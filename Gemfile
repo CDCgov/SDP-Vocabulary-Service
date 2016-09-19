@@ -54,6 +54,7 @@ group :development, :test do
   gem 'axe-matchers'
   gem 'selenium-webdriver', '2.48.0'
   gem 'parallel_tests'
+  gem 'overcommit'
 end
 
 group :development do
