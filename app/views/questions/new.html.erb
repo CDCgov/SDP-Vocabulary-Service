@@ -1,5 +1,5 @@
 <h1>New Question</h1>
-
-<%= render 'form', question: @question %>
+<!-- Change author: current_user.email to current_user.uid when controller change is made -->
+<%= render 'form', question: @question, author: current_user.email %>
 
 <%= link_to 'Back', questions_path %>
