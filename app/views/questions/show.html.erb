@@ -19,6 +19,17 @@
   <strong>Updated:</strong>
   <%= @question.updated_at %>
 </p>
+
+<p>
+  <strong>Response Set ID:</strong>
+  <%= @question.response_set_id %>
+</p>
+
+<p>
+  <strong>Response Set Name:</strong>
+  <%= @question.response_set_string %>
+</p>
+
 <% if user_signed_in? %>
     <%= link_to 'Edit', edit_question_path(@question) %> |
 <% end %>

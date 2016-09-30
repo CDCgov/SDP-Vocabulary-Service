@@ -17,6 +17,12 @@
   </div>
 
   <div class="field">
+    Response Set:
+    <% options = options_from_collection_for_select(@response_sets, 'id', 'name') %>
+    <%= f.select :response_set_id,  options %>
+  </div>
+
+  <div class="field">
     <!-- Displaying current user for when update tracking is added -->
     Author ID: <%= current_user.email %>
   </div>

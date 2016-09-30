@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :responses
+  resources :response_sets
   resources :questions
   devise_for :users
   root to: 'questions#index'
