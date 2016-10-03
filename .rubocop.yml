@@ -36,5 +36,3 @@ Metrics/PerceivedComplexity:
 
 Style/GuardClause:
   MinBodyLength: 100
-Style/HashSyntax:
-  UseHashRocketsWithSymbolValues: true

@@ -1,4 +1,3 @@
 class Question < ApplicationRecord
-  
-    belongs_to :response_set
+  belongs_to :response_set
 end

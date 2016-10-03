@@ -63,13 +63,14 @@ class ResponseSetsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_response_set
-      @response_set = ResponseSet.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def response_set_params
-      params.require(:response_set).permit(:name, :description, :oid, :author, :code, :code_system)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_response_set
+    @response_set = ResponseSet.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def response_set_params
+    params.require(:response_set).permit(:name, :description, :oid, :author, :code, :code_system)
+  end
 end

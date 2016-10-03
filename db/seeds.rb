@@ -13,21 +13,20 @@ user.password = 'password'
 user.save
 Ability.new(user)
 
-
 # Use `rake db:seed questionSeed=yes` to seed
 if ENV['questionSeed']
-     Question.create(content: 'What is your gender?', author: user.email)
-     Question.create(content: 'What is another question example?', author: user.email)
+  Question.create(content: 'What is your gender?', author: user.email)
+  Question.create(content: 'What is another question example?', author: user.email)
 end
 
 # Use `rake db:seed responseSeed=yes` to populate
 if ENV['responseSeed']
-     ResponseSet.create(name: 'Gender Partial', description: 'M / F', author: user.email)
-    ResponseSet.create(name: 'Gender Full', description: 'Male / Female / Prefer not to answer', author: user.email)
+  ResponseSet.create(name: 'Gender Partial', description: 'M / F', author: user.email)
+  ResponseSet.create(name: 'Gender Full', description: 'Male / Female / Prefer not to answer', author: user.email)
 
-     Response.create(value: 'M', response_set_id: rs1.id)
-   Response.create(value: 'F', response_set_id: rs1.id)
-     Response.create(value: 'Male', response_set_id: rs2.id)
-     Response.create(value: 'Female', response_set_id: rs2.id)
-   Response.create(value: 'Prefer not to answer', response_set_id: rs2.id)
+  Response.create(value: 'M', response_set_id: rs1.id)
+  Response.create(value: 'F', response_set_id: rs1.id)
+  Response.create(value: 'Male', response_set_id: rs2.id)
+  Response.create(value: 'Female', response_set_id: rs2.id)
+  Response.create(value: 'Prefer not to answer', response_set_id: rs2.id)
 end

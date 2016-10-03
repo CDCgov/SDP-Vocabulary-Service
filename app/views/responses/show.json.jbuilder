@@ -1,1 +1,1 @@
-json.partial! "responses/response", response: @response
+json.partial! 'responses/response', response: @response
