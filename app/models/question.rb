@@ -1,3 +1,3 @@
 class Question < ApplicationRecord
-    # resourcify # Need to check if this is necessary
+  # resourcify # Need to check if this is necessary
 end

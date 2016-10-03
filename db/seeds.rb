@@ -8,11 +8,11 @@
 
 # Setup single user for testing:
 user = User.new
-user.email = "test_author@gmail.com"
-user.password = "password"
+user.email = 'test_author@gmail.com'
+user.password = 'password'
 user.save
-ability = Ability.new(user)
+Ability.new(user)
 
 # Simple demo questions:
-q1 = Question.create(content: "What is your gender?", author: user.email)
-q2 = Question.create(content: "What is another question example?", author: user.email)
+Question.create(content: 'What is your gender?', author: user.email)
+Question.create(content: 'What is another question example?', author: user.email)

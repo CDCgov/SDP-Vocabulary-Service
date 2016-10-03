@@ -27,17 +27,17 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     ## Populating author field
-    # Change to .uid once User.uid is properly populated 
+    # Change to .uid once User.uid is properly populated
     # (currently null - need to evalute a devise uid generation extension)
-    @question.author = current_user.email 
+    @question.author = current_user.email
 
     respond_to do |format|
       if @question.save
         format.html { redirect_to @question, notice: 'Question was successfully created.' }
-        format.json { render :show, status: :created, location: @question }
+        format.json { render :show, :status => :created, :location => @question }
       else
         format.html { render :new }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
+        format.json { render json @question.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -48,10 +48,10 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.update(question_params)
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
-        format.json { render :show, status: :ok, location: @question }
+        format.json { render :show, :status => :ok, :location => @question }
       else
         format.html { render :edit }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
+        format.json { render :json => @question.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -67,13 +67,14 @@ class QuestionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_question
-      @question = Question.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def question_params
-      params.require(:question).permit(:content, :author)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_question
+    @question = Question.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def question_params
+    params.require(:question).permit(:content, :author)
+  end
 end
