@@ -32,15 +32,17 @@ class QuestionsController < ApplicationController
     # Change to .uid once User.uid is properly populated
     # (currently null - need to evalute a devise uid generation extension)
     @question.author = current_user.email
-    @question.response_set_string = ResponseSet.find(@question.response_set_id).name
+    if @question.response_set_id
+      @question.response_set_string = ResponseSet.find(@question.response_set_id).name
+    end
 
     respond_to do |format|
       if @question.save
         format.html { redirect_to @question, notice: 'Question was successfully created.' }
-        format.json { render :show, :status => :created, :location => @question }
+        format.json { render :show, status: :created, location: @question }
       else
         format.html { render :new }
-        format.json { render json @question.errors, :status => :unprocessable_entity }
+        format.json { render json @question.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -51,10 +53,10 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.update(question_params)
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
-        format.json { render :show, :status => :ok, :location => @question }
+        format.json { render :show, status: :ok, location: @question }
       else
         format.html { render :edit }
-        format.json { render :json => @question.errors, :status => :unprocessable_entity }
+        format.json { render json: @question.errors, status: :unprocessable_entity }
       end
     end
   end

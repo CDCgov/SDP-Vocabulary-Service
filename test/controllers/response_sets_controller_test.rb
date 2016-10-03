@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
   setup do
     @response_set = response_sets(:one)
+    sign_in users(:admin)
   end
 
   test 'should get index' do
