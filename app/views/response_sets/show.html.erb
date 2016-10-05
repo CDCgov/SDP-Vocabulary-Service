@@ -1,0 +1,48 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @response_set.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @response_set.description %>
+</p>
+
+<p>
+  <strong>Responses:</strong><br>
+  <% @response_set.responses.each do |response| %>
+    <%= response.value %><br>
+  <% end %>
+</p>
+
+<p>
+  <strong>Questions:</strong><br>
+  <% @response_set.questions.each do |question| %>
+    <%= question.content %><br>
+  <% end %>
+</p>
+
+<p>
+  <strong>Oid:</strong>
+  <%= @response_set.oid %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @response_set.author %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @response_set.code %>
+</p>
+
+<p>
+  <strong>Code system:</strong>
+  <%= @response_set.code_system %>
+</p>
+
+<%= link_to 'Edit', edit_response_set_path(@response_set) %> |
+<%= link_to 'Back', response_sets_path %>
