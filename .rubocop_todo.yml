@@ -1,0 +1,16 @@
+# Don't fail because of Rails defaults
+
+# Offense count: 1
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/test_helper.rb'
+
+# Offense count: 3
+# Configuration parameters: Exclude.
+Style/Documentation:
+  Enabled: false
+  # Exclude:
+
+Rails/FindEach:
+  Enabled: false
