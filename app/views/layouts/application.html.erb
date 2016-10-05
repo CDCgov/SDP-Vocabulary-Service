@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Vocabulary Service</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +14,35 @@
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">CDC Vocabulary Service</a>
+        </div>
+        <% if user_signed_in? %>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/questions">Questions</a></li>
+          <li class="active"><a href="/response_sets">Response Sets</a></li>
+          <li class="active"><a href="/responses">Responses</a></li>
+          <li class="active"><a href="/questions/new">New Question</a></li>
+          <li class="active"><a href="/response_sets/new">New Response Set</a></li>
+          <li class="active"><a href="/responses/new">New Response</a></li>
+        </ul>
+        <% else %>
+        <ul class="nav navbar-nav">
+          <li class="disabled"><a href="/questions/new">New Question</a></li>
+        </ul>
+        <% end %>
+        <ul class="nav navbar-nav navbar-right">
+          <%= render 'devise/menu/registration_items' %>
+          <%= render 'devise/menu/login_items' %>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+        <%= yield %>
+    </div>
   </body>
 </html>
+
+

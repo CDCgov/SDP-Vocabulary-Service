@@ -3,7 +3,15 @@
 one:
   name: MyString
   description: MyText
+  oid: 1
+  author: MyString
+  code: MyString
+  code_system: MyString
 
 two:
   name: MyString
   description: MyText
+  oid: 1
+  author: MyString
+  code: MyString
+  code_system: MyString

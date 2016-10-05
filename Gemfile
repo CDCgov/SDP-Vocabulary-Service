@@ -55,6 +55,8 @@ group :development, :test do
   gem 'selenium-webdriver', '2.48.0'
   gem 'parallel_tests'
   gem 'overcommit'
+  gem 'pry'
+  gem 'pry-nav'
 end
 
 group :development do
@@ -62,9 +64,6 @@ group :development do
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-
-  gem 'pry'
-  gem 'pry-nav'
 end
 
 group :test do
