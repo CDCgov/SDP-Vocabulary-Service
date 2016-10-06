@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :concepts
   resources :responses
   resources :response_sets
   resources :questions

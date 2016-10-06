@@ -30,3 +30,10 @@ if ENV['responseSeed']
   Response.create(value: 'Female', response_set_id: rs2.id)
   Response.create(value: 'Prefer not to answer', response_set_id: rs2.id)
 end
+
+# Use `rake db:seed conceptSeed=yes` to populate
+if ENV['conceptSeed']
+  Concept.create(value: 'rash')
+  Concept.create(value: 'elevated temp')
+  Concept.create(value: 'travel')
+end

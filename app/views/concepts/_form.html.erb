@@ -1,0 +1,22 @@
+<%= form_for(concept) do |f| %>
+  <% if concept.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(concept.errors.count, "error") %> prohibited this concept from being saved:</h2>
+
+      <ul>
+      <% concept.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :value %>
+    <%= f.text_field :value %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
