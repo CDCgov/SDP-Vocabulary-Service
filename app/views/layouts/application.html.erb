@@ -21,12 +21,25 @@
         </div>
         <% if user_signed_in? %>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="/questions">Questions</a></li>
-          <li class="active"><a href="/response_sets">Response Sets</a></li>
-          <li class="active"><a href="/responses">Responses</a></li>
-          <li class="active"><a href="/questions/new">New Question</a></li>
-          <li class="active"><a href="/response_sets/new">New Response Set</a></li>
-          <li class="active"><a href="/responses/new">New Response</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Overview
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li class="active"><a href="/questions">Questions</a></li>
+              <li class="active"><a href="/response_sets">Response Sets</a></li>
+              <li class="active"><a href="/responses">Responses</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Author
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li class="active"><a href="/questions/new">New Question</a></li>
+              <li class="active"><a href="/response_sets/new">New Response Set</a></li>
+              <li class="active"><a href="/responses/new">New Response</a></li>
+            </ul>
+          </li>
+
         </ul>
         <% else %>
         <ul class="nav navbar-nav">
