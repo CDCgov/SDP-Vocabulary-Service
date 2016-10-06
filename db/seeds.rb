@@ -21,8 +21,8 @@ end
 
 # Use `rake db:seed responseSeed=yes` to populate
 if ENV['responseSeed']
-  ResponseSet.create(name: 'Gender Partial', description: 'M / F', author: user.email)
-  ResponseSet.create(name: 'Gender Full', description: 'Male / Female / Prefer not to answer', author: user.email)
+  rs1 = ResponseSet.create(name: 'Gender Partial', description: 'M / F', author: user.email)
+  rs2 = ResponseSet.create(name: 'Gender Full', description: 'Male / Female / Prefer not to answer', author: user.email)
 
   Response.create(value: 'M', response_set_id: rs1.id)
   Response.create(value: 'F', response_set_id: rs1.id)
