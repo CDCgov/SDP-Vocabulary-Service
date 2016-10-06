@@ -32,9 +32,6 @@ class QuestionsController < ApplicationController
     # Change to .uid once User.uid is properly populated
     # (currently null - need to evalute a devise uid generation extension)
     @question.author = current_user.email
-    if @question.response_set_id
-      @question.response_set_string = ResponseSet.find(@question.response_set_id).name
-    end
 
     respond_to do |format|
       if @question.save
@@ -80,6 +77,6 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :author, :response_set_id, :response_set_string)
+    params.require(:question).permit(:content, :author, :response_set_id)
   end
 end
