@@ -1,0 +1,4 @@
+#!/bin/bash
+export RACK_ENV=${RACK_ENV:-"production"}
+bundle exec rake db:migrate
+exec /usr/libexec/s2i/run
