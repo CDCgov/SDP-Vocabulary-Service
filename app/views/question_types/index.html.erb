@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Question Types</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @question_types.each do |type| %>
+      <tr>
+        <td><%= type.name %></td>
+        <td><%= link_to 'Details', type %></td>
+        <% if user_signed_in? %>
+          <td><%= link_to 'Edit', edit_question_type_path(type) %></td>
+          <td><%= link_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% if user_signed_in? %>
+  <%= link_to 'New Question Type', new_question_type_path %>
+<% end %>

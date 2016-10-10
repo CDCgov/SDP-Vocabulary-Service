@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :responses
   resources :response_sets
   resources :questions
+  resources :question_types
   devise_for :users
   root to: 'questions#index'
 
