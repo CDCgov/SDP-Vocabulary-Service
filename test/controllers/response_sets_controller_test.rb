@@ -4,6 +4,9 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   setup do
     @response_set = response_sets(:one)
+    @response_set2 = response_sets(:two)
+    @resp = responses(:one)
+    @resp2 = responses(:two)
     sign_in users(:admin)
   end
 
@@ -42,6 +45,8 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should destroy response_set' do
     assert_difference('ResponseSet.count', -1) do
+      patch response_url(@resp), params: { response: { response_set_id: @response_set2.id, value: 'one' } }
+      patch response_url(@resp2), params: { response: { response_set_id: @response_set2.id, value: 'two' } }
       delete response_set_url(@response_set)
     end
 

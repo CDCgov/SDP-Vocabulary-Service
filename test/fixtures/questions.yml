@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  content: MyText
-  author: MyString
+  content: What is your gender?
+  author: test_author@gmail.com
 
 two:
-  content: MyText
-  author: MyString
+  content: What is another question example?
+  author: test_author@gmail.com
