@@ -1,9 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  value: MyText
+  value: M
   response_set: one
 
 two:
-  value: MyText
+  value: F
+  response_set: one
+
+three:
+  value: Male
+  response_set: two
+
+four:
+  value: Female
+  response_set: two
+
+five:
+  value: Prefer not to answer
   response_set: two

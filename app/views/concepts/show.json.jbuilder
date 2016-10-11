@@ -1,1 +1,1 @@
-json.partial! "concepts/concept", concept: @concept
+json.partial! 'concepts/concept', concept: @concept
