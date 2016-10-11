@@ -3,7 +3,7 @@ require 'test_helper'
 class QuestionTest < ActiveSupport::TestCase
   test 'Question should allow type to be set' do
     question = Question.new
-    type = QuestionType.new(name: "TestName")
+    type = QuestionType.new(name: 'TestName')
     question.question_type = type
     assert_equal question.question_type, type
   end
