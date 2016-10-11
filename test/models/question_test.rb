@@ -2,7 +2,15 @@ require 'test_helper'
 
 class QuestionTest < ActiveSupport::TestCase
   test 'Question should allow type to be set' do
-    assert true
+    question = Question.new
+    type = QuestionType.new(name: "TestName")
+    question.question_type = type
+    assert_equal question.question_type, type
+  end
+
+  test 'Question requires a type' do
+    question = Question.new
+    assert_not question.valid?
   end
 
   # test "the truth" do
