@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161006225701) do
+ActiveRecord::Schema.define(version: 20161011152231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,12 +21,20 @@ ActiveRecord::Schema.define(version: 20161006225701) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "question_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "questions", force: :cascade do |t|
     t.text     "content"
     t.string   "author"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "response_set_id"
+    t.integer  "question_type_id"
+    t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
     t.index ["response_set_id"], name: "index_questions_on_response_set_id", using: :btree
   end
 
@@ -85,6 +93,7 @@ ActiveRecord::Schema.define(version: 20161006225701) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
+  add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_sets"
   add_foreign_key "responses", "response_sets"
 end

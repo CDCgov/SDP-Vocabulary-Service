@@ -1,11 +1,20 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+<<<<<<< 05f458b74513c7258d3e2b4ab6ed9bfcc61958e0
   content: What is your gender?
   author: test_author@gmail.com
-  question_type: one
 
 two:
   content: What is another question example?
   author: test_author@gmail.com
+=======
+  content: MyText
+  author: MyString
   question_type: one
+
+two:
+  content: MyText
+  author: MyString
+  question_type: one
+>>>>>>> Question Type CRUD Operations (SDP-103 and SDP-76)

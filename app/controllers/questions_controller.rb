@@ -17,11 +17,13 @@ class QuestionsController < ApplicationController
   def new
     @question = Question.new
     @response_sets = ResponseSet.all
+    @question_types = QuestionType.all
   end
 
   # GET /questions/1/edit
   def edit
     @response_sets = ResponseSet.all
+    @question_types = QuestionType.all
   end
 
   # POST /questions
@@ -38,6 +40,8 @@ class QuestionsController < ApplicationController
         format.html { redirect_to @question, notice: 'Question was successfully created.' }
         format.json { render :show, status: :created, location: @question }
       else
+        @response_sets = ResponseSet.all
+        @question_types = QuestionType.all
         format.html { render :new }
         format.json { render json @question.errors, status: :unprocessable_entity }
       end
@@ -52,6 +56,8 @@ class QuestionsController < ApplicationController
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
+        @response_sets = ResponseSet.all
+        @question_types = QuestionType.all
         format.html { render :edit }
         format.json { render json: @question.errors, status: :unprocessable_entity }
       end
@@ -77,6 +83,6 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :author, :response_set_id)
+    params.require(:question).permit(:content, :author, :response_set_id, :question_type_id)
   end
 end

@@ -17,9 +17,14 @@
   </div>
 
   <div class="field">
-    Response Set:
-    <% options = options_from_collection_for_select(@response_sets, 'id', 'name') %>
+    <%= f.label :response_set_id, "Response Set" %>
+    <% options = options_from_collection_for_select(@response_sets, 'id', 'name', question.response_set_id) %>
     <%= f.select :response_set_id,  options %>
+  </div>
+
+  <div class="field">
+    <%= f.label :question_type_id, "Question Type" %>
+    <%= f.select :question_type_id, options_from_collection_for_select(@question_types, 'id', 'name', question.question_type_id), include_blank: true %>
   </div>
 
   <div class="field">
