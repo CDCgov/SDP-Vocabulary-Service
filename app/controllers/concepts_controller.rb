@@ -5,6 +5,7 @@ class ConceptsController < ApplicationController
   # GET /concepts.json
   def index
     @concepts = Concept.all
+    @response_sets = ResponseSet.all
   end
 
   # GET /concepts/1
@@ -24,7 +25,10 @@ class ConceptsController < ApplicationController
   # POST /concepts
   # POST /concepts.json
   def create
+    # byebug
     @concept = Concept.new(concept_params)
+    @response_sets = ResponseSet.where(id: params[:linked_response_sets])
+    @concept.response_sets << @response_sets
 
     respond_to do |format|
       if @concept.save
@@ -40,6 +44,10 @@ class ConceptsController < ApplicationController
   # PATCH/PUT /concepts/1
   # PATCH/PUT /concepts/1.json
   def update
+    @response_sets = ResponseSet.where(id: params[:linked_response_sets])
+    @concept.response_sets.destroy_all
+    @concept.response_sets << @response_sets
+
     respond_to do |format|
       if @concept.update(concept_params)
         format.html { redirect_to @concept, notice: 'Concept was successfully updated.' }
@@ -70,6 +78,6 @@ class ConceptsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def concept_params
-    params.require(:concept).permit(:value)
+    params.require(:concept).permit(:value, linked_response_sets: [])
   end
 end
