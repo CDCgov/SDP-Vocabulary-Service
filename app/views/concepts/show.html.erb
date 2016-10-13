@@ -5,5 +5,17 @@
   <%= @concept.value %>
 </p>
 
+<p>
+  <strong>Response Set Names:</strong><br>
+  <% @concept.response_sets.each do |rs| %>
+    <%= rs.name %><br>
+  <% end %>
+</p>
+
+<p>
+  <strong>Response Set IDs:</strong>
+  <%= @concept.response_sets.map {|k| k.id}.join(', ') %>
+</p>
+
 <%= link_to 'Edit', edit_concept_path(@concept) %> |
 <%= link_to 'Back', concepts_path %>
