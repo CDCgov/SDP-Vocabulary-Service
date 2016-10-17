@@ -31,9 +31,9 @@ Then(/^I should see the option to (.*) "([^"]*)"$/) do |action, object|
   end
 end
 
-When(/^I click on the option to Destroy "([^"]*)"$/) do |object|
+When(/^I click on the option to (.*) "([^"]*)"$/) do |action, object|
   within('#' + object.delete(' ')) do
-    click_on('Destroy')
+    click_on(action)
   end
 end
 
@@ -46,4 +46,12 @@ end
 
 Then(/^I should not see "([^"]*)"$/) do |value|
   page.assert_no_text(value)
+end
+
+When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |fieldname, newvalue|
+  fill_in(fieldname, with: newvalue)
+end
+
+When(/^I click on the "([^"]*)" button$/) do |buttonname|
+  click_on(buttonname)
 end
