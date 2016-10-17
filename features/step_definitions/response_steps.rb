@@ -30,3 +30,20 @@ Then(/^I should see the option to (.*) "([^"]*)"$/) do |action, object|
     has_link?(action)
   end
 end
+
+When(/^I click on the option to Destroy "([^"]*)"$/) do |object|
+  within('tr#' + object.delete(' ')) do
+    click_on('Destroy')
+  end
+end
+
+When(/^I confirm my action$/) do
+  # So, apparently the poltergeist driver automatically accept/confirm/okays all alerts
+  # Additionally, it doesn't support the code below, which is required when using selenium.
+  # I'm torn on removing the step entirely, so I'm leaving it and this explanation for posterity.
+  # page.driver.browser.switch_to.alert.accept
+end
+
+Then(/^I should not see "([^"]*)"$/) do |value|
+  page.assert_no_text(value)
+end
