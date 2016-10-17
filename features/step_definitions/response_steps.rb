@@ -26,13 +26,13 @@ Then(/^I should see "([^"]*)"$/) do |value|
 end
 
 Then(/^I should see the option to (.*) "([^"]*)"$/) do |action, object|
-  within('tr#' + object.delete(' ')) do
+  within('#' + object.delete(' ')) do
     has_link?(action)
   end
 end
 
 When(/^I click on the option to Destroy "([^"]*)"$/) do |object|
-  within('tr#' + object.delete(' ')) do
+  within('#' + object.delete(' ')) do
     click_on('Destroy')
   end
 end
