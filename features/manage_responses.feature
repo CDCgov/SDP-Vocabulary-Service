@@ -2,9 +2,9 @@ Feature: Manage Responses
   As an author
   I want to create and manage Responses
   Scenario: Response List View
-    Given I have responses with the values Male, Female, Prefer not to answer
+    Given I have Responses with the values Male, Female, Prefer not to answer
     And I am logged in as test_author@gmail.com
-    When I go to the list of responses
+    When I go to the list of Responses
     Then I should see "Male"
     And I should see "Female"
     And I should see "Prefer not to answer"
@@ -19,28 +19,37 @@ Feature: Manage Responses
     And I should see the option to Edit "Prefer not to answer"
 
   Scenario: Show Response in Detail
-    Given I have responses with the values Male, Female, Prefer not to answer
+    Given I have Responses with the values Male, Female, Prefer not to answer
     And I am logged in as test_author@gmail.com
-    When I go to the list of responses
+    When I go to the list of Responses
     And I click on the option to Show "Male"
     Then I should see "Value: Male"
 
   Scenario: Edit Response
-    Given I have responses with the values Male, Female, Prefer not to answer
+    Given I have Responses with the values Male, Female, Prefer not to answer
     And I am logged in as test_author@gmail.com
-    When I go to the list of responses
+    When I go to the list of Responses
     And I click on the option to Edit "Male"
     And I fill in the "Value" field with "Dalek"
-    #And I fill in the "Response Set" field with "2" 
+    #And I fill in the "Response set" field with "1"
     And I click on the "Update Response" button
     Then I should see "Response was successfully updated."
-    And I should see "Dalek" 
+    And I should see "Dalek"
   
   Scenario: Destroy Response
-    Given I have responses with the values Male, Female, Prefer not to answer
+    Given I have Responses with the values Male, Female, Prefer not to answer
     And I am logged in as test_author@gmail.com
-    When I go to the list of responses
+    When I go to the list of Responses
     And I click on the option to Destroy "Male"
     And I confirm my action
     Then I should see "Response was successfully destroyed."
     And I should not see "Male"
+
+  Scenario: Create New Response from List
+    Given I am logged in as test_author@gmail.com
+    When I go to the list of Responses
+    And I click on the "New Response" link
+    And I fill in the "Value" field with "Dalek"
+    And I click on the "Create Response" button
+    Then I should see "Response was successfully created."
+    And I should see "Dalek"

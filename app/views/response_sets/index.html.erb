@@ -15,7 +15,7 @@
 
   <tbody>
     <% @response_sets.each do |response_set| %>
-      <tr>
+      <tr id='<%= response_set.name.delete(' ') %>'>
         <td><%= response_set.name %></td>
         <td><%= response_set.description %></td>
         <td><%= response_set.author %></td>

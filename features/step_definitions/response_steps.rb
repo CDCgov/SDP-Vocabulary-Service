@@ -1,57 +1,24 @@
-Given(/^I have responses with the values (.+)$/) do |values|
+# Given clauses
+Given(/^I have Responses with the values (.+)$/) do |values|
   values.split(', ').each do |value|
     Response.create!(value: value)
   end
 end
 
-Given(/^I am logged in as (.+)$/) do |username|
-  user = User.new
-  user.email = username
-  user.password = 'password'
-  user.save
-  Ability.new(user)
-
-  visit '/users//sign_in'
-  fill_in('user_email', with: username)
-  fill_in('user_password', with: 'password')
-  click_on('Log in')
+Given(/^I have the Responses: (.+)$/) do |args|
+  args.split('; ').each do |response|
+    val_and_set = response.split(', ')
+    Response.create!(value: val_and_set[0], response_set_id: val_and_set[1])
+  end
 end
 
-When(/^I go to the list of responses$/) do
+Then(/^I should see a Response with the value "([^"]*)" and a Response Set ID of "([^"]*)"$/) do |value, rsid|
+  within('#' + value.delete(' ')) do
+    assert_text(rsid)
+  end
+end
+
+# When clauses
+When(/^I go to the list of Responses$/) do
   visit('/responses')
-end
-
-Then(/^I should see "([^"]*)"$/) do |value|
-  page.assert_text(value, minimum: 1)
-end
-
-Then(/^I should see the option to (.*) "([^"]*)"$/) do |action, object|
-  within('#' + object.delete(' ')) do
-    has_link?(action)
-  end
-end
-
-When(/^I click on the option to (.*) "([^"]*)"$/) do |action, object|
-  within('#' + object.delete(' ')) do
-    click_on(action)
-  end
-end
-
-When(/^I confirm my action$/) do
-  # So, apparently the poltergeist driver automatically accept/confirm/okays all alerts
-  # Additionally, it doesn't support the code below, which is required when using selenium.
-  # I'm torn on removing the step entirely, so I'm leaving it and this explanation for posterity.
-  # page.driver.browser.switch_to.alert.accept
-end
-
-Then(/^I should not see "([^"]*)"$/) do |value|
-  page.assert_no_text(value)
-end
-
-When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |fieldname, newvalue|
-  fill_in(fieldname, with: newvalue)
-end
-
-When(/^I click on the "([^"]*)" button$/) do |buttonname|
-  click_on(buttonname)
 end
