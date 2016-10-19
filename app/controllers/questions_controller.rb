@@ -30,10 +30,8 @@ class QuestionsController < ApplicationController
   # POST /questions.json
   def create
     @question = Question.new(question_params)
-    ## Populating author field
-    # Change to .uid once User.uid is properly populated
-    # (currently null - need to evalute a devise uid generation extension)
-    @question.author = current_user.email
+    # Populating author field
+    @question.author = current_user.uid
 
     respond_to do |format|
       if @question.save
