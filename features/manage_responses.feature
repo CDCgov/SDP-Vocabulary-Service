@@ -9,22 +9,22 @@ Feature: Manage Responses
     Then I should see "Male"
     And I should see "Female"
     And I should see "Prefer not to answer"
-    And I should see the option to Destroy "Male"
-    And I should see the option to Destroy "Female"
-    And I should see the option to Destroy "Prefer not to answer"
-    And I should see the option to Show "Male"
-    And I should see the option to Show "Female"
-    And I should see the option to Show "Prefer not to answer"
-    And I should see the option to Edit "Male"
-    And I should see the option to Edit "Female"
-    And I should see the option to Edit "Prefer not to answer"
+    And I should see the option to Destroy the Response with the value "Male"
+    And I should see the option to Destroy the Response with the value "Female"
+    And I should see the option to Destroy the Response with the value "Prefer not to answer"
+    And I should see the option to Show the Response with the value "Male"
+    And I should see the option to Show the Response with the value "Female"
+    And I should see the option to Show the Response with the value "Prefer not to answer"
+    And I should see the option to Edit the Response with the value "Male"
+    And I should see the option to Edit the Response with the value "Female"
+    And I should see the option to Edit the Response with the value "Prefer not to answer"
 
   Scenario: Show Response in Detail
     Given I have a Response Set with the name "Gender Full"
     And I have the Responses: Male, 1; Female, 1; Prefer not to answer, 1
     And I am logged in as test_author@gmail.com
     When I go to the list of Responses
-    And I click on the option to Show "Male"
+    And I click on the option to Show the Response with the value "Male"
     Then I should see "Value: Male"
 
   Scenario: Edit Response
@@ -33,7 +33,7 @@ Feature: Manage Responses
     And I have the Responses: Male, 1; Female, 1; Prefer not to answer, 1
     And I am logged in as test_author@gmail.com
     When I go to the list of Responses
-    And I click on the option to Edit "Male"
+    And I click on the option to Edit the Response with the value "Male"
     And I fill in the "Value" field with "Dalek"
     And I fill in the "Response set" field with "2"
     And I click on the "Update Response" button
@@ -56,7 +56,7 @@ Feature: Manage Responses
     And I have the Responses: Male, 1; Female, 1; Prefer not to answer, 1
     And I am logged in as test_author@gmail.com
     When I go to the list of Responses
-    And I click on the option to Destroy "Male"
+    And I click on the option to Destroy the Response with the value "Male"
     And I confirm my action
     Then I should see "Response was successfully destroyed."
     And I should not see "Male"

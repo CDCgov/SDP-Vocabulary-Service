@@ -12,7 +12,7 @@
 
   <tbody>
     <% @question_types.each do |type| %>
-      <tr>
+      <tr id='id_<%= type.id %>'>
         <td><%= type.name %></td>
         <td><%= link_to 'Details', type %></td>
         <% if user_signed_in? %>

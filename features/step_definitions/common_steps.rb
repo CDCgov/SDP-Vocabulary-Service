@@ -1,9 +1,6 @@
 # Given clauses
 Given(/^I am logged in as (.+)$/) do |user_name|
-  user = User.new
-  user.email = user_name
-  user.password = 'password'
-  user.save
+  user = User.create!(email: user_name, password: 'password')
   Ability.new(user)
 
   visit '/users/sign_in'
@@ -13,8 +10,9 @@ Given(/^I am logged in as (.+)$/) do |user_name|
 end
 
 # When clauses
-When(/^I click on the option to (.*) "([^"]*)"$/) do |action, object|
-  within('#' + object.delete(' ')) do
+When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
+  object_id = attribute_to_id(object_type, attribute, attribute_value)
+  within('#id_' + object_id) do
     click_on(action)
   end
 end
@@ -44,8 +42,24 @@ Then(/^I should see "([^"]*)"$/) do |value|
   page.assert_text(value, minimum: 1)
 end
 
-Then(/^I should see the option to (.*) "([^"]*)"$/) do |action, object|
-  within('#' + object.delete(' ')) do
+Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
+  object_id = attribute_to_id(object_type, attribute, attribute_value)
+  within('#id_' + object_id) do
     find_link(action)
   end
+end
+
+# Helper functions
+def attribute_to_id(object_type, attribute, attribute_value)
+  obj = nil
+  if object_type == 'Response'
+    obj = Response.find_by(attribute => attribute_value)
+  elsif object_type == 'Response Set'
+    obj = ResponseSet.find_by(attribute => attribute_value)
+  elsif object_type == 'Question'
+    obj = Question.find_by(attribute => attribute_value)
+  elsif object_type == 'Question Type'
+    obj = QuestionType.find_by(attribute => attribute_value)
+  end
+  obj.id.to_s
 end
