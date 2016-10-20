@@ -15,5 +15,5 @@ Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
 end
 
 Then(/^I should see a Response Set with the name "([^"]*)"$/) do |set_name|
-  find('#' + set_name.delete(' '))
+  find('#id_' + attribute_to_id('Response Set', 'name', set_name))
 end

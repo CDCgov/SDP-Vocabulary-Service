@@ -13,7 +13,7 @@
 
   <tbody>
     <% @responses.each do |response| %>
-      <tr id='<%= response.value.delete(' ') %>'>
+      <tr id='id_<%= response.id %>'>
         <td><%= response.value %></td>
         <td><%= response.response_set_id %></td>
         <td><%= link_to 'Show', response %></td>

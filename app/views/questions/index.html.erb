@@ -14,7 +14,7 @@
 
   <tbody>
     <% @questions.each do |question| %>
-      <tr>
+      <tr id='id_<%= question.id %>'>
         <td><%= question.content %></td>
         <td><%= question.author %></td>
         <td><%= question.question_type.try :name %> </td>
