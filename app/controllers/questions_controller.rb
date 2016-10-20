@@ -6,6 +6,7 @@ class QuestionsController < ApplicationController
   # GET /questions.json
   def index
     @questions = Question.all
+    @response_sets = ResponseSet.all
   end
 
   # GET /questions/1
@@ -26,10 +27,16 @@ class QuestionsController < ApplicationController
     @question_types = QuestionType.all
   end
 
+  def link_response_sets(params)
+    @response_sets = ResponseSet.where(id: params[:linked_response_sets])
+    @question.response_sets << @response_sets
+  end
+
   # POST /questions
   # POST /questions.json
   def create
     @question = Question.new(question_params)
+    link_response_sets(params)
     # Populating author field
     @question.author = current_user.uid
 
@@ -38,8 +45,6 @@ class QuestionsController < ApplicationController
         format.html { redirect_to @question, notice: 'Question was successfully created.' }
         format.json { render :show, status: :created, location: @question }
       else
-        @response_sets = ResponseSet.all
-        @question_types = QuestionType.all
         format.html { render :new }
         format.json { render json @question.errors, status: :unprocessable_entity }
       end
@@ -49,13 +54,15 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
+    @response_sets = ResponseSet.where(id: params[:linked_response_sets])
+    @question.response_sets.destroy_all
+    @question.response_sets << @response_sets
+
     respond_to do |format|
       if @question.update(question_params)
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
-        @response_sets = ResponseSet.all
-        @question_types = QuestionType.all
         format.html { render :edit }
         format.json { render json: @question.errors, status: :unprocessable_entity }
       end

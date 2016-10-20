@@ -20,9 +20,16 @@
   <%= @question.updated_at %>
 </p>
 
+<!-- Need to replace this with iterative loop
 <p>
   <strong>Response Set ID:</strong>
   <%= @question.response_set_id %>
+</p> -->
+<p>
+  <strong>Response Set Names:</strong><br>
+  <% @question.response_sets.each do |rs| %>
+    <%= rs.name %><br>
+  <% end %>
 </p>
 
 <p>
