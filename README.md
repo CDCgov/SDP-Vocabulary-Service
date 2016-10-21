@@ -24,6 +24,10 @@ you will need to have [node.js](https://nodejs.org/en/) and [npm](https://www.np
 
     npm install
 
+## Database Model
+Run `rake generate_erd` to regenerate (must have graphvis).
+![Entity relationship diagram](./erd.png)
+
 ### Public Domain
 This project constitutes a work of the United States government and is not subject to domestic copyright protection under 17 USC Section 105. This project is in the public domain within the United States, and copyright related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/). All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
 

@@ -22,6 +22,10 @@
 
 #coverage reports
 coverage
+
 # Added by webpack-rails
 /node_modules
 /public/webpack
+
+# entity relationship diagrams generaed by erd
+erd.pdf
