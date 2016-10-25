@@ -38,7 +38,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     link_response_sets(params)
     # Populating author field
-    @question.author = current_user.uid
+    @question.author = current_user.id
 
     respond_to do |format|
       if @question.save
