@@ -6,10 +6,28 @@
 
 require 'cucumber/rails'
 
-# Capybara defaults to CSS3 selectors rather than XPath.
-# If you'd prefer to use XPath, just uncomment this line and adjust any
-# selectors in your step definitions to use the XPath syntax.
-# Capybara.default_selector = :xpath
+require 'capybara/cucumber'
+require 'capybara/poltergeist'
+require 'capybara/accessible'
+
+require 'axe/cucumber/step_definitions'
+
+if ENV['IN_BROWSER']
+  # On demand: non-headless tests via Selenium/WebDriver
+  # To run the scenarios in browser (default: Firefox), use the following command line:
+  # IN_BROWSER=true bundle exec cucumber
+  # or (to have a pause of 1 second between each step):
+  # IN_BROWSER=true PAUSE=1 bundle exec cucumber
+  Capybara.default_driver = :accessible_selenium
+  AfterStep do
+    sleep(ENV['PAUSE'].to_i || 0)
+  end
+else
+  Capybara.default_driver    = :accessible_poltergeist
+  Capybara.javascript_driver = :accessible_poltergeist
+end
+
+Capybara.default_max_wait_time = 5
 
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
@@ -31,7 +49,7 @@ ActionController::Base.allow_rescue = false
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
 begin
-  DatabaseCleaner.strategy = :transaction
+  DatabaseCleaner.strategy = :truncation
 rescue NameError
   raise 'You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it.'
 end
