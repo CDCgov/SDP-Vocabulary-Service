@@ -32,13 +32,18 @@ class QuestionsController < ApplicationController
     @question.response_sets << @response_sets
   end
 
+  def assign_author
+    # Populating author field
+    @question.created_by = current_user
+    @question.updated_by = current_user
+  end
+
   # POST /questions
   # POST /questions.json
   def create
     @question = Question.new(question_params)
     link_response_sets(params)
-    # Populating author field
-    @question.author = current_user.id
+    assign_author
 
     respond_to do |format|
       if @question.save
@@ -51,12 +56,17 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /questions/1
-  # PATCH/PUT /questions/1.json
-  def update
+  def update_response_sets(params)
     @response_sets = ResponseSet.where(id: params[:linked_response_sets])
     @question.response_sets.destroy_all
     @question.response_sets << @response_sets
+  end
+
+  # PATCH/PUT /questions/1
+  # PATCH/PUT /questions/1.json
+  def update
+    update_response_sets(params)
+    @question.updated_by = current_user
 
     respond_to do |format|
       if @question.update(question_params)

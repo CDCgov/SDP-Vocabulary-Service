@@ -2,10 +2,10 @@
 
 one:
   content: What is your gender?
-  author: test_author@gmail.com
+  created_by_id: 1
   question_type: one
 
 two:
   content: What is another question example?
-  author: test_author@gmail.com
+  created_by_id: 1
   question_type: one

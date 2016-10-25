@@ -22,7 +22,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create response_set' do
     assert_difference('ResponseSet.count') do
-      post response_sets_url, params: { response_set: { author: @response_set.author, code: @response_set.code, code_system: @response_set.code_system, description: @response_set.description, name: @response_set.name, oid: @response_set.oid } }
+      post response_sets_url, params: { response_set: { description: @response_set.description, name: @response_set.name, oid: @response_set.oid } }
     end
 
     assert_redirected_to response_set_url(ResponseSet.last)
@@ -39,7 +39,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update response_set' do
-    patch response_set_url(@response_set), params: { response_set: { author: @response_set.author, code: @response_set.code, code_system: @response_set.code_system, description: @response_set.description, name: @response_set.name, oid: @response_set.oid } }
+    patch response_set_url(@response_set), params: { response_set: { description: @response_set.description, name: @response_set.name, oid: @response_set.oid } }
     assert_redirected_to response_set_url(@response_set)
   end
 

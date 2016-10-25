@@ -22,10 +22,17 @@ class ResponseSetsController < ApplicationController
   def edit
   end
 
+  def assign_author
+    # Populating author field
+    @response_set.created_by = current_user
+    @response_set.updated_by = current_user
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create
     @response_set = ResponseSet.new(response_set_params)
+    assign_author
 
     respond_to do |format|
       if @response_set.save
@@ -41,6 +48,8 @@ class ResponseSetsController < ApplicationController
   # PATCH/PUT /response_sets/1
   # PATCH/PUT /response_sets/1.json
   def update
+    @response_set.updated_by = current_user
+
     respond_to do |format|
       if @response_set.update(response_set_params)
         format.html { redirect_to @response_set, notice: 'Response set was successfully updated.' }

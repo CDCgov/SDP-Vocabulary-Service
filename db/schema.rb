@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161020142602) do
+ActiveRecord::Schema.define(version: 20161025210138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,24 +41,26 @@ ActiveRecord::Schema.define(version: 20161020142602) do
 
   create_table "questions", force: :cascade do |t|
     t.text     "content"
-    t.string   "author"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.integer  "response_set_id"
     t.integer  "question_type_id"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
-    t.index ["response_set_id"], name: "index_questions_on_response_set_id", using: :btree
+    t.index ["updated_by_id"], name: "index_questions_on_updated_by_id", using: :btree
   end
 
   create_table "response_sets", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
     t.integer  "oid"
-    t.string   "author"
-    t.string   "code"
-    t.string   "code_system"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
+    t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
 
   create_table "responses", force: :cascade do |t|
@@ -66,6 +68,7 @@ ActiveRecord::Schema.define(version: 20161020142602) do
     t.integer  "response_set_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "code_system"
     t.index ["response_set_id"], name: "index_responses_on_response_set_id", using: :btree
   end
 
@@ -106,6 +109,9 @@ ActiveRecord::Schema.define(version: 20161020142602) do
   end
 
   add_foreign_key "questions", "question_types"
-  add_foreign_key "questions", "response_sets"
+  add_foreign_key "questions", "users", column: "created_by_id"
+  add_foreign_key "questions", "users", column: "updated_by_id"
+  add_foreign_key "response_sets", "users", column: "created_by_id"
+  add_foreign_key "response_sets", "users", column: "updated_by_id"
   add_foreign_key "responses", "response_sets"
 end

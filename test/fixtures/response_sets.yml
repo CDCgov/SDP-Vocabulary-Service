@@ -4,14 +4,10 @@ one:
   name: Gender Partial
   description: M / F
   oid: 1
-  author: test_author@gmail.com
-  code: MyString
-  code_system: MyString
+  created_by_id: 1
 
 two:
   name: Gender Full
   description: Male / Female / Prefer not to answer
   oid: 1
-  author: test_author@gmail.com
-  code: MyString
-  code_system: MyString
+  created_by_id: 1
