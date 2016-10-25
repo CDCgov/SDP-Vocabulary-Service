@@ -5,6 +5,11 @@ Given(/^I am logged in as (.+)$/) do |user_name|
   login_as(user, :scope => :user)
 end
 
+# TODO This should really use url helpers so you could say 'sign in' instead of '/users/sign_in'
+Given(/^I am on the "(.+)" page$/) do |url|
+  visit url
+end
+
 # When clauses
 When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
@@ -43,6 +48,12 @@ Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |a
   within('#id_' + object_id) do
     find_link(action)
   end
+end
+
+# Quick little helper for popping a debugger, will cause tests to fail if left in
+Then(/^debugger$/) do
+  binding.pry
+  assert false
 end
 
 # Helper functions
