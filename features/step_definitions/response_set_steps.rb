@@ -13,7 +13,3 @@ end
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
   ResponseSet.create!(name: set_name)
 end
-
-Then(/^I should see a Response Set with the name "([^"]*)"$/) do |set_name|
-  find('#id_' + attribute_to_id('Response Set', 'name', set_name))
-end

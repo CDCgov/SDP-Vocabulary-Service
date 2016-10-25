@@ -5,8 +5,7 @@ Feature: Manage Response Sets
     Given I have a Response Set with the name "Gender Full"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
-    Then I should see a Response Set with the name "Gender Full"
-    And I should see the option to Show the Response Set with the name "Gender Full"
+    Then I should see the option to Show the Response Set with the name "Gender Full"
     And I should see the option to Edit the Response Set with the name "Gender Full"
     And I should see the option to Destroy the Response Set with the name "Gender Full"
 
