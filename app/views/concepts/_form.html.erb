@@ -17,7 +17,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :response_sets %>
+    <%= label_tag :linked_response_sets %>
     <%= select_tag 'linked_response_sets', options_from_collection_for_select(ResponseSet.all, 'id', 'name', @concept.response_sets.map{ |j| j.id }), :multiple => true, include_blank: true %>
   </div>
 
