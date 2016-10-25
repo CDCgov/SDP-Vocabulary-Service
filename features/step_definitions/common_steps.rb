@@ -2,11 +2,7 @@
 Given(/^I am logged in as (.+)$/) do |user_name|
   user = User.create!(email: user_name, password: 'password')
   Ability.new(user)
-
-  visit '/users/sign_in'
-  fill_in('user_email', with: user_name)
-  fill_in('user_password', with: 'password')
-  click_on('Log in')
+  login_as(user, :scope => :user)
 end
 
 # When clauses
