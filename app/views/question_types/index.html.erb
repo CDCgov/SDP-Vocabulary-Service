@@ -13,6 +13,7 @@
   <tbody>
     <% @question_types.each do |type| %>
       <tr>
+        <td>id_<%= type.id %></td>
         <td><%= type.name %></td>
         <td><%= link_to 'Details', type %></td>
         <% if user_signed_in? %>
