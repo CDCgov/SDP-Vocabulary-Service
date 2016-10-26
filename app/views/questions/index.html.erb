@@ -15,6 +15,7 @@
   <tbody>
     <% @questions.each do |question| %>
       <tr>
+        <td>id_<%= question.id %></td>
         <td><%= question.content %></td>
         <td><%= question.author %></td>
         <td><%= question.question_type.try :name %> </td>

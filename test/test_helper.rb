@@ -5,6 +5,9 @@ require 'simplecov'
 SimpleCov.start
 SimpleCov.minimum_coverage 90
 
+include Warden::Test::Helpers
+Warden.test_mode!
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all

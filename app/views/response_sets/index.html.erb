@@ -19,7 +19,7 @@
         <td><%= response_set.name %></td>
         <td><%= response_set.description %></td>
         <td><%= response_set.author %></td>
-        <td><%= response_set.id %></td>
+        <td>id_<%= response_set.id %></td>
         <td><%= link_to 'Show', response_set %></td>
         <td><%= link_to 'Edit', edit_response_set_path(response_set) %></td>
         <td><%= link_to 'Destroy', response_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>

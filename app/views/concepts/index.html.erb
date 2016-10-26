@@ -14,6 +14,7 @@
   <tbody>
     <% @concepts.each do |concept| %>
       <tr>
+        <td>id_<%= concept.id %></td>
         <td><%= concept.value %></td>
         <td><%= concept.response_sets.map {|k| k.name}.join(', ') %></td>
         <td><%= link_to 'Details', concept %></td>
