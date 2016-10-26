@@ -24,11 +24,11 @@ Feature: Manage Concepts
     When I go to the list of Concepts
     And I click on the option to Edit the Concept with the value "Gender"
     And I fill in the "Value" field with "Temperature"
-    And I select the "Temperature Status" option in the "Linked response sets" list
+    And I select the "Temperature Status" option in the "Response Sets" list
     And I click on the "Update Concept" button
     Then I should see "Concept was successfully updated."
     And I should see "Temperature"
-  
+
   Scenario: Create New Concept from List
     Given I have a Response Set with the name "Gender Full"
     And I have a Response Set with the name "Gender Partial"
@@ -36,8 +36,8 @@ Feature: Manage Concepts
     When I go to the list of Concepts
     And I click on the "New Concept" link
     And I fill in the "Value" field with "Gender"
-    And I select the "Gender Full" option in the "Linked response sets" list
-    And I select the "Gender Partial" option in the "Linked response sets" list
+    And I select the "Gender Full" option in the "Response Sets" list
+    And I select the "Gender Partial" option in the "Response Sets" list
     And I click on the "Create Concept" button
     Then I should see "Concept was successfully created."
     And I should see "Gender Full"
