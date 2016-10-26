@@ -250,6 +250,32 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
+  # config.omniauth :developer unless Rails.env.production?
+  #
+  # config.omniauth :open_id, :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
+  require 'openssl'
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+  config.omniauth :developer unless Rails.env.production?
+  config.omniauth :google_oauth2, 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', {}
+  config.omniauth :openid_connect, name: :openid_connect,
+                                   discovery: true,
+                                   scope: [:openid, :email, :profile, :address],
+                                   response_type: :code,
+                                   issuer: 'https://accounts.google.com',
+                                   client_options: {
+                                     port: 443,
+                                     scheme: 'https',
+                                     host: 'accounts.google.com',
+                                     identifier: ENV['OP_CLIENT_ID'] || '62211908042-3083gr70vqo58tbcugaldcnr8btnn73j.apps.googleusercontent.com',
+                                     secret: ENV['OP_SECRET_KEY'] || 'Ohk5qjKPdv0WSH6fy_jNQgDD',
+                                     authorization_endpoint: '/o/oauth2/v2/auth',
+                                     token_endpoint: 'https://www.googleapis.com/oauth2/v4/token',
+                                     userinfo_endpoint: 'https://www.googleapis.com/oauth2/v3/userinfo',
+                                     revocation_endpoint: 'https://accounts.google.com/o/oauth2/revoke',
+                                     jwks_uri: 'https://www.googleapis.com/oauth2/v3/certs',
+                                     redirect_uri: 'http://localhost:3000/users/auth/openid_connect/callback'
+                                   }
+  # eyJhbGciOiJSUzI1NiIsImtpZCI6InJzYTEifQ.eyJhdWQiOlsiNWIwMGYyYzItNmVkOC00ODk0LWI1OWItYjUxNDhlNDRlNmFhIl0sImlzcyI6Imh0dHBzOlwvXC9pZC5taXRyZS5vcmdcL2Nvbm5lY3RcLyIsImp0aSI6IjY2YWYzZWNjLThjZmItNDBmYS04ZDk2LTBmNmVhMDE1MmZmMCIsImlhdCI6MTQ3NzQxNzM0N30.MOHuNjiOFcZ8ccmFdzS9C03IHzaupU7_v7O2UwPnDxmvvIZIxTUkEp-XO1Y2NAIT7ViX57SGEv-h6llOQNctEw4IpClCkU2ry7K0r-P6kGvPOt_XJWaBAE0pqZF7TausIk43sKPcYgdaiknb7LcYBWLi90aU908eER17wNFUv_J-f2IJSfQlIbcEcM5KTVXNzZXOfmA8RqVvFdfZ-iTxxLk635gabEj4VPsgssUTFZxZVWYwc-Xo_xOOiS77cye8GJMLyIB3gIZ9wNmOVFIbL8fs862t7Tm81zHydskQDGc-kz_HEpb_JjBzFUy6Th1JfTNfOeHex2ecRKpHqvUp6A
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
@@ -271,5 +297,5 @@ Devise.setup do |config|
   #
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
-  # config.omniauth_path_prefix = '/my_engine/users/auth'
+  config.omniauth_path_prefix = '/users/auth'
 end
