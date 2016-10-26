@@ -1,5 +1,8 @@
 class Question < ApplicationRecord
-  belongs_to :response_set
+  has_many :question_response_sets
+  has_many :response_sets, through: :question_response_sets
   belongs_to :question_type
+  belongs_to :created_by, class_name: 'User'
+  belongs_to :updated_by, class_name: 'User'
   validates :question_type_id, presence: true
 end

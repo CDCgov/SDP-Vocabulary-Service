@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Question Response Sets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Response set</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @question_response_sets.each do |question_response_set| %>
+      <tr>
+        <td><%= question_response_set.question_id %></td>
+        <td><%= question_response_set.response_set_id %></td>
+        <td><%= link_to 'Show', question_response_set %></td>
+        <td><%= link_to 'Edit', edit_question_response_set_path(question_response_set) %></td>
+        <td><%= link_to 'Destroy', question_response_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Question Response Set', new_question_response_set_path %>

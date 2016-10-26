@@ -7,7 +7,7 @@
 
 <p>
   <strong>Author:</strong>
-  <%= @question.author %>
+  <%= @question.created_by.email if @question.created_by.present? %>
 </p>
 
 <p>
@@ -17,12 +17,15 @@
 
 <p>
   <strong>Updated:</strong>
+  <%= @question.updated_by.email if @question.created_by.present? %>
   <%= @question.updated_at %>
 </p>
 
 <p>
-  <strong>Response Set ID:</strong>
-  <%= @question.response_set_id %>
+  <strong>Response Set Names:</strong><br>
+  <% @question.response_sets.each do |rs| %>
+    <%= rs.name %><br>
+  <% end %>
 </p>
 
 <p>

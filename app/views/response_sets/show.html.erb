@@ -31,18 +31,9 @@
 
 <p>
   <strong>Author:</strong>
-  <%= @response_set.author %>
+  <%= @response_set.created_by.email if @response_set.created_by.present? %>
 </p>
 
-<p>
-  <strong>Code:</strong>
-  <%= @response_set.code %>
-</p>
-
-<p>
-  <strong>Code system:</strong>
-  <%= @response_set.code_system %>
-</p>
 
 <%= link_to 'Edit', edit_response_set_path(@response_set) %> |
 <%= link_to 'Back', response_sets_path %>

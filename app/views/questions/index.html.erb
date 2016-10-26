@@ -17,7 +17,7 @@
       <tr>
         <td>id_<%= question.id %></td>
         <td><%= question.content %></td>
-        <td><%= question.author %></td>
+        <td><%= question.created_by.email if question.created_by.present? %></td>
         <td><%= question.question_type.try :name %> </td>
         <td><%= link_to 'Details', question %></td>
         <% if user_signed_in? %>

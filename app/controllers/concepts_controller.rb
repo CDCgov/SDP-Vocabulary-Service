@@ -1,5 +1,6 @@
 class ConceptsController < ApplicationController
   before_action :set_concept, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /concepts
   # GET /concepts.json
