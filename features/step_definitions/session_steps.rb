@@ -4,6 +4,6 @@ Given(/^a user "(.+)" exists$/) do |user_name|
 end
 
 Then(/^a user "(.+)" should exist$/) do |user_email|
-  user = User.find_by_email(user_email)
+  user = User.find_by(email: user_email)
   assert_not_nil user
 end

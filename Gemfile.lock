@@ -142,7 +142,7 @@ GEM
     minitest-rails (3.0.0)
       minitest (~> 5.8)
       railties (~> 5.0)
-    minitest-reporters (1.1.11)
+    minitest-reporters (1.1.12)
       ansi
       builder
       minitest (>= 5.0)
@@ -212,7 +212,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.1.0)
     rake (11.3.0)
-    rb-fsevent (0.9.7)
+    rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     responders (2.3.0)
@@ -253,11 +253,6 @@ GEM
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-<<<<<<< 3b6076833cab30278587c0e459a51d545ac2bae3
-=======
-    uglifier (3.0.2)
-      execjs (>= 0.3.0, < 3)
->>>>>>> updating to latest version of rubocop.
     unicode-display_width (1.1.1)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -313,12 +308,7 @@ DEPENDENCIES
   rails (~> 5.0.0, >= 5.0.0.1)
   rails-erd
   rolify
-<<<<<<< 3b6076833cab30278587c0e459a51d545ac2bae3
-  rubocop (= 0.39)
-=======
   rubocop (~> 0.44.1)
-  sass-rails (~> 5.0)
->>>>>>> updating to latest version of rubocop.
   scss_lint
   selenium-webdriver (= 2.48.0)
   simplecov
@@ -327,4 +317,4 @@ DEPENDENCIES
   webpack-rails
 
 BUNDLED WITH
-   1.13.5
+   1.11.2
