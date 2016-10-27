@@ -1,0 +1,23 @@
+.footer {
+  background-color: $navbar-inverse-bg;
+  bottom: 0;
+  color: $white;
+  height: 120px;
+  line-height: 30px;
+  position: absolute;
+  width: 100%;
+  padding-top: 16px;
+  text-align: center;
+
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: $white;
+    span ~ span::before {
+      content: '|';
+      padding-left: 1em;
+      padding-right: 1em;
+    }
+  }
+}

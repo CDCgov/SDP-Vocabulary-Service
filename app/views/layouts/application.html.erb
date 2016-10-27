@@ -6,17 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <%= csrf_meta_tags %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
 
     <%= javascript_include_tag *webpack_asset_paths('bootstrap', extension: 'js') %>
     <%= javascript_include_tag *webpack_asset_paths('application', extension: 'js') %>
   </head>
 
   <body>
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-default main-nav">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/">CDC Vocabulary Service</a>
         </div>
+        <ul class="nav navbar-nav navbar-right">
+          <%= render 'devise/menu/registration_items' %>
+          <%= render 'devise/menu/login_items' %>
+        </ul>
+      </div>
+    </nav>
+    <nav class="navbar navbar-inverse secondary-nav">
         <% if user_signed_in? %>
         <ul class="nav navbar-nav">
           <li class="dropdown">
@@ -39,21 +48,25 @@
               <li class="<%= 'active' if current_page?(new_response_path) %>"><%=link_to 'Responses', new_response_path %>
             </ul>
           </li>
-
         </ul>
         <% else %>
         <ul class="nav navbar-nav">
           <li class="disabled"><a href="/questions/new">New Question</a></li>
         </ul>
         <% end %>
-        <ul class="nav navbar-nav navbar-right">
-          <%= render 'devise/menu/registration_items' %>
-          <%= render 'devise/menu/login_items' %>
-        </ul>
-      </div>
     </nav>
-    <div class="container">
+    <div class="container-fluid">
         <%= yield %>
     </div>
+    <footer class="footer">
+      <div class="container-fluid">
+        2016 Centers for Disease Control and Prevention. All rights reserved.
+        <div class="nav-links">
+          <span href="#">Privacy</span>
+          <span href="#">Security</span>
+          <span href="#">Terms of Service</span>
+        </div>
+    </div>
+    </footer>
   </body>
 </html>
