@@ -10,30 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025210138) do
+ActiveRecord::Schema.define(version: 20161027190235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "authentications", force: :cascade do |t|
-    t.string   "provider",   null: false
-    t.string   "uid",        null: false
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
-  end
-
-  create_table "concepts", force: :cascade do |t|
-    t.string   "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "concepts_response_sets", force: :cascade do |t|
-    t.integer "concept_id"
-    t.integer "response_set_id"
-  end
 
   create_table "question_response_sets", force: :cascade do |t|
     t.integer  "question_id"
@@ -117,7 +97,6 @@ ActiveRecord::Schema.define(version: 20161025210138) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
-  add_foreign_key "authentications", "users"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "users", column: "created_by_id"
   add_foreign_key "questions", "users", column: "updated_by_id"

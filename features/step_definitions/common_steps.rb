@@ -67,8 +67,6 @@ def attribute_to_id(object_type, attribute, attribute_value)
     obj = Question.find_by(attribute => attribute_value)
   elsif object_type == 'Question Type'
     obj = QuestionType.find_by(attribute => attribute_value)
-  elsif object_type == 'Concept'
-    obj = Concept.find_by(attribute => attribute_value)
   end
   obj.id.to_s
 end
