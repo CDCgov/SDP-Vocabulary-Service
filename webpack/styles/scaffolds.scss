@@ -21,6 +21,12 @@ html {
   min-height: 100%;
   -webkit-font-smoothing: antialiased;
 }
+label{
+  display: block;
+}
+td, th {
+    padding: 10px;
+  }
 
 // body {
 //   background-color: #fff;
