@@ -6,4 +6,4 @@ require 'rubocop/rake_task'
 
 Rails.application.load_tasks
 RuboCop::RakeTask.new
-task default: [:rubocop, 'brakeman:run', 'bundle_audit:run']
+task default: [:rubocop, 'cucumber:html', 'brakeman:run', 'bundle_audit:run']
