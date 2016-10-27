@@ -23,3 +23,9 @@ Feature: Session Management
     And I fill in the "user_password" field with "password"
     And I click on the "Log in" button
     Then I should see "Signed in successfully."
+
+  Scenario: Edit an existing account
+    Given I am logged in as test_author@gmail.com
+    And I am on the "/" page
+    When I click on the "Profile" link
+    Then I should see "Account Details"
