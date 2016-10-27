@@ -6,8 +6,18 @@
 </p>
 
 <p>
+  <strong>Questions:</strong><br>
+  <% @form.questions.zip(@form.response_sets).each do |q, rs| %>
+    <%= q.content %><br>
+    <% if rs %>
+      - <%= rs.name %><br>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
   <strong>Created By:</strong>
-  <%= @form.created_by.email %>
+  <%= @form.created_by.email if @form.created_by.present? %>
 </p>
 
 <%= link_to 'Edit', edit_form_path(@form) %> |

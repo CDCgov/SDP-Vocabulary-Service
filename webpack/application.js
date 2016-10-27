@@ -1,2 +1,4 @@
 require("styles/scaffolds.scss");
-require("jquery-ujs")
+require("jquery");
+require("jquery-ujs");
+forms = require("forms.js");

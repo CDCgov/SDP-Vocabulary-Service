@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  user: one
+  created_by_id: 1
 
 two:
   name: MyString
-  user: two
+  created_by_id: 1

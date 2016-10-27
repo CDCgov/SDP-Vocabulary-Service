@@ -11,21 +11,33 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field col-md-12">
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div> 
 
   <div class="col-md-4">
+    <h4>Select Questions:</h4><br>
     <% @questions.each do |q| %>
-      <%= link_to_add_question "add", f, q %> &nbsp <%= q.content %><br>
+      <a href='javascript:forms.addQuestion("<%= q.content %>", <%= q.id %>, <%= @response_sets.map {|rs| {"id" => rs.id, "name" => rs.name}}.to_json %>)'><%= q.content %></a><br>
     <% end %>
   </div>
 
   <div class="col-md-8">
-    <% @form.questions.each do |q| %>
-      <%= link_to_add_question "rem", f, q %> &nbsp <%= q.content %><br>
-    <% end %>
+    <h4>Added:</h4><br>
+    <table id="questionTable">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>Response Set</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr><td></td></tr> 
+      </tbody>
+    </table>
+
     <div class="actions">
       <%= f.submit %>
     </div>

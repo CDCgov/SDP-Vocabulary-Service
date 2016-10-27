@@ -15,7 +15,7 @@
     <% @forms.each do |form| %>
       <tr>
         <td><%= form.name %></td>
-        <td><%= form.created_by.email %></td>
+        <td><%= form.created_by.email if form.created_by.present? %></td>
         <td><%= link_to 'Show', form %></td>
         <td><%= link_to 'Edit', edit_form_path(form) %></td>
         <td><%= link_to 'Destroy', form, method: :delete, data: { confirm: 'Are you sure?' } %></td>

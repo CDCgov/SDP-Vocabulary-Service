@@ -20,7 +20,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create form' do
     assert_difference('Form.count') do
-      post forms_url, params: { form: { name: @form.name, user_id: @form.user_id } }
+      post forms_url, params: { form: { name: @form.name, created_by_id: @form.created_by_id } }
     end
 
     assert_redirected_to form_url(Form.last)
@@ -37,7 +37,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update form' do
-    patch form_url(@form), params: { form: { name: @form.name, user_id: @form.user_id } }
+    patch form_url(@form), params: { form: { name: @form.name, created_by_id: @form.created_by_id } }
     assert_redirected_to form_url(@form)
   end
 
