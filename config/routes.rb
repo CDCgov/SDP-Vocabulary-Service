@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :question_response_sets
-  resources :concepts
   resources :responses
   resources :response_sets
   resources :questions
