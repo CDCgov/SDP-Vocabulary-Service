@@ -14,9 +14,20 @@
   <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name %>
+  </div> 
+
+  <div class="col-md-4">
+    <% @questions.each do |q| %>
+      <%= link_to_add_question "add", f, q %> &nbsp <%= q.content %><br>
+    <% end %>
   </div>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="col-md-8">
+    <% @form.questions.each do |q| %>
+      <%= link_to_add_question "rem", f, q %> &nbsp <%= q.content %><br>
+    <% end %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
   </div>
 <% end %>

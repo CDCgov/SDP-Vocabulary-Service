@@ -6,6 +6,7 @@ class FormsController < ApplicationController
   # GET /forms.json
   def index
     @forms = Form.all
+    @questions = Question.all
   end
 
   # GET /forms/1
@@ -16,10 +17,12 @@ class FormsController < ApplicationController
   # GET /forms/new
   def new
     @form = Form.new
+    @questions = Question.all
   end
 
   # GET /forms/1/edit
   def edit
+    @questions = Question.all
   end
 
   # POST /forms
