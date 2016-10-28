@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th>Owner</th>
       <th colspan="3"></th>
@@ -14,6 +15,7 @@
   <tbody>
     <% @forms.each do |form| %>
       <tr>
+        <td>id_<%= form.id %></td>
         <td><%= form.name %></td>
         <td><%= form.created_by.email if form.created_by.present? %></td>
         <td><%= link_to 'Show', form %></td>

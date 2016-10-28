@@ -2,8 +2,8 @@ const $ = require('jquery');
 
 exports.addQuestion = function addQuestion(questionName, question, responseSets) {
   const tbl = $('#questionTable > tbody:last-child')
-  var responseSetsSelect = "<select name='response_set_ids[]'>";
-  responseSetsSelect += "<option label=' '></option>";
+  var responseSetsSelect = "<select aria-label='Response Set' name='response_set_ids[]'>";
+  responseSetsSelect += "<option aria-label=' '></option>";
   responseSets.forEach(function(rs){
     responseSetsSelect += '<option value="'
     responseSetsSelect += rs.id
@@ -12,6 +12,6 @@ exports.addQuestion = function addQuestion(questionName, question, responseSets)
     responseSetsSelect += '</option>';
   });
   responseSetsSelect += "</select>";
-  var appendString = '<tr><td>' + questionName + '</td><input type="hidden" name="question_ids[]" value="' + question + '"/><td>' + responseSetsSelect + '</td></tr>'
+  var appendString = '<tr><td>' + questionName + '</td><input aria-label="Question IDs" type="hidden" name="question_ids[]" value="' + question + '"/><td>' + responseSetsSelect + '</td></tr>'
   tbl.append(appendString);
 }
