@@ -10,14 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20161027190235) do
-
-
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
 
   create_table "form_questions", force: :cascade do |t|
     t.integer  "form_id"
