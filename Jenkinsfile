@@ -1,4 +1,4 @@
-node {
+node('ruby') {
   stage 'Checkout'
 
   // Checkout code from repository
