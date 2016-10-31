@@ -2,7 +2,7 @@ const $ = require('jquery');
 
 exports.addQuestion = function addQuestion(questionName, question, responseSets) {
   const tbl = $('#questionTable > tbody:last-child')
-  var responseSetsSelect = "<select aria-label='Response Set' name='response_set_ids[]'>";
+  var responseSetsSelect = "<label for='response_set_ids'>Response Sets</label><select name='response_set_ids[]' id='response_set_ids'>";
   responseSetsSelect += "<option aria-label=' '></option>";
   responseSets.forEach(function(rs){
     responseSetsSelect += '<option value="'

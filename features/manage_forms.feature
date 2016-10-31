@@ -26,7 +26,7 @@ Feature: Manage Forms
     And I click on the option to Edit the Form with the name "Test Form"
     And I fill in the "Name" field with "Gender Form"
     And I click on the "What is your gender?" link
-    Then I select the "Gender Partial" option in the "Response Set" list
+    Then I select the "Gender Partial" option in the "Response Sets" list
     And I click on the "Update Form" button
     Then I should see "Form was successfully updated."
     And I should see "Name: Gender Form"
@@ -41,10 +41,10 @@ Feature: Manage Forms
     And I click on the "New Form" link
     And I fill in the "Name" field with "Test Form"
     And I click on the "What is your gender?" link
-    And I select the "Gender Full" option in the "Response Set" list
+    And I select the "Gender Full" option in the "Response Sets" list
     And I click on the "Create Form" button
     Then I should see "Form was successfully created."
-    And I should see "What is your favorite color?"
+    And I should see "What is your gender?"
   
   Scenario: Destroy Form
     Given I have a Form with the name "Test Form"
