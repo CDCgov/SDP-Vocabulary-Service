@@ -24,7 +24,7 @@ gem 'cancancan'
 gem 'rolify'
 gem 'omniauth'
 group :development, :test do
-  gem 'rubocop', '0.39', require: false
+  gem 'rubocop', '~> 0.44.1', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'cucumber-rails', require: false

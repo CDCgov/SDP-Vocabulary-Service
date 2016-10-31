@@ -66,6 +66,12 @@ begin
   task :stats => 'cucumber:statsetup'
 
   task :notes => 'cucumber:annotations_setup'
+
+
+  Cucumber::Rake::Task.new("cucumber:html") do |t|
+    t.cucumber_opts = "features --profile html_report"
+  end
+
 rescue LoadError
   desc 'cucumber rake task not available (cucumber not installed)'
   task :cucumber do
