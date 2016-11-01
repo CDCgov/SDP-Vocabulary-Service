@@ -16,6 +16,7 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets/new
   def new
     @response_set = ResponseSet.new
+    @response_set.responses.build
   end
 
   # GET /response_sets/1/edit
@@ -80,6 +81,7 @@ class ResponseSetsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
-    params.require(:response_set).permit(:name, :description, :oid, :author, :code, :code_system)
+    params.require(:response_set).permit(:name, :description, :oid, :author, :coded,
+                                         responses_attributes: [:value, :display_name, :code_system])
   end
 end
