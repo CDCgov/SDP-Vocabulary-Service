@@ -1,0 +1,6 @@
+#!/bin/bash
+/usr/libexec/s2i/assemble
+npm config set proxy $http_proxy
+npm config set registry http://registry.npmjs.org/
+npm install
+bundle exec rake webpack:compile
