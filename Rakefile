@@ -7,3 +7,7 @@ require 'rubocop/rake_task'
 Rails.application.load_tasks
 RuboCop::RakeTask.new
 task default: [:rubocop, 'cucumber:html', 'brakeman:run', 'bundle_audit:run']
+namespace :assets do
+  task precompile: 'webpack:compile' do
+  end
+end
