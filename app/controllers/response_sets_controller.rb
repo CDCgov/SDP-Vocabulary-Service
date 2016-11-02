@@ -82,6 +82,6 @@ class ResponseSetsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
     params.require(:response_set).permit(:name, :description, :oid, :author, :coded,
-                                         responses_attributes: [:value, :display_name, :code_system])
+                                         responses_attributes: [:id, :value, :display_name, :code_system])
   end
 end
