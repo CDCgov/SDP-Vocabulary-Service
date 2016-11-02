@@ -6,7 +6,3 @@ end
 When(/^I go to the list of Questions$/) do
   visit '/questions'
 end
-
-When(/^I select the "([^"]*)" option in the "([^"]*)" list$/) do |option, list|
-  select(option, from: list)
-end

@@ -28,6 +28,10 @@ When(/^I click on the "([^"]*)" (button|link)$/) do |button_name, _button_or_lin
   click_on(button_name)
 end
 
+When(/^I select the "([^"]*)" option in the "([^"]*)" list$/) do |option, list|
+  select(option, from: list)
+end
+
 When(/^I confirm my action$/) do
   # So, apparently the poltergeist driver automatically accept/confirm/okays all alerts
   # Additionally, it doesn't support the code below, which is required when using selenium.
@@ -67,6 +71,8 @@ def attribute_to_id(object_type, attribute, attribute_value)
     obj = Question.find_by(attribute => attribute_value)
   elsif object_type == 'Question Type'
     obj = QuestionType.find_by(attribute => attribute_value)
+  elsif object_type == 'Form'
+    obj = Form.find_by(attribute => attribute_value)
   end
   obj.id.to_s
 end
