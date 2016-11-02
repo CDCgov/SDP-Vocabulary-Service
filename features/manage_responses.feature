@@ -35,22 +35,22 @@ Feature: Manage Responses
     When I go to the list of Responses
     And I click on the option to Edit the Response with the value "Male"
     And I fill in the "Value" field with "Dalek"
-    And I fill in the "Response set" field with "2"
+    And I select the "Gender Full" option in the "Response Set" list
     And I click on the "Update Response" button
     Then I should see "Response was successfully updated."
     And I should see "Dalek"
-  
+
   Scenario: Create New Response from List
     Given I have a Response Set with the name "Gender Full"
     Given I am logged in as test_author@gmail.com
     When I go to the list of Responses
     And I click on the "New Response" link
     And I fill in the "Value" field with "Dalek"
-    And I fill in the "Response set" field with "1"
+    And I select the "Gender Full" option in the "Response Set" list
     And I click on the "Create Response" button
     Then I should see "Response was successfully created."
     And I should see "Dalek"
-  
+
   Scenario: Destroy Response
     Given I have a Response Set with the name "Gender Full"
     And I have the Responses: Male, 1; Female, 1; Prefer not to answer, 1

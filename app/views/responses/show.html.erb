@@ -7,7 +7,7 @@
 
 <p>
   <strong>Response set:</strong>
-  <%= @response.response_set %>
+  <%= link_to @response.response_set.name, response_set_path(@response.response_set) %>
 </p>
 
 <%= link_to 'Edit', edit_response_path(@response) %> |

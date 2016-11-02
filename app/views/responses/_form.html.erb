@@ -17,8 +17,9 @@
   </div>
 
   <div class="field">
-    <%= f.label :response_set_id %>
-    <%= f.text_field :response_set_id %>
+    <%= f.label :response_set_id , "Response Set"%>
+    <%= f.select :response_set_id, options_for_select( ResponseSet.all.collect{|rs| [rs.name,rs.id]}, response.response_set_id), {id: 'response_set_id'}%></td>
+  </tr>
   </div>
 
   <div class="actions">

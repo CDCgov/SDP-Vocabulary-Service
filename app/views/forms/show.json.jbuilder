@@ -1,1 +1,1 @@
-json.partial! "forms/form", form: @form
+json.partial! 'forms/form', form: @form
