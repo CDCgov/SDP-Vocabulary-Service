@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027190235) do
+ActiveRecord::Schema.define(version: 20161101144421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20161027190235) do
     t.datetime "updated_at",    null: false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
+    t.boolean  "coded"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
@@ -74,6 +75,7 @@ ActiveRecord::Schema.define(version: 20161027190235) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "code_system"
+    t.string   "display_name"
     t.index ["response_set_id"], name: "index_responses_on_response_set_id", using: :btree
   end
 

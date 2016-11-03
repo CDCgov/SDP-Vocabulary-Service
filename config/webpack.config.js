@@ -27,7 +27,12 @@ var config = {
     path: path.join(__dirname, '..', 'public', 'webpack'),
     publicPath: '/webpack/',
 
-    filename: production ? '[name]-[chunkhash].js' : '[name].js'
+    filename: production ? '[name]-[chunkhash].js' : '[name].js',
+
+    // export itself to a global var
+    libraryTarget: "var",
+    // name of the global var: "SDP"
+    library: "SDP"
   },
 
   postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ],

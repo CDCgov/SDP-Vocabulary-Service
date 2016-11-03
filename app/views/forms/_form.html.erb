@@ -14,12 +14,12 @@
   <div class="field col-md-12">
     <%= f.label :name %>
     <%= f.text_field :name %>
-  </div> 
+  </div>
 
   <div class="col-md-4">
     <h4>Select Questions:</h4><br>
     <% @questions.each do |q| %>
-      <a href='javascript:forms.addQuestion("<%= q.content %>", <%= q.id %>, <%= @response_sets.map {|rs| {"id" => rs.id, "name" => rs.name}}.to_json %>)'><%= q.content %></a><br>
+      <a href='javascript:SDP.forms.addQuestion("<%= q.content %>", <%= q.id %>, <%= @response_sets.map {|rs| {"id" => rs.id, "name" => rs.name}}.to_json %>)'><%= q.content %></a><br>
     <% end %>
   </div>
 
@@ -34,7 +34,7 @@
       </thead>
 
       <tbody>
-        <tr><td></td></tr> 
+        <tr><td></td></tr>
       </tbody>
     </table>
 
