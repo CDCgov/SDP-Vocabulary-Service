@@ -12,9 +12,24 @@
 
 <p>
   <strong>Responses:</strong><br>
-  <% @response_set.responses.each do |response| %>
-    <%= response.value %><br>
-  <% end %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Response Code</th>
+        <th>Code System</th>
+        <th>Display Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @response_set.responses.each do |response| %>
+      <tr>
+        <td><%= response.value %></td>
+        <td><%= response.code_system %></td>
+        <td><%= response.display_name %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
 </p>
 
 <p>
