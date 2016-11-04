@@ -1,5 +1,5 @@
 const $ = require('jquery');
-
+exports.$ = $
 exports.addQuestion = function addQuestion(questionName, question, responseSets) {
   const tbl = $('#questionTable > tbody:last-child')
   var responseSetsSelect = "<label for='response_set_ids'>Response Sets</label><select name='response_set_ids[]' id='response_set_ids'>";
@@ -12,6 +12,13 @@ exports.addQuestion = function addQuestion(questionName, question, responseSets)
     responseSetsSelect += '</option>';
   });
   responseSetsSelect += "</select>";
-  var appendString = '<tr><td>' + questionName + '</td><input aria-label="Question IDs" type="hidden" name="question_ids[]" value="' + question + '"/><td>' + responseSetsSelect + '</td></tr>'
+  var remove =   '<td><a href="javascript:SDP.forms.removeQuestion(\'#question_id_'+question+'\')">Remove<a></td>'
+  var appendString = '<tr><td>' + questionName + '</td><input aria-label="Question IDs" id="question_id_'+question+'" type="hidden" name="question_ids[]" value="' + question + '"/><td>' + responseSetsSelect + '</td>'+remove+'</tr>'
   tbl.append(appendString);
+}
+
+
+exports.removeQuestion = function removeQuestion(td){
+  $(td).parent('tr').remove();
+  console.log(td)
 }

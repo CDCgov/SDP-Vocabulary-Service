@@ -8,9 +8,9 @@
 <p>
   <strong>Questions:</strong><br>
   <% @form.questions.zip(@form.response_sets).each do |q, rs| %>
-    <%= q.content %><br>
+    <%= link_to q.content, question_path(q) %><br>
     <% if rs %>
-      - <%= rs.name %><br>
+      -   <%= link_to rs.name, response_set_path(rs) %><br>
     <% end %>
   <% end %>
 </p>

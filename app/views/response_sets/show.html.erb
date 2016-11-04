@@ -35,7 +35,7 @@
 <p>
   <strong>Questions:</strong><br>
   <% @response_set.questions.each do |question| %>
-    <%= question.content %><br>
+    <%= link_to question.content, question_path(question) %><br>
   <% end %>
 </p>
 
