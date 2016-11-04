@@ -12,7 +12,7 @@ exports.addQuestion = function addQuestion(questionName, question, responseSets)
     responseSetsSelect += '</option>';
   });
   responseSetsSelect += "</select>";
-  var remove =   '<td><a href="javascript:forms.removeQuestion(\'#question_id_'+question+'\')">Remove<a></td>'
+  var remove =   '<td><a href="javascript:SDP.forms.removeQuestion(\'#question_id_'+question+'\')">Remove<a></td>'
   var appendString = '<tr><td>' + questionName + '</td><input aria-label="Question IDs" id="question_id_'+question+'" type="hidden" name="question_ids[]" value="' + question + '"/><td>' + responseSetsSelect + '</td>'+remove+'</tr>'
   tbl.append(appendString);
 }
