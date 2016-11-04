@@ -9,7 +9,7 @@
       <th>Description</th>
       <th>Author</th>
       <th>ID</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -22,6 +22,7 @@
         <td>id_<%= response_set.id %></td>
         <td><%= link_to 'Show', response_set %></td>
         <td><%= link_to 'Edit', edit_response_set_path(response_set) %></td>
+        <td><%= link_to 'Extend', extend_response_set_path(response_set) %></td>
         <td><%= link_to 'Destroy', response_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

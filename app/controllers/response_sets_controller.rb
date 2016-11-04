@@ -1,5 +1,6 @@
 class ResponseSetsController < ApplicationController
   before_action :set_response_set, only: [:show, :edit, :update, :destroy]
+  before_action :set_parent_set, only: [:extend]
   load_and_authorize_resource
 
   # GET /response_sets
@@ -46,6 +47,22 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  def transfer_table
+    @response_set.coded = @parent_set.coded
+    @response_set.oid = @parent_set.oid
+    @response_set.description = @parent_set.description
+    @response_set.name = @parent_set.name
+    @parent_set.responses.each do |r|
+      @response_set.responses << r.dup
+    end
+  end
+
+  # GET /response_sets/1/extend
+  def extend
+    @response_set = ResponseSet.new
+    transfer_table
+  end
+
   # PATCH/PUT /response_sets/1
   # PATCH/PUT /response_sets/1.json
   def update
@@ -77,6 +94,10 @@ class ResponseSetsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_response_set
     @response_set = ResponseSet.find(params[:id])
+  end
+
+  def set_parent_set
+    @parent_set = ResponseSet.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

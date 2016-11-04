@@ -1,13 +1,15 @@
 Rails.application.routes.draw do
+  root to: 'questions#index'
   resources :form_questions
   resources :forms
   resources :question_response_sets
   resources :responses
-  resources :response_sets
   resources :questions
   resources :question_types
   devise_for :users
-  root to: 'questions#index'
+  resources :response_sets do
+    get :extend, on: :member
+  end
 
   # get 'questions' => 'questions#index'
 
