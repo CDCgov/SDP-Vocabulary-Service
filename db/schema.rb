@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(version: 20161104210705) do
     t.string   "name"
     t.text     "description"
     t.integer  "oid"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.boolean  "coded"

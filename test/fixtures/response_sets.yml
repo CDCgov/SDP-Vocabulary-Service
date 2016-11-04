@@ -4,10 +4,22 @@ one:
   name: Gender Partial
   description: M / F
   oid: 1
+  version: 1
+  version_independent_id: 1
   created_by_id: 1
 
 two:
   name: Gender Full
   description: Male / Female / Prefer not to answer
   oid: 1
+  version: 1
+  version_independent_id: 2
+  created_by_id: 1
+
+gfv2:
+  name: Gender Full
+  description: Male / Female / Prefer not to answer
+  oid: 1
+  version: 2
+  version_independent_id: 2
   created_by_id: 1
