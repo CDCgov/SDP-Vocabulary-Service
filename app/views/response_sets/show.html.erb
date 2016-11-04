@@ -49,6 +49,10 @@
   <%= @response_set.created_by.email if @response_set.created_by.present? %>
 </p>
 
+<p>
+  <strong>Parent:</strong>
+  <%= @response_set.parent_id if @response_set.parent_id.present? %>
+</p>
 
 <%= link_to 'Edit', edit_response_set_path(@response_set) %> |
 <%= link_to 'Back', response_sets_path %>

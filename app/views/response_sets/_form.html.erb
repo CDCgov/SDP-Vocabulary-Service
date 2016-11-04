@@ -28,6 +28,7 @@
         <%= f.label :coded %>
         <%= f.check_box :coded %>
       </div>
+
     </div>
 
     <div class="row">
@@ -42,6 +43,12 @@
         <!-- Displaying current user for when update tracking is added -->
         Author ID: <%= current_user.email %>
       </div>
+    </div>
+
+    <div class="hidden">
+      <% if defined?(parent_id) %>
+        <%= f.hidden_field :parent_id, :value => parent_id %>
+      <% end %>
     </div>
 
     <table id="response-set-table" class="table table-striped">
