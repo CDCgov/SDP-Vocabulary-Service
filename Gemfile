@@ -32,6 +32,7 @@ gem 'acts_as_tree'
 gem 'acts_as_commentable'
 
 gem 'omniauth_openid_connect'
+
 group :development, :test do
   gem 'rubocop', '~> 0.44.1', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

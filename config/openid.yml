@@ -1,0 +1,30 @@
+development: &development
+  name: :openid_connect
+  discovery: true
+  scope:
+    - :openid
+    - :email
+    - :profile
+    - :address
+  response_type: :code
+  issuer: 'https://accounts.google.com'
+  client_options:
+    host: 'accounts.google.com'
+    identifier: '62211908042-3083gr70vqo58tbcugaldcnr8btnn73j.apps.googleusercontent.com'
+    secret: 'Ohk5qjKPdv0WSH6fy_jNQgDD'
+    redirect_uri: 'http://localhost:3000/users/auth/openid_connect/callback'
+test:
+  <<: *development
+production:
+  name: :openid_connect
+  discovery: true
+  scope:
+    - :openid
+    - :email
+    - :profile
+    - :address
+  response_type: :code
+  issuer: <%= ENV['OPIDC_CLIENT_ISSUER'] %>
+  client_options:
+    identifier: <%=  ENV['OPIDC_CLIENT_ID'] %>
+    secret: <%= ENV['OPIDC_SECRET_KEY'] %>
