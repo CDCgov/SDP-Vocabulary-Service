@@ -27,6 +27,18 @@ Feature: Manage Response Sets
     Then I should see "Response set was successfully updated."
     And I should see "Gender Partial"
 
+  Scenario: Extend Response Set
+    Given I have a Response Set with the name "Gender Full"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the option to Extend the Response Set with the name "Gender Full"
+    And I fill in the "Name" field with "Gender Partial"
+    And I fill in the "Description" field with "M / F / O"
+    And I click on the "Create Response set" button
+    Then I should see "Response set was successfully created."
+    And I should see "Gender Partial"
+    And I should see "M / F / O"
+
   Scenario: Create New Response Set
     Given I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
