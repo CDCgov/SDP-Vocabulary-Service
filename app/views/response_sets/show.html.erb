@@ -54,5 +54,16 @@
   <%= @response_set.parent_id if @response_set.parent_id.present? %>
 </p>
 
-<%= link_to 'Edit', edit_response_set_path(@response_set) %> |
+<% if @response_set.other_versions.present? %>
+<p>
+  <strong>Other Versions:</strong>
+  <ol>
+    <% @response_set.other_versions.each do |ov| %>
+      <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
+    <% end %>
+  </ol>
+</p>
+<% end %>
+
+<%= link_to 'Revise', revise_response_set_path(@response_set) %> |
 <%= link_to 'Back', response_sets_path %>

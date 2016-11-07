@@ -49,6 +49,8 @@
       <% if defined?(parent_id) %>
         <%= f.hidden_field :parent_id, :value => parent_id %>
       <% end %>
+      <%= f.hidden_field :version_independent_id %>
+      <%= f.hidden_field :version %>
     </div>
 
     <table id="response-set-table" class="table table-striped">

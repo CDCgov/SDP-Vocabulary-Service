@@ -10,7 +10,7 @@ one:
 
 two:
   name: Gender Full
-  description: Male / Female / Prefer not to answer
+  description: M/F/NA
   oid: 1
   version: 1
   version_independent_id: 2
@@ -18,7 +18,7 @@ two:
 
 gfv2:
   name: Gender Full
-  description: Male / Female / Prefer not to answer
+  description: Tweak
   oid: 1
   version: 2
   version_independent_id: 2

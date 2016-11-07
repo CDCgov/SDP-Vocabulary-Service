@@ -24,3 +24,13 @@ five:
   value: Prefer not to answer
   response_set: two
   code_system: MyString
+
+six:
+  value: Male
+  response_set: gfv2
+  code_system: MyString
+
+seven:
+  value: Female
+  response_set: gfv2
+  code_system: MyString
