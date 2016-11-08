@@ -76,6 +76,9 @@
             <%= response_form.label :display_name, class: "hidden" %>
             <%= response_form.text_field :display_name %>
           </td>
+          <td>
+            <a href="#" onclick="SDP.rs.removeResponseRow(event)">Remove</a>
+          </td>
         </tr>
       <% end %>
     </tbody>

@@ -20,3 +20,8 @@ exports.addResponseRow = function() {
   const tbl = $('#response-set-table > tbody:last-child');
   tbl.append(newRow);
 }
+
+exports.removeResponseRow = function(event) {
+  const row = $(event.target).parents("tr");
+  row.remove();
+}
