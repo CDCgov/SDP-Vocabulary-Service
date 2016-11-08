@@ -55,5 +55,15 @@ class ResponseSet < ApplicationRecord
     ResponseSet.where(version_independent_id: version_independent_id)
                .where.not(version: version)
                .order(version: :desc)
+  def xfer(id)
+    @parent_set = ResponseSet.find(id)
+    self.parent_id = @parent_set.id # for whatever reason this isn't taking
+    self.coded = @parent_set.coded
+    self.description = @parent_set.description
+    self.name = @parent_set.name
+    # This is the unsettled bit...
+    @parent_set.responses.each do |r|
+      responses << r.dup
+    end
   end
 end
