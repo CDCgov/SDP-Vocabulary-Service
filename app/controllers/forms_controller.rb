@@ -18,13 +18,13 @@ class FormsController < ApplicationController
   def new
     @form = Form.new
     @questions = Question.all
-    @response_sets = ResponseSet.all
+    @response_sets = ResponseSet.latest_versions
   end
 
   # GET /forms/1/edit
   def edit
     @questions = Question.all
-    @response_sets = ResponseSet.all
+    @response_sets = ResponseSet.latest_versions
   end
 
   def create_form_questions(form_id, question_ids, response_set_ids)
