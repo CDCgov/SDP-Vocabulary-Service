@@ -27,6 +27,19 @@ Feature: Manage Response Sets
     Then I should see "Response set was successfully revised."
     And I should see "Gender Partial"
 
+  Scenario: Revise Response Set Removing Response
+    Given I have a Response Set with the name "Gender Full"
+    And I have the Responses: Male, 1; Female, 1; Prefer not to answer, 1
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the option to Revise the Response Set with the name "Gender Full"
+    And I click on the link to remove the Response "Male"
+    And I click on the "Revise Response Set" button
+    Then I should see "Response set was successfully revised."
+    And I should see "Gender Full"
+    And I should see "Female"
+    And I should not see "Male"
+
   Scenario: Extend Response Set
     Given I have a Response Set with the name "Gender Full"
     And I am logged in as test_author@gmail.com

@@ -13,3 +13,9 @@ end
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
   ResponseSet.create!(name: set_name, version: 1)
 end
+
+When(/^I click on the link to remove the Response "([^"]*)"$/) do |response_name|
+  node = find('input[value="' + response_name + '"]')
+  tr = node.find(:xpath, '../..')
+  tr.click_on('Remove')
+end
