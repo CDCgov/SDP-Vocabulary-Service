@@ -5,7 +5,7 @@ one:
   description: M / F
   oid: 1
   version: 1
-  version_independent_id: 1
+  version_independent_id: RS-1
   created_by_id: 1
 
 two:
@@ -13,7 +13,7 @@ two:
   description: M/F/NA
   oid: 1
   version: 1
-  version_independent_id: 2
+  version_independent_id: RS-2
   created_by_id: 1
 
 gfv2:
@@ -21,5 +21,5 @@ gfv2:
   description: Tweak
   oid: 1
   version: 2
-  version_independent_id: 2
+  version_independent_id: RS-2
   created_by_id: 1

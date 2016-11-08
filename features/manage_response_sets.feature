@@ -23,8 +23,8 @@ Feature: Manage Response Sets
     And I click on the option to Revise the Response Set with the name "Gender Full"
     And I fill in the "Name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
-    And I click on the "Update Response set" button
-    Then I should see "Response set was successfully updated."
+    And I click on the "Revise Response Set" button
+    Then I should see "Response set was successfully revised."
     And I should see "Gender Partial"
 
   Scenario: Extend Response Set

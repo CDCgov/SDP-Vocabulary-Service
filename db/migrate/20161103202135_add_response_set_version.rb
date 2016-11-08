@@ -1,10 +1,10 @@
 class AddResponseSetVersion < ActiveRecord::Migration[5.0]
   def up
-    add_column :response_sets, :version_independent_id, :integer
+    add_column :response_sets, :version_independent_id, :string
     add_column :response_sets, :version, :integer, default: 1
 
-    ResponseSet.all.each_with_index do |rs, i|
-      rs.update_attribute :version_independent_id, i
+    ResponseSet.all.each do |rs|
+      rs.update_attribute :version_independent_id, "RS-#{rs.id}"
     end
   end
 

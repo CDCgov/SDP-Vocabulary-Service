@@ -84,7 +84,11 @@
 
 
     <div class="actions">
-      <%= f.submit %>
+      <% if response_set.version_independent_id.present? %>
+        <%= f.submit 'Revise Response Set' %>
+      <% else %>
+        <%= f.submit %>
+      <% end %>
     </div>
   <% end %>
 </div>

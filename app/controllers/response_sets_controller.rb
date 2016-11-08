@@ -40,7 +40,9 @@ class ResponseSetsController < ApplicationController
 
     respond_to do |format|
       if @response_set.save
-        format.html { redirect_to @response_set, notice: 'Response set was successfully created.' }
+        rs_action = 'created'
+        rs_action = 'revised' if @response_set.version > 1
+        format.html { redirect_to @response_set, notice: "Response set was successfully #{rs_action}." }
         format.json { render :show, status: :created, location: @response_set }
       else
         format.html { render :new }
