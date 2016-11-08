@@ -4,8 +4,18 @@ one:
   content: What is your gender?
   created_by_id: 1
   question_type: one
+  version_independent_id: 1
+  version: 1
 
 two:
   content: What is another question example?
   created_by_id: 1
   question_type: one
+  version_independent_id: 2
+
+three:
+  content: What is another question example?
+  created_by_id: 1
+  question_type: one
+  version_independent_id: 2
+  version: 2

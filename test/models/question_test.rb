@@ -13,6 +13,10 @@ class QuestionTest < ActiveSupport::TestCase
     assert_not question.valid?
   end
 
+  test 'latest versions' do
+    assert_equal 2, Question.latest_versions.count
+  end
+
   # test "the truth" do
   #   assert true
   # end
