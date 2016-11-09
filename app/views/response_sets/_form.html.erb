@@ -48,7 +48,7 @@
     <div class="hidden">
       <%= f.hidden_field :version_independent_id %>
       <%= f.hidden_field :version %>
-      <% if defined?(response_set.parent) %>
+      <% if response_set.parent.present? %>
         <%= f.hidden_field :parent_id, value: response_set.parent_id %>
       <% end %>
     </div>
