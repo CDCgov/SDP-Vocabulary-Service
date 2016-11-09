@@ -48,7 +48,7 @@ Feature: Manage Response Sets
     And I click on the option to Extend the Response Set with the name "Gender Full"
     And I fill in the "Name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F / O"
-    And I click on the "Create Response set" button
+    And I click on the "Extend Response Set" button
     Then I should see "Response set was successfully created."
     And I should see "Gender Partial"
     And I should see "M / F / O"

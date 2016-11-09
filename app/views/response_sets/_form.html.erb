@@ -87,7 +87,9 @@
 
 
     <div class="actions">
-      <% if response_set.version_independent_id.present? %>
+      <% if response_set.parent.present? %>
+        <%= f.submit 'Extend Response Set' %>
+      <% elsif response_set.version_independent_id.present? %>
         <%= f.submit 'Revise Response Set' %>
       <% else %>
         <%= f.submit %>

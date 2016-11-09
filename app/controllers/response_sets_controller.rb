@@ -1,6 +1,4 @@
 class ResponseSetsController < ApplicationController
-  before_action :set_response_set, only: [:show, :destroy]
-  before_action :set_parent_set, only: [:extend]
   load_and_authorize_resource
 
   # GET /response_sets
@@ -54,7 +52,8 @@ class ResponseSetsController < ApplicationController
 
   # GET /response_sets/1/extend
   def extend
-    @response_set = @response_set.extend_from
+    rs_parent = ResponseSet.find(params[:id])
+    @response_set = rs_parent.extend_from
   end
 
   # DELETE /response_sets/1
