@@ -33,19 +33,9 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get edit' do
-    get edit_response_set_url(@response_set)
-    assert_response :success
-  end
-
   test 'should get extend' do
     get extend_response_set_url(@response_set)
     assert_response :success
-  end
-
-  test 'should update response_set' do
-    patch response_set_url(@response_set), params: { response_set: { description: @response_set.description, name: @response_set.name, oid: @response_set.oid } }
-    assert_redirected_to response_set_url(@response_set)
   end
 
   test 'should destroy response_set' do

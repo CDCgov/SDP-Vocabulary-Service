@@ -2,13 +2,14 @@
 
 <h1>Response Sets</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Name</th>
       <th>Description</th>
       <th>Author</th>
       <th>ID</th>
+      <th>Version</th>
       <th colspan="4"></th>
     </tr>
   </thead>
@@ -20,8 +21,9 @@
         <td><%= response_set.description %></td>
         <td><%= response_set.created_by.email if response_set.created_by.present? %></td>
         <td>id_<%= response_set.id %></td>
+        <td><%= response_set.version %></td>
         <td><%= link_to 'Show', response_set %></td>
-        <td><%= link_to 'Edit', edit_response_set_path(response_set) %></td>
+        <td><%= link_to 'Revise', revise_response_set_path(response_set) %></td>
         <td><%= link_to 'Extend', extend_response_set_path(response_set) %></td>
         <td><%= link_to 'Destroy', response_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

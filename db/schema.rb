@@ -60,11 +60,13 @@ ActiveRecord::Schema.define(version: 20161104210705) do
     t.string   "name"
     t.text     "description"
     t.integer  "oid"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.boolean  "coded"
+    t.string   "version_independent_id"
+    t.integer  "version",                default: 1
     t.integer  "parent_id"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree

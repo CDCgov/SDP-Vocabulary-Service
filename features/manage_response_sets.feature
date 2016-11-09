@@ -6,7 +6,7 @@ Feature: Manage Response Sets
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     Then I should see the option to Show the Response Set with the name "Gender Full"
-    And I should see the option to Edit the Response Set with the name "Gender Full"
+    And I should see the option to Revise the Response Set with the name "Gender Full"
     And I should see the option to Destroy the Response Set with the name "Gender Full"
 
   Scenario: Show Response Set in Detail
@@ -16,16 +16,29 @@ Feature: Manage Response Sets
     And I click on the option to Show the Response Set with the name "Gender Full"
     Then I should see "Name: Gender Full"
 
-  Scenario: Edit Response Set
+  Scenario: Revise Response Set
     Given I have a Response Set with the name "Gender Full"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
-    And I click on the option to Edit the Response Set with the name "Gender Full"
+    And I click on the option to Revise the Response Set with the name "Gender Full"
     And I fill in the "Name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
-    And I click on the "Update Response set" button
-    Then I should see "Response set was successfully updated."
+    And I click on the "Revise Response Set" button
+    Then I should see "Response set was successfully revised."
     And I should see "Gender Partial"
+
+  Scenario: Revise Response Set Removing Response
+    Given I have a Response Set with the name "Gender Full"
+    And I have the Responses: Male, 1; Female, 1; Prefer not to answer, 1
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the option to Revise the Response Set with the name "Gender Full"
+    And I click on the link to remove the Response "Male"
+    And I click on the "Revise Response Set" button
+    Then I should see "Response set was successfully revised."
+    And I should see "Gender Full"
+    And I should see "Female"
+    And I should not see "Male"
 
   Scenario: Extend Response Set
     Given I have a Response Set with the name "Gender Full"

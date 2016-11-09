@@ -49,6 +49,8 @@
       <% if defined?(parent_id) %>
         <%= f.hidden_field :parent_id, :value => parent_id %>
       <% end %>
+      <%= f.hidden_field :version_independent_id %>
+      <%= f.hidden_field :version %>
     </div>
 
     <table id="response-set-table" class="table table-striped">
@@ -74,6 +76,9 @@
             <%= response_form.label :display_name, class: "hidden" %>
             <%= response_form.text_field :display_name %>
           </td>
+          <td>
+            <a href="#" onclick="SDP.rs.removeResponseRow(event)">Remove</a>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -82,7 +87,11 @@
 
 
     <div class="actions">
-      <%= f.submit %>
+      <% if response_set.version_independent_id.present? %>
+        <%= f.submit 'Revise Response Set' %>
+      <% else %>
+        <%= f.submit %>
+      <% end %>
     </div>
   <% end %>
 </div>

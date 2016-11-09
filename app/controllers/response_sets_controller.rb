@@ -1,12 +1,12 @@
 class ResponseSetsController < ApplicationController
-  before_action :set_response_set, only: [:show, :edit, :update, :destroy]
+  before_action :set_response_set, only: [:show, :destroy]
   before_action :set_parent_set, only: [:extend]
   load_and_authorize_resource
 
   # GET /response_sets
   # GET /response_sets.json
   def index
-    @response_sets = ResponseSet.all
+    @response_sets = ResponseSet.latest_versions
   end
 
   # GET /response_sets/1
@@ -20,8 +20,10 @@ class ResponseSetsController < ApplicationController
     @response_set.responses.build
   end
 
-  # GET /response_sets/1/edit
-  def edit
+  # GET /response_sets/1/revise
+  def revise
+    rs_to_revise = ResponseSet.find(params[:id])
+    @response_set = rs_to_revise.build_new_revision
   end
 
   def assign_author
@@ -38,7 +40,9 @@ class ResponseSetsController < ApplicationController
 
     respond_to do |format|
       if @response_set.save
-        format.html { redirect_to @response_set, notice: 'Response set was successfully created.' }
+        rs_action = 'created'
+        rs_action = 'revised' if @response_set.version > 1
+        format.html { redirect_to @response_set, notice: "Response set was successfully #{rs_action}." }
         format.json { render :show, status: :created, location: @response_set }
       else
         format.html { render :new }
@@ -103,7 +107,8 @@ class ResponseSetsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
-    params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author, :coded,
+    params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author, :coded, :version,
+                                         :version_independent_id,
                                          responses_attributes: [:id, :value, :display_name, :code_system])
   end
 end
