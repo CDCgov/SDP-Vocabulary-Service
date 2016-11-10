@@ -36,7 +36,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-
   test 'should destroy question' do
     assert_difference('Question.count', -1) do
       delete question_url(@question)
