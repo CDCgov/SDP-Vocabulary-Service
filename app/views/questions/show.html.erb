@@ -34,7 +34,16 @@
   <%= @question.question_type.try :name %>
 </p>
 
-
+<% if @question.other_versions.present? %>
+<p>
+  <strong>Other Versions:</strong>
+  <ol>
+    <% @question.other_versions.each do |ov| %>
+      <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
+    <% end %>
+  </ol>
+</p>
+<% end %>
 
 <% if user_signed_in? %>
     <%= link_to 'Revise', revise_question_path(@question) %> |

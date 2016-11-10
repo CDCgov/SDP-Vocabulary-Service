@@ -33,7 +33,7 @@ class Question < ApplicationRecord
   end
 
   def build_new_revision
-    new_revision = Question.new(content: content, created_at: created_at, updated_at: updated_at, created_by: created_by,
+    new_revision = Question.new(content: content,
                                 version_independent_id: version_independent_id,
                                 version: version + 1, question_response_sets: question_response_sets,
                                 response_sets: response_sets, form_questions: form_questions, forms: forms,
