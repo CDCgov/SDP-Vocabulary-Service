@@ -46,11 +46,11 @@
     </div>
 
     <div class="hidden">
-      <% if defined?(parent_id) %>
-        <%= f.hidden_field :parent_id, :value => parent_id %>
-      <% end %>
       <%= f.hidden_field :version_independent_id %>
       <%= f.hidden_field :version %>
+      <% if response_set.parent.present? %>
+        <%= f.hidden_field :parent_id, value: response_set.parent_id %>
+      <% end %>
     </div>
 
     <table id="response-set-table" class="table table-striped">
@@ -87,7 +87,9 @@
 
 
     <div class="actions">
-      <% if response_set.version_independent_id.present? %>
+      <% if response_set.parent.present? %>
+        <%= f.submit 'Extend Response Set' %>
+      <% elsif response_set.version_independent_id.present? %>
         <%= f.submit 'Revise Response Set' %>
       <% else %>
         <%= f.submit %>

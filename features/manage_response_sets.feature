@@ -7,6 +7,7 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     Then I should see the option to Show the Response Set with the name "Gender Full"
     And I should see the option to Revise the Response Set with the name "Gender Full"
+    And I should see the option to Extend the Response Set with the name "Gender Full"
     And I should see the option to Destroy the Response Set with the name "Gender Full"
 
   Scenario: Show Response Set in Detail
@@ -47,7 +48,7 @@ Feature: Manage Response Sets
     And I click on the option to Extend the Response Set with the name "Gender Full"
     And I fill in the "Name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F / O"
-    And I click on the "Create Response set" button
+    And I click on the "Extend Response Set" button
     Then I should see "Response set was successfully created."
     And I should see "Gender Partial"
     And I should see "M / F / O"
