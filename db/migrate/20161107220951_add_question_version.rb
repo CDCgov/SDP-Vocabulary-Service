@@ -1,10 +1,10 @@
 class AddQuestionVersion < ActiveRecord::Migration[5.0]
   def up
-    add_column :questions, :version_independent_id, :integer
+    add_column :questions, :version_independent_id, :string
     add_column :questions, :version, :integer, default: 1
 
     Question.all.each_with_index do |q, i|
-      q.update_attribute :version_independent_id, q.id
+      q.update_attribute :version_independent_id, "Q-#{q.id}"
     end
   end
 

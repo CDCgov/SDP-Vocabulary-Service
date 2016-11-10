@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.all
+    @questions = Question.latest_versions
     @response_sets = ResponseSet.all
   end
 
@@ -22,7 +22,9 @@ class QuestionsController < ApplicationController
   end
 
   # GET /questions/1/edit
-  def edit
+  def revise
+    q_to_revise = Question.find(params[:id])
+    @question = q_to_revise.build_new_revision
     @response_sets = ResponseSet.all
     @question_types = QuestionType.all
   end
@@ -47,7 +49,9 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.save
-        format.html { redirect_to @question, notice: 'Question was successfully created.' }
+        q_action = 'created'
+        q_action = 'revised' if @question.version > 1
+        format.html { redirect_to @question, notice: "Question was successfully #{q_action}." }
         format.json { render :show, status: :created, location: @question }
       else
         format.html { render :new }
@@ -98,6 +102,6 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :author, :response_set_id, :question_type_id)
+    params.require(:question).permit(:content, :author, :response_set_id, :question_type_id, :version, :version_independent_id)
   end
 end

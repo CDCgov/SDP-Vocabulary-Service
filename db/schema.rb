@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20161107220951) do
     t.integer  "question_type_id"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
-    t.integer  "version_independent_id"
+    t.string   "version_independent_id"
     t.integer  "version",                default: 1
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree

@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   resources :forms
   resources :question_response_sets
   resources :responses
-  resources :questions
+  resources :questions, except: [:edit, :update] do
+    get :revise, on: :member
+  end
   resources :question_types
   devise_for :users
   resources :response_sets, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
