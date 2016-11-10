@@ -14,7 +14,6 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   test 'latest versions' do
-    binding.pry
     assert_equal 2, Question.latest_versions.count
   end
 
