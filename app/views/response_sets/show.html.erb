@@ -49,10 +49,12 @@
   <%= @response_set.created_by.email if @response_set.created_by.present? %>
 </p>
 
+<% if @response_set.parent.present? %>
 <p>
   <strong>Parent:</strong>
-  <%= @response_set.parent_id if @response_set.parent_id.present? %>
+  <%= link_to @response_set.parent.name, @response_set.parent %>
 </p>
+<% end %>
 
 <% if @response_set.other_versions.present? %>
 <p>
