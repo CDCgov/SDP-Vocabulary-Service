@@ -35,17 +35,15 @@ class Question < ApplicationRecord
   def build_new_revision
     new_revision = Question.new(content: content, created_at: created_at, updated_at: updated_at, created_by: created_by,
                                 version_independent_id: version_independent_id,
-                                version: version+1, question_response_sets: question_response_sets,
+                                version: version + 1, question_response_sets: question_response_sets,
                                 response_sets: response_sets, form_questions: form_questions, forms: forms,
-                                question_type: question_type, created_by: created_by)
+                                question_type: question_type)
     new_revision
   end
 
-
-
   def other_versions
     Question.where(version_independent_id: version_independent_id)
-      .where.not(version: version)
-      .order(version: :desc)
+            .where.not(version: version)
+            .order(version: :desc)
   end
 end

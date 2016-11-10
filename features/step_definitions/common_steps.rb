@@ -57,7 +57,6 @@ end
 
 # Quick little helper for popping a debugger, will cause tests to fail if left in
 Then(/^debugger$/) do
-  binding.pry
   assert false
 end
 
