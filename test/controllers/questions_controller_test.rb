@@ -32,13 +32,8 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get edit' do
-    get edit_question_url(@question)
+    get revise_question_url(@question)
     assert_response :success
-  end
-
-  test 'should update question' do
-    patch question_url(@question), params: { question: { content: @question.content } }
-    assert_redirected_to question_url(@question)
   end
 
   test 'should destroy question' do
