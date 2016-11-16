@@ -7,6 +7,10 @@
     "lint": "eslint webpack",
     "lint-auto": "eslint webpack --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CDCgov/SDP-Vocabulary-Service"
+  },
   "dependencies": {
     "autoprefixer": "^6.5.1",
     "babel-core": "^6.17.0",
