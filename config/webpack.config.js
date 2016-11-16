@@ -16,6 +16,7 @@ var config = {
   entry: {
     // Sources are expected to live in $app_root/webpack
     'application': './webpack/application.js',
+    'response_set': './webpack/response_set.js',
     'bootstrap': 'bootstrap-loader'
   },
 
