@@ -5,6 +5,7 @@ node('ruby') {
   }
 
   stage('Install Deps') {
+    pwd()
     sh 'npm install'
     sh 'bundle install'
   }
