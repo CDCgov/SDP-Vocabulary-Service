@@ -15,7 +15,7 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets/new
   def new
     @response_set = ResponseSet.new
-    @response_set.responses.build
+    @response_set.responses.build(value: '', code_system: '', display_name: '')
   end
 
   # GET /response_sets/1/revise
