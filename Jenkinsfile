@@ -8,4 +8,12 @@ node('ruby') {
     sh 'npm install'
     sh 'bundle install'
   }
+
+  stage('Start Foreman') {
+    sh 'foreman start webpack'
+  }
+
+  stage('Run Tests') {
+    sh 'bundle exec rake'
+  }
 }
