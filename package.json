@@ -2,6 +2,10 @@
   "name": "SDP",
   "version": "0.0.1",
   "license": "Apache-2.0",
+  "scripts": {
+    "lint": "eslint webpack",
+    "lint-auto": "eslint webpack --fix"
+  },
   "dependencies": {
     "autoprefixer": "^6.5.1",
     "babel-core": "^6.17.0",
@@ -24,7 +28,9 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.9.11",
     "webpack-dev-middleware": "1.7.0",
-    "webpack-dev-server": "^1.9.0"
+    "webpack-dev-server": "^1.9.0",
+    "eslint": "^3.1.0",
+    "eslint-plugin-react": "^5.2.2"
   },
   "devDependencies": {
     "bootstrap-sass": "^3.3.7"
