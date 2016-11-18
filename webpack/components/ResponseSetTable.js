@@ -68,3 +68,11 @@ export default class ResponseSetTable extends Component {
     );
   }
 }
+
+ResponseSetTable.propTypes = {
+  initialResponses: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.string,
+    code_system: PropTypes.string,
+    display_name: PropTypes.string
+  }))
+};

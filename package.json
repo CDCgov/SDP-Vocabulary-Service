@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "scripts": {
+    "test": "NODE_ENV=test mocha --compilers js:babel-core/register --require ./test/frontend/test_helper.js --recursive ./test/frontend",
     "lint": "eslint webpack",
     "lint-auto": "eslint webpack --fix"
   },
@@ -22,8 +23,10 @@
     "jquery-ujs": "^1.2.2",
     "node-sass": "^3.10.1",
     "postcss-loader": "^1.0.0",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0",
     "resolve-url-loader": "^1.6.0",
     "sass-loader": "^4.0.2",
     "stats-webpack-plugin": "^0.2.1",
@@ -31,11 +34,16 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.9.11",
     "webpack-dev-middleware": "1.7.0",
-    "webpack-dev-server": "^1.9.0",
-    "eslint": "^3.1.0",
-    "eslint-plugin-react": "^5.2.2"
+    "webpack-dev-server": "^1.9.0"
   },
   "devDependencies": {
-    "bootstrap-sass": "^3.3.7"
+    "bootstrap-sass": "^3.3.7",
+    "chai": "^3.5.0",
+    "chai-jquery": "^2.0.0",
+    "eslint": "^3.10.2",
+    "eslint-plugin-react": "^6.7.1",
+    "jsdom": "^9.8.3",
+    "mocha": "^3.1.2",
+    "react-addons-test-utils": "^15.4.0"
   }
 }
