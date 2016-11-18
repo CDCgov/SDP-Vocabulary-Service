@@ -10,7 +10,7 @@ node('ruby') {
   }
 
   stage('Start Foreman') {
-    sh 'foreman start webpack'
+    sh 'foreman start webpack &'
   }
 
   stage('Run Tests') {
