@@ -1,3 +1,4 @@
+
 require("styles/scaffolds.scss");
 require("jquery");
 require("jquery-ujs");

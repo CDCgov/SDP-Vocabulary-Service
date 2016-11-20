@@ -1,0 +1,29 @@
+<!-- START Question Widget -->
+<div class="question-group">
+  <div class="panel panel-default">
+    <div class="question-container">
+
+      <ul class="list-inline">
+        <li><%= question.content %></li>
+        <li class="pull-right"><a><span class="glyphicon glyphicon-signal"></span></a></li>
+      </ul>
+
+    </div>
+
+    <div class="response-set-details">
+      <ul class="list-inline">
+        <li class="reponse-number"><span class="glyphicon glyphicon-th-list"></span></li>
+        <li class="pull-right panel-toggle" data-toggle="collapse" href="#collapse<%= question.id %>">
+          <a><span class="glyphicon glyphicon-chevron-down"></span></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel-collapse panel-details collapse" id="collapse<%= question.id %>">
+      <div class="panel-body">
+
+      </div>
+    </div>
+
+  </div>
+</div>

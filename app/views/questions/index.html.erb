@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Questions</h1>
-
+<!--
 <table>
   <thead>
     <tr>
@@ -32,7 +32,19 @@
   </tbody>
 </table>
 
-<br>
+<br> -->
+
+<div class="row">
+      <div class="col-md-12">
+        <%= render partial: "question.html", collection: @questions %>
+        <!-- END Question Widget -->
+      </div>
+
+
+      <div class="col-md-4">panel</div>
+
+    </div>
+
 
 <% if user_signed_in? %>
   <%= link_to 'New Question', new_question_path %>
