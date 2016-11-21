@@ -20,16 +20,20 @@
 
 //ELEMENTS//
 
+//WIDGETS//
+@import "widgets/questions";
+@import "widgets/analytics";
+@import "widgets/search";
+
+
+
 //LAYOUTS//
 @import "layouts/body";
+@import "layouts/panels";
 @import "layouts/footer";
 
 //NAVIGATION//
 @import "navigation/nav";
-
-
-//WIDGETS//
-@import "widgets/questions";
 // body {
 //   font-family: 'Open Sans', sans-serif;
 //   margin-bottom: 120px;

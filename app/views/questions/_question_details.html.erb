@@ -1,0 +1,44 @@
+<p>
+  <strong>Content:</strong>
+  <%= question.content %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= question.created_by.email if question.created_by.present? %>
+</p>
+
+<p>
+  <strong>Created:</strong>
+  <%= question.created_at %>
+</p>
+
+<p>
+  <strong>Updated:</strong>
+  <%= question.updated_by.email if question.created_by.present? %>
+  <%= question.updated_at %>
+</p>
+
+<p>
+  <strong>Response Set Names:</strong><br>
+  <% question.response_sets.each do |rs| %>
+    <%= link_to rs.name, response_set_path(rs) %>
+    <br>
+  <% end %>
+</p>
+
+<p>
+  <strong>Question Type:</strong>
+  <%= question.question_type.try :name %>
+</p>
+
+<% if question.other_versions.present? %>
+<p>
+  <strong>Other Versions:</strong>
+  <ol>
+    <% question.other_versions.each do |ov| %>
+      <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
+    <% end %>
+  </ol>
+</p>
+<% end %>

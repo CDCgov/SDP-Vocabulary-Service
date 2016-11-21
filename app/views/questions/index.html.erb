@@ -1,51 +1,27 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Questions</h1>
-<!--
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Content</th>
-      <th>Author</th>
-      <th>Type </th>
-      <th>Version </th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @questions.each do |question| %>
-      <tr>
-        <td>id_<%= question.id %></td>
-        <td><%= question.content %></td>
-        <td><%= question.created_by.email if question.created_by.present? %></td>
-        <td><%= question.question_type.try :name %> </td>
-        <td><%= question.version %> </td>
-        <td><%= link_to 'Details', question %></td>
-        <% if user_signed_in? %>
-          <td><%= link_to 'Revise', revise_question_path(question) %></td>
-          <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br> -->
-
+<!-- START Search Widget -->
 <div class="row">
-      <div class="col-md-12">
-        <%= render partial: "question.html", collection: @questions %>
-        <!-- END Question Widget -->
-      </div>
+    <div class="col-md-8 dashboard-details">
 
-
-      <div class="col-md-4">panel</div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group question-group">
+                    <input type="text" class="form-control" placeholder="Search Questions...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="question-group">
+            <%= render partial: "question.html", collection: @questions %>
+            <!-- END Question Widget -->
+        </div>
 
     </div>
 
-
+</div>
 <% if user_signed_in? %>
-  <%= link_to 'New Question', new_question_path %>
+<%= link_to 'New Question', new_question_path %>
 <% end %>
