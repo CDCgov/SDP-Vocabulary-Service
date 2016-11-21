@@ -3,17 +3,19 @@
 <!-- START Search Widget -->
 <div class="row">
     <div class="col-md-8 dashboard-details">
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="input-group question-group">
-                    <input type="text" class="form-control" placeholder="Search Questions...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
+        <form action="<%= questions_url %>">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group question-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search Questions...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
+
         <div class="question-group">
             <%= render partial: "question.html", collection: @questions %>
             <!-- END Question Widget -->
