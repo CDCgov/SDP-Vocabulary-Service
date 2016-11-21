@@ -4,7 +4,7 @@
     <div class="question-container">
 
       <ul class="list-inline">
-        <li><%= question.content %></li>
+        <li><%= link_to question.content,question_url(question) %></li>
         <li class="pull-right"><a><span class="glyphicon glyphicon-signal"></span></a></li>
       </ul>
 
