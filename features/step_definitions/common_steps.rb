@@ -14,7 +14,7 @@ end
 When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
   # '//tr[td="id_' + object_id + '"]/td[a="Destroy"]/a'
-  within(:xpath, '//tr[td="id_' + object_id + '"]') do
+  within(:xpath, create_path(object_type, object_id)) do
     click_on(action)
   end
 end
@@ -50,7 +50,7 @@ end
 
 Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
-  within(:xpath, '//tr[td="id_' + object_id + '"]') do
+  within(:xpath, create_path(object_type, object_id)) do
     find_link(action)
   end
 end
@@ -58,6 +58,14 @@ end
 # Quick little helper for popping a debugger, will cause tests to fail if left in
 Then(/^debugger$/) do
   assert false
+end
+
+def create_path(object_type, object_id)
+  if object_type == 'Question'
+    '//div[@id="question_id_' + object_id + '"]'
+  else
+    '//tr[td="id_' + object_id + '"]'
+  end
 end
 
 # Helper functions
