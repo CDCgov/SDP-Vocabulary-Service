@@ -1,0 +1,447 @@
+ # http://editor.swagger.io/#/
+swagger: '2.0'
+
+info:
+  version: "0.1.0"
+  title: SDP Question Bank
+  description: Web API for the SDP Question Bank shared service
+  contact:
+    name: SDP Support
+    url: http://www.cdc.gov/sdp/
+    email: surveillanceplatform@cdc.gov
+    
+tags:
+  -
+    name: questions
+    description: Access to questions
+  -
+    name: forms
+    description: Access to forms
+  -
+    name: programs
+    description: Access to programs
+  -
+    name: valueSets
+    description: Access to value sets
+
+paths:
+  /questions:
+    get:
+      tags:
+      - questions
+      description: |
+        Get a list of questions that match the supplied search criteria.
+      produces:
+      - application/json
+          
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned questions, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned questions to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Question'
+
+  /questions/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of question
+        required: true
+        type: string
+    get:
+      tags:
+      - questions
+      description: |
+        Get information about the question identified by `id` in the request
+        URL. Information returned includes response sets associated with the
+        question, these may be filtered using optional query parameters.
+      produces:
+      - application/json
+          
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Question'
+
+  /questions/{id}/usage:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of question
+        required: true
+        type: string
+    get:
+      tags:
+      - questions
+      description: |
+        Get usage information about the question identified by `id` in the request
+        URL.
+      produces:
+      - application/json
+          
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Usage'
+
+  /programs:
+    get:
+      tags:
+      - programs
+      description: |
+        Get a list of programs that match the supplied search criteria.
+      produces:
+      - application/json
+          
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned programs, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned programs to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Program'
+
+  /programs/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of program
+        required: true
+        type: string
+    get:
+      tags:
+      - programs
+      description: |
+        Get information about a program including the questions and associated
+        responses used by that program.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Program'
+
+  /forms/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of form
+        required: true
+        type: string
+    get:
+      tags:
+      - forms
+      description: |
+        Get information about a form including the questions and associated
+        response used by that form.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Form'
+
+  /valueSets:
+    get:
+      tags:
+      - valueSets
+      description: |
+        Get a list of value sets that match the supplied search criteria.
+      produces:
+      - application/json
+          
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned value sets, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned value sets to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ValueSet'
+
+  /valueSets/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of value set
+        required: true
+        type: string
+    get:
+      tags:
+      - valueSets
+      description: |
+        Get information about a value set.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/ValueSet'
+
+  /valueSets/{id}/usage:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of value set
+        required: true
+        type: string
+    get:
+      tags:
+      - valueSets
+      description: |
+        Get usage information about the value set identified by `id` in the request
+        URL.
+      produces:
+      - application/json
+          
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Usage'
+
+
+definitions:
+  ValueSet:
+    type: object
+    description: |
+      A set of codes drawn from one or more code systems. This is a proper subset of the
+      [FHIR ValueSet](http://hl7.org/fhir/2016Sep/valueset.html) structure.
+    properties:
+      url:
+        type: string
+        title: Globally unique identifier for the value set
+      identifier:
+        type: array
+        title: Additional identifiers for the value set
+        items:
+          type: object
+          title: Additional identifier for the value set
+          properties:
+            system:
+              type: string
+            value:
+              type: string
+      version:
+        type: string
+        title: Logical identifier for this version of the value set
+      name:
+        type: string
+        title: informal name of the value set
+      status:
+        title: Status of the value set
+        type: string
+        enum:
+          - draft
+          - active
+          - retired
+      description:
+        type: string
+        title: Human readable description of the value set
+      expansion:
+        type: object
+        properties:
+          identifier:
+            type: string
+            title: Uniquely identifies this expansion
+          timestamp:
+            type: string
+            title: Time ValueSet expansion happened
+          contains:
+            type: array
+            title: Codes in the value set
+            items:
+              type: object
+              properties:
+                system:
+                  type: string
+                  title: System value for the code
+                version: 
+                  type: string
+                  title: Version of the system in which this code/display is defined
+                code:
+                  type: string
+                  title: Symbol in syntax defined by the system
+                display:
+                  type: string
+                  title:
+                    User display for the concept
+
+  Usage:
+    type: array
+    description:
+      A set of programs and forms that use a question or response
+      value set.
+    items:
+      type: array
+      items:
+        type: object
+        properties:
+          programId:
+            type: string
+            title: Program identifier
+          programName:
+            type: string
+            title: Human readable name of the program
+          programUri:
+            type: string
+            title: Relative URI of program
+          forms:
+            type: array
+            title: List of forms in which the question or response set is used
+            items:
+              type: object
+              properties:
+                formId:
+                  type: string
+                  title: Form identifier
+                formName:
+                  type: string
+                  title: Human readable name of the form
+                formUri:
+                  type: string
+                  title: Relative URI of the form
+
+  Question:
+    type: object
+    description:
+      Details about a question managed by the service.
+    properties:
+      questionId:
+        type: string
+        title: Question identifier
+      # do we need support for multiple languages here?
+      questionText:
+        type: string
+        title: Human readable text of the question
+      questionUri:
+        type: string
+        title: Relative URI of the question
+      # TODO additional metadata
+
+  Program:
+    type: object
+    description:
+      Details about a program.
+    properties:
+      programId:
+        type: string
+        title: Program identifier
+      programName:
+        type: string
+        title: Human readable name of the program
+      programUri:
+        type: string
+        title: Relative URI of the program
+      # TODO additional metadata
+      forms:
+        type: array
+        description:
+          Array of forms used by this program.
+        items:
+          $ref: '#/definitions/Form'
+
+  Form:
+    type: object
+    description:
+      Details about a form.
+    properties:
+      programId:
+        type: string
+        title: Program identifier
+      programName:
+        type: string
+        title: Human readable name of the program
+      programUri:
+        type: string
+        title: Relative URI of the program
+      formId:
+        type: string
+        title: Form identifier
+      formName:
+        type: string
+        title: Human readable name of the form
+      formUri:
+        type: string
+        title: Relative URI of the form
+      # TODO additional metadata
+      questions:
+        type: array
+        description:
+          Array of [question, response] pairs used in this form.
+        items:
+          type: object
+          properties:
+            question:
+              $ref: '#/definitions/Question'
+            response:
+              $ref: '#/definitions/ValueSet'
