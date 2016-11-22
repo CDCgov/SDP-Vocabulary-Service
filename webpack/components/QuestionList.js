@@ -20,3 +20,7 @@ export default class QuestionList extends Component {
     );
   }
 }
+
+QuestionList.propTypes = {
+  questions: PropTypes.arrayOf(QuestionWidget.propTypes.question)
+};

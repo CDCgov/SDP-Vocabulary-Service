@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+var routes = require("../routes.js.erb");
 export default class QuestionWidget extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +12,7 @@ export default class QuestionWidget extends Component {
               <div className="question-container">
 
                   <ul className="list-inline">
-                      <li><a href={SDP.routes.question_path(this.props.question)}>{this.props.question.content}</a></li>
+                      <li><a href={routes.question_path(this.props.question)}>{this.props.question.content}</a></li>
                       <li className="pull-right">
                           <a>
                               <span className="glyphicon glyphicon-signal"></span>
@@ -32,13 +32,13 @@ export default class QuestionWidget extends Component {
                               </a>
                               <ul className="dropdown-menu">
                               <li>
-                                <a href={SDP.routes.revise_question_path(this.props.question)}>Revise</a>
+                                <a href={routes.revise_question_path(this.props.question)}>Revise</a>
                               </li>
                               <li>
-                                <a href={SDP.routes.question_path(this.props.question)}>Details</a>
+                                <a href={routes.question_path(this.props.question)}>Details</a>
                               </li>
                                   <li>
-                                  <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={SDP.routes.question_path(this.props.question)}>Delete</a>
+                                  <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={routes.question_path(this.props.question)}>Delete</a>
                                   </li>
                               </ul>
                           </div>
@@ -56,3 +56,12 @@ export default class QuestionWidget extends Component {
     );
   }
 }
+
+
+QuestionWidget.propTypes = {
+  question: PropTypes.shape({
+    id: PropTypes.number,
+    content: PropTypes.string,
+    question_type: PropTypes.string
+  })
+};
