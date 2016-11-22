@@ -54,3 +54,18 @@ Feature: Manage Questions
     And I confirm my action
     Then I should see "Question was successfully destroyed."
     And I should not see "Male"
+
+  Scenario: Search for a Question
+    Given I have a Question with the content "Cat?" and the type "MC"
+    And I have a Question with the content "Hat?" and the type "MC"
+    And I have a Question with the content "Fat?" and the type "MC"
+    And I have a Question with the content "Cancer?" and the type "MC"
+    And I have a Question with the content "Broken Legs?" and the type "MC"
+    When I go to the list of Questions
+    And I fill in the "search" field with "at"
+    And I click on the "Go!" button
+    Then I should see "Cat?"
+    And I should see "Hat?"
+    And I should see "Fat?"
+    And I should not see "Cancer?"
+    And I should not see "Broken Legs?"

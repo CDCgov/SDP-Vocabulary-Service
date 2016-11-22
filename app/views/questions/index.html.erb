@@ -6,8 +6,9 @@
         <form action="<%= questions_url %>">
             <div class="row">
                 <div class="col-md-12">
+
                     <div class="input-group question-group">
-                        <input type="text" name="search" class="form-control" placeholder="Search Questions...">
+                        <input type="text" id="search" name="search" class="form-control" placeholder="Search Questions...">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Go!</button>
                         </span>
@@ -17,7 +18,6 @@
         </form>
 
         <div id="question_list" class="question-group">
-
         </div>
 
     </div>

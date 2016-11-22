@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 var routes = require("../routes.js");
-if(routes.Routes){ routes=routes.Routes}
+if(routes.Routes){ routes=routes.Routes;}
 export default class QuestionWidget extends Component {
   constructor(props) {
     super(props);
