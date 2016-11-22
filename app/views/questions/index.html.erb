@@ -16,14 +16,19 @@
             </div>
         </form>
 
-        <div class="question-group">
-            <%= render partial: "question.html", collection: @questions %>
-            <!-- END Question Widget -->
+        <div id="question_list" class="question-group">
+
         </div>
 
     </div>
 
 </div>
+
+<script type="application/json" id="question-json">
+  <%= raw @questions.to_json %>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('question_list', extension: 'js') %>
+
 <% if user_signed_in? %>
 <%= link_to 'New Question', new_question_path %>
 <% end %>
