@@ -68,4 +68,53 @@ You will have to **EDIT** this file. Add another entry in the `entry` section fo
 'resource_name': webpack/[resource_name].js
 ```
 
-This is what makes the `*webpack_asset_paths([resource_name], extension: 'js')` in your ERB template work, if the `resource_name` tags don't match it won't find your JS file.
+This is what makes the `webpack_asset_paths([resource_name], extension: 'js')` in your ERB template work, if the `resource_name` tags don't match it won't find your JS file.
+
+
+## Testing JS Components
+
+While you could rely on the Rails application's Cucumber suite to test the React code it is likely much simpler to test the components in the JS ecosystem. As such, components should be tested using Mocha
+
+### Getting started writing a test
+
+You should create a file in `/test/frontend/components/[component_name]_test.js` to start. You will need to include some test helpers as seen below.
+
+```
+import { renderComponent , expect } from '../test_helper';
+import [ComponentName] from '[path_to_component]';
+```
+
+You will also need to import your component.
+
+Please feel free to use the following as a scaffold:
+
+```
+describe('[componentName]', () => {
+  let component;
+
+  beforeEach(() => {
+    component = renderComponent([ComponentName], [props]);
+  });
+
+  it('has the correct class', () => {
+    expect(component).to.have.class('some-class');
+  });
+});
+```
+
+This test will get picked up by the mocha test runner.
+
+### Internal State
+In some cases you might need to access the internal state of the component. Unfortunately the renderComponent wrapper doesn't support this use case. There is a second helper called `renderComponentWithState` that will return an object that looks like `{component, componentInstance}` so you can call it like `{component, componentInstance} = renderComponentWithState([ComponentName], [props]);` then proceed as normal. Any time you need to access the state of the component you can do so off the `componentInstance.state` object.
+
+### Simulating Interactions
+
+If your test needs to simulate interactions you can import TestUtils with `import TestUtils from 'react-addons-test-utils';` This will give you access to the Simulate object documented at https://facebook.github.io/react/docs/test-utils.html#simulate There are a handful of examples on the documentation site.
+
+### Running Tests
+
+`npm test`
+
+## Linting
+
+You should run `npm run lint` before making a PR. If it shows a bunch of errors they are likely mostly minor, there's a task for automatically fixing many small errors automatically, `npm run lint-auto`. It'd be a good idea to make a commit before running this just in case. It shouldn't make many large changes but commits are cheap in git. 
