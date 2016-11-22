@@ -53,38 +53,8 @@
       <% end %>
     </div>
 
-    <table id="response-set-table" class="table table-striped">
-      <thead>
-        <tr>
-          <th>Response Code</th>
-          <th>Code System</th>
-          <th>Display Name</th>
-        </tr>
-      </thead>
-      <tbody>
-      <%= f.fields_for :responses do |response_form| %>
-        <tr>
-          <td>
-            <%= response_form.label :value, class: "hidden" %>
-            <%= response_form.text_field :value %>
-          </td>
-          <td>
-            <%= response_form.label :code_system, class: "hidden" %>
-            <%= response_form.text_field :code_system %>
-          </td>
-          <td>
-            <%= response_form.label :display_name, class: "hidden" %>
-            <%= response_form.text_field :display_name %>
-          </td>
-          <td>
-            <a href="#" onclick="SDP.rs.removeResponseRow(event)">Remove</a>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-    </table>
-    <a href="javascript:SDP.rs.addResponseRow()">Add Row</a>
-
+    <div id="response-set-table">
+    </div>
 
     <div class="actions">
       <% if response_set.parent.present? %>
@@ -97,3 +67,7 @@
     </div>
   <% end %>
 </div>
+<script type="application/json" id="responses-json">
+  <%= raw response_set.responses.to_json %>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('response_set', extension: 'js') %>
