@@ -1,43 +1,67 @@
-<%= form_for(question) do |f| %>
-  <% if question.errors.any? %>
+<div class="panel">
+
+    <%= form_for(question) do |f| %>
+    <% if question.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
-
-      <ul>
-      <% question.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+        <h2><%= pluralize(question.errors.count, "error") %>
+            prohibited this question from being saved:</h2>
+        <ul>
+            <% question.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+        </ul>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :content %>
-    <%= f.text_area :content %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :linked_response_sets, 'Response Sets' %>
-    <%= select_tag 'linked_response_sets', options_from_collection_for_select(ResponseSet.all, 'id', 'name', @question.response_sets.map{ |j| j.id }), size: 5, :multiple => true, include_blank: true %>
-  </div>
-
-  <div class="field">
-    <%= f.label :question_type_id, "Question Type" %>
-    <%= f.select :question_type_id, options_from_collection_for_select(@question_types, 'id', 'name', question.question_type_id), include_blank: true %>
-  </div>
-
-  <div class="field">
-    <!-- Displaying current user for when update tracking is added -->
-    Author ID: <%= current_user.email %>
-  </div>
-  <%= f.hidden_field :version_independent_id %>
-  <%= f.hidden_field :version %>
-
-  <div class="actions">
-    <% if question.version_independent_id.present? %>
-      <%= f.submit 'Revise Question' %>
-    <% else %>
-      <%= f.submit %>
     <% end %>
-  </div>
-<% end %>
+    <div class="row">
+        <div class="col-md-8 field">
+            <div class="row">
+                <%= f.label :content, "Question"%>
+            </div>
+            <div class="row">
+                <%= f.text_field :content  %>
+            </div>
+        </div>
+
+        <div class="col-md-4 field">
+            <div class="row">
+                <%= f.label :question_type_id, "Question Type" %>
+            </div>
+            <div class="row">
+                <%= f.select :question_type_id, options_from_collection_for_select(@question_types, 'id', 'name', question.question_type_id), include_blank: true %>
+            </div>
+        </div>
+    </div>
+    <div class="row field">
+      <div class="col-md-8">
+        <%= label_tag :response_type_id, 'Primary Response Type' %>
+      </div>
+        <div class="col-md-8">
+          <%= select_tag 'response_type_id', options_from_collection_for_select(ResponseType.all, 'id', 'name', @question.response_type),  :multiple => false, include_blank: false %>
+      </div>
+    </div>
+    <div class="row field">
+      <div class="col-md-12">
+        <%= label_tag :linked_response_sets, 'Response Sets' %>
+      </div>
+        <div class="col-md-12">
+          <%= select_tag 'linked_response_sets', options_from_collection_for_select(ResponseSet.all, 'id', 'name', @question.response_sets.map{ |j| j.id }), size: 5, :multiple => true, include_blank: true %>
+      </div>
+    </div>
+
+    <div class="field">
+        <!-- Displaying current user for when update tracking is added -->
+        Author ID:
+        <%= current_user.email %>
+    </div>
+    <%= f.hidden_field :version_independent_id %>
+    <%= f.hidden_field :version %>
+
+    <div class="actions">
+        <% if question.version_independent_id.present? %>
+        <%= f.submit 'Revise Question' %>
+    <% else %>
+        <%= f.submit %>
+        <% end %>
+    </div>
+    <% end %>
+</div>
