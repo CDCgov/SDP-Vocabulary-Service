@@ -36,10 +36,26 @@
 
 <% if @question.other_versions.present? %>
 <p>
+  <strong>Most Recent Version:</strong>
+  <% if @question.other_versions[0].version > @question.version %>
+    <%= @question.other_versions[0].version %>
+  <% else %>
+    <%= @question.version %>
+  <% end %>
+</p>
+<p>
   <strong>Other Versions:</strong>
   <ol>
     <% @question.other_versions.each do |ov| %>
+      <% if @question.version == (ov.version + 1) %>
+        <li>Version: <%= @question.version %> - Created <%= time_ago_in_words(@question.created_at) %> ago (Currently Selected)
+        </li>
+      <% end %>
       <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
+    <% end %>
+    <% if @question.version == 1 %>
+      <li>Version: <%= @question.version %> - Created <%= time_ago_in_words(@question.created_at) %> ago (Currently Selected)
+      </li>
     <% end %>
   </ol>
 </p>

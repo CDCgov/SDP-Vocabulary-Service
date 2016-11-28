@@ -58,10 +58,26 @@
 
 <% if @response_set.other_versions.present? %>
 <p>
+  <strong>Most Recent Version:</strong>
+  <% if @response_set.other_versions[0].version > @response_set.version %>
+    <%= @response_set.other_versions[0].version %>
+  <% else %>
+    <%= @response_set.version %>
+  <% end %>
+</p>
+<p>
   <strong>Other Versions:</strong>
   <ol>
     <% @response_set.other_versions.each do |ov| %>
+      <% if @response_set.version == (ov.version + 1) %>
+        <li>Version: <%= @response_set.version %> - Created <%= time_ago_in_words(@response_set.created_at) %> ago (Currently Selected)
+        </li>
+      <% end %>
       <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
+    <% end %>
+    <% if @response_set.version == 1 %>
+      <li>Version: <%= @response_set.version %> - Created <%= time_ago_in_words(@response_set.created_at) %> ago (Currently Selected)
+      </li>
     <% end %>
   </ol>
 </p>
