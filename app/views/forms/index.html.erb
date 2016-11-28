@@ -14,7 +14,7 @@
 
   <tbody>
     <% @forms.each do |form| %>
-      <tr>
+      <tr id="form_id_<%= form.id %>">
         <td>id_<%= form.id %></td>
         <td><%= form.name %></td>
         <td><%= form.created_by.email if form.created_by.present? %></td>

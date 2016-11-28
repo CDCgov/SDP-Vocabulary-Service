@@ -15,6 +15,10 @@ class Question < ApplicationRecord
   after_save :assign_version_independent_id,
              if: proc { |q| q.version == 1 && q.version_independent_id.blank? }
 
+  def self.search(search)
+    where('content ILIKE ?', "%#{search}%")
+  end
+
   def self.latest_versions
     joins('INNER JOIN (SELECT version_independent_id, MAX(version) as version
              FROM questions GROUP BY version_independent_id) q

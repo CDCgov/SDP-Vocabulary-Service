@@ -13,10 +13,13 @@ var devServerPort = 3808;
 var production = process.env.NODE_ENV === 'production';
 
 var config = {
+
+
   entry: {
     // Sources are expected to live in $app_root/webpack
     'application': './webpack/application.js',
     'response_set': './webpack/response_set.js',
+    'question_list': './webpack/question_list.js',
     'bootstrap': 'bootstrap-loader'
   },
 
@@ -39,11 +42,14 @@ var config = {
   postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ],
 
   module: {
+    preLoaders: [
+    { test: /\.erb$/, loader: 'rails-erb-loader' },
+    ],
     loaders: [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
       { test: /\.css$/, loaders: ['style', 'css', 'postcss'] },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/[name].[ext]' },
-      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=assets/[name].[ext]' },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=8192' },
       { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] }
     ]
   },

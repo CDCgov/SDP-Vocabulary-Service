@@ -23,6 +23,7 @@ gem 'devise', '~>4.2.0'
 gem 'cancancan'
 gem 'rolify'
 gem 'omniauth'
+gem 'js-routes'
 group :development, :test do
   gem 'rubocop', '~> 0.44.1', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

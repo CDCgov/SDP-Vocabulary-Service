@@ -13,7 +13,7 @@
 
   <tbody>
     <% @question_types.each do |type| %>
-      <tr>
+      <tr id="question_type_id_<%=type.id %>">
         <td>id_<%= type.id %></td>
         <td><%= type.name %></td>
         <td><%= link_to 'Details', type %></td>

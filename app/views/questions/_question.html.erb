@@ -1,0 +1,49 @@
+<!-- START Question Widget -->
+<div class="question-group" id="question_id_<%= question.id %>">
+    <div class="panel panel-default">
+        <div class="question-container">
+
+            <ul class="list-inline">
+                <li><%= link_to question.content,question_url(question) %></li>
+                <li class="pull-right">
+                    <a>
+                        <span class="glyphicon glyphicon-signal"></span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="response-set-details">
+            <ul class="list-inline">
+                <li class="reponse-number panel-toggle" data-toggle="collapse" href="#collapse<%=question.id %>">
+                    <span class="glyphicon glyphicon-th-list"></span></li>
+                <li class="pull-right question-menu">
+                    <div class="dropdown">
+                        <a id="question_<%= question.id %>_menu" class="dropdown-toggle" type="" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-option-horizontal"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <%= link_to "Revise", revise_question_path(question) %>
+                            </li>
+                            <li>
+                              <%= link_to "Details", question_path(question) %>
+                            </li>
+                            <li>
+                              <%= link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' } %>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="panel-collapse panel-details collapse" id="collapse<%= question.id %>">
+            <div class="panel-body">
+              <%= render partial: 'question_details', locals: {question: question} %>
+            </div>
+        </div>
+
+    </div>
+</div>

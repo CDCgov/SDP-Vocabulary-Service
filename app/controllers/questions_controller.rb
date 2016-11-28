@@ -5,8 +5,7 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.latest_versions
-    @response_sets = ResponseSet.all
+    @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
   end
 
   # GET /questions/1

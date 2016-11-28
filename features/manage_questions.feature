@@ -6,7 +6,8 @@ Feature: Manage Questions
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     Then I should see "What is your gender?"
-    And I should see the option to Destroy the Question with the content "What is your gender?"
+    When I click on the menu link for the Question with the content "What is your gender?"
+    Then I should see the option to Delete the Question with the content "What is your gender?"
     And I should see the option to Details the Question with the content "What is your gender?"
     And I should see the option to Revise the Question with the content "What is your gender?"
 
@@ -14,6 +15,7 @@ Feature: Manage Questions
     Given I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
+    When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Content: What is your gender?"
 
@@ -22,6 +24,7 @@ Feature: Manage Questions
     And I have a Response Set with the name "Gender Partial"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
+    When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Revise the Question with the content "What is your gender?"
     And I fill in the "Content" field with "What is your favorite color?"
     And I select the "Gender Partial" option in the "Response Set" list
@@ -42,11 +45,27 @@ Feature: Manage Questions
     Then I should see "Question was successfully created."
     And I should see "What is your favorite color?"
 
-  Scenario: Destroy Question
+  Scenario: Delete Question
     Given I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the option to Destroy the Question with the content "What is your gender?"
+    When I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Delete the Question with the content "What is your gender?"
     And I confirm my action
     Then I should see "Question was successfully destroyed."
     And I should not see "Male"
+
+  Scenario: Search for a Question
+    Given I have a Question with the content "Cat?" and the type "MC"
+    And I have a Question with the content "Hat?" and the type "MC"
+    And I have a Question with the content "Fat?" and the type "MC"
+    And I have a Question with the content "Cancer?" and the type "MC"
+    And I have a Question with the content "Broken Legs?" and the type "MC"
+    When I go to the list of Questions
+    And I fill in the "search" field with "at"
+    And I click on the "Go!" button
+    Then I should see "Cat?"
+    And I should see "Hat?"
+    And I should see "Fat?"
+    And I should not see "Cancer?"
+    And I should not see "Broken Legs?"

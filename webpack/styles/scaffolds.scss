@@ -1,33 +1,56 @@
 /* ------------------------- IMPORT VARIABLES ------------------------------ */
 
-@import "elements/variables";
+@import "base/variables";
 
 /* ------------------------- IMPORT 3RD PARTY VENDORS ---------------------- */
-
+@import "~bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
 
 /* ------------------------- IMPORT COMPONENTS ----------------------------- */
-@import "elements/header";
-@import "elements/footer";
+// @import "elements/header";
+// @import "elements/footer";
+//BOOTSTRAP//
 
-body {
-  font-family: 'Open Sans', sans-serif;
-  margin-bottom: 120px;
-}
 
-html {
-  position: relative;
-  min-height: 100%;
-  -webkit-font-smoothing: antialiased;
-}
-label{
-  display: block;
-}
-td, th {
-    padding: 10px;
-  }
+//BASE//
 
+@import "base/colors";
+@import "base/fonts";
+
+//ELEMENTS//
+
+//WIDGETS//
+@import "widgets/questions";
+@import "widgets/analytics";
+@import "widgets/search";
+
+
+
+//LAYOUTS//
+@import "layouts/body";
+@import "layouts/panels";
+@import "layouts/footer";
+
+//NAVIGATION//
+@import "navigation/nav";
+// body {
+//   font-family: 'Open Sans', sans-serif;
+//   margin-bottom: 120px;
+// }
+//
+// html {
+//   position: relative;
+//   min-height: 100%;
+//   -webkit-font-smoothing: antialiased;
+// }
+// label{
+//   display: block;
+// }
+// td, th {
+//     padding: 10px;
+//   }
+//
 // body {
 //   background-color: #fff;
 //   color: #333;
