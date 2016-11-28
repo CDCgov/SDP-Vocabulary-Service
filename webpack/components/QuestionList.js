@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-var QuestionWidget = require('./QuestionWidget.js').default;
+import QuestionWidget from './QuestionWidget';
 export default class QuestionList extends Component {
   constructor(props) {
     super(props);
