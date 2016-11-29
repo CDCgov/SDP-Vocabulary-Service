@@ -15,7 +15,7 @@ node('ruby') {
 
   stage('Start Test DB') {
     timeout(time: 120, unit: 'SECONDS') {
-      sh 'oc process openshift//postgresql-ephemeral -l testdb=test-${JOB_NAME} DATABASE_SERVICE_NAME=test-${JOB_NAME} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=jenkins-${JOB_NAME} | oc create -f -'
+      sh 'oc process openshift//postgresql-ephemeral -l testdb=test-${BRANCH_NAME} DATABASE_SERVICE_NAME=test-${BRANCH_NAME} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=jenkins-${BRANCH_NAME} | oc create -f -'
       waitUntil {
         sh 'test `oc get pod -l name=test-${JOB_NAME} -o jsonpath="{.items[*].status.phase}"` = "Running"'
       }
