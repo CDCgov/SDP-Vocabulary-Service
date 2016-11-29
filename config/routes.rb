@@ -14,7 +14,10 @@ Rails.application.routes.draw do
     get :extend, on: :member
   end
 
-  # get 'questions' => 'questions#index'
+  namespace :api, defaults: { format: :json } do
+    resources :questions
+    resources :forms
+  end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
