@@ -23,11 +23,14 @@ node('ruby') {
         def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].status.phase}"'
         return (r == "Running")
       }
+      env.dbhost = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].status.podIP}'
     }
   }
 
   stage('Run Tests') {
-    sh 'bundle exec rake'
+    withEnv(['OPENSHIFT_POSTGRESQL_DB_NAME=${svcname}', 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', 'OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}', 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
+      sh 'bundle exec rake'
+    }
   }
 
   stage('Destroy Test DB') {
