@@ -20,7 +20,7 @@ node('ruby') {
     timeout(time: 120, unit: 'SECONDS') {
       sh 'oc process openshift//postgresql-ephemeral -l testdb=${svcname} DATABASE_SERVICE_NAME=${svcname} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=${tdbname} | oc create -f -'
       waitUntil {
-        def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].status.phase}"'
+        def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[0].status.conditions[0].type}"'
         return (r == "Running")
       }
       env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.portalIP}"'
