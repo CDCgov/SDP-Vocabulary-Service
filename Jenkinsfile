@@ -31,6 +31,6 @@ node('ruby') {
   }
 
   stage('Destroy Test DB') {
-    sh 'oc delete pods,dc,rc,services -l testdb=${svcname}
+    sh 'oc delete pods,dc,rc,services -l testdb=${svcname}'
   }
 }
