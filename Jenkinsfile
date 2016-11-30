@@ -43,6 +43,6 @@ node('ruby') {
   }
 
   stage('Destroy Test DB') {
-    openshiftDeleteResourceByLabels types: 'pods,dc,rc,services', keys: 'testdb', values: "${svcname}"
+    sh 'oc delete pods,dc,rc,services -l testdb=${svcname}'
   }
 }
