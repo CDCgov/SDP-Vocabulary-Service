@@ -59,25 +59,22 @@
 <% if @response_set.other_versions.present? %>
 <p>
   <strong>Most Recent Version:</strong>
-  <% if @response_set.other_versions[0].version > @response_set.version %>
-    <%= @response_set.other_versions[0].version %>
+  <% if @response_set.most_recent? %>
+    <%= @response_set.version %> (Currently Selected)
   <% else %>
-    <%= @response_set.version %>
+    <%= @response_set.most_recent %>
   <% end %>
 </p>
 <p>
-  <strong>Other Versions:</strong>
+  <strong>Versions:</strong>
   <ol>
-    <% @response_set.other_versions.each do |ov| %>
-      <% if @response_set.version == (ov.version + 1) %>
+    <% @response_set.all_versions.each do |av| %>
+      <% if @response_set.version == av.version %>
         <li>Version: <%= @response_set.version %> - Created <%= time_ago_in_words(@response_set.created_at) %> ago (Currently Selected)
         </li>
+      <% else %>
+        <li><%= link_to "Version: #{av.version}", av %> - Created <%= time_ago_in_words(av.created_at) %> ago</li>
       <% end %>
-      <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
-    <% end %>
-    <% if @response_set.version == 1 %>
-      <li>Version: <%= @response_set.version %> - Created <%= time_ago_in_words(@response_set.created_at) %> ago (Currently Selected)
-      </li>
     <% end %>
   </ol>
 </p>

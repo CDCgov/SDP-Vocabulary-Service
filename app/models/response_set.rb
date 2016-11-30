@@ -58,6 +58,27 @@ class ResponseSet < ApplicationRecord
                .order(version: :desc)
   end
 
+  def all_versions
+    ResponseSet.where(version_independent_id: version_independent_id)
+               .order(version: :desc)
+  end
+
+  def most_recent
+    if other_versions[0].version > version
+      other_versions[0].version
+    else
+      version
+    end
+  end
+
+  def most_recent?
+    if other_versions[0].version > version
+      false
+    else
+      true
+    end
+  end
+
   def extend_from
     extended_set = ResponseSet.new
     extended_set.name = name

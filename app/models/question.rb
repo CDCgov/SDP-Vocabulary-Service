@@ -50,4 +50,25 @@ class Question < ApplicationRecord
             .where.not(version: version)
             .order(version: :desc)
   end
+
+  def all_versions
+    Question.where(version_independent_id: version_independent_id)
+            .order(version: :desc)
+  end
+
+  def most_recent
+    if other_versions[0].version > version
+      other_versions[0].version
+    else
+      version
+    end
+  end
+
+  def most_recent?
+    if other_versions[0].version > version
+      false
+    else
+      true
+    end
+  end
 end
