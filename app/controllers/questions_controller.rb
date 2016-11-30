@@ -16,7 +16,7 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
-    @response_sets = ResponseSet.all
+    @response_sets = ResponseSet.latest_versions
     @question_types = QuestionType.all
   end
 
@@ -24,7 +24,6 @@ class QuestionsController < ApplicationController
   def revise
     q_to_revise = Question.find(params[:id])
     @question = q_to_revise.build_new_revision
-    @response_sets = ResponseSet.all
     @question_types = QuestionType.all
   end
 
@@ -53,6 +52,7 @@ class QuestionsController < ApplicationController
         format.html { redirect_to @question, notice: "Question was successfully #{q_action}." }
         format.json { render :show, status: :created, location: @question }
       else
+        @question_types = QuestionType.all
         format.html { render :new }
         format.json { render json @question.errors, status: :unprocessable_entity }
       end
@@ -76,6 +76,7 @@ class QuestionsController < ApplicationController
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
+        @question_types = QuestionType.all
         format.html { render :edit }
         format.json { render json: @question.errors, status: :unprocessable_entity }
       end

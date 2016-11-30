@@ -1,17 +1,11 @@
-<div className="question-group">
-    <div class="panel">
-        <div class="row">
-
-            <div class="col-md-1">
-                <span></span>
-            </div>
-            <div class="col-md-8">New Question</div>
-            <div class="col-md-2 text-right">X</div>
-            <div class="col-md-1 "></div>
-        </div>
-    </div>
+<div class="row">
+<div class="col-md-12">
+  <div class="panel ">
+ <div class="panel-heading panel-default"><i class="glyphicon glyphicon-question-sign"></i>New Question
+    <i class="glyphicon glyphicon-question-sign pull-right"></i>
+ </div>
     <!-- Change author: current_user.email to current_user.uid when controller change is made -->
     <%= render 'form', question: @question, author: current_user.email %>
-
-    <%= link_to 'Back', questions_path %>
-</div>
+  </div>
+   </div>
+ </div>

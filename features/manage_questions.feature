@@ -26,7 +26,7 @@ Feature: Manage Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Revise the Question with the content "What is your gender?"
-    And I fill in the "Content" field with "What is your favorite color?"
+    And I fill in the "Question" field with "What is your favorite color?"
     And I select the "Gender Partial" option in the "Response Set" list
     And I click on the "Revise Question" button
     Then I should see "Question was successfully revised."
@@ -38,7 +38,7 @@ Feature: Manage Questions
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     And I click on the "New Question" link
-    And I fill in the "Content" field with "What is your favorite color?"
+    And I fill in the "Question" field with "What is your favorite color?"
     And I select the "Gender Full" option in the "Response Set" list
     And I select the "Multiple Choice" option in the "Question Type" list
     And I click on the "Create Question" button

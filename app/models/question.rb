@@ -7,6 +7,7 @@ class Question < ApplicationRecord
   belongs_to :question_type
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
+  validates :content, presence: true
   validates :question_type_id, presence: true
   validates :version_independent_id, presence: true,
                                      if: proc { |q| q.version > 1 }
