@@ -24,12 +24,14 @@ node('ruby') {
         return (r == "true")
       }
       env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.portalIP}"'
+      env.podName = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.name}"'
+      openshiftExec pod: "${podName}" container: 'postgresql' command: [ "/bin/sh", "-i", "-c", "psql -h 127.0.0.1 -q -c 'ALTER ROLE railstest WITH SUPERUSER'" ]
     }
   }
 
   stage('Create Schema') {
     withEnv(['OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}', 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', 'OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}', 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
-      sh 'bundle exec rake db:migrate'
+      sh 'bundle exec rake db:create'
     }
   }
 
