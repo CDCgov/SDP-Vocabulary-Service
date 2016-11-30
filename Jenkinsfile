@@ -26,7 +26,7 @@ node('ruby') {
       env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.portalIP}"'
       env.podName = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.name}"'
       env.namespace = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.namespace}"'
-      openshiftExec namespace: "${namespace}, pod: "${podName}", container: 'postgresql', command: [ "/bin/sh", "-i", "-c", "psql -h 127.0.0.1 -q -c 'ALTER ROLE railstest WITH SUPERUSER'" ]
+      openshiftExec namespace: "${namespace}", pod: "${podName}", container: 'postgresql', command: [ "/bin/sh", "-i", "-c", "psql -h 127.0.0.1 -q -c 'ALTER ROLE railstest WITH SUPERUSER'" ]
     }
   }
 
@@ -43,6 +43,6 @@ node('ruby') {
   }
 
   stage('Destroy Test DB') {
-    sh 'oc delete pods,dc,rc,services -l testdb=${svcname}'
+    openshiftDeleteResourceByLabels types: 'pods,dc,rc,services', keys: 'testdb', values: "${svcname}"
   }
 }
