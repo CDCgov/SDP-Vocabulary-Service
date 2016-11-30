@@ -23,7 +23,7 @@ node('ruby') {
         def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].status.phase}"'
         return (r == "Running")
       }
-      env.dbhost = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].status.podIP}"'
+      env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.portalIP}"'
     }
   }
 
