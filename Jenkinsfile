@@ -15,7 +15,7 @@ node('ruby') {
 
   stage('Start Test DB') {
     timeout(time: 120, unit: 'SECONDS') {
-      env.svcname = sh returnStdout: true, script: 'echo "test-${BRANCH_NAME}" | tr "_" "-" | cut -c1-24'
+      env.svcname = sh returnStdout: true, script: 'echo "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_" "-" | cut -c1-24'
       env.tdbname = sh returnStdout: true, script: 'echo "${svcname}" | tr "-" "_"'
       sh 'oc process openshift//postgresql-ephemeral -l testdb=${svcname} DATABASE_SERVICE_NAME=${svcname} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=${tdbname} | oc create -f -'
       waitUntil {
