@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
 
+
 <%= render partial: 'question_details', locals: {question: @question } %>
 <% if user_signed_in? %>
     <%= link_to 'Revise', revise_question_path(@question) %> |
