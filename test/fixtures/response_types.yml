@@ -6,5 +6,8 @@
 #
 one:
   name: "Response Set"
+# column: value
+#
 two:
-  name: "Ineteger"
+  name: "Integer"
+# column: value
