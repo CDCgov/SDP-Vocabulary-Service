@@ -1,4 +1,7 @@
 class FormSerializer < ActiveModel::Serializer
+  attribute(:programId) { nil }
+  attribute(:programName) { nil }
+  attribute(:programUri) { nil }
   attribute :id, key: :formId
   attribute :name, key: :formName
   attribute :form_uri, key: :formUri
