@@ -58,7 +58,7 @@ development:
 # Do not set this db to the same as development or production.
 test: &test
   <<: *default
-  database: <%=ENV['OPENSHIFT_POSTGRESQL_DB_NAME']%>
+  database: <%=ENV['OPENSHIFT_POSTGRESQL_DB_NAME'] || 'vocabulary_test'%>
   username: <%=ENV['OPENSHIFT_POSTGRESQL_DB_USERNAME']%>
   password: <%=ENV['OPENSHIFT_POSTGRESQL_DB_PASSWORD']%>
   host:     <%=ENV['OPENSHIFT_POSTGRESQL_DB_HOST']%>
