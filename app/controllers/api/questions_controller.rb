@@ -4,11 +4,13 @@ module Api
 
 		def index
 			@questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
-			respond_with params[:limit] ? @questions.limit(params[:limit]) : @questions
+			@questions = params[:limit] ? @questions.limit(params[:limit]) : @questions
+			render json: @questions, each_serializer: QuestionsSerializer
 		end
 
 		def show
-			respond_with Question.find(params[:id])
+			@question = Question.find(params[:id])
+			render json: @question, serializer: QuestionsSerializer
 		end
 	end
 end

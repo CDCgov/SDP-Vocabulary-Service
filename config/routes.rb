@@ -15,9 +15,18 @@ Rails.application.routes.draw do
   end
 
   namespace :api, defaults: { format: :json } do
-    resources :questions
-    resources :forms
+    get '/questions/', to: 'questions#index'
+    get '/questions/:id', to: 'questions#show'
+    get '/questions/:id/usage', to: 'questions#usage'
+    get '/forms/:id', to: 'forms#show'
+    get '/valueSets', to: 'response_sets#index'
+    get '/valueSets/:id', to: 'response_sets#show'
+    get '/valueSets/:id/usage', to: 'response_sets#usage'
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
+
+Rails.application.routes.default_url_options = {
+    host: 'example.com'
+}
