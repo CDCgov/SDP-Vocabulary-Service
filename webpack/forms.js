@@ -1,23 +1,23 @@
-const $ = require('jquery');
-exports.$ = $;
-exports.addQuestion = function addQuestion(questionName, question, responseSets) {
-  const tbl = $('#questionTable > tbody:last-child');
-  var responseSetsSelect = "<label for='response_set_ids'>Response Sets</label><select name='response_set_ids[]' id='response_set_ids'>";
-  responseSetsSelect += "<option aria-label=' '></option>";
-  responseSets.forEach(function(rs){
-    responseSetsSelect += '<option value="';
-    responseSetsSelect += rs.id;
-    responseSetsSelect += '">';
-    responseSetsSelect += rs.name;
-    responseSetsSelect += '</option>';
-  });
-  responseSetsSelect += "</select>";
-  var remove =   '<td><a href="javascript:SDP.forms.removeQuestion(\'#question_id_'+question+'\')">Remove<a></td>';
-  var appendString = '<tr><td>' + questionName + '</td><input aria-label="Question IDs" id="question_id_'+question+'" type="hidden" name="question_ids[]" value="' + question + '"/><td>' + responseSetsSelect + '</td>'+remove+'</tr>';
-  tbl.append(appendString);
-};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
+import AddedFormQuestionList from './components/AddedFormQuestionList';
+import QuestionList from './components/QuestionList';
 
-exports.removeQuestion = function removeQuestion(td){
-  $(td).parent('tr').remove();
-};
+import { observe } from './FormBuild';
+
+const unadded = document.getElementById('search-results-div');
+const added   = document.getElementById('added-questions');
+
+const all_qs = JSON.parse(document.getElementById('all_qs-json').innerHTML);
+const form_qs = JSON.parse(document.getElementById('formqs-json').innerHTML);
+const all_rs = JSON.parse(document.getElementById('all_rs-json').innerHTML);
+
+ReactDOM.render(<QuestionList questions={all_qs} response_sets={all_rs} />, unadded );
+
+observe(questions => 
+  ReactDOM.render(
+    <AddedFormQuestionList questions={questions} response_sets={all_rs} />,
+    added 
+  )
+);

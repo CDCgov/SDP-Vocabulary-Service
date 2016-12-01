@@ -1,5 +1,14 @@
-<h1>Editing Form</h1>
-
+<h3>Editing Form</h3>
+<div class="col-md-4">
+  <div id='search-bar-div'>
+    <%= form_tag(edit_form_path, :method => "get", id: "search-form") do %>
+      <%= text_field_tag :search, params[:search], placeholder: "Search Questions" %>
+      <%= submit_tag "Search" %>
+    <% end %>
+  </div>
+  <div id='search-results-div'>
+  </div>
+</div>
 <%= render 'form', form: @form %>
 
 <%= link_to 'Show', @form %> |

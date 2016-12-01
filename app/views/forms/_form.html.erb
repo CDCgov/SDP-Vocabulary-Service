@@ -11,43 +11,49 @@
     </div>
   <% end %>
 
-  <div class="col-md-4">
-    <h4>Select Questions:</h4><br>
-    <% @questions.each do |q| %>
-      <a href='javascript:SDP.forms.addQuestion("<%= q.content %>", <%= q.id %>, <%= @response_sets.map {|rs| {"id" => rs.id, "name" => rs.name}}.to_json %>)'><%= q.content %></a><br>
-    <% end %>
-  </div>
-
-  <div class="col-md-8">
-    <div >
-      <%= f.label :name %>
-      <%= f.text_field :name %>
+  <div class="col-md-8" id='form-div'>
+    <div class="row" id="form-button-div">
+      <div class="col-md-2">
+        <div class="btn btn-default btn-sm" disabled>
+          <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </div>
+      </div>
+      <div class="col-md-7"></div>
+      <div class="col-md-3">
+        <div class="col-md-6">
+          <div class="btn btn-default" disabled>Export</div>
+        </div>
+        <div class="col-md-6">
+          <div class="actions">
+            <%= f.submit 'Save', class: 'btn btn-success'%>
+          </div>
+        </div>
+      </div>
     </div>
-    <h4>Added:</h4><br>
-    <table id="questionTable" aria-label="Added">
-      <thead>
-        <tr>
-          <th>Question</th>
-          <th>Response Set</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-      <% form.form_questions.each do |fq| %>
-      <tr><td><%=fq.question.content%></td>
-        <input aria-label="Question IDs" type="hidden" id="question_id_<%=fq.question_id%>" name="question_ids[]" value="<%=fq.question_id%>"/>
-        <td><%= select_tag "response_set_ids[]", options_for_select( ResponseSet.all.collect{|rs| [rs.name,rs.id]}, fq.response_set_id)%></td>
-        <td><a href="javascript:SDP.forms.removeQuestion('#question_id_<%=fq.question_id%>')">Remove<a></td>
-      </tr>
-        <% end %>
-
-        <tr><td></td></tr>
-      </tbody>
-    </table>
-
-    <div class="actions">
-      <%= f.submit %>
+    <div class="row">
+      <div class="col-md-12">
+        <hr>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.text_field :name, placeholder: "Form Name" %>
+      </div>
+    </div>
+    <b>Form Questions:</b>
+
+    <div id="added-questions" aria-label="Added"></div>
+
   </div>
 <% end %>
+
+<script type="application/json" id="all_qs-json">
+  <%= raw @questions.to_json %>
+</script>
+<script type="application/json" id="formqs-json">
+  <%= raw form.questions.to_json %>
+</script>
+<script type="application/json" id="all_rs-json">
+  <%= raw @response_sets.to_json =%>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('forms', extension: 'js') %>

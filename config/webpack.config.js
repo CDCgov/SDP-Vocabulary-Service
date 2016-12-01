@@ -19,6 +19,7 @@ var config = {
     // Sources are expected to live in $app_root/webpack
     'application': './webpack/application.js',
     'response_set': './webpack/response_set.js',
+    'forms': './webpack/forms.js',
     'question_list': './webpack/question_list.js',
     'bootstrap': 'bootstrap-loader'
   },

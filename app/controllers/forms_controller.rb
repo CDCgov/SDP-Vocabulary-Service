@@ -17,13 +17,13 @@ class FormsController < ApplicationController
   # GET /forms/new
   def new
     @form = Form.new
-    @questions = Question.all
+    @questions = params[:search] ? Question.search(params[:search]) : Question.all
     @response_sets = ResponseSet.latest_versions
   end
 
   # GET /forms/1/edit
   def edit
-    @questions = Question.all
+    @questions = params[:search] ? Question.search(params[:search]) : Question.all
     @response_sets = ResponseSet.latest_versions
   end
 
@@ -90,6 +90,6 @@ class FormsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params
-    params.require(:form).permit(:name, :user_id)
+    params.require(:form).permit(:name, :user_id, :search)
   end
 end
