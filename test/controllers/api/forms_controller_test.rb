@@ -8,9 +8,8 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin)
   end
 
-	test 'api should show form' do
-		get api_form_url(@form)
-		assert_response :success
-	end
-
+  test 'api should show form' do
+    get api_form_url(@form)
+    assert_response :success
+  end
 end
