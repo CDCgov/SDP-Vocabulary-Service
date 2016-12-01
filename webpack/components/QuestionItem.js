@@ -10,7 +10,7 @@ const QuestionItem = ({question, response_sets}) => {
        <div className="col-md-5" >{question.content}</div>
        <div className="col-md-3" >
          <input aria-label="Question IDs" id={"question_id_"+question.id} type="hidden" name="question_ids[]" value={question.id}/>
-         <select name='response_set_ids[]' id='response_set_ids'>
+         <select aria-label="Response Set IDs" name='response_set_ids[]' id='response_set_ids'>
            {response_sets.map((r, i) => {
              return (
                <option value={r.id} key={i} >{r.name}</option>
