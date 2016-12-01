@@ -31,11 +31,10 @@
                 <%= f.select :question_type_id, options_from_collection_for_select(@question_types, 'id', 'name', question.question_type_id || ''), {include_blank: true}, {class:"form-control"}  %>
         </div>
       </div>
-
     <div class="row ">
       <div class="col-md-8 form-group">
-        <%= label_tag :response_type_id, 'Primary Response Type' %>
-          <%= select_tag 'response_type_id', options_from_collection_for_select(ResponseType.all, 'id', 'name', @question.response_type),  :multiple => false, include_blank: false ,class:"form-control"%>
+        <%= f.label  :response_type_id, 'Primary Response Type' %>
+        <%= f.select :response_type_id, options_from_collection_for_select(ResponseType.all, 'id', 'name', question.response_type_id || '' ),  {:multiple => false, include_blank: false },{class:"form-control"}%>
       </div>
         <div class="col-md-4 form-group"></div>
     </div>

@@ -20,6 +20,11 @@
 </p>
 
 <p>
+  <strong>Primary Response Type:</strong><br>
+    <%= question.response_type.try :name %>
+</p>
+
+<p>
   <strong>Response Set Names:</strong><br>
   <% question.response_sets.each do |rs| %>
     <%= link_to rs.name, response_set_path(rs) %>
