@@ -1,19 +1,13 @@
-import _$ from 'jquery';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
-import { expect } from '../test_helper';
+import { expect, renderComponent } from '../test_helper';
 import QuestionWidget from '../../../webpack/components/QuestionWidget';
-
-const $ = _$(window);
+import routes from '../mock_routes';
 
 describe('QuestionWidget', () => {
-  let component, componentInstance;
+  let component;
 
   beforeEach(() => {
-    const question = {id: 1, content: "Is this a question?", question_type: ""}
-    componentInstance =  TestUtils.renderIntoDocument(<QuestionWidget question={question}/>);
-    component = $(ReactDOM.findDOMNode(componentInstance));
+    const question = {id: 1, content: "Is this a question?", question_type: ""};
+    component = renderComponent(QuestionWidget, {question, routes});
   });
 
   it('should create question block', () => {
