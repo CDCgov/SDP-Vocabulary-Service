@@ -7,14 +7,13 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin)
   end
 
-	test 'api should get index' do
+  test 'api should get index' do
     get api_valueSets_url
     assert_response :success
   end
 
-	test 'api should show value set' do
-		get api_valueSets_url(@response_set)
-		assert_response :success
-	end
-
+  test 'api should show value set' do
+    get api_valueSets_url(@response_set)
+    assert_response :success
+  end
 end

@@ -14,16 +14,15 @@ Rails.application.routes.draw do
     get :extend, on: :member
   end
 
- 
-namespace :api, defaults: { format: :json } do
-   resources :questions , only:[:index,:show] do
-       get :usage, on: :member
-   end
-   resources :forms, only:[:show]
-   resources :valueSets, only:[:index,:show], controller: "response_sets" do
-     get :usage, on: :member
-   end
-end
+  namespace :api, defaults: { format: :json } do
+    resources :questions, only: [:index, :show] do
+      get :usage, on: :member
+    end
+    resources :forms, only: [:show]
+    resources :valueSets, only: [:index, :show], controller: 'response_sets' do
+      get :usage, on: :member
+    end
+  end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
