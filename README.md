@@ -1,5 +1,5 @@
 # SDP-Vocabulary-Service
-Repository for the development of the initial Surveillance Data Platform (SDP) vocabulary service. 
+Repository for the development of the initial Surveillance Data Platform (SDP) vocabulary service.
 
 This GitHub repository was created for use by [CDC](http://www.cdc.gov) programs to collaborate on public health surveillance-related projects in support of the [CDC Surveillance Strategy](http://www.cdc.gov/surveillance). This third-party web application is not hosted by CDC, but it is used by CDC and its partners to share information and collaborate on software.
 
