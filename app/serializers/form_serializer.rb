@@ -3,7 +3,7 @@ class FormSerializer < ActiveModel::Serializer
   attribute :name, key: :formName
   attribute :formUri
   def formUri
-    Rails.application.routes.url_helpers.form_url(object)
+    Rails.application.routes.url_helpers.api_form_url(object, :only_path => true)
   end
   has_many :questions, serializer: QuestionsSerializer
 end

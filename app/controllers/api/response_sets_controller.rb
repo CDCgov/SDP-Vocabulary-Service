@@ -12,5 +12,10 @@ module Api
 			@valueSet = ResponseSet.find(params[:id])
 			render json: @valueSet, serializer: ValueSetsSerializer
 		end
+
+		def usage
+			@valueSet = ResponseSet.find(params[:id])
+			render json: @valueSet, serializer: UsageSerializer
+		end
 	end
 end

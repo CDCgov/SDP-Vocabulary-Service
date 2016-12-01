@@ -12,5 +12,10 @@ module Api
 			@question = Question.find(params[:id])
 			render json: @question, serializer: QuestionsSerializer
 		end
+
+		def usage
+			@question = Question.find(params[:id])
+			render json: @question, serializer: UsageSerializer
+		end
 	end
 end

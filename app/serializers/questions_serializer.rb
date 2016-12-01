@@ -5,6 +5,6 @@ class QuestionsSerializer < ActiveModel::Serializer
   attribute :content, key: :questionText
   attribute :questionUri
   def questionUri
-    Rails.application.routes.url_helpers.question_url(object)
+    Rails.application.routes.url_helpers.api_question_url(object, :only_path => true)
   end
 end

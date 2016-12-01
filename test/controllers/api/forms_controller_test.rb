@@ -9,7 +9,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   end
 
 	test 'api should show form' do
-		get api_forms_url(@form)
+		get api_form_url(@form)
 		assert_response :success
 	end
 
