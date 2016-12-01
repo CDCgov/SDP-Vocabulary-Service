@@ -133,6 +133,7 @@ GEM
       railties (>= 3.2)
       sprockets-rails
     json (2.0.2)
+    json_schema (0.14.4)
     jsonapi (0.1.1.beta6)
       jsonapi-parser (= 0.1.1.beta3)
       jsonapi-renderer (= 0.1.1.beta1)
@@ -306,6 +307,7 @@ DEPENDENCIES
   foreman
   jbuilder (~> 2.5)
   js-routes
+  json_schema
   listen (~> 3.0.5)
   minitest
   minitest-rails
