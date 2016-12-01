@@ -1,18 +1,17 @@
 class ValueSetsSerializer < ActiveModel::Serializer
   attribute :url
   def url
-    Rails.application.routes.url_helpers.response_set_url(object)
+    Rails.application.routes.url_helpers.api_valueSet_url(object, :only_path => true)
   end
   
-  attribute :identifier
+  attribute :identifier #additional identifiers not yet available
   def identifier
-
   end
 
   attribute :version
   attribute :name
   
-  attribute :status #not yet available
+  attribute :status #status not yet available
   def status
   end
 
@@ -28,7 +27,7 @@ class ValueSetsSerializer < ActiveModel::Serializer
     @responses.each do |response|
       exp = {}
       exp['system'] = response.code_system
-      exp['version'] = nil
+      exp['version'] = nil #responses aren't versioned
       exp['code'] = response.value
       exp['display'] = response.display_name
       
