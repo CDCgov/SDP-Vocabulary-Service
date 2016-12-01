@@ -1,8 +1,16 @@
 <p id="notice"><%= notice %></p>
 
-
-<%= render partial: 'question_details', locals: {question: @question } %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel ">
+ <!-- <div class="panel-heading panel-default"><i class="glyphicon glyphicon-question-sign"></i>Revise Question
+        <i class="glyphicon glyphicon-question-sign pull-right"></i>
+      </div> -->
+      <%= render partial: 'question_details', locals: {question: @question } %>
+    </div>
+  </div>
+</div>
 <% if user_signed_in? %>
-    <%= link_to 'Revise', revise_question_path(@question) %> |
+  <%= link_to 'Revise', revise_question_path(@question) , class: "btn btn-primary"%> |
 <% end %>
-<%= link_to 'Back', questions_path %>
+<%= link_to 'Back', questions_path, class: "btn btn-primary " %>

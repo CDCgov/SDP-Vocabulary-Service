@@ -3,6 +3,10 @@ Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) d
   Question.create!(content: content, question_type_id: qt314.id, version: 1)
 end
 
+Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
+  ResponseType.create!(name: name)
+end
+
 When(/^I go to the list of Questions$/) do
   visit '/questions'
 end
