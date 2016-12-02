@@ -13,8 +13,8 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
       {(() => {
         if(btn_type == 'add') {
           return(
-            <div>
-              <div className="col-md-8" >{question.content}</div>
+            <div data-question-id={question.id}>
+              <div className="col-md-8" name="question_content" >{question.content}</div>
               <div className="col-md-3">
                 <div className="btn btn-small btn-default"
                      onClick={() => add_question( question )}>
@@ -26,7 +26,7 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
         } else if (btn_type == 'remove') {
           return(
             <div>
-              <div className="col-md-5" >{question.content}</div>
+              <div className="col-md-5" id={question.id} >{question.content}</div>
               <div className="col-md-3" >
                 <input aria-label="Question IDs" id={"question_id_"+question.id} type="hidden" name="question_ids[]" value={question.id}/>
                 <select className="col-md-12" aria-label="Response Set IDs" name='response_set_ids[]' id='response_set_ids'>
