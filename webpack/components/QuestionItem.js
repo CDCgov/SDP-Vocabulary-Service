@@ -16,7 +16,7 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
             <div data-question-id={question.id}>
               <div className="col-md-8" name="question_content" >{question.content}</div>
               <div className="col-md-3">
-                <div className="btn btn-small btn-default"
+                <div id={"question_"+question.id+"_add"} className="btn btn-small btn-default"
                      onClick={() => add_question( question )}>
                   <b>Add</b>
                 </div>
@@ -28,7 +28,7 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
             <div>
               <div className="col-md-5" id={question.id} >{question.content}</div>
               <div className="col-md-3" >
-                <input aria-label="Question IDs" id={"question_id_"+question.id} type="hidden" name="question_ids[]" value={question.id}/>
+                <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={question.id}/>
                 <select className="col-md-12" aria-label="Response Set IDs" name='response_set_ids[]' id='response_set_ids'>
                   {response_sets.map((r, i) => {
                    return (

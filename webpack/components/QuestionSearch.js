@@ -8,7 +8,8 @@ class QuestionSearch extends Component {
 
         this.state = {
             questions: props.all_qs,
-            response_sets: props.all_rs
+            response_sets: props.all_rs,
+            all_qs: props.all_qs
         };
     }
 
@@ -16,9 +17,9 @@ class QuestionSearch extends Component {
         var questions_filtered = [];
 
         if (term == '') {
-            questions_filtered = props.all_qs;
+            questions_filtered = this.state.all_qs;
         } else {
-            props.all_qs.map((q,i) => {
+            this.state.all_qs.map((q,i) => {
                 if (q.content.toLowerCase().includes(term.toLowerCase())){
                     questions_filtered.push(q);
                 }
