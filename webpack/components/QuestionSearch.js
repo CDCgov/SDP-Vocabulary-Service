@@ -19,7 +19,7 @@ class QuestionSearch extends Component {
         if (term == '') {
             questions_filtered = this.state.all_qs;
         } else {
-            this.state.all_qs.map((q,i) => {
+            this.state.all_qs.map((q) => {
                 if (q.content.toLowerCase().includes(term.toLowerCase())){
                     questions_filtered.push(q);
                 }
@@ -40,5 +40,11 @@ class QuestionSearch extends Component {
         );
     }
 }
+
+
+QuestionSearch.propTypes = {
+  all_qs: React.PropTypes.array,
+  all_rs: React.PropTypes.array
+};
 
 export default QuestionSearch;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { add_question } from '../FormBuild';
 import { remove_question } from '../FormBuild';
 
@@ -50,6 +50,12 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
       })()}
     </div>
   );
-}
+};
+
+QuestionItem.propTypes = {
+  question: React.PropTypes.object,
+  response_sets: React.PropTypes.array,
+  btn_type: React.PropTypes.string
+};
 
 export default QuestionItem;

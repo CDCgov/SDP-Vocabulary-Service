@@ -25,4 +25,8 @@ class SearchBar extends Component {
 }
 
 
+SearchBar.propTypes = {
+  onSearchTermChange: React.PropTypes.func
+};
+
 export default SearchBar;

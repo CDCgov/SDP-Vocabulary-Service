@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import QuestionItem from './QuestionItem';
 
-export default class QuestionList extends Component {
+export default class FormsQuestionList extends Component {
   render() {
     return (
       <div className="question-group">
@@ -33,3 +33,9 @@ export default class QuestionList extends Component {
     );
   }
 }
+
+FormsQuestionList.propTypes = {
+  btn_type: React.PropTypes.string,
+  questions: React.PropTypes.array,
+  response_sets: React.PropTypes.array
+};
