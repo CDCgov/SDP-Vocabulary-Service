@@ -14,7 +14,7 @@ export function observe(o) {
   emitChange();
 }
 
-export function add_question( el ) {
+export function addQuestion( el ) {
 // Should we allow duplicates?
 // if (questions.includes( el )) {
 // throw new Error('Duplicates are not allowed.');
@@ -24,7 +24,7 @@ export function add_question( el ) {
 //  }
 }
 
-export function remove_question( index ) {
+export function removeQuestion( index ) {
 // If we disallowed dupes we could remove by first or last indexOf
 // let index = questions.indexOf( q );
   questions.splice( index, 1);

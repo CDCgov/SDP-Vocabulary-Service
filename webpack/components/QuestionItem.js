@@ -1,9 +1,9 @@
 import React from 'react';
-import { add_question } from '../FormBuild';
-import { remove_question } from '../FormBuild';
+import { addQuestion } from '../FormBuild';
+import { removeQuestion } from '../FormBuild';
 
-const QuestionItem = ({question, response_sets, btn_type}) => {
-  if (!question || !response_sets) {
+const QuestionItem = ({question, responseSets, btnType}) => {
+  if (!question || !responseSets) {
     return "Loading...";
   }
 
@@ -11,26 +11,26 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
     <div>
       <div className="col-md-1" >{question.id}</div>
       {(() => {
-        if(btn_type == 'add') {
+        if(btnType == 'add') {
           return(
             <div data-question-id={question.id}>
               <div className="col-md-8" name="question_content" >{question.content}</div>
               <div className="col-md-3">
                 <div id={"question_"+question.id+"_add"} className="btn btn-small btn-default"
-                     onClick={() => add_question( question )}>
+                     onClick={() => addQuestion( question )}>
                   <b>Add</b>
                 </div>
               </div>
             </div>
           );
-        } else if (btn_type == 'remove') {
+        } else if (btnType == 'remove') {
           return(
             <div>
               <div className="col-md-5" id={question.id} >{question.content}</div>
               <div className="col-md-3" >
                 <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={question.id}/>
                 <select className="col-md-12" aria-label="Response Set IDs" name='response_set_ids[]' id='response_set_ids'>
-                  {response_sets.map((r, i) => {
+                  {responseSets.map((r, i) => {
                    return (
                       <option value={r.id} key={i} >{r.name}</option>
                     );
@@ -40,7 +40,7 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
               </div>
               <div className="col-md-3">
                 <div className="btn btn-small btn-default" 
-                     onClick={() => remove_question( question )}>
+                     onClick={() => removeQuestion( question )}>
                   <b>Remove</b>
                 </div>
               </div>
@@ -54,8 +54,8 @@ const QuestionItem = ({question, response_sets, btn_type}) => {
 
 QuestionItem.propTypes = {
   question: React.PropTypes.object,
-  response_sets: React.PropTypes.array,
-  btn_type: React.PropTypes.string
+  responseSets: React.PropTypes.array,
+  btnType: React.PropTypes.string
 };
 
 export default QuestionItem;

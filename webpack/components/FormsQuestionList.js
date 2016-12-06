@@ -8,11 +8,11 @@ export default class FormsQuestionList extends Component {
         <div className="row">
           <div className="col-md-1"><b>ID</b></div>
             {(() => {
-              if(this.props.btn_type == 'add') {
+              if(this.props.btnType == 'add') {
                 return(
                   <div className="col-md-11"><b>Content</b></div>
                 );
-              } else if (this.props.btn_type == 'remove') {
+              } else if (this.props.btnType == 'remove') {
                 return(
                   <div>
                     <div className="col-md-5"><b>Content</b></div>
@@ -25,7 +25,7 @@ export default class FormsQuestionList extends Component {
         {this.props.questions.map((q, i) => {
           return (
             <div className="row" key={i}>
-              <QuestionItem question={q} response_sets={this.props.response_sets} btn_type={this.props.btn_type}/>
+              <QuestionItem question={q} responseSets={this.props.responseSets} btnType={this.props.btnType}/>
             </div>
           );
         })}
@@ -35,7 +35,7 @@ export default class FormsQuestionList extends Component {
 }
 
 FormsQuestionList.propTypes = {
-  btn_type: React.PropTypes.string,
+  btnType: React.PropTypes.string,
   questions: React.PropTypes.array,
-  response_sets: React.PropTypes.array
+  responseSets: React.PropTypes.array
 };

@@ -7,27 +7,27 @@ class QuestionSearch extends Component {
         super(props);
 
         this.state = {
-            questions: props.all_qs,
-            response_sets: props.all_rs,
-            all_qs: props.all_qs
+            questions: props.allQs,
+            responseSets: props.allRs,
+            allQs: props.allQs
         };
     }
 
     questionFilter(term) {
-        var questions_filtered = [];
+        var questionsFiltered = [];
 
         if (term == '') {
-            questions_filtered = this.state.all_qs;
+            questionsFiltered = this.state.allQs;
         } else {
-            this.state.all_qs.map((q) => {
+            this.state.allQs.map((q) => {
                 if (q.content.toLowerCase().includes(term.toLowerCase())){
-                    questions_filtered.push(q);
+                    questionsFiltered.push(q);
                 }
             });
         }
 
         this.setState({
-            questions: questions_filtered
+            questions: questionsFiltered
         });
     }
 
@@ -35,7 +35,7 @@ class QuestionSearch extends Component {
         return (
             <div>
                 <SearchBar onSearchTermChange={term => this.questionFilter(term)} />
-                <FormsQuestionList questions={this.state.questions} response_sets={this.state.response_sets} btn_type={'add'} />
+                <FormsQuestionList questions={this.state.questions} responseSets={this.state.responseSets} btnType={'add'} />
             </div>
         );
     }
@@ -43,8 +43,8 @@ class QuestionSearch extends Component {
 
 
 QuestionSearch.propTypes = {
-  all_qs: React.PropTypes.array,
-  all_rs: React.PropTypes.array
+  allQs: React.PropTypes.array,
+  allRs: React.PropTypes.array
 };
 
 export default QuestionSearch;
