@@ -4,7 +4,7 @@ import Comment from './Comment';
 export default class CommentList extends Component {
   render() {
     return (
-      <div className="container">
+      <div className="container post-comments">
         <form action="/comments" method="post">
           <input type="hidden" name="comment[commentable_type]" value={this.props.commentable_type}/>
           <input type="hidden" name="comment[commentable_id]" value={this.props.commentable_id}/>

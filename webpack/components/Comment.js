@@ -78,8 +78,7 @@ var commentType = PropTypes.shape({
   title: PropTypes.string,
   user_id: PropTypes.number.isRequired,
   user_name: PropTypes.string.isRequired,
-  created_at: PropTypes.string.isRequired,
-  updated_at: PropTypes.string.isRequired
+  created_at: PropTypes.string.isRequired
 });
 
 commentType.children = PropTypes.arrayOf(commentType);

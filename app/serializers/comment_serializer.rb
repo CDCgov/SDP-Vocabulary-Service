@@ -3,6 +3,8 @@ class CommentSerializer < ActiveModel::Serializer
   attribute :parent_id
   attribute :title
   attribute :comment
+  attribute :commentable_id
+  attribute :commentable_type
   attribute :user_id
   attribute :created_at
   attribute :role
