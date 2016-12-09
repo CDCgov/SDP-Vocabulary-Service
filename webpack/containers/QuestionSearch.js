@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 
 import { addQuestion } from '../actions/question';
 
-import QuestionResults from './QuestionResults';
-import SearchBar from './SearchBar';
+import QuestionResults from '../components/QuestionResults';
+import SearchBar from '../components/SearchBar';
 
 class QuestionSearch extends Component {
     constructor(props) {

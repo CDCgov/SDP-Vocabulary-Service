@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import FormsQuestionList from './components/FormsQuestionList';
-import QuestionSearch from './components/QuestionSearch';
+import FormsQuestionList from './containers/FormsQuestionList';
+import QuestionSearch from './containers/QuestionSearch';
 
 import configureStore from './store/configure_store';
 import { addQuestion } from './actions/question';

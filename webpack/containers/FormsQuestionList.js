@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { removeQuestion } from '../actions/question';
 
-import QuestionItem from './QuestionItem';
+import QuestionItem from '../components/QuestionItem';
 
 class FormsQuestionList extends Component {
   render() {
