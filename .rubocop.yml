@@ -18,6 +18,10 @@ Metrics/LineLength:
   Max: 150
   Exclude:
     - 'test/**/*'
+Metrics/BlockLength:
+  Exclude:
+    - 'config/routes.rb'
+    - 'lib/tasks/admin.rake'
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
   Max: 20

@@ -9,4 +9,11 @@
     <%= link_to 'Revise', revise_question_path(@question) , class: "btn btn-primary"%> |
   <% end %>
   <%= link_to 'Back', questions_path, class: "btn btn-primary " %>
+
+  <div id="comments"></div>
+  <%= javascript_include_tag *webpack_asset_paths('question', extension: 'js') %>
+  <script>
+    var comments = <%=  ActiveModelSerializers::SerializableResource.new(@question.comments.top_level).as_json.to_json.html_safe %>;
+    SDP.createCommentList("comments",comments , "Question", <%= @question.id %>)
+  </script>
 </div>

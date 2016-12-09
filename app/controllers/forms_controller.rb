@@ -1,5 +1,4 @@
 class FormsController < ApplicationController
-  before_action :set_form, only: [:show, :edit, :destroy]
   load_and_authorize_resource
 
   # GET /forms
@@ -79,10 +78,6 @@ class FormsController < ApplicationController
     end
   end
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_form
-    @form = Form.find(params[:id])
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params

@@ -24,8 +24,9 @@ var config = {
     'response_set_list': './webpack/response_set_list.js',
     'search': './webpack/search.js',
     'bootstrap': 'bootstrap-loader',
-    'babel-polyfill': 'babel-polyfill'
-  },
+    'babel-polyfill': 'babel-polyfill',
+    'question': './webpack/question.js'
+    },
 
   output: {
     // Build assets directly in to public/webpack/, let webpack know
