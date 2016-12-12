@@ -36,11 +36,6 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should update form' do
-    patch form_url(@form), params: { form: { name: @form.name, created_by_id: @form.created_by_id } }
-    assert_redirected_to form_url(@form)
-  end
-
   test 'should destroy form' do
     assert_difference('Form.count', -1) do
       delete form_url(@form)
