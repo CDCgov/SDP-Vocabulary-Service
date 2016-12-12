@@ -1,0 +1,18 @@
+import {
+  ADD_QUESTION,
+  REMOVE_QUESTION
+} from './types';
+
+export function addQuestion(question) {
+  return {
+    type: ADD_QUESTION,
+    payload: question
+  };
+}
+
+export function removeQuestion(index) {
+  return {
+    type: REMOVE_QUESTION,
+    payload: index
+  };
+}

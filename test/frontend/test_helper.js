@@ -9,11 +9,7 @@ import chai, { expect } from 'chai';
 import chaiJquery from 'chai-jquery';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-// import reducers from '../src/reducers';
-// When we actually start using redux, uncomment the line above and get rid
-// of the stub below
-
-const reducers = (state={}) => {return state;};
+import reducers from '../../webpack/reducers';
 
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.window = global.document.defaultView;

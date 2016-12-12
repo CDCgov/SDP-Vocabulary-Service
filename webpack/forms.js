@@ -1,20 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
-import FormsQuestionList from './components/FormsQuestionList';
-import QuestionSearch from './components/QuestionSearch';
+import FormsQuestionList from './containers/FormsQuestionList';
+import QuestionSearch from './containers/QuestionSearch';
 
-import { observe } from './FormBuild';
+import configureStore from './store/configure_store';
+import { addQuestion } from './actions/question';
+
+const store = configureStore();
 
 const added   = document.getElementById('added-questions');
 const allQs = JSON.parse(document.getElementById('all_qs-json').innerHTML);
 const allRs = JSON.parse(document.getElementById('all_rs-json').innerHTML);
+const selectedQsScript = document.getElementById('selected-qs-json');
 
-ReactDOM.render(<QuestionSearch allQs={allQs} allRs={allRs} />, document.getElementById('search-results-div'));
+if (selectedQsScript) {
+  const selectedQs = JSON.parse(selectedQsScript.innerHTML);
+  selectedQs.forEach((q) => store.dispatch(addQuestion(q)));
+}
 
-observe(questions => 
-  ReactDOM.render(
-    <FormsQuestionList questions={questions} responseSets={allRs} btnType={'remove'} />,
-    added 
-  )
+ReactDOM.render(<Provider store={store}>
+    <QuestionSearch allQs={allQs} allRs={allRs} />
+  </Provider>, document.getElementById('search-results-div'));
+
+
+ReactDOM.render(
+  <Provider store={store}>
+    <FormsQuestionList responseSets={allRs} />
+  </Provider>,
+  added
 );
