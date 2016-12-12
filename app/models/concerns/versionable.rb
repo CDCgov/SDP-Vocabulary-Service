@@ -38,16 +38,24 @@ module Versionable
   end
 
   def most_recent
-    if other_versions[0].version > version
-      other_versions[0].version
+    if other_versions.present?
+      if other_versions[0].version > version
+        other_versions[0].version
+      else
+        version
+      end
     else
       version
     end
   end
 
   def most_recent?
-    if other_versions[0].version > version
-      false
+    if other_versions.present?
+      if other_versions[0].version > version
+        false
+      else
+        true
+      end
     else
       true
     end
