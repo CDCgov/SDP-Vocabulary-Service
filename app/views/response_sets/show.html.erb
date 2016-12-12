@@ -80,6 +80,10 @@
 </p>
 <% end %>
 
-<%= link_to 'Revise', revise_response_set_path(@response_set) %> |
-<%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+<% if user_signed_in? & @response_set.most_recent? %>
+  <%= link_to 'Revise', revise_response_set_path(@response_set) %> |
+  <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+<% elsif user_signed_in? %>
+  <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+<% end %>
 <%= link_to 'Back', response_sets_path %>
