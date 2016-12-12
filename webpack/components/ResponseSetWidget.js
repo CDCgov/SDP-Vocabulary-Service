@@ -7,7 +7,9 @@ export default class ResponseSetWidget extends Component {
         <div className="response-set-name">
           <div className="response-set-container">
             <ul className="list-inline">
-              <li>{this.props.response_set.name}</li>
+              <li>
+                <a href={this.props.routes.response_set_path(this.props.response_set)}>{this.props.response_set.name}</a>
+              </li>
               <li className="pull-right"><a><span className="glyphicon glyphicon-question-sign"></span></a></li>
             </ul>
           </div>

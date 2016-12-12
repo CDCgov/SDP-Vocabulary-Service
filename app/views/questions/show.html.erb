@@ -10,7 +10,7 @@
     </div>
   </div>
 </div>
-<% if user_signed_in? %>
+<% if user_signed_in? & @question.most_recent? %>
   <%= link_to 'Revise', revise_question_path(@question) , class: "btn btn-primary"%> |
 <% end %>
 <%= link_to 'Back', questions_path, class: "btn btn-primary " %>
