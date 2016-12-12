@@ -17,6 +17,10 @@ class ResponseSet < ApplicationRecord
   after_save :assign_version_independent_id,
              if: proc { |rs| rs.version == 1 && rs.version_independent_id.blank? }
 
+  def self.search(search)
+    where('name ILIKE ?', "%#{search}%")
+  end
+
   # Finds only the latest versions of ResponseSets. ResponseSet.all will return
   # all versions of all ResponseSets.
   def self.latest_versions

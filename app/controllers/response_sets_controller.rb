@@ -4,7 +4,7 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets
   # GET /response_sets.json
   def index
-    @response_sets = ResponseSet.latest_versions
+    @response_sets = params[:search] ? ResponseSet.search(params[:search]).latest_versions : ResponseSet.latest_versions
   end
 
   # GET /response_sets/1
