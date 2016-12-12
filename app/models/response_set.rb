@@ -68,18 +68,22 @@ class ResponseSet < ApplicationRecord
   end
 
   def most_recent
-    if other_versions[0].version > version
-      other_versions[0].version
-    else
-      version
+    if other_versions.present?
+      if other_versions[0].version > version
+        other_versions[0].version
+      else
+        version
+      end
     end
   end
 
   def most_recent?
-    if other_versions[0].version > version
-      false
-    else
-      true
+    if other_versions.present?
+      if other_versions[0].version > version
+        false
+      else
+        true
+      end
     end
   end
 
