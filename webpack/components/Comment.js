@@ -1,11 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
+import CommentForm from './CommentForm'
 export default class Comment extends Component {
 
-  reply (){
-
-  }
-
+  addComment(data){
+    console.log("addComment");
+    console.log(data);
+    this.props.comment.children = this.props.comment.children || [];
+    this.props.comment.children.push({id: (Math.floor(1000 * Math.random()))  % 1000,
+      comment: data,
+      commentable_id: this.props.comment.commentable_id,
+      commentable_type: this.props.comment.commentable_type,
+      created_at:this.props.comment.created_at,
+      user_id: 12,
+      user_name: "Holy Moly"
+  });
+    this.collapse.click();
+    this.setState(this.state);
+  };
 
   render() {
     return (
@@ -39,19 +51,13 @@ export default class Comment extends Component {
                 <span><a href="#">report</a></span>
                 <span><a href="#">hide</a></span>
                 <span>
-                  <a className="" role="button" data-toggle="collapse" href="#replyCommentThree" aria-expanded="false" aria-controls="collapseExample">reply</a>
+                  <a className="" ref={(input) => {this.collapse = input}}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls="collapseExample">reply</a>
                 </span>
-                <div className="collapse" id="replyCommentThree">
-                  <form>
-                    <div className="form-group">
-                      <label htmlFor="comment">Your Comment</label>
-                      <textarea name="comment" className="form-control" rows="3"></textarea>
-                      <input type="hidden" name="comment[parent_id]" value={this.props.comment.id}/>
-                      <input type="hidden" name="comment[commentable_id]" value={this.props.comment.commentable_id}/>
-                      <input type="hidden" name="comment[commentable_type]" value={this.props.comment.commentable_type}/>
-                    </div>
-                    <button type="submit" className="btn btn-default">Send</button>
-                  </form>
+                <div className="collapse" id={"replyComment_"+this.props.comment.id}>
+                 <CommentForm ref={(input) => { this.form = input; }} parentId={this.props.comment.id}
+                              commentable_type={this.props.comment.commentable_type}
+                              commentable_id={this.props.comment.commentable_id}
+                              commentContainer={this}/>
                 </div>
               </div>
               {(this.props.comment.children || []).map((childComment) => {
@@ -67,6 +73,7 @@ export default class Comment extends Component {
         </div>
     );
   }
+
 }
 
 var commentType = PropTypes.shape({
