@@ -1,8 +1,8 @@
 <div class="row">
 <div class="col-md-12">
   <div class="panel ">
- <div class="panel-heading panel-default"><i class="glyphicon glyphicon-question-sign"></i>New Question
-    <i class="glyphicon glyphicon-question-sign pull-right"></i>
+ <div class="panel-heading panel-default"><i class="fa fa-question-circle-o"></i>New Question
+    <i class="fa fa-question-circle-o pull-right"></i>
  </div>
     <!-- Change author: current_user.email to current_user.uid when controller change is made -->
     <%= render 'form', question: @question, author: current_user.email %>

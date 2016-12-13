@@ -10,7 +10,7 @@ export default class QuestionWidget extends Component {
               <li><a href={this.props.routes.question_path(this.props.question)}>{this.props.question.content}</a></li>
               <li className="pull-right">
                 <a>
-                  <span className="glyphicon glyphicon-signal"></span>
+                  <span className="fa fa-signal"></span>
                 </a>
               </li>
             </ul>
@@ -19,12 +19,12 @@ export default class QuestionWidget extends Component {
           <div className="response-set-details">
             <ul className="list-inline">
               <li className="reponse-number panel-toggle" data-toggle="collapse" href={"#collapse"+this.props.question.id}>
-                <span className="glyphicon glyphicon-th-list"></span>
+                <span className="fa fa-list-ul"></span>
               </li>
               <li className="pull-right question-menu">
                 <div className="dropdown">
                   <a id={"question_"+this.props.question.id+"_menu"} className="dropdown-toggle" type="" data-toggle="dropdown">
-                    <span className="glyphicon glyphicon-option-horizontal"></span>
+                    <span className="fa fa-ellipsis-h"></span>
                   </a>
                   <ul className="dropdown-menu">
                     <li>
