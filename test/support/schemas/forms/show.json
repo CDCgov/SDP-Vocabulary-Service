@@ -3,6 +3,9 @@
     "formId" : { "type" : "number" },
     "formName" : { "type" : "string" },
     "formUri" : { "type" : "string" },
-    "questions" : { "type" : "array"}
+    "questions" : { "type" : "array", "items":[
+      {"question" : { "type" : "object"} },
+      {"response" : { "type" : "object"} }
+    ]}
   }
 }

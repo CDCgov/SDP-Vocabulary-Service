@@ -8,5 +8,5 @@ class FormSerializer < ActiveModel::Serializer
   def form_uri
     Rails.application.routes.url_helpers.api_form_url(object, only_path: true)
   end
-  has_many :questions, serializer: QuestionsSerializer
+  has_many :form_questions, key: :questions, serializer: FormQuestionsSerializer
 end
