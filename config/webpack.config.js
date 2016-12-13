@@ -22,6 +22,7 @@ var config = {
     'forms': './webpack/forms.js',
     'question_list': './webpack/question_list.js',
     'response_set_list': './webpack/response_set_list.js',
+    'search': './webpack/search.js',
     'bootstrap': 'bootstrap-loader'
   },
 

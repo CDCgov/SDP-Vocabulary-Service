@@ -1,5 +1,58 @@
 
 .search-group {
-	
-	
-}	
+  @extend .input-group;
+  
+}
+
+.search-group-btn {
+  @extend .input-group-btn;
+}
+
+
+.search-category-btn {
+  @extend .btn;
+  font-size: 14px;
+  color: $cdc-blue;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+  font-weight: bold;
+  border-left: 1px solid $cdc-blue;
+  border-top: 1px solid $cdc-blue;    
+    border-bottom: 1px solid $cdc-blue; 
+    border-right: 0px;    
+  background-color: white;
+  padding: 6px 12px 7px 12px;
+  .search-caret {
+    @extend .caret;
+    margin-left: 10px;
+    }
+} 
+.search-input {
+  @extend .form-control;
+  border: 1px solid $cdc-blue;
+}
+
+.search-btn {
+  @extend .btn;
+  border-left: none;
+  border-right: 1px solid $cdc-blue;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+  padding: 6px 12px 7px 12px;
+  &:hover {
+    background-color: $hover-blue;
+    border: 1px solid $cdc-blue;  
+  }
+  .search-btn-icon {
+    color: $dark-gray;
+  } 
+}
+
+.search-btn-default {
+  @extend .btn-default;
+  border: 1px solid $cdc-blue;
+
+  
+  
+  
+}
