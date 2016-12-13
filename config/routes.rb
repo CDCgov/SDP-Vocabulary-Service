@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'questions#index'
+  root to: 'dashboard#index'
   resources :form_questions
   resources :forms
   resources :question_response_sets
