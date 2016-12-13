@@ -1,5 +1,11 @@
-<h1>New Question</h1>
-<!-- Change author: current_user.email to current_user.uid when controller change is made -->
-<%= render 'form', question: @question, author: current_user.email %>
-
-<%= link_to 'Back', questions_path %>
+<div class="row">
+<div class="col-md-12">
+  <div class="panel ">
+ <div class="panel-heading panel-default"><i class="fa fa-question-circle-o"></i>New Question
+    <i class="fa fa-question-circle-o pull-right"></i>
+ </div>
+    <!-- Change author: current_user.email to current_user.uid when controller change is made -->
+    <%= render 'form', question: @question, author: current_user.email %>
+  </div>
+   </div>
+ </div>

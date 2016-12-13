@@ -1,39 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Questions</h1>
+<!-- START Search Widget -->
+<div class="row">
+    <div class="col-md-8 dashboard-details">
+        <form action="<%= questions_url %>">
+            <div class="row">
+                <div class="col-md-12">
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Content</th>
-      <th>Author</th>
-      <th>Type </th>
-      <th>Version </th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+                    <div class="input-group question-group">
+                        <input type="text" id="search" name="search" class="form-control" placeholder="Search Questions...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
 
-  <tbody>
-    <% @questions.each do |question| %>
-      <tr>
-        <td>id_<%= question.id %></td>
-        <td><%= question.content %></td>
-        <td><%= question.created_by.email if question.created_by.present? %></td>
-        <td><%= question.question_type.try :name %> </td>
-        <td><%= question.version %> </td>
-        <td><%= link_to 'Details', question %></td>
+        <div id="question_list" class="question-group">
+        </div>
         <% if user_signed_in? %>
-          <td><%= link_to 'Revise', revise_question_path(question) %></td>
-          <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%= link_to 'New Question', new_question_path , class:"btn btn-default"%>
         <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    </div>
 
-<br>
+</div>
 
-<% if user_signed_in? %>
-  <%= link_to 'New Question', new_question_path %>
-<% end %>
+<script type="application/json" id="question-json">
+  <%= raw @questions.to_json %>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('question_list', extension: 'js') %>

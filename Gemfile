@@ -10,6 +10,9 @@ gem 'puma', '~> 3.0'
 
 gem 'webpack-rails'
 
+gem 'active_model_serializers', '~> 0.10.0'
+gem 'json_schema'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -23,6 +26,7 @@ gem 'devise', '~>4.2.0'
 gem 'cancancan'
 gem 'rolify'
 gem 'omniauth'
+gem 'js-routes'
 group :development, :test do
   gem 'rubocop', '~> 0.44.1', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

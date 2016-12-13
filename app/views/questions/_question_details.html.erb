@@ -1,0 +1,62 @@
+<p>
+  <strong>Content:</strong>
+  <%= question.content %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= question.created_by.email if question.created_by.present? %>
+</p>
+
+<p>
+  <strong>Created:</strong>
+  <%= question.created_at %>
+</p>
+
+<p>
+  <strong>Updated:</strong>
+  <%= question.updated_by.email if question.created_by.present? %>
+  <%= question.updated_at %>
+</p>
+
+<p>
+  <strong>Primary Response Type:</strong><br>
+    <%= question.response_type.try :name %>
+</p>
+
+<p>
+  <strong>Response Set Names:</strong><br>
+  <% question.response_sets.each do |rs| %>
+    <%= link_to rs.name, response_set_path(rs) %>
+    <br>
+  <% end %>
+</p>
+
+<p>
+  <strong>Question Type:</strong>
+  <%= question.question_type.try :name %>
+</p>
+
+<% if @question.other_versions.present? %>
+<p>
+  <strong>Most Recent Version:</strong>
+  <% if @question.most_recent? %>
+    <%= @question.version %> (Currently Selected)
+  <% else %>
+    <%= @question.most_recent %>
+  <% end %>
+</p>
+<p>
+  <strong>Versions:</strong>
+  <ol>
+    <% @question.all_versions.each do |av| %>
+      <% if @question.version == av.version %>
+        <li>Version: <%= @question.version %> - Created <%= time_ago_in_words(@question.created_at) %> ago (Currently Selected)
+        </li>
+      <% else %>
+        <li><%= link_to "Version: #{av.version}", av %> - Created <%= time_ago_in_words(av.created_at) %> ago</li>
+      <% end %>
+    <% end %>
+  </ol>
+</p>
+<% end %>

@@ -24,10 +24,10 @@ Feature: Manage Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the option to Edit the Form with the name "Test Form"
-    And I fill in the "Name" field with "Gender Form"
-    And I click on the "What is your gender?" link
-    Then I select the "Gender Partial" option in the "Response Sets" list
-    And I click on the "Update Form" button
+    And I fill in the "form_name" field with "Gender Form"
+    And I click on the button to add the Question "What is your gender?"
+    Then I select the "Gender Partial" option in the "response_set_ids" list
+    And I click on the "Save" button
     Then I should see "Form was successfully updated."
     And I should see "Name: Gender Form"
     And I should see "What is your gender?"
@@ -39,10 +39,10 @@ Feature: Manage Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the "New Form" link
-    And I fill in the "Name" field with "Test Form"
-    And I click on the "What is your gender?" link
-    And I select the "Gender Full" option in the "Response Sets" list
-    And I click on the "Create Form" button
+    And I fill in the "form_name" field with "Test Form"
+    And I click on the button to add the Question "What is your gender?"
+    Then I select the "Gender Full" option in the "response_set_ids" list
+    And I click on the "Save" button
     Then I should see "Form was successfully created."
     And I should see "What is your gender?"
   

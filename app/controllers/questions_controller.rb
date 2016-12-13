@@ -5,8 +5,7 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.latest_versions
-    @response_sets = ResponseSet.all
+    @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
   end
 
   # GET /questions/1
@@ -17,7 +16,7 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
-    @response_sets = ResponseSet.all
+    @response_sets = ResponseSet.latest_versions
     @question_types = QuestionType.all
   end
 
@@ -25,7 +24,6 @@ class QuestionsController < ApplicationController
   def revise
     q_to_revise = Question.find(params[:id])
     @question = q_to_revise.build_new_revision
-    @response_sets = ResponseSet.all
     @question_types = QuestionType.all
   end
 
@@ -54,6 +52,7 @@ class QuestionsController < ApplicationController
         format.html { redirect_to @question, notice: "Question was successfully #{q_action}." }
         format.json { render :show, status: :created, location: @question }
       else
+        @question_types = QuestionType.all
         format.html { render :new }
         format.json { render json @question.errors, status: :unprocessable_entity }
       end
@@ -77,6 +76,7 @@ class QuestionsController < ApplicationController
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
+        @question_types = QuestionType.all
         format.html { render :edit }
         format.json { render json: @question.errors, status: :unprocessable_entity }
       end
@@ -102,6 +102,6 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :author, :response_set_id, :question_type_id, :version, :version_independent_id)
+    params.require(:question).permit(:content, :author, :response_set_id, :response_type_id, :question_type_id, :version, :version_independent_id)
   end
 end

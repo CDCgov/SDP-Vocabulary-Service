@@ -8,7 +8,7 @@ end
 Given(/^I have the Responses: (.+)$/) do |args|
   args.split('; ').each do |response|
     val_and_set = response.split(', ')
-    Response.create!(value: val_and_set[0], response_set_id: val_and_set[1])
+    Response.create!(value: val_and_set[0], response_set_id: val_and_set[1], code_system: '', display_name: '')
   end
 end
 

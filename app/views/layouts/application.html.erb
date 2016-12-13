@@ -3,6 +3,7 @@
   <head>
     <title>Vocabulary Service</title>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <%= csrf_meta_tags %>
@@ -13,54 +14,54 @@
     <%= javascript_include_tag *webpack_asset_paths('application', extension: 'js') %>
   </head>
 
-  <body>
-    <nav class="navbar navbar-default main-nav">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="/">CDC Vocabulary Service</a>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-          <%= render 'devise/menu/registration_items' %>
-          <%= render 'devise/menu/login_items' %>
-        </ul>
-      </div>
-    </nav>
-    <nav class="navbar navbar-inverse secondary-nav">
-        <% if user_signed_in? %>
-        <ul class="nav navbar-nav">
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Overview
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li class="<%= 'active' if current_page?(questions_path) %>"><%=link_to 'Questions', questions_path %>
-              <li class="<%= 'active' if current_page?(question_types_path) %>"><%=link_to 'Question Types', question_types_path %>
-              <li class="<%= 'active' if current_page?(response_sets_path) %>"><%=link_to 'Response Sets', response_sets_path %>
-              <li class="<%= 'active' if current_page?(forms_path) %>"><%=link_to 'Forms', forms_path %>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Author
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li class="<%= 'active' if current_page?(new_question_path) %>"><%=link_to 'Questions', new_question_path %>
-              <li class="<%= 'active' if current_page?(new_question_type_path) %>"><%=link_to 'Question Types', new_question_type_path %>
-              <li class="<%= 'active' if current_page?(new_response_set_path) %>"><%=link_to 'Response Sets', new_response_set_path %>
-              <li class="<%= 'active' if current_page?(new_response_path) %>"><%=link_to 'Responses', new_response_path %>
-              <li class="<%= 'active' if current_page?(new_form_path) %>"><%=link_to 'Forms', new_form_path %>
-            </ul>
-          </li>
-        </ul>
-        <% else %>
-        <ul class="nav navbar-nav">
-          <li class="disabled"><a href="/questions/new">New Question</a></li>
-        </ul>
-        <% end %>
-    </nav>
-    <div class="container-fluid">
+  <body class="body">
+
+  <!-- Fixed navbar -->
+
+  <nav class="navbar navbar-nav nav navbar-fixed-top ">
+    <div class="container">
+      <a class="navbar-brand " href="/">CDC Vocabulary Service</a>
+      <ul class="nav navbar-nav navbar-right">
+        <%= render 'devise/menu/registration_items' %>
+        <%= render 'devise/menu/login_items' %>
+      </ul>
+    </div>
+  </nav>
+
+  <nav class="navbar-main" >
+    <div class="container">
+      <% if user_signed_in? %>
+      <ul class="nav navbar-nav navbar">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Overview
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="<%= 'active' if current_page?(questions_path) %>"><%=link_to 'Questions', questions_path %>
+            <li class="<%= 'active' if current_page?(question_types_path) %>"><%=link_to 'Question Types', question_types_path %>
+            <li class="<%= 'active' if current_page?(response_sets_path) %>"><%=link_to 'Response Sets', response_sets_path %>
+            <li class="<%= 'active' if current_page?(forms_path) %>"><%=link_to 'Forms', forms_path %>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Author
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="<%= 'active' if current_page?(new_question_path) %>"><%=link_to 'Questions', new_question_path %>
+            <li class="<%= 'active' if current_page?(new_question_type_path) %>"><%=link_to 'Question Types', new_question_type_path %>
+            <li class="<%= 'active' if current_page?(new_response_set_path) %>"><%=link_to 'Response Sets', new_response_set_path %>
+            <li class="<%= 'active' if current_page?(new_response_path) %>"><%=link_to 'Responses', new_response_path %>
+            <li class="<%= 'active' if current_page?(new_form_path) %>"><%=link_to 'Forms', new_form_path %>
+          </ul>
+        </li>
+      </ul>
+      <% end %>
+    </div>
+  </nav>
+    <div class="container">
         <%= yield %>
     </div>
     <footer class="footer">
-      <div class="container-fluid">
+      <div class="container">
         2016 Centers for Disease Control and Prevention. All rights reserved.
         <div class="nav-links">
           <span href="#">Privacy</span>

@@ -1,24 +1,33 @@
-const $ = require('jquery');
-exports.$ = $
-exports.addQuestion = function addQuestion(questionName, question, responseSets) {
-  const tbl = $('#questionTable > tbody:last-child')
-  var responseSetsSelect = "<label for='response_set_ids'>Response Sets</label><select name='response_set_ids[]' id='response_set_ids'>";
-  responseSetsSelect += "<option aria-label=' '></option>";
-  responseSets.forEach(function(rs){
-    responseSetsSelect += '<option value="'
-    responseSetsSelect += rs.id
-    responseSetsSelect += '">'
-    responseSetsSelect += rs.name
-    responseSetsSelect += '</option>';
-  });
-  responseSetsSelect += "</select>";
-  var remove =   '<td><a href="javascript:SDP.forms.removeQuestion(\'#question_id_'+question+'\')">Remove<a></td>'
-  var appendString = '<tr><td>' + questionName + '</td><input aria-label="Question IDs" id="question_id_'+question+'" type="hidden" name="question_ids[]" value="' + question + '"/><td>' + responseSetsSelect + '</td>'+remove+'</tr>'
-  tbl.append(appendString);
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
+import FormsQuestionList from './containers/FormsQuestionList';
+import QuestionSearch from './containers/QuestionSearch';
+
+import configureStore from './store/configure_store';
+import { addQuestion } from './actions/question';
+
+const store = configureStore();
+
+const added   = document.getElementById('added-questions');
+const allQs = JSON.parse(document.getElementById('all_qs-json').innerHTML);
+const allRs = JSON.parse(document.getElementById('all_rs-json').innerHTML);
+const selectedQsScript = document.getElementById('selected-qs-json');
+
+if (selectedQsScript) {
+  const selectedQs = JSON.parse(selectedQsScript.innerHTML);
+  selectedQs.forEach((q) => store.dispatch(addQuestion(q)));
 }
 
+ReactDOM.render(<Provider store={store}>
+    <QuestionSearch allQs={allQs} allRs={allRs} />
+  </Provider>, document.getElementById('search-results-div'));
 
-exports.removeQuestion = function removeQuestion(td){
-  $(td).parent('tr').remove();
-  console.log(td)
-}
+
+ReactDOM.render(
+  <Provider store={store}>
+    <FormsQuestionList responseSets={allRs} />
+  </Provider>,
+  added
+);

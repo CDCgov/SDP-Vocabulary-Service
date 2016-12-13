@@ -58,15 +58,32 @@
 
 <% if @response_set.other_versions.present? %>
 <p>
-  <strong>Other Versions:</strong>
+  <strong>Most Recent Version:</strong>
+  <% if @response_set.most_recent? %>
+    <%= @response_set.version %> (Currently Selected)
+  <% else %>
+    <%= @response_set.most_recent %>
+  <% end %>
+</p>
+<p>
+  <strong>Versions:</strong>
   <ol>
-    <% @response_set.other_versions.each do |ov| %>
-      <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
+    <% @response_set.all_versions.each do |av| %>
+      <% if @response_set.version == av.version %>
+        <li>Version: <%= @response_set.version %> - Created <%= time_ago_in_words(@response_set.created_at) %> ago (Currently Selected)
+        </li>
+      <% else %>
+        <li><%= link_to "Version: #{av.version}", av %> - Created <%= time_ago_in_words(av.created_at) %> ago</li>
+      <% end %>
     <% end %>
   </ol>
 </p>
 <% end %>
 
-<%= link_to 'Revise', revise_response_set_path(@response_set) %> |
-<%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+<% if user_signed_in? & @response_set.most_recent? %>
+  <%= link_to 'Revise', revise_response_set_path(@response_set) %> |
+  <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+<% elsif user_signed_in? %>
+  <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+<% end %>
 <%= link_to 'Back', response_sets_path %>

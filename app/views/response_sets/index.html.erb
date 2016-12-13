@@ -1,36 +1,33 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Response Sets</h1>
+<!-- START RS Widget -->
+<div class="row">
+    <div class="col-md-8 dashboard-details">
+        <form action="<%= response_sets_url %>">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <div class="input-group">
+                        <input type="text" id="search" name="search" class="form-control" placeholder="Search Response Sets...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Author</th>
-      <th>ID</th>
-      <th>Version</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
+        <div id="response_set_list" class="response-set-list">
+        </div>
+        <% if user_signed_in? %>
+        <%= link_to 'New Response Set', new_response_set_path , class:"btn btn-default"%>
+        <% end %>
+    </div>
 
-  <tbody>
-    <% @response_sets.each do |response_set| %>
-      <tr>
-        <td><%= response_set.name %></td>
-        <td><%= response_set.description %></td>
-        <td><%= response_set.created_by.email if response_set.created_by.present? %></td>
-        <td>id_<%= response_set.id %></td>
-        <td><%= response_set.version %></td>
-        <td><%= link_to 'Show', response_set %></td>
-        <td><%= link_to 'Revise', revise_response_set_path(response_set) %></td>
-        <td><%= link_to 'Extend', extend_response_set_path(response_set) %></td>
-        <td><%= link_to 'Destroy', response_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+</div>
 
-<br>
-
-<%= link_to 'New Response Set', new_response_set_path %>
+<script type="application/json" id="response-set-json">
+  <%= raw @response_sets.to_json %>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('response_set_list', extension: 'js') %>
+<!-- END RS Widget -->
