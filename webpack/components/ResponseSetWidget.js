@@ -10,7 +10,7 @@ export default class ResponseSetWidget extends Component {
               <li>
                 <a href={this.props.routes.response_set_path(this.props.response_set)}>{this.props.response_set.name}</a>
               </li>
-              <li className="pull-right"><a><span className="glyphicon glyphicon-question-sign"></span></a></li>
+              <li className="pull-right"><a><span className="fa fa-question-circle-o"></span></a></li>
             </ul>
           </div>
 
@@ -20,7 +20,7 @@ export default class ResponseSetWidget extends Component {
               <li className="pull-right response-set-menu">
                 <div className="dropdown">
                   <a id={"response_set_"+this.props.response_set.id+"_menu"} className="dropdown-toggle" type="" data-toggle="dropdown" role="navigation">
-                    <span className="glyphicon glyphicon-option-horizontal"></span>
+                    <span className="fa fa-ellipsis-h"></span>
                   </a>
                   <ul className="dropdown-menu dropdown-menu-right" >
                     <li>
