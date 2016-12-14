@@ -83,11 +83,9 @@ export default class SearchWidget extends Component {
   render() {
     return (
       <div className="search-widget">
-        <h1> START OF SEARCH WIDGET </h1>
         <SearchWidgetBar onSearchTermChange={(term, category) => this.refreshSearch(term, category)} />
         <ResponseSetList response_sets={this.state.response_sets} routes={this.props.routes} />
         <QuestionList questions={this.state.questions} routes={this.props.routes} />
-        <h1> END OF SEARCH WIDGET </h1>
       </div>
     );
   }

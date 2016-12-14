@@ -8,17 +8,21 @@
       <div class="row">
         <div class="analytics-group">
           <ul class="analytics-list-group">
-            <li class="analytics-list-item"><i class="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i><p class="item-value">568</p><h2 class="item-title">Questions</h2></li>
+            <li class="analytics-list-item"><i class="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i><p class="item-value"><%= @questions.count %></p><h2 class="item-title">Questions</h2></li>
             <li class="analytics-list-item"><i class="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
-            <p class="item-value">679</p><h2 class="item-title">Response Sets</h2></li>
+            <p class="item-value"><%= @response_sets.count %></p><h2 class="item-title">Response Sets</h2></li>
             <li class="analytics-list-item"><i class="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
-            <p class="item-value">345</p><h2 class="item-title">Forms</h2></li>
+            <p class="item-value"><%= @forms.count %></p><h2 class="item-title">Forms</h2></li>
           </ul>
         </div>
       </div>
       <!-- END Analytics Widget -->
       
       <!-- Start Search Widget -->
+      <div class="row">
+        <div id="search-widget">
+        </div>
+      </div>
       <!-- End Search Widget -->
     </div>
 
@@ -58,3 +62,14 @@
     </div>
   </div>
 </div>
+
+
+<script type="application/json" id="response-set-json">
+  <%= raw @response_sets.to_json %>
+</script>
+
+<script type="application/json" id="question-json">
+  <%= raw @questions.to_json %>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('search', extension: 'js') %>
+
