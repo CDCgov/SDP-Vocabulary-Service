@@ -12,6 +12,7 @@
     "url": "https://github.com/CDCgov/SDP-Vocabulary-Service"
   },
   "dependencies": {
+    "axios": "^0.13.1",
     "autoprefixer": "^6.5.1",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",

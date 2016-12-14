@@ -9,11 +9,11 @@ class CommentSerializer < ActiveModel::Serializer
   attribute :created_at
   attribute :role
   attribute :user_name, key: :user_name
-  attribute :children, key: :children
+  # attribute :children, key: :children
 
   def user_name
     object.user.full_name
   end
 
-  has_many :children, serializer: CommentSerializer
+  # has_many :children, serializer: CommentSerializer
 end

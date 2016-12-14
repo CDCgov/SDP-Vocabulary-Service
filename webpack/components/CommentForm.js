@@ -19,7 +19,7 @@ export default class CommentForm extends Component {
 
     submit(data){
       data.preventDefault();
-      this.props.commentContainer.addComment(this.comment.value);
+      this.props.addComment(this.props.commentable_type, this.props.commentable_id, this.comment.value, this.props.parent_id);
       this.reset();
     }
 
@@ -29,3 +29,10 @@ export default class CommentForm extends Component {
      this.comment.value = "";
    }
 }
+
+CommentForm.propTypes = {
+    addComment: PropTypes.func.isRequired,
+    parentId: PropTypes.number,
+    commentable_type: PropTypes.string.isRequired,
+    commentable_id: PropTypes.number.isRequired
+};

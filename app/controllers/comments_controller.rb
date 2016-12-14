@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = Comment.new(comment_params)
+    @comment = Comment.new(create_params)
     @comment.user = current_user
     @comment.save!
     render json: @comment, serializer: CommentSerializer
@@ -34,7 +34,7 @@ class CommentsController < ApplicationController
   private
 
   def create_params
-    params.require(:comment).permit(:commentable_type, :commentable_id, :title, :comment)
+    params.require(:comment).permit(:parent_id, :commentable_type, :commentable_id, :title, :comment)
   end
 
   def find_commentable

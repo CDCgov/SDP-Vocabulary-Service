@@ -1,23 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import CommentForm from './CommentForm'
-export default class Comment extends Component {
+import { addComment, replyToComment, fetchComments} from '../actions/comment';
 
-  addComment(data){
-    console.log("addComment");
-    console.log(data);
-    this.props.comment.children = this.props.comment.children || [];
-    this.props.comment.children.push({id: (Math.floor(1000 * Math.random()))  % 1000,
-      comment: data,
-      commentable_id: this.props.comment.commentable_id,
-      commentable_type: this.props.comment.commentable_type,
-      created_at:this.props.comment.created_at,
-      user_id: 12,
-      user_name: "Holy Moly"
-  });
-    this.collapse.click();
-    this.setState(this.state);
-  };
+class Comment extends Component {
+
+   constructor(props){
+     super(props)
+   }
 
   render() {
     return (
@@ -54,19 +45,15 @@ export default class Comment extends Component {
                   <a className="" ref={(input) => {this.collapse = input}}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls="collapseExample">reply</a>
                 </span>
                 <div className="collapse" id={"replyComment_"+this.props.comment.id}>
-                 <CommentForm ref={(input) => { this.form = input; }} parentId={this.props.comment.id}
+                 <CommentForm ref={(input) => { this.form = input; }}
+                              parent_id={this.props.comment.id}
                               commentable_type={this.props.comment.commentable_type}
                               commentable_id={this.props.comment.commentable_id}
-                              commentContainer={this}/>
+                              comments={this.props.comments}
+                              addComment={this.props.addComment} />
                 </div>
               </div>
-              {(this.props.comment.children || []).map((childComment) => {
-                // Each List Item Component needs a key attribute for uniqueness:
-                // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-                // In addition, we pass in our item data and a handleOnClick function that executes a callback that passes
-                // the item value
-                return <Comment key={childComment.id} comment={childComment}  />;
-              })}
+              {this.renderChildren()}
 
             </div>
           </div>
@@ -74,7 +61,25 @@ export default class Comment extends Component {
     );
   }
 
-}
+  renderChildren (){
+    const addComment = this.props.addComment;
+    console.log(addComment);
+    if(this.props.comments){
+      return this.props.comments.filter((c) => {
+          return c.parent_id==this.props.comment.id}).map((comment) => {
+        // Each List Item Component needs a key attribute for uniqueness:
+        // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
+        // In addition, we pass in our item data and a handleOnClick function that executes a callback that passes
+        // the item value
+        return <Comment key={comment.id}
+                        comment={comment}
+                        addComment={this.props.addComment} />;
+                      })
+      }
+    }
+  }
+
+
 
 var commentType = PropTypes.shape({
   id: PropTypes.number.isRequired,
@@ -85,10 +90,20 @@ var commentType = PropTypes.shape({
   title: PropTypes.string,
   user_id: PropTypes.number.isRequired,
   user_name: PropTypes.string.isRequired,
-  created_at: PropTypes.string.isRequired
+  created_at: PropTypes.string.isRequired,
+  addComment: PropTypes.func.isRequired
 });
 
 commentType.children = PropTypes.arrayOf(commentType);
+
 Comment.propTypes = {
   comment: commentType
 };
+
+function mapStateToProps(state) {
+  return {
+    comments: state.comments.comments
+  };
+}
+
+export default connect(mapStateToProps)(Comment);
