@@ -28,7 +28,7 @@ class SearchWidgetBar extends Component {
                   type="text" className="search-input" 
                   value={this.state.term}
                   onChange={event => this.onInputChange(event.target.value)}
-                  onKeyUp={event => {if (event.keyCode ==13) this.onBtnClick(this.state.term, this.state.category)}}
+                  onKeyUp={event => {if (event.keyCode ==13) this.onBtnClick(this.state.term, this.state.category);}}
                   placeholder="Search..." />
                 
                 <div className="input-group-btn">
@@ -56,6 +56,11 @@ class SearchWidgetBar extends Component {
         this.setState({category});
     }
 }
+
+SearchWidgetBar.propTypes = {
+  onSearchTermChange: PropTypes.func.isRequired
+};
+
 
 
 export default SearchWidgetBar;

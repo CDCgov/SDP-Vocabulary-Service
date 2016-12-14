@@ -65,11 +65,7 @@ export default class SearchWidget extends Component {
         break;
 
       case 'Forms':
-        console.log('No form widgets yet')
         break;
-
-      default:
-        console.log('Error in search widget, category selected not found')
     }
 
 
