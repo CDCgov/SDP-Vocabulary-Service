@@ -11,6 +11,9 @@
     </div>
   <% end %>
 
+  <%= f.hidden_field :version_independent_id %>
+  <%= f.hidden_field :version %>
+
   <div class="col-md-4" id='search-results-div'>
   </div>
   <div class="col-md-8" id='form-div'>
@@ -60,7 +63,7 @@
 </script>
 <% if form.persisted? %>
 <script type="application/json" id="selected-qs-json">
-  <%= raw form.questions.to_json =%>
+  <%= raw @selected_questions.to_json =%>
 </script>
 <% end %>
 

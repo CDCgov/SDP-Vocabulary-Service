@@ -2,7 +2,7 @@
 
 <h1>Forms</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
@@ -19,7 +19,7 @@
         <td><%= form.name %></td>
         <td><%= form.created_by.email if form.created_by.present? %></td>
         <td><%= link_to 'Show', form %></td>
-        <td><%= link_to 'Edit', edit_form_path(form) %></td>
+        <td><%= link_to 'Revise', revise_form_path(form) %></td>
         <td><%= link_to 'Destroy', form, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

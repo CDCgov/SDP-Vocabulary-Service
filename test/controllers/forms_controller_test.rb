@@ -31,8 +31,8 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get edit' do
-    get edit_form_url(@form)
+  test 'should get revise' do
+    get revise_form_url(@form)
     assert_response :success
   end
 

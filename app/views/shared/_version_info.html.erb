@@ -1,0 +1,23 @@
+<% if versionable.other_versions.present? %>
+<p>
+  <strong>Most Recent Version:</strong>
+  <% if versionable.most_recent? %>
+    <%= versionable.version %> (Currently Selected)
+  <% else %>
+    <%= versionable.most_recent %>
+  <% end %>
+</p>
+<p>
+  <strong>Versions:</strong>
+  <ol>
+    <% versionable.all_versions.each do |av| %>
+      <% if versionable.version == av.version %>
+        <li>Version: <%= versionable.version %> - Created <%= time_ago_in_words(versionable.created_at) %> ago (Currently Selected)
+        </li>
+      <% else %>
+        <li><%= link_to "Version: #{av.version}", av %> - Created <%= time_ago_in_words(av.created_at) %> ago</li>
+      <% end %>
+    <% end %>
+  </ol>
+</p>
+<% end %>

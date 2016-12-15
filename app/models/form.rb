@@ -11,10 +11,6 @@ class Form < ApplicationRecord
   def build_new_revision
     new_revision = Form.new(version_independent_id: version_independent_id,
                             version: version + 1, name: name)
-    form_questions.each do |fq|
-      new_revision.form_questions << fq.dup
-    end
-
     new_revision
   end
 end

@@ -1,5 +1,5 @@
 class FormsController < ApplicationController
-  before_action :set_form, only: [:show, :edit, :update, :destroy]
+  before_action :set_form, only: [:show, :edit, :destroy]
   load_and_authorize_resource
 
   # GET /forms
@@ -21,9 +21,12 @@ class FormsController < ApplicationController
     @response_sets = ResponseSet.latest_versions
   end
 
-  # GET /forms/1/edit
-  def edit
+  # GET /forms/1/revise
+  def revise
+    original_form = Form.find(params[:id])
+    @form = original_form.build_new_revision
     @questions = params[:search] ? Question.search(params[:search]) : Question.all
+    @selected_questions = original_form.questions
     @response_sets = ResponseSet.latest_versions
   end
 
@@ -48,23 +51,6 @@ class FormsController < ApplicationController
         format.json { render :show, status: :created, location: @form }
       else
         format.html { render :new }
-        format.json { render json: @form.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /forms/1
-  # PATCH/PUT /forms/1.json
-  def update
-    @form.questions.destroy_all
-    create_form_questions(@form.id, params[:question_ids], params[:response_set_ids])
-
-    respond_to do |format|
-      if @form.update(form_params)
-        format.html { redirect_to @form, notice: 'Form was successfully updated.' }
-        format.json { render :show, status: :ok, location: @form }
-      else
-        format.html { render :edit }
         format.json { render json: @form.errors, status: :unprocessable_entity }
       end
     end

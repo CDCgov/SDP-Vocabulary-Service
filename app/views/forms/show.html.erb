@@ -20,5 +20,7 @@
   <%= @form.created_by.email if @form.created_by.present? %>
 </p>
 
-<%= link_to 'Edit', edit_form_path(@form) %> |
+<%= render partial: 'shared/version_info', locals: {versionable: @form} %>
+
+<%= link_to 'Revise', revise_form_path(@form) %> |
 <%= link_to 'Back', forms_path %>
