@@ -17,10 +17,10 @@ class SearchWidgetBar extends Component {
                 <div className="search-group-btn">
                   <button type="button" id="search-group-btn" className="search-category-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.state.category}<span className="search-caret"></span></button>
                     <ul className="dropdown-menu">
-                      <li><a onClick={() => this.changeCategory('Questions')} >Questions</a></li>
-                      <li><a onClick={() => this.changeCategory('Response Sets')} >Response Sets</a></li>
-                      <li><a onClick={() => this.changeCategory('Forms')} >Forms</a></li>
-                      <li><a onClick={() => this.changeCategory('Select Category')} >Clear Filter</a></li>
+                      <li><a id="menu_item_questions" onClick={() => this.changeCategory('Questions')} >Questions</a></li>
+                      <li><a id="menu_item_response_sets" onClick={() => this.changeCategory('Response Sets')} >Response Sets</a></li>
+                      <li><a id="menu_item_forms" onClick={() => this.changeCategory('Forms')} >Forms</a></li>
+                      <li><a id="menu_item_clear" onClick={() => this.changeCategory('Select Category')} >Clear Filter</a></li>
                     </ul>
                 </div>
 

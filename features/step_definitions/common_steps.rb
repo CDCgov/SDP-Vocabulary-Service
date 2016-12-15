@@ -23,10 +23,8 @@ When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |act
   end
 end
 
-When(/^I click on the (.*) option$/) do |action|
-  within(:xpath, '//div[@id="search-group-btn"]') do
-    click_on(action)
-  end
+When(/^I click on the (.*) search filter$/) do |action|
+  page.find("#menu_item_#{action}").trigger('click')
 end
 
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|

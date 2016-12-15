@@ -91,7 +91,7 @@ Feature: Manage Questions
     And I have a Response Set with the name "Reasons why"
     When I go to the dashboard
     And I click on the "search-group-btn" button
-    And I click on the Questions option
+    And I click on the questions search filter
     And I fill in the "search" field with "why"
     And I click on the "search-btn" button
     Then I should see "Why?"
