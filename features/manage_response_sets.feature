@@ -100,3 +100,16 @@ Feature: Manage Response Sets
     And I should not see "Temp"
     And I should not see "True"
     And I should not see "Other"
+
+  Scenario: Filter for Response Sets on Dashboard
+    Given I have a Question with the content "Why?" and the type "MC"
+    And I have a Question with the content "What?" and the type "MC"
+    And I have a Response Set with the name "Reasons why"
+    When I go to the dashboard
+    And I click on the "search-group-btn" button
+    And I click on the response_sets search filter
+    And I fill in the "search" field with "why"
+    And I click on the "search-btn" button
+    Then I should not see "Why?"
+    And I should see "Reasons"
+    And I should not see "What?"

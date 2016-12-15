@@ -11,9 +11,9 @@ export default class SearchWidget extends Component {
 
     this.state = {
       questions: [],
-      response_sets: [],
-      all_questions: props.questions,
-      all_rs: props.response_sets
+      responseSets: [],
+      allQuestions: props.questions,
+      allResponseSets: props.responseSets
     };
   }
 
@@ -24,16 +24,15 @@ export default class SearchWidget extends Component {
     switch (category) {
       case 'Select Category':
         if (term == '') {
-          questionsFiltered = this.state.all_questions;
-          rsFiltered = this.state.all_rs;
+          questionsFiltered = this.state.allQuestions;
+          rsFiltered = this.state.allResponseSets;
         } else {
-          this.state.all_questions.map((qz) => {
-            var test1 = qz.content.toLowerCase().includes('test')
-            if (qz.content.toLowerCase().includes(term.toLowerCase())){
-              questionsFiltered.push(qz);
+          this.state.allQuestions.map((q) => {
+            if (q.content.toLowerCase().includes(term.toLowerCase())){
+              questionsFiltered.push(q);
             }
           });
-          this.state.all_rs.map((rs) => {
+          this.state.allResponseSets.map((rs) => {
             if (rs.name.toLowerCase().includes(term.toLowerCase())){
               rsFiltered.push(rs);
             }
@@ -43,9 +42,9 @@ export default class SearchWidget extends Component {
 
       case 'Questions':
         if (term == '') {
-          questionsFiltered = this.state.all_questions;
+          questionsFiltered = this.state.allQuestions;
         } else {
-          this.state.all_questions.map((q) => {
+          this.state.allQuestions.map((q) => {
             if (q.content.toLowerCase().includes(term.toLowerCase())){
               questionsFiltered.push(q);
             }
@@ -55,9 +54,9 @@ export default class SearchWidget extends Component {
 
       case 'Response Sets':
         if (term == '') {
-          rsFiltered = this.state.all_rs;
+          rsFiltered = this.state.allResponseSets;
         } else {
-          this.state.all_rs.map((rs) => {
+          this.state.allResponseSets.map((rs) => {
             if (rs.name.toLowerCase().includes(term.toLowerCase())){
               rsFiltered.push(rs);
             }
@@ -69,11 +68,9 @@ export default class SearchWidget extends Component {
         break;
     }
 
-
-
     this.setState({
       questions: questionsFiltered,
-      response_sets: rsFiltered
+      responseSets: rsFiltered
     });
   }
 
@@ -81,7 +78,7 @@ export default class SearchWidget extends Component {
     return (
       <div className="search-widget">
         <SearchWidgetBar onSearchTermChange={(term, category) => this.refreshSearch(term, category)} />
-        <ResponseSetList response_sets={this.state.response_sets} routes={this.props.routes} />
+        <ResponseSetList responseSets={this.state.responseSets} routes={this.props.routes} />
         <QuestionList questions={this.state.questions} routes={this.props.routes} />
       </div>
     );
@@ -89,7 +86,7 @@ export default class SearchWidget extends Component {
 }
 
 SearchWidget.propTypes = {
-  response_sets: PropTypes.arrayOf(ResponseSetWidget.propTypes.response_set).isRequired,
+  responseSets: PropTypes.arrayOf(ResponseSetWidget.propTypes.response_set).isRequired,
   questions: PropTypes.arrayOf(QuestionWidget.propTypes.question).isRequired,
   routes: PropTypes.object.isRequired
 };

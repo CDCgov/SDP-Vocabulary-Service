@@ -5,7 +5,7 @@ export default class ResponseSetList extends Component {
   render() {
     return (
       <div className="response-set-list">
-        {this.props.response_sets.map((rs) => {
+        {this.props.responseSets.map((rs) => {
           // Each List Item Component needs a key attribute for uniqueness:
           // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
           // In addition, we pass in our item data
@@ -17,6 +17,6 @@ export default class ResponseSetList extends Component {
 }
 
 ResponseSetList.propTypes = {
-  response_sets: PropTypes.arrayOf(ResponseSetWidget.propTypes.response_set).isRequired,
+  responseSets: PropTypes.arrayOf(ResponseSetWidget.propTypes.response_set).isRequired,
   routes: ResponseSetWidget.propTypes.routes.isRequired
 };

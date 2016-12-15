@@ -6,4 +6,4 @@ import "babel-polyfill";
 
 const questions = JSON.parse(document.getElementById('question-json').innerHTML);
 const response_sets = JSON.parse(document.getElementById('response-set-json').innerHTML);
-ReactDOM.render(<SearchWidget questions={questions} response_sets={response_sets} routes={Routes} />, document.getElementById('search-widget'));
+ReactDOM.render(<SearchWidget questions={questions} responseSets={response_sets} routes={Routes} />, document.getElementById('search-widget'));
