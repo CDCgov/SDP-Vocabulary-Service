@@ -10,6 +10,10 @@ Given(/^I am on the "(.+)" page$/) do |url|
   visit url
 end
 
+When(/^I go to the dashboard$/) do
+  visit '/'
+end
+
 # When clauses
 When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
@@ -17,6 +21,10 @@ When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |act
   within(:xpath, create_path(object_type, object_id)) do
     click_on(action)
   end
+end
+
+When(/^I click on the (.*) search filter$/) do |action|
+  page.find("#menu_item_#{action}").trigger('click')
 end
 
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|
