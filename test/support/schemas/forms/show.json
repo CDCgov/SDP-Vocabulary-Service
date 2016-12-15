@@ -1,11 +1,17 @@
 {
   "properties": {
-    "formId" : { "type" : "number" },
-    "formName" : { "type" : "string" },
-    "formUri" : { "type" : "string" },
-    "questions" : { "type" : "array", "items":[
-      {"question" : { "type" : "object"} },
-      {"response" : { "type" : "object"} }
-    ]}
+    "formId" : {"type" : "number"},
+    "formName" : {"type" : "string"},
+    "formUri" : {"type" : "string"},
+    "questions" : { 
+      "type" : "array",
+      "items": {
+        "type" : "object",
+        "properties": {
+          "question": {"type": "object"},
+          "response": {"type": "object"}
+        }
+      }
+    }
   }
 }

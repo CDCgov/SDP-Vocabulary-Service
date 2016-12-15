@@ -1,8 +1,8 @@
 {
   "properties": {
-    "formId" : { "type" : "number" },
-    "formName" : { "type" : "string" },
-    "formUri" : { "type" : "string" },
-    "questions" : { "type" : "array"}
+    "formId" : {"type" : "number"},
+    "formName" : {"type" : "string"},
+    "formUri" : {"type" : "string"},
+    "questions" : {"type" : "array"}
   }
 }
