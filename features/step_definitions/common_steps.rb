@@ -23,6 +23,12 @@ When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |act
   end
 end
 
+When(/^I click on the (.*) option$/) do |action|
+  within(:xpath, '//div[@id="search-group-btn"]') do
+    click_on(action)
+  end
+end
+
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|
   fill_in(field_name, with: new_value)
 end

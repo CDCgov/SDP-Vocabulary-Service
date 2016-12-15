@@ -84,3 +84,16 @@ Feature: Manage Questions
     Then I should see "Why?"
     And I should see "Reasons"
     And I should not see "What?"
+
+  Scenario: Filter for Questions on Dashboard
+    Given I have a Question with the content "Why?" and the type "MC"
+    And I have a Question with the content "What?" and the type "MC"
+    And I have a Response Set with the name "Reasons why"
+    When I go to the dashboard
+    And I click on the "search-group-btn" button
+    And I click on the Questions option
+    And I fill in the "search" field with "why"
+    And I click on the "search-btn" button
+    Then I should see "Why?"
+    And I should not see "Reasons"
+    And I should not see "What?"

@@ -13,9 +13,9 @@ class SearchWidgetBar extends Component {
     render() {
         return (
             <div>
-              <div className="search-group">
+              <div className="search-group" id="search-group">
                 <div className="search-group-btn">
-                  <button type="button" className="search-category-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.state.category}<span className="search-caret"></span></button>
+                  <button type="button" id="search-group-btn" className="search-category-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.state.category}<span className="search-caret"></span></button>
                     <ul className="dropdown-menu">
                       <li><a onClick={() => this.changeCategory('Questions')} >Questions</a></li>
                       <li><a onClick={() => this.changeCategory('Response Sets')} >Response Sets</a></li>

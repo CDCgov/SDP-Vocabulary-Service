@@ -27,9 +27,10 @@ export default class SearchWidget extends Component {
           questionsFiltered = this.state.all_questions;
           rsFiltered = this.state.all_rs;
         } else {
-          this.state.all_questions.map((q) => {
-            if (q.content.toLowerCase().includes(term.toLowerCase())){
-              questionsFiltered.push(q);
+          this.state.all_questions.map((qz) => {
+            var test1 = qz.content.toLowerCase().includes('test')
+            if (qz.content.toLowerCase().includes(term.toLowerCase())){
+              questionsFiltered.push(qz);
             }
           });
           this.state.all_rs.map((rs) => {
