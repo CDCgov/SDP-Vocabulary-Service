@@ -26,6 +26,8 @@ class SearchWidgetBar extends Component {
 
                 <input 
                   type="text" className="search-input" 
+                  id="search"
+                  name="search"
                   value={this.state.term}
                   onChange={event => this.onInputChange(event.target.value)}
                   onKeyUp={event => {if (event.keyCode ==13) this.onBtnClick(this.state.term, this.state.category);}}
@@ -34,6 +36,8 @@ class SearchWidgetBar extends Component {
                 <div className="input-group-btn">
                   <button 
                     className="search-btn search-btn-default"
+                    id="search-btn"
+                    aria-label="search-btn"
                     onClick={() => this.onBtnClick(this.state.term, this.state.category)}
                     type="button">
                     <i className="fa fa-search search-btn-icon" aria-hidden="true"></i>

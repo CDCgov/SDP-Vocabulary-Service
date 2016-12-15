@@ -73,3 +73,14 @@ Feature: Manage Questions
     And I should see "Fat?"
     And I should not see "Cancer?"
     And I should not see "Broken Legs?"
+
+  Scenario: Search for a Question on Dashboard
+    Given I have a Question with the content "Why?" and the type "MC"
+    And I have a Question with the content "What?" and the type "MC"
+    And I have a Response Set with the name "Reasons why"
+    When I go to the dashboard
+    And I fill in the "search" field with "why"
+    And I click on the "search-btn" button
+    Then I should see "Why?"
+    And I should see "Reasons"
+    And I should not see "What?"

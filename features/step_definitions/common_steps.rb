@@ -10,6 +10,10 @@ Given(/^I am on the "(.+)" page$/) do |url|
   visit url
 end
 
+When(/^I go to the dashboard$/) do
+  visit '/'
+end
+
 # When clauses
 When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
