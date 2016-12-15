@@ -13,10 +13,10 @@ const store = configureStore();
 const added   = document.getElementById('added-questions');
 const allQs = JSON.parse(document.getElementById('all_qs-json').innerHTML);
 const allRs = JSON.parse(document.getElementById('all_rs-json').innerHTML);
-const selectedQsScript = document.getElementById('selected-qs-json');
+const selectedQsScript = document.getElementById('formqs-json');
 
-if (selectedQsScript) {
-  const selectedQs = JSON.parse(selectedQsScript.innerHTML);
+const selectedQs = JSON.parse(selectedQsScript.innerHTML);
+if (selectedQs) {
   selectedQs.forEach((q) => store.dispatch(addQuestion(q)));
 }
 

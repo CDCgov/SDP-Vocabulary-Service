@@ -56,15 +56,10 @@
   <%= raw @questions.to_json %>
 </script>
 <script type="application/json" id="formqs-json">
-  <%= raw form.questions.to_json %>
+  <%= raw @selected_questions.to_json %>
 </script>
 <script type="application/json" id="all_rs-json">
   <%= raw @response_sets.to_json =%>
 </script>
-<% if form.persisted? %>
-<script type="application/json" id="selected-qs-json">
-  <%= raw @selected_questions.to_json =%>
-</script>
-<% end %>
 
 <%= javascript_include_tag *webpack_asset_paths('forms', extension: 'js') %>

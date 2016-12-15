@@ -30,14 +30,6 @@ class FormsController < ApplicationController
     @response_sets = ResponseSet.latest_versions
   end
 
-  def create_form_questions(form_id, question_ids, response_set_ids)
-    if question_ids
-      question_ids.zip(response_set_ids).each do |qid, rsid|
-        FormQuestion.create(form_id: form_id, question_id: qid, response_set_id: rsid)
-      end
-    end
-  end
-
   # POST /forms
   # POST /forms.json
   def create
@@ -47,7 +39,7 @@ class FormsController < ApplicationController
     respond_to do |format|
       if @form.save
         create_form_questions(@form.id, params[:question_ids], params[:response_set_ids])
-        format.html { redirect_to @form, notice: 'Form was successfully created.' }
+        format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
         format.html { render :new }
@@ -69,6 +61,19 @@ class FormsController < ApplicationController
 
   private
 
+  def save_message(form)
+    action = form.version > 1 ? 'revised' : 'created'
+    "Form was successfully #{action}."
+  end
+
+  def create_form_questions(form_id, question_ids, response_set_ids)
+    if question_ids
+      question_ids.zip(response_set_ids).each do |qid, rsid|
+        FormQuestion.create(form_id: form_id, question_id: qid, response_set_id: rsid)
+      end
+    end
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_form
     @form = Form.find(params[:id])
@@ -76,6 +81,6 @@ class FormsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params
-    params.require(:form).permit(:name, :user_id, :search)
+    params.require(:form).permit(:name, :user_id, :search, :version, :version_independent_id)
   end
 end
