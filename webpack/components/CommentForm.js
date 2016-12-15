@@ -20,14 +20,9 @@ export default class CommentForm extends Component {
     submit(data){
       data.preventDefault();
       this.props.addComment(this.props.commentable_type, this.props.commentable_id, this.comment.value, this.props.parent_id);
-      this.reset();
+      this.comment.value = "";
     }
 
-   reset(){
-     console.log("reset");
-     console.log(this.comment);
-     this.comment.value = "";
-   }
 }
 
 CommentForm.propTypes = {

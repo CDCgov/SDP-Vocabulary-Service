@@ -61,22 +61,21 @@ class Comment extends Component {
     );
   }
 
-  renderChildren (){
+  renderChildren() {
     const addComment = this.props.addComment;
     console.log(addComment);
-    if(this.props.comments){
-      return this.props.comments.filter((c) => {
-          return c.parent_id==this.props.comment.id}).map((comment) => {
-        // Each List Item Component needs a key attribute for uniqueness:
-        // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        // In addition, we pass in our item data and a handleOnClick function that executes a callback that passes
-        // the item value
-        return <Comment key={comment.id}
-                        comment={comment}
-                        addComment={this.props.addComment} />;
-                      })
-      }
+    if (this.props.comments) {
+      return this.props.comments
+        .filter((c) => {
+          return c.parent_id == this.props.comment.id
+        })
+        .map((comment) => {
+          return <Comment key = {comment.id}
+                          comment = {comment}
+                          addComment = {this.props.addComment} />;
+        })
     }
+  }
   }
 
 

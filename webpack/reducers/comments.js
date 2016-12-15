@@ -18,8 +18,6 @@ export default function comments(state = {comments: [], loading: false}, action)
     case FETCH_COMMENTS_FULFILLED:
       return Object.assign({}, state, {
         loading: false,
-        commentable_id: action.commentable_id,
-        commentable_type: action.commentable_type,
         comments: [...action.payload.data]
       })
     case ADD_COMMENT_FULFILLED:
