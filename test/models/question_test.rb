@@ -23,7 +23,4 @@ class QuestionTest < ActiveSupport::TestCase
     assert 1, found.count
     assert 'What is your gender?', found.first.content
   end
-  # test "the truth" do
-  #   assert true
-  # end
 end

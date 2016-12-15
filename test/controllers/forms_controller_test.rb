@@ -31,14 +31,9 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get edit' do
-    get edit_form_url(@form)
+  test 'should get revise' do
+    get revise_form_url(@form)
     assert_response :success
-  end
-
-  test 'should update form' do
-    patch form_url(@form), params: { form: { name: @form.name, created_by_id: @form.created_by_id } }
-    assert_redirected_to form_url(@form)
   end
 
   test 'should destroy form' do
