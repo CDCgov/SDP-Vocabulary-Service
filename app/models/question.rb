@@ -1,5 +1,4 @@
 class Question < ApplicationRecord
-
   include Versionable
   acts_as_commentable
 

@@ -1,5 +1,4 @@
 class Form < ApplicationRecord
-
   include Versionable
   acts_as_commentable
 

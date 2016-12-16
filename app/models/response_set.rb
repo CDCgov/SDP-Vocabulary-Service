@@ -1,8 +1,7 @@
 class ResponseSet < ApplicationRecord
-
   include Versionable
   acts_as_commentable
-  
+
   has_many :question_response_sets
   has_many :questions, through: :question_response_sets
   has_many :responses, dependent: :nullify
