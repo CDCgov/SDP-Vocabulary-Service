@@ -23,12 +23,7 @@ class Comment extends Component {
           <div className="panel-collapse collapse in" id={"comment_id_"+this.props.comment.id}>
             <div className="media-left">
               <div className="vote-wrap">
-                <div className="vote up">
-                  <i className="glyphicon glyphicon-menu-up"></i>
-                </div>
-                <div className="vote inactive">
-                  <i className="glyphicon glyphicon-menu-down"></i>
-                </div>
+    
               </div>
             </div>
 
