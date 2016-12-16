@@ -12,6 +12,7 @@ class Comment < ActiveRecord::Base
 
   # NOTE: Comments belong to a user
   belongs_to :user
+  validates :user, presence: true
   scope :top_level, -> { where(parent_id: nil) }
 
   def create_reply(from, subject, message)

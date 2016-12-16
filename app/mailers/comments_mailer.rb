@@ -1,19 +1,27 @@
 class CommentsMailer < ApplicationMailer
-  def notify_commenters(comment)
+  def notify_of_reply(comment)
+    if comment.parent && comment.parent.user != comment.user
+      subject = "#{comment.user.full_name} replyed to your comment"
+      mail(to: comment.parent.user.email, subject: subject, body: '')
+    end
   end
 
   def notify_owner(comment)
-    subject "#{comment.user.full_name} Commented on your #{comment.commentable_type}"
+    if comment.commentable.created_by != comment.user
+      subject = "#{comment.user.full_name} commented on your #{comment.commentable_type}"
+      mail(to: comment.commentable.created_by.email, subject: subject, body: '')
+    end
   end
 
   private
 
-  def gather_emails(comment)
+  def gather_commenter_emails(comment)
     emails = []
-    emails << comment.created_by.email
-    comment.ancestors.each do |an|
-      email = an.user.email
-      emails << email unless email == comment.created_by.email
+    owner = comment.commentable.created_by
+    comment.commentable.comments.each do |an|
+      if an.user != owner || an.user != comment.user
+        emails << comment.user.email
+      end
     end
     emails.uniq
   end

@@ -20,6 +20,7 @@ Metrics/LineLength:
     - 'test/**/*'
 Metrics/BlockLength:
   Exclude:
+    - 'config/environments/*'
     - 'config/routes.rb'
     - 'lib/tasks/admin.rake'
 Metrics/MethodLength:

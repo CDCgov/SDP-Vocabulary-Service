@@ -28,6 +28,10 @@ class CommentsController < ApplicationController
     @comment = Comment.new(create_params)
     @comment.user = current_user
     @comment.save!
+
+    CommentsMailer.notify_owner(@comment).deliver_later
+    CommentsMailer.notify_of_reply(@comment).deliver_later
+
     render json: @comment, serializer: CommentSerializer
   end
 
