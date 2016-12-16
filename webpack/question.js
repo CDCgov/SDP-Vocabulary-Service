@@ -10,12 +10,14 @@ import { addComment, fetchComments } from './actions/comment';
 const store = configureStore();
 
 exports.createCommentList =function(div, comments, type, id) {
+  store.getState().comments=comments;
   ReactDOM.render(
     <Provider store={store}>
       <CommentList
+                   comments={comments}
                    commentable_type={type}
                    commentable_id={id}
                    addComment={addComment}
                    fetchComments={fetchComments}/>
     </Provider>, document.getElementById(div));
-}
+};

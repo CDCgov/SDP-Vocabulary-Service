@@ -3,15 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
-import { addComment, replyToComment, fetchComments} from '../actions/comment';
+import { addComment, fetchComments} from '../actions/comment';
 // comments url
 // reply to url function
 //
 class CommentList extends Component {
-
-  componentWillMount() {
-    this.props.fetchComments(this.props.commentable_type, this.props.commentable_id);
-  }
 
   render() {
     return (
@@ -27,10 +23,8 @@ class CommentList extends Component {
   }
 
   renderChildren (){
-    const addComment = this.props.addComment;
-    console.log(addComment);
     if(this.props.comments){
-      return this.props.comments.filter((c) => {return c.parent_id==null}).map((comment) => {
+      return this.props.comments.filter((c) => c.parent_id==null).map((comment) => {
         // Each List Item Component needs a key attribute for uniqueness:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
         // In addition, we pass in our item data and a handleOnClick function that executes a callback that passes
@@ -39,7 +33,7 @@ class CommentList extends Component {
                         comment={comment}
                         addComment={this.props.addComment}
                         comments={this.props.comments} />;
-                      })
+                      });
       }
     }
 }
@@ -50,8 +44,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    comments: state.comments.comments,
-    loading: state.comments.loading
+    comments: state.comments
   };
 }
 

@@ -2,12 +2,12 @@ import {
   combineReducers
 } from 'redux';
 
-import questionsReducer from './questions';
-import commentsReducer from './comments';
+import questions from './questions';
+import comments from './comments';
 
 const rootReducer = combineReducers({
-  questions: questionsReducer,
-  comments: commentsReducer
+  questions: questions,
+  comments: comments
 });
 
 export default rootReducer;

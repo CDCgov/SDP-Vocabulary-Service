@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import CommentForm from './CommentForm'
-import { addComment, replyToComment, fetchComments} from '../actions/comment';
+import CommentForm from './CommentForm';
 
 class Comment extends Component {
 
    constructor(props){
-     super(props)
+     super(props);
    }
 
   render() {
@@ -38,11 +37,8 @@ class Comment extends Component {
                 {this.props.comment.comment}
               </p>
               <div className="comment-meta">
-                <span><a href="#">delete</a></span>
-                <span><a href="#">report</a></span>
-                <span><a href="#">hide</a></span>
                 <span>
-                  <a className="" ref={(input) => {this.collapse = input}}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls="collapseExample">reply</a>
+                  <a className="" ref={(input) => this.collapse = input}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls="collapseExample">reply</a>
                 </span>
                 <div className="collapse" id={"replyComment_"+this.props.comment.id}>
                  <CommentForm ref={(input) => { this.form = input; }}
@@ -62,18 +58,15 @@ class Comment extends Component {
   }
 
   renderChildren() {
-    const addComment = this.props.addComment;
-    console.log(addComment);
     if (this.props.comments) {
       return this.props.comments
-        .filter((c) => {
-          return c.parent_id == this.props.comment.id
-        })
+        .filter((c) => c.parent_id == this.props.comment.id)
         .map((comment) => {
           return <Comment key = {comment.id}
                           comment = {comment}
+                          comments={this.props.comments}
                           addComment = {this.props.addComment} />;
-        })
+        });
     }
   }
   }
@@ -90,18 +83,20 @@ var commentType = PropTypes.shape({
   user_id: PropTypes.number.isRequired,
   user_name: PropTypes.string.isRequired,
   created_at: PropTypes.string.isRequired,
-  addComment: PropTypes.func.isRequired
+  addComment: PropTypes.func
 });
 
 commentType.children = PropTypes.arrayOf(commentType);
 
 Comment.propTypes = {
-  comment: commentType
+  comment: commentType,
+  addComment: PropTypes.func.isRequired,
+  comments: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    comments: state.comments.comments
+    comments: state.comments
   };
 }
 
