@@ -17,13 +17,13 @@ class Comment extends Component {
               <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
             </button>
             <span className="label label-info">{this.props.comment.id}</span>
-            {moment(this.props.comment.created_at,'').fromNow()} by {this.props.comment.user_name}
+            {moment(this.props.comment.created_at,'').fromNow()} by {this.props.comment.userName}
           </div>
 
           <div className="panel-collapse collapse in" id={"comment_id_"+this.props.comment.id}>
             <div className="media-left">
               <div className="vote-wrap">
-    
+
               </div>
             </div>
 
@@ -37,9 +37,9 @@ class Comment extends Component {
                 </span>
                 <div className="collapse" id={"replyComment_"+this.props.comment.id}>
                  <CommentForm ref={(input) => { this.form = input; }}
-                              parent_id={this.props.comment.id}
-                              commentable_type={this.props.comment.commentable_type}
-                              commentable_id={this.props.comment.commentable_id}
+                              parentId={this.props.comment.id}
+                              commentableType={this.props.comment.commentableType}
+                              commentableId={this.props.comment.commentableId}
                               comments={this.props.comments}
                               addComment={this.props.addComment} />
                 </div>
@@ -55,7 +55,7 @@ class Comment extends Component {
   renderChildren() {
     if (this.props.comments) {
       return this.props.comments
-        .filter((c) => c.parent_id == this.props.comment.id)
+        .filter((c) => c.parentId == this.props.comment.id)
         .map((comment) => {
           return <Comment key = {comment.id}
                           comment = {comment}
@@ -70,14 +70,14 @@ class Comment extends Component {
 
 var commentType = PropTypes.shape({
   id: PropTypes.number.isRequired,
-  parent_id: PropTypes.number,
-  commentable_id: PropTypes.number.isRequired,
-  commentable_type: PropTypes.string.isRequired,
+  parentId: PropTypes.number,
+  commentableId: PropTypes.number.isRequired,
+  commentableType: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   title: PropTypes.string,
-  user_id: PropTypes.number.isRequired,
-  user_name: PropTypes.string.isRequired,
-  created_at: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
+  userName: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
   addComment: PropTypes.func
 });
 

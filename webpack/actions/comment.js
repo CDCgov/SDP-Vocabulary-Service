@@ -5,16 +5,16 @@ import {
   FETCH_COMMENTS
 } from './types';
 
-export function addComment(commentable_type, commentable_id, comment, parent_id) {
+export function addComment(commentableType, commentableId, comment, parentId) {
   return {
     type: ADD_COMMENT,
     payload: axios.post(routes.comments_path(), {
       authenticity_token: getCSRFToken(),
       comment: {
-        commentable_type: commentable_type,
-        commentable_id: commentable_id,
+        commentableType: commentableType,
+        commentableId: commentableId,
         comment: comment,
-        parent_id: parent_id
+        parentId: parentId
       }
     })
   };
@@ -22,15 +22,15 @@ export function addComment(commentable_type, commentable_id, comment, parent_id)
 
 
 
-export function fetchComments(commentable_type, commentable_id) {
+export function fetchComments(commentableType, commentableId) {
   return {
     type: FETCH_COMMENTS,
-    commentable_type: commentable_type,
-    commentable_id: commentable_id,
+    commentable_type: commentableType,
+    commentableId: commentableId,
     payload: axios.get(routes.comments_path(), {
       params: {
-        commentable_type: commentable_type,
-        commentable_id: commentable_id,
+        commentableType: commentableType,
+        commentableId: commentableId,
       }
     })
   };

@@ -12,8 +12,8 @@ class CommentList extends Component {
   render() {
     return (
       <div className="container post-comments">
-      <CommentForm commentable_type={this.props.commentable_type}
-                   commentable_id={this.props.commentable_id}
+      <CommentForm commentableType={this.props.commentableType}
+                   commentableId={this.props.commentableId}
                    addComment={this.props.addComment}/>
         <div className="comment-group">
            {this.renderChildren()}
@@ -24,7 +24,7 @@ class CommentList extends Component {
 
   renderChildren (){
     if(this.props.comments){
-      return this.props.comments.filter((c) => c.parent_id==null).map((comment) => {
+      return this.props.comments.filter((c) => c.parentId==null).map((comment) => {
         // Each List Item Component needs a key attribute for uniqueness:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
         // In addition, we pass in our item data and a handleOnClick function that executes a callback that passes
@@ -51,8 +51,8 @@ function mapStateToProps(state) {
 CommentList.propTypes = {
   comments: PropTypes.array,
   addComment: PropTypes.func.isRequired,
-  commentable_id: PropTypes.number.isRequired,
-  commentable_type: PropTypes.string.isRequired,
+  commentableId: PropTypes.number.isRequired,
+  commentableType: PropTypes.string.isRequired,
   replyToComment: PropTypes.func,
   fetchComments: PropTypes.func.isRequired
 

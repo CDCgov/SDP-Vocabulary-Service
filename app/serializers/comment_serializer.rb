@@ -1,14 +1,14 @@
 class CommentSerializer < ActiveModel::Serializer
   attribute :id
-  attribute :parent_id
+  attribute :parent_id, key: :parentId
   attribute :title
   attribute :comment
-  attribute :commentable_id
-  attribute :commentable_type
-  attribute :user_id
-  attribute :created_at
+  attribute :commentable_id, key: :commentableId
+  attribute :commentable_type, key: :commentableType
+  attribute :user_id, key: :userId
+  attribute :created_at, key: :createdAt
   attribute :role
-  attribute :user_name, key: :user_name
+  attribute :user_name, key: :userName
   # attribute :children, key: :children
 
   def user_name

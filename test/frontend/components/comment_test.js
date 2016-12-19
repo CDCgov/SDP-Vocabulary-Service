@@ -12,13 +12,13 @@ describe('Comment', () => {
     const comment = {
       id: 1,
       comment: "Is this a question?",
-      commentable_id: 12,
-      commentable_type: "Question",
-      parent_id: null,
+      commentableId: 12,
+      commentableType: "Question",
+      parentId: null,
       title: null,
-      user_id: 14,
-      created_at: "2016-12-09T20:54:38.702Z",
-      user_name: "Billy Jo Cooter",
+      userId: 14,
+      createdAt: "2016-12-09T20:54:38.702Z",
+      userName: "Billy Jo Cooter",
       children: null
     };
     component = renderComponent(Comment, {

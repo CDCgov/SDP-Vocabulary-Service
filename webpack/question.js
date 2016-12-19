@@ -15,8 +15,8 @@ exports.createCommentList =function(div, comments, type, id) {
     <Provider store={store}>
       <CommentList
                    comments={comments}
-                   commentable_type={type}
-                   commentable_id={id}
+                   commentableType={type}
+                   commentableId={id}
                    addComment={addComment}
                    fetchComments={fetchComments}/>
     </Provider>, document.getElementById(div));

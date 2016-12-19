@@ -10,7 +10,7 @@ import {
 
 describe('comments reducer', () => {
   it('should add a comment', () => {
-    const comment = {data: {comment: 'Is this a test?', commentable_id: 1, commentable_type: "Question"}}
+    const comment = {data: {comment: 'Is this a test?', commentableId: 1, commentableType: "Question"}}
     const action = {type: ADD_COMMENT_FULFILLED, payload: comment };
     const startState = [];
     const nextState = comments(startState, action);
@@ -18,8 +18,8 @@ describe('comments reducer', () => {
   });
 
   it('should fetch comments', () => {
-    const commentData = {data: [{comment: 'Is this a test?', commentable_id: 1, commentable_type: "Question"},
-                      {comment: 'Yes it is!', commentable_id: 2, commentable_type: "Question"}]
+    const commentData = {data: [{comment: 'Is this a test?', commentableId: 1, commentableType: "Question"},
+                      {comment: 'Yes it is!', commentableId: 2, commentableType: "Question"}]
                       } ;
 
     const action = {type: FETCH_COMMENTS_FULFILLED, payload: commentData};

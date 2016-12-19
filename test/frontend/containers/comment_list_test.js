@@ -10,32 +10,32 @@ describe('CommentList', () => {
     const comments = [{
       id: 1,
       comment: "Is this a question?",
-      commentable_id: 12,
+      commentableId: 12,
       commentable_type: "Question",
-      parent_id: null,
+      parentId: null,
       title: null,
-      user_id: 14,
-      user_name: "Billy Jo Cooter",
+      userId: 14,
+      userName: "Billy Jo Cooter",
       children: null,
-      created_at: "2016-12-09T20:54:38.702Z",
+      createdAt: "2016-12-09T20:54:38.702Z",
     }, {
       id: 2,
       comment: "Is this a question?",
-      commentable_id: 12,
-      commentable_type: "Question",
-      parent_id: null,
+      commentableId: 12,
+      commentableType: "Question",
+      parentId: null,
       title: null,
-      user_id: 16,
-      user_name: "Billy Jo Jim Bob",
+      userId: 16,
+      userName: "Billy Jo Jim Bob",
       children: null,
-      created_at: "2016-12-09T20:54:38.702Z",
+      createdAt: "2016-12-09T20:54:38.702Z",
     }];
     const state = {
       comments: comments
     };
     const props = {
-      commentable_id: 12,
-      commentable_type: "Question",
+      commentableId: 12,
+      commentableType: "Question",
       comments: comments
     };
     const component = renderComponent(CommentList, props, state);
