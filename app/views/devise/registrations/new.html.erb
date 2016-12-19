@@ -16,6 +16,15 @@
               <p class="help-block">Please provide your E-mail</p>
             </div>
           </div>
+          <div class="field">
+            <%= f.label :first_name, class: "control-label"%>
+            <%= f.text_field :first_name, autofocus: false , class:"form-control input-lg" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :last_name, class: "control-label"%>
+            <%= f.text_field :last_name, autofocus: false , class:"form-control input-lg" %>
+          </div>
 
           <div class="control-group">
             <%= f.label :password, "Password", class: "control-label"%>
