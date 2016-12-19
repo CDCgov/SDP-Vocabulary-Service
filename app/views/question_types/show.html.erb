@@ -1,19 +1,21 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @question_type.name %>
-</p>
+<div class="row dashboard">
+  <p>
+    <strong>Name:</strong>
+    <%= @question_type.name %>
+  </p>
 
-<p>
-  <strong>Created:</strong>
-  <%= @question_type.created_at %>
-</p>
+  <p>
+    <strong>Created:</strong>
+    <%= @question_type.created_at %>
+  </p>
 
-<p>
-  <strong>Updated:</strong>
-  <%= @question_type.updated_at %>
-</p>
+  <p>
+    <strong>Updated:</strong>
+    <%= @question_type.updated_at %>
+  </p>
+</div>
 
 <% if user_signed_in? %>
     <%= link_to 'Edit', edit_question_type_path(@question_type) %> |

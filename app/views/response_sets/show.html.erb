@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
 
+<div class="row dashboard">
 <p>
   <strong>Name:</strong>
   <%= @response_set.name %>
@@ -57,6 +58,7 @@
 <% end %>
 
 <%= render partial: 'shared/version_info', locals: {versionable: @response_set} %>
+</div>
 
 <% if user_signed_in? & @response_set.most_recent? %>
   <%= link_to 'Revise', revise_response_set_path(@response_set) %> |

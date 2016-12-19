@@ -1,4 +1,6 @@
 <%= form_for(form) do |f| %>
+
+<div class="row dashboard">
   <% if form.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(form.errors.count, "error") %> prohibited this form from being saved:</h2>
@@ -50,6 +52,7 @@
     <div id="added-questions" aria-label="Added"></div>
 
   </div>
+</div>
 <% end %>
 
 <script type="application/json" id="all_qs-json">

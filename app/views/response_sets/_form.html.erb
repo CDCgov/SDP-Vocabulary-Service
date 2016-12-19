@@ -1,4 +1,6 @@
 <div class="container">
+
+<div class="row dashboard">
   <%= form_for(response_set) do |f| %>
     <% if response_set.errors.any? %>
       <div id="error_explanation">
@@ -66,6 +68,7 @@
       <% end %>
     </div>
   <% end %>
+</div>
 </div>
 <script type="application/json" id="responses-json">
   <%= raw response_set.responses.to_json %>

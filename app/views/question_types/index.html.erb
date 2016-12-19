@@ -1,31 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Question Types</h1>
+<div class="row dashboard">
+  <h1>Question Types</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Type</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @question_types.each do |type| %>
-      <tr id="question_type_id_<%=type.id %>">
-        <td>id_<%= type.id %></td>
-        <td><%= type.name %></td>
-        <td><%= link_to 'Details', type %></td>
-        <% if user_signed_in? %>
-          <td><%= link_to 'Edit', edit_question_type_path(type) %></td>
-          <td><%= link_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
+    <tbody>
+      <% @question_types.each do |type| %>
+        <tr id="question_type_id_<%=type.id %>">
+          <td>id_<%= type.id %></td>
+          <td><%= type.name %></td>
+          <td><%= link_to 'Details', type %></td>
+          <% if user_signed_in? %>
+            <td><%= link_to 'Edit', edit_question_type_path(type) %></td>
+            <td><%= link_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <br>
 
 <% if user_signed_in? %>
