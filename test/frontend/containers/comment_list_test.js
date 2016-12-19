@@ -9,9 +9,9 @@ describe('CommentList', () => {
   it('will show a list of comments', () => {
     const comments = [{
       id: 1,
-      comment: "Is this a question?",
+      comment: "Is this a comment?",
       commentableId: 12,
-      commentable_type: "Question",
+      commentableType: "Question",
       parentId: null,
       title: null,
       userId: 14,
@@ -20,7 +20,7 @@ describe('CommentList', () => {
       createdAt: "2016-12-09T20:54:38.702Z",
     }, {
       id: 2,
-      comment: "Is this a question?",
+      comment: "Is this too a comment?",
       commentableId: 12,
       commentableType: "Question",
       parentId: null,
@@ -40,6 +40,8 @@ describe('CommentList', () => {
     };
     const component = renderComponent(CommentList, props, state);
     expect(component.find("div[class='media']").length).to.equal(2);
+    expect(component.find("div:contains('Is this a comment?')")).to.exist;
+    expect(component.find("div:contains('Is this too a comment?')")).to.exist;
   });
 });
 
