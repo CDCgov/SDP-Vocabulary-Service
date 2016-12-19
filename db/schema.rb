@@ -15,15 +15,6 @@ ActiveRecord::Schema.define(version: 20161212180833) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "authentications", force: :cascade do |t|
-    t.string   "provider",   null: false
-    t.string   "uid",        null: false
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
-  end
-
   create_table "form_questions", force: :cascade do |t|
     t.integer  "form_id"
     t.integer  "question_id"
@@ -139,7 +130,6 @@ ActiveRecord::Schema.define(version: 20161212180833) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
-  add_foreign_key "authentications", "users"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"

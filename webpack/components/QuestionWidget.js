@@ -7,7 +7,7 @@ export default class QuestionWidget extends Component {
         <div className="panel panel-default">
           <div className="question-container">
             <ul className="list-inline">
-              <li><a href={this.props.routes.question_path(this.props.question)}>{this.props.question.content}</a></li>
+              <li><a href={this.props.routes.questionPath(this.props.question)}>{this.props.question.content}</a></li>
               <li className="pull-right">
                 <a>
                   <span className="fa fa-signal"></span>
@@ -28,13 +28,13 @@ export default class QuestionWidget extends Component {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <a href={this.props.routes.revise_question_path(this.props.question)}>Revise</a>
+                      <a href={this.props.routes.reviseQuestionPath(this.props.question)}>Revise</a>
                     </li>
                     <li>
-                      <a href={this.props.routes.question_path(this.props.question)}>Details</a>
+                      <a href={this.props.routes.questionPath(this.props.question)}>Details</a>
                     </li>
                     <li>
-                      <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.question_path(this.props.question)}>Delete</a>
+                      <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.questionPath(this.props.question)}>Delete</a>
                     </li>
                   </ul>
                 </div>
@@ -56,11 +56,10 @@ export default class QuestionWidget extends Component {
 QuestionWidget.propTypes = {
   question: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    content: PropTypes.string.isRequired,
-    question_type: PropTypes.string
+    content: PropTypes.string.isRequired
   }),
   routes: PropTypes.shape({
-    question_path: PropTypes.func.isRequired,
-    revise_question_path: PropTypes.func.isRequired
+    questionPath: PropTypes.func.isRequired,
+    reviseQuestionPath: PropTypes.func.isRequired
   })
 };

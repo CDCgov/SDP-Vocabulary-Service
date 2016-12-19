@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 
 class SearchWidgetBar extends Component {
-    constructor(props){
-        super(props);
+  constructor(props){
+    super(props);
 
-        this.state = { 
-          term: '',
-          category: 'Select Category'
-        };
-    }
+    this.state = {
+      term: '',
+      category: 'Select Category'
+    };
+  }
 
-    render() {
-        return (
+  render() {
+    return (
             <div>
               <div className="search-group" id="search-group">
                 <div className="search-group-btn">
@@ -24,17 +24,19 @@ class SearchWidgetBar extends Component {
                     </ul>
                 </div>
 
-                <input 
-                  type="text" className="search-input" 
+                <input
+                  type="text" className="search-input"
                   id="search"
                   name="search"
                   value={this.state.term}
                   onChange={event => this.onInputChange(event.target.value)}
-                  onKeyUp={event => {if (event.keyCode ==13) this.onBtnClick(this.state.term, this.state.category);}}
+                  onKeyUp={event => {
+                    if (event.keyCode ==13) this.onBtnClick(this.state.term, this.state.category);
+                  }}
                   placeholder="Search..." />
-                
+
                 <div className="input-group-btn">
-                  <button 
+                  <button
                     className="search-btn search-btn-default"
                     id="search-btn"
                     aria-label="search-btn"
@@ -45,20 +47,20 @@ class SearchWidgetBar extends Component {
                 </div>
               </div>
             </div>
-        );
-    }
+    );
+  }
 
-    onBtnClick(term, category) {
-        this.props.onSearchTermChange(term, category);
-    }
+  onBtnClick(term, category) {
+    this.props.onSearchTermChange(term, category);
+  }
 
-    onInputChange(term) {
-        this.setState({term});
-    }
+  onInputChange(term) {
+    this.setState({term});
+  }
 
-    changeCategory(category) {
-        this.setState({category});
-    }
+  changeCategory(category) {
+    this.setState({category});
+  }
 }
 
 SearchWidgetBar.propTypes = {

@@ -22,50 +22,50 @@ export default class SearchWidget extends Component {
     var rsFiltered = [];
 
     switch (category) {
-      case 'Select Category':
-        if (term == '') {
-          questionsFiltered = this.state.allQuestions;
-          rsFiltered = this.state.allResponseSets;
-        } else {
-          this.state.allQuestions.map((q) => {
-            if (q.content.toLowerCase().includes(term.toLowerCase())){
-              questionsFiltered.push(q);
-            }
-          });
-          this.state.allResponseSets.map((rs) => {
-            if (rs.name.toLowerCase().includes(term.toLowerCase())){
-              rsFiltered.push(rs);
-            }
-          });
-        }
-        break;
+    case 'Select Category':
+      if (term == '') {
+        questionsFiltered = this.state.allQuestions;
+        rsFiltered = this.state.allResponseSets;
+      } else {
+        this.state.allQuestions.map((q) => {
+          if (q.content.toLowerCase().includes(term.toLowerCase())){
+            questionsFiltered.push(q);
+          }
+        });
+        this.state.allResponseSets.map((rs) => {
+          if (rs.name.toLowerCase().includes(term.toLowerCase())){
+            rsFiltered.push(rs);
+          }
+        });
+      }
+      break;
 
-      case 'Questions':
-        if (term == '') {
-          questionsFiltered = this.state.allQuestions;
-        } else {
-          this.state.allQuestions.map((q) => {
-            if (q.content.toLowerCase().includes(term.toLowerCase())){
-              questionsFiltered.push(q);
-            }
-          });
-        }
-        break;
+    case 'Questions':
+      if (term == '') {
+        questionsFiltered = this.state.allQuestions;
+      } else {
+        this.state.allQuestions.map((q) => {
+          if (q.content.toLowerCase().includes(term.toLowerCase())){
+            questionsFiltered.push(q);
+          }
+        });
+      }
+      break;
 
-      case 'Response Sets':
-        if (term == '') {
-          rsFiltered = this.state.allResponseSets;
-        } else {
-          this.state.allResponseSets.map((rs) => {
-            if (rs.name.toLowerCase().includes(term.toLowerCase())){
-              rsFiltered.push(rs);
-            }
-          });
-        }
-        break;
+    case 'Response Sets':
+      if (term == '') {
+        rsFiltered = this.state.allResponseSets;
+      } else {
+        this.state.allResponseSets.map((rs) => {
+          if (rs.name.toLowerCase().includes(term.toLowerCase())){
+            rsFiltered.push(rs);
+          }
+        });
+      }
+      break;
 
-      case 'Forms':
-        break;
+    case 'Forms':
+      break;
     }
 
     this.setState({
@@ -86,7 +86,7 @@ export default class SearchWidget extends Component {
 }
 
 SearchWidget.propTypes = {
-  responseSets: PropTypes.arrayOf(ResponseSetWidget.propTypes.response_set).isRequired,
+  responseSets: PropTypes.arrayOf(ResponseSetWidget.propTypes.responseSet).isRequired,
   questions: PropTypes.arrayOf(QuestionWidget.propTypes.question).isRequired,
   routes: PropTypes.object.isRequired
 };

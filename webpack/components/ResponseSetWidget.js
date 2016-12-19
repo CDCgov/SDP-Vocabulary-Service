@@ -3,12 +3,12 @@ import React, { Component, PropTypes } from 'react';
 export default class ResponseSetWidget extends Component {
   render() {
     return (
-      <div className="response-set-group" id={"response_set_id_"+this.props.response_set.id}>
+      <div className="response-set-group" id={"response_set_id_"+this.props.responseSet.id}>
         <div className="response-set-name">
           <div className="response-set-container">
             <ul className="list-inline">
               <li>
-                <a href={this.props.routes.response_set_path(this.props.response_set)}>{this.props.response_set.name}</a>
+                <a href={this.props.routes.responseSetPath(this.props.responseSet)}>{this.props.responseSet.name}</a>
               </li>
               <li className="pull-right"><a><span className="fa fa-question-circle-o"></span></a></li>
             </ul>
@@ -16,24 +16,24 @@ export default class ResponseSetWidget extends Component {
 
           <div className="response-set-details">
             <ul className="list-inline response-set-items">
-              <li className="reponse-set-id">{this.props.response_set.description}</li>
+              <li className="reponse-set-id">{this.props.responseSet.description}</li>
               <li className="pull-right response-set-menu">
                 <div className="dropdown">
-                  <a id={"response_set_"+this.props.response_set.id+"_menu"} className="dropdown-toggle" type="" data-toggle="dropdown" role="navigation">
+                  <a id={"response_set_"+this.props.responseSet.id+"_menu"} className="dropdown-toggle" type="" data-toggle="dropdown" role="navigation">
                     <span className="fa fa-ellipsis-h"></span>
                   </a>
                   <ul className="dropdown-menu dropdown-menu-right" >
                     <li>
-                      <a href={this.props.routes.revise_response_set_path(this.props.response_set)}>Revise</a>
+                      <a href={this.props.routes.reviseResponseSetPath(this.props.responseSet)}>Revise</a>
                     </li>
                     <li>
-                      <a href={this.props.routes.extend_response_set_path(this.props.response_set)}>Extend</a>
+                      <a href={this.props.routes.extendResponseSetPath(this.props.responseSet)}>Extend</a>
                     </li>
                     <li>
-                      <a href={this.props.routes.response_set_path(this.props.response_set)}>Details</a>
+                      <a href={this.props.routes.responseSetPath(this.props.responseSet)}>Details</a>
                     </li>
                     <li>
-                      <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.response_set_path(this.props.response_set)}>Delete</a>
+                      <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.responseSetPath(this.props.responseSet)}>Delete</a>
                     </li>
                   </ul>
                 </div>
@@ -48,14 +48,14 @@ export default class ResponseSetWidget extends Component {
 }
 
 ResponseSetWidget.propTypes = {
-  response_set: PropTypes.shape({
+  responseSet: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string
   }),
   routes: PropTypes.shape({
-    response_set_path: PropTypes.func.isRequired,
-    extend_response_set_path: PropTypes.func.isRequired,
-    revise_response_set_path: PropTypes.func.isRequired
+    responseSetPath: PropTypes.func.isRequired,
+    extendResponseSetPath: PropTypes.func.isRequired,
+    reviseResponseSetPath: PropTypes.func.isRequired
   })
 };

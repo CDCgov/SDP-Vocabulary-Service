@@ -1,2 +1,2 @@
-exports.question_path = (q) => `/questions/${q.id}`;
-exports.revise_question_path = (q) => `/questions/${q.id}/revise`;
+exports.questionPath = (q) => `/questions/${q.id}`;
+exports.reviseQuestionPath = (q) => `/questions/${q.id}/revise`;

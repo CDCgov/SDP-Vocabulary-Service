@@ -9,7 +9,7 @@ export default class ResponseSetList extends Component {
           // Each List Item Component needs a key attribute for uniqueness:
           // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
           // In addition, we pass in our item data
-          return <ResponseSetWidget key={rs.id} response_set={rs} routes={this.props.routes} />;
+          return <ResponseSetWidget key={rs.id} responseSet={rs} routes={this.props.routes} />;
         })}
       </div>
     );
@@ -17,6 +17,6 @@ export default class ResponseSetList extends Component {
 }
 
 ResponseSetList.propTypes = {
-  responseSets: PropTypes.arrayOf(ResponseSetWidget.propTypes.response_set).isRequired,
+  responseSets: PropTypes.arrayOf(ResponseSetWidget.propTypes.responseSet).isRequired,
   routes: ResponseSetWidget.propTypes.routes.isRequired
 };

@@ -8,7 +8,7 @@ export default class ResponseSetTable extends Component {
 
   addResponseRow() {
     let newResponses = this.state.responses;
-    newResponses.push({display_name: "", code_system: "", value: ""});
+    newResponses.push({display: "", system: "", code: ""});
     this.setState({responses: newResponses});
   }
 
@@ -42,15 +42,15 @@ export default class ResponseSetTable extends Component {
               <tr key={i}>
                 <td>
                   <label className="hidden" htmlFor={`response_set_responses_attributes_${i}_value`}>Value</label>
-                  <input type="text" value={r.value} name={`response_set[responses_attributes][${i}][value]`} id={`response_set_responses_attributes_${i}_value`} onChange={this.handleChange(i, 'value')}/>
+                  <input type="text" value={r.code} name={`response_set[responses_attributes][${i}][value]`} id={`response_set_responses_attributes_${i}_value`} onChange={this.handleChange(i, 'code')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`response_set_responses_attributes_${i}_code_system`}>Code system</label>
-                  <input type="text" value={r.code_system} name={`response_set[responses_attributes][${i}][code_system]`} id={`response_set_responses_attributes_${i}_code_system`} onChange={this.handleChange(i, 'code_system')}/>
+                  <input type="text" value={r.system} name={`response_set[responses_attributes][${i}][code_system]`} id={`response_set_responses_attributes_${i}_code_system`} onChange={this.handleChange(i, 'system')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`response_set_responses_attributes_${i}_display_name`}>Display name</label>
-                  <input type="text" value={r.display_name} name={`response_set[responses_attributes][${i}][display_name]`} id={`response_set_responses_attributes_${i}_display_name`} onChange={this.handleChange(i, 'display_name')}/>
+                  <input type="text" value={r.display} name={`response_set[responses_attributes][${i}][display_name]`} id={`response_set_responses_attributes_${i}_display_name`} onChange={this.handleChange(i, 'display')}/>
                 </td>
                 <td>
                   <a href="#" onClick={() => this.removeResponseRow(i)}>Remove</a>
@@ -71,8 +71,8 @@ export default class ResponseSetTable extends Component {
 
 ResponseSetTable.propTypes = {
   initialResponses: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string,
-    code_system: PropTypes.string,
-    display_name: PropTypes.string
+    code: PropTypes.string,
+    system: PropTypes.string,
+    display: PropTypes.string
   }))
 };
