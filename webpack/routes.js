@@ -1,6 +1,5 @@
 import { camelCase } from './camelcase';
 import routes from './_routes';
-import 'babel-polyfill';
 
 let exportRoutes = routes;
 if(routes.Routes){

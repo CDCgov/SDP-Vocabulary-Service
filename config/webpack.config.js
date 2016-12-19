@@ -23,7 +23,8 @@ var config = {
     'question_list': './webpack/question_list.js',
     'response_set_list': './webpack/response_set_list.js',
     'search': './webpack/search.js',
-    'bootstrap': 'bootstrap-loader'
+    'bootstrap': 'bootstrap-loader',
+    'babel-polyfill': 'babel-polyfill'
   },
 
   output: {
