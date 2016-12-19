@@ -19,13 +19,14 @@
 }
 
 .recent-items-icon {
-    color: $dark-gray;
-    float: left;
-    text-align: center;
-    i {
-      font-size: 26px;
-    }
+  color: $dark-gray;
+  float: left;
+  text-align: center;
+  i {
+    font-size: 26px;
+  }
 }
+
 .recent-items-value {
   float: left;
   margin-left: 12px;
@@ -45,6 +46,5 @@
   &:last-child {
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
-
   }
 }

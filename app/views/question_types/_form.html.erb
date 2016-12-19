@@ -1,6 +1,6 @@
 <%= form_for(question_type) do |f| %>
 
-<div class="row dashboard">
+<div class="row">
   <% if question_type.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(question_type.errors.count, "error") %> prohibited this question type from being saved:</h2>

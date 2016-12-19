@@ -5,7 +5,7 @@
   height: 150px;
   text-align: center;
   border: 1px solid $light-gray;
-} 
+}
 
 .analytics-list-group {
   @extend .list-group;
@@ -34,12 +34,10 @@
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 4px;
-  
 }
 
 .item-title {
   font-size: 14px;
   color: $dark-gray;
   margin-top: 4px;
-  
 }

@@ -1,6 +1,5 @@
-<p id="notice"><%= notice %></p>
-
-<div class="row dashboard">
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
   <h1>Question Types</h1>
 
   <table>
@@ -26,9 +25,9 @@
       <% end %>
     </tbody>
   </table>
-</div>
-<br>
+  <br>
 
-<% if user_signed_in? %>
-  <%= link_to 'New Question Type', new_question_type_path %>
-<% end %>
+  <% if user_signed_in? %>
+    <%= link_to 'New Question Type', new_question_type_path %>
+  <% end %>
+</div>

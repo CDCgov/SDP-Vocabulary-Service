@@ -6,21 +6,22 @@
 .dashboard-details {
   background-color: white;
   min-height: 90vh;
-
 }
 
 .dashboard-activity {
   background-color: white;
   min-height: 90vh;
-  
 }
 
 .basic-bg {
   margin-bottom: 20px;
   margin-top: 130px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   background-color: white;
-  height: 90vh;
-  
+  min-height: 90vh;
 }
 
 .mystuff-bg {
@@ -28,6 +29,5 @@
   margin-top: 130px;
   border-top: 3px solid $cdc-green;
   background-color: white;
-  height: 90vh;
-  
+  min-height: 90vh;
 }

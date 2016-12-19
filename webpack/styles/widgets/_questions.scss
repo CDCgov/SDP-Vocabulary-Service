@@ -7,43 +7,44 @@
 
 	.panel-body {
 		padding: 10px;
-		}	
+	}
+
 	.question-container {
-			@extend .panel-body;
-			border-bottom: 1px solid $light-gray;
-			font-weight: bold;
-			border-radius: 0px;
-			font-size: 14px;
-			color: $cdc-blue;
-			padding: 6px 8px 6px 10px;
-			li:first-child {
-				width: 95%;
-				float: left;
-				
-			}
+		@extend .panel-body;
+		border-bottom: 1px solid $light-gray;
+		font-weight: bold;
+		border-radius: 0px;
+		font-size: 14px;
+		color: $cdc-blue;
+		padding: 6px 8px 6px 10px;
+		li:first-child {
+			width: 95%;
+			float: left;		
 		}
+	}
+
 	.question {
 		@extend .panel; 
 		border-radius: 0px;
 		border: 1px solid $light-gray;
-		
-	}	
+	}
+
 	.response-set-details {
-			@extend .panel-body;
-			padding: 0px;
-			background-color: $light-gray;
-			.list-inline {
-				margin-left: 0px;
-			}
-			ul {
-				margin-bottom: 0px;
-			}
-			a {
-				color: $cdc-blue;
-			}
-			span {
-				padding: 4px 6px 0px 4px;
-			}
+		@extend .panel-body;
+		padding: 0px;
+		background-color: $light-gray;
+		.list-inline {
+			margin-left: 0px;
+		}
+		ul {
+			margin-bottom: 0px;
+		}
+		a {
+			color: $cdc-blue;
+		}
+		span {
+			padding: 4px 6px 0px 4px;
+		}
 		.reponse-number {
 			background-color: $cdc-blue;
 			color: white;
@@ -56,7 +57,5 @@
 				padding: 0px 10px 0px 0px;
 			}
 		}
-	}		
+	}
 }
-
-

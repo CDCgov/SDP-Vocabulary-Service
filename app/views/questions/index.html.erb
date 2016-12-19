@@ -1,28 +1,26 @@
-<p id="notice"><%= notice %></p>
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
 
-<div class="row dashboard">
-    <div class="col-md-8 dashboard-details">
-        <form action="<%= questions_url %>">
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="input-group question-group">
-                        <input type="text" id="search" name="search" class="form-control" placeholder="Search Questions...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <div id="question_list" class="question-group">
+  <div class="col-md-12">
+    <form action="<%= questions_url %>">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="input-group question-group">
+            <input type="text" id="search" name="search" class="form-control" placeholder="Search Questions...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">Go!</button>
+            </span>
+          </div>
         </div>
-        <% if user_signed_in? %>
-        <%= link_to 'New Question', new_question_path , class:"btn btn-default"%>
-        <% end %>
-    </div>
+      </div>
+    </form>
 
+    <div id="question_list" class="question-group">
+    </div>
+    <% if user_signed_in? %>
+      <%= link_to 'New Question', new_question_path , class:"btn btn-default"%>
+    <% end %>
+  </div>
 </div>
 
 <script type="application/json" id="question-json">

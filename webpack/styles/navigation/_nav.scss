@@ -1,4 +1,3 @@
-
 .cdc-utlt-nav {
 	@extend .navbar;
 	background-color: $cdc-dark-blue;
@@ -8,9 +7,10 @@
 		color: white;
 	}
 	a:hover, a:focus {
-		 color: $cdc-dark-blue;
+		color: $cdc-dark-blue;
 	}
 }
+
 .cdc-brand {
 	@extend .navbar-brand;
 	padding: 13px 0px 0px 0px;
@@ -31,8 +31,8 @@
 		padding-right: 6px;	
 	}
 	span {
-			margin-left: 6px;
-		}	
+		margin-left: 6px;
+	}	
 }
 
 .cdc-nav-main {
@@ -59,8 +59,8 @@
 			margin-right: 6px;
 		}
 		a:hover, a:focus, a:visited {
-			 background-color: white;
-			 height: 60px;
+			background-color: white;
+			height: 60px;
 		}
 		span {
 			margin-left: 6px;
@@ -76,5 +76,4 @@
  
 .cdc-nav-dropdown {
 	@extend .dropdown-menu;
-
 } 

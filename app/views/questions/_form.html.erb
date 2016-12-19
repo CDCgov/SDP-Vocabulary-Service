@@ -1,47 +1,47 @@
-
-
-    <%= form_for(question) do |f| %>
-    <% if question.errors.any? %>
+<%= form_for(question) do |f| %>
+  <% if question.errors.any? %>
     <div class="panel-body">
-    <div class="row">
-      <div class="panel panel-danger">
- 		<div class="panel-heading panel-danger">
-        <%= pluralize(question.errors.count, "error") %>
+      <div class="row">
+        <div class="panel panel-danger">
+       		<div class="panel-heading panel-danger">
+            <%= pluralize(question.errors.count, "error") %>
             prohibited this question from being saved:
-    </div>
-    <div class="panel-body">
-        <ul>
-            <% question.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-            <% end %>
-        </ul>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% question.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-    <% end %>
-    <div class="panel-body">
-       <div class="row">
-         <div class="col-md-8 form-group">
-                <%= f.label :content, "Question"%>
-                <%= f.text_field :content, {class:"form-control" ,placeholder:"Question text"}   %>
-        </div>
+  <% end %>
 
-        <div class="col-md-4 form-group">
-                <%= f.label :question_type_id, "Question Type" %>
-                <%= f.select :question_type_id, options_from_collection_for_select(@question_types, 'id', 'name', question.question_type_id || ''), {include_blank: true}, {class:"form-control"}  %>
-        </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-8 form-group">
+        <%= f.label :content, "Question"%>
+        <%= f.text_field :content, {class:"form-control" ,placeholder:"Question text"}   %>
       </div>
-    <div class="row ">
+
+      <div class="col-md-4 form-group">
+        <%= f.label :question_type_id, "Question Type" %>
+        <%= f.select :question_type_id, options_from_collection_for_select(@question_types, 'id', 'name', question.question_type_id || ''), {include_blank: true}, {class:"form-control"}  %>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-8 form-group">
         <%= f.label  :response_type_id, 'Primary Response Type' %>
         <%= f.select :response_type_id, options_from_collection_for_select(ResponseType.all, 'id', 'name', question.response_type_id || '' ),  {:multiple => false, include_blank: false },{class:"form-control"}%>
       </div>
-        <div class="col-md-4 form-group"></div>
+      <div class="col-md-4 form-group"></div>
     </div>
     <div class="row ">
       <div class="col-md-8 form-group">
         <%= label_tag :linked_response_sets, 'Response Sets' %>
-          <%= select_tag 'linked_response_sets', options_from_collection_for_select(ResponseSet.latest_versions, 'id', 'name', @question.response_sets.map{ |j| j.id }), size: 5, :multiple => true, include_blank: true, class:"form-control" %>
+        <%= select_tag 'linked_response_sets', options_from_collection_for_select(ResponseSet.latest_versions, 'id', 'name', @question.response_sets.map{ |j| j.id }), size: 5, :multiple => true, include_blank: true, class:"form-control" %>
       </div>
     </div>
 
@@ -49,14 +49,14 @@
     <%= f.hidden_field :version %>
 
     <div class="actions form-group">
-        <% if question.version_independent_id.present? %>
-        <%= f.submit 'Revise Question' ,  class: "btn btn-default"%>
+      <% if question.version_independent_id.present? %>
+      <%= f.submit 'Revise Question' ,  class: "btn btn-default"%>
+      <%= link_to 'Cancel', questions_path, class: "btn btn-default" %>
+      <%= link_to 'Show', question_path(question.other_versions.first), class: "btn btn-default" %>
+      <% else %>
+        <%= f.submit "Create Question", class: "btn btn-default" %>
         <%= link_to 'Cancel', questions_path, class: "btn btn-default" %>
-        <%= link_to 'Show', question_path(question.other_versions.first), class: "btn btn-default" %>
-        <% else %>
-          <%= f.submit "Create Question", class: "btn btn-default" %>
-          <%= link_to 'Cancel', questions_path, class: "btn btn-default" %>
-        <% end %>
+      <% end %>
     </div>
-    <% end %>
+<% end %>
 </div>

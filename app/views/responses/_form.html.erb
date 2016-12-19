@@ -1,6 +1,5 @@
 <%= form_for(response) do |f| %>
-
-  <div class="row dashboard">
+  <div class="row">
     <% if response.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(response.errors.count, "error") %> prohibited this response from being saved:</h2>

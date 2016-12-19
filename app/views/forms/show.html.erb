@@ -1,6 +1,5 @@
-<p id="notice"><%= notice %></p>
-
-<div class="row dashboard">
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
   <p>
     <strong>Name:</strong>
     <%= @form.name %>
@@ -20,9 +19,9 @@
     <strong>Created By:</strong>
     <%= @form.created_by.email if @form.created_by.present? %>
   </p>
+
+  <%= render partial: 'shared/version_info', locals: {versionable: @form} %>
+
+  <%= link_to 'Revise', revise_form_path(@form) %> |
+  <%= link_to 'Back', forms_path %>
 </div>
-
-<%= render partial: 'shared/version_info', locals: {versionable: @form} %>
-
-<%= link_to 'Revise', revise_form_path(@form) %> |
-<%= link_to 'Back', forms_path %>

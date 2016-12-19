@@ -1,6 +1,5 @@
-<p id="notice"><%= notice %></p>
-
-<div class="row dashboard">
+<div class="basic-bg">
+  <p id="notice"><%= notice %></p>
   <h1>Responses</h1>
 
   <table>
@@ -26,7 +25,6 @@
       <% end %>
     </tbody>
   </table>
+  <br>
+  <%= link_to 'New Response', new_response_path %> 
 </div>
-<br>
-
-<%= link_to 'New Response', new_response_path %>
