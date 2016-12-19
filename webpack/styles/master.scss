@@ -1,34 +1,29 @@
-//BOOTSTRAP//
-@import "../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
-
+// SCSS From UI REPO
+// Do not copy over the following:
+//  - //BOOTSTRAP//
+// Last Sync Date: 12/16/16
 
 //BASE//
-
 @import "base/colors";
 @import "base/fonts";
+@import "base/variables";
 
 //ELEMENTS//
+@import "elements/buttons";
+@import "elements/input";
 
 //WIDGETS//
 @import "widgets/responseset";
 @import "widgets/questions";
 @import "widgets/analytics";
 @import "widgets/search";
-
-
+@import "widgets/recentitems";
 
 //LAYOUTS//
 @import "layouts/body";
 @import "layouts/panels";
 @import "layouts/footer";
+@import "layouts/frameworks";
 
 //NAVIGATION//
 @import "navigation/nav";
-
-
-
-
-
-
-
-

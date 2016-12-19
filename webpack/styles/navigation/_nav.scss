@@ -1,20 +1,77 @@
-nav {
+
+.cdc-utlt-nav {
+	@extend .navbar;
 	background-color: $cdc-dark-blue;
 	height: 50px;
+	margin-bottom: 0px;
 	a {
-	color: white;
-	}	
+		color: white;
+	}
+}
+.cdc-brand {
+	@extend .navbar-brand;
+	padding: 13px 0px 0px 0px;
 }
 
-.navbar-utility {
-	background-color: red;
-	
+.cdc-nav {
+	@extend .nav;
+	padding: 0px;
 }
 
-.navbar-main {
+.cdc-utlt-navbar-nav {
+	@extend .navbar-nav;
+	padding: 0px 0px 0px 0px;
+	.utlt-navbar-item>a {
+		height: 50px;
+	}
+	.utlt-navbar-icon {
+		padding-right: 6px;	
+	}
+	span {
+			margin-left: 6px;
+		}	
+}
+
+.cdc-nav-main {
+	@extend .navbar;
 	background-color: $cdc-blue;
 	text-align: center;
-	margin-top: 50px;
-	height: 80px;
+	height: 60px;
 	margin-bottom: 20px;
+	border-radius: 0px;
+	.cdc-navbar-nav {
+	    width: 100%;
+	    height: 60px;
+	    text-align: center;
+	    > li {
+	      float: none;
+	      display: inline-block;
+	    }
+	  }
+	 .cdc-navbar-item {
+		height: 60px;
+		padding: 18px 18px 0px 18px;
+		height: 60px;
+		.item-navbar-icon {
+			margin-right: 6px;
+		}
+		a:hover, a:focus, a:visited {
+			 background-color: white;
+			 height: 60px;
+		}
+		span {
+			margin-left: 6px;
+		}
+	}
 }
+
+.alerts-badge {
+	@extend .badge;
+	background-color: red;
+	margin-left: 8px;
+}
+ 
+.cdc-nav-dropdown {
+	@extend .dropdown-menu;
+
+} 

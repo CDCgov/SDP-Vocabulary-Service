@@ -1,13 +1,33 @@
-
+.dashboard {
+  margin-bottom: 20px;
+  margin-top: 130px;
+}
 
 .dashboard-details {
-	background-color: white;
-
+  background-color: white;
+  height: 90vh;
 
 }
 
 .dashboard-activity {
-	background-color: white;
-	
+  background-color: white;
+  height: 90vh;
+  
 }
 
+.basic-bg {
+  margin-bottom: 20px;
+  margin-top: 130px;
+  background-color: white;
+  height: 90vh;
+  
+}
+
+.mystuff-bg {
+  margin-bottom: 20px;
+  margin-top: 130px;
+  border-top: 3px solid $cdc-green;
+  background-color: white;
+  height: 90vh;
+  
+}
