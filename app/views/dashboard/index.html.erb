@@ -32,13 +32,24 @@
       <div class="dashboard-activity">
         
         <!-- START Recent Items Widget -->
-        <div class="panel panel-default">
-          <div class="panel-heading">Recent Items</div>
-          <div class="panel-body">
+        <div class="recent-items-panel">
+          <div class="recent-items-heading">Recent Items</div>
+          <div class="recent-items-body">
             <ul class="list-group">
-              <li class="list-group-item">RESPONSE SETS</li>
-              <li class="list-group-item">QUESTIONS</li>
-              <li class="list-group-item">FORMS</li>
+              <li class="recent-item-list">
+                <div class="recent-items-icon"><i class="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
+                <div class="recent-items-value"><%= @response_sets.count %> Response Sets</div>
+              </li>
+            
+              <li class="recent-item-list">
+                <div class="recent-items-icon"><i class="fa fa-question-circle recent-items-icon" aria-hidden="true"></i></div>
+                <div class="recent-items-value"><%= @questions.count %> Questions</div>
+              </li>
+            
+              <li class="recent-item-list">
+                <div class="recent-items-icon"><i class="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
+                <div class="recent-items-value"><%= @forms.count %> Forms</div>
+              </li>
             </ul>
           </div>
         </div>
