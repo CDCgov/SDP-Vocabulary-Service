@@ -13,6 +13,7 @@ Rails/HasAndBelongsToMany:
 Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
+    - 'lib/tasks/admin.rake'
 Metrics/LineLength:
   Max: 150
   Exclude:
