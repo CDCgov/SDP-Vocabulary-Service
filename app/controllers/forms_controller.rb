@@ -63,6 +63,11 @@ class FormsController < ApplicationController
     end
   end
 
+  # DELETE /forms/1
+  # DELETE /forms/1.json
+  def redcap
+  end
+
   private
 
   def load_supporting_resources_for_editing
