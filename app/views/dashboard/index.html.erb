@@ -6,23 +6,25 @@
     <div class="col-md-8 dashboard-details">
       <!-- START Analytics Widget -->
       <div class="row">
-        <div class="analytics-group">
-          <ul class="analytics-list-group">
-            <li class="analytics-list-item"><i class="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i><p class="item-value"><%= @questions.count %></p><h2 class="item-title">Questions</h2></li>
-            <li class="analytics-list-item"><i class="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
-            <p class="item-value"><%= @response_sets.count %></p><h2 class="item-title">Response Sets</h2></li>
-            <li class="analytics-list-item"><i class="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
-            <p class="item-value"><%= @forms.count %></p><h2 class="item-title">Forms</h2></li>
-          </ul>
+        <div class="col-md-12">
+          <div class="analytics-group">
+            <ul class="analytics-list-group">
+              <li class="analytics-list-item"><i class="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i><p class="item-value"><%= @questions.count %></p><h2 class="item-title">Questions</h2></li>
+              <li class="analytics-list-item"><i class="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
+              <p class="item-value"><%= @response_sets.count %></p><h2 class="item-title">Response Sets</h2></li>
+              <li class="analytics-list-item"><i class="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
+              <p class="item-value"><%= @forms.count %></p><h2 class="item-title">Forms</h2></li>
+            </ul>
+          </div>
         </div>
       </div>
       <!-- END Analytics Widget -->
       
       <!-- Start Search Widget -->
-      <div class="row">
-        <div id="search-widget">
-        </div>
+      
+      <div id="search-widget">
       </div>
+      
       <!-- End Search Widget -->
     </div>
 
@@ -30,13 +32,24 @@
       <div class="dashboard-activity">
         
         <!-- START Recent Items Widget -->
-        <div class="panel panel-default">
-          <div class="panel-heading">Recent Items</div>
-          <div class="panel-body">
+        <div class="recent-items-panel">
+          <div class="recent-items-heading">Recent Items</div>
+          <div class="recent-items-body">
             <ul class="list-group">
-              <li class="list-group-item">RESPONSE SETS</li>
-              <li class="list-group-item">QUESTIONS</li>
-              <li class="list-group-item">FORMS</li>
+              <li class="recent-item-list">
+                <div class="recent-items-icon"><i class="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
+                <div class="recent-items-value"><%= @response_sets.count %> Response Sets</div>
+              </li>
+            
+              <li class="recent-item-list">
+                <div class="recent-items-icon"><i class="fa fa-question-circle recent-items-icon" aria-hidden="true"></i></div>
+                <div class="recent-items-value"><%= @questions.count %> Questions</div>
+              </li>
+            
+              <li class="recent-item-list">
+                <div class="recent-items-icon"><i class="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
+                <div class="recent-items-value"><%= @forms.count %> Forms</div>
+              </li>
             </ul>
           </div>
         </div>

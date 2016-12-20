@@ -27,5 +27,6 @@ Feature: Session Management
   Scenario: Edit an existing account
     Given I am logged in as test_author@gmail.com
     And I am on the "/" page
-    When I click on the "Profile" link
+    When I click on the "account-dropdown" link
+    And I click on the "Settings" link
     Then I should see "Account Details"

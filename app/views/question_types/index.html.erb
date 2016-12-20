@@ -1,33 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
+  <h1>Question Types</h1>
 
-<h1>Question Types</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Type</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @question_types.each do |type| %>
-      <tr id="question_type_id_<%=type.id %>">
-        <td>id_<%= type.id %></td>
-        <td><%= type.name %></td>
-        <td><%= link_to 'Details', type %></td>
-        <% if user_signed_in? %>
-          <td><%= link_to 'Edit', edit_question_type_path(type) %></td>
-          <td><%= link_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @question_types.each do |type| %>
+        <tr id="question_type_id_<%=type.id %>">
+          <td>id_<%= type.id %></td>
+          <td><%= type.name %></td>
+          <td><%= link_to 'Details', type %></td>
+          <% if user_signed_in? %>
+            <td><%= link_to 'Edit', edit_question_type_path(type) %></td>
+            <td><%= link_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
 
-<% if user_signed_in? %>
-  <%= link_to 'New Question Type', new_question_type_path %>
-<% end %>
+  <% if user_signed_in? %>
+    <%= link_to 'New Question Type', new_question_type_path %>
+  <% end %>
+</div>

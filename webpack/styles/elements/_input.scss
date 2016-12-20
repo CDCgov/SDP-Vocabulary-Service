@@ -1,0 +1,14 @@
+.input-label {
+  font-size: 18px;  
+}
+
+.input-format {
+  @extend .form-control;
+  height: 40px;
+  border: 1px solid $cdc-blue;
+  border-radius: 0px;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  text-indent: 1px;
+  text-overflow: '';
+}

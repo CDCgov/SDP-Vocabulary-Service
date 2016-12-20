@@ -1,0 +1,50 @@
+.recent-items-panel {
+  @extend .panel; 
+  border: none;
+  border-radius: 0px;
+}
+
+.recent-items-heading {
+  @extend .panel-heading;
+  border-radius: 0px;
+  font-weight: bold;
+  color: $dark-gray;
+  font-size: 18px;
+  border-bottom: 3px solid $light-gray; 
+}
+
+.recent-items-body {
+  @extend .panel-body;
+  padding: 0px;
+}
+
+.recent-items-icon {
+  color: $dark-gray;
+  float: left;
+  text-align: center;
+  i {
+    font-size: 26px;
+  }
+}
+
+.recent-items-value {
+  float: left;
+  margin-left: 12px;
+}
+
+.recent-item-list {
+  @extend .list-group-item;
+  padding: 30px 15px;
+  border: 0px;
+  font-weight: bold;
+  color: $cdc-blue;
+  font-size: 16px;
+  &:first-child {
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+  }
+  &:last-child {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+}

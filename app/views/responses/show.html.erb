@@ -1,14 +1,15 @@
-<p id="notice"><%= notice %></p>
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
+  <p>
+    <strong>Value:</strong>
+    <%= @response.value %>
+  </p>
 
-<p>
-  <strong>Value:</strong>
-  <%= @response.value %>
-</p>
+  <p>
+    <strong>Response set:</strong>
+    <%= link_to @response.response_set.name, response_set_path(@response.response_set) %>
+  </p>
 
-<p>
-  <strong>Response set:</strong>
-  <%= link_to @response.response_set.name, response_set_path(@response.response_set) %>
-</p>
-
-<%= link_to 'Edit', edit_response_path(@response) %> |
-<%= link_to 'Back', responses_path %>
+  <%= link_to 'Edit', edit_response_path(@response) %> |
+  <%= link_to 'Back', responses_path %>
+</div>

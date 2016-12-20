@@ -1,67 +1,68 @@
-<p id="notice"><%= notice %></p>
+<div class="basic-bg">
+  <p id="notice"><%= notice %></p>
+  <p>
+    <strong>Name:</strong>
+    <%= @response_set.name %>
+  </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @response_set.name %>
-</p>
+  <p>
+    <strong>Description:</strong>
+    <%= @response_set.description %>
+  </p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @response_set.description %>
-</p>
+  <p>
+    <strong>Responses:</strong><br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Response Code</th>
+          <th>Code System</th>
+          <th>Display Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @response_set.responses.each do |response| %>
+        <tr>
+          <td><%= response.value %></td>
+          <td><%= response.code_system %></td>
+          <td><%= response.display_name %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </p>
 
-<p>
-  <strong>Responses:</strong><br>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Response Code</th>
-        <th>Code System</th>
-        <th>Display Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @response_set.responses.each do |response| %>
-      <tr>
-        <td><%= response.value %></td>
-        <td><%= response.code_system %></td>
-        <td><%= response.display_name %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-</p>
+  <p>
+    <strong>Questions:</strong><br>
+    <% @response_set.questions.each do |question| %>
+      <%= link_to question.content, question_path(question) %><br>
+    <% end %>
+  </p>
 
-<p>
-  <strong>Questions:</strong><br>
-  <% @response_set.questions.each do |question| %>
-    <%= link_to question.content, question_path(question) %><br>
+  <p>
+    <strong>Oid:</strong>
+    <%= @response_set.oid %>
+  </p>
+
+  <p>
+    <strong>Author:</strong>
+    <%= @response_set.created_by.email if @response_set.created_by.present? %>
+  </p>
+
+  <% if @response_set.parent.present? %>
+  <p>
+    <strong>Parent:</strong>
+    <%= link_to @response_set.parent.name, @response_set.parent %>
+  </p>
   <% end %>
-</p>
 
-<p>
-  <strong>Oid:</strong>
-  <%= @response_set.oid %>
-</p>
+  <%= render partial: 'shared/version_info', locals: {versionable: @response_set} %>
 
-<p>
-  <strong>Author:</strong>
-  <%= @response_set.created_by.email if @response_set.created_by.present? %>
-</p>
-
-<% if @response_set.parent.present? %>
-<p>
-  <strong>Parent:</strong>
-  <%= link_to @response_set.parent.name, @response_set.parent %>
-</p>
-<% end %>
-
-<%= render partial: 'shared/version_info', locals: {versionable: @response_set} %>
-
-<% if user_signed_in? & @response_set.most_recent? %>
-  <%= link_to 'Revise', revise_response_set_path(@response_set) %> |
-  <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
-<% elsif user_signed_in? %>
-  <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
-<% end %>
-<%= link_to 'Back', response_sets_path %>
+  <% if user_signed_in? & @response_set.most_recent? %>
+    <%= link_to 'Revise', revise_response_set_path(@response_set) %> |
+    <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+  <% elsif user_signed_in? %>
+    <%= link_to 'Extend', extend_response_set_path(@response_set) %> |
+  <% end %>
+  <%= link_to 'Back', response_sets_path %>
+</div>

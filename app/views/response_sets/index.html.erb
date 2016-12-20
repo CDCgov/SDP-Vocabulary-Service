@@ -1,29 +1,27 @@
-<p id="notice"><%= notice %></p>
-
 <!-- START RS Widget -->
-<div class="row">
-    <div class="col-md-8 dashboard-details">
-        <form action="<%= response_sets_url %>">
-            <div class="row">
-                <div class="col-md-12">
-                    <br>
-                    <div class="input-group">
-                        <input type="text" id="search" name="search" class="form-control" placeholder="Search Response Sets...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <div id="response_set_list" class="response-set-list">
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
+  <div class="col-md-8 dashboard-details">
+    <form action="<%= response_sets_url %>">
+      <div class="row">
+        <div class="col-md-12">
+          <br>
+          <div class="input-group">
+            <input type="text" id="search" name="search" class="form-control" placeholder="Search Response Sets...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">Go!</button>
+            </span>
+          </div>
         </div>
-        <% if user_signed_in? %>
-        <%= link_to 'New Response Set', new_response_set_path , class:"btn btn-default"%>
-        <% end %>
-    </div>
+      </div>
+    </form>
 
+    <div id="response_set_list" class="response-set-list">
+    </div>
+    <% if user_signed_in? %>
+      <%= link_to 'New Response Set', new_response_set_path , class:"btn btn-default"%>
+    <% end %>
+  </div>
 </div>
 
 <script type="application/json" id="response-set-json">

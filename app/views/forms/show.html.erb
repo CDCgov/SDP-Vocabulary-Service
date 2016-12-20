@@ -1,26 +1,27 @@
-<p id="notice"><%= notice %></p>
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
+  <p>
+    <strong>Name:</strong>
+    <%= @form.name %>
+  </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @form.name %>
-</p>
-
-<p>
-  <strong>Questions:</strong><br>
-  <% @form.questions.zip(@form.response_sets).each do |q, rs| %>
-    <%= link_to q.content, question_path(q) %><br>
-    <% if rs %>
-      -   <%= link_to rs.name, response_set_path(rs) %><br>
+  <p>
+    <strong>Questions:</strong><br>
+    <% @form.questions.zip(@form.response_sets).each do |q, rs| %>
+      <%= link_to q.content, question_path(q) %><br>
+      <% if rs %>
+        -   <%= link_to rs.name, response_set_path(rs) %><br>
+      <% end %>
     <% end %>
-  <% end %>
-</p>
+  </p>
 
-<p>
-  <strong>Created By:</strong>
-  <%= @form.created_by.email if @form.created_by.present? %>
-</p>
+  <p>
+    <strong>Created By:</strong>
+    <%= @form.created_by.email if @form.created_by.present? %>
+  </p>
 
-<%= render partial: 'shared/version_info', locals: {versionable: @form} %>
+  <%= render partial: 'shared/version_info', locals: {versionable: @form} %>
 
-<%= link_to 'Revise', revise_form_path(@form) %> |
-<%= link_to 'Back', forms_path %>
+  <%= link_to 'Revise', revise_form_path(@form) %> |
+  <%= link_to 'Back', forms_path %>
+</div>

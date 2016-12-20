@@ -1,10 +1,11 @@
 
 .analytics-group {
-  margin-bottom: 14px;
+  margin-top: 14px;
+  margin-bottom: 20px;
   height: 150px;
   text-align: center;
   border: 1px solid $light-gray;
-} 
+}
 
 .analytics-list-group {
   @extend .list-group;
@@ -18,7 +19,9 @@
   display: table-cell;
   width: 30%; 
   color: $cdc-blue;
+  border: none;
   border-left: solid 1px $light-gray;
+  border-bottom: solid 1px $light-gray;
   height: 150px;
   &:first-child {
     border-left: none;
@@ -33,12 +36,10 @@
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 4px;
-  
 }
 
 .item-title {
   font-size: 14px;
   color: $dark-gray;
   margin-top: 4px;
-  
 }
