@@ -1,6 +1,6 @@
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and \
-the author "([^"]*)" and with the Responses (.+)$/) do |set_name, desc, author, response_values|
-  set = ResponseSet.create!(name: set_name, description: desc, author: author, version: 1)
+with the Responses (.+)$/) do |set_name, desc, response_values|
+  set = ResponseSet.create!(name: set_name, description: desc, version: 1)
   response_values.split(', ').each do |value|
     Response.create!(value: value, response_set_id: set['id'])
   end
