@@ -1,0 +1,11 @@
+@media print {
+  nav {
+    display:none;
+  }
+  footer {
+    display:none;
+  }
+  div.no-print {
+    display:none;
+  }
+}
