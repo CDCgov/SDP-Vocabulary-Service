@@ -1,25 +1,25 @@
 .button {
-	@extend .btn;
-	border-radius: 0px;
-	font-weight: bold;
-	font-size: 14px;
-	padding: 10px 16px;
-	border: 0px;
-	.icon {
-		margin-right: 10px;
-	}	
+  @extend .btn;
+  border-radius: 0px;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 10px 16px;
+  border: 0px;
+  .icon {
+    margin-right: 10px;
+  } 
 }
 
 .button-action {
-	@extend .btn-primary;
-	background-color: $cdc-blue;	
+  @extend .btn-primary;
+  background-color: $cdc-blue;  
 }
 
 .button-submit {
-	@extend .btn-success;
-	background-color: $cdc-green;	
+  @extend .btn-success;
+  background-color: $cdc-green; 
 }
 
 .button-disabled {
-	background-color: gray;
+  background-color: gray;
 }
