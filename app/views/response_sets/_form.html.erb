@@ -69,6 +69,6 @@
 </div>
 
 <script type="application/json" id="responses-json">
-  <%= raw response_set.responses.to_json %>
+  <%= raw response_set.responses.map{|r| {code: r.value, display: r.display_name, system: r.code_system}}.to_json %>
 </script>
 <%= javascript_include_tag *webpack_asset_paths('response_set', extension: 'js') %>

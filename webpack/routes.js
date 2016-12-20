@@ -1,5 +1,16 @@
-var routes = require("./_routes.js");
+import { camelCase } from './camelcase';
+import routes from './_routes';
+
+let exportRoutes = routes;
 if(routes.Routes){
-  routes = routes.Routes;
+  exportRoutes = routes.Routes;
 }
-export default routes;
+
+Object.keys(exportRoutes).forEach((k) => {
+  if (k.endsWith('_path')) {
+    const camelRouteName = camelCase(k);
+    exportRoutes[camelRouteName] = exportRoutes[k];
+  }
+});
+
+export default exportRoutes;

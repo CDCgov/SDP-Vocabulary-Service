@@ -11,8 +11,8 @@ describe('ResponseSetTable', () => {
   let component, componentInstance;
 
   beforeEach(() => {
-    const initialResponses = [{value: 'M', code_system: 'Gender', display_name: 'Male'},
-                              {value: 'F', code_system: 'Gender', display_name: 'Female'}];
+    const initialResponses = [{code: 'M', system: 'Gender', display: 'Male'},
+                              {code: 'F', system: 'Gender', display: 'Female'}];
     componentInstance =  TestUtils.renderIntoDocument(<ResponseSetTable initialResponses={initialResponses}/>);
     component = $(ReactDOM.findDOMNode(componentInstance));
   });
@@ -24,7 +24,7 @@ describe('ResponseSetTable', () => {
   it('should update the state when a value is changed', () => {
     const input = component.find("input[value=M]")[0];
     TestUtils.Simulate.change(input, {target: {value: 'different'}});
-    expect(componentInstance.state.responses[0].value).to.equal('different');
+    expect(componentInstance.state.responses[0].code).to.equal('different');
   });
 
   it('should remove a row', () => {

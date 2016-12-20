@@ -14,7 +14,7 @@ const QuestionItem = ({question, responseSets, index, removeQuestion}) => {
           <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={question.id}/>
           <select className="col-md-12" aria-label="Response Set IDs" name='response_set_ids[]' id='response_set_ids'>
             {responseSets.map((r, i) => {
-             return (
+              return (
                 <option value={r.id} key={i} >{r.name}</option>
               );
             })}
