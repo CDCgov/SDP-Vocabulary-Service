@@ -7,10 +7,10 @@
 
   <p>
     <strong>Questions:</strong><br>
-    <% @form.questions.zip(@form.response_sets).each do |q, rs| %>
-      <%= link_to q.content, question_path(q) %><br>
-      <% if rs %>
-        -   <%= link_to rs.name, response_set_path(rs) %><br>
+    <% @form.form_questions.each do |fq| %>
+      <%= link_to fq.question.content, question_path(fq.question) %><br>
+      <% if fq.response_set %>
+      -  <%= link_to fq.response_set.name, response_set_path(fq.response_set) %><br>
       <% end %>
     <% end %>
   </p>
@@ -20,8 +20,12 @@
     <%= @form.created_by.email if @form.created_by.present? %>
   </p>
 
+<div class="no-print">
   <%= render partial: 'shared/version_info', locals: {versionable: @form} %>
 
-  <%= link_to 'Revise', revise_form_path(@form) %> |
+  <% if user_signed_in? & @form.most_recent? %>
+    <%= link_to 'Revise', revise_form_path(@form) %> |
+  <% end %>
+  <%= link_to 'Export', export_form_path(@form) %> |
   <%= link_to 'Back', forms_path %>
 </div>

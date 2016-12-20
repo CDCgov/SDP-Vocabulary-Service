@@ -30,6 +30,11 @@ class FormsController < ApplicationController
     @response_sets = ResponseSet.latest_versions
   end
 
+  # GET /forms/1/export
+  def export
+    @form = Form.find(params[:id])
+  end
+
   # POST /forms
   # POST /forms.json
   def create

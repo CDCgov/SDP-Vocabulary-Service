@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root to: 'dashboard#index'
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
+    get :export, on: :member
     get :revise, on: :member
   end
   resources :question_response_sets

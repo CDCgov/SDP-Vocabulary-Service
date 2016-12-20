@@ -10,6 +10,10 @@ Rails:
 Rails/HasAndBelongsToMany:
   Exclude:
     - 'app/models/role.rb'
+Metrics/BlockLength:
+  Exclude:
+    - 'config/routes.rb'
+    - 'lib/tasks/admin.rake'
 Metrics/LineLength:
   Max: 150
   Exclude:
