@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212180833) do
+ActiveRecord::Schema.define(version: 20161220201422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,10 +50,11 @@ ActiveRecord::Schema.define(version: 20161212180833) do
   create_table "forms", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "version_independent_id"
-    t.integer  "version",                default: 1
+    t.integer  "version",                          default: 1
+    t.string   "control_number",         limit: 9
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
