@@ -1,7 +1,7 @@
 
 .analytics-group {
   margin-top: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
   height: 150px;
   text-align: center;
   border: 1px solid $light-gray;
@@ -19,7 +19,9 @@
   display: table-cell;
   width: 30%; 
   color: $cdc-blue;
+  border: none;
   border-left: solid 1px $light-gray;
+  border-bottom: solid 1px $light-gray;
   height: 150px;
   &:first-child {
     border-left: none;
