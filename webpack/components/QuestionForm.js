@@ -60,12 +60,18 @@ DropTarget.propTypes = {
 let DroppableTarget = Droppable(DropTarget, onDrop);
 
 let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], routes, questionTypes = [], responseTypes = []}) => {
+  let submitText = "Create Question";
+  let titleText = "New Question";
+  if (question.version_independent_id) {
+    submitText = "Revise Question";
+    titleText = "Revise Question";
+  }
   return (
     <div className="row">
       <div className="col-md-12 basic-bg">
         <div className="panel panel-default">
           <div className="panel-heading">
-            <h3 className="panel-title">New Question</h3>
+            <h3 className="panel-title">{titleText}</h3>
           </div>
           <div className="panel-body">
           <div className="row">
@@ -107,7 +113,7 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
                     })}
                   </div>
               </div>
-              <div className="col-md-6 drop-target">
+              <div className="col-md-6 drop-target selected_response_sets">
                 <label htmlFor="selected_response_sets">Selected</label>
                 <DroppableTarget selectedResponseSets={selectedResponseSets} routes={routes}/>
               </div>
@@ -119,7 +125,7 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
 
           <div className="panel-footer">
             <div className="actions form-group">
-              <input type="submit" name="commit" value="Create Question" className="btn btn-default" data-disable-with="Create Question" />
+              <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
               <a className="btn btn-default" href={routes.questions_path()}>Cancel</a>
             </div>
           </div>
