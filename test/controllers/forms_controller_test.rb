@@ -60,6 +60,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     get form_url(@form, format: :json)
     assert_response :success
     assert_response_schema('forms/show_default.json')
+  end
 
   private
 
