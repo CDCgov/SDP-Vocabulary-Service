@@ -4,10 +4,10 @@ one:
   name: MyString
   version: 1
   version_independent_id: F-1
-  created_by_id: 1
+  created_by_id: 100
 
 two:
   name: MyString
-  created_by_id: 1
+  created_by_id: 100
   version: 1
   version_independent_id: F-2

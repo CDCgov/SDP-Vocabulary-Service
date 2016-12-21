@@ -12,4 +12,8 @@ admin:
 not_admin:
   email: not_admin@example.com
   admin: false
-# column: value
+
+not_admin:
+  id: 100
+  email: creator@example.com
+  admin: false
