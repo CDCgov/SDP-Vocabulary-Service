@@ -64,11 +64,12 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   private
 
   def valiedate_redcap(xml)
-    doc = Nokogiri::XML(xml)
+    doc = Nokogiri::XML::Document.parse(xml)
     doc.root.add_namespace_definition('odm', 'http://www.cdisc.org/ns/odm/v1.3')
     doc.root.add_namespace_definition('ds', 'http://www.w3.org/2000/09/xmldsig#')
     doc.root.add_namespace_definition('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
     doc.root.add_namespace_definition('redcap', 'https://projectredcap.org')
     assert doc
+    assert doc.at_xpath("/odm:ODM/odm:Study[@OID='Project.Test']")
   end
 end
