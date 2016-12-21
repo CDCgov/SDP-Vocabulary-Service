@@ -66,6 +66,10 @@ class FormsController < ApplicationController
   # DELETE /forms/1
   # DELETE /forms/1.json
   def redcap
+    xml = render_to_string 'forms/redcap.xml', layout: false
+    send_data(xml, filename: "#{@form.name.underscore}_redcap.xml",
+                   type: 'application/xml',
+                   status: 200)
   end
 
   private

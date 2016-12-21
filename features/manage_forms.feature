@@ -81,9 +81,19 @@ Feature: Manage Forms
     And I click on the button to add the Question "What is your gender?"
     And I select the "Gender Partial" option in the "response_set_ids" list
     And I click on the "Save" button
-    And I click on the "Export" link
-    Then I should see "Form Name: Test Form"
-    And I should see "What is your gender?"
-    And I should not see "Gender Partial"
-    And I should see "Male"
-    And I should see "Female"
+    And I click on the "Print" link
+
+
+    Scenario: Export Form to Redcap
+      Given I have a Form with the name "Test Form"
+      And I have a Question with the content "What is your gender?" and the type "MC"
+      And I have a Response Set with the name "Gender Partial" and the description "Gender example" and with the Responses Male, Female
+      And I am logged in as test_author@gmail.com
+      When I go to the list of Forms
+      And I click on the "New Form" link
+      And I fill in the "form_name" field with "Test Form"
+      And I click on the button to add the Question "What is your gender?"
+      And I select the "Gender Partial" option in the "response_set_ids" list
+      And I click on the "Save" button
+      And I click on the "Export to Redcap" link
+      Then I should get a download with the filename "test form_redcap.xml"

@@ -40,7 +40,7 @@
      <% if fq.response_set %>
       <CodeList OID="question_<%=fq.question.id%>.choices" Name="question_<%=fq.question.id%>" DataType="text" redcap:Variable="question_<%=fq.question.id%>">
         <% fq.response_set.responses.each do |response| %>
-        <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.empty? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
+        <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.blank? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
         <% end %>
       </CodeList>
     <% end %>
