@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212180833) do
+ActiveRecord::Schema.define(version: 20161220201422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,10 +50,11 @@ ActiveRecord::Schema.define(version: 20161212180833) do
   create_table "forms", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "version_independent_id"
-    t.integer  "version",                default: 1
+    t.integer  "version",                          default: 1
+    t.string   "control_number",         limit: 9
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -95,9 +96,9 @@ ActiveRecord::Schema.define(version: 20161212180833) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.boolean  "coded"
-    t.integer  "parent_id"
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
+    t.integer  "parent_id"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
@@ -126,22 +127,6 @@ ActiveRecord::Schema.define(version: 20161212180833) do
     t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
-  end
-
-  create_table "taggings", force: :cascade do |t|
-    t.integer  "tag_id"
-    t.string   "taggable_type"
-    t.integer  "taggable_id"
-    t.string   "tagger_type"
-    t.integer  "tagger_id"
-    t.string   "context",       limit: 128
-    t.datetime "created_at"
-    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string "name"
-    t.index ["name"], name: "index_tags_on_name", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|

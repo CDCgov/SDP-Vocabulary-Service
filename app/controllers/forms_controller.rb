@@ -16,17 +16,16 @@ class FormsController < ApplicationController
   # GET /forms/new
   def new
     @form = Form.new
-    @questions = params[:search] ? Question.search(params[:search]) : Question.all
-    @response_sets = ResponseSet.latest_versions
+    load_supporting_resources_for_editing
   end
 
   # GET /forms/1/revise
   def revise
+    load_supporting_resources_for_editing
+
     original_form = Form.find(params[:id])
     @form = original_form.build_new_revision
-    @questions = params[:search] ? Question.search(params[:search]) : Question.all
     @selected_questions = original_form.questions
-    @response_sets = ResponseSet.latest_versions
   end
 
   # GET /forms/1/export
@@ -46,6 +45,7 @@ class FormsController < ApplicationController
         format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
+        load_supporting_resources_for_editing
         format.html { render :new }
         format.json { render json: @form.errors, status: :unprocessable_entity }
       end
@@ -65,6 +65,11 @@ class FormsController < ApplicationController
 
   private
 
+  def load_supporting_resources_for_editing
+    @questions = params[:search] ? Question.search(params[:search]) : Question.all
+    @response_sets = ResponseSet.latest_versions
+  end
+
   def save_message(form)
     action = form.version > 1 ? 'revised' : 'created'
     "Form was successfully #{action}."
@@ -80,6 +85,7 @@ class FormsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params
-    params.require(:form).permit(:name, :user_id, :search, :version, :version_independent_id)
+    params.require(:form).permit(:name, :user_id, :search, :version,
+                                 :version_independent_id, :control_number)
   end
 end

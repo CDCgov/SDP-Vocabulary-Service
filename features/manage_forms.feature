@@ -40,11 +40,26 @@ Feature: Manage Forms
     When I go to the list of Forms
     And I click on the "New Form" link
     And I fill in the "form_name" field with "Test Form"
+    And I fill in the "form_control_number" field with "1234-1234"
     And I click on the button to add the Question "What is your gender?"
     Then I select the "Gender Full" option in the "response_set_ids" list
     And I click on the "Save" button
     Then I should see "Form was successfully created."
     And I should see "What is your gender?"
+
+  Scenario: An invalid control number should not allow save
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Forms
+    And I click on the "New Form" link
+    And I fill in the "form_name" field with "Test Form"
+    And I fill in the "form_control_number" field with "1234"
+    And I click on the button to add the Question "What is your gender?"
+    Then I select the "Gender Full" option in the "response_set_ids" list
+    And I click on the "Save" button
+    Then I should see "error prohibited this form from being saved"
+    And I should see "Control number must be a valid OMB Control Number"
 
   Scenario: Destroy Form
     Given I have a Form with the name "Test Form"

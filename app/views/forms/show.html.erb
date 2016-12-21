@@ -4,6 +4,12 @@
     <strong>Name:</strong>
     <%= @form.name %>
   </p>
+  <% if @form.omb_approved? %>
+  <p>
+    <strong>OMB Control Number:</strong>
+    <%= @form.control_number %>
+  </p>
+  <% end %>
 
   <p>
     <strong>Questions:</strong><br>
