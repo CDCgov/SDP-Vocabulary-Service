@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20161220201422) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+<<<<<<< 9d96ba81df1e77784e10cfaf99773dbc37c56d0e
   create_table "authentications", force: :cascade do |t|
     t.string   "provider",   null: false
     t.string   "uid",        null: false
@@ -39,6 +40,8 @@ ActiveRecord::Schema.define(version: 20161220201422) do
     t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
+=======
+>>>>>>> Added drag and drop to question form
   create_table "form_questions", force: :cascade do |t|
     t.integer  "form_id"
     t.integer  "question_id"
@@ -157,7 +160,6 @@ ActiveRecord::Schema.define(version: 20161220201422) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
-  add_foreign_key "authentications", "users"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
