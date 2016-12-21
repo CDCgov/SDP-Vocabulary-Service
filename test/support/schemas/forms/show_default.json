@@ -1,0 +1,11 @@
+{
+  "properties": {
+    "id" : { "type" : "number" },
+    "name" : { "type" : "string" },
+    "created_at" : { "type" : "string", "format": "date-time" },
+    "updated_at" : { "type" : "string", "format": "date-time" },
+    "user_id" : { "type" : "string" },
+    "url" : {"type": "string"}
+  },
+  "required": ["id","created_at","url"]
+}
