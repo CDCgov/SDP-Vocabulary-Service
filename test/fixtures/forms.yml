@@ -2,12 +2,12 @@
 
 one:
   name: MyString
+  created_by: not_admin
   version: 1
   version_independent_id: F-1
-  created_by_id: 100
 
 two:
   name: MyString
-  created_by_id: 100
+  created_by: not_admin
   version: 1
   version_independent_id: F-2

@@ -12,8 +12,3 @@ admin:
 not_admin:
   email: not_admin@example.com
   admin: false
-
-not_admin:
-  id: 100
-  email: creator@example.com
-  admin: false
