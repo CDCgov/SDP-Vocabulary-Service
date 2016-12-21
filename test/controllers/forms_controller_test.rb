@@ -43,4 +43,10 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to forms_url
   end
+
+  test 'should respond to json format' do
+    get form_url(@form, format: :json)
+    assert_response :success
+    assert_response_schema('forms/show_default.json')
+  end
 end
