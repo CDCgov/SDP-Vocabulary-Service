@@ -8,8 +8,8 @@ import {
 export function addComment(commentableType, commentableId, comment, parentId) {
   return {
     type: ADD_COMMENT,
-    payload: axios.post(routes.comments_path(), {
-      authenticity_token: getCSRFToken(),
+    payload: axios.post(routes.commentsPath(), {
+      authenticityToken: getCSRFToken(),
       comment: {
         commentableType: commentableType,
         commentableId: commentableId,
@@ -25,7 +25,7 @@ export function addComment(commentableType, commentableId, comment, parentId) {
 export function fetchComments(commentableType, commentableId) {
   return {
     type: FETCH_COMMENTS,
-    commentable_type: commentableType,
+    commentableType: commentableType,
     commentableId: commentableId,
     payload: axios.get(routes.comments_path(), {
       params: {

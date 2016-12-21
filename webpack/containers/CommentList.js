@@ -33,9 +33,9 @@ class CommentList extends Component {
                         comment={comment}
                         addComment={this.props.addComment}
                         comments={this.props.comments} />;
-                      });
-      }
+      });
     }
+  }
 }
 
 function mapDispatchToProps(dispatch) {

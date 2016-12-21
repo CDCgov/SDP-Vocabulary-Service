@@ -10,20 +10,20 @@ export default class CommentForm extends Component {
             </div>
             <button type="submit" className="btn btn-default">Send</button>
           </form>
-        );
-      }
+    );
+  }
 
-    submit(data){
-      data.preventDefault();
-      this.props.addComment(this.props.commentableType, this.props.commentableId, this.comment.value, this.props.parentId);
-      this.comment.value = "";
-    }
+  submit(data){
+    data.preventDefault();
+    this.props.addComment(this.props.commentableType, this.props.commentableId, this.comment.value, this.props.parentId);
+    this.comment.value = "";
+  }
 
 }
 
 CommentForm.propTypes = {
-    addComment: PropTypes.func.isRequired,
-    parentId: PropTypes.number,
-    commentableType: PropTypes.string.isRequired,
-    commentableId: PropTypes.number.isRequired
+  addComment: PropTypes.func.isRequired,
+  parentId: PropTypes.number,
+  commentableType: PropTypes.string.isRequired,
+  commentableId: PropTypes.number.isRequired
 };

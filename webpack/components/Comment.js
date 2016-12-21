@@ -5,9 +5,9 @@ import CommentForm from './CommentForm';
 
 class Comment extends Component {
 
-   constructor(props){
-     super(props);
-   }
+  constructor(props){
+    super(props);
+  }
 
   render() {
     return (
@@ -36,7 +36,7 @@ class Comment extends Component {
                   <a className="" ref={(input) => this.collapse = input}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls="collapseExample">reply</a>
                 </span>
                 <div className="collapse" id={"replyComment_"+this.props.comment.id}>
-                 <CommentForm ref={(input) => { this.form = input; }}
+                 <CommentForm ref={(input) => this.form = input}
                               parentId={this.props.comment.id}
                               commentableType={this.props.comment.commentableType}
                               commentableId={this.props.comment.commentableId}
