@@ -1,1 +1,10 @@
-<div class="row basic-bg">  <p id="notice"><%= notice %></p>  <h1>Forms</h1>    <div id="form_list"></div>    <%= link_to 'New Form', new_form_path %></div><script type="application/json" id="forms-json">  <%= raw @forms.to_json =%></script><%= javascript_include_tag *webpack_asset_paths('form_list', extension: 'js') %>
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
+  <h1>Forms</h1>
+  <div id="form_list"></div>
+  <%= link_to 'New Form', new_form_path %>
+</div>
+<script type="application/json" id="forms-json">
+  <%= raw @forms.to_json =%>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('form_list', extension: 'js') %>
