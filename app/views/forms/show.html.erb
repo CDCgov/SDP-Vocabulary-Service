@@ -30,9 +30,9 @@
   <%= render partial: 'shared/version_info', locals: {versionable: @form} %>
 
   <% if user_signed_in? & @form.most_recent? %>
-    <%= link_to 'Revise', revise_form_path(@form) %> |
+    <%= link_to 'Revise', revise_form_path(@form), class: "btn btn-default"  %>
   <% end %>
-  <a href="" id="Print" onclick="javascript:printJS({printable: '<%= export_form_path(@form) %>'})">Print</a>  |
-  <%= link_to 'Export to Redcap', redcap_form_path(@form) %>
-  <%= link_to 'Back', forms_path %>
+  <button class="btn btn-default" onclick="javascript:printJS({printable: '<%= export_form_path(@form) %>'})">Print</button>  
+  <%= link_to 'Export to Redcap', redcap_form_path(@form), class: "btn btn-default"  %>
+  <%= link_to 'Back', forms_path, class: "btn btn-default"  %>
 </div>
