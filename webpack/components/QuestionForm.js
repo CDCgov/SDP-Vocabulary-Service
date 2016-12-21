@@ -4,7 +4,7 @@ import ResponseSetWidget from './ResponseSetWidget';
 
 
 let setData = function(){
-  return {"json/responseSet": JSON.stringify(this.props.response_set)};
+  return {"json/responseSet": JSON.stringify(this.props.responseSet)};
 };
 
 let DraggableResponseSet = Draggable(ResponseSetWidget, setData);
@@ -38,7 +38,7 @@ class DropTarget extends Component {
         return (
         <div key={i}>
         <i className='pull-right fa fa-close' onClick={() => removeResponseSet(rs.id)}/>
-        <DraggableResponseSet  response_set={rs} routes={routes}/>
+        <DraggableResponseSet  responseSet={rs} routes={routes}/>
         </div>);
       })}
       <select readOnly={true} value={this.state.selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
@@ -103,7 +103,7 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
                 <label htmlFor="linked_response_sets">Response Sets</label>
                   <div name="linked_response_sets">
                     {responseSets.map((rs, i) => {
-                      return <DraggableResponseSet key={i} response_set={rs} routes={routes}/>;
+                      return <DraggableResponseSet key={i} responseSet={rs} routes={routes}/>;
                     })}
                   </div>
               </div>
