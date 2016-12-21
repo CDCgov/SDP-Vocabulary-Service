@@ -10,12 +10,14 @@ let setData = function(){
 let DraggableResponseSet = Draggable(ResponseSetWidget, setData);
 
 let onDrop = (evt, self) => {
-    let rs = JSON.parse(evt.dataTransfer.getData("json/responseSet"));
-    let { selectedResponseSets } = self.state;
-    if(!selectedResponseSets.find((r) => {return r.id == rs.id;})) {
-      selectedResponseSets.push(rs);
-      self.setState({selectedResponseSets});
-    }
+  let rs = JSON.parse(evt.dataTransfer.getData("json/responseSet"));
+  let { selectedResponseSets } = self.state;
+  if(!selectedResponseSets.find((r) => {
+    return r.id == rs.id;
+  })) {
+    selectedResponseSets.push(rs);
+    self.setState({selectedResponseSets});
+  }
 };
 
 
