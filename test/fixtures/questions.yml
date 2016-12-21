@@ -1,21 +1,20 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   content: What is your gender?
-  created_by_id: 1
+  created_by: admin
   question_type: one
   version: 1
   version_independent_id: Q-1
 
 two:
   content: What is another question example?
-  created_by_id: 1
+  created_by: admin
   question_type: one
   version_independent_id: Q-2
 
 three:
   content: What is another question example?
-  created_by_id: 1
+  created_by: admin
   question_type: one
   version: 2
   version_independent_id: Q-2

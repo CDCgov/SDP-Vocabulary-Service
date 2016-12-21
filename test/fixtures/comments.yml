@@ -1,0 +1,24 @@
+q_one:
+  comment: Is this the best comment?
+  user: admin
+  commentable: three (Question)
+
+q_two:
+  comment: OR is this the best comment?
+  user: admin
+  commentable: three (Question)
+
+f_one:
+  comment:  is this the best form comment?
+  user: admin
+  commentable: one (Form)
+
+f_two:
+  comment: OR is this the best form comment?
+  user: admin
+  commentable: one (Form)
+
+r_one:
+  comment: OR is this the best form comment?
+  user: admin
+  commentable: one (ResponseSet)

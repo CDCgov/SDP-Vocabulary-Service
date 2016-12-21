@@ -1,5 +1,6 @@
 class Form < ApplicationRecord
   include Versionable
+  acts_as_commentable
 
   has_many :form_questions
   has_many :questions, through: :form_questions

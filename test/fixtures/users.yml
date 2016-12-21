@@ -7,8 +7,13 @@
 admin:
   email: admin@example.com
   admin: true
+  first_name: "Super"
+  last_name: "Admin"
 # column: value
-#
+
 not_admin:
   email: not_admin@example.com
   admin: false
+  first_name: "Ordinary"
+  last_name: "User"
+# column: value

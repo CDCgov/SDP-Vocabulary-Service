@@ -15,6 +15,30 @@ ActiveRecord::Schema.define(version: 20161212180833) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "authentications", force: :cascade do |t|
+    t.string   "provider",   null: false
+    t.string   "uid",        null: false
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "title",            limit: 50, default: ""
+    t.integer  "parent_id"
+    t.text     "comment"
+    t.string   "commentable_type"
+    t.integer  "commentable_id"
+    t.integer  "user_id"
+    t.string   "role",                        default: "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
+    t.index ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
+  end
+
   create_table "form_questions", force: :cascade do |t|
     t.integer  "form_id"
     t.integer  "question_id"
@@ -71,9 +95,9 @@ ActiveRecord::Schema.define(version: 20161212180833) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.boolean  "coded"
+    t.integer  "parent_id"
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
-    t.integer  "parent_id"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
@@ -104,6 +128,22 @@ ActiveRecord::Schema.define(version: 20161212180833) do
     t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.string   "taggable_type"
+    t.integer  "taggable_id"
+    t.string   "tagger_type"
+    t.integer  "tagger_id"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.index ["name"], name: "index_tags_on_name", unique: true, using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
@@ -120,6 +160,8 @@ ActiveRecord::Schema.define(version: 20161212180833) do
     t.string   "provider"
     t.string   "uid"
     t.boolean  "admin",                  default: false
+    t.string   "first_name"
+    t.string   "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
@@ -130,6 +172,7 @@ ActiveRecord::Schema.define(version: 20161212180833) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
+  add_foreign_key "authentications", "users"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"

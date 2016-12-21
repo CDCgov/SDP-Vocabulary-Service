@@ -1,5 +1,4 @@
 class FormsController < ApplicationController
-  before_action :set_form, only: [:show, :edit, :destroy]
   load_and_authorize_resource
 
   # GET /forms
@@ -77,11 +76,6 @@ class FormsController < ApplicationController
         FormQuestion.create(form_id: form_id, question_id: qid, response_set_id: rsid)
       end
     end
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_form
-    @form = Form.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
