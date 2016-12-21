@@ -42,7 +42,6 @@ Feature: Manage Questions
     And I drag the "Gender Partial" option to the "Selected Response Sets" list
     And I select the "Response Set" option in the "Primary Response Type" list
     And I click on the "Revise Question" button
-    Then I should see "Question was successfully revised."
     And I should see "What is your favorite color?"
 
   Scenario: Create New Question from List
@@ -54,7 +53,7 @@ Feature: Manage Questions
     And I click on the "New Question" link
     And I fill in the "Question" field with "What is your favorite color?"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
-    And I select the "Multiple Choice" option in the "Question Type" list
+    And I select the "Multiple Choice" option in the "Type" list
     And I select the "Integer" option in the "Primary Response Type" list
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
