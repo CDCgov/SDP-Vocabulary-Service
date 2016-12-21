@@ -1,41 +1,59 @@
 <div class="basic-bg">
   <div>
-    <h3>Account Details </h3>
-    <dl>
-
-    </dl>
+    <h3>Account Details
+    </h3>
+    <dl></dl>
   </div>
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h1 class='panel-title'>Edit <%= resource_name.to_s.humanize %></h1>
+      <h1 class='panel-title'>Edit
+        <%= resource_name.to_s.humanize %></h1>
     </div>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= devise_error_messages! %>
 
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class:"form-horizontal") do |f| %>
+    <%= devise_error_messages! %>
+    <fieldset>
       <div class="field">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password %>
-        <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %><br />
-        <%= f.password_field :password, autocomplete: "off" %>
+        <%= f.label :first_name, class: "control-label"%>
+        <%= f.text_field :first_name, autofocus: false , class:"form-control input-lg" %>
       </div>
 
       <div class="field">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        <%= f.label :last_name, class: "control-label"%>
+        <%= f.text_field :last_name, autofocus: false , class:"form-control input-lg" %>
       </div>
 
-      <div class="actions">
-        <%= f.submit "Save", class: 'btn btn-default' %>
-        <%= link_to "Back", "javascript:history.back()", class: 'btn btn-default' %>
-
+      <div class="control-group">
+        <%= f.label :current_password, "Current Password", class: "control-label"%>
+        <div class="controls">
+          <%= f.password_field :current_password, autocomplete: "off"  , placeholder: "", class:"form-control input-lg" %>
+          <% if @minimum_password_length %>
+          <p class="help-block">Password should be at least
+            <%= @minimum_password_length %>
+            characters</p>
+          <% end %>
+        </div>
       </div>
+
+      <div class="control-group">
+        <%= f.label :password, "Password (Confirm)", class: "control-label" %>
+        <div class="controls">
+          <%= f.password_field :password, autocomplete: "off" , placeholder: "", class:"form-control input-lg" %>
+          <p class="help-block">Please confirm password</p>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <!-- Button -->
+        <div class="controls">
+          <%= f.submit "Update" , class: "btn btn-success"%>
+          <%= link_to "Back", "javascript:history.back()", class: 'btn btn-default' %>
+          <br>
+        </div>
+      </div>
+    </fieldset>
+
     <% end %>
   </div>
 </div>

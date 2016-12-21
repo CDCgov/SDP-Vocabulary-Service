@@ -23,8 +23,18 @@ if ENV['IN_BROWSER']
     sleep(ENV['PAUSE'].to_i || 0)
   end
 else
-  Capybara.default_driver    = :accessible_poltergeist
+
+  Capybara.register_driver :accessible_poltergeist_with_promises do |app|
+    libs_path = Rails.root.join('features/support/js_libs/')
+    driver = Capybara::Poltergeist::Driver.new(app,
+                                               extensions: %W(#{libs_path}promise.js))
+    adaptor = Capybara::Accessible::PoltergeistDriverAdapter.new
+    Capybara::Accessible.setup(driver, adaptor)
+  end
+
+  Capybara.default_driver    = :accessible_poltergeist_with_promises
   Capybara.javascript_driver = :accessible_poltergeist
+
 end
 
 Capybara.default_max_wait_time = 5

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root to: 'dashboard#index'
+
+  devise_for :users, controllers: { registrations: 'registrations' }
+
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :export, on: :member
@@ -10,8 +13,12 @@ Rails.application.routes.draw do
   resources :questions, except: [:edit, :update] do
     get :revise, on: :member
   end
+
+  resources :comments do
+    post :reply_to, on: :member
+  end
   resources :question_types
-  devise_for :users
+
   resources :response_sets, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :revise, on: :member
     get :extend, on: :member

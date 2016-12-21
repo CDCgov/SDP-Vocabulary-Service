@@ -1,5 +1,5 @@
 import { expect } from '../test_helper';
-import { questions } from '../../../webpack/reducers';
+import  questions  from '../../../webpack/reducers/questions';
 
 import {
   ADD_QUESTION,

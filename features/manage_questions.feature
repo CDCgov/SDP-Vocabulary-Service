@@ -19,6 +19,17 @@ Feature: Manage Questions
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Content: What is your gender?"
 
+  Scenario: Comment on a Question in Detail
+    Given I have a Question with the content "What is your gender?" and the type "MC"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    When I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    Then I should see "Content: What is your gender?"
+    And I fill in the "Your Comment" field with "Is This a Comment?"
+    And I click on the "Send" button
+    Then I should see "Is This a Comment?"
+
   Scenario: Revise Question
     Given I have a Question with the content "What is your gender?" and the type "MC"
     And I have a Response Set with the name "Gender Partial"
