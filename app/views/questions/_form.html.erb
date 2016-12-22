@@ -2,6 +2,9 @@
   <div class='container' id='react-container'>
   </div>
 
+  <%= f.hidden_field :version_independent_id %>
+  <%= f.hidden_field :version %>
+
 <% end %>
 <script type="application/json" id="question-json">
   <%= raw @question.to_json %>
