@@ -26,11 +26,9 @@ gem 'devise', '~>4.2.0'
 gem 'cancancan'
 gem 'rolify'
 gem 'omniauth'
-
 gem 'js-routes'
 gem 'acts_as_tree'
 gem 'acts_as_commentable'
-
 gem 'omniauth_openid_connect'
 
 group :development, :test do
