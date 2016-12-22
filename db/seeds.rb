@@ -7,8 +7,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # Setup single user for testing:
-user = User.new
-user.email = 'test_author@gmail.com'
-user.password = 'password'
-user.save
-Ability.new(user)
+ResponseType.create name: 'Response Set'
+ResponseType.create name: 'Free Text'
+ResponseType.create name: 'Date'
+ResponseType.create name: 'Integer'
+ResponseType.create name: 'Decimal'

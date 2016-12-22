@@ -1,0 +1,9 @@
+{
+  "properties": {
+    "url" : {"type" : "string"},
+    "version" : {"type" : "string"},
+    "name" : {"type" : "string"},
+    "description" : {"type" : "string"},
+    "expansion" : {"type" : "array"}
+  }
+}

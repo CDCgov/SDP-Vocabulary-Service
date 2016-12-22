@@ -17,7 +17,10 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal 2, Question.latest_versions.count
   end
 
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'search' do
+    assert 3, Question.count
+    found = Question.search('gender')
+    assert 1, found.count
+    assert 'What is your gender?', found.first.content
+  end
 end

@@ -1,6 +1,6 @@
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and \
-the author "([^"]*)" and with the Responses (.+)$/) do |set_name, desc, author, response_values|
-  set = ResponseSet.create!(name: set_name, description: desc, author: author, version: 1)
+with the Responses (.+)$/) do |set_name, desc, response_values|
+  set = ResponseSet.create!(name: set_name, description: desc, version: 1)
   response_values.split(', ').each do |value|
     Response.create!(value: value, response_set_id: set['id'])
   end
@@ -18,4 +18,8 @@ When(/^I click on the link to remove the Response "([^"]*)"$/) do |response_name
   node = find('input[value="' + response_name + '"]')
   tr = node.find(:xpath, '../..')
   tr.click_on('Remove')
+end
+When(/^I click on the menu link for the Response Set with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
+  object_id = attribute_to_id('Response Set', attribute, attribute_value)
+  page.find("#response_set_#{object_id}_menu").trigger('click')
 end

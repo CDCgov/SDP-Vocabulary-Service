@@ -1,0 +1,1466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redcap="https://projectredcap.org" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 schema/odm/ODM1-3-1.xsd" ODMVersion="1.3.1" FileOID="000-00-0000" FileType="Snapshot" Description="test" AsOfDateTime="2016-12-15T19:38:07" CreationDateTime="2016-12-15T19:38:07" SourceSystem="REDCap" SourceSystemVersion="6.18.1">
+<Study OID="Project.Test">
+<GlobalVariables>
+	<StudyName>test</StudyName>
+	<StudyDescription>This file contains the metadata, events, and data for REDCap project "test".</StudyDescription>
+	<ProtocolName>test</ProtocolName>
+	<redcap:RecordAutonumberingEnabled>1</redcap:RecordAutonumberingEnabled>
+	<redcap:CustomRecordLabel></redcap:CustomRecordLabel>
+	<redcap:SecondaryUniqueField></redcap:SecondaryUniqueField>
+	<redcap:SchedulingEnabled>0</redcap:SchedulingEnabled>
+	<redcap:Purpose>0</redcap:Purpose>
+	<redcap:PurposeOther></redcap:PurposeOther>
+	<redcap:ProjectNotes></redcap:ProjectNotes>
+</GlobalVariables>
+<MetaDataVersion OID="Metadata.Test_2016-12-15_1938" Name="test" redcap:RecordIdField="lab_id">
+	<FormDef OID="Form.id_shipping" Name="ID Shipping" Repeating="No" redcap:FormName="id_shipping">
+		<ItemGroupRef ItemGroupOID="id_shipping.lab_id" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="id_shipping.facility_name" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="id_shipping.secondtime_getsample" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="id_shipping.thirdtime_getsample" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="id_shipping.id_shipping_complete" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.pathology_review" Name="Pathology Review" Repeating="No" redcap:FormName="pathology_review">
+		<ItemGroupRef ItemGroupOID="pathology_review.tumor_origin" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="pathology_review.date_surgery" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_breast" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_prostate" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="pathology_review.clin_giag_colon" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_lung" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_others" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="pathology_review.pathology_review_complete" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.slide_information" Name="Slide Information" Repeating="No" redcap:FormName="slide_information">
+		<ItemGroupRef ItemGroupOID="slide_information.five_um_tumor_quant" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.tma_information" Name="TMA Information" Repeating="No" redcap:FormName="tma_information">
+		<ItemGroupRef ItemGroupOID="tma_information.tma_ca_pos1" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.slide_tracking" Name="Slide Tracking" Repeating="No" redcap:FormName="slide_tracking">
+		<ItemGroupRef ItemGroupOID="slide_tracking.pulling_date1" Mandatory="No"/>
+	</FormDef>
+	<ItemGroupDef OID="id_shipping.lab_id" Name="IDs" Repeating="No">
+		<ItemRef ItemOID="lab_id" Mandatory="No" redcap:Variable="lab_id"/>
+		<ItemRef ItemOID="trc_id" Mandatory="No" redcap:Variable="trc_id"/>
+		<ItemRef ItemOID="first_name" Mandatory="Yes" redcap:Variable="first_name"/>
+		<ItemRef ItemOID="middle_name" Mandatory="No" redcap:Variable="middle_name"/>
+		<ItemRef ItemOID="last_name" Mandatory="Yes" redcap:Variable="last_name"/>
+		<ItemRef ItemOID="suffix" Mandatory="No" redcap:Variable="suffix"/>
+		<ItemRef ItemOID="date_of_birth" Mandatory="No" redcap:Variable="date_of_birth"/>
+		<ItemRef ItemOID="age" Mandatory="No" redcap:Variable="age"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="id_shipping.facility_name" Name="Shipping Information" Repeating="No">
+		<ItemRef ItemOID="facility_name" Mandatory="No" redcap:Variable="facility_name"/>
+		<ItemRef ItemOID="facility_city" Mandatory="No" redcap:Variable="facility_city"/>
+		<ItemRef ItemOID="facility_state" Mandatory="No" redcap:Variable="facility_state"/>
+		<ItemRef ItemOID="receivedate" Mandatory="Yes" redcap:Variable="receivedate"/>
+		<ItemRef ItemOID="shipmethod" Mandatory="No" redcap:Variable="shipmethod"/>
+		<ItemRef ItemOID="trackingnumber" Mandatory="No" redcap:Variable="trackingnumber"/>
+		<ItemRef ItemOID="pathaccnumber" Mandatory="Yes" redcap:Variable="pathaccnumber"/>
+		<ItemRef ItemOID="otheraccnumber2" Mandatory="No" redcap:Variable="otheraccnumber2"/>
+		<ItemRef ItemOID="blk_no_received" Mandatory="No" redcap:Variable="blk_no_received"/>
+		<ItemRef ItemOID="stainedslide_received" Mandatory="No" redcap:Variable="stainedslide_received"/>
+		<ItemRef ItemOID="unstainedslide_received" Mandatory="No" redcap:Variable="unstainedslide_received"/>
+		<ItemRef ItemOID="return_needed" Mandatory="No" redcap:Variable="return_needed"/>
+		<ItemRef ItemOID="return_date" Mandatory="No" redcap:Variable="return_date"/>
+		<ItemRef ItemOID="return_tracking" Mandatory="No" redcap:Variable="return_tracking"/>
+		<ItemRef ItemOID="labcirculation_time" Mandatory="No" redcap:Variable="labcirculation_time"/>
+		<ItemRef ItemOID="followup_note" Mandatory="No" redcap:Variable="followup_note"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="id_shipping.secondtime_getsample" Name="If Receive Sample 2nd Time" Repeating="No">
+		<ItemRef ItemOID="secondtime_getsample" Mandatory="No" redcap:Variable="secondtime_getsample"/>
+		<ItemRef ItemOID="follow_up_needed2" Mandatory="No" redcap:Variable="follow_up_needed2"/>
+		<ItemRef ItemOID="collection_note2" Mandatory="No" redcap:Variable="collection_note2"/>
+		<ItemRef ItemOID="samefacasbefore" Mandatory="No" redcap:Variable="samefacasbefore"/>
+		<ItemRef ItemOID="facility_name2" Mandatory="No" redcap:Variable="facility_name2"/>
+		<ItemRef ItemOID="facility_city2" Mandatory="No" redcap:Variable="facility_city2"/>
+		<ItemRef ItemOID="facility_state2" Mandatory="No" redcap:Variable="facility_state2"/>
+		<ItemRef ItemOID="receivedate2" Mandatory="No" redcap:Variable="receivedate2"/>
+		<ItemRef ItemOID="shipmethod2" Mandatory="No" redcap:Variable="shipmethod2"/>
+		<ItemRef ItemOID="receivetracking2" Mandatory="No" redcap:Variable="receivetracking2"/>
+		<ItemRef ItemOID="pathaccnumber2" Mandatory="No" redcap:Variable="pathaccnumber2"/>
+		<ItemRef ItemOID="otheraccnumber" Mandatory="No" redcap:Variable="otheraccnumber"/>
+		<ItemRef ItemOID="block_received2" Mandatory="No" redcap:Variable="block_received2"/>
+		<ItemRef ItemOID="stainedslide_received2" Mandatory="No" redcap:Variable="stainedslide_received2"/>
+		<ItemRef ItemOID="unstainedslide_received2" Mandatory="No" redcap:Variable="unstainedslide_received2"/>
+		<ItemRef ItemOID="return_needed2" Mandatory="No" redcap:Variable="return_needed2"/>
+		<ItemRef ItemOID="returndate2" Mandatory="No" redcap:Variable="returndate2"/>
+		<ItemRef ItemOID="return_tracking2" Mandatory="No" redcap:Variable="return_tracking2"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="id_shipping.thirdtime_getsample" Name="If Receive Sample 3rd Time" Repeating="No">
+		<ItemRef ItemOID="thirdtime_getsample" Mandatory="No" redcap:Variable="thirdtime_getsample"/>
+		<ItemRef ItemOID="follow_up_needed3" Mandatory="No" redcap:Variable="follow_up_needed3"/>
+		<ItemRef ItemOID="collection_note3" Mandatory="No" redcap:Variable="collection_note3"/>
+		<ItemRef ItemOID="samefacilityasbefore2" Mandatory="No" redcap:Variable="samefacilityasbefore2"/>
+		<ItemRef ItemOID="facility_name3" Mandatory="No" redcap:Variable="facility_name3"/>
+		<ItemRef ItemOID="facility_city3" Mandatory="No" redcap:Variable="facility_city3"/>
+		<ItemRef ItemOID="facility_state3" Mandatory="No" redcap:Variable="facility_state3"/>
+		<ItemRef ItemOID="receivedate3" Mandatory="No" redcap:Variable="receivedate3"/>
+		<ItemRef ItemOID="shipmethod3" Mandatory="No" redcap:Variable="shipmethod3"/>
+		<ItemRef ItemOID="receivetracking3" Mandatory="No" redcap:Variable="receivetracking3"/>
+		<ItemRef ItemOID="pathaccnumber3" Mandatory="No" redcap:Variable="pathaccnumber3"/>
+		<ItemRef ItemOID="otheraccnumber3" Mandatory="No" redcap:Variable="otheraccnumber3"/>
+		<ItemRef ItemOID="block_received3" Mandatory="No" redcap:Variable="block_received3"/>
+		<ItemRef ItemOID="stainedslide_received3" Mandatory="No" redcap:Variable="stainedslide_received3"/>
+		<ItemRef ItemOID="unstainedslide_received3" Mandatory="No" redcap:Variable="unstainedslide_received3"/>
+		<ItemRef ItemOID="return_needed3" Mandatory="No" redcap:Variable="return_needed3"/>
+		<ItemRef ItemOID="returndate3" Mandatory="No" redcap:Variable="returndate3"/>
+		<ItemRef ItemOID="returntracking3" Mandatory="No" redcap:Variable="returntracking3"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="id_shipping.id_shipping_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="id_shipping_complete" Mandatory="No" redcap:Variable="id_shipping_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.tumor_origin" Name="Tumor Origin and Location" Repeating="No">
+		<ItemRef ItemOID="tumor_origin" Mandatory="Yes" redcap:Variable="tumor_origin"/>
+		<ItemRef ItemOID="specify_other_origin" Mandatory="No" redcap:Variable="specify_other_origin"/>
+		<ItemRef ItemOID="tumor_location" Mandatory="No" redcap:Variable="tumor_location"/>
+		<ItemRef ItemOID="tumor_location_colorectum" Mandatory="No" redcap:Variable="tumor_location_colorectum"/>
+		<ItemRef ItemOID="tumor_location_lung" Mandatory="No" redcap:Variable="tumor_location_lung"/>
+		<ItemRef ItemOID="other_location_lung" Mandatory="No" redcap:Variable="other_location_lung"/>
+		<ItemRef ItemOID="specify_other_location" Mandatory="No" redcap:Variable="specify_other_location"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.date_surgery" Name="Clinical Pathology Information" Repeating="No">
+		<ItemRef ItemOID="date_surgery" Mandatory="No" redcap:Variable="date_surgery"/>
+		<ItemRef ItemOID="age_at_surgery" Mandatory="No" redcap:Variable="age_at_surgery"/>
+		<ItemRef ItemOID="sex" Mandatory="No" redcap:Variable="sex"/>
+		<ItemRef ItemOID="pathol_acc_no" Mandatory="Yes" redcap:Variable="pathol_acc_no"/>
+		<ItemRef ItemOID="other_acc_no" Mandatory="No" redcap:Variable="other_acc_no"/>
+		<ItemRef ItemOID="block_tumor" Mandatory="No" redcap:Variable="block_tumor"/>
+		<ItemRef ItemOID="block_normal" Mandatory="No" redcap:Variable="block_normal"/>
+		<ItemRef ItemOID="block_metastatic" Mandatory="No" redcap:Variable="block_metastatic"/>
+		<ItemRef ItemOID="block_precancerous" Mandatory="No" redcap:Variable="block_precancerous"/>
+		<ItemRef ItemOID="invitrosize1" Mandatory="No" redcap:Variable="invitrosize1"/>
+		<ItemRef ItemOID="invitrosize2" Mandatory="No" redcap:Variable="invitrosize2"/>
+		<ItemRef ItemOID="invitrosize3" Mandatory="No" redcap:Variable="invitrosize3"/>
+		<ItemRef ItemOID="perineuralinvasion" Mandatory="No" redcap:Variable="perineuralinvasion"/>
+		<ItemRef ItemOID="vascular_invasion" Mandatory="No" redcap:Variable="vascular_invasion"/>
+		<ItemRef ItemOID="surgical_margin_cancer_pre" Mandatory="No" redcap:Variable="surgical_margin_cancer_pre"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.clin_diagn_breast" Name="For Breast Cancer Samples" Repeating="No">
+		<ItemRef ItemOID="clin_diagn_breast" Mandatory="No" redcap:Variable="clin_diagn_breast"/>
+		<ItemRef ItemOID="lab_diagn_breast" Mandatory="No" redcap:Variable="lab_diagn_breast"/>
+		<ItemRef ItemOID="if_ilc_subtype" Mandatory="No" redcap:Variable="if_ilc_subtype"/>
+		<ItemRef ItemOID="specify_if_other_type_br" Mandatory="No" redcap:Variable="specify_if_other_type_br"/>
+		<ItemRef ItemOID="clin_grade_breast" Mandatory="No" redcap:Variable="clin_grade_breast"/>
+		<ItemRef ItemOID="lab_grade_breast" Mandatory="No" redcap:Variable="lab_grade_breast"/>
+		<ItemRef ItemOID="estrogen_receptor" Mandatory="No" redcap:Variable="estrogen_receptor"/>
+		<ItemRef ItemOID="progesterone_receptor" Mandatory="No" redcap:Variable="progesterone_receptor"/>
+		<ItemRef ItemOID="her2_immunohistochemistry" Mandatory="No" redcap:Variable="her2_immunohistochemistry"/>
+		<ItemRef ItemOID="her2_fish" Mandatory="No" redcap:Variable="her2_fish"/>
+		<ItemRef ItemOID="bc_molecularsubtype" Mandatory="No" redcap:Variable="bc_molecularsubtype"/>
+		<ItemRef ItemOID="ki_67" Mandatory="No" redcap:Variable="ki_67"/>
+		<ItemRef ItemOID="p53_ihc" Mandatory="No" redcap:Variable="p53_ihc"/>
+		<ItemRef ItemOID="dna_index" Mandatory="No" redcap:Variable="dna_index"/>
+		<ItemRef ItemOID="bc_precancerous" Mandatory="No" redcap:Variable="bc_precancerous"/>
+		<ItemRef ItemOID="tnm_breast_tumor" Mandatory="No" redcap:Variable="tnm_breast_tumor"/>
+		<ItemRef ItemOID="tnmbreast_ln_n" Mandatory="No" redcap:Variable="tnmbreast_ln_n"/>
+		<ItemRef ItemOID="tnmbreast_distantmetast_m" Mandatory="No" redcap:Variable="tnmbreast_distantmetast_m"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.clin_diagn_prostate" Name="For Prostate Cancer Samples" Repeating="No">
+		<ItemRef ItemOID="clin_diagn_prostate" Mandatory="No" redcap:Variable="clin_diagn_prostate"/>
+		<ItemRef ItemOID="lab_diag_prostate" Mandatory="No" redcap:Variable="lab_diag_prostate"/>
+		<ItemRef ItemOID="specify_if_other_type_pro" Mandatory="No" redcap:Variable="specify_if_other_type_pro"/>
+		<ItemRef ItemOID="clin_gleason_score" Mandatory="No" redcap:Variable="clin_gleason_score"/>
+		<ItemRef ItemOID="clin_grade_pro" Mandatory="No" redcap:Variable="clin_grade_pro"/>
+		<ItemRef ItemOID="lab_gleason_score" Mandatory="No" redcap:Variable="lab_gleason_score"/>
+		<ItemRef ItemOID="lab_grade_pro" Mandatory="No" redcap:Variable="lab_grade_pro"/>
+		<ItemRef ItemOID="tnmprostate_t" Mandatory="No" redcap:Variable="tnmprostate_t"/>
+		<ItemRef ItemOID="tnmprostate_n" Mandatory="No" redcap:Variable="tnmprostate_n"/>
+		<ItemRef ItemOID="tnmprostate_m" Mandatory="No" redcap:Variable="tnmprostate_m"/>
+		<ItemRef ItemOID="psa_level" Mandatory="No" redcap:Variable="psa_level"/>
+		<ItemRef ItemOID="seminalinvasion" Mandatory="No" redcap:Variable="seminalinvasion"/>
+		<ItemRef ItemOID="extraprostate_extention" Mandatory="No" redcap:Variable="extraprostate_extention"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.clin_giag_colon" Name="For Colon Cancer Samples" Repeating="No">
+		<ItemRef ItemOID="clin_giag_colon" Mandatory="No" redcap:Variable="clin_giag_colon"/>
+		<ItemRef ItemOID="specify_colon_clin" Mandatory="No" redcap:Variable="specify_colon_clin"/>
+		<ItemRef ItemOID="lab_diagn_colon" Mandatory="No" redcap:Variable="lab_diagn_colon"/>
+		<ItemRef ItemOID="specify_colon_lab" Mandatory="No" redcap:Variable="specify_colon_lab"/>
+		<ItemRef ItemOID="clin_grade_colon" Mandatory="No" redcap:Variable="clin_grade_colon"/>
+		<ItemRef ItemOID="lab_grade_colon" Mandatory="No" redcap:Variable="lab_grade_colon"/>
+		<ItemRef ItemOID="tnmcolon_t" Mandatory="No" redcap:Variable="tnmcolon_t"/>
+		<ItemRef ItemOID="tnmcolon_n" Mandatory="No" redcap:Variable="tnmcolon_n"/>
+		<ItemRef ItemOID="tnmcolon_m" Mandatory="No" redcap:Variable="tnmcolon_m"/>
+		<ItemRef ItemOID="pre_cancerous_colon" Mandatory="No" redcap:Variable="pre_cancerous_colon"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.clin_diagn_lung" Name="For Lung Cancer Samples" Repeating="No">
+		<ItemRef ItemOID="clin_diagn_lung" Mandatory="No" redcap:Variable="clin_diagn_lung"/>
+		<ItemRef ItemOID="lab_diagn_lung" Mandatory="No" redcap:Variable="lab_diagn_lung"/>
+		<ItemRef ItemOID="if_others_specify" Mandatory="No" redcap:Variable="if_others_specify"/>
+		<ItemRef ItemOID="clin_grade_lung" Mandatory="No" redcap:Variable="clin_grade_lung"/>
+		<ItemRef ItemOID="lab_grade_lung" Mandatory="No" redcap:Variable="lab_grade_lung"/>
+		<ItemRef ItemOID="tnmlung_t" Mandatory="No" redcap:Variable="tnmlung_t"/>
+		<ItemRef ItemOID="tnmlung_n" Mandatory="No" redcap:Variable="tnmlung_n"/>
+		<ItemRef ItemOID="tnmlung_m" Mandatory="No" redcap:Variable="tnmlung_m"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.clin_diagn_others" Name="For Other Cancer Samples" Repeating="No">
+		<ItemRef ItemOID="clin_diagn_others" Mandatory="No" redcap:Variable="clin_diagn_others"/>
+		<ItemRef ItemOID="lab_diagn_others" Mandatory="No" redcap:Variable="lab_diagn_others"/>
+		<ItemRef ItemOID="clin_grade_others" Mandatory="No" redcap:Variable="clin_grade_others"/>
+		<ItemRef ItemOID="lab_grade_others" Mandatory="No" redcap:Variable="lab_grade_others"/>
+		<ItemRef ItemOID="tnm_stage" Mandatory="No" redcap:Variable="tnm_stage"/>
+		<ItemRef ItemOID="pathoireview_note" Mandatory="No" redcap:Variable="pathoireview_note"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="pathology_review.pathology_review_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="pathology_review_complete" Mandatory="No" redcap:Variable="pathology_review_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="slide_information.five_um_tumor_quant" Name="Slide Information" Repeating="No">
+		<ItemRef ItemOID="five_um_tumor_quant" Mandatory="No" redcap:Variable="five_um_tumor_quant"/>
+		<ItemRef ItemOID="five_um_tumor_currquant" Mandatory="No" redcap:Variable="five_um_tumor_currquant"/>
+		<ItemRef ItemOID="ten_um_tumor_quant" Mandatory="No" redcap:Variable="ten_um_tumor_quant"/>
+		<ItemRef ItemOID="ten_um_tumor_currquant" Mandatory="No" redcap:Variable="ten_um_tumor_currquant"/>
+		<ItemRef ItemOID="five_um_nor_quant" Mandatory="No" redcap:Variable="five_um_nor_quant"/>
+		<ItemRef ItemOID="five_um_nor_currquant" Mandatory="No" redcap:Variable="five_um_nor_currquant"/>
+		<ItemRef ItemOID="ten_um_nor_quant" Mandatory="No" redcap:Variable="ten_um_nor_quant"/>
+		<ItemRef ItemOID="ten_um_nor_currquant" Mandatory="No" redcap:Variable="ten_um_nor_currquant"/>
+		<ItemRef ItemOID="slideloc_1" Mandatory="No" redcap:Variable="slideloc_1"/>
+		<ItemRef ItemOID="parapieceloc_1" Mandatory="No" redcap:Variable="parapieceloc_1"/>
+		<ItemRef ItemOID="is_there_another_accnumber" Mandatory="No" redcap:Variable="is_there_another_accnumber"/>
+		<ItemRef ItemOID="pathaccnum_2" Mandatory="No" redcap:Variable="pathaccnum_2"/>
+		<ItemRef ItemOID="five_um_tumor_quant2" Mandatory="No" redcap:Variable="five_um_tumor_quant2"/>
+		<ItemRef ItemOID="five_um_tumor_currquant2" Mandatory="No" redcap:Variable="five_um_tumor_currquant2"/>
+		<ItemRef ItemOID="ten_um_tumor_quant2" Mandatory="No" redcap:Variable="ten_um_tumor_quant2"/>
+		<ItemRef ItemOID="ten_um_tumor_currquant2" Mandatory="No" redcap:Variable="ten_um_tumor_currquant2"/>
+		<ItemRef ItemOID="five_um_nor_quant2" Mandatory="No" redcap:Variable="five_um_nor_quant2"/>
+		<ItemRef ItemOID="five_um_nor_currquant2" Mandatory="No" redcap:Variable="five_um_nor_currquant2"/>
+		<ItemRef ItemOID="ten_um_nor_quant2" Mandatory="No" redcap:Variable="ten_um_nor_quant2"/>
+		<ItemRef ItemOID="ten_um_nor_currquant2" Mandatory="No" redcap:Variable="ten_um_nor_currquant2"/>
+		<ItemRef ItemOID="same_slideloc" Mandatory="No" redcap:Variable="same_slideloc"/>
+		<ItemRef ItemOID="if_no_location2" Mandatory="No" redcap:Variable="if_no_location2"/>
+		<ItemRef ItemOID="parapieceloc_2" Mandatory="No" redcap:Variable="parapieceloc_2"/>
+		<ItemRef ItemOID="is_there_metastatic_tumor" Mandatory="No" redcap:Variable="is_there_metastatic_tumor"/>
+		<ItemRef ItemOID="metastatic_accnum" Mandatory="No" redcap:Variable="metastatic_accnum"/>
+		<ItemRef ItemOID="five_um_met_quant" Mandatory="No" redcap:Variable="five_um_met_quant"/>
+		<ItemRef ItemOID="five_um_met_currentquant" Mandatory="No" redcap:Variable="five_um_met_currentquant"/>
+		<ItemRef ItemOID="ten_um_met_quant" Mandatory="No" redcap:Variable="ten_um_met_quant"/>
+		<ItemRef ItemOID="ten_um_met_currentquant" Mandatory="No" redcap:Variable="ten_um_met_currentquant"/>
+		<ItemRef ItemOID="slideloc_metmetastatic" Mandatory="No" redcap:Variable="slideloc_metmetastatic"/>
+		<ItemRef ItemOID="parapieceloc_metastatic" Mandatory="No" redcap:Variable="parapieceloc_metastatic"/>
+		<ItemRef ItemOID="is_there_precancer" Mandatory="No" redcap:Variable="is_there_precancer"/>
+		<ItemRef ItemOID="precancer_accnum" Mandatory="No" redcap:Variable="precancer_accnum"/>
+		<ItemRef ItemOID="five_um_precancer_quant" Mandatory="No" redcap:Variable="five_um_precancer_quant"/>
+		<ItemRef ItemOID="five_um_precancer_curquant" Mandatory="No" redcap:Variable="five_um_precancer_curquant"/>
+		<ItemRef ItemOID="ten_um_precancer_quant" Mandatory="No" redcap:Variable="ten_um_precancer_quant"/>
+		<ItemRef ItemOID="ten_um_precancer_curquant" Mandatory="No" redcap:Variable="ten_um_precancer_curquant"/>
+		<ItemRef ItemOID="slideloc_precancer" Mandatory="No" redcap:Variable="slideloc_precancer"/>
+		<ItemRef ItemOID="parapieceloc_precancer" Mandatory="No" redcap:Variable="parapieceloc_precancer"/>
+		<ItemRef ItemOID="slide_information_complete" Mandatory="No" redcap:Variable="slide_information_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="tma_information.tma_ca_pos1" Name="TMA Information" Repeating="No">
+		<ItemRef ItemOID="tma_ca_pos1" Mandatory="No" redcap:Variable="tma_ca_pos1"/>
+		<ItemRef ItemOID="tma_ca_pos2" Mandatory="No" redcap:Variable="tma_ca_pos2"/>
+		<ItemRef ItemOID="tma_nor_pos1" Mandatory="No" redcap:Variable="tma_nor_pos1"/>
+		<ItemRef ItemOID="tma_nor_pos2" Mandatory="No" redcap:Variable="tma_nor_pos2"/>
+		<ItemRef ItemOID="tma_preca_pos" Mandatory="No" redcap:Variable="tma_preca_pos"/>
+		<ItemRef ItemOID="tma_metastatic_pos" Mandatory="No" redcap:Variable="tma_metastatic_pos"/>
+		<ItemRef ItemOID="another_accnumber" Mandatory="No" redcap:Variable="another_accnumber"/>
+		<ItemRef ItemOID="tma_ca_pos3" Mandatory="No" redcap:Variable="tma_ca_pos3"/>
+		<ItemRef ItemOID="tma_ca_pos4" Mandatory="No" redcap:Variable="tma_ca_pos4"/>
+		<ItemRef ItemOID="tma_nor_pos3" Mandatory="No" redcap:Variable="tma_nor_pos3"/>
+		<ItemRef ItemOID="tma_nor_pos4" Mandatory="No" redcap:Variable="tma_nor_pos4"/>
+		<ItemRef ItemOID="tma_preca_pos2" Mandatory="No" redcap:Variable="tma_preca_pos2"/>
+		<ItemRef ItemOID="tma_metastatic_pos2" Mandatory="No" redcap:Variable="tma_metastatic_pos2"/>
+		<ItemRef ItemOID="tma_information_complete" Mandatory="No" redcap:Variable="tma_information_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="slide_tracking.pulling_date1" Name="Slide Tracking" Repeating="No">
+		<ItemRef ItemOID="pulling_date1" Mandatory="No" redcap:Variable="pulling_date1"/>
+		<ItemRef ItemOID="forwhoseproject" Mandatory="No" redcap:Variable="forwhoseproject"/>
+		<ItemRef ItemOID="whichslidepulled1" Mandatory="No" redcap:Variable="whichslidepulled1"/>
+		<ItemRef ItemOID="pulled_quant1" Mandatory="No" redcap:Variable="pulled_quant1"/>
+		<ItemRef ItemOID="slide_tracking_complete" Mandatory="No" redcap:Variable="slide_tracking_complete"/>
+	</ItemGroupDef>
+	<ItemDef OID="lab_id" Name="lab_id" DataType="text" Length="999" redcap:Variable="lab_id" redcap:FieldType="text" redcap:SectionHeader="IDs">
+		<Question><TranslatedText>Lab ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="trc_id" Name="trc_id" DataType="text" Length="999" redcap:Variable="trc_id" redcap:FieldType="text">
+		<Question><TranslatedText>TRC ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="first_name" Name="first_name" DataType="text" Length="999" redcap:Variable="first_name" redcap:FieldType="text" redcap:Identifier="y" redcap:RequiredField="y">
+		<Question><TranslatedText>First Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="middle_name" Name="middle_name" DataType="text" Length="999" redcap:Variable="middle_name" redcap:FieldType="text">
+		<Question><TranslatedText>Middle Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="last_name" Name="last_name" DataType="text" Length="999" redcap:Variable="last_name" redcap:FieldType="text" redcap:Identifier="y" redcap:RequiredField="y">
+		<Question><TranslatedText>Last Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="suffix" Name="suffix" DataType="text" Length="999" redcap:Variable="suffix" redcap:FieldType="text">
+		<Question><TranslatedText>Suffix</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="date_of_birth" Name="date_of_birth" DataType="date" Length="999" redcap:Variable="date_of_birth" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:Identifier="y">
+		<Question><TranslatedText>Date of Birth</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="age" Name="age" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="age" redcap:FieldType="text" redcap:TextValidationType="float" redcap:FieldNote="Age at surgery, DOB not available">
+		<Question><TranslatedText>Age</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="facility_name" Name="facility_name" DataType="text" Length="999" redcap:Variable="facility_name" redcap:FieldType="text" redcap:SectionHeader="Shipping Information">
+		<Question><TranslatedText>Facility_Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="facility_city" Name="facility_city" DataType="text" Length="999" redcap:Variable="facility_city" redcap:FieldType="text">
+		<Question><TranslatedText>Facility_City</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="facility_state" Name="facility_state" DataType="text" Length="999" redcap:Variable="facility_state" redcap:FieldType="text">
+		<Question><TranslatedText>Facility_State</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="receivedate" Name="receivedate" DataType="date" Length="999" redcap:Variable="receivedate" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:Identifier="y" redcap:RequiredField="y">
+		<Question><TranslatedText>ReceiveDate</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="shipmethod" Name="shipmethod" DataType="text" Length="1" redcap:Variable="shipmethod" redcap:FieldType="select">
+		<Question><TranslatedText>ShipMethod</TranslatedText></Question>
+		<CodeListRef CodeListOID="shipmethod.choices"/>
+	</ItemDef>
+	<ItemDef OID="trackingnumber" Name="trackingnumber" DataType="text" Length="999" redcap:Variable="trackingnumber" redcap:FieldType="text">
+		<Question><TranslatedText>ReceiveTracking</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="pathaccnumber" Name="pathaccnumber" DataType="text" Length="999" redcap:Variable="pathaccnumber" redcap:FieldType="text" redcap:Identifier="y" redcap:RequiredField="y">
+		<Question><TranslatedText>PathAccNumber</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="otheraccnumber2" Name="otheraccnumber2" DataType="text" Length="999" redcap:Variable="otheraccnumber2" redcap:FieldType="text">
+		<Question><TranslatedText>OtherAccNumber</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="blk_no_received" Name="blk_no_received" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="blk_no_received" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>Block_ Received</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="stainedslide_received" Name="stainedslide_received" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="stainedslide_received" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>StainedSlide_Received</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="unstainedslide_received" Name="unstainedslide_received" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="unstainedslide_received" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>UnstainedSlide_Received</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="return_needed" Name="return_needed" DataType="boolean" Length="1" redcap:Variable="return_needed" redcap:FieldType="yesno">
+		<Question><TranslatedText>Return_Needed?</TranslatedText></Question>
+		<CodeListRef CodeListOID="return_needed.choices"/>
+	</ItemDef>
+	<ItemDef OID="return_date" Name="return_date" DataType="date" Length="999" redcap:Variable="return_date" redcap:FieldType="text" redcap:TextValidationType="date_mdy">
+		<Question><TranslatedText>ReturnDate</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="return_tracking" Name="return_tracking" DataType="text" Length="999" redcap:Variable="return_tracking" redcap:FieldType="text">
+		<Question><TranslatedText>ReturnTracking</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="labcirculation_time" Name="labcirculation_time" DataType="float" Length="999" redcap:Variable="labcirculation_time" redcap:FieldType="calc" redcap:Calculation="round(datediff([receivedate],[return_date],&quot;d&quot;,&quot;mdy&quot;))">
+		<Question><TranslatedText>LabCirculation_time</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="followup_note" Name="followup_note" DataType="text" Length="999" redcap:Variable="followup_note" redcap:FieldType="textarea">
+		<Question><TranslatedText>FollowUp_Note</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="secondtime_getsample" Name="secondtime_getsample" DataType="boolean" Length="1" redcap:Variable="secondtime_getsample" redcap:FieldType="yesno" redcap:SectionHeader="If Receive Sample 2nd Time">
+		<Question><TranslatedText>2nd_Time_Receive</TranslatedText></Question>
+		<CodeListRef CodeListOID="secondtime_getsample.choices"/>
+	</ItemDef>
+	<ItemDef OID="follow_up_needed2" Name="follow_up_needed2" DataType="boolean" Length="1" redcap:Variable="follow_up_needed2" redcap:FieldType="yesno" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Follow up needed?</TranslatedText></Question>
+		<CodeListRef CodeListOID="follow_up_needed2.choices"/>
+	</ItemDef>
+	<ItemDef OID="collection_note2" Name="collection_note2" DataType="text" Length="999" redcap:Variable="collection_note2" redcap:FieldType="textarea" redcap:BranchingLogic="[follow_up_needed2] = &#039;1&#039; and [secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>FollowUp_Note2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="samefacasbefore" Name="samefacasbefore" DataType="boolean" Length="1" redcap:Variable="samefacasbefore" redcap:FieldType="yesno" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>SameFacilityAsBefore?</TranslatedText></Question>
+		<CodeListRef CodeListOID="samefacasbefore.choices"/>
+	</ItemDef>
+	<ItemDef OID="facility_name2" Name="facility_name2" DataType="text" Length="999" redcap:Variable="facility_name2" redcap:FieldType="text" redcap:BranchingLogic="[samefacasbefore] = &#039;0&#039; and [secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Facility_Name2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="facility_city2" Name="facility_city2" DataType="text" Length="999" redcap:Variable="facility_city2" redcap:FieldType="text" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039; and [samefacasbefore] = &#039;0&#039;">
+		<Question><TranslatedText>Facility_City2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="facility_state2" Name="facility_state2" DataType="text" Length="999" redcap:Variable="facility_state2" redcap:FieldType="text" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039; and [samefacasbefore] = &#039;0&#039;">
+		<Question><TranslatedText>Facility_State2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="receivedate2" Name="receivedate2" DataType="date" Length="999" redcap:Variable="receivedate2" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReceiveDate2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="shipmethod2" Name="shipmethod2" DataType="text" Length="1" redcap:Variable="shipmethod2" redcap:FieldType="select" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ShipMethod2</TranslatedText></Question>
+		<CodeListRef CodeListOID="shipmethod2.choices"/>
+	</ItemDef>
+	<ItemDef OID="receivetracking2" Name="receivetracking2" DataType="text" Length="999" redcap:Variable="receivetracking2" redcap:FieldType="text" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReceiveTracking2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="pathaccnumber2" Name="pathaccnumber2" DataType="text" Length="999" redcap:Variable="pathaccnumber2" redcap:FieldType="text" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>PathAccNumber</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="otheraccnumber" Name="otheraccnumber" DataType="text" Length="999" redcap:Variable="otheraccnumber" redcap:FieldType="text" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>OtherAccNumber</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="block_received2" Name="block_received2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="block_received2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Block_ Received2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="stainedslide_received2" Name="stainedslide_received2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="stainedslide_received2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>StainedSlide_Received2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="unstainedslide_received2" Name="unstainedslide_received2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="unstainedslide_received2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>UnstainedSlide_Received2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="return_needed2" Name="return_needed2" DataType="boolean" Length="1" redcap:Variable="return_needed2" redcap:FieldType="yesno" redcap:BranchingLogic="[secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Return_needed?</TranslatedText></Question>
+		<CodeListRef CodeListOID="return_needed2.choices"/>
+	</ItemDef>
+	<ItemDef OID="returndate2" Name="returndate2" DataType="date" Length="999" redcap:Variable="returndate2" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:BranchingLogic="[return_needed2] = &#039;1&#039; and [secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReturnDate2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="return_tracking2" Name="return_tracking2" DataType="text" Length="999" redcap:Variable="return_tracking2" redcap:FieldType="text" redcap:BranchingLogic="[return_needed2] = &#039;1&#039; and [secondtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReturnTracking2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="thirdtime_getsample" Name="thirdtime_getsample" DataType="boolean" Length="1" redcap:Variable="thirdtime_getsample" redcap:FieldType="yesno" redcap:SectionHeader="If Receive Sample 3rd Time">
+		<Question><TranslatedText>3rd_Time_Receive</TranslatedText></Question>
+		<CodeListRef CodeListOID="thirdtime_getsample.choices"/>
+	</ItemDef>
+	<ItemDef OID="follow_up_needed3" Name="follow_up_needed3" DataType="boolean" Length="1" redcap:Variable="follow_up_needed3" redcap:FieldType="yesno" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Follow up needed?</TranslatedText></Question>
+		<CodeListRef CodeListOID="follow_up_needed3.choices"/>
+	</ItemDef>
+	<ItemDef OID="collection_note3" Name="collection_note3" DataType="text" Length="999" redcap:Variable="collection_note3" redcap:FieldType="textarea" redcap:BranchingLogic="[follow_up_needed3] = &#039;1&#039; and [thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>FollowUp_Note</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="samefacilityasbefore2" Name="samefacilityasbefore2" DataType="boolean" Length="1" redcap:Variable="samefacilityasbefore2" redcap:FieldType="yesno" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>SameFacilityAsBefore?</TranslatedText></Question>
+		<CodeListRef CodeListOID="samefacilityasbefore2.choices"/>
+	</ItemDef>
+	<ItemDef OID="facility_name3" Name="facility_name3" DataType="text" Length="999" redcap:Variable="facility_name3" redcap:FieldType="text" redcap:BranchingLogic="[samefacilityasbefore2] = &#039;0&#039; and [thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Facility_Name3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="facility_city3" Name="facility_city3" DataType="text" Length="999" redcap:Variable="facility_city3" redcap:FieldType="text" redcap:BranchingLogic="[samefacilityasbefore2] = &#039;0&#039; and [thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Facility_City3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="facility_state3" Name="facility_state3" DataType="text" Length="999" redcap:Variable="facility_state3" redcap:FieldType="text" redcap:BranchingLogic="[samefacilityasbefore2] = &#039;0&#039; and [thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Facility_State3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="receivedate3" Name="receivedate3" DataType="date" Length="999" redcap:Variable="receivedate3" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReceiveDate3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="shipmethod3" Name="shipmethod3" DataType="text" Length="1" redcap:Variable="shipmethod3" redcap:FieldType="select" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ShipMethod3</TranslatedText></Question>
+		<CodeListRef CodeListOID="shipmethod3.choices"/>
+	</ItemDef>
+	<ItemDef OID="receivetracking3" Name="receivetracking3" DataType="text" Length="999" redcap:Variable="receivetracking3" redcap:FieldType="text" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReceiveTracking3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="pathaccnumber3" Name="pathaccnumber3" DataType="text" Length="999" redcap:Variable="pathaccnumber3" redcap:FieldType="text" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>PathAccNumber3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="otheraccnumber3" Name="otheraccnumber3" DataType="text" Length="999" redcap:Variable="otheraccnumber3" redcap:FieldType="text" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>OtherAccNumber</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="block_received3" Name="block_received3" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="block_received3" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Block_ Received3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="stainedslide_received3" Name="stainedslide_received3" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="stainedslide_received3" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>StainedSlide_Received3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="unstainedslide_received3" Name="unstainedslide_received3" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="unstainedslide_received3" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>UnstainedSlide_Received3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="return_needed3" Name="return_needed3" DataType="boolean" Length="1" redcap:Variable="return_needed3" redcap:FieldType="yesno" redcap:BranchingLogic="[thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>Return_needed?</TranslatedText></Question>
+		<CodeListRef CodeListOID="return_needed3.choices"/>
+	</ItemDef>
+	<ItemDef OID="returndate3" Name="returndate3" DataType="date" Length="999" redcap:Variable="returndate3" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:BranchingLogic="[return_needed3] = &#039;1&#039; and [thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReturnDate3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="returntracking3" Name="returntracking3" DataType="text" Length="999" redcap:Variable="returntracking3" redcap:FieldType="text" redcap:BranchingLogic="[return_needed3] = &#039;1&#039; and [thirdtime_getsample] = &#039;1&#039;">
+		<Question><TranslatedText>ReturnTracking3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="id_shipping_complete" Name="id_shipping_complete" DataType="text" Length="1" redcap:Variable="id_shipping_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="id_shipping_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="tumor_origin" Name="tumor_origin" DataType="text" Length="1" redcap:Variable="tumor_origin" redcap:FieldType="select" redcap:SectionHeader="Tumor Origin and Location" redcap:RequiredField="y">
+		<Question><TranslatedText>Tumor_Origin</TranslatedText></Question>
+		<CodeListRef CodeListOID="tumor_origin.choices"/>
+	</ItemDef>
+	<ItemDef OID="specify_other_origin" Name="specify_other_origin" DataType="text" Length="999" redcap:Variable="specify_other_origin" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;5&#039;">
+		<Question><TranslatedText>Specify_Other_Origin</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tumor_location" Name="tumor_location" DataType="text" Length="1" redcap:Variable="tumor_location" redcap:FieldType="select" redcap:FieldNote="Multiple means 2 or more" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039; or [tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Location_Breast_Prostate</TranslatedText></Question>
+		<CodeListRef CodeListOID="tumor_location.choices"/>
+	</ItemDef>
+	<ItemDef OID="tumor_location_colorectum" Name="tumor_location_colorectum" DataType="text" Length="2" redcap:Variable="tumor_location_colorectum" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>Location_Colorectum</TranslatedText></Question>
+		<CodeListRef CodeListOID="tumor_location_colorectum.choices"/>
+	</ItemDef>
+	<ItemDef OID="tumor_location_lung" Name="tumor_location_lung" DataType="text" Length="2" redcap:Variable="tumor_location_lung" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>Location_Lung</TranslatedText></Question>
+		<CodeListRef CodeListOID="tumor_location_lung.choices"/>
+	</ItemDef>
+	<ItemDef OID="other_location_lung" Name="other_location_lung" DataType="text" Length="999" redcap:Variable="other_location_lung" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039; and [tumor_location_lung] = &#039;11&#039;">
+		<Question><TranslatedText>Other location_lung</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="specify_other_location" Name="specify_other_location" DataType="text" Length="999" redcap:Variable="specify_other_location" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;5&#039;">
+		<Question><TranslatedText>Specify_Other_Location</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="date_surgery" Name="date_surgery" DataType="date" Length="999" redcap:Variable="date_surgery" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:SectionHeader="Clinical Pathology Information">
+		<Question><TranslatedText>Date_Surgery</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="age_at_surgery" Name="age_at_surgery" DataType="float" Length="999" redcap:Variable="age_at_surgery" redcap:FieldType="calc" redcap:Calculation="round(datediff([date_of_birth],[date_surgery],&quot;y&quot;,&quot;mdy&quot;,true),0)">
+		<Question><TranslatedText>Age at Surgery</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="sex" Name="sex" DataType="text" Length="1" redcap:Variable="sex" redcap:FieldType="select">
+		<Question><TranslatedText>Sex</TranslatedText></Question>
+		<CodeListRef CodeListOID="sex.choices"/>
+	</ItemDef>
+	<ItemDef OID="pathol_acc_no" Name="pathol_acc_no" DataType="text" Length="999" redcap:Variable="pathol_acc_no" redcap:FieldType="text" redcap:Identifier="y" redcap:RequiredField="y">
+		<Question><TranslatedText>Pathol_Acc_No</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="other_acc_no" Name="other_acc_no" DataType="text" Length="999" redcap:Variable="other_acc_no" redcap:FieldType="text">
+		<Question><TranslatedText>Other_Acc_No</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="block_tumor" Name="block_tumor" DataType="text" Length="999" redcap:Variable="block_tumor" redcap:FieldType="text">
+		<Question><TranslatedText>BlockNum_Tumor</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="block_normal" Name="block_normal" DataType="text" Length="999" redcap:Variable="block_normal" redcap:FieldType="text">
+		<Question><TranslatedText>BlockNum_Normal</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="block_metastatic" Name="block_metastatic" DataType="text" Length="999" redcap:Variable="block_metastatic" redcap:FieldType="text">
+		<Question><TranslatedText>BlockNum_Metastatic</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="block_precancerous" Name="block_precancerous" DataType="text" Length="999" redcap:Variable="block_precancerous" redcap:FieldType="text">
+		<Question><TranslatedText>BlockNum_Precancerous</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="invitrosize1" Name="invitrosize1" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="invitrosize1" redcap:FieldType="text" redcap:TextValidationType="float" redcap:FieldNote="Maximum size in centimeter">
+		<Question><TranslatedText>InvitroSize1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="invitrosize2" Name="invitrosize2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="invitrosize2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:FieldNote="In % of total tissue volume for prostate cancer" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>InvitroSize2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="invitrosize3" Name="invitrosize3" DataType="text" Length="999" redcap:Variable="invitrosize3" redcap:FieldType="text" redcap:FieldNote="The seceond largest tumor">
+		<Question><TranslatedText>InvitroSize3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="perineuralinvasion" Name="perineuralinvasion" DataType="text" Length="1" redcap:Variable="perineuralinvasion" redcap:FieldType="select">
+		<Question><TranslatedText>PerineuralInvasion</TranslatedText></Question>
+		<CodeListRef CodeListOID="perineuralinvasion.choices"/>
+	</ItemDef>
+	<ItemDef OID="vascular_invasion" Name="vascular_invasion" DataType="text" Length="1" redcap:Variable="vascular_invasion" redcap:FieldType="select">
+		<Question><TranslatedText>Vascular invasion present</TranslatedText></Question>
+		<CodeListRef CodeListOID="vascular_invasion.choices"/>
+	</ItemDef>
+	<ItemDef OID="surgical_margin_cancer_pre" Name="surgical_margin_cancer_pre" DataType="text" Length="1" redcap:Variable="surgical_margin_cancer_pre" redcap:FieldType="select">
+		<Question><TranslatedText>Surgical margin cancer present</TranslatedText></Question>
+		<CodeListRef CodeListOID="surgical_margin_cancer_pre.choices"/>
+	</ItemDef>
+	<ItemDef OID="clin_diagn_breast" Name="clin_diagn_breast" DataType="text" Length="2" redcap:Variable="clin_diagn_breast" redcap:FieldType="select" redcap:SectionHeader="For Breast Cancer Samples" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Clin_Diagn_Breast</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_diagn_breast.choices"/>
+	</ItemDef>
+	<ItemDef OID="lab_diagn_breast" Name="lab_diagn_breast" DataType="text" Length="2" redcap:Variable="lab_diagn_breast" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Lab_Diagn_Breast</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_diagn_breast.choices"/>
+	</ItemDef>
+	<ItemDef OID="if_ilc_subtype" Name="if_ilc_subtype" DataType="text" Length="3" redcap:Variable="if_ilc_subtype" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039; and [lab_diagn_breast] = &#039;9&#039;">
+		<Question><TranslatedText>ILC_Subtype</TranslatedText></Question>
+		<CodeListRef CodeListOID="if_ilc_subtype.choices"/>
+	</ItemDef>
+	<ItemDef OID="specify_if_other_type_br" Name="specify_if_other_type_br" DataType="text" Length="999" redcap:Variable="specify_if_other_type_br" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Specify_If_Other_Type_Br</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="clin_grade_breast" Name="clin_grade_breast" DataType="text" Length="1" redcap:Variable="clin_grade_breast" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Clin_Grade_Breast</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_grade_breast.choices"/>
+	</ItemDef>
+	<ItemDef OID="lab_grade_breast" Name="lab_grade_breast" DataType="text" Length="1" redcap:Variable="lab_grade_breast" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Lab_Grade_Breast</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_grade_breast.choices"/>
+	</ItemDef>
+	<ItemDef OID="estrogen_receptor" Name="estrogen_receptor" DataType="text" Length="1" redcap:Variable="estrogen_receptor" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Estrogen Receptor</TranslatedText></Question>
+		<CodeListRef CodeListOID="estrogen_receptor.choices"/>
+	</ItemDef>
+	<ItemDef OID="progesterone_receptor" Name="progesterone_receptor" DataType="text" Length="1" redcap:Variable="progesterone_receptor" redcap:FieldType="select" redcap:FieldNote="Allred Score System 0-8" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Progesterone Receptor</TranslatedText></Question>
+		<CodeListRef CodeListOID="progesterone_receptor.choices"/>
+	</ItemDef>
+	<ItemDef OID="her2_immunohistochemistry" Name="her2_immunohistochemistry" DataType="text" Length="1" redcap:Variable="her2_immunohistochemistry" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>HER2_Immunohistochemistry</TranslatedText></Question>
+		<CodeListRef CodeListOID="her2_immunohistochemistry.choices"/>
+	</ItemDef>
+	<ItemDef OID="her2_fish" Name="her2_fish" DataType="text" Length="1" redcap:Variable="her2_fish" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>HER2_FISH</TranslatedText></Question>
+		<CodeListRef CodeListOID="her2_fish.choices"/>
+	</ItemDef>
+	<ItemDef OID="bc_molecularsubtype" Name="bc_molecularsubtype" DataType="text" Length="1" redcap:Variable="bc_molecularsubtype" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>BC_MolecularSubtype</TranslatedText></Question>
+		<CodeListRef CodeListOID="bc_molecularsubtype.choices"/>
+	</ItemDef>
+	<ItemDef OID="ki_67" Name="ki_67" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ki_67" redcap:FieldType="text" redcap:TextValidationType="float" redcap:FieldNote="positive cells in percentage" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>Ki-67</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="p53_ihc" Name="p53_ihc" DataType="text" Length="999" redcap:Variable="p53_ihc" redcap:FieldType="text" redcap:FieldNote="positive cells in percentage" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>p53_IHC</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="dna_index" Name="dna_index" DataType="text" Length="999" redcap:Variable="dna_index" redcap:FieldType="text" redcap:FieldNote="Unfavorable: &gt;1.1" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>DNA Index</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="bc_precancerous" Name="bc_precancerous" DataType="text" Length="1" redcap:Variable="bc_precancerous" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>BC_Precancerous</TranslatedText></Question>
+		<CodeListRef CodeListOID="bc_precancerous.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnm_breast_tumor" Name="tnm_breast_tumor" DataType="text" Length="2" redcap:Variable="tnm_breast_tumor" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>TNMbreast_PrimTum(T)</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnm_breast_tumor.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmbreast_ln_n" Name="tnmbreast_ln_n" DataType="text" Length="2" redcap:Variable="tnmbreast_ln_n" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>TNMbreast_LN (N)</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmbreast_ln_n.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmbreast_distantmetast_m" Name="tnmbreast_distantmetast_m" DataType="text" Length="1" redcap:Variable="tnmbreast_distantmetast_m" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;1&#039;">
+		<Question><TranslatedText>TNMbreast_DistantMetast (M)</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmbreast_distantmetast_m.choices"/>
+	</ItemDef>
+	<ItemDef OID="clin_diagn_prostate" Name="clin_diagn_prostate" DataType="text" Length="2" redcap:Variable="clin_diagn_prostate" redcap:FieldType="select" redcap:SectionHeader="For Prostate Cancer Samples" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Clin_Diagn_Prostate</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_diagn_prostate.choices"/>
+	</ItemDef>
+	<ItemDef OID="lab_diag_prostate" Name="lab_diag_prostate" DataType="text" Length="2" redcap:Variable="lab_diag_prostate" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Lab_Diag_Prostate</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_diag_prostate.choices"/>
+	</ItemDef>
+	<ItemDef OID="specify_if_other_type_pro" Name="specify_if_other_type_pro" DataType="text" Length="999" redcap:Variable="specify_if_other_type_pro" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Specify_If_Other_type_Pro</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="clin_gleason_score" Name="clin_gleason_score" DataType="text" Length="999" redcap:Variable="clin_gleason_score" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Clin_Gleason_Score</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="clin_grade_pro" Name="clin_grade_pro" DataType="text" Length="1" redcap:Variable="clin_grade_pro" redcap:FieldType="select" redcap:FieldNote="Gleason Score System" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Clin_Grade_Pro</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_grade_pro.choices"/>
+	</ItemDef>
+	<ItemDef OID="lab_gleason_score" Name="lab_gleason_score" DataType="text" Length="999" redcap:Variable="lab_gleason_score" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Lab_Gleason_Score</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="lab_grade_pro" Name="lab_grade_pro" DataType="text" Length="1" redcap:Variable="lab_grade_pro" redcap:FieldType="select" redcap:FieldNote="Gleason Score System (1-10)" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>Lab_Grade_Pro</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_grade_pro.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmprostate_t" Name="tnmprostate_t" DataType="text" Length="2" redcap:Variable="tnmprostate_t" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>TNMprostate_T</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmprostate_t.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmprostate_n" Name="tnmprostate_n" DataType="text" Length="1" redcap:Variable="tnmprostate_n" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>TNMprostate_N</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmprostate_n.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmprostate_m" Name="tnmprostate_m" DataType="text" Length="1" redcap:Variable="tnmprostate_m" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>TNMprostate_M</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmprostate_m.choices"/>
+	</ItemDef>
+	<ItemDef OID="psa_level" Name="psa_level" DataType="text" Length="999" redcap:Variable="psa_level" redcap:FieldType="text" redcap:FieldNote="ng/mL" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>PSA_Level</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="seminalinvasion" Name="seminalinvasion" DataType="text" Length="1" redcap:Variable="seminalinvasion" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>SeminalInvasion</TranslatedText></Question>
+		<CodeListRef CodeListOID="seminalinvasion.choices"/>
+	</ItemDef>
+	<ItemDef OID="extraprostate_extention" Name="extraprostate_extention" DataType="text" Length="1" redcap:Variable="extraprostate_extention" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;2&#039;">
+		<Question><TranslatedText>ExtraProstate Extention</TranslatedText></Question>
+		<CodeListRef CodeListOID="extraprostate_extention.choices"/>
+	</ItemDef>
+	<ItemDef OID="clin_giag_colon" Name="clin_giag_colon" DataType="text" Length="1" redcap:Variable="clin_giag_colon" redcap:FieldType="select" redcap:SectionHeader="For Colon Cancer Samples" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>Clin_Diagn_Colon</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_giag_colon.choices"/>
+	</ItemDef>
+	<ItemDef OID="specify_colon_clin" Name="specify_colon_clin" DataType="text" Length="999" redcap:Variable="specify_colon_clin" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039; and [clin_giag_colon] = &#039;8&#039;">
+		<Question><TranslatedText>If others_specify</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="lab_diagn_colon" Name="lab_diagn_colon" DataType="text" Length="1" redcap:Variable="lab_diagn_colon" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>Lab_Diagn_Colon</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_diagn_colon.choices"/>
+	</ItemDef>
+	<ItemDef OID="specify_colon_lab" Name="specify_colon_lab" DataType="text" Length="999" redcap:Variable="specify_colon_lab" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039; and [lab_diagn_colon] = &#039;8&#039;">
+		<Question><TranslatedText>If others_specify</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="clin_grade_colon" Name="clin_grade_colon" DataType="text" Length="1" redcap:Variable="clin_grade_colon" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>Clin_Grade_Colon</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_grade_colon.choices"/>
+	</ItemDef>
+	<ItemDef OID="lab_grade_colon" Name="lab_grade_colon" DataType="text" Length="1" redcap:Variable="lab_grade_colon" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>Lab_Grade_Colon</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_grade_colon.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmcolon_t" Name="tnmcolon_t" DataType="text" Length="3" redcap:Variable="tnmcolon_t" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>TNMcolon_T</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmcolon_t.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmcolon_n" Name="tnmcolon_n" DataType="text" Length="3" redcap:Variable="tnmcolon_n" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>TNMcolon_N</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmcolon_n.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmcolon_m" Name="tnmcolon_m" DataType="text" Length="3" redcap:Variable="tnmcolon_m" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>TNMcolon_M</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmcolon_m.choices"/>
+	</ItemDef>
+	<ItemDef OID="pre_cancerous_colon" Name="pre_cancerous_colon" DataType="text" Length="999" redcap:Variable="pre_cancerous_colon" redcap:FieldType="textarea" redcap:BranchingLogic="[tumor_origin] = &#039;3&#039;">
+		<Question><TranslatedText>Pre-cancerous_Colon</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="clin_diagn_lung" Name="clin_diagn_lung" DataType="text" Length="2" redcap:Variable="clin_diagn_lung" redcap:FieldType="select" redcap:SectionHeader="For Lung Cancer Samples" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>Clin_Diagn_Lung</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_diagn_lung.choices"/>
+	</ItemDef>
+	<ItemDef OID="lab_diagn_lung" Name="lab_diagn_lung" DataType="text" Length="2" redcap:Variable="lab_diagn_lung" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>Lab_Diagn_Lung</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_diagn_lung.choices"/>
+	</ItemDef>
+	<ItemDef OID="if_others_specify" Name="if_others_specify" DataType="text" Length="999" redcap:Variable="if_others_specify" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039; and [lab_diagn_lung] = &#039;10&#039;">
+		<Question><TranslatedText>If_Others_Specify</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="clin_grade_lung" Name="clin_grade_lung" DataType="text" Length="1" redcap:Variable="clin_grade_lung" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>Clin_Grade_Lung</TranslatedText></Question>
+		<CodeListRef CodeListOID="clin_grade_lung.choices"/>
+	</ItemDef>
+	<ItemDef OID="lab_grade_lung" Name="lab_grade_lung" DataType="text" Length="1" redcap:Variable="lab_grade_lung" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>Lab_Grade_Lung</TranslatedText></Question>
+		<CodeListRef CodeListOID="lab_grade_lung.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmlung_t" Name="tnmlung_t" DataType="text" Length="1" redcap:Variable="tnmlung_t" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>TNMlung_T</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmlung_t.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmlung_n" Name="tnmlung_n" DataType="text" Length="2" redcap:Variable="tnmlung_n" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>TNMlung_N</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmlung_n.choices"/>
+	</ItemDef>
+	<ItemDef OID="tnmlung_m" Name="tnmlung_m" DataType="text" Length="2" redcap:Variable="tnmlung_m" redcap:FieldType="select" redcap:BranchingLogic="[tumor_origin] = &#039;4&#039;">
+		<Question><TranslatedText>TNMlung_M</TranslatedText></Question>
+		<CodeListRef CodeListOID="tnmlung_m.choices"/>
+	</ItemDef>
+	<ItemDef OID="clin_diagn_others" Name="clin_diagn_others" DataType="text" Length="999" redcap:Variable="clin_diagn_others" redcap:FieldType="text" redcap:SectionHeader="For Other Cancer Samples" redcap:BranchingLogic="[tumor_origin] = &#039;5&#039;">
+		<Question><TranslatedText>Clin_Diagn_Others</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="lab_diagn_others" Name="lab_diagn_others" DataType="text" Length="999" redcap:Variable="lab_diagn_others" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;5&#039;">
+		<Question><TranslatedText>Lab_Diagn_Others</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="clin_grade_others" Name="clin_grade_others" DataType="text" Length="999" redcap:Variable="clin_grade_others" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;5&#039;">
+		<Question><TranslatedText>Clin_Grade_Others</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="lab_grade_others" Name="lab_grade_others" DataType="text" Length="999" redcap:Variable="lab_grade_others" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;5&#039;">
+		<Question><TranslatedText>Lab_Grade_Others</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tnm_stage" Name="tnm_stage" DataType="text" Length="999" redcap:Variable="tnm_stage" redcap:FieldType="text" redcap:BranchingLogic="[tumor_origin] = &#039;5&#039;">
+		<Question><TranslatedText>TNM_Stage</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="pathoireview_note" Name="pathoireview_note" DataType="text" Length="999" redcap:Variable="pathoireview_note" redcap:FieldType="textarea">
+		<Question><TranslatedText>PatholReview_Note</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="pathology_review_complete" Name="pathology_review_complete" DataType="text" Length="1" redcap:Variable="pathology_review_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="pathology_review_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="five_um_tumor_quant" Name="five_um_tumor_quant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_tumor_quant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>5um_Tumor_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_tumor_currquant" Name="five_um_tumor_currquant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_tumor_currquant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>5um_Tumor_CurrQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_tumor_quant" Name="ten_um_tumor_quant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_tumor_quant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>10um_Tumor_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_tumor_currquant" Name="ten_um_tumor_currquant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_tumor_currquant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>10um_Tumor_CurrQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_nor_quant" Name="five_um_nor_quant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_nor_quant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>5um_Nor_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_nor_currquant" Name="five_um_nor_currquant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_nor_currquant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>5um_Nor_CurrQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_nor_quant" Name="ten_um_nor_quant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_nor_quant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>10um_Nor_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_nor_currquant" Name="ten_um_nor_currquant" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_nor_currquant" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>10um_Nor_CurrQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="slideloc_1" Name="slideloc_1" DataType="text" Length="999" redcap:Variable="slideloc_1" redcap:FieldType="text">
+		<Question><TranslatedText>SlideLoc_1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="parapieceloc_1" Name="parapieceloc_1" DataType="text" Length="999" redcap:Variable="parapieceloc_1" redcap:FieldType="text">
+		<Question><TranslatedText>ParaPieceLoc_1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="is_there_another_accnumber" Name="is_there_another_accnumber" DataType="boolean" Length="1" redcap:Variable="is_there_another_accnumber" redcap:FieldType="yesno">
+		<Question><TranslatedText>Is there another AccNumber?</TranslatedText></Question>
+		<CodeListRef CodeListOID="is_there_another_accnumber.choices"/>
+	</ItemDef>
+	<ItemDef OID="pathaccnum_2" Name="pathaccnum_2" DataType="text" Length="999" redcap:Variable="pathaccnum_2" redcap:FieldType="text" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>PathAccNum_2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_tumor_quant2" Name="five_um_tumor_quant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_tumor_quant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Tumor_Quant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_tumor_currquant2" Name="five_um_tumor_currquant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_tumor_currquant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Tumor_CurrQuant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_tumor_quant2" Name="ten_um_tumor_quant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_tumor_quant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Tumor_Quant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_tumor_currquant2" Name="ten_um_tumor_currquant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_tumor_currquant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Tumor_CurrQuant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_nor_quant2" Name="five_um_nor_quant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_nor_quant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Nor_Quant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_nor_currquant2" Name="five_um_nor_currquant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="five_um_nor_currquant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Nor_CurrQuant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_nor_quant2" Name="ten_um_nor_quant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_nor_quant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Nor_Quant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_nor_currquant2" Name="ten_um_nor_currquant2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="ten_um_nor_currquant2" redcap:FieldType="text" redcap:TextValidationType="float" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Nor_CurrQuant2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="same_slideloc" Name="same_slideloc" DataType="boolean" Length="1" redcap:Variable="same_slideloc" redcap:FieldType="yesno" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>Same_SlideLoc?</TranslatedText></Question>
+		<CodeListRef CodeListOID="same_slideloc.choices"/>
+	</ItemDef>
+	<ItemDef OID="if_no_location2" Name="if_no_location2" DataType="text" Length="999" redcap:Variable="if_no_location2" redcap:FieldType="text" redcap:BranchingLogic="[same_slideloc] = &#039;0&#039; and [is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>If_No_Location2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="parapieceloc_2" Name="parapieceloc_2" DataType="text" Length="999" redcap:Variable="parapieceloc_2" redcap:FieldType="text" redcap:BranchingLogic="[is_there_another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>ParaPieceLoc_2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="is_there_metastatic_tumor" Name="is_there_metastatic_tumor" DataType="boolean" Length="1" redcap:Variable="is_there_metastatic_tumor" redcap:FieldType="yesno">
+		<Question><TranslatedText>Is there Metastatic Tumor?</TranslatedText></Question>
+		<CodeListRef CodeListOID="is_there_metastatic_tumor.choices"/>
+	</ItemDef>
+	<ItemDef OID="metastatic_accnum" Name="metastatic_accnum" DataType="text" Length="999" redcap:Variable="metastatic_accnum" redcap:FieldType="text" redcap:BranchingLogic="[is_there_metastatic_tumor] = &#039;1&#039;">
+		<Question><TranslatedText>Metastatic_AccNum</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_met_quant" Name="five_um_met_quant" DataType="text" Length="999" redcap:Variable="five_um_met_quant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_metastatic_tumor] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Met_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_met_currentquant" Name="five_um_met_currentquant" DataType="text" Length="999" redcap:Variable="five_um_met_currentquant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_metastatic_tumor] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Met_CurrentQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_met_quant" Name="ten_um_met_quant" DataType="text" Length="999" redcap:Variable="ten_um_met_quant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_metastatic_tumor] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Met_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_met_currentquant" Name="ten_um_met_currentquant" DataType="text" Length="999" redcap:Variable="ten_um_met_currentquant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_metastatic_tumor] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Met_CurrentQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="slideloc_metmetastatic" Name="slideloc_metmetastatic" DataType="text" Length="999" redcap:Variable="slideloc_metmetastatic" redcap:FieldType="text" redcap:BranchingLogic="[is_there_metastatic_tumor] = &#039;1&#039;">
+		<Question><TranslatedText>SlideLoc_Metmetastatic</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="parapieceloc_metastatic" Name="parapieceloc_metastatic" DataType="text" Length="999" redcap:Variable="parapieceloc_metastatic" redcap:FieldType="text" redcap:BranchingLogic="[is_there_metastatic_tumor] = &#039;1&#039;">
+		<Question><TranslatedText>ParaPieceLoc_Metastatic</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="is_there_precancer" Name="is_there_precancer" DataType="boolean" Length="1" redcap:Variable="is_there_precancer" redcap:FieldType="yesno">
+		<Question><TranslatedText>Is There Precancer?</TranslatedText></Question>
+		<CodeListRef CodeListOID="is_there_precancer.choices"/>
+	</ItemDef>
+	<ItemDef OID="precancer_accnum" Name="precancer_accnum" DataType="text" Length="999" redcap:Variable="precancer_accnum" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
+		<Question><TranslatedText>PreCancer_AccNum</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_precancer_quant" Name="five_um_precancer_quant" DataType="text" Length="999" redcap:Variable="five_um_precancer_quant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Precancer_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="five_um_precancer_curquant" Name="five_um_precancer_curquant" DataType="text" Length="999" redcap:Variable="five_um_precancer_curquant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
+		<Question><TranslatedText>5um_Precancer_CurrentQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_precancer_quant" Name="ten_um_precancer_quant" DataType="text" Length="999" redcap:Variable="ten_um_precancer_quant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Precancer_Quant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ten_um_precancer_curquant" Name="ten_um_precancer_curquant" DataType="text" Length="999" redcap:Variable="ten_um_precancer_curquant" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
+		<Question><TranslatedText>10um_Precancer_CurQuant</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="slideloc_precancer" Name="slideloc_precancer" DataType="text" Length="999" redcap:Variable="slideloc_precancer" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
+		<Question><TranslatedText>SlideLoc_Precancer</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="parapieceloc_precancer" Name="parapieceloc_precancer" DataType="text" Length="999" redcap:Variable="parapieceloc_precancer" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
+		<Question><TranslatedText>ParaPieceLoc_Precancer</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="slide_information_complete" Name="slide_information_complete" DataType="text" Length="1" redcap:Variable="slide_information_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="slide_information_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="tma_ca_pos1" Name="tma_ca_pos1" DataType="text" Length="999" redcap:Variable="tma_ca_pos1" redcap:FieldType="text">
+		<Question><TranslatedText>TMA_Ca_pos1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_ca_pos2" Name="tma_ca_pos2" DataType="text" Length="999" redcap:Variable="tma_ca_pos2" redcap:FieldType="text">
+		<Question><TranslatedText>TMA_Ca_pos2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_nor_pos1" Name="tma_nor_pos1" DataType="text" Length="999" redcap:Variable="tma_nor_pos1" redcap:FieldType="text">
+		<Question><TranslatedText>TMA_Nor_pos1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_nor_pos2" Name="tma_nor_pos2" DataType="text" Length="999" redcap:Variable="tma_nor_pos2" redcap:FieldType="text">
+		<Question><TranslatedText>TMA_Nor_pos2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_preca_pos" Name="tma_preca_pos" DataType="text" Length="999" redcap:Variable="tma_preca_pos" redcap:FieldType="text">
+		<Question><TranslatedText>TMA_ PreCa_pos1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_metastatic_pos" Name="tma_metastatic_pos" DataType="text" Length="999" redcap:Variable="tma_metastatic_pos" redcap:FieldType="text">
+		<Question><TranslatedText>TMA Metastatic_pos1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="another_accnumber" Name="another_accnumber" DataType="boolean" Length="1" redcap:Variable="another_accnumber" redcap:FieldType="yesno">
+		<Question><TranslatedText>Another_AccNumber?</TranslatedText></Question>
+		<CodeListRef CodeListOID="another_accnumber.choices"/>
+	</ItemDef>
+	<ItemDef OID="tma_ca_pos3" Name="tma_ca_pos3" DataType="text" Length="999" redcap:Variable="tma_ca_pos3" redcap:FieldType="text" redcap:BranchingLogic="[another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>TMA_Ca_pos3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_ca_pos4" Name="tma_ca_pos4" DataType="text" Length="999" redcap:Variable="tma_ca_pos4" redcap:FieldType="text" redcap:BranchingLogic="[another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>TMA_Ca_pos4</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_nor_pos3" Name="tma_nor_pos3" DataType="text" Length="999" redcap:Variable="tma_nor_pos3" redcap:FieldType="text" redcap:BranchingLogic="[another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>TMA_Nor_pos3</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_nor_pos4" Name="tma_nor_pos4" DataType="text" Length="999" redcap:Variable="tma_nor_pos4" redcap:FieldType="text" redcap:BranchingLogic="[another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>TMA_Nor_pos4</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_preca_pos2" Name="tma_preca_pos2" DataType="text" Length="999" redcap:Variable="tma_preca_pos2" redcap:FieldType="text" redcap:BranchingLogic="[another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>TMA_ PreCa_pos2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_metastatic_pos2" Name="tma_metastatic_pos2" DataType="text" Length="999" redcap:Variable="tma_metastatic_pos2" redcap:FieldType="text" redcap:BranchingLogic="[another_accnumber] = &#039;1&#039;">
+		<Question><TranslatedText>TMA Metastatic_pos2</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tma_information_complete" Name="tma_information_complete" DataType="text" Length="1" redcap:Variable="tma_information_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="tma_information_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="pulling_date1" Name="pulling_date1" DataType="date" Length="999" redcap:Variable="pulling_date1" redcap:FieldType="text" redcap:TextValidationType="date_mdy">
+		<Question><TranslatedText>Pulling_Date1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="forwhoseproject" Name="forwhoseproject" DataType="text" Length="999" redcap:Variable="forwhoseproject" redcap:FieldType="text">
+		<Question><TranslatedText>ForWhoseProject1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="whichslidepulled1" Name="whichslidepulled1" DataType="text" Length="999" redcap:Variable="whichslidepulled1" redcap:FieldType="text">
+		<Question><TranslatedText>WhichSlidePulled1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="pulled_quant1" Name="pulled_quant1" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="pulled_quant1" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>Pulled_Quant1</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="slide_tracking_complete" Name="slide_tracking_complete" DataType="text" Length="1" redcap:Variable="slide_tracking_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="slide_tracking_complete.choices"/>
+	</ItemDef>
+	<CodeList OID="shipmethod.choices" Name="shipmethod" DataType="text" redcap:Variable="shipmethod">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>FedEx</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>USPS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>UPS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>ByPerson</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Others</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="return_needed.choices" Name="return_needed" DataType="boolean" redcap:Variable="return_needed">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="secondtime_getsample.choices" Name="secondtime_getsample" DataType="boolean" redcap:Variable="secondtime_getsample">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="follow_up_needed2.choices" Name="follow_up_needed2" DataType="boolean" redcap:Variable="follow_up_needed2">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="samefacasbefore.choices" Name="samefacasbefore" DataType="boolean" redcap:Variable="samefacasbefore">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="shipmethod2.choices" Name="shipmethod2" DataType="text" redcap:Variable="shipmethod2">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>FedEx</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>USPS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>UPS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>ByPerson</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Others</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="return_needed2.choices" Name="return_needed2" DataType="boolean" redcap:Variable="return_needed2">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="thirdtime_getsample.choices" Name="thirdtime_getsample" DataType="boolean" redcap:Variable="thirdtime_getsample">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="follow_up_needed3.choices" Name="follow_up_needed3" DataType="boolean" redcap:Variable="follow_up_needed3">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="samefacilityasbefore2.choices" Name="samefacilityasbefore2" DataType="boolean" redcap:Variable="samefacilityasbefore2">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="shipmethod3.choices" Name="shipmethod3" DataType="text" redcap:Variable="shipmethod3">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>FedEx</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>USPS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>UPS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>ByPerson</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Others</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="return_needed3.choices" Name="return_needed3" DataType="boolean" redcap:Variable="return_needed3">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="id_shipping_complete.choices" Name="id_shipping_complete" DataType="text" redcap:Variable="id_shipping_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tumor_origin.choices" Name="tumor_origin" DataType="text" redcap:Variable="tumor_origin">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Breast</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Prostate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Colorectum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Lung</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Others</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tumor_location.choices" Name="tumor_location" DataType="text" redcap:Variable="tumor_location">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Left</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Right</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Bilateral</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Multiple</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Unclear</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tumor_location_colorectum.choices" Name="tumor_location_colorectum" DataType="text" redcap:Variable="tumor_location_colorectum">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Appendix</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Cecum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Ascending</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Hepatic Flexure</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Transverse</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Splenic Flexure</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>Descending</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>Sigmoid</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Rectum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Anus</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>Left</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>Right</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>Unclear</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tumor_location_lung.choices" Name="tumor_location_lung" DataType="text" redcap:Variable="tumor_location_lung">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Right Upper Lobe</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Right Middle Lobe</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Right Lower Lobe</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Left Upper Lobe</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Left Lower Lobe</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Right Bronchus</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>Left Bronchus</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>Right</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Left</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Unclear</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>Others (specify it)</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="sex.choices" Name="sex" DataType="text" redcap:Variable="sex">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>male</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>female</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="perineuralinvasion.choices" Name="perineuralinvasion" DataType="text" redcap:Variable="perineuralinvasion">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="vascular_invasion.choices" Name="vascular_invasion" DataType="text" redcap:Variable="vascular_invasion">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="surgical_margin_cancer_pre.choices" Name="surgical_margin_cancer_pre" DataType="text" redcap:Variable="surgical_margin_cancer_pre">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_diagn_breast.choices" Name="clin_diagn_breast" DataType="text" redcap:Variable="clin_diagn_breast">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Noninvasive carcinoma (NOS)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Ductal carcinoma in situ</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Lobular carcinoma in situ</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Paget disease without invasive carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Invasive carcinoma (NOS)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Invasive ductal carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>IDC with an extensive intraductal component</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>IDC with Paget disease</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Invasive lobular</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Mucinous</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>Medullary</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>Papillary</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>Tubular</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="14"><Decode><TranslatedText>Adenoid cystic</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="15"><Decode><TranslatedText>Secretory (juvenile)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="16"><Decode><TranslatedText>Apocrine</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="17"><Decode><TranslatedText>Cribriform</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="18"><Decode><TranslatedText>Carcinoma with squamous metaplasia</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="19"><Decode><TranslatedText>Carcinoma with spindle cell metaplasia</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="20"><Decode><TranslatedText>Carcinoma with cartilaginous/osseous metaplasia</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="21"><Decode><TranslatedText>Carcinoma with metaplasia, mixed type</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="22"><Decode><TranslatedText>Other(s) (specify)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="23"><Decode><TranslatedText>Not assessable</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="24"><Decode><TranslatedText>No cancer tissue</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="25"><Decode><TranslatedText>IDC+ILC (50 -90% each component)</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_diagn_breast.choices" Name="lab_diagn_breast" DataType="text" redcap:Variable="lab_diagn_breast">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Noninvasive carcinoma (NOS)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Ductal carcinoma in situ</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Lobular carcinoma in situ</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Paget disease without invasive carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Invasive carcinoma (NOS)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Invasive ductal carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>IDC with an extensive intraductal component</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>IDC with Paget disease</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Invasive lobular</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Mucinous</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>Medullary</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>Papillary</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>Tubular</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="14"><Decode><TranslatedText>Adenoid cystic</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="15"><Decode><TranslatedText>Secretory (juvenile)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="16"><Decode><TranslatedText>Apocrine</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="17"><Decode><TranslatedText>Cribriform</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="18"><Decode><TranslatedText>Carcinoma with squamous metaplasia</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="19"><Decode><TranslatedText>Carcinoma with spindle cell metaplasia</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="20"><Decode><TranslatedText>Carcinoma with cartilaginous/osseous metaplasia</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="21"><Decode><TranslatedText>Carcinoma with metaplasia, mixed type</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="22"><Decode><TranslatedText>Other(s) (specify)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="23"><Decode><TranslatedText>Not assessable</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="24"><Decode><TranslatedText>No cancer tissue</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="25"><Decode><TranslatedText>IDC+ILC (50 -90% each component)</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="if_ilc_subtype.choices" Name="if_ilc_subtype" DataType="text" redcap:Variable="if_ilc_subtype">
+		<CodeListItem CodedValue="901"><Decode><TranslatedText>classical ILC</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="902"><Decode><TranslatedText>solid ILC</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="903"><Decode><TranslatedText>pleomorphic ILC</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="904"><Decode><TranslatedText>alveolar ILC</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="905"><Decode><TranslatedText>tubulolobular ILC</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="906"><Decode><TranslatedText>mixed ILC</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="907"><Decode><TranslatedText>signet ring cell ILC</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="908"><Decode><TranslatedText>others</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_grade_breast.choices" Name="clin_grade_breast" DataType="text" redcap:Variable="clin_grade_breast">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>1</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>2</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>1~2</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>2~3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_grade_breast.choices" Name="lab_grade_breast" DataType="text" redcap:Variable="lab_grade_breast">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>1</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>2</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="estrogen_receptor.choices" Name="estrogen_receptor" DataType="text" redcap:Variable="estrogen_receptor">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>negative</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>week (</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>positive (&gt;=1%)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="progesterone_receptor.choices" Name="progesterone_receptor" DataType="text" redcap:Variable="progesterone_receptor">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>negative (0~2)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>week (3~4)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>intermediate (5~6)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>strong (7~8)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="her2_immunohistochemistry.choices" Name="her2_immunohistochemistry" DataType="text" redcap:Variable="her2_immunohistochemistry">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>0</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>1 (1~9% cells positivity)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>2 (10-30% cells positivity)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>3 (&gt;30% cells positivity with strong color)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="her2_fish.choices" Name="her2_fish" DataType="text" redcap:Variable="her2_fish">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>0 (Non-Amplified, </TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>1 (Amplified, &gt;2.2)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>2 (Borderline, 1.8~2.2)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="bc_molecularsubtype.choices" Name="bc_molecularsubtype" DataType="text" redcap:Variable="bc_molecularsubtype">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Luminal A</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Luminal B</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>HER2</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Triple Negative</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="bc_precancerous.choices" Name="bc_precancerous" DataType="text" redcap:Variable="bc_precancerous">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Not seen</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>DCIS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>LCIS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>DCIS+LCIS</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnm_breast_tumor.choices" Name="tnm_breast_tumor" DataType="text" redcap:Variable="tnm_breast_tumor">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>TX:Primary tumor cannot be assessed</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>T0:No evidence of primary tumor</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Tis:DCIS/LCIS/Paget&#039;s dis w/o associated tumor</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>T1mic:Microinvasion </TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>T1a:&gt;0.1 but </TranslatedText><redcap:FormattedTranslatedText>T1a:&gt;0.1 but &lt;=0.5 cm</redcap:FormattedTranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>T1b:&gt;0.5 cm but </TranslatedText><redcap:FormattedTranslatedText>T1b:&gt;0.5 cm but &lt;=1.0 cm</redcap:FormattedTranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>T1c:&gt;1.0 cm but </TranslatedText><redcap:FormattedTranslatedText>T1c:&gt;1.0 cm but &lt;=2.0 cm</redcap:FormattedTranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>T2:Tumor &gt;2.0 cm but </TranslatedText><redcap:FormattedTranslatedText>T2:Tumor &gt;2.0 cm but &lt;=5.0 cm</redcap:FormattedTranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>T3:Tumor &gt;5.0 cm</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>T4a:Any size with direct extension to chest wall</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>T4b:skin Edema/ulceration;satellite skin nodules</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>T4c:Both of T4a and T4b</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>T4d:Inflammatory carcinoma</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmbreast_ln_n.choices" Name="tnmbreast_ln_n" DataType="text" redcap:Variable="tnmbreast_ln_n">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>NX: Regional LNs cannot be assessed</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>N0: No regional LNs metastasis</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>N1: Movable ipsilateral axillary LN(s)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N2: Ipsilateral axillary LN(s) fixed</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>N3: Ipsilateral internal mammary LN(s)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>pNX: Regional LNs cannot be assessed</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>pN0: No regional LNs metastasis</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>pN1: movable ipsilateral axillary LN(s)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>pN1a:Only micrometastasis </TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>pN1b: Metastasis any &gt;0.2 cm</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>pN1bi:1 to 3 LNs, any &gt;0.2 cm and all </TranslatedText><redcap:FormattedTranslatedText>pN1bi:1 to 3 LNs, any &gt;0.2 cm and all &lt;2.0 cm</redcap:FormattedTranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>pN1bii: &gt;=4 LN3, any &gt;0.2 cm and all </TranslatedText><redcap:FormattedTranslatedText>pN1bii: &gt;=4 LN3, any &gt;0.2 cm and all &lt;2.0 cm</redcap:FormattedTranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>pN1biii: beyond LN capsule,metastasis </TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="14"><Decode><TranslatedText>pN1biv: Metastasis to a LN &gt;=2.0 cm</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="15"><Decode><TranslatedText>pN2: to ipsilateral axillaryLN(s) fixed</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="16"><Decode><TranslatedText>pN3: to ipsilateral internal mammary LN(s)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="17"><Decode><TranslatedText>pN0(i+)</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmbreast_distantmetast_m.choices" Name="tnmbreast_distantmetast_m" DataType="text" redcap:Variable="tnmbreast_distantmetast_m">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>MX: cannot be assessed</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>M0: No distant metastasis</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>M1: yes includes ipsilateral supraclavicular LNs</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_diagn_prostate.choices" Name="clin_diagn_prostate" DataType="text" redcap:Variable="clin_diagn_prostate">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Adenocarcinoma,NOS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Prostatic duct adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Mucinous adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Signet-ring cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Adenosquemous carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Small cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>Sarcomatoid carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>Other (specifiy)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Undifferentiated carcinoma, NOS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Cannot be determined</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_diag_prostate.choices" Name="lab_diag_prostate" DataType="text" redcap:Variable="lab_diag_prostate">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Adenocarcinoma,NOS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Prostatic duct adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Mucinous adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Signet-ring cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Adenosquemous carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Small cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>Sarcomatoid carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>Other (specifiy)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Undifferentiated carcinoma, NOS</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Cannot be determined</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_grade_pro.choices" Name="clin_grade_pro" DataType="text" redcap:Variable="clin_grade_pro">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Low(1-4)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Intermediate(5-7)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>High(8-10)</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_grade_pro.choices" Name="lab_grade_pro" DataType="text" redcap:Variable="lab_grade_pro">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Low(1-4)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Intermediate(5-7)</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>High(8-10)</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmprostate_t.choices" Name="tnmprostate_t" DataType="text" redcap:Variable="tnmprostate_t">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>T1: Microscopic, DRE/Ultrasound undetectable</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>T1a: </TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>T1b: &gt;5 percent</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>T1c: as F/U of screening w/ high PSA</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>T2: within prost, DRE/ultrasound detectable</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>T2a: &gt;half of one lobe</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>T2b: &gt;half of one lobe,DRE detectable often</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>T2c: involve both lobes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>T3: surrounding tissues or seminal vesicles</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>T3a: outside prostate on one side</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>T3b: outside prostate on both sides</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>T3c: to one or both seminal tubes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>T4a: to bladder or rectum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="14"><Decode><TranslatedText>T4b: beyond prostate or levator muscles</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="15"><Decode><TranslatedText>TX</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmprostate_n.choices" Name="tnmprostate_n" DataType="text" redcap:Variable="tnmprostate_n">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>N0: not to pelvic LN</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>N1: a single pelvic LN,</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>N2: a single pelvic LN,2-5cm</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N3: &gt;5 cm in size</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>NX</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmprostate_m.choices" Name="tnmprostate_m" DataType="text" redcap:Variable="tnmprostate_m">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>M0: spread only regionally in pelvic area</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>M1: spread beyond pelvic area</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>MX</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="seminalinvasion.choices" Name="seminalinvasion" DataType="text" redcap:Variable="seminalinvasion">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="extraprostate_extention.choices" Name="extraprostate_extention" DataType="text" redcap:Variable="extraprostate_extention">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_giag_colon.choices" Name="clin_giag_colon" DataType="text" redcap:Variable="clin_giag_colon">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>1 Adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>2 Mucinous adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>3 Medullary carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>4 Signet ring cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>5 Small cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>6 Squamous cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>7 Adenosquamous carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>8 Others</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>9 Adenoma</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_diagn_colon.choices" Name="lab_diagn_colon" DataType="text" redcap:Variable="lab_diagn_colon">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>1 Adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>2 Mucinous adenocarcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>3 Medullary carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>4 Signet ring cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>5 Small cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>6 Squamous cell carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>7 Adenosquamous carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>8 Others</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>9 Adenoma</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_grade_colon.choices" Name="clin_grade_colon" DataType="text" redcap:Variable="clin_grade_colon">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Low</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Intermediate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>High</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Low-Intermediate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Intermediate-High</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_grade_colon.choices" Name="lab_grade_colon" DataType="text" redcap:Variable="lab_grade_colon">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Low</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Intermediate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>High</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmcolon_t.choices" Name="tnmcolon_t" DataType="text" redcap:Variable="tnmcolon_t">
+		<CodeListItem CodedValue="Tx"><Decode><TranslatedText>Tx</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="Tis"><Decode><TranslatedText>Tis earliest stage (in situ) involves only mucosa</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="T1"><Decode><TranslatedText>T1 through the muscularis mucosa</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="T2"><Decode><TranslatedText>T2 through submucosa into muscularis propria</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="T3"><Decode><TranslatedText>T3 through muscularis propria into outermost layers</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="T4a"><Decode><TranslatedText>T4a through serosa/visceral peritoneum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="T4b"><Decode><TranslatedText>T4b through the wall attach/invade nearby tissues</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmcolon_n.choices" Name="tnmcolon_n" DataType="text" redcap:Variable="tnmcolon_n">
+		<CodeListItem CodedValue="Nx"><Decode><TranslatedText>Nx incomplete information.</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="N0"><Decode><TranslatedText>N0 No cancer in nearby LNs</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="N1a"><Decode><TranslatedText>N1a in 1 nearby LN</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="N1b"><Decode><TranslatedText>N1b in 2 to 3 nearby LNs</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="N1c"><Decode><TranslatedText>N1c cancer cells in areas of fat near LN, but not in LNs</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="N2a"><Decode><TranslatedText>N2a in 4 to 6 nearby LN</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="N2b"><Decode><TranslatedText>N2b in 7 or more nearby LNs</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmcolon_m.choices" Name="tnmcolon_m" DataType="text" redcap:Variable="tnmcolon_m">
+		<CodeListItem CodedValue="M0"><Decode><TranslatedText>M0 No distant spread</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="M1a"><Decode><TranslatedText>M1a to 1 distant organ or set of distant LNs</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="M1b"><Decode><TranslatedText>M1b to &gt;1 or distant parts peritoneum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="MX"><Decode><TranslatedText>MX</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_diagn_lung.choices" Name="clin_diagn_lung" DataType="text" redcap:Variable="clin_diagn_lung">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Squamous cell carcinoma 8070/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Small cell carcinoma 8041/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Adenocarcinoma 8140/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Adenocarcinoma, mixed subtype 8255/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Adenocarcinoma, Acinar 8550/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Adenocarcinoma, Papillary 8260/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>Adenocarcinoma, Micropapillary</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>Bronchioloalveolar carcinoma 8250/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Solid adenocarcinoma with mucin 8230/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Adenosquamous carcinoma 8560/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>Large cell carcinoma 8012/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>Sarcomatoid carcinoma 8033/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>Carcinoid tumour 8240/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="14"><Decode><TranslatedText>Mucoepidermoid carcinoma 8430/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="15"><Decode><TranslatedText>Epithelial-myoepithelial carcinoma 8562/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="16"><Decode><TranslatedText>Adenoid cystic carcinoma 8200/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="17"><Decode><TranslatedText>Unclassified carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="18"><Decode><TranslatedText>Others</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="19"><Decode><TranslatedText>Large cell neuroendocrine carcinoma  8013/3</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_diagn_lung.choices" Name="lab_diagn_lung" DataType="text" redcap:Variable="lab_diagn_lung">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Squamous cell carcinoma 8070/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Small cell carcinoma 8041/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Adenocarcinoma 8140/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>Adenocarcinoma, mixed subtype 8255/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Adenocarcinoma, Acinar 8550/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Adenocarcinoma, Papillary 8260/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>Adenocarcinoma, Micropapillary</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>Bronchioloalveolar carcinoma 8250/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>Solid adenocarcinoma with mucin 8230/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>Adenosquamous carcinoma 8560/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>Large cell carcinoma 8012/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>Sarcomatoid carcinoma 8033/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>Carcinoid tumour 8240/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="14"><Decode><TranslatedText>Mucoepidermoid carcinoma 8430/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="15"><Decode><TranslatedText>Epithelial-myoepithelial carcinoma 8562/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="16"><Decode><TranslatedText>Adenoid cystic carcinoma 8200/3</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="17"><Decode><TranslatedText>Unclassified carcinoma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="18"><Decode><TranslatedText>Others</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="19"><Decode><TranslatedText>Large cell neuroendocrine carcinoma 8013/3</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="clin_grade_lung.choices" Name="clin_grade_lung" DataType="text" redcap:Variable="clin_grade_lung">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Low</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Intermediate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>High</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>Low-Intermediate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Intermediate-High</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="lab_grade_lung.choices" Name="lab_grade_lung" DataType="text" redcap:Variable="lab_grade_lung">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Low</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Intermediate</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>High</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>N/A</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmlung_t.choices" Name="tnmlung_t" DataType="text" redcap:Variable="tnmlung_t">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>TX</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>T0 No evidence of primary tumour</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Tis Carcinoma in situ</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>T1 </TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>T2 &gt; 3 cm; or involves main bronchus(&gt;2 cm distal to carina)/visceral pleura; or Associated with atelectasis or obstructive pneumonitis that does not involve entire lung</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>T3 any size that directly invades any of:chest wall, diaphragm, mediastinal pleura, parietal pericardium; or tumour in main bronchus &lt;  2 cm distal to carina but without involvement of carina; or associated atelectasis or obstructive pneumonitis of entire lung</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="7"><Decode><TranslatedText>T4 any size that invades any of: mediastinum, heart, great vessels, trachea, oesophagus, vertebral body, carina; separate tumour nodule(s) in same lobe; tumour with malignant pleural effusion</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmlung_n.choices" Name="tnmlung_n" DataType="text" redcap:Variable="tnmlung_n">
+		<CodeListItem CodedValue="8"><Decode><TranslatedText>NX</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="9"><Decode><TranslatedText>N0</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="10"><Decode><TranslatedText>N1 Ipsilateral peribronchial/ipsilateral hilar LNs and intrapulmonary LNs</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="11"><Decode><TranslatedText>N2 ipsilateral mediastinal/subcarinal LNs</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="12"><Decode><TranslatedText>N3 contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular LNs</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tnmlung_m.choices" Name="tnmlung_m" DataType="text" redcap:Variable="tnmlung_m">
+		<CodeListItem CodedValue="13"><Decode><TranslatedText>MX</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="14"><Decode><TranslatedText>M0</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="15"><Decode><TranslatedText>M1 Distant metastasis, includes separate tumour nodule(s) in different lobe</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="pathology_review_complete.choices" Name="pathology_review_complete" DataType="text" redcap:Variable="pathology_review_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="is_there_another_accnumber.choices" Name="is_there_another_accnumber" DataType="boolean" redcap:Variable="is_there_another_accnumber">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="same_slideloc.choices" Name="same_slideloc" DataType="boolean" redcap:Variable="same_slideloc">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="is_there_metastatic_tumor.choices" Name="is_there_metastatic_tumor" DataType="boolean" redcap:Variable="is_there_metastatic_tumor">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="is_there_precancer.choices" Name="is_there_precancer" DataType="boolean" redcap:Variable="is_there_precancer">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="slide_information_complete.choices" Name="slide_information_complete" DataType="text" redcap:Variable="slide_information_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="another_accnumber.choices" Name="another_accnumber" DataType="boolean" redcap:Variable="another_accnumber">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Yes</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>No</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tma_information_complete.choices" Name="tma_information_complete" DataType="text" redcap:Variable="tma_information_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="slide_tracking_complete.choices" Name="slide_tracking_complete" DataType="text" redcap:Variable="slide_tracking_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+</MetaDataVersion>
+</Study>
+</ODM>

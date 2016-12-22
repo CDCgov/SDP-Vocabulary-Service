@@ -1,31 +1,30 @@
-<p id="notice"><%= notice %></p>
+<div class="basic-bg">
+  <p id="notice"><%= notice %></p>
+  <h1>Responses</h1>
 
-<h1>Responses</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Value</th>
-      <th>Response Set ID</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @responses.each do |response| %>
+  <table>
+    <thead>
       <tr>
-	      <td>id_<%= response.id %></td>
-        <td><%= response.value %></td>
-        <td><%= response.response_set_id %></td>
-        <td><%= link_to 'Show', response %></td>
-        <td><%= link_to 'Edit', edit_response_path(response) %></td>
-        <td><%= link_to 'Destroy', response, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>ID</th>
+        <th>Value</th>
+        <th>Response Set ID</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
-
-<%= link_to 'New Response', new_response_path %>
+    <tbody>
+      <% @responses.each do |response| %>
+        <tr>
+  	      <td>id_<%= response.id %></td>
+          <td><%= response.value %></td>
+          <td><%= response.response_set_id %></td>
+          <td><%= link_to 'Show', response %></td>
+          <td><%= link_to 'Edit', edit_response_path(response) %></td>
+          <td><%= link_to 'Destroy', response, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+  <%= link_to 'New Response', new_response_path %> 
+</div>

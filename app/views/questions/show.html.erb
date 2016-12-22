@@ -1,51 +1,19 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Content:</strong>
-  <%= @question.content %>
-</p>
-
-<p>
-  <strong>Author:</strong>
-  <%= @question.created_by.email if @question.created_by.present? %>
-</p>
-
-<p>
-  <strong>Created:</strong>
-  <%= @question.created_at %>
-</p>
-
-<p>
-  <strong>Updated:</strong>
-  <%= @question.updated_by.email if @question.created_by.present? %>
-  <%= @question.updated_at %>
-</p>
-
-<p>
-  <strong>Response Set Names:</strong><br>
-  <% @question.response_sets.each do |rs| %>
-    <%= link_to rs.name, response_set_path(rs) %>
-    <br>
+<div class="row basic-bg">
+  <p id="notice"><%= notice %></p>
+  <div class="col-md-12">
+    <div class="panel ">
+      <%= render partial: 'question_details', locals: {question: @question } %>
+    </div>
+  </div>
+  <% if user_signed_in? & @question.most_recent? %>
+    <%= link_to 'Revise', revise_question_path(@question) , class: "btn btn-primary"%> |
   <% end %>
-</p>
+  <%= link_to 'Back', questions_path, class: "btn btn-primary " %>
 
-<p>
-  <strong>Question Type:</strong>
-  <%= @question.question_type.try :name %>
-</p>
-
-<% if @question.other_versions.present? %>
-<p>
-  <strong>Other Versions:</strong>
-  <ol>
-    <% @question.other_versions.each do |ov| %>
-      <li><%= link_to "Version: #{ov.version}", ov %> - Created <%= time_ago_in_words(ov.created_at) %> ago</li>
-    <% end %>
-  </ol>
-</p>
-<% end %>
-
-<% if user_signed_in? %>
-    <%= link_to 'Revise', revise_question_path(@question) %> |
-<% end %>
-<%= link_to 'Back', questions_path %>
+  <div id="comments"></div>
+  <%= javascript_include_tag *webpack_asset_paths('question', extension: 'js') %>
+  <script>
+    var comments = <%=  raw ActiveModelSerializers::SerializableResource.new(@question.comments).as_json.to_json %>;
+    SDP.createCommentList("comments",comments , "Question", <%= @question.id %>)
+  </script>
+</div>

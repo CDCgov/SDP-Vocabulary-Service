@@ -6,3 +6,4 @@ Make sure you have checked off the following before you issue your Pull Request:
 - [ ] Passed all cucumber tests using `bundle exec cucumber`
 - [ ] Passed overcommit hooks, including running all code through Rubocop
 - [ ] If any database changes were made, run `rake generate_erd` to update the README.md
+- [ ] If any changes were made to config/routes.rb run `rake jsroutes:generate`

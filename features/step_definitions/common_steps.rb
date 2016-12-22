@@ -10,13 +10,21 @@ Given(/^I am on the "(.+)" page$/) do |url|
   visit url
 end
 
+When(/^I go to the dashboard$/) do
+  visit '/'
+end
+
 # When clauses
 When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
   # '//tr[td="id_' + object_id + '"]/td[a="Destroy"]/a'
-  within(:xpath, '//tr[td="id_' + object_id + '"]') do
+  within(:xpath, create_path(object_type, object_id)) do
     click_on(action)
   end
+end
+
+When(/^I click on the (.*) search filter$/) do |action|
+  page.find("#menu_item_#{action}").trigger('click')
 end
 
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|
@@ -50,14 +58,28 @@ end
 
 Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
-  within(:xpath, '//tr[td="id_' + object_id + '"]') do
+  within(:xpath, create_path(object_type, object_id)) do
     find_link(action)
   end
+end
+
+Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|
+  page.response_headers['Content-Disposition'].index("filename=\"#{filename}\"")
 end
 
 # Quick little helper for popping a debugger, will cause tests to fail if left in
 Then(/^debugger$/) do
   assert false
+end
+
+def create_path(object_type, object_id)
+  if object_type == 'Question'
+    '//div[@id="question_id_' + object_id + '"]'
+  elsif object_type == 'Response Set'
+    '//div[@id="response_set_id_' + object_id + '"]'
+  else
+    '//tr[td="id_' + object_id + '"]'
+  end
 end
 
 # Helper functions

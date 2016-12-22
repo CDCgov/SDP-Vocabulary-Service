@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107220951) do
+ActiveRecord::Schema.define(version: 20161220201422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "title",            limit: 50, default: ""
+    t.integer  "parent_id"
+    t.text     "comment"
+    t.string   "commentable_type"
+    t.integer  "commentable_id"
+    t.integer  "user_id"
+    t.string   "role",                        default: "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
+    t.index ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
+  end
 
   create_table "form_questions", force: :cascade do |t|
     t.integer  "form_id"
@@ -26,8 +41,11 @@ ActiveRecord::Schema.define(version: 20161107220951) do
   create_table "forms", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "version_independent_id"
+    t.integer  "version",                          default: 1
+    t.string   "control_number",         limit: 9
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -53,25 +71,33 @@ ActiveRecord::Schema.define(version: 20161107220951) do
     t.integer  "updated_by_id"
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
+    t.integer  "response_type_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
+    t.index ["response_type_id"], name: "index_questions_on_response_type_id", using: :btree
     t.index ["updated_by_id"], name: "index_questions_on_updated_by_id", using: :btree
   end
 
   create_table "response_sets", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "oid"
+    t.string   "oid"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.boolean  "coded"
-    t.integer  "parent_id"
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
+    t.integer  "parent_id"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
+  end
+
+  create_table "response_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "responses", force: :cascade do |t|
@@ -110,6 +136,8 @@ ActiveRecord::Schema.define(version: 20161107220951) do
     t.string   "provider"
     t.string   "uid"
     t.boolean  "admin",                  default: false
+    t.string   "first_name"
+    t.string   "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
@@ -122,6 +150,7 @@ ActiveRecord::Schema.define(version: 20161107220951) do
 
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
+  add_foreign_key "questions", "response_types"
   add_foreign_key "questions", "users", column: "created_by_id"
   add_foreign_key "questions", "users", column: "updated_by_id"
   add_foreign_key "response_sets", "users", column: "created_by_id"

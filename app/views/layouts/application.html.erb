@@ -3,71 +3,94 @@
   <head>
     <title>Vocabulary Service</title>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <%= csrf_meta_tags %>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
-
+    <%= javascript_include_tag *webpack_asset_paths('babel-polyfill', extension: 'js') %>
     <%= javascript_include_tag *webpack_asset_paths('bootstrap', extension: 'js') %>
     <%= javascript_include_tag *webpack_asset_paths('application', extension: 'js') %>
   </head>
 
-  <body>
-    <nav class="navbar navbar-default main-nav">
-      <div class="container-fluid">
+  <body class="body">
+
+    <nav class="cdc-utlt-nav navbar-fixed-top">
+      <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">CDC Vocabulary Service</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="cdc-brand" href="/">CDC Vocabulary Service</a>
         </div>
-        <ul class="nav navbar-nav navbar-right">
-          <%= render 'devise/menu/registration_items' %>
-          <%= render 'devise/menu/login_items' %>
-        </ul>
-      </div>
-    </nav>
-    <nav class="navbar navbar-inverse secondary-nav">
-        <% if user_signed_in? %>
-        <ul class="nav navbar-nav">
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Overview
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li class="<%= 'active' if current_page?(questions_path) %>"><%=link_to 'Questions', questions_path %>
-              <li class="<%= 'active' if current_page?(question_types_path) %>"><%=link_to 'Question Types', question_types_path %>
-              <li class="<%= 'active' if current_page?(response_sets_path) %>"><%=link_to 'Response Sets', response_sets_path %>
-              <li class="<%= 'active' if current_page?(forms_path) %>"><%=link_to 'Forms', forms_path %>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Author
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li class="<%= 'active' if current_page?(new_question_path) %>"><%=link_to 'Questions', new_question_path %>
-              <li class="<%= 'active' if current_page?(new_question_type_path) %>"><%=link_to 'Question Types', new_question_type_path %>
-              <li class="<%= 'active' if current_page?(new_response_set_path) %>"><%=link_to 'Response Sets', new_response_set_path %>
-              <li class="<%= 'active' if current_page?(new_response_path) %>"><%=link_to 'Responses', new_response_path %>
-              <li class="<%= 'active' if current_page?(new_form_path) %>"><%=link_to 'Forms', new_form_path %>
-            </ul>
-          </li>
-        </ul>
+
+        <% if user_signed_in? == false %>
+          <ul class="nav navbar-nav navbar-right">
+            <%= render 'devise/menu/registration_items' %>
+            <%= render 'devise/menu/login_items' %>
+          </ul>
         <% else %>
-        <ul class="nav navbar-nav">
-          <li class="disabled"><a href="/questions/new">New Question</a></li>
-        </ul>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="cdc-nav cdc-utlt-navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" id="account-dropdown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i><%= current_user.email %><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">My Stuff</a></li>
+                  <li><a href="/users/edit">Settings</a></li>
+                  <li><a href="#">Saved Searches</a></li>
+                  <li><a href="#">System Activity</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><%= render 'devise/menu/login_items'%></li>
+                </ul>
+              </li>
+              <li><a href="#"><i class="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help</a></li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
         <% end %>
+      </div>
+
+      <nav class="cdc-nav-main" role="navigation">
+        <div class="container">
+          <% if user_signed_in? %>
+          <ul class="nav cdc-navbar-nav">
+            <li class="active"><a href="/" class="cdc-navbar-item"><i class="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span class="caret"></span></a>
+              <ul class="cdc-nav-dropdown">
+                <li class="nav-dropdown-item"><a href="/questions/new">Questions</a></li>
+                <li class="nav-dropdown-item"><a href="/question_types/new">Question Types</a></li>
+                <li class="nav-dropdown-item"><a href="/response_sets/new">Response Sets</a></li>
+                <li class="nav-dropdown-item"><a href="/forms/new">Forms</a></li>
+              </ul>
+            </li>                
+            <li>
+              <a href="#contact" class="cdc-navbar-item"><i class="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
+              Alerts
+              <span class="alerts-badge">1</span></a>
+            </ul>
+          </ul>
+          <% end %>
+        </div>
+      </nav>
     </nav>
-    <div class="container-fluid">
+
+
+    <div class="container">
         <%= yield %>
     </div>
     <footer class="footer">
-      <div class="container-fluid">
+      <div class="container">
         2016 Centers for Disease Control and Prevention. All rights reserved.
         <div class="nav-links">
           <span href="#">Privacy</span>
           <span href="#">Security</span>
           <span href="#">Terms of Service</span>
         </div>
-    </div>
+      </div>
     </footer>
   </body>
 </html>

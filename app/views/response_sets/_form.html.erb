@@ -1,99 +1,74 @@
 <div class="container">
-  <%= form_for(response_set) do |f| %>
-    <% if response_set.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(response_set.errors.count, "error") %> prohibited this response_set from being saved:</h2>
+  <div class="row">
+    <%= form_for(response_set) do |f| %>
+      <% if response_set.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(response_set.errors.count, "error") %> prohibited this response_set from being saved:</h2>
+          <ul>
+          <% response_set.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-        <ul>
-        <% response_set.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+      <div class="row">
+        <div class="col-md-4">
+          <%= f.label :name %>
+          <%= f.text_field :name %>
+        </div>
+
+        <div class="col-md-4">
+          <%= f.label :oid %>
+          <%= f.number_field :oid %>
+        </div>
+
+        <div class="col-md-2">
+          <%= f.label :coded %>
+          <%= f.check_box :coded %>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <%= f.label :description %>
+          <%= f.text_area :description %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <!-- Displaying current user for when update tracking is added -->
+          Author ID: <%= current_user.email %>
+        </div>
+      </div>
+
+      <div class="hidden">
+        <%= f.hidden_field :version_independent_id %>
+        <%= f.hidden_field :version %>
+        <% if response_set.parent.present? %>
+          <%= f.hidden_field :parent_id, value: response_set.parent_id %>
         <% end %>
-        </ul>
+      </div>
+
+      <div id="response-set-table">
+      </div>
+
+      <div class="actions">
+        <% if response_set.parent.present? %>
+          <%= f.submit 'Extend Response Set' %>
+        <% elsif response_set.version_independent_id.present? %>
+          <%= f.submit 'Revise Response Set' %>
+        <% else %>
+          <%= f.submit %>
+        <% end %>
       </div>
     <% end %>
-
-
-    <div class="row">
-      <div class="col-md-4">
-        <%= f.label :name %>
-        <%= f.text_field :name %>
-      </div>
-
-      <div class="col-md-4">
-        <%= f.label :oid %>
-        <%= f.number_field :oid %>
-      </div>
-
-      <div class="col-md-2">
-        <%= f.label :coded %>
-        <%= f.check_box :coded %>
-      </div>
-
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <%= f.label :description %>
-        <%= f.text_area :description %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <!-- Displaying current user for when update tracking is added -->
-        Author ID: <%= current_user.email %>
-      </div>
-    </div>
-
-    <div class="hidden">
-      <%= f.hidden_field :version_independent_id %>
-      <%= f.hidden_field :version %>
-      <% if response_set.parent.present? %>
-        <%= f.hidden_field :parent_id, value: response_set.parent_id %>
-      <% end %>
-    </div>
-
-    <table id="response-set-table" class="table table-striped">
-      <thead>
-        <tr>
-          <th>Response Code</th>
-          <th>Code System</th>
-          <th>Display Name</th>
-        </tr>
-      </thead>
-      <tbody>
-      <%= f.fields_for :responses do |response_form| %>
-        <tr>
-          <td>
-            <%= response_form.label :value, class: "hidden" %>
-            <%= response_form.text_field :value %>
-          </td>
-          <td>
-            <%= response_form.label :code_system, class: "hidden" %>
-            <%= response_form.text_field :code_system %>
-          </td>
-          <td>
-            <%= response_form.label :display_name, class: "hidden" %>
-            <%= response_form.text_field :display_name %>
-          </td>
-          <td>
-            <a href="#" onclick="SDP.rs.removeResponseRow(event)">Remove</a>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-    </table>
-    <a href="javascript:SDP.rs.addResponseRow()">Add Row</a>
-
-
-    <div class="actions">
-      <% if response_set.parent.present? %>
-        <%= f.submit 'Extend Response Set' %>
-      <% elsif response_set.version_independent_id.present? %>
-        <%= f.submit 'Revise Response Set' %>
-      <% else %>
-        <%= f.submit %>
-      <% end %>
-    </div>
-  <% end %>
+  </div>
 </div>
+
+<script type="application/json" id="responses-json">
+  <%= raw response_set.responses.map{|r| {code: r.value, display: r.display_name, system: r.code_system}}.to_json %>
+</script>
+<%= javascript_include_tag *webpack_asset_paths('response_set', extension: 'js') %>

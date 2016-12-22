@@ -1,0 +1,4 @@
+dist/**/*
+test/test_helper.js
+webpack/_routes.js
+webpack/print.js
