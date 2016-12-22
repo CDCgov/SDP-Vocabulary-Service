@@ -121,10 +121,6 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
               </div>
           </div>
 
-
-          <input type="hidden" name="question[version_independent_id]" id="question_version_independent_id" />
-          <input type="hidden" value="1" name="question[version]" id="question_version" />
-
           <div className="panel-footer">
             <div className="actions form-group">
               <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
