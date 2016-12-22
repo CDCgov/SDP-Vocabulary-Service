@@ -263,7 +263,6 @@ Devise.setup do |config|
   cnf = YAML.load(File.open(File.join(File.dirname(__FILE__), '..', 'openid.yml')))
   config.omniauth :openid_connect, cnf[Rails.env] if cnf[Rails.env]
 
-  # eyJhbGciOiJSUzI1NiIsImtpZCI6InJzYTEifQ.eyJhdWQiOlsiNWIwMGYyYzItNmVkOC00ODk0LWI1OWItYjUxNDhlNDRlNmFhIl0sImlzcyI6Imh0dHBzOlwvXC9pZC5taXRyZS5vcmdcL2Nvbm5lY3RcLyIsImp0aSI6IjY2YWYzZWNjLThjZmItNDBmYS04ZDk2LTBmNmVhMDE1MmZmMCIsImlhdCI6MTQ3NzQxNzM0N30.MOHuNjiOFcZ8ccmFdzS9C03IHzaupU7_v7O2UwPnDxmvvIZIxTUkEp-XO1Y2NAIT7ViX57SGEv-h6llOQNctEw4IpClCkU2ry7K0r-P6kGvPOt_XJWaBAE0pqZF7TausIk43sKPcYgdaiknb7LcYBWLi90aU908eER17wNFUv_J-f2IJSfQlIbcEcM5KTVXNzZXOfmA8RqVvFdfZ-iTxxLk635gabEj4VPsgssUTFZxZVWYwc-Xo_xOOiS77cye8GJMLyIB3gIZ9wNmOVFIbL8fs862t7Tm81zHydskQDGc-kz_HEpb_JjBzFUy6Th1JfTNfOeHex2ecRKpHqvUp6A
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

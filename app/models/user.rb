@@ -23,5 +23,4 @@ class User < ApplicationRecord
     fn = "#{first_name} #{last_name}"
     fn.strip.blank? ? email : fn
   end
-
 end

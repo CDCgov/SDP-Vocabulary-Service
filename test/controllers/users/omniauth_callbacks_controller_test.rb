@@ -15,7 +15,11 @@ module Users
     end
 
     test 'should create new user and authentication if one does not exist' do
+      Question.destroy_all
+      Form.destroy_all
+      ResponseSet.destroy_all
       User.destroy_all
+
       get '/users/auth/openid_connect/callback'
       assert_equal 1, User.count, 'expected a new user to have been created'
       user = User.first
