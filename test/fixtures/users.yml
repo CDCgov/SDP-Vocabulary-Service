@@ -10,7 +10,7 @@ admin:
   first_name: "Super"
   last_name: "Admin"
 # column: value
-#
+
 not_admin:
   email: not_admin@example.com
   admin: false
