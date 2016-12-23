@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  include Versionable
+  include Versionable, OidGenerator
   acts_as_commentable
 
   has_many :question_response_sets
@@ -25,7 +25,7 @@ class Question < ApplicationRecord
                                 version_independent_id: version_independent_id,
                                 version: version + 1, question_response_sets: question_response_sets,
                                 response_sets: response_sets, form_questions: form_questions, forms: forms,
-                                question_type: question_type,
+                                question_type: question_type, oid: oid,
                                 response_type: response_type)
     concepts.each do |c|
       new_revision.concepts << c.dup

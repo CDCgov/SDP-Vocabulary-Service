@@ -3,7 +3,6 @@
 one:
   name: Gender Partial
   description: M / F
-  oid: 1
   version: 1
   version_independent_id: RS-1
   created_by_id: admin
@@ -11,7 +10,6 @@ one:
 two:
   name: Gender Full
   description: M/F/NA
-  oid: 1
   version: 1
   version_independent_id: RS-2
   created_by_id: admin
@@ -19,7 +17,6 @@ two:
 gfv2:
   name: Gender Full
   description: Tweak
-  oid: 1
   version: 2
   version_independent_id: RS-2
   created_by_id: admin
