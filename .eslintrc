@@ -1,48 +1,48 @@
 {
-    "rules": {
-        "linebreak-style": [
-            2,
-            "unix"
-        ],
-        "semi": [
-            2,
-            "always"
-        ],
-        "camelcase": 2,
-        "indent": ["error", 2],
-        "brace-style": 2,
-        "no-nested-ternary": 2,
-        "no-trailing-spaces": 2,
-        'react/jsx-no-duplicate-props': 2,
-        'react/jsx-no-undef': 2,
-        'react/jsx-uses-react': 2,
-        'react/jsx-uses-vars': 2,
-        'react/no-danger': 2,
-        'react/no-deprecated': 2,
-        'react/no-did-mount-set-state': 2,
-        'react/no-did-update-set-state': 2,
-        'react/no-direct-mutation-state': 2,
-        'react/no-is-mounted': 2,
-        'react/no-unknown-property': 2,
-        'react/prop-types': 2,
-        'react/react-in-jsx-scope': 2,
-        'no-case-declarations': 0
-    },
-    "env": {
-        "es6": true,
-        "browser": true,
-        "mocha": true,
-        "commonjs": true
-    },
-    "extends": ["eslint:recommended"],
-    "parserOptions": {
-      "sourceType": "module",
-      "ecmaFeatures": {
-          "jsx": true,
-          "experimentalObjectRestSpread": true
-      }
-    },
-    "plugins": [
-        "react"
-    ]
+  "rules": {
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "semi": [
+      2,
+      "always"
+    ],
+    "camelcase": 2,
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "brace-style": 2,
+    "no-nested-ternary": 2,
+    "no-trailing-spaces": 2,
+    "react/jsx-no-duplicate-props": 2,
+    "react/jsx-no-undef": 2,
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/no-danger": 2,
+    "react/no-deprecated": 2,
+    "react/no-did-mount-set-state": 2,
+    "react/no-did-update-set-state": 2,
+    "react/no-direct-mutation-state": 2,
+    "react/no-is-mounted": 2,
+    "react/no-unknown-property": 2,
+    "react/prop-types": 2,
+    "react/react-in-jsx-scope": 2,
+    "no-case-declarations": 0
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "mocha": true,
+    "commonjs": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "plugins": [
+    "react"
+  ]
 }
