@@ -16,3 +16,10 @@ When(/^I click on the menu link for the Question with the (.+) "([^"]*)"$/) do |
   object_id = attribute_to_id('Question', attribute, attribute_value)
   page.find("#question_#{object_id}_menu").trigger('click')
 end
+
+When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
+  drag = find('a', text: option)
+  target = '.' + target.downcase.tr(' ', '_')
+  drop = find(target)
+  drag.drag_to(drop)
+end

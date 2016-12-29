@@ -63,6 +63,10 @@ Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |a
   end
 end
 
+Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|
+  page.response_headers['Content-Disposition'].index("filename=\"#{filename}\"")
+end
+
 # Quick little helper for popping a debugger, will cause tests to fail if left in
 Then(/^debugger$/) do
   assert false

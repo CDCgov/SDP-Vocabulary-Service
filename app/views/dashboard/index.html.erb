@@ -9,28 +9,44 @@
         <div class="col-md-12">
           <div class="analytics-group">
             <ul class="analytics-list-group">
-              <li class="analytics-list-item"><i class="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i><p class="item-value"><%= @questions.count %></p><h2 class="item-title">Questions</h2></li>
-              <li class="analytics-list-item"><i class="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
-              <p class="item-value"><%= @response_sets.count %></p><h2 class="item-title">Response Sets</h2></li>
-              <li class="analytics-list-item"><i class="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
-              <p class="item-value"><%= @forms.count %></p><h2 class="item-title">Forms</h2></li>
+              <li class="analytics-list-item">
+                <a href="<%= questions_path%>">
+                  <i class="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i>
+                  <p class="item-value"><%= @questions.count %></p>
+                  <h2 class="item-title">Questions</h2>
+                </a>
+              </li>
+              <li class="analytics-list-item">
+                <a href="<%= response_sets_path%>">
+                  <i class="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
+                  <p class="item-value"><%= @response_sets.count %></p>
+                  <h2 class="item-title">Response Sets</h2>
+                </a>
+                </li>
+              <li class="analytics-list-item">
+                <a href="<%= forms_path%>">
+                  <i class="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
+                  <p class="item-value"><%= @forms.count %></p>
+                  <h2 class="item-title">Forms</h2>
+                </a>
+                </li>
             </ul>
           </div>
         </div>
       </div>
       <!-- END Analytics Widget -->
-      
+
       <!-- Start Search Widget -->
-      
+
       <div id="search-widget">
       </div>
-      
+
       <!-- End Search Widget -->
     </div>
 
     <div class="col-md-4">
       <div class="dashboard-activity">
-        
+
         <!-- START Recent Items Widget -->
         <div class="recent-items-panel">
           <div class="recent-items-heading">Recent Items</div>
@@ -40,12 +56,12 @@
                 <div class="recent-items-icon"><i class="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
                 <div class="recent-items-value"><%= @response_sets.count %> Response Sets</div>
               </li>
-            
+
               <li class="recent-item-list">
                 <div class="recent-items-icon"><i class="fa fa-question-circle recent-items-icon" aria-hidden="true"></i></div>
                 <div class="recent-items-value"><%= @questions.count %> Questions</div>
               </li>
-            
+
               <li class="recent-item-list">
                 <div class="recent-items-icon"><i class="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
                 <div class="recent-items-value"><%= @forms.count %> Forms</div>
@@ -54,7 +70,7 @@
           </div>
         </div>
         <!-- END Recent Items Widget -->
-        
+
         <!-- START System Activity Widget -->
         <div class="panel panel-default">
           <div class="panel-heading">System Activity</div>
@@ -85,4 +101,3 @@
   <%= raw @questions.to_json %>
 </script>
 <%= javascript_include_tag *webpack_asset_paths('search', extension: 'js') %>
-

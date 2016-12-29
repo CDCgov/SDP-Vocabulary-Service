@@ -36,6 +36,18 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get export' do
+    get export_form_url(@form)
+    assert_response :success
+  end
+
+  test 'should get redcap export ' do
+    get redcap_form_url(@form)
+    assert response.headers['Content-Disposition'].index("filename=\"#{@form.name.underscore}_redcap.xml\"")
+    valiedate_redcap(response.body)
+    assert_response :success
+  end
+
   test 'should destroy form' do
     assert_difference('Form.count', -1) do
       delete form_url(@form)
@@ -48,5 +60,17 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     get form_url(@form, format: :json)
     assert_response :success
     assert_response_schema('forms/show_default.json')
+  end
+
+  private
+
+  def valiedate_redcap(xml)
+    doc = Nokogiri::XML::Document.parse(xml)
+    doc.root.add_namespace_definition('odm', 'http://www.cdisc.org/ns/odm/v1.3')
+    doc.root.add_namespace_definition('ds', 'http://www.w3.org/2000/09/xmldsig#')
+    doc.root.add_namespace_definition('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+    doc.root.add_namespace_definition('redcap', 'https://projectredcap.org')
+    assert doc
+    assert doc.at_xpath("/odm:ODM/odm:Study[@OID='Project.Test']")
   end
 end

@@ -63,6 +63,14 @@ class FormsController < ApplicationController
     end
   end
 
+  # GET /forms/1/redcap
+  def redcap
+    xml = render_to_string 'forms/redcap.xml', layout: false
+    send_data(xml, filename: "#{@form.name.underscore}_redcap.xml",
+                   type: 'application/xml',
+                   status: 200)
+  end
+
   private
 
   def load_supporting_resources_for_editing

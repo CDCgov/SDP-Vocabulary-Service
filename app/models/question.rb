@@ -13,7 +13,7 @@ class Question < ApplicationRecord
   belongs_to :updated_by, class_name: 'User'
 
   validates :content, presence: true
-  validates :question_type_id, presence: true
+  # validates :question_type_id, presence: true
 
   def self.search(search)
     where('content ILIKE ?', "%#{search}%")
