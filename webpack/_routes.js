@@ -444,9 +444,6 @@ Based on Rails routes of Vocabulary::Application
 // edit_comment => /comments/:id/edit(.:format)
   // function(id, options)
   edit_comment_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
-// edit_form => /forms/:id/edit(.:format)
-  // function(id, options)
-  edit_form_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // edit_form_question => /form_questions/:id/edit(.:format)
   // function(id, options)
   edit_form_question_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"form_questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
@@ -465,6 +462,9 @@ Based on Rails routes of Vocabulary::Application
 // edit_user_registration => /users/edit(.:format)
   // function(options)
   edit_user_registration_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// export_form => /forms/:id/export(.:format)
+  // function(id, options)
+  export_form_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"export",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // extend_response_set => /response_sets/:id/extend(.:format)
   // function(id, options)
   extend_response_set_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"extend",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
@@ -558,6 +558,9 @@ Based on Rails routes of Vocabulary::Application
 // responses => /responses(.:format)
   // function(options)
   responses_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"responses",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
+// revise_form => /forms/:id/revise(.:format)
+  // function(id, options)
+  revise_form_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // revise_question => /questions/:id/revise(.:format)
   // function(id, options)
   revise_question_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
