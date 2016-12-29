@@ -77,6 +77,8 @@ def create_path(object_type, object_id)
     '//div[@id="question_id_' + object_id + '"]'
   elsif object_type == 'Response Set'
     '//div[@id="response_set_id_' + object_id + '"]'
+  elsif object_type == 'Form'
+    '//div[@id="form_id_' + object_id + '"]'
   else
     '//tr[td="id_' + object_id + '"]'
   end
