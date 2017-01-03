@@ -1,0 +1,167 @@
+.basic-form-bg{
+  @extend .basic-bg;
+  height: 100%;
+}
+
+.response-data {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-size: 13px;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  a:hover {
+    text-decoration: none;
+    background-color: #F5F5F5;
+  }
+  i {
+    display:none;
+    float: right;
+  }
+}
+
+i.edit-pencil {
+  font-size: 15px;
+  display: none;
+  padding-right: 10px;
+  padding-left: 50px;
+  color: #7B7878;
+}
+
+.response-data:hover{
+  background-color: #E9E9E9;
+  cursor: pointer;
+  i.edit-pencil{
+    display: block;
+  }
+}
+
+a.edit-response-link {
+  text-decoration: none;
+  color: black;
+}
+
+a.edit-response-link:hover {
+  text-decoration: none;
+  color: black;   
+}
+
+.response-data-coded {
+  text-align: center;
+  input#response-data-coded {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    margin-top: 16px;
+  }
+}
+
+.input-label-form {
+  @extend .input-label;
+  display: block;
+}
+
+.input-label-form-centered {
+  @extend .input-label-form;
+  text-align: center;
+}
+
+.view-description-button {
+  display: block;
+  color: $cdc-blue;
+  font-weight: 700;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.view-description-button:hover {
+  text-decoration: none;
+}
+
+.view-description {
+  display: none;
+}
+
+form.new-response-set{
+
+  .panel-body{
+    padding:0px;
+  }
+
+  input#response-set-coded {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+  }
+
+  .form-group-description{
+    margin-top: 1%;
+    i {
+      font-size: 18px;
+    }
+  }
+
+  .add-description-button {
+    display: block;
+    color: $cdc-blue;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+  }
+
+  .description-input-textarea{
+    display: none;
+  }
+}
+
+.new-response-page-header {
+  @extend .page-header;
+  margin-top: 18px;
+
+  .new-response-set-icon {
+    color: $cdc-blue;
+    text-align: center;
+    font-size: 26px;
+    i {
+      float: left;
+    }
+  }
+
+  .new-response-set-title{
+    font-weight: 600;
+    color: $cdc-dark-blue;
+    padding-left: 4%;
+  }
+}
+
+.form-footer{
+  @extend .panel-footer;
+  background-color: unset;
+
+  .cancel{
+    @extend .button-disabled;
+    color: white;
+    font-weight: 700;
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .done{
+    @extend .cancel;
+    margin-right: 10px;
+  }
+
+  .submit{
+    @extend .button-submit;
+    color: white;
+    font-weight: 700;
+    float: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
