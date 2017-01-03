@@ -1,0 +1,35 @@
+one:
+  user: admin
+  message: Just a simple notification
+  url: /path/to/something
+  read: false
+
+two:
+  user: admin
+  message: Just a simple notification
+  url: /path/to/something
+  read: false
+
+three:
+  user: not_admin
+  message: Just a simple notification
+  url: /path/to/something
+  read: false
+
+four:
+  user: not_admin
+  message: Just a simple notification
+  url: /path/to/something
+  read: true
+
+five:
+  user: admin
+  message: Just a simple notification
+  url: /path/to/something
+  read: true
+
+six:
+  user: admin
+  message: Just a simple notification
+  url: /path/to/something
+  read: true
