@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161220201422) do
+ActiveRecord::Schema.define(version: 20170103201705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "authentications", force: :cascade do |t|
+    t.string   "provider",   null: false
+    t.string   "uid",        null: false
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
+  end
 
   create_table "comments", force: :cascade do |t|
     t.string   "title",            limit: 50, default: ""
@@ -47,6 +56,16 @@ ActiveRecord::Schema.define(version: 20161220201422) do
     t.integer  "version",                          default: 1
     t.string   "control_number",         limit: 9
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "url"
+    t.string   "message"
+    t.boolean  "read",       default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id", using: :btree
   end
 
   create_table "question_response_sets", force: :cascade do |t|
@@ -87,9 +106,9 @@ ActiveRecord::Schema.define(version: 20161220201422) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.boolean  "coded"
+    t.integer  "parent_id"
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
-    t.integer  "parent_id"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
@@ -148,6 +167,7 @@ ActiveRecord::Schema.define(version: 20161220201422) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
+  add_foreign_key "authentications", "users"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
