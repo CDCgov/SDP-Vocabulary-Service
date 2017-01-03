@@ -8,7 +8,9 @@ class Form < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
 
   validates :control_number, allow_blank: true, format: { with: /\d{4}-\d{4}/,
-                                                          message: 'must be a valid OMB Control Number' }
+                                                          message: 'must be a valid OMB Control Number' },
+                             uniqueness: { message: 'forms should have different OMB Control Numbers',
+                                           unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
 
   # Builds a new Form object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
