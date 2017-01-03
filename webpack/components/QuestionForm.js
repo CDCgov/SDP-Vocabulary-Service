@@ -69,8 +69,8 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
     titleText = "Revise Question";
   }
   return (
-    <div className="row">
-      <div className="col-md-12 basic-bg">
+    <div className="row"><br/>
+      <div>
         <div className="panel panel-default">
           <div className="panel-heading">
             <h3 className="panel-title">{titleText}</h3>
