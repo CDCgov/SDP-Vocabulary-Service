@@ -159,7 +159,6 @@ ActiveRecord::Schema.define(version: 20170103201705) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
-  add_foreign_key "authentications", "users"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
