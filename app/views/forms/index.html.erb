@@ -5,7 +5,7 @@
   <%= link_to 'New Form', new_form_path %>
 </div>
 <script type="application/json" id="forms-json">
-  <%= raw @forms.to_json =%>
+  <%= raw @forms.to_json(include: :questions) =%>
 </script>
 <script type="application/json" id="authors-json">
   <%= raw @users.to_json =%>

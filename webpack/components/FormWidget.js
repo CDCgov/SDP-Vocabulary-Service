@@ -16,7 +16,7 @@ export default class FormWidget extends Component {
     </div>
     <div className="question-set-details">
       <ul className="list-inline question-set-items">
-        <li className="question-number"><i className="fa fa-question-circle fa-2x" aria-hidden="true"></i><p>15</p></li>
+        <li className="question-number"><i className="fa fa-question-circle fa-2x" aria-hidden="true"></i><p>{this.props.form.questions.length}</p></li>
         <li className="pull-right question-menu">
           <div className="dropdown">
             <a id={"form_"+this.props.form.id+"_menu"} className="dropdown-toggle" type="" data-toggle="dropdown" role="navigation">
@@ -40,6 +40,7 @@ FormWidget.propTypes = {
   form: PropTypes.shape({
     id: PropTypes.number.isRequired,
     createdByEmail: PropTypes.string,//isRequired throws 'undefined' bug even when present
+    questions: PropTypes.array.isRequired,//array itself can be empty
     name: PropTypes.string.isRequired
   }),
   routes: PropTypes.shape({
