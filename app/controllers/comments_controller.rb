@@ -1,3 +1,4 @@
+require 'sdp/comments_notifier'
 class CommentsController < ApplicationController
   load_and_authorize_resource only: [:show, :destroy, :reply_to]
   before_action :find_commentable, only: [:index]
