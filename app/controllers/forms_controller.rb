@@ -5,7 +5,7 @@ class FormsController < ApplicationController
   # GET /forms.json
   def index
     @forms = Form.latest_versions
-    @questions = Question.all
+    @users = User.all
   end
 
   # GET /forms/1
