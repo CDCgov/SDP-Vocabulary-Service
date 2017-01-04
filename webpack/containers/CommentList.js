@@ -11,7 +11,7 @@ class CommentList extends Component {
 
   render() {
     return (
-      <div className="container post-comments">
+      <div className="container col-md-12 post-comments">
       <CommentForm commentableType={this.props.commentableType}
                    commentableId={this.props.commentableId}
                    addComment={this.props.addComment}/>
