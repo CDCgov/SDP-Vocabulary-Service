@@ -13,7 +13,7 @@ class FormTest < ActiveSupport::TestCase
     revision = rs.build_new_revision
     assert_equal 2, revision.version
     assert_equal 'F-2', revision.version_independent_id
-    assert_equal nil, revision.oid
+    assert_nil revision.oid
   end
 
   test 'assign_new_oids' do

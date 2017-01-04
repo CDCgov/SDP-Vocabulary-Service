@@ -1,12 +1,12 @@
 module OidGenerator
   extend ActiveSupport::Concern
 
-  if Rails.application.config.oid_prefix.blank?
-    raise 'Missing OID prefix, cannot continue. Configure this prefix in config/initializers/oid_prefix.rb'
+  if Rails.application.config.oid_prefix.blank? ||
+     Rails.application.config.oid_object_prefixes[:Form].blank? ||
+     Rails.application.config.oid_object_prefixes[:Question].blank? ||
+     Rails.application.config.oid_object_prefixes[:ResponseSet].blank?
+    raise 'OID prefixes misconfigured, cannot continue. Configure these prefixes in config/initializers/oid_prefix.rb'
   end
-  CLASS_PREFIXES = {  Form: "#{Rails.application.config.oid_prefix}.1",
-                      Question: "#{Rails.application.config.oid_prefix}.2",
-                      ResponseSet: "#{Rails.application.config.oid_prefix}.3" }.freeze
 
   included do
     validate :validate_oid
@@ -46,7 +46,7 @@ module OidGenerator
 
   module ClassMethods
     def oid_prefix
-      CLASS_PREFIXES[name.to_sym]
+      "#{Rails.application.config.oid_prefix}.#{Rails.application.config.oid_object_prefixes[name.to_sym]}"
     end
 
     def next_avail_oid(start_oid = 1)
