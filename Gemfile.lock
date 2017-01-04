@@ -92,6 +92,9 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.0.3)
+    config (1.4.0)
+      activesupport (>= 3.0)
+      deep_merge (~> 1.1.1)
     cucumber (2.4.0)
       builder (>= 2.1.2)
       cucumber-core (~> 1.5.0)
@@ -110,6 +113,7 @@ GEM
       railties (>= 3, < 5.1)
     cucumber-wire (0.0.1)
     debug_inspector (0.0.2)
+    deep_merge (1.1.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     devise (4.2.0)
@@ -361,6 +365,7 @@ DEPENDENCIES
   cancancan
   capybara
   capybara-accessible
+  config
   cucumber-rails
   database_cleaner!
   devise (~> 4.2.0)

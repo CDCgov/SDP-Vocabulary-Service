@@ -1,0 +1,15 @@
+openid_connect:
+  name: :openid_connect
+  discovery: true
+  scope:
+    - :openid
+    - :email
+    - :profile
+    - :address
+  response_type: :code
+  issuer: <%= ENV['OPIDC_CLIENT_ISSUER'] %>
+  client_options:
+    identifier: <%=  ENV['OPIDC_CLIENT_ID'] %>
+    secret: <%= ENV['OPIDC_SECRET_KEY'] %>
+    host: <%= ENV['OPIDC_HOST'] %>
+    redirect_uri: <%= "#{ENV['OPIDC_REDIRECT_HOST']}/users/auth/openid_connect/callback" %>

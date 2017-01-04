@@ -260,8 +260,8 @@ Devise.setup do |config|
   OpenIDConnect.http_config do |client|
     client.ssl_config.add_trust_ca(ENV['CA_TRUST_CERTIFICATE']) if ENV['CA_TRUST_CERTIFICATE']
   end
-  cnf = YAML.load(File.open(File.join(File.dirname(__FILE__), '..', 'openid.yml')))
-  config.omniauth :openid_connect, cnf[Rails.env] if cnf[Rails.env]
+  cnf = Settings.openid_connect
+  config.omniauth :openid_connect, cnf.to_hash if cnf
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

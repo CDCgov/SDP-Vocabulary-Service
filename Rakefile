@@ -10,7 +10,7 @@ task default: [:create_reports_dir, :rubocop, 'cucumber:html', 'brakeman:run', '
                'javascript:test', 'javascript:lint', 'erd:test']
 
 task :create_reports_dir do
-  FileUtils.mkdir('./reports')
+  FileUtils.mkdir('./reports') unless Dir.exist?('./reports')
 end
 
 namespace :assets do
