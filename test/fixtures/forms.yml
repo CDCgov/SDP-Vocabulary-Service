@@ -5,6 +5,7 @@ one:
   version: 1
   version_independent_id: F-1
   created_by_id: admin
+  control_number: 1234-5678
 
 two:
   name: MyString
