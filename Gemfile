@@ -29,6 +29,10 @@ gem 'omniauth'
 gem 'js-routes'
 gem 'acts_as_tree'
 gem 'acts_as_commentable'
+gem 'omniauth_openid_connect'
+
+gem 'config'
+
 group :development, :test do
   gem 'rubocop', '~> 0.44.1', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -45,6 +49,8 @@ group :development, :test do
   gem 'overcommit'
   gem 'pry'
   gem 'pry-nav'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
 end
 
 group :development do

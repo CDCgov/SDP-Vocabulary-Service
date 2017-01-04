@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   root to: 'dashboard#index'
 
-  devise_for :users, controllers: { registrations: 'registrations' }
-
+  devise_for :users, controllers: { registrations: 'registrations',
+                                    omniauth_callbacks: 'users/omniauth_callbacks' }
+  resources :authentications
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :export, on: :member
@@ -34,6 +35,8 @@ Rails.application.routes.draw do
       get :usage, on: :member
     end
   end
+
+  # get 'questions' => 'questions#index'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

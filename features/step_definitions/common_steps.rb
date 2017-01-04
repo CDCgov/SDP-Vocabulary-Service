@@ -62,6 +62,9 @@ Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |a
     find_link(action)
   end
 end
+Then(/^I should see the "([^"]*)" link$/) do |value|
+  find('a', text: value)
+end
 
 Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|
   page.response_headers['Content-Disposition'].index("filename=\"#{filename}\"")
