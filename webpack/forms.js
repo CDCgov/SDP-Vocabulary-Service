@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import $ from 'jquery';
 import FormsQuestionList from './containers/FormsQuestionList';
 import QuestionSearch from './containers/QuestionSearch';
 
@@ -31,3 +32,24 @@ ReactDOM.render(
   </Provider>,
   added
 );
+
+$('#new_form').submit((event) => {
+  event.preventDefault();
+  const submissionURL = event.target.action;
+  const formData = $(event.target).serialize();
+  const request = $.post(submissionURL, formData, null, 'json');
+  request.done((data) => {
+    const location = data.url.replace('.json', '');
+    window.location = location;
+  });
+  request.fail((jqXHR) => {
+    const errorItems = jqXHR.responseJSON.map((e) => `<li>${e}</li>`);
+    $('#error_explanation').html(`
+      <h2>${jqXHR.responseJSON.length} error(s) prohibited this form from being saved:</h2>
+      <ul>
+        ${errorItems}
+      </ul>
+    `);
+  });
+  return false;
+});
