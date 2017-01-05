@@ -14,7 +14,7 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   test 'latest versions' do
-    assert_equal 2, Question.latest_versions.count
+    assert_equal 3, Question.latest_versions.count
   end
 
   test 'search' do
@@ -22,5 +22,13 @@ class QuestionTest < ActiveSupport::TestCase
     found = Question.search('gender')
     assert 1, found.count
     assert 'What is your gender?', found.first.content
+  end
+
+  test 'build_new_revision' do
+    qs = questions(:gfv2)
+    revision = qs.build_new_revision
+    assert_equal 3, revision.version
+    assert_equal 'Q-3', revision.version_independent_id
+    assert_equal 2, revision.concepts.length
   end
 end

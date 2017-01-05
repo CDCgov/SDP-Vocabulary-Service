@@ -6,6 +6,7 @@ class Question < ApplicationRecord
   has_many :response_sets, through: :question_response_sets
   has_many :form_questions
   has_many :forms, through: :form_questions
+  has_many :concepts, dependent: :nullify
 
   belongs_to :response_type
   belongs_to :question_type
@@ -26,6 +27,10 @@ class Question < ApplicationRecord
                                 response_sets: response_sets, form_questions: form_questions, forms: forms,
                                 question_type: question_type,
                                 response_type: response_type)
+    concepts.each do |c|
+      new_revision.concepts << c.dup
+    end
+
     new_revision
   end
 end
