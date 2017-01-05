@@ -1,0 +1,1 @@
+default_url_helper_host: <%= ENV['RAILS_URL_HELPER_HOST']
