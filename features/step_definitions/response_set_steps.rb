@@ -1,8 +1,9 @@
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and \
 with the Responses (.+)$/) do |set_name, desc, response_values|
-  set = ResponseSet.create!(name: set_name, description: desc, version: 1)
+  user = User.create_with(password: 'password').find_or_create_by(email: 'test_author@gmail.com')
+  set = ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user)
   response_values.split(', ').each do |value|
-    Response.create!(value: value, response_set_id: set['id'])
+    Response.create!(value: value, response_set_id: set['id'], created_by: user)
   end
 end
 
@@ -11,7 +12,8 @@ When(/^I go to the list of Response Sets$/) do
 end
 
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
-  ResponseSet.create!(name: set_name, version: 1)
+  user = User.create_with(password: 'password').find_or_create_by(email: 'test_author@gmail.com')
+  ResponseSet.create!(name: set_name, version: 1, created_by: user)
 end
 
 When(/^I click on the link to remove the Response "([^"]*)"$/) do |response_name|

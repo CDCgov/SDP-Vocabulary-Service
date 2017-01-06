@@ -1,6 +1,6 @@
 # Given clauses
 Given(/^I am logged in as (.+)$/) do |user_name|
-  user = User.create!(email: user_name, password: 'password')
+  user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
   login_as(user, scope: :user)
 end
