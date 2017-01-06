@@ -8,6 +8,7 @@ import QuestionItem from '../components/QuestionItem';
 
 class FormsQuestionList extends Component {
   render() {
+    console.log(this.props.questions);
     return (
       <div className="question-group">
         <div className="row">
