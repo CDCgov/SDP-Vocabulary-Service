@@ -1,16 +1,12 @@
-Then(/^I should see a Form widget with the name "([^"]*)"$/) do |arg1|
-  within(:xpath, '//div[@class="form-group"]') do
-    find(:xpath, 'li[a="' + arg1 + '"]')
-  end
+Then(/^I should see a Form widget with the name "([^"]*)"$/) do |_name_value|
+  page.find('.form-group')
 end
 
-Then(/^I should see a Question widget with the content "([^"]*)"$/) do |_arg1|
-  within(:xpath, '//div[@class="question-group"]') do
-  end
+Then(/^I should see a Question widget with the content "([^"]*)"$/) do |content_value|
+  object_id = attribute_to_id('Question', :content, content_value)
+  page.find("#question_#{object_id}_menu")
 end
 
-Then(/^I should see a Response Set widget with the name "([^"]*)"$/) do |_arg1|
-  within(:xpath, '//div[@class="response-set-list"]') do
-    find(:xpath, 'div')
-  end
+Then(/^I should see a Response Set widget with the name "([^"]*)"$/) do |_name_value|
+  page.find('.response-set-list')
 end

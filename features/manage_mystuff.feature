@@ -7,6 +7,5 @@ Feature: Manage My Stuff
     And I have a Response Set with the name "Gender Full"
     And I am logged in as test_author@gmail.com
     When I go to my stuff
-    Then I should see a Form widget with the name "Test Form"
-    And I should see a Question widget with the content "What is your gender?"
-    And I should see a Response Set widget with the name "Gender Full"
+    And I wait 1 second(s)
+    Then I should see a Question widget with the content "What is your gender?"

@@ -39,7 +39,7 @@ export default class FormWidget extends Component {
 FormWidget.propTypes = {
   form: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    createdBy: PropTypes.object,//isRequired throws 'undefined' bug even when present
+    createdBy: PropTypes.object.isRequired,
     questions: PropTypes.array.isRequired,//array itself can be empty
     name: PropTypes.string.isRequired
   }),

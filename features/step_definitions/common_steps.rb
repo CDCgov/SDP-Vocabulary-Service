@@ -14,6 +14,10 @@ When(/^I go to the dashboard$/) do
   visit '/'
 end
 
+When(/^I wait (\d+) second\(s\)$/) do |seconds|
+  sleep seconds.to_i
+end
+
 # When clauses
 When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)

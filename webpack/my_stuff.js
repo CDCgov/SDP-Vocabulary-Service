@@ -18,7 +18,6 @@ forms.forEach((form) => {
     }
   });
 });
-console.log(forms);
 ReactDOM.render(<FormList forms={forms} routes={Routes} />, document.getElementById('form_list'));
 ReactDOM.render(<QuestionList questions={questions} routes={Routes} />, document.getElementById('question_list'));
 ReactDOM.render(<ResponseSetList responseSets={responseSets} routes={Routes} />, document.getElementById('response_set_list'));

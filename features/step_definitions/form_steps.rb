@@ -1,5 +1,6 @@
 Given(/^I have a Form with the name "([^"]*)"$/) do |name|
-  Form.create!(name: name)
+  user = User.create!(email: 'arbitr@ry.com', password: 'password')
+  Form.create!(name: name, created_by: user)
 end
 
 When(/^I go to the list of Forms$/) do
