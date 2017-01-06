@@ -3,7 +3,7 @@ with the Responses (.+)$/) do |set_name, desc, response_values|
   user = User.create_with(password: 'password').find_or_create_by(email: 'test_author@gmail.com')
   set = ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user)
   response_values.split(', ').each do |value|
-    Response.create!(value: value, response_set_id: set['id'], created_by: user)
+    Response.create!(value: value, response_set_id: set['id'])
   end
 end
 
