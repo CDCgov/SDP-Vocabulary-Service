@@ -15,7 +15,6 @@
   </head>
 
   <body class="body">
-
     <nav class="cdc-utlt-nav navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -72,9 +71,8 @@
               Alerts
               <% if current_user.notifications.count > 0 %>
                 <span class="caret"></span>
-                <span class="alerts-badge"><% current_user.notifications.count %></span></a>
-                <ul class="cdc-nav-dropdown">
-                   <div id="notification-menu"></div>
+                <span class="alerts-badge"><%= current_user.notifications.count %></span></a>
+                <ul id="notification-menu" class="cdc-nav-dropdown">
                 </ul>
               <% else %>
                 <span class="caret"></span></a>
@@ -86,11 +84,12 @@
           </ul>
           <% end %>
         </div>
+        <script type="application/json" id="notification-json">
+          <%= raw current_user.notifications.to_json %>
+        </script>
+        <%= javascript_include_tag *webpack_asset_paths('notification_menu', extension: 'js') %>
       </nav>
     </nav>
-    <script type="application/json" id="notification-json">
-      <%= raw current_user.notifications.to_json %>
-    </script>
 
     <div class="container">
         <%= yield %>

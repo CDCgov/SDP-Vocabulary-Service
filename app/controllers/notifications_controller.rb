@@ -4,6 +4,12 @@ class NotificationsController < ApplicationController
     render json: notifications
   end
 
+  def new
+    notification = Notification.new(user_id: current_user.id, url: 'localhost:3000/questions', message: 'Hey whats up?')
+    notification.save
+    render json: notification
+  end
+
   def mark_read
     notifications = current_user.notifications.find(params[:ids])
     notifications.each do |note|

@@ -22,7 +22,10 @@ export default class NotificationMenu extends Component {
       <div className="notification-menu">
         <ul>
           {this.props.notifications.map((notif) => {
-            <Notification notification={notif} onNotifClick={(id, url) => this.notificationClick(id, url)} />
+            console.log(notif);
+            return(
+              <Notification key={notif.id} notification={notif} onNotifClick={(id, url) => this.notificationClick(id, url)} />
+            );
           })}
         </ul>
       </div>
@@ -31,6 +34,5 @@ export default class NotificationMenu extends Component {
 }
 
 NotificationMenu.propTypes = {
-  notifications: PropTypes.arrayOf(QuestionWidget.propTypes.notification).isRequired,
-  routes: PropTypes.object.isRequired
+  notifications: PropTypes.arrayOf(Notification.propTypes.notification)
 };

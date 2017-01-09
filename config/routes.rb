@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications
+  get 'notifications/new', to: 'notifications#new', as: :notifications_new
   post 'notifications/mark_read', to: 'notifications#mark_read', as: :notifications_mark_read
 
   namespace :api, defaults: { format: :json } do

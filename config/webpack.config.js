@@ -28,7 +28,8 @@ var config = {
     'search': './webpack/search.js',
     'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',
-    'question': './webpack/question.js'
+    'question': './webpack/question.js',
+    'notification_menu': './webpack/notification_menu.js'
     },
 
   output: {
