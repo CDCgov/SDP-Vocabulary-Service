@@ -85,3 +85,15 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+module CustomWorld
+  def get_user(email)
+    user = User.find_by(email: email)
+    if user
+      return user
+    else
+      return User.create_with(password: 'password').find_or_create_by(email: email)
+    end
+  end
+end
+World(CustomWorld)

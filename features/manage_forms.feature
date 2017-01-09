@@ -5,7 +5,6 @@ Feature: Manage Forms
     Given I have a Form with the name "Test Form"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I wait 1 second(s)
     Then I should see "Test Form"
     When I click on the menu link for the Form with the name "Test Form"
     Then I should see the option to Delete the Form with the name "Test Form"

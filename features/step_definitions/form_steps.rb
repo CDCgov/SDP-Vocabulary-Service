@@ -1,5 +1,5 @@
 Given(/^I have a Form with the name "([^"]*)"$/) do |name|
-  user = User.create_with(password: 'password').find_or_create_by(email: 'test_author@gmail.com')
+  user = get_user 'test_author@gmail.com'
   Form.create!(name: name, created_by: user)
 end
 

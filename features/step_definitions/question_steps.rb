@@ -1,5 +1,5 @@
 Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) do |content, type|
-  user = User.create_with(password: 'password').find_or_create_by(email: 'test_author@gmail.com')
+  user = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
   Question.create!(content: content, question_type_id: qt314.id, version: 1, created_by: user)
 end
