@@ -7,6 +7,7 @@ class Form < ApplicationRecord
   has_many :response_sets, through: :form_questions
   belongs_to :created_by, class_name: 'User'
 
+  validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\d{4}-\d{4}/,
                                                           message: 'must be a valid OMB Control Number' },
                              uniqueness: { message: 'forms should have different OMB Control Numbers',

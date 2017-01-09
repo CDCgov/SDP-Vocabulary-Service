@@ -6,9 +6,9 @@ describe('FormList', () => {
   let component;
 
   beforeEach(() => {
-    const forms = [{id:1,name:"Bleep",createdByEmail:"test_author@gmail.com",createdAt:"2016-12-27T23:40:54.505Z",updatedAt:"2016-12-28T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]},
-                 {id:2,name:"Bloop",createdByEmail:"test_author@gmail.com",createdAt:"2016-12-28T23:40:54.505Z",updatedAt:"2016-12-29T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]},
-                 {id:3,name:"I am a robot",createdByEmail:"test_author@gmail.com",createdAt:"2016-12-29T23:40:54.505Z",updatedAt:"2016-12-30T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]}];
+    const forms = [{id:1,name:"Bleep",createdBy:{email: "test_author@gmail.com"},createdAt:"2016-12-27T23:40:54.505Z",updatedAt:"2016-12-28T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]},
+                 {id:2,name:"Bloop",createdBy:{email: "test_author@gmail.com"},createdAt:"2016-12-28T23:40:54.505Z",updatedAt:"2016-12-29T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]},
+                 {id:3,name:"I am a robot",createdBy:{email: "test_author@gmail.com"},createdAt:"2016-12-29T23:40:54.505Z",updatedAt:"2016-12-30T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]}];
     component = renderComponent(FormList, {forms, routes});
   });
 
