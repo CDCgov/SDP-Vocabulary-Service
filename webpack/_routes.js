@@ -513,6 +513,12 @@ Based on Rails routes of Vocabulary::Application
 // new_user_session => /users/sign_in(.:format)
   // function(options)
   new_user_session_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"sign_in",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// notifications => /notifications(.:format)
+  // function(options)
+  notifications_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"notifications",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
+// notifications_mark_read => /notifications/mark_read(.:format)
+  // function(options)
+  notifications_mark_read_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"notifications",false],[2,[7,"/",false],[2,[6,"mark_read",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
 // question => /questions/:id(.:format)
   // function(id, options)
   question_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
@@ -543,6 +549,9 @@ Based on Rails routes of Vocabulary::Application
 // rails_mailers => /rails/mailers(.:format)
   // function(options)
   rails_mailers_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"rails",false],[2,[7,"/",false],[2,[6,"mailers",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// redcap_form => /forms/:id/redcap(.:format)
+  // function(id, options)
+  redcap_form_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"redcap",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // reply_to_comment => /comments/:id/reply_to(.:format)
   // function(id, options)
   reply_to_comment_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"reply_to",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
