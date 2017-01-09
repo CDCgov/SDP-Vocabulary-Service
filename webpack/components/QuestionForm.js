@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Draggable, Droppable } from './Draggable';
 import ResponseSetWidget from './ResponseSetWidget';
+import CodedSetTableForm from './CodedSetTableForm';
 
 
 let setData = function(){
@@ -61,7 +62,7 @@ DropTarget.propTypes = {
 
 let DroppableTarget = Droppable(DropTarget, onDrop);
 
-let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], routes, questionTypes = [], responseTypes = []}) => {
+let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], routes, questionTypes = [], responseTypes = [], concepts=[]}) => {
   let submitText = "Create Question";
   let titleText = "New Question";
   if (question.version_independent_id) {
@@ -106,6 +107,13 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
           </div>
 
           <div className="row ">
+              <div className="col-md-8 form-group">
+                  <label className="input-label" htmlFor="concept_id">Concepts</label>
+                  <CodedSetTableForm initialItems={concepts} childName={'concept'} parentName={'question'}/>
+              </div>
+          </div>
+
+          <div className="row ">
 
               <div className="col-md-6 question-form-group">
                 <label htmlFor="linked_response_sets">Response Sets</label>
@@ -138,11 +146,12 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
 
 QuestionForm.propTypes = {
   question: PropTypes.object,
-  selectedResponseSets:PropTypes.array,
+  selectedResponseSets: PropTypes.array,
   responseSets: PropTypes.array,
   routes: PropTypes.object,
   questionTypes: PropTypes.array,
-  responseTypes: PropTypes.array
+  responseTypes: PropTypes.array,
+  concepts: PropTypes.array
 };
 
 export default QuestionForm;
