@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170103201705) do
+ActiveRecord::Schema.define(version: 20170105171917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "authentications", force: :cascade do |t|
+    t.string   "provider",   null: false
+    t.string   "uid",        null: false
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
+  end
 
   create_table "comments", force: :cascade do |t|
     t.string   "title",            limit: 50, default: ""
@@ -29,13 +38,15 @@ ActiveRecord::Schema.define(version: 20170103201705) do
     t.index ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
     t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
-  create_table "authentications", force: :cascade do |t|
-    t.string   "provider",   null: false
-    t.string   "uid",        null: false
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
+
+  create_table "concepts", force: :cascade do |t|
+    t.text     "value"
+    t.string   "code_system"
+    t.string   "display_name"
+    t.integer  "question_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["question_id"], name: "index_concepts_on_question_id", using: :btree
   end
 
   create_table "form_questions", force: :cascade do |t|
@@ -54,6 +65,7 @@ ActiveRecord::Schema.define(version: 20170103201705) do
     t.string   "version_independent_id"
     t.integer  "version",                          default: 1
     t.string   "control_number",         limit: 9
+    t.string   "oid"
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -90,6 +102,7 @@ ActiveRecord::Schema.define(version: 20170103201705) do
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
     t.integer  "response_type_id"
+    t.string   "oid"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
     t.index ["response_type_id"], name: "index_questions_on_response_type_id", using: :btree
@@ -167,6 +180,7 @@ ActiveRecord::Schema.define(version: 20170103201705) do
   end
 
   add_foreign_key "authentications", "users"
+  add_foreign_key "concepts", "questions"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"

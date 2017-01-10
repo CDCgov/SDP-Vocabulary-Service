@@ -1,0 +1,31 @@
+<%= form_for(concept) do |f| %>
+  <div class="row">
+    <% if concept.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(concept.errors.count, "error") %> prohibited this concept from being saved:</h2>
+
+        <ul>
+        <% concept.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :value %>
+      <%= f.text_area :value %>
+    </div>
+
+    <div class="field">
+      <%= f.label :question_id , "Question"%>
+      <%= f.select :question_id, options_for_select( Question.all.collect{|q| [q.content,q.id]}, concept.question_id), {id: 'question_id'}%>
+      </td>
+    </tr>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

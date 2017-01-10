@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
   resources :question_response_sets
   resources :responses
+  resources :concepts
   resources :questions, except: [:edit, :update] do
     get :revise, on: :member
   end
