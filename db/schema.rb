@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< a4d7a6fe3a6a8eb7763c52e8e8ff529a7a5d1ce9
 ActiveRecord::Schema.define(version: 20170105171917) do
+=======
+ActiveRecord::Schema.define(version: 20161220201422) do
+>>>>>>> Added reording javascript
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"

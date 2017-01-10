@@ -1,10 +1,9 @@
 import React from 'react';
 
-const QuestionItem = ({question, responseSets, index, removeQuestion}) => {
+const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQuestion}) => {
   if (!question || !responseSets) {
     return "Loading...";
   }
-
   return (
     <div>
       <div className="col-md-1" >{question.id}</div>
@@ -20,8 +19,17 @@ const QuestionItem = ({question, responseSets, index, removeQuestion}) => {
             })}
             <option aria-label=' '></option>
           </select>
+
         </div>
         <div className="col-md-3">
+          <div className="btn btn-small btn-default"
+               onClick={() => reorderQuestion(index, 1)}>
+            <b>Move Up</b>
+          </div>
+          <div className="btn btn-small btn-default"
+               onClick={() => reorderQuestion(index, -1)}>
+            <b>Move Down</b>
+          </div>
           <div className="btn btn-small btn-default"
                onClick={() => removeQuestion(index)}>
             <b>Remove</b>
@@ -36,7 +44,8 @@ QuestionItem.propTypes = {
   question: React.PropTypes.object.isRequired,
   responseSets: React.PropTypes.array.isRequired,
   index: React.PropTypes.number.isRequired,
-  removeQuestion: React.PropTypes.func.isRequired
+  removeQuestion: React.PropTypes.func.isRequired,
+  reorderQuestion: React.PropTypes.func.isRequired
 };
 
 export default QuestionItem;

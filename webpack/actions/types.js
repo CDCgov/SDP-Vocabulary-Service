@@ -1,5 +1,6 @@
 export const ADD_QUESTION = 'ADD_QUESTION';
 export const REMOVE_QUESTION = 'REMOVE_QUESTION';
+export const REORDER_QUESTION = 'REORDER_QUESTION';
 // Comment types
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const ADD_COMMENT_FULFILLED = "ADD_COMMENT_FULFILLED";
