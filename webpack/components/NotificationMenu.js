@@ -1,8 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import Notification from './Notification';
+import routes from '../routes';
 import axios from 'axios';
 
-const querystring = require('querystring');
+function getCSRFToken() {
+  const metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    const meta = metas[i];
+    if (meta.getAttribute('name') === 'csrf-token') {
+      return meta.getAttribute('content');
+    }
+  }
+
+  return null;
+}
 
 export default class NotificationMenu extends Component {
   constructor(props){
@@ -13,12 +24,12 @@ export default class NotificationMenu extends Component {
     };
   }
 
-  notificationClick(id, url) {
-    console.log(id);
-    console.log(url);
 
-    axios.post("/notifications/mark_read", {
-      ids: String(id)
+
+  notificationClick(id, url) {
+    axios.post(routes.notifications_mark_read_path(), {
+      authenticityToken: getCSRFToken(),
+      ids: [id]
     })
     .then(function (response) {
       console.log(response);
@@ -28,7 +39,7 @@ export default class NotificationMenu extends Component {
     });
 
     // Redirect to the url in notification:
-    //window.location = url;
+    window.location = url;
   }
 
   render() {
