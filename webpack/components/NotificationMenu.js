@@ -22,7 +22,6 @@ export default class NotificationMenu extends Component {
       <div className="notification-menu">
         <ul>
           {this.props.notifications.map((notif) => {
-            console.log(notif);
             return(
               <Notification key={notif.id} notification={notif} onNotifClick={(id, url) => this.notificationClick(id, url)} />
             );

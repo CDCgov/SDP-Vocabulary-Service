@@ -9,8 +9,8 @@ class Notification extends Component {
     );
   }
 
-  onNotificationClick(id) {
-    this.props.onNotifClick(id);
+  onNotificationClick(id, url) {
+    this.props.onNotifClick(id, url);
   }
 }
 

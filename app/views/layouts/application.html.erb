@@ -71,7 +71,7 @@
               Alerts
               <% if current_user.notifications.count > 0 %>
                 <span class="caret"></span>
-                <span class="alerts-badge"><%= current_user.notifications.count %></span></a>
+                <span class="alerts-badge"><%= current_user.notifications.where('read' => false).count %></span></a>
                 <ul id="notification-menu" class="cdc-nav-dropdown">
                 </ul>
               <% else %>
@@ -84,9 +84,11 @@
           </ul>
           <% end %>
         </div>
-        <script type="application/json" id="notification-json">
-          <%= raw current_user.notifications.to_json %>
-        </script>
+        <% if user_signed_in? %>
+          <script type="application/json" id="notification-json">
+            <%= raw current_user.notifications.where('read' => false).to_json %>
+          </script>
+        <% end %>
         <%= javascript_include_tag *webpack_asset_paths('notification_menu', extension: 'js') %>
       </nav>
     </nav>
