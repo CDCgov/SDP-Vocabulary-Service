@@ -46,6 +46,6 @@
   <%= raw @response_sets.to_json %>
 </script>
 <script type="application/json" id="forms-json">
-  <%= raw @forms.to_json(include: [:questions, :created_by]) %>
+  <%= raw @forms.to_json(include: [:questions, :created_by]).camelize %>
 </script>
 <%= javascript_include_tag *webpack_asset_paths('my_stuff', extension: 'js') %>
