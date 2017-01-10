@@ -16,16 +16,18 @@ export default class NotificationMenu extends Component {
   notificationClick(id, url) {
     console.log(id);
     console.log(url);
-    console.log("/notifications/mark_read?ids=" + id);
 
-    axios.post(("/notifications/mark_read?ids=" + id))
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    axios.post("/notifications/mark_read", {
+      ids: String(id)
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
+    // Redirect to the url in notification:
     //window.location = url;
   }
 
