@@ -12,7 +12,7 @@ export default class FormWidget extends Component {
         <li className="form-list-group-item"><h2 className="form-item-title">Systems</h2><i className="fa fa-info-circle fa-lg form-item-icon" aria-hidden="true"></i><p className="form-item-value">145</p></li>
         <li className="form-list-group-item"><h2 className="form-item-title">Programs</h2><i className="fa fa-info-circle fa-lg form-item-icon" aria-hidden="true"></i><p className="form-item-value">89</p></li>
       </ul>
-      <div className="form-info">{"Author: "+this.props.form.createdByEmail}</div>
+      <div className="form-info">{"Author: "+this.props.form.createdBy.email}</div>
     </div>
     <div className="question-set-details">
       <ul className="list-inline question-set-items">
@@ -39,7 +39,7 @@ export default class FormWidget extends Component {
 FormWidget.propTypes = {
   form: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    createdByEmail: PropTypes.string,//isRequired throws 'undefined' bug even when present
+    createdBy: PropTypes.object.isRequired,
     questions: PropTypes.array.isRequired,//array itself can be empty
     name: PropTypes.string.isRequired
   }),

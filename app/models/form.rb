@@ -7,6 +7,7 @@ class Form < ApplicationRecord
   has_many :response_sets, through: :form_questions
   belongs_to :created_by, class_name: 'User'
 
+  validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\d{4}-\d{4}/,
                                                           message: 'must be a valid OMB Control Number' },
                              uniqueness: { message: 'forms should have different OMB Control Numbers',
@@ -16,7 +17,8 @@ class Form < ApplicationRecord
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
     new_revision = Form.new(version_independent_id: version_independent_id,
-                            version: version + 1, name: name, control_number: control_number)
+                            version: version + 1, name: name,
+                            created_by: created_by, control_number: control_number)
     new_revision
   end
 

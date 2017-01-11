@@ -20,6 +20,7 @@ var config = {
     'application': './webpack/application.js',
     'response_set': './webpack/response_set.js',
     'forms': './webpack/forms.js',
+    'my_stuff': './webpack/my_stuff.js',
     'form_list': './webpack/form_list.js',
     'question_list': './webpack/question_list.js',
     'question_form': './webpack/question_form.js',

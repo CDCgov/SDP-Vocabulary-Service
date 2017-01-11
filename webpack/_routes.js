@@ -504,6 +504,9 @@ Based on Rails routes of Vocabulary::Application
 // forms => /forms(.:format)
   // function(options)
   forms_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
+// mystuff => /mystuff(.:format)
+  // function(options)
+  mystuff_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"mystuff",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
 // new_authentication => /authentications/new(.:format)
   // function(options)
   new_authentication_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"authentications",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),

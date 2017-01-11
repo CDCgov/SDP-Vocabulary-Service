@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'registrations',
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :authentications
+  get '/mystuff' => 'mystuff#index'
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :export, on: :member

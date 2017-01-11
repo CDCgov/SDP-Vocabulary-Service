@@ -5,9 +5,6 @@
   <%= link_to 'New Form', new_form_path %>
 </div>
 <script type="application/json" id="forms-json">
-  <%= raw @forms.to_json(include: :questions) =%>
-</script>
-<script type="application/json" id="authors-json">
-  <%= raw @users.to_json =%>
+  <%= raw @forms.to_json(include: [:questions,:created_by]).camelize =%>
 </script>
 <%= javascript_include_tag *webpack_asset_paths('form_list', extension: 'js') %>
