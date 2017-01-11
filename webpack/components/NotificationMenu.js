@@ -12,13 +12,16 @@ export default class NotificationMenu extends Component {
   }
 
   notificationClick(id, url) {
-    readNotification(id);
-    // Redirect to the url in notification:
-    if (url.includes(window.location.pathname)) {
-      window.location.reload();
+    function callRedirect(url) {
+      // Redirect to the url in notification:
+      if (url.includes(window.location.pathname)) {
+        window.location.reload();
+      }
+      window.location.hash = '';
+      window.location = url;
     }
-    window.location.hash = '';
-    window.location = url;
+
+    readNotification(id, url, callRedirect);
   }
 
   render() {

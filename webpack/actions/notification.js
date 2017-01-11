@@ -1,11 +1,12 @@
 import axios from 'axios';
 import routes from '../routes';
 
-export function readNotification(notificationIds) {
+export function readNotification(notificationIds, url, callRedirect) {
   axios.post(routes.notifications_mark_read_path(), {
     authenticityToken: getCSRFToken(),
     ids: [notificationIds]
-  });
+  })
+  .then(callRedirect(url));
 }
 
 function getCSRFToken() {
