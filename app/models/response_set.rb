@@ -1,5 +1,5 @@
 class ResponseSet < ApplicationRecord
-  include Versionable
+  include Versionable, OidGenerator
   acts_as_commentable
 
   has_many :question_response_sets
@@ -37,7 +37,6 @@ class ResponseSet < ApplicationRecord
     extended_set.description = description
     extended_set.coded = coded
     extended_set.parent = self
-    extended_set.oid = ''
     extended_set.version = 1
     extended_set.version_independent_id = nil
     extended_set.responses = responses.collect(&:dup)

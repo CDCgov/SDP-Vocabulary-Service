@@ -6,6 +6,7 @@ one:
   version_independent_id: F-1
   created_by: admin
   control_number: 1234-5678
+  oid: 2.16.840.1.113883.3.1502.1.1
 
 two:
   name: MyString

@@ -13,3 +13,8 @@ openid_connect:
     secret: <%= ENV['OPIDC_SECRET_KEY'] %>
     host: <%= ENV['OPIDC_HOST'] %>
     redirect_uri: <%= "#{ENV['OPIDC_REDIRECT_HOST']}/users/auth/openid_connect/callback" %>
+
+oid_prefix:
+  Form: '2.16.840.1.113883.3.1502.1'
+  Question: '2.16.840.1.113883.3.1502.2'
+  ResponseSet: '2.16.840.1.113883.3.1502.3'
