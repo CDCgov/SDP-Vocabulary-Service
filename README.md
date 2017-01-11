@@ -53,4 +53,5 @@ All comments, messages, pull requests and other submissions received through CDC
 ### Records
 This project is not a source of government records, but it is a copy to increase collaboration and collaborative potential. All government records will be published through the [CDC website](http://www.cdc.gov).
 
-Please refer to the [CDC's Template Repository](https://github.com/CDCgov/template) for more information about contributing to this repository, public domain notices, and code of conduct.
+##Notices
+Please refer to [CDC's Template Repository](https://github.com/CDCgov/template) for more information about [contributing to this repository](https://github.com/CDCgov/template/blob/master/CONTRIBUTING.md), [public domain notices and disclaimers](https://github.com/CDCgov/template/blob/master/DISCLAIMER.md), and [code of conduct](https://github.com/CDCgov/template/blob/master/code-of-conduct.md).
