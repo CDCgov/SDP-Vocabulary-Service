@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Notification from './Notification';
 import routes from '../routes';
 import axios from 'axios';
+import { readNotification } from '../actions/notification';
 
 function getCSRFToken() {
   const metas = document.getElementsByTagName('meta');
@@ -11,7 +12,6 @@ function getCSRFToken() {
       return meta.getAttribute('content');
     }
   }
-
   return null;
 }
 
@@ -24,21 +24,14 @@ export default class NotificationMenu extends Component {
     };
   }
 
-
-
   notificationClick(id, url) {
-    axios.post(routes.notifications_mark_read_path(), {
-      authenticityToken: getCSRFToken(),
-      ids: [id]
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
+    readNotification(id);
     // Redirect to the url in notification:
+    console.log(url.includes(window.location.pathname));
+    if (url.includes(window.location.pathname)) {
+      window.location.reload();
+    }
+    window.location.hash = ''
     window.location = url;
   }
 
