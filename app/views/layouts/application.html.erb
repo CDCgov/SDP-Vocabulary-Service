@@ -67,20 +67,18 @@
               </ul>
             </li>                
             <li class="dropdown">
-              <a href="#notifications" class="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
+              <a href="#notifications" class="dropdown-toggle cdc-navbar-item" id="notifications-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
               Alerts
-              <% if current_user.notifications.exists? %>
-                <% if current_user.notifications.where('read' => false).count > 0 %>
-                  <span class="caret"></span>
-                  <span class="alerts-badge"><%= current_user.notifications.where('read' => false).count %></span></a>
-                  <ul id="notification-menu" class="cdc-nav-dropdown">
-                  </ul>
-                <% else %>
-                  <span class="caret"></span></a>
-                  <ul class="cdc-nav-dropdown">
-                    <ul><li class="notification-menu-item">No new notifications</li></ul>
-                  </ul>
-                <% end %>
+              <% if current_user.notifications.exists? and current_user.notifications.where('read' => false).count > 0 %>
+                <span class="caret"></span>
+                <span class="alerts-badge"><%= current_user.notifications.where('read' => false).count %></span></a>
+                <ul id="notification-menu" class="cdc-nav-dropdown">
+                </ul>
+              <% else %>
+                <span class="caret"></span></a>
+                <ul class="cdc-nav-dropdown">
+                  <ul><li class="notification-menu-item">No new notifications</li></ul>
+                </ul>
               <% end %>
             </li>
           </ul>
