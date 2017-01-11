@@ -16,9 +16,8 @@ class Form < ApplicationRecord
   # Builds a new Form object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
-
     new_revision = Form.new(version_independent_id: version_independent_id,
-                            version: version + 1, name: name,oid: oid,
+                            version: version + 1, name: name, oid: oid,
                             created_by: created_by, control_number: control_number)
 
     new_revision

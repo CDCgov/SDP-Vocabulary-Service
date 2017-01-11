@@ -17,48 +17,49 @@ class FormTest < ActiveSupport::TestCase
   end
 
   test 'assign_new_oids' do
-    f = Form.new
+    user = users(:admin)
+    f = Form.new(created_by: user)
     f.id = 3
-    f.save
+    assert f.save
     assert_equal 1, f.version
     assert_equal 'F-3', f.version_independent_id
     assert_equal '2.16.840.1.113883.3.1502.1.3', f.oid
 
-    f = Form.new
+    f = Form.new(created_by: user)
     f.oid = '2.16.840.1.113883.3.1502.1.3'
     assert_not f.valid?
     f.oid = '2.16.840.1.113883.3.1502.1.4'
     assert f.valid?
-    f.save
+    assert f.save
 
-    f = Form.new
+    f = Form.new(created_by: user)
     f.id = 4
     f.oid = '2.16.840.1.113883.3.1502.1.6'
-    f.save
+    assert f.save
 
-    f = Form.new
+    f = Form.new(created_by: user)
     f.id = 5
     f.oid = '2.16.840.1.113883.3.1502.1.8'
-    f.save
+    assert f.save
 
     # Should find next available oid which is .7 NOT .9
-    f = Form.new
+    f = Form.new(created_by: user)
     f.id = 6
-    f.save
+    assert f.save
     assert_equal '2.16.840.1.113883.3.1502.1.7', f.oid
 
     # Should follow special validation rules for new versions
-    f2 = Form.new
+    f2 = Form.new(created_by: user)
     f2.version_independent_id = f.version_independent_id
     f2.version = 2
-    f2.save
+    assert f2.save
     assert_equal f.oid, f2.oid
 
-    f3 = Form.new
+    f3 = Form.new(created_by: user)
     f3.version_independent_id = f.version_independent_id
     f3.version = 3
     f3.oid = f.oid
-    f3.save
+    assert f3.save
     assert_equal f.oid, f3.oid
   end
 
