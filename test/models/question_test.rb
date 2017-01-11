@@ -24,7 +24,6 @@ class QuestionTest < ActiveSupport::TestCase
     assert 'What is your gender?', found.first.content
   end
 
-
   test 'build_new_revision' do
     qs = questions(:gfv2)
     revision = qs.build_new_revision
