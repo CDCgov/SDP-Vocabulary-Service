@@ -12,7 +12,6 @@ When(/^I click on the button to add the Question "([^"]*)"$/) do |question_conte
   page.find("#question_#{object_id}_add").trigger('click')
 end
 
-
 When(/^I click on the menu link for the Form with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Form', attribute, attribute_value)
   page.find("#form_#{object_id}_menu").trigger('click')
