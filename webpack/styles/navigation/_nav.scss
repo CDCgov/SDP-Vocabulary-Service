@@ -49,12 +49,16 @@
     > li {
       float: none;
       display: inline-block;
+      height: 60px;
+    }
+    a:hover, a:focus, a:visited {
+      background-color: white;
+      height: 60px;
     }
   }
   .cdc-navbar-item {
     height: 60px;
     padding: 18px 18px 0px 18px;
-    height: 60px;
     .item-navbar-icon {
       margin-right: 6px;
     }
@@ -72,6 +76,17 @@
   @extend .badge;
   background-color: red;
   margin-left: 8px;
+}
+
+.notif-button {
+  height: 60px;
+  min-width: 100px;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 18px;
+  margin-top: -18px;
+  margin-left: -18px;
+  margin-right: -18px;
 }
 
 .notification-menu-item {

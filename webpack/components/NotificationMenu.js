@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Notification from './Notification';
-import { readNotification } from '../actions/notification';
 
 export default class NotificationMenu extends Component {
   constructor(props){
@@ -11,17 +10,12 @@ export default class NotificationMenu extends Component {
     };
   }
 
-  notificationClick(id, url) {
-    function callRedirect(url) {
-      // Redirect to the url in notification:
-      if (url.includes(window.location.pathname)) {
-        window.location.reload();
-      }
-      window.location.hash = '';
-      window.location = url;
+  notificationClick(url) {
+    if (url.includes(window.location.pathname)) {
+      window.location.reload();
     }
-
-    readNotification(id, url, callRedirect);
+    window.location.hash = '';
+    window.location = url;
   }
 
   render() {
@@ -30,7 +24,7 @@ export default class NotificationMenu extends Component {
         <ul>
           {this.props.notifications.map((notif) => {
             return(
-              <Notification key={notif.id} notification={notif} onNotifClick={(id, url) => this.notificationClick(id, url)} />
+              <Notification key={notif.id} notification={notif} onNotifClick={(url) => this.notificationClick(url)} />
             );
           })}
         </ul>

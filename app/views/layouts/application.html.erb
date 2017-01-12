@@ -67,15 +67,11 @@
               </ul>
             </li>                
             <li class="dropdown">
-              <a href="#notifications" class="dropdown-toggle cdc-navbar-item" id="notifications-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
-              Alerts
-              <% if current_user.notifications.exists? and current_user.notifications.where('read' => false).count > 0 %>
-                <span class="caret"></span>
-                <span class="alerts-badge"><%= current_user.notifications.where('read' => false).count %></span></a>
+              <a href="#notifications" class="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
+              <% if current_user.notifications.exists? && current_user.notifications.where('read' => false).count > 0 %>
                 <ul id="notification-menu" class="cdc-nav-dropdown">
                 </ul>
               <% else %>
-                <span class="caret"></span></a>
                 <ul class="cdc-nav-dropdown">
                   <ul><li class="notification-menu-item">No new notifications</li></ul>
                 </ul>
@@ -84,12 +80,13 @@
           </ul>
           <% end %>
         </div>
-        <% if user_signed_in? and current_user.notifications.where('read' => false).exists? %>
+        <% if user_signed_in? && current_user.notifications.where('read' => false).exists? %>
           <script type="application/json" id="notification-json">
             <%= raw current_user.notifications.where('read' => false).to_json %>
           </script>
           <%= javascript_include_tag *webpack_asset_paths('notification_menu', extension: 'js') %>
         <% end %>
+        <%= javascript_include_tag *webpack_asset_paths('notification_dropdown', extension: 'js') %>
       </nav>
     </nav>
 
