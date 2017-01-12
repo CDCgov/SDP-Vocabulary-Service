@@ -13,7 +13,7 @@ export default class NotificationDropdown extends Component {
   onDropdownClick(notifications) {
     var ids = [];
     notifications.forEach((notif) => {
-      ids.push(notif.id)
+      ids.push(notif.id);
     });
     readNotification(ids);
 
@@ -32,8 +32,7 @@ export default class NotificationDropdown extends Component {
           <span className="alerts-badge">{this.state.notificationCount}</span>
         </div>
       );
-    }
-    else{
+    } else {
       return (
         <div className="notif-button">
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>

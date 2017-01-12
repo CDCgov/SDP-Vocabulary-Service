@@ -6,9 +6,10 @@ Feature: Manage Notifications
     And I have a Notification with the message "User2 has replied to your comment" and the url "/questions/2"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
-    And I click on the "notifications-dropdown" link
-    Then I should see "User1 has replied to your comment"
     And I should see "2" new notifications
+    And I click on the "notification-dropdown" link
+    Then I should see "User1 has replied to your comment"
+    And I should see no new notifications
 
   Scenario: Notification Redirect
     Given I have a Notification with the message "User1 has replied to your comment" and the url "/questions/1"
