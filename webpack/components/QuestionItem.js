@@ -5,10 +5,10 @@ const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQue
     return "Loading...";
   }
   return (
-    <div>
+    <div className='question-item'>
       <div className="col-md-1" >{question.id}</div>
       <div>
-        <div className="col-md-5" id={question.id} >{question.content}</div>
+        <div className="col-md-5" id={`question_id_${question.id}`} >{question.content}</div>
         <div className="col-md-3" >
           <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={question.id}/>
           <select className="col-md-12" aria-label="Response Set IDs" name='response_set_ids[]' id='response_set_ids'>
@@ -22,11 +22,11 @@ const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQue
 
         </div>
         <div className="col-md-3">
-          <div className="btn btn-small btn-default"
+          <div className="btn btn-small btn-default move-up"
                onClick={() => reorderQuestion(index, 1)}>
             <b>Move Up</b>
           </div>
-          <div className="btn btn-small btn-default"
+          <div className="btn btn-small btn-default move-down"
                onClick={() => reorderQuestion(index, -1)}>
             <b>Move Down</b>
           </div>
