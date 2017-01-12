@@ -85,8 +85,10 @@
             <%= raw current_user.notifications.where('read' => false).to_json %>
           </script>
           <%= javascript_include_tag *webpack_asset_paths('notification_menu', extension: 'js') %>
+          <%= javascript_include_tag *webpack_asset_paths('notification_dropdown', extension: 'js') %>
+        <% elsif user_signed_in? %>
+          <%= javascript_include_tag *webpack_asset_paths('notification_dropdown', extension: 'js') %>
         <% end %>
-        <%= javascript_include_tag *webpack_asset_paths('notification_dropdown', extension: 'js') %>
       </nav>
     </nav>
 
