@@ -35,6 +35,23 @@ Feature: Manage Forms
     And I should see "What is your gender?"
     And I should see "Gender Partial"
 
+  Scenario: Reorder Questions
+    Given I have a Form with the name "Test Form"
+    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I have a Question with the content "What is your name?" and the type "MC"
+    And I have a Response Set with the name "Gender Partial"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Forms
+    And I click on the menu link for the Form with the name "Test Form"
+    And I click on the option to Revise the Form with the name "Test Form"
+    And I click on the button to add the Question "What is your gender?"
+    And I click on the button to add the Question "What is your name?"
+    And I move the Question "What is your name?" up
+    And I move the Question "What is your name?" down
+    And I click on the "Save" button
+    And I should see "What is your gender?"
+    And I should see "Gender Partial"
+
   Scenario: Create New Form from List
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"
