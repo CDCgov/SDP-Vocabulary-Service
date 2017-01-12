@@ -1,7 +1,8 @@
 import {
   ADD_QUESTION,
   REMOVE_QUESTION,
-  REORDER_QUESTION
+  REORDER_QUESTION,
+  FETCH_QUESTIONS_FULFILLED
 } from '../actions/types';
 
 let move = function(array, from, to) {
@@ -19,8 +20,9 @@ export default function questions(state = [], action) {
     case REORDER_QUESTION:
       let {index, direction} = action.payload;
       return state = move(state, index, index - direction);
-
+    case FETCH_QUESTIONS_FULFILLED:
+      return action.payload.data;
     default:
       return state;
   }
-}
+};
