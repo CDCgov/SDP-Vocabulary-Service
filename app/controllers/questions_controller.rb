@@ -54,7 +54,7 @@ class QuestionsController < ApplicationController
       else
         @question_types = QuestionType.all
         format.html { render :new }
-        format.json { render json @question.errors, status: :unprocessable_entity }
+        format.json { render json: @question.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -1,7 +1,10 @@
+import axios from 'axios';
+import routes from '../routes';
 import {
   ADD_QUESTION,
   REMOVE_QUESTION,
-   REORDER_QUESTION
+  REORDER_QUESTION,
+  FETCH_QUESTIONS
 } from './types';
 
 export function addQuestion(question) {
@@ -18,9 +21,20 @@ export function removeQuestion(index) {
   };
 }
 
+
 export function reorderQuestion(index, direction) {
   return {
     type: REORDER_QUESTION,
     payload: {index, direction}
+  };
+}
+
+export function fetchQuestions(searchTerms) {
+  return {
+    type: FETCH_QUESTIONS,
+    payload: axios.get(routes.questions_path(), {
+      headers: {'Accept': 'application/json'},
+      params:  { search: searchTerms }
+    })
   };
 }
