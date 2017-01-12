@@ -42,15 +42,13 @@ Feature: Manage Forms
     And I have a Response Set with the name "Gender Partial"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
+    And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Revise the Form with the name "Test Form"
-    And I fill in the "form_name" field with "Gender Form"
     And I click on the button to add the Question "What is your gender?"
     And I click on the button to add the Question "What is your name?"
     And I move the Question "What is your name?" up
     And I move the Question "What is your name?" down
     And I click on the "Save" button
-    Then I should see "Form was successfully revised."
-    And I should see "Name: Gender Form"
     And I should see "What is your gender?"
     And I should see "Gender Partial"
 
