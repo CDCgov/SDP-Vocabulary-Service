@@ -54,7 +54,6 @@
   .cdc-navbar-item {
     height: 60px;
     padding: 18px 18px 0px 18px;
-    height: 60px;
     .item-navbar-icon {
       margin-right: 6px;
     }
@@ -73,7 +72,40 @@
   background-color: red;
   margin-left: 8px;
 }
- 
+
+.notif-button {
+  height: 60px;
+  min-width: 100px;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 18px;
+  margin-top: -18px;
+  margin-left: -18px;
+  margin-right: -18px;
+}
+
+.notification-menu-item {
+  list-style-type: none;
+  margin-left: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.notification-menu-item:hover {
+  background-color: #e4e4e4;
+}
+
 .cdc-nav-dropdown {
   @extend .dropdown-menu;
+  ul {
+    list-style-type: none;
+    padding-left: 0px;
+    padding-right: 0px;
+    max-height: 250px;
+    width: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 } 
