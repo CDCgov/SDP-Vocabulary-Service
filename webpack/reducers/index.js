@@ -4,10 +4,10 @@ import {
 
 import questions from './questions';
 import comments from './comments';
+import stats from './stats';
 
 const rootReducer = combineReducers({
-  questions: questions,
-  comments: comments
+  questions, comments, stats
 });
 
 export default rootReducer;

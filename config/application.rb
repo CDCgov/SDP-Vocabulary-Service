@@ -12,6 +12,7 @@ module Vocabulary
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.assets.enabled = false
+    config.middleware.use 'OliveBranch::Middleware'
     Rails.application.routes.default_url_options[:host] = Settings.default_url_helper_host || 'localhost:3000'
   end
 end
