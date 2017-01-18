@@ -9,6 +9,7 @@ gem 'pg'
 gem 'puma', '~> 3.0'
 
 gem 'webpack-rails'
+gem 'olive_branch'
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'json_schema'
