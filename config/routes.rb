@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get '/landing' => 'landing#index'
+  get '/landing/stats' => 'landing#stats'
 
   root to: 'dashboard#index'
 
