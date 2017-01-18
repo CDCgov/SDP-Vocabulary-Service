@@ -30,7 +30,8 @@ var config = {
     'babel-polyfill': 'babel-polyfill',
     'question': './webpack/question.js',
     'notification_menu': './webpack/notification_menu.js',
-    'notification_dropdown': './webpack/notification_dropdown.js'
+    'notification_dropdown': './webpack/notification_dropdown.js',
+    'landing': './webpack/landing.js'
     },
 
   output: {
