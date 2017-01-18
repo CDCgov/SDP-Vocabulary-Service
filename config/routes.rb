@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/landing' => 'landing#index'
+
   root to: 'dashboard#index'
 
   devise_for :users, controllers: { registrations: 'registrations',
