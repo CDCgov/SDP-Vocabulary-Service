@@ -10,6 +10,7 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets/1
   # GET /response_sets/1.json
   def show
+    @response_set = ResponseSet.includes(:responses, :questions, :parent).find(params[:id])
   end
 
   # GET /response_sets/new
