@@ -2,7 +2,7 @@ import {
   FETCH_RESPONSE_SETS_FULFILLED
 } from '../actions/types';
 
-const initialState = null
+const initialState = null;
 
 export default function responseSets(state = initialState, action) {
   switch (action.type) {
