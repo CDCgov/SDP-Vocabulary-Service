@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import FormList from '../components/FormList';
 import Routes from '../routes';
 import { connect } from 'react-redux';
@@ -31,4 +31,8 @@ function mapStateToProps(state) {
     forms: state.forms
   };
 }
+FormsContainer.propTypes = {
+  forms: FormList.propTypes.forms,
+  fetchForms: PropTypes.func
+};
 export default connect(mapStateToProps, mapDispatchToProps)(FormsContainer);
