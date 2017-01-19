@@ -2,9 +2,11 @@ import {
   FETCH_FORMS_FULFILLED
 } from '../actions/types';
 
-export default function forms(state = {}, action) {
+const initialState = null;
+
+export default function forms(state = initialState, action) {
   if (action.type == FETCH_FORMS_FULFILLED) {
-    return action.payload.data;
+    return [...action.payload.data];
   }
   return state;
 }
