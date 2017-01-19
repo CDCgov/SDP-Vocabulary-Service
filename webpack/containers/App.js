@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchCurrentUser } from '../actions/current_user_actions';
+import currentUserProps from '../prop-types/current_user_props';
 
 class App extends Component {
   componentWillMount() {
@@ -30,7 +31,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  currentUser: PropTypes.object,
+  currentUser: currentUserProps,
   fetchCurrentUser: PropTypes.func,
   children: PropTypes.object
 };
