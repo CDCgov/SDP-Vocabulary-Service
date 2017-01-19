@@ -7,8 +7,11 @@ import {
 export function fetchForms() {
   return {
     type: FETCH_FORMS,
-    payload: axios.get(routes.forms_path(), {
-      headers: {'Accept': 'application/json'}
+    payload: axios.get(routes.formsPath(), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      }
     })
   };
 }
