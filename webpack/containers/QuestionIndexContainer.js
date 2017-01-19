@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestions } from '../actions/question';
+import { fetchQuestions } from '../actions/questions_actions';
 import Routes from "../routes";
 import QuestionList from '../components/QuestionList';
 import QuestionListSearch from '../components/QuestionListSearch';
 
-class QuestionListContainer extends Component {
+class QuestionIndexContainer extends Component {
   constructor(props){
     super(props);
     this.search = this.search.bind(this);
@@ -41,9 +41,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 // Avoiding a lint error, but if you supply these when you create this class, they will be ignored and overwritten!
-QuestionListContainer.propTypes = {
-  questions: QuestionList.propTypes.questions,
+QuestionIndexContainer.propTypes = {
+  questions: PropTypes.object, //fixme
   fetchQuestions: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionListContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionIndexContainer);

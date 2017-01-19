@@ -2,7 +2,7 @@ import {
   combineReducers
 } from 'redux';
 
-import questions from './questions';
+import questions from './questions_reducer';
 import comments from './comments';
 import stats from './stats';
 
