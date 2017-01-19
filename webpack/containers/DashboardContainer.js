@@ -38,18 +38,18 @@ class DashboardContainer extends Component {
     <div className="analytics-group">
       <ul className="analytics-list-group">
         <li className="analytics-list-item">
-          <a href="">
+          <Link to="/questions">
             <i className="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.questionCount}</p>
             <h2 className="item-title">Questions</h2>
-          </a>
+          </Link>
         </li>
         <li className="analytics-list-item">
-          <a href="">
+          <Link to="/responseSets">
             <i className="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.responseSetCount}</p>
             <h2 className="item-title">Response Sets</h2>
-          </a>
+          </Link>
           </li>
         <li className="analytics-list-item">
           <Link to="/forms">
