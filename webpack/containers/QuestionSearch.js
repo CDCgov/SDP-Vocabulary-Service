@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addQuestion } from '../actions/question';
+import { addQuestion } from '../actions/questions_actions';
 
 import QuestionResults from '../components/QuestionResults';
 import SearchBar from '../components/SearchBar';
