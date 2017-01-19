@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import FormWidget from './FormWidget';
 
-export default class FormList extends Component {
+class FormList extends Component {
   render() {
     return (
       <div className='form-group'>
@@ -17,3 +17,5 @@ FormList.propTypes = {
   forms: PropTypes.arrayOf(FormWidget.propTypes.form).isRequired,
   routes: FormWidget.propTypes.routes.isRequired
 };
+
+export default FormList;
