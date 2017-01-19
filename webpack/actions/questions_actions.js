@@ -10,7 +10,7 @@ import {
 export function addQuestion(question) {
   return {
     type: ADD_QUESTION,
-    payload: question
+    payload: {data: question}
   };
 }
 

@@ -9,7 +9,7 @@ Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
 end
 
 When(/^I go to the list of Questions$/) do
-  visit '/questions'
+  visit 'landing#/questions'
 end
 
 # When clauses
