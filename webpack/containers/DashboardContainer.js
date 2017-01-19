@@ -2,10 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchStats } from '../actions/landing';
+import { fetchCurrentUser } from '../actions/current_user_actions';
 
 class DashboardContainer extends Component {
   componentWillMount() {
     this.props.fetchStats();
+    this.props.fetchCurrentUser();
   }
 
   render() {
@@ -118,7 +120,8 @@ DashboardContainer.propTypes = {
   formCount: PropTypes.number,
   questionCount: PropTypes.number,
   responseSetCount: PropTypes.number,
-  fetchStats: PropTypes.func
+  fetchStats: PropTypes.func,
+  fetchCurrentUser: PropTypes.func
 };
 
-export default connect(mapStateToProps, {fetchStats})(DashboardContainer);
+export default connect(mapStateToProps, {fetchStats, fetchCurrentUser})(DashboardContainer);
