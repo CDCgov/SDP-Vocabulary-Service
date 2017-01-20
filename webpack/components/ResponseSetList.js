@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import ResponseSetWidget from './ResponseSetWidget';
+import _ from 'lodash';
 
 export default class ResponseSetList extends Component {
   render() {
     return (
       <div className="response-set-list">
-        {this.props.responseSets.map((rs) => {
-          // Each List Item Component needs a key attribute for uniqueness:
-          // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-          // In addition, we pass in our item data
+        {_.values(this.props.responseSets).map((rs) => {
           return <ResponseSetWidget key={rs.id} responseSet={rs} routes={this.props.routes} />;
         })}
       </div>
@@ -17,6 +15,6 @@ export default class ResponseSetList extends Component {
 }
 
 ResponseSetList.propTypes = {
-  responseSets: PropTypes.arrayOf(ResponseSetWidget.propTypes.responseSet).isRequired,
+  responseSets: PropTypes.object.isRequired,
   routes: ResponseSetWidget.propTypes.routes.isRequired
 };

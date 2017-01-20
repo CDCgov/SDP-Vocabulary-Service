@@ -34,7 +34,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 ResponseSetsContainer.propTypes = {
-  responseSets: PropTypes.array,
+  responseSets: PropTypes.object,
   fetchResponseSets: PropTypes.func
 };
 
