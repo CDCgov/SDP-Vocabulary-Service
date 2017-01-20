@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import FormWidget from './FormWidget';
+import _ from 'lodash';
 
 class FormList extends Component {
   render() {
     return (
       <div className='form-group'>
-        {this.props.forms.map((aForm) => {
+        {_.values(this.props.forms).map((aForm) => {
           return <FormWidget key={aForm.id} form={aForm} routes={this.props.routes} />;
         })}
       </div>
@@ -14,7 +15,7 @@ class FormList extends Component {
 }
 
 FormList.propTypes = {
-  forms: PropTypes.arrayOf(FormWidget.propTypes.form).isRequired,
+  forms: PropTypes.object.isRequired,
   routes: FormWidget.propTypes.routes.isRequired
 };
 
