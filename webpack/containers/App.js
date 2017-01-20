@@ -1,7 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
+import { connect } from 'react-redux';
+
+import { fetchCurrentUser } from '../actions/current_user_actions';
+import currentUserProps from '../prop-types/current_user_props';
 
 class App extends Component {
+  componentWillMount() {
+    this.props.fetchCurrentUser();
+  }
+
   render() {
     return (
       <div>
@@ -22,4 +30,14 @@ class App extends Component {
   }
 }
 
-export default App;
+App.propTypes = {
+  currentUser: currentUserProps,
+  fetchCurrentUser: PropTypes.func,
+  children: PropTypes.object
+};
+
+function mapStateToProps(state) {
+  return {currentUser: state.currentUser};
+}
+
+export default connect(mapStateToProps, {fetchCurrentUser})(App);
