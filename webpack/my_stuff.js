@@ -15,6 +15,6 @@ forms.map((aForm) => {
   aForm.userId = aForm.createdBy.email;
 });
 
-ReactDOM.render(<FormList forms={forms} routes={Routes} />, document.getElementById('form_list'));
+ReactDOM.render(<FormList forms={_.keyBy(forms,'id')} routes={Routes} />, document.getElementById('form_list'));
 ReactDOM.render(<QuestionList questions={questions} routes={Routes} />, document.getElementById('question_list'));
 ReactDOM.render(<ResponseSetList responseSets={_.keyBy(responseSets, 'id')} routes={Routes} />, document.getElementById('response_set_list'));
