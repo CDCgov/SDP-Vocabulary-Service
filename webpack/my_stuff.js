@@ -6,8 +6,6 @@ import QuestionList from './components/QuestionList';
 import Routes from './routes';
 import _ from 'lodash';
 
-import _ from 'lodash';
-
 const forms = JSON.parse(document.getElementById('forms-json').innerHTML);
 const questions = _.keyBy(JSON.parse(document.getElementById('question-json').innerHTML), 'id');
 const responseSets = JSON.parse(document.getElementById('response-set-json').innerHTML);
