@@ -10,7 +10,7 @@ class FormsContainer extends Component {
     this.props.fetchForms();
   }
   render() {
-    if(!this.props.forms){
+    if(this.props.forms.loading == true){
       return (
         <div>Loading...</div>
       );
