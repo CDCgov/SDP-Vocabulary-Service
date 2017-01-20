@@ -5,6 +5,8 @@ import QuestionList from './QuestionList';
 import ResponseSetList from './ResponseSetList';
 import SearchWidgetBar from './SearchWidgetBar';
 
+import _ from 'lodash';
+
 export default class SearchWidget extends Component {
   constructor(props){
     super(props);
@@ -78,7 +80,7 @@ export default class SearchWidget extends Component {
     return (
       <div className="search-widget">
         <SearchWidgetBar onSearchTermChange={(term, category) => this.refreshSearch(term, category)} />
-        <ResponseSetList responseSets={this.state.responseSets} routes={this.props.routes} />
+        <ResponseSetList responseSets={_.keyBy(this.state.responseSets, 'id')} routes={this.props.routes} />
         <QuestionList questions={this.state.questions} routes={this.props.routes} />
       </div>
     );

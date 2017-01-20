@@ -6,6 +6,7 @@ import { addQuestion } from '../actions/question';
 
 import QuestionResults from '../components/QuestionResults';
 import SearchBar from '../components/SearchBar';
+import _ from 'lodash';
 
 class QuestionSearch extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class QuestionSearch extends Component {
     return (
             <div>
                 <SearchBar onSearchTermChange={term => this.questionFilter(term)} />
-                <QuestionResults questions={this.state.questions} responseSets={this.state.responseSets}
+                <QuestionResults questions={this.state.questions} responseSets={_.values(this.state.responseSets)}
                                  addQuestion={this.props.addQuestion} />
             </div>
     );
