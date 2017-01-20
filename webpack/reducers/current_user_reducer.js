@@ -3,9 +3,10 @@ import {
 } from '../actions/types';
 
 export default function currentUser(state = {}, action) {
-  if (action.type === FETCH_CURRENT_USER_FULFILLED) {
-    return action.payload.data;
-  } else {
-    return state;
+  switch (action.type) {
+    case FETCH_CURRENT_USER_FULFILLED:
+      return action.payload.data;
+    default:
+      return state;
   }
 }
