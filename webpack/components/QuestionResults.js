@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { questionProps } from "../prop-types/question_props";
 
 export default class QuestionResults extends Component {
   render() {
@@ -29,6 +30,6 @@ export default class QuestionResults extends Component {
 }
 
 QuestionResults.propTypes = {
-  questions: React.PropTypes.array.isRequired,
+  questions: React.PropTypes.arrayOf(questionProps).isRequired,
   addQuestion: React.PropTypes.func.isRequired
 };

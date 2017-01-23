@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { questionsProps } from "../prop-types/question_props";
+import { responseSetsProps } from "../prop-types/response_set_props";
 import QuestionList from './QuestionList';
 import ResponseSetList from './ResponseSetList';
 import SearchWidgetBar from './SearchWidgetBar';
@@ -85,7 +87,7 @@ export default class SearchWidget extends Component {
 }
 
 SearchWidget.propTypes = {
-  responseSets: PropTypes.object.isRequired,
-  questions: PropTypes.object.isRequired,
+  responseSets: responseSetsProps,
+  questions: questionsProps,
   routes: PropTypes.object.isRequired
 };
