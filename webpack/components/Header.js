@@ -1,8 +1,9 @@
 import React from 'react';
+import currentUserProps from '../prop-types/current_user_props';
 
-let LoginMenu = ({currentUser={loggedIn:false}}) => {
-  let {loggedIn} = currentUser;
 
+let LoginMenu = ({currentUser={email:null}}) => {
+  let loggedIn = currentUser ? true : false;
   if(!loggedIn) {
     return (
       <ul className="nav navbar-nav navbar-right">
@@ -13,15 +14,20 @@ let LoginMenu = ({currentUser={loggedIn:false}}) => {
           <a href="#"> Register </a>
         </li>
       </ul>
-    )
+    );
   }
   return null;
 
-}
+};
 
-let ContentMenu = ({currentUser={loggedIn:false, email:null}}) => {
-  let {loggedIn, email} = currentUser;
+LoginMenu.propTypes = {
+  currentUser: currentUserProps,
+};
+
+let ContentMenu = ({currentUser={email:false}}) => {
+  let loggedIn = currentUser ? true : false;
   if(loggedIn) {
+    let {email} = currentUser;
     return(
       <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul className="cdc-nav cdc-utlt-navbar-nav navbar-right">
@@ -41,13 +47,16 @@ let ContentMenu = ({currentUser={loggedIn:false, email:null}}) => {
           <li><a href="#"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help</a></li>
         </ul>
       </div>
-    )
+    );
   }
-  return null;
-}
+  return false;
+};
+ContentMenu.propTypes = {
+  currentUser: currentUserProps,
+};
 
-let SignedInMenu = ({currentUser={loggedIn:false}}) => {
-  let { loggedIn } = currentUser;
+let SignedInMenu = ({currentUser={email:false}}) => {
+  let loggedIn = currentUser ? true : false;
   if(loggedIn) {
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">
@@ -66,14 +75,15 @@ let SignedInMenu = ({currentUser={loggedIn:false}}) => {
 
         </li>
       </ul>
-    )
+    );
   }
   return null;
-}
-
+};
+SignedInMenu.propTypes = {
+  currentUser: currentUserProps,
+};
 
 let Header = ({currentUser}) => {
-  currentUser={loggedIn:false, email:'test@gmail.com'};
   return (
     <nav className="cdc-utlt-nav navbar-fixed-top">
       <div className="container">
@@ -92,8 +102,11 @@ let Header = ({currentUser}) => {
       </div>
 
     </nav>
-  )
-}
+  );
+};
+Header.propTypes = {
+  currentUser: currentUserProps,
+};
 
 export default Header;
 
