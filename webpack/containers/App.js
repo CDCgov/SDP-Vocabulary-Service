@@ -14,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header currentUser={this.props.currentUser}/>
         {this.props.children}
         <footer className="footer">
           <div className="container">
