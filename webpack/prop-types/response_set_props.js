@@ -19,4 +19,6 @@ const responseSetProps = PropTypes.shape({
   responses: PropTypes.arrayOf(responseProps)
 });
 
-export {responseSetProps, responseProps};
+const responseSetsProps = PropTypes.objectOf(responseSetProps);
+
+export {responseSetProps, responseProps, responseSetsProps};

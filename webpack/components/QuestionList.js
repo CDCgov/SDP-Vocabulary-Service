@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { questionsProps } from "../prop-types/question_props";
 import QuestionWidget from './QuestionWidget';
 import _ from 'lodash';
 
@@ -15,7 +16,7 @@ class QuestionList extends Component {
 }
 
 QuestionList.propTypes = {
-  questions: PropTypes.object.isRequired,
+  questions: questionsProps,
   routes: QuestionWidget.propTypes.routes.isRequired
 };
 
