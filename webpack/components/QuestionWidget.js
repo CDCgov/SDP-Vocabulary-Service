@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { questionProps } from "../prop-types/question_props";
 
 export default class QuestionWidget extends Component {
   render() {
@@ -54,10 +55,7 @@ export default class QuestionWidget extends Component {
 }
 
 QuestionWidget.propTypes = {
-  question: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    content: PropTypes.string.isRequired
-  }),
+  question: questionProps,
   routes: PropTypes.shape({
     questionPath: PropTypes.func.isRequired,
     reviseQuestionPath: PropTypes.func.isRequired
