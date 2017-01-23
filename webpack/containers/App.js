@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Header from '../components/Header';
 
 import { connect } from 'react-redux';
 
@@ -13,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div>Header Stuff</div>
+        <Header currentUser={this.props.currentUser}/>
         {this.props.children}
         <footer className="footer">
           <div className="container">
