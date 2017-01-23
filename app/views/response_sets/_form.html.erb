@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container col-md-12">
   <div class="row">
     <%= form_for(response_set) do |f| %>
       <% if response_set.errors.any? %>
@@ -16,11 +16,6 @@
         <div class="col-md-4">
           <%= f.label :name %>
           <%= f.text_field :name %>
-        </div>
-
-        <div class="col-md-4">
-          <%= f.label :oid %>
-          <%= f.number_field :oid %>
         </div>
 
         <div class="col-md-2">

@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   root to: 'dashboard#index'
 
-  devise_for :users, controllers: { registrations: 'registrations' }
-
+  devise_for :users, controllers: { registrations: 'registrations',
+                                    omniauth_callbacks: 'users/omniauth_callbacks' }
+  resources :authentications
+  get '/mystuff' => 'mystuff#index'
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :export, on: :member
@@ -11,6 +13,7 @@ Rails.application.routes.draw do
   end
   resources :question_response_sets
   resources :responses
+  resources :concepts
   resources :questions, except: [:edit, :update] do
     get :revise, on: :member
   end
@@ -25,6 +28,9 @@ Rails.application.routes.draw do
     get :extend, on: :member
   end
 
+  get 'notifications', to: 'notifications#index', as: :notifications
+  post 'notifications/mark_read', to: 'notifications#mark_read', as: :notifications_mark_read
+
   namespace :api, defaults: { format: :json } do
     resources :questions, only: [:index, :show] do
       get :usage, on: :member
@@ -34,6 +40,8 @@ Rails.application.routes.draw do
       get :usage, on: :member
     end
   end
+
+  # get 'questions' => 'questions#index'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

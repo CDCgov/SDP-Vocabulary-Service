@@ -15,8 +15,9 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
-    @response_sets = ResponseSet.latest_versions
+    @response_sets  = ResponseSet.latest_versions
     @question_types = QuestionType.all
+    @question.concepts.build(value: '', code_system: '', display_name: '')
   end
 
   # GET /questions/1/edit
@@ -53,7 +54,7 @@ class QuestionsController < ApplicationController
       else
         @question_types = QuestionType.all
         format.html { render :new }
-        format.json { render json @question.errors, status: :unprocessable_entity }
+        format.json { render json: @question.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -96,6 +97,7 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :author, :response_set_id, :response_type_id, :question_type_id, :version, :version_independent_id)
+    params.require(:question).permit(:content, :response_set_id, :response_type_id, :question_type_id, :version, :version_independent_id,
+                                     concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

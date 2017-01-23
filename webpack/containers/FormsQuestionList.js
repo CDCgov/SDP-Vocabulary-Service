@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { removeQuestion } from '../actions/question';
+import { removeQuestion, reorderQuestion } from '../actions/question';
 
 import QuestionItem from '../components/QuestionItem';
 
@@ -21,7 +21,8 @@ class FormsQuestionList extends Component {
           return (
             <div className="row" key={i}>
               <QuestionItem question={q} responseSets={this.props.responseSets} index={i}
-                            removeQuestion={this.props.removeQuestion}/>
+                            removeQuestion={this.props.removeQuestion}
+                            reorderQuestion={this.props.reorderQuestion}/>
             </div>
           );
         })}
@@ -31,7 +32,7 @@ class FormsQuestionList extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({removeQuestion}, dispatch);
+  return bindActionCreators({removeQuestion, reorderQuestion}, dispatch);
 }
 
 function mapStateToProps(state) {
@@ -43,7 +44,8 @@ function mapStateToProps(state) {
 FormsQuestionList.propTypes = {
   questions: React.PropTypes.array.isRequired,
   responseSets: React.PropTypes.array.isRequired,
-  removeQuestion: React.PropTypes.func.isRequired
+  removeQuestion: React.PropTypes.func.isRequired,
+  reorderQuestion: React.PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormsQuestionList);

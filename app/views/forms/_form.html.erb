@@ -1,8 +1,9 @@
 <%= form_for(form) do |f| %>
 
 <div class="row">
-  <% if form.errors.any? %>
+
     <div id="error_explanation">
+      <% if form.errors.any? %>
       <h2><%= pluralize(form.errors.count, "error") %> prohibited this form from being saved:</h2>
 
       <ul>
@@ -10,8 +11,9 @@
         <li><%= message %></li>
       <% end %>
       </ul>
+      <% end %>
     </div>
-  <% end %>
+
 
   <%= f.hidden_field :version_independent_id %>
   <%= f.hidden_field :version %>

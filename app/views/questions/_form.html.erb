@@ -1,12 +1,14 @@
 <%= form_for(question) do |f| %>
-  <div class='container' id='react-container'>
+  <div class='container col-md-12' id='react-container'>
   </div>
+
+  <%= f.hidden_field :version_independent_id %>
+  <%= f.hidden_field :version %>
 
 <% end %>
 <script type="application/json" id="question-json">
   <%= raw @question.to_json %>
 </script>
-
 <script type="application/json" id="response-sets-json">
   <%= raw ResponseSet.latest_versions.to_json %>
 </script>
@@ -18,5 +20,8 @@
 </script>
 <script type="application/json" id="question-response-sets-json">
   <%= raw @question.response_sets.to_json %>
+</script>
+<script type="application/json" id="concepts-json">
+  <%= raw @question.concepts.map{|c| {code: c.value, display: c.display_name, system: c.code_system}}.to_json %>
 </script>
 <%= javascript_include_tag *webpack_asset_paths('question_form', extension: 'js') %>

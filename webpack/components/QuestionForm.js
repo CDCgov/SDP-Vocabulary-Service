@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Draggable, Droppable } from './Draggable';
 import ResponseSetWidget from './ResponseSetWidget';
+import CodedSetTableForm from './CodedSetTableForm';
 
 
 let setData = function(){
@@ -61,7 +62,7 @@ DropTarget.propTypes = {
 
 let DroppableTarget = Droppable(DropTarget, onDrop);
 
-let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], routes, questionTypes = [], responseTypes = []}) => {
+let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], routes, questionTypes = [], responseTypes = [], concepts=[]}) => {
   let submitText = "Create Question";
   let titleText = "New Question";
   if (question.version_independent_id) {
@@ -69,20 +70,20 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
     titleText = "Revise Question";
   }
   return (
-    <div className="row">
-      <div className="col-md-12 basic-bg">
+    <div className="row"><br/>
+      <div>
         <div className="panel panel-default">
           <div className="panel-heading">
             <h3 className="panel-title">{titleText}</h3>
           </div>
           <div className="panel-body">
           <div className="row">
-              <div className="col-md-8 form-group">
+              <div className="col-md-8 question-form-group">
                   <label className="input-label" htmlFor="question_content">Question</label>
                   <input className="input-format" placeholder="Question text" type="text" name="question[content]" id="question_content" defaultValue={question.content}/>
               </div>
 
-              <div className="col-md-4 form-group">
+              <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="question_question_type_id">Type</label>
                   <select className="input-format" name="question[question_type_id]" id="question_question_type_id" defaultValue={question.question_type_id}>
                     <option value=""></option>
@@ -94,7 +95,7 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
           </div>
 
           <div className="row ">
-              <div className="col-md-8 form-group">
+              <div className="col-md-8 question-form-group">
                   <label className="input-label" htmlFor="response_type_id">Primary Response Type</label>
                   <select name="response_type_id" id="response_type_id" className="input-format" defaultValue={question.response_type_id}>
                     {responseTypes.map((rt) => {
@@ -102,12 +103,19 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
                     })}
                   </select>
               </div>
-              <div className="col-md-4 form-group"></div>
+              <div className="col-md-4 question-form-group"></div>
+          </div>
+
+          <div className="row ">
+              <div className="col-md-8 form-group">
+                  <label className="input-label" htmlFor="concept_id">Concepts</label>
+                  <CodedSetTableForm initialItems={concepts} childName={'concept'} parentName={'question'}/>
+              </div>
           </div>
 
           <div className="row ">
 
-              <div className="col-md-6 form-group">
+              <div className="col-md-6 question-form-group">
                 <label htmlFor="linked_response_sets">Response Sets</label>
                   <div name="linked_response_sets">
                     {responseSets.map((rs, i) => {
@@ -120,10 +128,6 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
                 <DroppableTarget selectedResponseSets={selectedResponseSets} routes={routes}/>
               </div>
           </div>
-
-
-          <input type="hidden" name="question[version_independent_id]" id="question_version_independent_id" />
-          <input type="hidden" value="1" name="question[version]" id="question_version" />
 
           <div className="panel-footer">
             <div className="actions form-group">
@@ -142,11 +146,12 @@ let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], r
 
 QuestionForm.propTypes = {
   question: PropTypes.object,
-  selectedResponseSets:PropTypes.array,
+  selectedResponseSets: PropTypes.array,
   responseSets: PropTypes.array,
   routes: PropTypes.object,
   questionTypes: PropTypes.array,
-  responseTypes: PropTypes.array
+  responseTypes: PropTypes.array,
+  concepts: PropTypes.array
 };
 
 export default QuestionForm;

@@ -6,15 +6,17 @@ Feature: Manage Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     Then I should see "Test Form"
-    And I should see the option to Destroy the Form with the name "Test Form"
-    And I should see the option to Show the Form with the name "Test Form"
+    When I click on the menu link for the Form with the name "Test Form"
+    Then I should see the option to Delete the Form with the name "Test Form"
+    And I should see the option to View the Form with the name "Test Form"
     And I should see the option to Revise the Form with the name "Test Form"
 
   Scenario: Show Form in Detail
     Given I have a Form with the name "Test Form"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the option to Show the Form with the name "Test Form"
+    And I click on the menu link for the Form with the name "Test Form"
+    And I click on the option to View the Form with the name "Test Form"
     Then I should see "Name: Test Form"
 
   Scenario: Revise Form
@@ -23,13 +25,30 @@ Feature: Manage Forms
     And I have a Response Set with the name "Gender Partial"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
+    And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Revise the Form with the name "Test Form"
     And I fill in the "form_name" field with "Gender Form"
     And I click on the button to add the Question "What is your gender?"
     Then I select the "Gender Partial" option in the "response_set_ids" list
     And I click on the "Save" button
-    Then I should see "Form was successfully revised."
-    And I should see "Name: Gender Form"
+    Then I should see "Name: Gender Form"
+    And I should see "What is your gender?"
+    And I should see "Gender Partial"
+
+  Scenario: Reorder Questions
+    Given I have a Form with the name "Test Form"
+    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I have a Question with the content "What is your name?" and the type "MC"
+    And I have a Response Set with the name "Gender Partial"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Forms
+    And I click on the menu link for the Form with the name "Test Form"
+    And I click on the option to Revise the Form with the name "Test Form"
+    And I click on the button to add the Question "What is your gender?"
+    And I click on the button to add the Question "What is your name?"
+    And I move the Question "What is your name?" up
+    And I move the Question "What is your name?" down
+    And I click on the "Save" button
     And I should see "What is your gender?"
     And I should see "Gender Partial"
 
@@ -44,7 +63,7 @@ Feature: Manage Forms
     And I click on the button to add the Question "What is your gender?"
     Then I select the "Gender Full" option in the "response_set_ids" list
     And I click on the "Save" button
-    Then I should see "Form was successfully created."
+    Then I should see "Name: Test Form"
     And I should see "What is your gender?"
 
   Scenario: An invalid control number should not allow save
@@ -58,14 +77,15 @@ Feature: Manage Forms
     And I click on the button to add the Question "What is your gender?"
     Then I select the "Gender Full" option in the "response_set_ids" list
     And I click on the "Save" button
-    Then I should see "error prohibited this form from being saved"
-    And I should see "Control number must be a valid OMB Control Number"
+    Then I should see "error(s) prohibited this form from being saved"
+    And I should see "Control number: must be a valid OMB Control Number"
 
-  Scenario: Destroy Form
+  Scenario: Delete Form
     Given I have a Form with the name "Test Form"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the option to Destroy the Form with the name "Test Form"
+    And I click on the menu link for the Form with the name "Test Form"
+    And I click on the option to Delete the Form with the name "Test Form"
     And I confirm my action
     Then I should see "Form was successfully destroyed."
     And I should not see "Test Form"
@@ -82,7 +102,6 @@ Feature: Manage Forms
     And I select the "Gender Partial" option in the "response_set_ids" list
     And I click on the "Save" button
     And I click on the "Print" link
-
 
     Scenario: Export Form to Redcap
       Given I have a Form with the name "Test Form"

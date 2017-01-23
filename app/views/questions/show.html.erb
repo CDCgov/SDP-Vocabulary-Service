@@ -1,19 +1,27 @@
 <div class="row basic-bg">
   <p id="notice"><%= notice %></p>
   <div class="col-md-12">
-    <div class="panel ">
+    <div class="panel">
       <%= render partial: 'question_details', locals: {question: @question } %>
     </div>
-  </div>
-  <% if user_signed_in? & @question.most_recent? %>
-    <%= link_to 'Revise', revise_question_path(@question) , class: "btn btn-primary"%> |
-  <% end %>
-  <%= link_to 'Back', questions_path, class: "btn btn-primary " %>
+  
+    <h4>Concepts</h4>
+    <div id="concepts-table"></div>
 
-  <div id="comments"></div>
-  <%= javascript_include_tag *webpack_asset_paths('question', extension: 'js') %>
-  <script>
-    var comments = <%=  raw ActiveModelSerializers::SerializableResource.new(@question.comments).as_json.to_json %>;
-    SDP.createCommentList("comments",comments , "Question", <%= @question.id %>)
-  </script>
+    <% if user_signed_in? & @question.most_recent? %>
+      <%= link_to 'Revise', revise_question_path(@question) , class: "btn btn-primary"%> |
+    <% end %>
+    <%= link_to 'Back', questions_path, class: "btn btn-primary " %>
+
+    <div id="comments"></div>
+
+    <script type="application/json" id="concepts-json">
+      <%= raw @question.concepts.map{|c| {code: c.value, display: c.display_name, system: c.code_system}}.to_json %>
+    </script>
+      <%= javascript_include_tag *webpack_asset_paths('question', extension: 'js') %>
+    <script>
+      var comments = <%=  raw ActiveModelSerializers::SerializableResource.new(@question.comments).as_json.to_json %>;
+      SDP.createCommentList("comments",comments , "Question", <%= @question.id %>)
+    </script>
+  </div>
 </div>

@@ -1,6 +1,6 @@
 # Given clauses
 Given(/^I am logged in as (.+)$/) do |user_name|
-  user = User.create!(email: user_name, password: 'password')
+  user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
   login_as(user, scope: :user)
 end
@@ -12,6 +12,10 @@ end
 
 When(/^I go to the dashboard$/) do
   visit '/'
+end
+
+When(/^I wait (\d+) second\(s\)$/) do |seconds|
+  sleep seconds.to_i
 end
 
 # When clauses
@@ -62,6 +66,9 @@ Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |a
     find_link(action)
   end
 end
+Then(/^I should see the "([^"]*)" link$/) do |value|
+  find('a', text: value)
+end
 
 Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|
   page.response_headers['Content-Disposition'].index("filename=\"#{filename}\"")
@@ -77,6 +84,8 @@ def create_path(object_type, object_id)
     '//div[@id="question_id_' + object_id + '"]'
   elsif object_type == 'Response Set'
     '//div[@id="response_set_id_' + object_id + '"]'
+  elsif object_type == 'Form'
+    '//div[@id="form_id_' + object_id + '"]'
   else
     '//tr[td="id_' + object_id + '"]'
   end

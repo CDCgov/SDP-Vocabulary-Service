@@ -20,13 +20,17 @@ var config = {
     'application': './webpack/application.js',
     'response_set': './webpack/response_set.js',
     'forms': './webpack/forms.js',
+    'my_stuff': './webpack/my_stuff.js',
+    'form_list': './webpack/form_list.js',
     'question_list': './webpack/question_list.js',
     'question_form': './webpack/question_form.js',
     'response_set_list': './webpack/response_set_list.js',
     'search': './webpack/search.js',
     'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',
-    'question': './webpack/question.js'
+    'question': './webpack/question.js',
+    'notification_menu': './webpack/notification_menu.js',
+    'notification_dropdown': './webpack/notification_dropdown.js'
     },
 
   output: {

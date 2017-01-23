@@ -1,3 +1,4 @@
+require 'sdp/comments_notifier'
 class CommentsController < ApplicationController
   load_and_authorize_resource only: [:show, :destroy, :reply_to]
   before_action :find_commentable, only: [:index]
@@ -15,6 +16,7 @@ class CommentsController < ApplicationController
   def reply_to
     p = comment_params
     reply = @comment.create_reply(current_user, p[:title], p[:comment])
+    SDP::CommentsNotifier.notify_users(reply)
     reply.save!
     render json: reply, serializer: CommentSerializer
   end
@@ -29,8 +31,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     @comment.save!
 
-    CommentsMailer.notify_owner(@comment).deliver_later
-    CommentsMailer.notify_of_reply(@comment).deliver_later
+    SDP::CommentsNotifier.notify_users(@comment)
 
     render json: @comment, serializer: CommentSerializer
   end

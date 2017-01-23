@@ -1,0 +1,41 @@
+.table-label{
+	font-family: "Open Sans",sans-serif;
+	font-size: 17px;
+	font-weight: 600;
+	margin-bottom: 5px;
+	float: left;
+	margin-top: 5%;
+	padding-left: 0px;
+}
+
+.set-table{
+	@extend .table;
+	border-top: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+	thead {
+		tr th {
+			border-bottom: 0px;
+			vertical-align: middle;
+			.table-icon{
+				text-align: center;
+				font-size: 26px;
+				a{
+					color: $cdc-blue;
+				}  
+			}
+		}   
+		background-color: #F5F5F5;
+	}
+	tbody{
+		tr td{
+			vertical-align: middle;
+			.table-icon{
+				text-align: center;
+				font-size: 20px;
+				a{
+					color: #787878;
+				}              
+			}
+		}
+	}
+}

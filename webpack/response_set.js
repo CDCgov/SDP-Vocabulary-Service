@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ResponseSetTable from './components/ResponseSetTable';
+import CodedSetTableForm from './components/CodedSetTableForm';
 
 const responses = JSON.parse(document.getElementById('responses-json').innerHTML);
-ReactDOM.render(<ResponseSetTable initialResponses={responses} />, document.getElementById('response-set-table'));
+ReactDOM.render(<CodedSetTableForm initialItems={responses} parentName={'response_set'} childName={'response'} />, document.getElementById('response-set-table'));

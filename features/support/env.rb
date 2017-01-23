@@ -26,8 +26,10 @@ else
 
   Capybara.register_driver :accessible_poltergeist_with_promises do |app|
     libs_path = Rails.root.join('features/support/js_libs/')
+    js_log = File.open('log/test_phantomjs.log', 'a')
     driver = Capybara::Poltergeist::Driver.new(app,
-                                               extensions: %W(#{libs_path}promise.js))
+                                               extensions: %W(#{libs_path}promise.js),
+                                               phantomjs_logger: js_log)
     adaptor = Capybara::Accessible::PoltergeistDriverAdapter.new
     Capybara::Accessible.setup(driver, adaptor)
   end
@@ -83,3 +85,15 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+module CustomWorld
+  def get_user(email)
+    user = User.find_by(email: email)
+    if user
+      return user
+    else
+      return User.create_with(password: 'password').find_or_create_by(email: email)
+    end
+  end
+end
+World(CustomWorld)

@@ -1,11 +1,12 @@
 class Question < ApplicationRecord
-  include Versionable
+  include Versionable, OidGenerator
   acts_as_commentable
 
   has_many :question_response_sets
   has_many :response_sets, through: :question_response_sets
   has_many :form_questions
   has_many :forms, through: :form_questions
+  has_many :concepts, dependent: :nullify
 
   belongs_to :response_type
   belongs_to :question_type
@@ -13,7 +14,7 @@ class Question < ApplicationRecord
   belongs_to :updated_by, class_name: 'User'
 
   validates :content, presence: true
-  # validates :question_type_id, presence: true
+  accepts_nested_attributes_for :concepts, allow_destroy: true
 
   def self.search(search)
     where('content ILIKE ?', "%#{search}%")
@@ -24,8 +25,12 @@ class Question < ApplicationRecord
                                 version_independent_id: version_independent_id,
                                 version: version + 1, question_response_sets: question_response_sets,
                                 response_sets: response_sets, form_questions: form_questions, forms: forms,
-                                question_type: question_type,
+                                question_type: question_type, oid: oid,
                                 response_type: response_type)
+    concepts.each do |c|
+      new_revision.concepts << c.dup
+    end
+
     new_revision
   end
 end

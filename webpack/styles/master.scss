@@ -11,13 +11,16 @@
 //ELEMENTS//
 @import "elements/buttons";
 @import "elements/input";
+@import "elements/table";
 
 //WIDGETS//
 @import "widgets/responseset";
 @import "widgets/questions";
+@import "widgets/forms";
 @import "widgets/analytics";
 @import "widgets/search";
 @import "widgets/recentitems";
+@import "layouts/response_set";
 
 //LAYOUTS//
 @import "layouts/body";

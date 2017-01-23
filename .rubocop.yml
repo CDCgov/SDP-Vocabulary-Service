@@ -23,6 +23,8 @@ Metrics/BlockLength:
     - 'config/environments/*'
     - 'config/routes.rb'
     - 'lib/tasks/admin.rake'
+    - 'config/initializers/devise.rb'
+    - 'test/**/*'
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
   Max: 20

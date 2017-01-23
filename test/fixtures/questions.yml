@@ -10,11 +10,19 @@ two:
   content: What is another question example?
   created_by: admin
   question_type: one
+  version: 1
   version_independent_id: Q-2
 
 three:
   content: What is another question example?
   created_by: admin
   question_type: one
+  version: 1
+  version_independent_id: Q-3
+
+gfv2:
+  content: What is another question example?
+  created_by: admin
+  question_type: one
   version: 2
-  version_independent_id: Q-2
+  version_independent_id: Q-3
