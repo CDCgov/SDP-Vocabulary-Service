@@ -65,7 +65,7 @@ Feature: Manage Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Delete the Question with the content "What is your gender?"
     And I confirm my action
-    Then I should see "Question was successfully destroyed."
+    #Then I should see "Question was successfully destroyed."
     And I should not see "Male"
 
   Scenario: Search for a Question
