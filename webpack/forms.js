@@ -6,7 +6,7 @@ import FormsQuestionList from './containers/FormsQuestionList';
 import QuestionSearch from './containers/QuestionSearch';
 
 import configureStore from './store/configure_store';
-import { addQuestion } from './actions/question';
+import { addQuestion } from './actions/questions_actions';
 
 
 const store = configureStore();

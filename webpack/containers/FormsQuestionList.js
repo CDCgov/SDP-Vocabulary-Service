@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { removeQuestion, reorderQuestion } from '../actions/question';
+import { removeQuestion, reorderQuestion } from '../actions/questions_actions';
 
 import QuestionItem from '../components/QuestionItem';
 
