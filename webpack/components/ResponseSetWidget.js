@@ -33,7 +33,9 @@ export default class ResponseSetWidget extends Component {
                       <a href={this.props.routes.extendResponseSetPath(this.props.responseSet)}>Extend</a>
                     </li>
                     <li>
-                      <a href={this.props.routes.responseSetPath(this.props.responseSet)}>Details</a>
+                      <Link to={'/responseSet/' + this.props.responseSet.id}>
+                        Details
+                      </Link>
                     </li>
                     <li>
                       <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.responseSetPath(this.props.responseSet)}>Delete</a>
@@ -43,7 +45,6 @@ export default class ResponseSetWidget extends Component {
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     );

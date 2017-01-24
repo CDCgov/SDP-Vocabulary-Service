@@ -50,7 +50,7 @@ export default class ResponseSetDetails extends Component {
         { responseSet.questions && responseSet.questions.map((q) => {
           return (
             <div key={"rs_question_" + q.id}>
-              <a href={Routes.question_path(q.id)}>{q.content}</a><br/>
+              <a href={Routes.questionPath(q.id)}>{q.content}</a><br/>
             </div>
           );
         })}
@@ -72,6 +72,8 @@ export default class ResponseSetDetails extends Component {
           { responseSet.updated_by && responseSet.updated_by.email }
           { moment(responseSet.updated_at,'').format('MMMM Do YYYY, h:mm:ss a') }
         </p>
+        <a href={Routes.reviseResponseSetPath(responseSet.id)}>Revise</a> |
+        <a href={Routes.extendResponseSetPath(responseSet.id)}> Extend</a>
       </div>
     );
   }
