@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import { responseSetProps } from '../prop-types/response_set_props';
 
 export default class ResponseSetWidget extends Component {
   render() {
@@ -52,11 +53,7 @@ export default class ResponseSetWidget extends Component {
 }
 
 ResponseSetWidget.propTypes = {
-  responseSet: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string
-  }),
+  responseSet: responseSetProps,
   routes: PropTypes.shape({
     responseSetPath: PropTypes.func.isRequired,
     extendResponseSetPath: PropTypes.func.isRequired,
