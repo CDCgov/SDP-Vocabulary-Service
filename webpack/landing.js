@@ -23,7 +23,7 @@ ReactDOM.render(
         <IndexRoute component={DashboardContainer} />
         <Route path='/forms' component={FormsContainer} />
         <Route path='/responseSets' component={ResponseSetsContainer} />
-          <Route path='/responseSet/:rsId' component={ResponseSetShowContainer} />
+          <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
         <Route path='/questions' component={QuestionIndexContainer} />
       </Route>
     </Router>
