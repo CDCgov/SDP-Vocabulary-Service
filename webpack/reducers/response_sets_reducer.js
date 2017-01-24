@@ -5,9 +5,7 @@ import {
   FETCH_RESPONSE_SET_FULFILLED
 } from '../actions/types';
 
-const initialState = null;
-
-export default function responseSets(state = initialState, action) {
+export default function responseSets(state = {}, action) {
   switch (action.type) {
     case FETCH_RESPONSE_SETS_FULFILLED:
       return _.keyBy(action.payload.data, 'id');
