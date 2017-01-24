@@ -1,7 +1,7 @@
 class ValueSetsSerializer < ActiveModel::Serializer
   attribute :url
   def url
-    Rails.application.routes.url_helpers.api_valueSet_url(object, only_path: true)
+    '/api/valueSets/' + object.version_independent_id
   end
 
   attribute :identifier # additional identifiers not yet available

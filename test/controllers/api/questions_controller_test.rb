@@ -2,6 +2,7 @@ require 'test_helper'
 
 class QuestionsControllerTest < ActionDispatch::IntegrationTest
   include ActiveModelSerializers::Test::Schema
+  include ActiveModelSerializers::Test::Serializer
 
   setup do
     @question = questions(:one)
@@ -15,8 +16,9 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'api should show question' do
-    get api_questions_url(@question)
+    get 'http://localhost:3000/api/questions/' + @question.version_independent_id
     assert_response :success
+    assert_serializer 'QuestionsSerializer'
     assert_response_schema('questions/show.json')
   end
 end

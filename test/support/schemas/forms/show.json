@@ -3,7 +3,7 @@
     "formId" : {"type" : "string"},
     "formName" : {"type" : "string"},
     "formUri" : {"type" : "string"},
-    "version" : {"type" : "string"},
+    "version" : {"type" : "number"},
     "questions" : { 
       "type" : "array",
       "items": {

@@ -1,9 +1,29 @@
 {
   "properties": {
     "url" : {"type" : "string"},
+    //"identifier" : {"type": "string"},
+    //"status" : {"type" : "string"},
     "version" : {"type" : "string"},
     "name" : {"type" : "string"},
     "description" : {"type" : "string"},
-    "expansion" : {"type" : "array"}
+    "expansion" : {
+      "type" : "object",
+      "properties" : {
+        //"identifier" : {"type": "string"},
+        //"timestamp" : {"type": "string"},
+        "contains" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "system" : {"type": "string"},
+              //"version" : {"type": "number"},
+              "code" : {"type": "string"},
+              "display" : {"type": "string"}
+            }
+          }
+        }
+      }
+    }
   }
 }
