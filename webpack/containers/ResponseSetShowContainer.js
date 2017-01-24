@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
+import { responseSetProps } from '../prop-types/response_set_props';
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
@@ -34,7 +35,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 ResponseSetShowContainer.propTypes = {
-  responseSets: PropTypes.object,
+  responseSets: PropTypes.objectOf(responseSetProps),
   fetchResponseSet: PropTypes.func,
   params: PropTypes.object
 };
