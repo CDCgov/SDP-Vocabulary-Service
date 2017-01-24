@@ -15,7 +15,9 @@ class App extends Component {
     return (
       <div>
         <Header currentUser={this.props.currentUser}/>
-        {this.props.children}
+        <div className='main-content'>
+          {this.props.children}
+        </div>
         <footer className="footer">
           <div className="container">
             2016 Centers for Disease Control and Prevention. All rights reserved.
