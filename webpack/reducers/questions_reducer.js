@@ -19,7 +19,9 @@ export default function questions(state = {}, action) {
     case REORDER_QUESTION:
       return state;
     case FETCH_QUESTIONS_FULFILLED:
-      return _.keyBy(action.payload.data,'id');
+      const questionsClone = Object.assign({}, state);
+      action.payload.data.forEach((q) => questionsClone[q.id] = q);
+      return questionsClone;
     default:
       return state;
   }
