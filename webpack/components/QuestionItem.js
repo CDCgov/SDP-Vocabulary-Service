@@ -1,4 +1,5 @@
 import React from 'react';
+import { questionProps } from "../prop-types/question_props";
 
 const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQuestion}) => {
   if (!question || !responseSets) {
@@ -41,7 +42,7 @@ const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQue
 };
 
 QuestionItem.propTypes = {
-  question: React.PropTypes.object.isRequired,
+  question: questionProps,
   responseSets: React.PropTypes.array.isRequired,
   index: React.PropTypes.number.isRequired,
   removeQuestion: React.PropTypes.func.isRequired,

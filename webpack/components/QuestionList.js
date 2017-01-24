@@ -1,11 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { questionsProps } from "../prop-types/question_props";
 import QuestionWidget from './QuestionWidget';
+import _ from 'lodash';
 
 class QuestionList extends Component {
   render() {
     return (
       <div className="question-group">
-        {this.props.questions.map((q) => {
+        {_.values(this.props.questions).map((q) => {
           return <QuestionWidget key={q.id} question={q} routes={this.props.routes} />;
         })}
       </div>
@@ -14,7 +16,7 @@ class QuestionList extends Component {
 }
 
 QuestionList.propTypes = {
-  questions: PropTypes.arrayOf(QuestionWidget.propTypes.question).isRequired,
+  questions: questionsProps,
   routes: QuestionWidget.propTypes.routes.isRequired
 };
 

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import { removeQuestion, reorderQuestion } from '../actions/question';
-
+import { removeQuestion, reorderQuestion } from '../actions/questions_actions';
 import QuestionItem from '../components/QuestionItem';
+import _ from 'lodash';
 
 class FormsQuestionList extends Component {
   render() {
@@ -17,7 +16,7 @@ class FormsQuestionList extends Component {
               <div className="col-md-6"><b>Response Sets</b></div>
             </div>
         </div><br/>
-        {this.props.questions.map((q, i) => {
+        {_.values(this.props.questions).map((q, i) => {
           return (
             <div className="row" key={i}>
               <QuestionItem question={q} responseSets={this.props.responseSets} index={i}
@@ -42,7 +41,7 @@ function mapStateToProps(state) {
 }
 
 FormsQuestionList.propTypes = {
-  questions: React.PropTypes.array.isRequired,
+  questions: React.PropTypes.object.isRequired,
   responseSets: React.PropTypes.array.isRequired,
   removeQuestion: React.PropTypes.func.isRequired,
   reorderQuestion: React.PropTypes.func.isRequired
