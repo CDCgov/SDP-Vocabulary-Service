@@ -10,7 +10,7 @@ export default class ResponseSetWidget extends Component {
           <div className="response-set-container">
             <ul className="list-inline">
               <li>
-                <Link to={'/responseSet/' + this.props.responseSet.id}>
+                <Link to={'/responseSets/' + this.props.responseSet.id}>
                   {this.props.responseSet.name}
                 </Link>
               </li>
@@ -34,7 +34,7 @@ export default class ResponseSetWidget extends Component {
                       <a href={this.props.routes.extendResponseSetPath(this.props.responseSet)}>Extend</a>
                     </li>
                     <li>
-                      <Link to={'/responseSet/' + this.props.responseSet.id}>
+                      <Link to={'/responseSets/' + this.props.responseSet.id}>
                         Details
                       </Link>
                     </li>
