@@ -31,6 +31,7 @@ class QuestionIndexContainer extends Component {
   render() {
     return (
       <div className='row basic-bg'>
+        <p id="notice">{this.props.notice}</p>
         <div className='col-md-12'>
           <QuestionListSearch search={this.search} />
           <QuestionList questions={this.props.questions} routes={Routes} />
@@ -43,6 +44,7 @@ class QuestionIndexContainer extends Component {
 
 function mapStateToProps(state) {
   return {
+    notice: state.notice,
     questions: state.questions,
     currentUser: state.currentUser
   };
@@ -54,6 +56,7 @@ function mapDispatchToProps(dispatch) {
 
 // Avoiding a lint error, but if you supply these when you create this class, they will be ignored and overwritten!
 QuestionIndexContainer.propTypes = {
+  notice: PropTypes.string,
   questions: questionsProps,
   currentUser: currentUserProps,
   fetchQuestions: PropTypes.func

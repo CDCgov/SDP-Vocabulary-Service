@@ -4,7 +4,8 @@ import {
   REMOVE_QUESTION,
   REORDER_QUESTION,
   FETCH_QUESTION_FULFILLED,
-  FETCH_QUESTIONS_FULFILLED
+  FETCH_QUESTIONS_FULFILLED,
+  DELETE_QUESTION_FULFILLED
 } from '../actions/types';
 
 function addQuestionToState(action, state){
@@ -14,7 +15,6 @@ function addQuestionToState(action, state){
 }
 
 export default function questions(state = {}, action) {
-  //Object.freeze(state);
   switch (action.type) {
     case ADD_QUESTION:
       return addQuestionToState(action, state);
@@ -27,9 +27,11 @@ export default function questions(state = {}, action) {
     case FETCH_QUESTIONS_FULFILLED:
       return _.keyBy(action.payload.data, 'id');
     case FETCH_QUESTION_FULFILLED:
-      const questionClone = Object.assign({}, state);
-      questionClone[action.payload.data.id] = action.payload.data;
-      return questionClone;
+      return addQuestionToState(action, state);
+    case DELETE_QUESTION_FULFILLED:
+      return _.omitBy(state,(v, k)=>{
+        return action.payload.data.id==k;
+      });
     default:
       return state;
   }
