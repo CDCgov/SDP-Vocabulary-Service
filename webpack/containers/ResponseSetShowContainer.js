@@ -10,6 +10,11 @@ class ResponseSetShowContainer extends Component {
   }
 
   render() {
+    if(!this.props.responseSets){
+      return (
+        <div>Loading..</div>
+      );
+    }
     return (
       <div>
         <ResponseSetDetails responseSet={(this.props.responseSets)[this.props.params.rsId]} />
