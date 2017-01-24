@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 export default class ResponseSetWidget extends Component {
   render() {
@@ -8,7 +9,9 @@ export default class ResponseSetWidget extends Component {
           <div className="response-set-container">
             <ul className="list-inline">
               <li>
-                <a href={this.props.routes.responseSetPath(this.props.responseSet)}>{this.props.responseSet.name}</a>
+                <Link to={'/responseSet/' + this.props.responseSet.id}>
+                  {this.props.responseSet.name}
+                </Link>
               </li>
               <li className="pull-right"><a><span className="fa fa-question-circle-o"></span></a></li>
             </ul>
