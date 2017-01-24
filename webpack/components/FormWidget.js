@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import allRoutes from '../prop-types/route_props';
+import formProps from '../prop-types/form_props';
 
 export default class FormWidget extends Component {
   render() {
@@ -37,7 +39,10 @@ export default class FormWidget extends Component {
 }
 
 FormWidget.propTypes = {
-  form: PropTypes.shape({
+  form: formProps,
+  routes: allRoutes
+};
+/*PropTypes.shape({
     id: PropTypes.number.isRequired,
     userId: PropTypes.string.isRequired,
     questions: PropTypes.array.isRequired,//array itself can be empty
@@ -47,4 +52,4 @@ FormWidget.propTypes = {
     formPath: PropTypes.func.isRequired,
     reviseFormPath: PropTypes.func.isRequired
   })
-};
+};*/

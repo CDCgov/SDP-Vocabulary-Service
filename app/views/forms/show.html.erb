@@ -36,4 +36,6 @@
     <%= link_to 'Export to Redcap', redcap_form_path(@form), class: "btn btn-default"  %>
     <%= link_to 'Back', forms_path, class: "btn btn-default"  %>
   </div>
+  <div id="-form"></div>
+  <%= javascript_include_tag *webpack_asset_paths('show_form', extension: 'js') %>
 </div>
