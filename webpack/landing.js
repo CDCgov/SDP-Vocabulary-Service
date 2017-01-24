@@ -10,6 +10,7 @@ import DashboardContainer from './containers/DashboardContainer';
 import FormsContainer from './containers/FormsContainer';
 import ResponseSetsContainer from './containers/ResponseSetsContainer';
 import QuestionIndexContainer from './containers/QuestionIndexContainer';
+import ResponseSetShowContainer from './containers/ResponseSetShowContainer';
 import App from './containers/App';
 
 import configureStore from './store/configure_store';
@@ -22,7 +23,8 @@ ReactDOM.render(
         <IndexRoute component={DashboardContainer} />
         <Route path='/forms' component={FormsContainer} />
         <Route path='/responseSets' component={ResponseSetsContainer} />
-        <Route path='/questions' component={QuestionIndexContainer} />
+          <Route path='/responseSet/:rsId' component={ResponseSetShowContainer} />
+        <Route path='/questions' component={QuestionsIndexContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));
