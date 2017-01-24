@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
+import { questionsProps } from '../prop-types/question_props';
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
@@ -11,23 +12,26 @@ class ResponseSetShowContainer extends Component {
   }
 
   render() {
-    if(!this.props.responseSets){
+    if(!this.props.responseSet){
       return (
         <div>Loading..</div>
       );
     }
     return (
       <div>
-        <ResponseSetDetails responseSet={(this.props.responseSets)[this.props.params.rsId]} />
+        <ResponseSetDetails responseSet={this.props.responseSet} questions={this.props.questions}/>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    responseSets: state.responseSets
-  };
+function mapStateToProps(state, ownProps) {
+  const props = {};
+  props.responseSet = state.responseSets[ownProps.params.rsId];
+  if (props.responseSet) {
+    props.questions = props.responseSet.questions.map((qId) => state.questions[qId]);
+  }
+  return props;
 }
 
 function mapDispatchToProps(dispatch) {
@@ -35,7 +39,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 ResponseSetShowContainer.propTypes = {
-  responseSets: PropTypes.objectOf(responseSetProps),
+  responseSet: responseSetProps,
+  questions: questionsProps,
   fetchResponseSet: PropTypes.func,
   params: PropTypes.object
 };
