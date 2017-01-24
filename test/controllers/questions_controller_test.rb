@@ -35,7 +35,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Question.count', -1) do
       delete question_url(@question)
     end
-
-    assert_redirected_to questions_url
+    assert_response :success
   end
 end
