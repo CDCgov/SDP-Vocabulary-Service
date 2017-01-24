@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
-import { questionsProps } from '../prop-types/question_props';
+import { questionProps } from '../prop-types/question_props';
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
@@ -40,7 +40,7 @@ function mapDispatchToProps(dispatch) {
 
 ResponseSetShowContainer.propTypes = {
   responseSet: responseSetProps,
-  questions: questionsProps,
+  questions: PropTypes.arrayOf(questionProps),
   fetchResponseSet: PropTypes.func,
   params: PropTypes.object
 };
