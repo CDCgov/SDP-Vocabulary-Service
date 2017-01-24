@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Routes from "../routes";
 import moment from 'moment';
+import { responseSetProps } from '../prop-types/response_set_props';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -80,5 +81,5 @@ export default class ResponseSetDetails extends Component {
 }
 
 ResponseSetDetails.propTypes = {
-  responseSet:  PropTypes.object
+  responseSet:  responseSetProps
 };
