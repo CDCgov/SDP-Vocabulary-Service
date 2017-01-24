@@ -9,12 +9,12 @@ module Api
     end
 
     def show
-      @value_set = ResponseSet.find(params[:id])
+      @value_set = ResponseSet.by_id_and_version(params[:id], params[:version])
       render json: @value_set, serializer: ValueSetsSerializer
     end
 
     def usage
-      @value_set = ResponseSet.find(params[:id])
+      @value_set = ResponseSet.by_id_and_version(params[:id], params[:version])
       render json: @value_set, serializer: UsageSerializer
     end
   end

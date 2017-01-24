@@ -9,12 +9,12 @@ module Api
     end
 
     def show
-      @question = Question.find(params[:id])
+      @question = Question.by_id_and_version(params[:id], params[:version])
       render json: @question, serializer: QuestionsSerializer
     end
 
     def usage
-      @question = Question.find(params[:id])
+      @question = Question.by_id_and_version(params[:id, params[:version]])
       render json: @question, serializer: UsageSerializer
     end
   end

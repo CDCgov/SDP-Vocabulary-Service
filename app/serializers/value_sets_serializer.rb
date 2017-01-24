@@ -8,7 +8,7 @@ class ValueSetsSerializer < ActiveModel::Serializer
   def identifier
   end
 
-  attribute :version
+  attribute :version_independent_id, key: :version
   attribute :name
 
   attribute :status # status not yet available

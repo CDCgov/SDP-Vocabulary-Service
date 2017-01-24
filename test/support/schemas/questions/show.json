@@ -1,9 +1,8 @@
 {
-  "properties": {
-    "url" : {"type" : "string"},
-    "version" : {"type" : "string"},
-    "name" : {"type" : "string"},
-    "description" : {"type" : "string"},
-    "expansion" : {"type" : "array"}
-  }
+    "properties": {
+      "questionId" : {"type" : "string"},
+      "questionText" : {"type" : "string"},
+      "questionUri" : {"type" : "string"},
+      "version" : {"type" : "string"}
+    }
 }
