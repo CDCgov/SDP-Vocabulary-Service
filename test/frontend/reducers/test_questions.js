@@ -10,7 +10,7 @@ import {
 describe('questions reducer', () => {
 
   it('should add a question', () => {
-    const question = {data:{id: 1, content: "Is this a question?", questionType: ""}}
+    const question = {data:{id: 1, content: "Is this a question?", questionType: ""}};
     const action = {type: ADD_QUESTION, payload: question };
     const startState = {};
     const nextState = questions(startState, action);
@@ -29,7 +29,7 @@ describe('questions reducer', () => {
                                  {id: 2, content: "Whats your name", questionType: ""},
                                  {id: 3, content: "What is a question?", questionType: ""}]};
     const action = {type: FETCH_QUESTIONS_FULFILLED, payload: questionData};
-    const startState = {questions: {}}
+    const startState = {};
     const nextState = questions(startState, action);
     expect(Object.keys(nextState).length).to.equal(3);
   });

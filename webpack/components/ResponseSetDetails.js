@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import Routes from "../routes";
 import moment from 'moment';
 import { responseSetProps } from '../prop-types/response_set_props';
+import { questionsProps } from '../prop-types/question_props';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -48,7 +49,7 @@ export default class ResponseSetDetails extends Component {
         <p>
           <strong>Questions:</strong><br/>
         </p>
-        { responseSet.questions && responseSet.questions.map((q) => {
+        { this.props.questions.map((q) => {
           return (
             <div key={"rs_question_" + q.id}>
               <a href={Routes.questionPath(q.id)}>{q.content}</a><br/>
@@ -81,5 +82,6 @@ export default class ResponseSetDetails extends Component {
 }
 
 ResponseSetDetails.propTypes = {
-  responseSet:  responseSetProps
+  responseSet:  responseSetProps,
+  questions: questionsProps
 };

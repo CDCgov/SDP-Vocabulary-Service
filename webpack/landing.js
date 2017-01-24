@@ -24,7 +24,7 @@ ReactDOM.render(
         <Route path='/forms' component={FormsContainer} />
         <Route path='/responseSets' component={ResponseSetsContainer} />
           <Route path='/responseSet/:rsId' component={ResponseSetShowContainer} />
-        <Route path='/questions' component={QuestionsIndexContainer} />
+        <Route path='/questions' component={QuestionIndexContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));
