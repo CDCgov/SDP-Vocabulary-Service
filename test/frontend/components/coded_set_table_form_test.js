@@ -11,9 +11,9 @@ describe('CodedSetTableForm', () => {
   let component, componentInstance;
 
   beforeEach(() => {
-    const concepts = [{code:"Code1",display:" Display Name 1",system:"Test system 1"},
-                      {code:"Code2",display:" Display Name 2",system:"Test system 2"},
-                      {code:"Code3",display:" Display Name 3",system:"Test system 3"}];
+    const concepts = [{value: "Code1", displayName: "Display Name 1", codeSystem:"Test system 1"},
+                      {value: "Code2", displayName: "Display Name 2", codeSystem:"Test system 2"},
+                      {value: "Code3", displayName: "Display Name 3", codeSystem:"Test system 3"}];
     componentInstance =  TestUtils.renderIntoDocument(<CodedSetTableForm initialItems={concepts} parentName={'question'} childName={'concept'}/>);
     component = $(ReactDOM.findDOMNode(componentInstance));
   });

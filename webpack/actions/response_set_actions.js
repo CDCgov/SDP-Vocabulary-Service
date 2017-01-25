@@ -2,8 +2,11 @@ import axios from 'axios';
 import routes from '../routes';
 import {
   FETCH_RESPONSE_SETS,
-  FETCH_RESPONSE_SET
+  FETCH_RESPONSE_SET,
+  SAVE_RESPONSE_SET
 } from './types';
+
+//import { getCSRFToken } from './index';
 
 export function fetchResponseSets() {
   return {
@@ -20,5 +23,15 @@ export function fetchResponseSet(id) {
     payload: axios.get(routes.responseSetPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
+  };
+}
+
+export function saveResponseSet(responseSet) {
+  //const authenticityToken = getCSRFToken();
+  return {
+    type: SAVE_RESPONSE_SET,
+    payload: axios.post(routes.responseSetsPath(),
+                        {responseSet},
+                        {'X-Key-Inflection': 'camel'})
   };
 }
