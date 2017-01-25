@@ -44,25 +44,31 @@ export default class CodedSetTableForm extends Component {
               <tr key={i}>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_value`}>Value</label>
-                  <input type="text" value={r.code}    name={`${attrsName}[${i}][value]`} id={`${idPrefix}_${i}_value`} onChange={this.handleChange(i, 'code')}/>
+                  <input type="text" value={r.value}    name={`${attrsName}[${i}][value]`} id={`${idPrefix}_${i}_value`} onChange={this.handleChange(i, 'code')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_code_system`}>Code system</label>
-                  <input type="text" value={r.system}  name={`${attrsName}[${i}][code_system]`} id={`${idPrefix}_${i}_code_system`} onChange={this.handleChange(i, 'system')}/>
+                  <input type="text" value={r.codeSystem}  name={`${attrsName}[${i}][code_system]`} id={`${idPrefix}_${i}_code_system`} onChange={this.handleChange(i, 'system')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_display_name`}>Display name</label>
-                  <input type="text" value={r.display} name={`${attrsName}[${i}][display_name]`} id={`${idPrefix}_${i}_display_name`} onChange={this.handleChange(i, 'display')}/>
+                  <input type="text" value={r.displayName} name={`${attrsName}[${i}][display_name]`} id={`${idPrefix}_${i}_display_name`} onChange={this.handleChange(i, 'display')}/>
                 </td>
                 <td>
-                  <a href="#" onClick={() => this.removeItemRow(i)}>Remove</a>
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    this.removeItemRow(i);
+                  }}>Remove</a>
                 </td>
               </tr>
             );
           })}
           <tr>
             <td>
-              <a href="#" onClick={() => this.addItemRow()}>Add Row</a>
+              <a href="#" onClick={(e) => {
+                e.preventDefault();
+                this.addItemRow();
+              }}>Add Row</a>
             </td>
           </tr>
         </tbody>
