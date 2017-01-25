@@ -42,14 +42,3 @@ FormWidget.propTypes = {
   form: formProps,
   routes: allRoutes
 };
-/*PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    userId: PropTypes.string.isRequired,
-    questions: PropTypes.array.isRequired,//array itself can be empty
-    name: PropTypes.string.isRequired
-  }),
-  routes: PropTypes.shape({
-    formPath: PropTypes.func.isRequired,
-    reviseFormPath: PropTypes.func.isRequired
-  })
-};*/
