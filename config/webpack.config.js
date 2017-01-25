@@ -29,7 +29,6 @@ var config = {
     'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',
     'question': './webpack/question.js',
-    'show_form':'./webpack/show_form.js',
     'notification_menu': './webpack/notification_menu.js',
     'notification_dropdown': './webpack/notification_dropdown.js',
     'landing': './webpack/landing.js'
