@@ -7,10 +7,11 @@ import { Provider } from 'react-redux';
 import { hashHistory, Router, Route, IndexRoute } from 'react-router';
 
 import DashboardContainer from './containers/DashboardContainer';
-import FormsContainer from './containers/FormsContainer';
+import FormsIndexContainer from './containers/FormsIndexContainer';
 import ResponseSetsContainer from './containers/ResponseSetsContainer';
 import QuestionIndexContainer from './containers/QuestionIndexContainer';
 import ResponseSetShowContainer from './containers/ResponseSetShowContainer';
+import FormShowContainer from './containers/FormShowContainer';
 import App from './containers/App';
 
 import configureStore from './store/configure_store';
@@ -21,7 +22,8 @@ ReactDOM.render(
     <Router history={hashHistory}>
       <Route path='/' component={App}>
         <IndexRoute component={DashboardContainer} />
-        <Route path='/forms' component={FormsContainer} />
+        <Route path='/forms' component={FormsIndexContainer} />
+        <Route path='/forms/:formId' component={FormShowContainer} />
         <Route path='/responseSets' component={ResponseSetsContainer} />
           <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
         <Route path='/questions' component={QuestionIndexContainer} />
