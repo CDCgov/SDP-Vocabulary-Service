@@ -1,8 +1,8 @@
 import axios from 'axios';
 import routes from '../routes';
 import {
-  FETCH_FORM,
-  FETCH_FORMS
+  FETCH_FORMS,
+  FETCH_FORM
 } from './types';
 
 export function fetchForms(searchTerms) {
@@ -22,6 +22,18 @@ export function fetchForm(id) {
   return {
     type: FETCH_FORM,
     payload: axios.get(routes.formPath(id), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      }
+    })
+  };
+}
+
+export function fetchForm(formId) {
+  return {
+    type: FETCH_FORM,
+    payload: axios.get(routes.formPath(formId), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'
