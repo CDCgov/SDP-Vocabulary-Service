@@ -3,7 +3,7 @@
     "url" : {"type" : "string"},
     //"identifier" : {"type": "string"},
     //"status" : {"type" : "string"},
-    "version" : {"type" : "string"},
+    "version" : {"type" : "number"},
     "name" : {"type" : "string"},
     "description" : {"type" : "string"},
     "expansion" : {

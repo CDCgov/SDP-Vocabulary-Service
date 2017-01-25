@@ -5,6 +5,7 @@ module Api
     def index
       @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
       @questions = params[:limit] ? @questions.limit(params[:limit]) : @questions
+      @questions = @questions.order(version_independent_id: :asc)
       render json: @questions, each_serializer: QuestionsSerializer
     end
 
