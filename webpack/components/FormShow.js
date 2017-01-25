@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import allRoutes from '../prop-types/route_props';
-import formProps from '../prop-types/form_props';
+import React, { Component } from 'react';
+import {formProps} from '../prop-types/form_props';
 import QuestionList from './QuestionList';
 import _ from 'lodash';
 import Routes from '../routes';
@@ -21,7 +20,7 @@ class FormShow extends Component {
         <QuestionList questions={qpass} routes={Routes} />
         <div className="no-print">
           <a className="btn btn-default" href={Routes.reviseFormPath(form)}>Revise</a>
-          <button className="btn btn-default">Print</button>  
+          <button className="btn btn-default">Print</button>
           <a className="btn btn-default" href={Routes.formPath(form)}>Export to Redcap</a>
           <a className="btn btn-default" href={Routes.formsPath()}>Back</a>
         </div>
