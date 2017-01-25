@@ -4,7 +4,7 @@ import {
 } from '../actions/types';
 import _ from 'lodash';
 
-const initialState = {'loading': true};
+const initialState = null;
 
 export default function forms(state = initialState, action) {
   switch (action.type) {

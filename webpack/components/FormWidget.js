@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
 import allRoutes from '../prop-types/route_props';
-import formProps from '../prop-types/form_props';
+import {formProps} from '../prop-types/form_props';
 
 export default class FormWidget extends Component {
   render() {
@@ -8,7 +9,7 @@ export default class FormWidget extends Component {
   <div className="form" id={"form_id_"+this.props.form.id}>
     <div className="form-container">
       <ul className="list-inline">
-        <li className="form-title">{this.props.form.name}</li>
+        <li className="form-title"><Link to={'/forms/'+this.props.form.id}>{this.props.form.name}</Link></li>
       </ul>
       <ul className="form-list-group list-inline">
         <li className="form-list-group-item"><h2 className="form-item-title">Systems</h2><i className="fa fa-info-circle fa-lg form-item-icon" aria-hidden="true"></i><p className="form-item-value">145</p></li>
@@ -26,7 +27,7 @@ export default class FormWidget extends Component {
             </a>
             <ul className="dropdown-menu dropdown-menu-right">
               <li><a href={this.props.routes.reviseFormPath(this.props.form)}>Revise</a></li>
-              <li><a href={this.props.routes.formPath(this.props.form)}>View</a></li>
+              <li><Link to={'/forms/'+this.props.form.id}>View</Link></li>
               <li><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.formPath(this.props.form)}>Delete</a></li>
             </ul>
           </div>

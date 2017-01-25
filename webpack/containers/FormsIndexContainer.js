@@ -5,6 +5,7 @@ import Routes from '../routes';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForms } from '../actions/form_actions';
+import { formsProps } from '../prop-types/form_props';
 
 class FormsIndexContainer extends Component {
   constructor(props){
@@ -21,7 +22,7 @@ class FormsIndexContainer extends Component {
   }
 
   render() {
-    if(this.props.forms.loading == true){
+    if(!this.props.forms){
       return (
         <div>Loading...</div>
       );
@@ -46,7 +47,7 @@ function mapStateToProps(state) {
   };
 }
 FormsIndexContainer.propTypes = {
-  forms: FormList.propTypes.forms,
+  forms: formsProps,
   fetchForms: PropTypes.func
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FormsIndexContainer);
