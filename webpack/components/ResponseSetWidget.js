@@ -28,13 +28,17 @@ export default class ResponseSetWidget extends Component {
                   </a>
                   <ul className="dropdown-menu dropdown-menu-right" >
                     <li>
-                      <a href={this.props.routes.reviseResponseSetPath(this.props.responseSet)}>Revise</a>
+                      <Link to={`/responseSets/${this.props.responseSet.id}/revise`}>
+                        Revise
+                      </Link>
                     </li>
                     <li>
-                      <a href={this.props.routes.extendResponseSetPath(this.props.responseSet)}>Extend</a>
+                      <Link to={`/responseSets/${this.props.responseSet.id}/extend`}>
+                        Extend
+                      </Link>
                     </li>
                     <li>
-                      <Link to={'/responseSets/' + this.props.responseSet.id}>
+                      <Link to={`/responseSets/${this.props.responseSet.id}`}>
                         Details
                       </Link>
                     </li>
@@ -55,8 +59,6 @@ export default class ResponseSetWidget extends Component {
 ResponseSetWidget.propTypes = {
   responseSet: responseSetProps,
   routes: PropTypes.shape({
-    responseSetPath: PropTypes.func.isRequired,
-    extendResponseSetPath: PropTypes.func.isRequired,
-    reviseResponseSetPath: PropTypes.func.isRequired
+    responseSetPath: PropTypes.func.isRequired
   })
 };
