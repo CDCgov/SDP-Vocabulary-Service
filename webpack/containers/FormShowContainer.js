@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { fetchForm } from '../actions/form_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
-import { questionsProps } from '../prop-types/question_props';
 
 class FormShowContainer extends Component {
   componentWillMount() {
