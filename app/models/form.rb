@@ -24,6 +24,10 @@ class Form < ApplicationRecord
     DeleteFromIndexJob.perform_later('form', id)
   end
 
+  def self.search(search)
+    where('name ILIKE ?', "%#{search}%")
+  end
+
   # Builds a new Form object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
