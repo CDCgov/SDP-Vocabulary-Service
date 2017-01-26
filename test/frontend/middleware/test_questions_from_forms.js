@@ -41,9 +41,6 @@ describe('questionsFromForms middleware', () => {
   it('will transform the form payload', () => {
     questionsFromForms(store)(next)(action);
     const form = action.payload.data[0];
-    expect(form.questions[0]['id']).to.equal(1);
-    expect(form.questions[0]['content']).to.equal('M?');
-    expect(form.questions[1]['id']).to.equal(2);
-    expect(form.questions[1]['content']).to.equal('F?');
+    expect(form.questions).to.eql(transformedQs);
   });
 });
