@@ -6,7 +6,7 @@ module Api
     end
 
     def show
-      @form = Form.find(params[:id])
+      @form = Form.by_id_and_version(params[:id], params[:version])
       render json: @form, serializer: FormSerializer
     end
   end

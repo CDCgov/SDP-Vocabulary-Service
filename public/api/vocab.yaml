@@ -68,6 +68,12 @@ paths:
         description: ID of question
         required: true
         type: string
+      -
+        name: version
+        in: query
+        description: Version of question
+        required: false
+        type: string
     get:
       tags:
       - questions
@@ -174,6 +180,12 @@ paths:
         description: ID of form
         required: true
         type: string
+      -
+        name: version
+        in: query
+        description: Version of form
+        required: false
+        type: string
     get:
       tags:
       - forms
@@ -231,6 +243,12 @@ paths:
         description: ID of value set
         required: true
         type: string
+      -
+        name: version
+        in: query
+        description: Version of value set
+        required: false
+        type: string
     get:
       tags:
       - valueSets
@@ -280,6 +298,9 @@ definitions:
       url:
         type: string
         title: Globally unique identifier for the value set
+      id:
+        type: string
+        title: Version independent identifier for the value set
       identifier:
         type: array
         title: Additional identifiers for the value set
@@ -386,6 +407,9 @@ definitions:
       questionUri:
         type: string
         title: Relative URI of the question
+      version:
+        type: string
+        title: Logical identifier for this version of the question
       # TODO additional metadata
 
   Program:
@@ -433,6 +457,9 @@ definitions:
       formUri:
         type: string
         title: Relative URI of the form
+      version:
+        type: string
+        title: Logical identifier for this version of the form
       # TODO additional metadata
       questions:
         type: array

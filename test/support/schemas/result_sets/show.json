@@ -1,8 +1,29 @@
 {
   "properties": {
-    "formId" : {"type" : "number"},
-    "formName" : {"type" : "string"},
-    "formUri" : {"type" : "string"},
-    "questions" : {"type" : "array"}
+    "url" : {"type" : "string"},
+    //"identifier" : {"type": "string"},
+    //"status" : {"type" : "string"},
+    "version" : {"type" : "number"},
+    "name" : {"type" : "string"},
+    "description" : {"type" : "string"},
+    "expansion" : {
+      "type" : "object",
+      "properties" : {
+        //"identifier" : {"type": "string"},
+        //"timestamp" : {"type": "string"},
+        "contains" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "system" : {"type": "string"},
+              //"version" : {"type": "number"},
+              "code" : {"type": "string"},
+              "display" : {"type": "string"}
+            }
+          }
+        }
+      }
+    }
   }
 }
