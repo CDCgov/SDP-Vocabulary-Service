@@ -2,7 +2,7 @@ import { expect } from '../test_helper';
 import forms from '../../../webpack/reducers/forms_reducer';
 import _ from 'lodash';
 import {
-  FETCH_FORM_FULFILLED
+  FETCH_FORM_FULFILLED,
   FETCH_FORMS_FULFILLED
 } from '../../../webpack/actions/types';
 
