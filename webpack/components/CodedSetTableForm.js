@@ -10,12 +10,18 @@ export default class CodedSetTableForm extends Component {
     let newItems = this.state.items;
     newItems.push({display: "", system: "", code: ""});
     this.setState({items: newItems});
+    if (this.props.itemWatcher) {
+      this.props.itemWatcher(newItems);
+    }
   }
 
   removeItemRow(rowNumber) {
     let newItems = this.state.items;
     newItems.splice(rowNumber, 1);
     this.setState({items: newItems});
+    if (this.props.itemWatcher) {
+      this.props.itemWatcher(newItems);
+    }
   }
 
   handleChange(rowNumber, field) {
@@ -23,6 +29,9 @@ export default class CodedSetTableForm extends Component {
       let newItems = this.state.items;
       newItems[rowNumber][field] = event.target.value;
       this.setState({items: newItems});
+      if (this.props.itemWatcher) {
+        this.props.itemWatcher(newItems);
+      }
     };
   }
 
@@ -84,5 +93,6 @@ CodedSetTableForm.propTypes = {
     display: PropTypes.string
   })),
   parentName: PropTypes.string,
-  childName:  PropTypes.string
+  childName:  PropTypes.string,
+  itemWatcher: PropTypes.func
 };
