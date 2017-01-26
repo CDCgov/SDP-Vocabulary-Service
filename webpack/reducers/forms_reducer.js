@@ -4,9 +4,7 @@ import {
 } from '../actions/types';
 import _ from 'lodash';
 
-const initialState = null;
-
-export default function forms(state = initialState, action) {
+export default function forms(state = {}, action) {
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
       return _.keyBy(action.payload.data, 'id');
