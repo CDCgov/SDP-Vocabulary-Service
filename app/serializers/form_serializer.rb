@@ -7,7 +7,7 @@ class FormSerializer < ActiveModel::Serializer
   attribute :form_uri, key: :formUri
   attribute :version
   def form_uri
-    '/api/forms/' + object.version_independent_id
+    Rails.application.routes.url_helpers.api_form_url(object.version_independent_id, version: object.version, only_path: true)
   end
   has_many :form_questions, key: :questions, serializer: FormQuestionsSerializer
 end

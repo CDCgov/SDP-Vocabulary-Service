@@ -11,7 +11,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'api should show form' do
-    get 'http://localhost:3000/api/forms/' + @form.version_independent_id
+    get api_form_url(@form.version_independent_id)
     assert_response :success
     assert_serializer 'FormSerializer'
     assert_response_schema('forms/show.json')

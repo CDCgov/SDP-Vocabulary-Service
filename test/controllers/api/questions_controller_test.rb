@@ -19,7 +19,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'api should show question' do
-    get 'http://localhost:3000/api/questions/' + @question.version_independent_id
+    get api_question_url(@question.version_independent_id)
     assert_response :success
     assert_serializer 'QuestionsSerializer'
     assert_response_schema('questions/show.json')

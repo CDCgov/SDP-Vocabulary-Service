@@ -13,14 +13,14 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   test 'api should get index' do
     get api_valueSets_url
     res = JSON.parse response.body
-    assert_equal(res.map { |r| r['url'] }, ['/api/valueSets/RS-1', '/api/valueSets/RS-2'])
+    assert_equal(res.map { |r| r['id'] }, ['RS-1', 'RS-2'])
     assert_equal(res[1]['version'], 2) # index gets latest versions
     assert_response :success
     assert_response_schema('result_sets/show.json')
   end
 
   test 'api should show value set' do
-    get 'http://localhost:3000/api/valueSets/' + @response_set.version_independent_id
+    get api_valueSet_url(@response_set.version_independent_id)
     assert_response :success
     assert_serializer 'ValueSetsSerializer'
     assert_response_schema('result_sets/show.json')

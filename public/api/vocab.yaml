@@ -298,6 +298,9 @@ definitions:
       url:
         type: string
         title: Globally unique identifier for the value set
+      id:
+        type: string
+        title: Version independent identifier for the value set
       identifier:
         type: array
         title: Additional identifiers for the value set
