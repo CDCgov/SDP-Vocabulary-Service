@@ -18,11 +18,15 @@ class ResponseSetEditContainer extends Component {
         <div>Loading..</div>
       );
     }
+    let action = this.props.params.action;
+    if (action === undefined) {
+      action = 'new';
+    }
     return (
       <div className="container">
         <ResponseSetForm responseSet={this.props.responseSet}
                          responseSetSubmitter={this.props.saveResponseSet}
-                         action={this.props.params.action}
+                         action={action}
                          router={this.props.router} />
       </div>
     );
