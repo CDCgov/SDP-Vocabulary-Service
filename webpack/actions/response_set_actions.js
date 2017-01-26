@@ -6,7 +6,7 @@ import {
   SAVE_RESPONSE_SET
 } from './types';
 
-//import { getCSRFToken } from './index';
+import { getCSRFToken } from './index';
 
 export function fetchResponseSets() {
   return {
@@ -26,12 +26,16 @@ export function fetchResponseSet(id) {
   };
 }
 
-export function saveResponseSet(responseSet) {
-  //const authenticityToken = getCSRFToken();
+export function saveResponseSet(responseSet, callback=null) {
+  const authenticityToken = getCSRFToken();
+  const postPromise = axios.post(routes.responseSetsPath(),
+                      {responseSet, authenticityToken},
+                      {'X-Key-Inflection': 'camel'});
+  if (callback) {
+    postPromise.then(callback);
+  }
   return {
     type: SAVE_RESPONSE_SET,
-    payload: axios.post(routes.responseSetsPath(),
-                        {responseSet},
-                        {'X-Key-Inflection': 'camel'})
+    payload: postPromise
   };
 }
