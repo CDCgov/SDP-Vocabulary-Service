@@ -1,5 +1,6 @@
 import axios from 'axios';
 import routes from '../routes';
+import { getCSRFToken } from './index';
 import {
   ADD_COMMENT,
   FETCH_COMMENTS
@@ -34,17 +35,4 @@ export function fetchComments(commentableType, commentableId) {
       }
     })
   };
-}
-
-
-function getCSRFToken() {
-  const metas = document.getElementsByTagName('meta');
-  for (let i = 0; i < metas.length; i++) {
-    const meta = metas[i];
-    if (meta.getAttribute('name') === 'csrf-token') {
-      return meta.getAttribute('content');
-    }
-  }
-
-  return null;
 }
