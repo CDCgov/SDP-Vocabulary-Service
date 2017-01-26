@@ -25,7 +25,7 @@ describe('CodedSetTableForm', () => {
   it('should update the state when a value is changed', () => {
     const input = component.find("input[value=Code1]")[0];
     TestUtils.Simulate.change(input, {target: {value: 'different'}});
-    expect(componentInstance.state.items[0].code).to.equal('different');
+    expect(componentInstance.state.items[0].value).to.equal('different');
   });
 
   it('should add a row', () => {
