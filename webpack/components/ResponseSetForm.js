@@ -16,7 +16,9 @@ export default class ResponseSetForm extends Component {
       oid: this.props.responseSet.oid,
       coded: this.props.responseSet.coded,
       description: this.props.responseSet.description,
-      responses: this.props.responseSet.responses,
+      responsesAttributes: this.props.responseSet.responses.map((r) => {
+        return {code: r.value, system: r.codeSystem, display: r.displayName};
+      }),
       version: version,
       versionIndependentId: versionIndependentId
     };
@@ -52,7 +54,7 @@ export default class ResponseSetForm extends Component {
           </div>
 
           <CodedSetTableForm itemWatcher={(r) => this.handleResponsesChange(r)}
-                             initialItems={this.state.responses}
+                             initialItems={this.state.responsesAttributes}
                              parentName={'response_set'}
                              childName={'response'} />
 
@@ -66,11 +68,18 @@ export default class ResponseSetForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.responseSetSubmitter(this.state, () => {});
+    this.props.responseSetSubmitter(this.state, (response) => {
+      if (response.status === 201) {
+        this.props.router.push(`/responseSets/${response.data.id}`);
+      }
+    });
   }
 
   handleResponsesChange(newResponses) {
-    this.setState({responsesAttributes: newResponses});
+    const r = newResponses.map((nr) => {
+      return {value: nr.code, codeSystem: nr.system, displayName: nr.display};
+    });
+    this.setState({responsesAttributes: r});
   }
 
   handleChange(field) {
@@ -85,5 +94,6 @@ export default class ResponseSetForm extends Component {
 ResponseSetForm.propTypes = {
   responseSet: responseSetProps.isRequired,
   responseSetSubmitter: PropTypes.func.isRequired,
-  action: PropTypes.string.isRequired
+  action: PropTypes.string.isRequired,
+  router: PropTypes.object.isRequired
 };
