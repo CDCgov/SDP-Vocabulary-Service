@@ -8,12 +8,14 @@ const questionsFromForms = store => next => action => {
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
       const forms = action.payload.data;
-      form.forEach((f) => {
+      forms.forEach((f) => {
         store.dispatch({
           type: FETCH_QUESTIONS_FULFILLED,
           payload: {data: f.questions}
         });
-        f.questions = f.questions.map((q) => q.id);
+        f.questions = f.questions.map((q) => {
+          return ({id: q.id, content: q.content });
+        });
       });
       break;
     case FETCH_FORM_FULFILLED:
@@ -21,7 +23,9 @@ const questionsFromForms = store => next => action => {
         type: FETCH_QUESTIONS_FULFILLED,
         payload: {data: action.payload.data.questions}
       });
-      action.payload.data.questions = action.payload.data.questions.map((q) => q.id);
+      action.payload.data.questions = action.payload.data.questions.map((q) => {
+        return ({id: q.id, content: q.content });
+      });
       break;
   }
   next(action);
