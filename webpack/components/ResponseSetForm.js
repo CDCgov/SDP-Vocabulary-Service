@@ -6,11 +6,19 @@ import { responseSetProps } from '../prop-types/response_set_props';
 export default class ResponseSetForm extends Component {
   constructor(props) {
     super(props);
+    let version = 1;
+    let versionIndependentId;
+    if (props.action === 'revise') {
+      version = this.props.responseSet.version + 1;
+      versionIndependentId = this.props.responseSet.versionIndependentId;
+    }
     this.state = {name: this.props.responseSet.name,
       oid: this.props.responseSet.oid,
       coded: this.props.responseSet.coded,
       description: this.props.responseSet.description,
-      responses: this.props.responseSet.responses
+      responses: this.props.responseSet.responses,
+      version: version,
+      versionIndependentId: versionIndependentId
     };
   }
 
@@ -49,7 +57,7 @@ export default class ResponseSetForm extends Component {
                              childName={'response'} />
 
           <div className="actions">
-            <input type="submit" value="Create Response Set"/>
+            <input type="submit" value={`${this.props.action} Response Set`}/>
           </div>
         </div>
       </form>
@@ -58,7 +66,7 @@ export default class ResponseSetForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.responseSetSubmitter(this.state);
+    this.props.responseSetSubmitter(this.state, () => {});
   }
 
   handleResponsesChange(newResponses) {
@@ -76,5 +84,6 @@ export default class ResponseSetForm extends Component {
 
 ResponseSetForm.propTypes = {
   responseSet: responseSetProps.isRequired,
-  responseSetSubmitter: PropTypes.func.isRequired
+  responseSetSubmitter: PropTypes.func.isRequired,
+  action: PropTypes.string.isRequired
 };
