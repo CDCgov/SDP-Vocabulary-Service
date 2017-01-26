@@ -4,7 +4,7 @@ class FormsController < ApplicationController
   # GET /forms
   # GET /forms.json
   def index
-    @forms = Form.latest_versions
+    @forms = params[:search] ? Form.search(params[:search]).latest_versions : Form.latest_versions
     @users = User.all
   end
 

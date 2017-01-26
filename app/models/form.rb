@@ -13,6 +13,10 @@ class Form < ApplicationRecord
                              uniqueness: { message: 'forms should have different OMB Control Numbers',
                                            unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
 
+  def self.search(search)
+    where('name ILIKE ?', "%#{search}%")
+  end
+
   # Builds a new Form object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
