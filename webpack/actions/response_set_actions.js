@@ -30,7 +30,7 @@ export function saveResponseSet(responseSet, callback=null) {
   const authenticityToken = getCSRFToken();
   const postPromise = axios.post(routes.responseSetsPath(),
                       {responseSet, authenticityToken},
-                      {'X-Key-Inflection': 'camel'});
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (callback) {
     postPromise.then(callback);
   }
