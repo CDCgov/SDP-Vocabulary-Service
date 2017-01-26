@@ -24,4 +24,11 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_serializer 'QuestionsSerializer'
     assert_response_schema('questions/show.json')
   end
+
+  test 'api should show question of specific version' do
+    get api_question_url(@question.version_independent_id, version: 1)
+    assert_response :success
+    res = JSON.parse response.body
+    assert_equal(res['version'], 1)
+  end
 end
