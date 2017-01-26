@@ -43,7 +43,7 @@ export function reorderQuestion(index, direction) {
 export function fetchQuestions(searchTerms) {
   return {
     type: FETCH_QUESTIONS,
-    payload: axios.get(routes.questions_path(), {
+    payload: axios.get(routes.questionsPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params:  { search: searchTerms }
     })
@@ -53,7 +53,7 @@ export function fetchQuestions(searchTerms) {
 export function fetchQuestion(id) {
   return {
     type: FETCH_QUESTION,
-    payload: axios.get(routes.question_path(id), {
+    payload: axios.get(routes.questionPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };
