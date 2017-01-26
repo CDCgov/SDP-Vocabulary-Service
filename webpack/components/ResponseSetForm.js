@@ -8,17 +8,22 @@ export default class ResponseSetForm extends Component {
     super(props);
     let version = 1;
     let versionIndependentId;
+    const oid = this.props.responseSet.oid || '';
     if (props.action === 'revise') {
       version = this.props.responseSet.version + 1;
       versionIndependentId = this.props.responseSet.versionIndependentId;
     }
+    let startingResponses;
+    if (this.props.responseSet.responses) {
+      startingResponses = filterResponses(this.props.responseSet.responses);
+    } else {
+      startingResponses = [{displayName: '', value: '', codeSystem: ''}];
+    }
     this.state = {name: this.props.responseSet.name,
-      oid: this.props.responseSet.oid,
-      coded: this.props.responseSet.coded,
-      description: this.props.responseSet.description,
-      responsesAttributes: this.props.responseSet.responses.map((r) => {
-        return {code: r.value, system: r.codeSystem, display: r.displayName};
-      }),
+      oid,
+      coded: this.props.responseSet.coded || false,
+      description: this.props.responseSet.description || '',
+      responsesAttributes: startingResponses,
       version: version,
       versionIndependentId: versionIndependentId
     };
@@ -76,10 +81,7 @@ export default class ResponseSetForm extends Component {
   }
 
   handleResponsesChange(newResponses) {
-    const r = newResponses.map((nr) => {
-      return {value: nr.code, codeSystem: nr.system, displayName: nr.display};
-    });
-    this.setState({responsesAttributes: r});
+    this.setState({responsesAttributes: newResponses});
   }
 
   handleChange(field) {
@@ -89,6 +91,12 @@ export default class ResponseSetForm extends Component {
       this.setState(newState);
     };
   }
+}
+
+function filterResponses(responses) {
+  return responses.map((nr) => {
+    return {value: nr.value, codeSystem: nr.codeSystem, displayName: nr.displayName};
+  });
 }
 
 ResponseSetForm.propTypes = {
