@@ -8,7 +8,7 @@ with the Responses (.+)$/) do |set_name, desc, response_values|
 end
 
 When(/^I go to the list of Response Sets$/) do
-  visit '/response_sets'
+  visit 'landing#/responseSets'
 end
 
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|

@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
+import { responseSetProps } from '../prop-types/response_set_props';
 
 export default class ResponseSetWidget extends Component {
   render() {
@@ -8,7 +10,9 @@ export default class ResponseSetWidget extends Component {
           <div className="response-set-container">
             <ul className="list-inline">
               <li>
-                <a href={this.props.routes.responseSetPath(this.props.responseSet)}>{this.props.responseSet.name}</a>
+                <Link to={'/responseSets/' + this.props.responseSet.id}>
+                  {this.props.responseSet.name}
+                </Link>
               </li>
               <li className="pull-right"><a><span className="fa fa-question-circle-o"></span></a></li>
             </ul>
@@ -30,7 +34,9 @@ export default class ResponseSetWidget extends Component {
                       <a href={this.props.routes.extendResponseSetPath(this.props.responseSet)}>Extend</a>
                     </li>
                     <li>
-                      <a href={this.props.routes.responseSetPath(this.props.responseSet)}>Details</a>
+                      <Link to={'/responseSets/' + this.props.responseSet.id}>
+                        Details
+                      </Link>
                     </li>
                     <li>
                       <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.responseSetPath(this.props.responseSet)}>Delete</a>
@@ -40,7 +46,6 @@ export default class ResponseSetWidget extends Component {
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     );
@@ -48,11 +53,7 @@ export default class ResponseSetWidget extends Component {
 }
 
 ResponseSetWidget.propTypes = {
-  responseSet: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string
-  }),
+  responseSet: responseSetProps,
   routes: PropTypes.shape({
     responseSetPath: PropTypes.func.isRequired,
     extendResponseSetPath: PropTypes.func.isRequired,
