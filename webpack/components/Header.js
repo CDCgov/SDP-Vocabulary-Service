@@ -1,6 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
-
 
 let LoginMenu = ({currentUser={email:null}}) => {
   let loggedIn = currentUser ? true : false;
@@ -66,7 +66,7 @@ let SignedInMenu = ({currentUser={email:false}}) => {
           <ul className="cdc-nav-dropdown">
             <li className="nav-dropdown-item"><a href="/questions/new">Questions</a></li>
             <li className="nav-dropdown-item"><a href="/question_types/new">Question Types</a></li>
-            <li className="nav-dropdown-item"><a href="/response_sets/new">Response Sets</a></li>
+            <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
             <li className="nav-dropdown-item"><a href="/forms/new">Forms</a></li>
           </ul>
         </li>

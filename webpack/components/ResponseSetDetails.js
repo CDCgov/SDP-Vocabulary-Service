@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import Routes from "../routes";
 import moment from 'moment';
 import { responseSetProps } from '../prop-types/response_set_props';
@@ -63,7 +64,7 @@ export default class ResponseSetDetails extends Component {
         </p>
         <p>
           <strong>Author: </strong>
-          { responseSet.created_by && responseSet.created_by.email }
+          { responseSet.createdBy && responseSet.createdBy.email }
         </p>
         <p>
           <strong>Created: </strong>
@@ -74,8 +75,12 @@ export default class ResponseSetDetails extends Component {
           { responseSet.updated_by && responseSet.updated_by.email }
           { moment(responseSet.updatedAt,'').format('MMMM Do YYYY, h:mm:ss a') }
         </p>
-        <a href={Routes.reviseResponseSetPath(responseSet.id)}>Revise</a> |
-        <a href={Routes.extendResponseSetPath(responseSet.id)}> Extend</a>
+        <Link to={`/responseSets/${this.props.responseSet.id}/revise`}>
+          Revise
+        </Link> |
+        <Link to={`/responseSets/${this.props.responseSet.id}/extend`}>
+          Extend
+        </Link>
       </div>
     );
   }
