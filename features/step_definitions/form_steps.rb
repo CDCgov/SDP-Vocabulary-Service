@@ -4,7 +4,7 @@ Given(/^I have a Form with the name "([^"]*)"$/) do |name|
 end
 
 When(/^I go to the list of Forms$/) do
-  visit '/forms'
+  visit 'landing#/forms'
 end
 
 When(/^I click on the button to add the Question "([^"]*)"$/) do |question_content|
