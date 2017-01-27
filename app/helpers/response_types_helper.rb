@@ -1,0 +1,2 @@
+module ResponseTypesHelper
+end
