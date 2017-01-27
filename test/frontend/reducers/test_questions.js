@@ -4,7 +4,8 @@ import _ from 'lodash';
 import {
   ADD_QUESTION,
   REMOVE_QUESTION,
-  FETCH_QUESTIONS_FULFILLED
+  FETCH_QUESTION_FULFILLED,
+  FETCH_QUESTIONS_FULFILLED,
 } from '../../../webpack/actions/types';
 
 describe('questions reducer', () => {
@@ -32,5 +33,13 @@ describe('questions reducer', () => {
     const startState = {};
     const nextState = questions(startState, action);
     expect(Object.keys(nextState).length).to.equal(3);
+  });
+
+  it('should fetch a question', () => {
+    const questionData = {data: {id: 1, content: "Is this a question?", questionType: ""}};
+    const action = {type: FETCH_QUESTION_FULFILLED, payload: questionData};
+    const startState = {};
+    const nextState = questions(startState, action);
+    expect(Object.keys(nextState).length).to.equal(1);
   });
 });

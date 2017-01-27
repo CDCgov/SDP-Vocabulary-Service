@@ -4,6 +4,7 @@ import {
   ADD_QUESTION,
   REMOVE_QUESTION,
   REORDER_QUESTION,
+  FETCH_QUESTION,
   FETCH_QUESTIONS
 } from './types';
 
@@ -33,8 +34,17 @@ export function fetchQuestions(searchTerms) {
   return {
     type: FETCH_QUESTIONS,
     payload: axios.get(routes.questions_path(), {
-      headers: {'Accept': 'application/json'},
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params:  { search: searchTerms }
+    })
+  };
+}
+
+export function fetchQuestion(id) {
+  return {
+    type: FETCH_QUESTION,
+    payload: axios.get(routes.question_path(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };
 }

@@ -4,6 +4,7 @@ import createLogger from 'redux-logger';
 
 import questionsFromResponseSets from '../middleware/questions_from_response_sets';
 import questionsFromForms from '../middleware/questions_from_forms';
+import responseSetsFromQuestions from '../middleware/response_sets_from_questions';
 
 import rootReducer from '../reducers';
 
@@ -12,7 +13,8 @@ export default function configureStore(initialState) {
     promiseMiddleware(),
     createLogger(),
     questionsFromResponseSets,
-    questionsFromForms
+    questionsFromForms,
+    responseSetsFromQuestions
   );
 
   let store = createStore(rootReducer, initialState, middleware);

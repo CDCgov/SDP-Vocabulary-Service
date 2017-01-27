@@ -8,7 +8,7 @@ import QuestionResults from '../components/QuestionResults';
 import SearchBar from '../components/SearchBar';
 import _ from 'lodash';
 
-class QuestionSearch extends Component {
+class QuestionSearchContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -52,10 +52,10 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({addQuestion}, dispatch);
 }
 
-QuestionSearch.propTypes = {
+QuestionSearchContainer.propTypes = {
   allQs: React.PropTypes.array,
   allRs: React.PropTypes.array,
   addQuestion: React.PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(QuestionSearch);
+export default connect(null, mapDispatchToProps)(QuestionSearchContainer);
