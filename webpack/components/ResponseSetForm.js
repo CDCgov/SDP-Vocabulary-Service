@@ -6,9 +6,14 @@ import { responseSetProps } from '../prop-types/response_set_props';
 export default class ResponseSetForm extends Component {
   constructor(props) {
     super(props);
+    // TODO: Extract building of new response sets to
+    // their own methods to clean things up.
     let version = 1;
     let versionIndependentId;
-    const oid = this.props.responseSet.oid || '';
+    let oid = this.props.responseSet.oid || '';
+    if (props.action === 'extend') {
+      oid = '';
+    }
     if (props.action === 'revise') {
       version = this.props.responseSet.version + 1;
       versionIndependentId = this.props.responseSet.versionIndependentId;
@@ -74,6 +79,7 @@ export default class ResponseSetForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.responseSetSubmitter(this.state, (response) => {
+      // TODO: Handle when the saving response set fails.
       if (response.status === 201) {
         this.props.router.push(`/responseSets/${response.data.id}`);
       }
