@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class CodedSetTable extends Component {
+export default class CodedSetTableForm extends Component {
   constructor(props) {
     super(props);
     this.state = {items: props.initialItems, parentName: props.parentName, childName: props.childName};
@@ -71,7 +71,7 @@ export default class CodedSetTable extends Component {
   }
 }
 
-CodedSetTable.propTypes = {
+CodedSetTableForm.propTypes = {
   initialItems: PropTypes.arrayOf(PropTypes.shape({
     code:    PropTypes.string,
     system:  PropTypes.string,

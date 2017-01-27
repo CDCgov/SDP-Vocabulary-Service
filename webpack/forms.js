@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import $ from 'jquery';
 import FormsQuestionList from './containers/FormsQuestionList';
-import QuestionSearch from './containers/QuestionSearch';
+import QuestionSearchContainer from './containers/QuestionSearchContainer';
 
 import configureStore from './store/configure_store';
 import { addQuestion } from './actions/questions_actions';
@@ -22,7 +22,7 @@ if (selectedQs) {
 }
 
 ReactDOM.render(<Provider store={store}>
-    <QuestionSearch allQs={allQs} allRs={allRs} />
+    <QuestionSearchContainer allQs={allQs} allRs={allRs} />
   </Provider>, document.getElementById('search-results-div'));
 
 
