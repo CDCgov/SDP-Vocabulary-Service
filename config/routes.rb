@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'response_types', to: 'response_types#index', as: :response_types
+
   get '/landing' => 'landing#index'
   get '/landing/stats' => 'landing#stats'
 
