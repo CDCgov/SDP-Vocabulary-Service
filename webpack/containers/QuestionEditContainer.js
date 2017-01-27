@@ -4,12 +4,16 @@ import { bindActionCreators } from 'redux';
 import { fetchQuestion } from '../actions/questions_actions';
 import QuestionForm from '../components/QuestionForm';
 import { questionProps } from '../prop-types/question_props';
+import { fetchResponseTypes } from '../actions/response_type_actions';
+import { fetchQuestionTypes } from '../actions/question_type_actions';
 
 class QuestionEditContainer extends Component {
   componentWillMount() {
     if(this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
     }
+    this.props.fetchQuestionTypes();
+    this.props.fetchResponseTypes();
   }
 
   render() {
@@ -38,12 +42,14 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion}, dispatch);
+  return bindActionCreators({fetchQuestion, fetchQuestionTypes, fetchResponseTypes}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
   question: questionProps,
   fetchQuestion: PropTypes.func,
+  fetchQuestionTypes: PropTypes.func,
+  fetchResponseTypes: PropTypes.func,
   params: PropTypes.object
 };
 
