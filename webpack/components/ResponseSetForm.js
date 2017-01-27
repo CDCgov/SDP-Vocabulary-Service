@@ -6,32 +6,49 @@ import { responseSetProps } from '../prop-types/response_set_props';
 export default class ResponseSetForm extends Component {
   constructor(props) {
     super(props);
-    // TODO: Extract building of new response sets to
-    // their own methods to clean things up.
-    let version = 1;
-    let versionIndependentId;
-    let oid = this.props.responseSet.oid || '';
-    if (props.action === 'extend') {
-      oid = '';
+    switch (this.props.action) {
+      case 'revise':
+        this.state = this.stateForRevise(this.props.responseSet);
+        break;
+      case 'extend':
+        this.state = this.stateForExtend(this.props.responseSet);
+        break;
+      case 'new':
+        this.state = this.stateForNew();
+        break;
     }
-    if (props.action === 'revise') {
-      version = this.props.responseSet.version + 1;
-      versionIndependentId = this.props.responseSet.versionIndependentId;
-    }
-    let startingResponses;
-    if (this.props.responseSet.responses) {
-      startingResponses = filterResponses(this.props.responseSet.responses);
-    } else {
-      startingResponses = [{displayName: '', value: '', codeSystem: ''}];
-    }
-    this.state = {name: this.props.responseSet.name,
-      oid,
-      coded: this.props.responseSet.coded || false,
-      description: this.props.responseSet.description || '',
-      responsesAttributes: startingResponses,
-      version: version,
-      versionIndependentId: versionIndependentId
+  }
+
+  stateForRevise(responseSet) {
+    const name = responseSet.name || '';
+    const oid = responseSet.oid || '';
+    const coded = responseSet.coded || false;
+    const description = responseSet.description || '';
+    const responsesAttributes = filterResponses(responseSet.responses);
+    const version = responseSet.version + 1;
+    const versionIndependentId = responseSet.versionIndependentId;
+    return {name, oid, description, coded, responsesAttributes,
+      version, versionIndependentId};
+  }
+
+  stateForNew() {
+    return {
+      name: '', oid: '', coded: false, description: '',
+      responsesAttributes: [{displayName: '', value: '', codeSystem: ''}],
+      version: 1, versionIndependentId: null
     };
+  }
+
+  stateForExtend(responseSet) {
+    const name = responseSet.name || '';
+    const oid = '';
+    const coded = responseSet.coded || false;
+    const description = responseSet.description || '';
+    const responsesAttributes = filterResponses(responseSet.responses);
+    const version = 1;
+    const versionIndependentId = null;
+    return {name, oid, description, coded, responsesAttributes,
+      version, versionIndependentId};
   }
 
   render() {
