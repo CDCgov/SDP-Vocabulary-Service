@@ -1,5 +1,6 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import { questionsProps } from "../prop-types/question_props";
+import allRoutes from '../prop-types/route_props';
 import QuestionWidget from './QuestionWidget';
 import _ from 'lodash';
 
@@ -17,10 +18,7 @@ class QuestionList extends Component {
 
 QuestionList.propTypes = {
   questions: questionsProps,
-  routes: PropTypes.shape({
-    questionPath: PropTypes.func.isRequired,
-    reviseQuestionPath: PropTypes.func.isRequired
-  })
+  routes: allRoutes
 };
 
 export default QuestionList;
