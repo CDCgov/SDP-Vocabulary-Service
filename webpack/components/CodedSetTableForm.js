@@ -8,14 +8,20 @@ export default class CodedSetTableForm extends Component {
 
   addItemRow() {
     let newItems = this.state.items;
-    newItems.push({display: "", system: "", code: ""});
+    newItems.push({displayName: "", codeSystem: "", value: ""});
     this.setState({items: newItems});
+    if (this.props.itemWatcher) {
+      this.props.itemWatcher(newItems);
+    }
   }
 
   removeItemRow(rowNumber) {
     let newItems = this.state.items;
     newItems.splice(rowNumber, 1);
     this.setState({items: newItems});
+    if (this.props.itemWatcher) {
+      this.props.itemWatcher(newItems);
+    }
   }
 
   handleChange(rowNumber, field) {
@@ -23,6 +29,9 @@ export default class CodedSetTableForm extends Component {
       let newItems = this.state.items;
       newItems[rowNumber][field] = event.target.value;
       this.setState({items: newItems});
+      if (this.props.itemWatcher) {
+        this.props.itemWatcher(newItems);
+      }
     };
   }
 
@@ -44,25 +53,31 @@ export default class CodedSetTableForm extends Component {
               <tr key={i}>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_value`}>Value</label>
-                  <input type="text" value={r.code}    name={`${attrsName}[${i}][value]`} id={`${idPrefix}_${i}_value`} onChange={this.handleChange(i, 'code')}/>
+                  <input type="text" value={r.value}    name={`${attrsName}[${i}][value]`} id={`${idPrefix}_${i}_value`} onChange={this.handleChange(i, 'value')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_code_system`}>Code system</label>
-                  <input type="text" value={r.system}  name={`${attrsName}[${i}][code_system]`} id={`${idPrefix}_${i}_code_system`} onChange={this.handleChange(i, 'system')}/>
+                  <input type="text" value={r.codeSystem}  name={`${attrsName}[${i}][code_system]`} id={`${idPrefix}_${i}_code_system`} onChange={this.handleChange(i, 'codeSystem')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_display_name`}>Display name</label>
-                  <input type="text" value={r.display} name={`${attrsName}[${i}][display_name]`} id={`${idPrefix}_${i}_display_name`} onChange={this.handleChange(i, 'display')}/>
+                  <input type="text" value={r.displayName} name={`${attrsName}[${i}][display_name]`} id={`${idPrefix}_${i}_display_name`} onChange={this.handleChange(i, 'displayName')}/>
                 </td>
                 <td>
-                  <a href="#" onClick={() => this.removeItemRow(i)}>Remove</a>
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    this.removeItemRow(i);
+                  }}>Remove</a>
                 </td>
               </tr>
             );
           })}
           <tr>
             <td>
-              <a href="#" onClick={() => this.addItemRow()}>Add Row</a>
+              <a href="#" onClick={(e) => {
+                e.preventDefault();
+                this.addItemRow();
+              }}>Add Row</a>
             </td>
           </tr>
         </tbody>
@@ -73,10 +88,11 @@ export default class CodedSetTableForm extends Component {
 
 CodedSetTableForm.propTypes = {
   initialItems: PropTypes.arrayOf(PropTypes.shape({
-    code:    PropTypes.string,
-    system:  PropTypes.string,
-    display: PropTypes.string
+    value:       PropTypes.string,
+    codeSystem:  PropTypes.string,
+    displayName: PropTypes.string
   })),
   parentName: PropTypes.string,
-  childName:  PropTypes.string
+  childName:  PropTypes.string,
+  itemWatcher: PropTypes.func
 };
