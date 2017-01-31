@@ -102,6 +102,8 @@ export default class ResponseSetForm extends Component {
       // TODO: Handle when the saving response set fails.
       if (response.status === 201) {
         this.props.router.push(`/responseSets/${response.data.id}`);
+      } else {
+        // update state
       }
     });
   }
