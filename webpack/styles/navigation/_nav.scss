@@ -3,6 +3,7 @@
   background-color: $cdc-dark-blue;
   height: 50px;
   margin-bottom: 0px;
+
   a {
     color: white;
   }
@@ -11,8 +12,19 @@
   }
 }
 
+a.cdc-brand:hover {
+  color:white;
+}
+
+a.cdc-brand:focus {
+  color:white;
+}
+
 .cdc-brand {
   @extend .navbar-brand;
+  a:hover, a:focus {
+    color: white;
+  }
   padding: 13px 0px 0px 0px;
 }
 
@@ -23,7 +35,7 @@
 
 .cdc-utlt-navbar-nav {
   @extend .navbar-nav;
-  padding: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 20px;
   .utlt-navbar-item>a {
     height: 50px;
   }

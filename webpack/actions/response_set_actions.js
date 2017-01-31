@@ -8,11 +8,12 @@ import {
 
 import { getCSRFToken } from './index';
 
-export function fetchResponseSets() {
+export function fetchResponseSets(searchTerms) {
   return {
     type: FETCH_RESPONSE_SETS,
     payload: axios.get(routes.responseSetsPath(), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      params: { search: searchTerms }
     })
   };
 }

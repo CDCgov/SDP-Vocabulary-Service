@@ -5,6 +5,7 @@ import { fetchResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
+import _ from 'lodash';
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
@@ -29,7 +30,7 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   props.responseSet = state.responseSets[ownProps.params.rsId];
   if (props.responseSet) {
-    props.questions = props.responseSet.questions.map((qId) => state.questions[qId]);
+    props.questions = _.compact(props.responseSet.questions.map((qId) => state.questions[qId]));
   }
   return props;
 }
