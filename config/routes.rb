@@ -26,10 +26,7 @@ Rails.application.routes.draw do
   end
   resources :question_types
 
-  resources :response_sets, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
-    get :revise, on: :member
-    get :extend, on: :member
-  end
+  resources :response_sets, except: [:edit, :update] # No editing/updating on response sets, we only revise them
 
   get 'notifications', to: 'notifications#index', as: :notifications
   post 'notifications/mark_read', to: 'notifications#mark_read', as: :notifications_mark_read
