@@ -94,7 +94,7 @@ let Header = ({currentUser}) => {
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
           </button>
-          <a className="cdc-brand" href="/">CDC Vocabulary Service</a>
+          <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
         </div>
         <SignedInMenu currentUser={currentUser} />
         <LoginMenu currentUser={currentUser} />
