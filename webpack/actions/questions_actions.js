@@ -3,6 +3,7 @@ import routes from '../routes';
 import {
   ADD_QUESTION,
   REMOVE_QUESTION,
+  DELETE_QUESTION,
   REORDER_QUESTION,
   FETCH_QUESTION,
   FETCH_QUESTIONS
@@ -22,6 +23,15 @@ export function removeQuestion(index) {
   };
 }
 
+export function deleteQuestion(id, csrf) {
+  return {
+    type: DELETE_QUESTION,
+    payload: axios.delete(routes.questions_path()+'/'+id, {
+      headers: {'Accept': 'application/json'},
+      params:  {'authenticity_token': csrf}
+    })
+  };
+}
 
 export function reorderQuestion(index, direction) {
   return {
