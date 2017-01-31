@@ -10,27 +10,30 @@ class DashboardContainer extends Component {
 
   render() {
     return (
-    <div className="conatiner">
-      <div className="row dashboard">
-        <div className="col-md-8 dashboard-details">
-          <div className="row">
-            <div className="col-md-12">
-              {this.analyticsGroup()}
+      <div>
+        <div className="row dashboard">
+          <div className="col-md-8">
+            <div className="dashboard-details">
+              <div className="row">
+                <div className="col-md-12">
+                  {this.analyticsGroup()}
+                </div>
+              </div>
+
+              <div id="search-widget">
+              </div>
             </div>
           </div>
 
-          <div id="search-widget">
-          </div>
-        </div>
-
-        <div className="col-md-4">
-          <div className="dashboard-activity">
-            {this.recentItems()}
-            {this.activityPanel()}
+          <div className="col-md-4">
+            <div className="dashboard-activity">
+              {this.recentItems()}
+              {this.activityPanel()}
+            </div>
           </div>
         </div>
       </div>
-    </div>);
+    );
   }
 
   analyticsGroup() {
