@@ -20,7 +20,6 @@ class FormShow extends Component {
           <a className="btn btn-default" href={Routes.reviseFormPath(form)}>Revise</a>
           <button className="btn btn-default">Print</button>
           <a className="btn btn-default" href={Routes.formPath(form)}>Export to Redcap</a>
-          <a className="btn btn-default" href={Routes.formsPath()}>Back</a>
         </div>
       </div>
     );
