@@ -4,6 +4,7 @@ import Routes from "../routes";
 import moment from 'moment';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
+import VersionInfo from './VersionInfo';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -75,6 +76,7 @@ export default class ResponseSetDetails extends Component {
           { responseSet.updated_by && responseSet.updated_by.email }
           { moment(responseSet.updatedAt,'').format('MMMM Do YYYY, h:mm:ss a') }
         </p>
+        <VersionInfo versionable={responseSet} versionableType='ResponseSet' />
         <Link to={`/responseSets/${this.props.responseSet.id}/revise`}>
           Revise
         </Link> |
