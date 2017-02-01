@@ -24,7 +24,7 @@ class QuestionShowContainer extends Component {
       return null;
     }
     return (
-      <div>
+      <div className="basic-bg">
         <QuestionDetails question={this.props.question} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
         <h4>Concepts</h4>
         <div id="concepts-table">
