@@ -12,7 +12,7 @@ class FormShow extends Component {
       );
     }
     return (
-      <div className="form" id={"form_id_"+form.id}>
+      <div id={"form_id_"+form.id}>
         <p><strong>Name:</strong> {form.name} </p>
         <p><strong>Created By:</strong> {form.userId} </p>
         <QuestionList questions={form.questions} routes={Routes} />
