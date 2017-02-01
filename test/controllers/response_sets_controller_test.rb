@@ -11,30 +11,21 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index' do
-    get response_sets_url
-    assert_response :success
-  end
-
-  test 'should get new' do
-    get new_response_set_url
+    get response_sets_url, xhr: true, params: nil
     assert_response :success
   end
 
   test 'should create response_set' do
     assert_difference('ResponseSet.count') do
-      post response_sets_url, params: { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }
+      rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+      post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     end
 
-    assert_redirected_to response_set_url(ResponseSet.last)
+    assert_response :created
   end
 
   test 'should show response_set' do
-    get response_set_url(@response_set)
-    assert_response :success
-  end
-
-  test 'should get extend' do
-    get extend_response_set_url(@response_set)
+    get response_set_url(@response_set), xhr: true, params: nil
     assert_response :success
   end
 

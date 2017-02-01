@@ -6,9 +6,7 @@ const allRoutes = PropTypes.shape({
   reviseFormPath: PropTypes.func.isRequired,
   questionPath: PropTypes.func.isRequired,
   reviseQuestionPath: PropTypes.func.isRequired,
-  responseSetPath: PropTypes.func.isRequired,
-  extendResponseSetPath: PropTypes.func.isRequired,
-  reviseResponseSetPath: PropTypes.func.isRequired
+  responseSetPath: PropTypes.func.isRequired
 });
 
 export default allRoutes;
