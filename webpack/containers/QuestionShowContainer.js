@@ -31,7 +31,6 @@ class QuestionShowContainer extends Component {
           <CodedSetTable items={this.props.question.concepts} itemName={'Concept'} />
         </div>
         {this.reviseQuestionButton()}
-        <a className='btn btn-primary' href='/landing#/questions'>Back</a>
       </div>
     );
   }
