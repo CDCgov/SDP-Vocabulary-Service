@@ -19,7 +19,7 @@ class ResponseSetShowContainer extends Component {
       );
     }
     return (
-      <div>
+      <div className="basic-bg">
         <ResponseSetDetails responseSet={this.props.responseSet} questions={this.props.questions}/>
       </div>
     );
