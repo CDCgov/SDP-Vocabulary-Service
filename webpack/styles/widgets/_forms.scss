@@ -6,7 +6,9 @@
   width: 180px;
 }
 .form {
-  @extend .panel;
+  @extend .panel; 
+  border-radius: 0px;
+  border: 1px solid $light-gray;
 }	
 .form-container {
   @extend .panel-body;
