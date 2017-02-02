@@ -7,6 +7,9 @@ export default class QuestionDetails extends Component {
   render() {
     const {question} = this.props;
     const {responseSets} = this.props;
+    if(!question){
+      return (<div>Loading...</div>);
+    }
     return (
       <div className="panel">
         <p>

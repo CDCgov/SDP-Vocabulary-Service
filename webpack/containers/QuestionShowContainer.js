@@ -9,18 +9,19 @@ import { responseSetProps } from "../prop-types/response_set_props";
 import currentUserProps from "../prop-types/current_user_props";
 
 class QuestionShowContainer extends Component {
+
   componentWillMount() {
     this.props.fetchQuestion(this.props.params.qId);
   }
 
-  componentDidUpdate(prevProps) {
-    if(prevProps.params.qId != this.props.params.qId){
+  componentDidUpdate(prevProps){
+    if(prevProps.params.qId !== this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
     }
   }
 
   reviseQuestionButton(){
-    if(this.props.currentUser && this.props.currentUser.id){
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
       return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/revise`}>Revise</a> );
     }
   }
