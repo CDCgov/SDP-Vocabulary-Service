@@ -12,6 +12,12 @@ class ResponseSetShowContainer extends Component {
     this.props.fetchResponseSet(this.props.params.rsId);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.params.rsId != this.props.params.rsId){
+      this.props.fetchResponseSet(this.props.params.rsId);
+    }
+  }
+
   render() {
     if(!this.props.responseSet){
       return (
@@ -29,7 +35,7 @@ class ResponseSetShowContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const props = {};
   props.responseSet = state.responseSets[ownProps.params.rsId];
-  if (props.responseSet) {
+  if (props.responseSet && props.responseSet.questions) {
     props.questions = _.compact(props.responseSet.questions.map((qId) => state.questions[qId]));
   }
   return props;
