@@ -3,6 +3,7 @@ import {
   ADD_QUESTION,
   REMOVE_QUESTION,
   REORDER_QUESTION,
+  SAVE_QUESTION_FULFILLED,
   FETCH_QUESTION_FULFILLED,
   FETCH_QUESTIONS_FULFILLED,
   DELETE_QUESTION_FULFILLED
@@ -25,7 +26,8 @@ export default function questions(state = {}, action) {
     case REORDER_QUESTION:
       return state;
     case FETCH_QUESTIONS_FULFILLED:
-      return _.keyBy(action.payload.data, 'id');
+      return Object.assign(_.keyBy(action.payload.data, 'id'), state);
+    case SAVE_QUESTION_FULFILLED:
     case FETCH_QUESTION_FULFILLED:
       return addQuestionToState(action, state);
     case DELETE_QUESTION_FULFILLED:

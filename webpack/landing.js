@@ -32,9 +32,9 @@ ReactDOM.render(
           <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
           <Route path='/responseSets/:rsId/:action' component={ResponseSetEditContainer} />
         <Route path='/questions' component={QuestionIndexContainer} />
-          <Route path='/questions/:qId' component={QuestionShowContainer} />
-          <Route path='/questions/:qId/revise' component={QuestionEditContainer} />
           <Route path='/questions/new' component={QuestionEditContainer} />
+          <Route path='/questions/:qId' component={QuestionShowContainer} />
+          <Route path='/questions/:qId/:action' component={QuestionEditContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));
