@@ -47,8 +47,9 @@ export default class ResponseSetForm extends Component {
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = 1;
     const versionIndependentId = null;
+    const parentId = responseSet.id;
     return {name, oid, description, coded, responsesAttributes,
-      version, versionIndependentId};
+      version, versionIndependentId, parentId};
   }
 
   render() {
@@ -70,7 +71,9 @@ export default class ResponseSetForm extends Component {
               <label htmlFor="coded">Coded</label>
               <input type="checkbox" value={this.state.coded} name="coded" id="coded" onChange={this.handleChange('coded')}/>
             </div>
-
+            <div className="hidden">
+              <input type="hidden" name="parentId" id="parentId" value={this.state.parentId} />
+            </div>
           </div>
 
           <div className="row">
