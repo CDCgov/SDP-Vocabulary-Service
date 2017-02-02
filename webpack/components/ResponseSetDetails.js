@@ -51,7 +51,7 @@ export default class ResponseSetDetails extends Component {
         <p>
           <strong>Questions:</strong><br/>
         </p>
-        { this.props.questions.map((q) => {
+        { this.props.questions && this.props.questions.map((q) => {
           return (
             <div key={"rs_question_" + q.id}>
               <a href={Routes.questionPath(q.id)}>{q.content}</a><br/>
