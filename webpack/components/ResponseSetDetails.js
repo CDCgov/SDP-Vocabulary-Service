@@ -67,6 +67,12 @@ export default class ResponseSetDetails extends Component {
           <strong>Author: </strong>
           { responseSet.createdBy && responseSet.createdBy.email }
         </p>
+        { responseSet.parent && 
+          <p>
+            <strong>Extended from: </strong>
+            <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
+          </p>
+        }
         <p>
           <strong>Created: </strong>
           { moment(responseSet.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
