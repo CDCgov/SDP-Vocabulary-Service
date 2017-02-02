@@ -4,11 +4,20 @@ import _ from 'lodash';
 import {
   ADD_QUESTION,
   REMOVE_QUESTION,
+  SAVE_QUESTION_FULFILLED,
   FETCH_QUESTION_FULFILLED,
   FETCH_QUESTIONS_FULFILLED,
 } from '../../../webpack/actions/types';
 
 describe('questions reducer', () => {
+
+  it('should save a question', () => {
+    const question = {data:{id: 1, content: "Is this a question?", questionType: ""}};
+    const action   = {type: SAVE_QUESTION_FULFILLED, payload: question };
+    const startState = {};
+    const nextState  = questions(startState, action);
+    expect(nextState[1].id).to.equal(question.data.id);
+  });
 
   it('should add a question', () => {
     const question = {data:{id: 1, content: "Is this a question?", questionType: ""}};

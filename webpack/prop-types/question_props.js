@@ -1,8 +1,8 @@
 import { PropTypes } from 'react';
 
 const questionProps = PropTypes.shape({
-  id: PropTypes.number.isRequired,
-  content: PropTypes.string.isRequired
+  id: PropTypes.number,
+  content: PropTypes.string
 });
 
 const questionsProps = PropTypes.objectOf(questionProps);
