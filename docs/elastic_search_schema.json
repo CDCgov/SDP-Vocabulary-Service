@@ -1,15 +1,61 @@
 {
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "analysis": {
+        "analyzer": {
+          "trigram": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["standard", "shingle"]
+          },
+          "reverse": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["standard", "reverse"]
+          }
+        },
+        "filter": {
+          "shingle": {
+            "type": "shingle",
+            "min_shingle_size": 2,
+            "max_shingle_size": 3
+          }
+        }
+      }
+    }
+  },
   "mappings": {
     "question": {
       "properties": {
-        "completion" : {"type" : "completion"},
+        "suggest" : {"type" : "completion"},
         "id" :{"type" : "string"},
         "version_independent_id" : {"type" : "string"},
         "version" : {"type" : "string"},
         "status" :{"type" : "string"},
         "category":{"type" : "string"},
-        "name" : {"type" : "string"},
-        "description" : {"type" : "string"},
+        "name" : {"type" : "string",
+          "fields": {
+              "trigram": {
+                "type": "text",
+                "analyzer": "trigram"
+              },
+              "reverse": {
+                "type": "text",
+                "analyzer": "reverse"
+              }
+            }},
+        "description" : {"type" : "string",
+          "fields": {
+              "trigram": {
+                "type": "text",
+                "analyzer": "trigram"
+              },
+              "reverse": {
+                "type": "text",
+                "analyzer": "reverse"
+              }
+            }},
         "createdAt" :{"type" : "date"},
         "updatedAt" :{"type" : "date"},
         "createdBy":{
@@ -49,14 +95,34 @@
     },
     "form":{
       "properties" :{
-        "completion" : {"type" : "completion"},
+        "suggest" : {"type" : "completion"},
         "id" :{"type" : "string"},
         "version_independent_id" : {"type" : "string"},
         "version" : {"type" : "string"},
         "status" :{"type" : "string"},
         "category":{"type" : "string"},
-        "name" : {"type" : "string"},
-        "description" : {"type" : "string"},
+        "name" : {"type" : "string",
+          "fields": {
+              "trigram": {
+                "type": "text",
+                "analyzer": "trigram"
+              },
+              "reverse": {
+                "type": "text",
+                "analyzer": "reverse"
+              }
+            }},
+        "description" : {"type" : "string",
+          "fields": {
+              "trigram": {
+                "type": "text",
+                "analyzer": "trigram"
+              },
+              "reverse": {
+                "type": "text",
+                "analyzer": "reverse"
+              }
+            }},
         "createdAt" :{"type" : "date"},
         "updatedAt" :{"type" : "date"},
         "createdBy":{
@@ -87,14 +153,34 @@
     },
     "responseSet":{
       "properties" :{
-        "completion" : {"type" : "completion"},
+        "suggest" : {"type" : "completion"},
         "id" :{"type" : "string"},
         "version_independent_id" : {"type" : "string"},
         "version" : {"type" : "string"},
         "status" :{"type" : "string"},
         "category":{"type" : "string"},
-        "name" : {"type" : "string"},
-        "description" : {"type" : "string"},
+        "name" : {"type" : "string",
+          "fields": {
+              "trigram": {
+                "type": "text",
+                "analyzer": "trigram"
+              },
+              "reverse": {
+                "type": "text",
+                "analyzer": "reverse"
+              }
+            }},
+        "description" : {"type" : "string",
+          "fields": {
+              "trigram": {
+                "type": "text",
+                "analyzer": "trigram"
+              },
+              "reverse": {
+                "type": "text",
+                "analyzer": "reverse"
+              }
+            }},
         "createdAt" :{"type" : "date"},
         "updatedAt" :{"type" : "date"},
         "createdBy":{

@@ -14,6 +14,14 @@ class ResponseSet < ApplicationRecord
 
   accepts_nested_attributes_for :responses, allow_destroy: true
 
+  after_save do |form|
+    UpdateIndexJob.perform_async('form', ESFormSerializer.new(form))
+  end
+
+  after_delete do |form|
+    DeleteFromIndexJob.perform_async('form', form.id)
+  end
+
   def self.search(search)
     where('name ILIKE ?', "%#{search}%")
   end

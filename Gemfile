@@ -30,7 +30,7 @@ gem 'js-routes'
 gem 'acts_as_tree'
 gem 'acts_as_commentable'
 gem 'omniauth_openid_connect'
-
+gem 'elasticsearch'
 gem 'config'
 
 group :development, :test do
