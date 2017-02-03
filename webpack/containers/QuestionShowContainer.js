@@ -13,9 +13,9 @@ class QuestionShowContainer extends Component {
     this.props.fetchQuestion(this.props.params.qId);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if(prevProps.params.qId != this.props.params.qId){
-      this.props.fetchResponseSet(this.props.params.qId);
+      this.props.fetchQuestion(this.props.params.qId);
     }
   }
 

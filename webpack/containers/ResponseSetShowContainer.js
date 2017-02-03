@@ -12,7 +12,7 @@ class ResponseSetShowContainer extends Component {
     this.props.fetchResponseSet(this.props.params.rsId);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if(prevProps.params.rsId != this.props.params.rsId){
       this.props.fetchResponseSet(this.props.params.rsId);
     }
