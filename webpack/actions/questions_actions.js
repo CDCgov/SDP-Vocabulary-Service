@@ -11,17 +11,18 @@ import {
   FETCH_QUESTIONS
 } from './types';
 
-export function addQuestion(question) {
+
+export function addQuestion(form, question) {
   return {
     type: ADD_QUESTION,
-    payload: {data: question}
+    payload: {form, question}
   };
 }
 
-export function removeQuestion(index) {
+export function removeQuestion(form, index) {
   return {
     type: REMOVE_QUESTION,
-    payload: index
+    payload: {form, index}
   };
 }
 
@@ -35,10 +36,10 @@ export function deleteQuestion(id, csrf) {
   };
 }
 
-export function reorderQuestion(index, direction) {
+export function reorderQuestion(form, index, direction) {
   return {
     type: REORDER_QUESTION,
-    payload: {index, direction}
+    payload: {form, index, direction}
   };
 }
 
