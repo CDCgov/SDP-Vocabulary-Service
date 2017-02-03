@@ -16,7 +16,7 @@ export default class QuestionResults extends Component {
                 <div className="col-md-8" name="question_content" >{question.content}</div>
                 <div className="col-md-3">
                   <div id={"question_"+question.id+"_add"} className="btn btn-small btn-default"
-                       onClick={() => this.props.addQuestion(question)}>
+                       onClick={() => this.props.addQuestion(this.props.form, question)}>
                     <b>Add</b>
                   </div>
                 </div>
