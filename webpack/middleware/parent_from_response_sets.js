@@ -18,7 +18,6 @@ const parentFromResponseSets = store => next => action => {
       if(action.payload.data.parent){
         store.dispatch({type: FETCH_RESPONSE_SET_FULFILLED, payload: {data: action.payload.data.parent}});
         action.payload.data.parent = ({id: action.payload.data.parent.id, name: action.payload.data.parent.name});
-        //action.payload.data.parent = Object.keys(action.payload.data.parent).reduce((id, name) => {return({id: id, name: name});});
       }
   }
 
