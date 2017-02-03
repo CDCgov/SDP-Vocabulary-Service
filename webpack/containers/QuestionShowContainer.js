@@ -13,6 +13,12 @@ class QuestionShowContainer extends Component {
     this.props.fetchQuestion(this.props.params.qId);
   }
 
+  componentDidUpdate(prevProps) {
+    if(prevProps.params.qId != this.props.params.qId){
+      this.props.fetchQuestion(this.props.params.qId);
+    }
+  }
+
   reviseQuestionButton(){
     if(this.props.currentUser && this.props.currentUser.id){
       return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/revise`}>Revise</a> );

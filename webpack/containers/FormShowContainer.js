@@ -10,6 +10,12 @@ class FormShowContainer extends Component {
     this.props.fetchForm(this.props.params.formId);
   }
 
+  componentDidUpdate(prevProps) {
+    if(prevProps.params.formId != this.props.params.formId){
+      this.props.fetchForm(this.props.params.formId);
+    }
+  }
+
   render() {
     if(!this.props.form){
       return (

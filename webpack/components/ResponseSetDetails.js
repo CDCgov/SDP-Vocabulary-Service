@@ -4,6 +4,7 @@ import Routes from "../routes";
 import moment from 'moment';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
+import VersionInfo from './VersionInfo';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -50,7 +51,7 @@ export default class ResponseSetDetails extends Component {
         <p>
           <strong>Questions:</strong><br/>
         </p>
-        { this.props.questions.map((q) => {
+        { this.props.questions && this.props.questions.map((q) => {
           return (
             <div key={"rs_question_" + q.id}>
               <a href={Routes.questionPath(q.id)}>{q.content}</a><br/>
@@ -66,6 +67,12 @@ export default class ResponseSetDetails extends Component {
           <strong>Author: </strong>
           { responseSet.createdBy && responseSet.createdBy.email }
         </p>
+        { responseSet.parent &&
+          <p>
+            <strong>Extended from: </strong>
+            <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
+          </p>
+        }
         <p>
           <strong>Created: </strong>
           { moment(responseSet.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
@@ -75,6 +82,7 @@ export default class ResponseSetDetails extends Component {
           { responseSet.updated_by && responseSet.updated_by.email }
           { moment(responseSet.updatedAt,'').format('MMMM Do YYYY, h:mm:ss a') }
         </p>
+        <VersionInfo versionable={responseSet} versionableType='ResponseSet' />
         <Link to={`/responseSets/${this.props.responseSet.id}/revise`}>
           Revise
         </Link> |

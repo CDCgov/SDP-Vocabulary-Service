@@ -1,12 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import Routes from "../routes";
 import moment from 'moment';
-
-const routesMap = {
-  Form: Routes.formPath,
-  Question: Routes.questionPath,
-  ResponseSet: Routes.responseSetPath
-};
+import { Link } from 'react-router';
 
 export default class VersionInfo extends Component {
 
@@ -46,7 +40,7 @@ export default class VersionInfo extends Component {
               );
             }else{
               return (
-                <li key={v.id}><a href={routesMap[this.props.versionableType](v)}>Version: {v.version}</a> - Created {moment(v.createdAt,'').fromNow()}</li>
+                <li key={v.id}><Link to={`/${this.props.versionableType}s/${v.id}`}>Version: {v.version}</Link> - Created {moment(v.createdAt,'').fromNow()}</li>
               );
             }
           })}
