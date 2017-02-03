@@ -42,7 +42,7 @@ class QuestionSearchContainer extends Component {
             <div>
                 <SearchBar onSearchTermChange={term => this.questionFilter(term)} />
                 <QuestionResults questions={this.state.questions} responseSets={_.values(this.state.responseSets)}
-                                 addQuestion={this.props.addQuestion} />
+                                 addQuestion={this.props.addQuestion} form={this.props.form}/>
             </div>
     );
   }
@@ -55,7 +55,8 @@ function mapDispatchToProps(dispatch) {
 QuestionSearchContainer.propTypes = {
   allQs: React.PropTypes.array,
   allRs: React.PropTypes.array,
-  addQuestion: React.PropTypes.func.isRequired
+  addQuestion: React.PropTypes.func.isRequired,
+  form: React.PropTypes.object
 };
 
 export default connect(null, mapDispatchToProps)(QuestionSearchContainer);
