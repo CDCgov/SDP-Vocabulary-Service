@@ -1,13 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import Routes from "../routes";
 import moment from 'moment';
 import { Link } from 'react-router';
-
-const routesMap = {
-  Form: Routes.formPath,
-  Question: Routes.questionPath,
-  ResponseSet: Routes.responseSetPath
-};
 
 export default class VersionInfo extends Component {
 

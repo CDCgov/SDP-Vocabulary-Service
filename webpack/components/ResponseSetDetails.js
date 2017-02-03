@@ -67,7 +67,7 @@ export default class ResponseSetDetails extends Component {
           <strong>Author: </strong>
           { responseSet.createdBy && responseSet.createdBy.email }
         </p>
-        { responseSet.parent && 
+        { responseSet.parent &&
           <p>
             <strong>Extended from: </strong>
             <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
