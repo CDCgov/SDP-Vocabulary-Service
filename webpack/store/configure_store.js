@@ -18,7 +18,7 @@ export default function configureStore(initialState) {
     questionsFromResponseSets,
     questionsFromForms,
     responseSetsFromQuestions,
-    parentFromResponseSets
+    parentFromResponseSets,
     responseTypesFromQuestions,
     questionTypesFromQuestions
   );
