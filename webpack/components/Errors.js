@@ -7,19 +7,21 @@ export default class Errors extends Component {
         <div id="error_explanation">
           <h2>{this.errorCount()} error(s) prohibited this form from being saved:</h2>
           <ul>
-          {_.forOwn(this.props.errors, (field) => {
-            return _.map(this.props.errors[field], (e) => {
-              return <li>{field} - {e}</li>;
-            });
-          })}
+          {_.map(this.errorList(), (e, i) => <li key={i}>{e}</li>)}
           </ul>
         </div>
       );
+    } else {
+      return <div id="error_explanation" />;
     }
   }
 
   errorCount() {
-    return _.reduce(_.values(this.props.errors), 'length', 0);
+    return _.reduce(_.values(this.props.errors), (sum, v) => sum + v.length, 0);
+  }
+
+  errorList() {
+    return _.flatten(_.values(this.props.errors));
   }
 }
 
