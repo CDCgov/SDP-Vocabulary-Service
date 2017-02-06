@@ -91,11 +91,16 @@ export default class ResponseSetForm extends Component {
                              childName={'response'} />
 
           <div className="actions">
-            <input type="submit" value={`${this.props.action} Response Set`}/>
+            <input type="submit" value={`${this.actionWord()} Response Set`}/>
           </div>
         </div>
       </form>
     );
+  }
+
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend'};
+    return wordMap[this.props.action];
   }
 
   handleSubmit(event) {
