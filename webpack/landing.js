@@ -14,6 +14,7 @@ import ResponseSetShowContainer from './containers/ResponseSetShowContainer';
 import FormShowContainer from './containers/FormShowContainer';
 import QuestionShowContainer from './containers/QuestionShowContainer';
 import ResponseSetEditContainer from './containers/ResponseSetEditContainer';
+import QuestionEditContainer from './containers/QuestionEditContainer';
 import App from './containers/App';
 
 import configureStore from './store/configure_store';
@@ -31,7 +32,9 @@ ReactDOM.render(
           <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
           <Route path='/responseSets/:rsId/:action' component={ResponseSetEditContainer} />
         <Route path='/questions' component={QuestionIndexContainer} />
+          <Route path='/questions/new' component={QuestionEditContainer} />
           <Route path='/questions/:qId' component={QuestionShowContainer} />
+          <Route path='/questions/:qId/:action' component={QuestionEditContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));

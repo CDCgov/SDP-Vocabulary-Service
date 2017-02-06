@@ -1,10 +1,12 @@
 import axios from 'axios';
 import routes from '../routes';
+import { getCSRFToken } from './index';
 import {
   ADD_QUESTION,
   REMOVE_QUESTION,
   DELETE_QUESTION,
   REORDER_QUESTION,
+  SAVE_QUESTION,
   FETCH_QUESTION,
   FETCH_QUESTIONS
 } from './types';
@@ -43,7 +45,7 @@ export function reorderQuestion(index, direction) {
 export function fetchQuestions(searchTerms) {
   return {
     type: FETCH_QUESTIONS,
-    payload: axios.get(routes.questions_path(), {
+    payload: axios.get(routes.questionsPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params:  { search: searchTerms }
     })
@@ -53,8 +55,24 @@ export function fetchQuestions(searchTerms) {
 export function fetchQuestion(id) {
   return {
     type: FETCH_QUESTION,
-    payload: axios.get(routes.question_path(id), {
+    payload: axios.get(routes.questionPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
+  };
+}
+
+export function saveQuestion(question, callback=null) {
+  const authenticityToken  = getCSRFToken();
+  const linkedResponseSets = question.linkedResponseSets;
+  delete question.linkedResponseSets;
+  const postPromise = axios.post(routes.questionsPath(),
+                      {question, authenticityToken, linkedResponseSets},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  if (callback) {
+    postPromise.then(callback);
+  }
+  return {
+    type: SAVE_QUESTION,
+    payload: postPromise
   };
 }

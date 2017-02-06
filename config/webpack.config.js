@@ -21,8 +21,6 @@ var config = {
     'forms': './webpack/forms.js',
     'my_stuff': './webpack/my_stuff.js',
     'form_list': './webpack/form_list.js',
-    'question_index': './webpack/question_index.js',
-    'question_form': './webpack/question_form.js',
     'search': './webpack/search.js',
     'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',

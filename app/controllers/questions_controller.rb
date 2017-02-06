@@ -12,21 +12,6 @@ class QuestionsController < ApplicationController
   def show
   end
 
-  # GET /questions/new
-  def new
-    @question = Question.new
-    @response_sets  = ResponseSet.latest_versions
-    @question_types = QuestionType.all
-    @question.concepts.build(value: '', code_system: '', display_name: '')
-  end
-
-  # GET /questions/1/edit
-  def revise
-    q_to_revise = Question.find(params[:id])
-    @question = q_to_revise.build_new_revision
-    @question_types = QuestionType.all
-  end
-
   def link_response_sets(params)
     @response_sets = ResponseSet.where(id: params[:linked_response_sets])
     @question.response_sets << @response_sets

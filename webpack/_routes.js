@@ -600,6 +600,9 @@ Based on Rails routes of Vocabulary::Application
 // response_sets => /response_sets(.:format)
   // function(options)
   response_sets_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"response_sets",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
+// response_types => /response_types(.:format)
+  // function(options)
+  response_types_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"response_types",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
 // responses => /responses(.:format)
   // function(options)
   responses_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"responses",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
