@@ -27,14 +27,18 @@ export function fetchResponseSet(id) {
   };
 }
 
-export function saveResponseSet(responseSet, callback=null) {
+export function saveResponseSet(responseSet, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   const postPromise = axios.post(routes.responseSetsPath(),
                       {responseSet, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
-  if (callback) {
-    postPromise.then(callback);
+  if (failureHandler) {
+    postPromise.catch(failureHandler);
   }
+  if (successHandler) {
+    postPromise.then(successHandler);
+  }
+
   return {
     type: SAVE_RESPONSE_SET,
     payload: postPromise

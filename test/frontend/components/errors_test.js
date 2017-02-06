@@ -16,6 +16,6 @@ describe('Errors', () => {
   });
 
   it('should display the correct number of errors', () => {
-    expect(component.find('h2')).to.contain('3 error(s) prohibited the form from being saved.');
+    expect(component.find('h2')).to.contain('3 error(s) prohibited this form from being saved');
   });
 });
