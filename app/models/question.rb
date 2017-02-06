@@ -17,11 +17,11 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
   after_save do |question|
-    UpdateIndexJob.perform_async('question', ESQuestionSerializer.new(question))
+    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question).as_json)
   end
 
-  after_delete do |question|
-    DeleteFromIndexJob.perform_async('question', question.id)
+  after_destroy do |question|
+    DeleteFromIndexJob.perform_later('question', question.id)
   end
 
   def self.search(search)

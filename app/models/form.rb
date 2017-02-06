@@ -14,11 +14,11 @@ class Form < ApplicationRecord
                                            unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
 
   after_save do |form|
-    UpdateIndexJob.perform_async('form', ESFormSerializer.new(form))
+    UpdateIndexJob.perform_later('form', ESFormSerializer.new(form).as_json)
   end
 
-  after_delete do |form|
-    DeleteFromIndexJob.perform_async('form', form.id)
+  after_destroy do |form|
+    DeleteFromIndexJob.perform_later('form', form.id)
   end
   # Builds a new Form object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.

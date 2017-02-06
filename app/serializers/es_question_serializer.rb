@@ -8,13 +8,13 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :status
   attribute :category
   attribute :description
-  attribute :created_at, key: :createdAt
   attribute :updated_at, key: :updatedAt
+  attribute :created_at, key: :createdAt
   attribute :suggest
   attribute :updated_by, key: :updatedBy
   attribute :created_by, key: :createdBy
   attribute :response_sets, key: :responseSets
-  attribute :codes
+  attribute(:codes) { codes }
   attribute :forms
 
   def forms
@@ -46,6 +46,14 @@ class ESQuestionSerializer < ActiveModel::Serializer
   end
 
   def description
+  end
+
+  def updated_at
+    object.updated_at.as_json if object.updated_at
+  end
+
+  def created_at
+    object.created_at.as_json if object.created_at
   end
 
   def updated_by

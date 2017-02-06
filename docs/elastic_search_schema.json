@@ -28,187 +28,316 @@
   "mappings": {
     "question": {
       "properties": {
-        "suggest" : {"type" : "completion"},
-        "id" :{"type" : "string"},
-        "version_independent_id" : {"type" : "string"},
-        "version" : {"type" : "string"},
-        "status" :{"type" : "string"},
-        "category":{"type" : "string"},
-        "name" : {"type" : "string",
+        "suggest": {
+          "type": "completion"
+        },
+        "id": {
+          "type": "string"
+        },
+        "version_independent_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
           "fields": {
-              "trigram": {
-                "type": "text",
-                "analyzer": "trigram"
-              },
-              "reverse": {
-                "type": "text",
-                "analyzer": "reverse"
-              }
-            }},
-        "description" : {"type" : "string",
+            "trigram": {
+              "type": "text",
+              "analyzer": "trigram"
+            },
+            "reverse": {
+              "type": "text",
+              "analyzer": "reverse"
+            }
+          }
+        },
+        "description": {
+          "type": "string",
           "fields": {
-              "trigram": {
-                "type": "text",
-                "analyzer": "trigram"
-              },
-              "reverse": {
-                "type": "text",
-                "analyzer": "reverse"
-              }
-            }},
-        "createdAt" :{"type" : "date"},
-        "updatedAt" :{"type" : "date"},
-        "createdBy":{
+            "trigram": {
+              "type": "text",
+              "analyzer": "trigram"
+            },
+            "reverse": {
+              "type": "text",
+              "analyzer": "reverse"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "date"
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "updatedBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "type": "string"
+        },
+        "responseSets": {
           "type": "nested",
           "properties": {
-            "name" : {"type": "string"},
-            "email" : {"type": "string"},
-            "id" : {"type": "string"}
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
           }
-         },
-         "updatedBy":{
-           "type": "nested",
-           "properties": {
-             "name" : {"type": "string"},
-             "email" : {"type": "string"},
-             "id" : {"type": "string"}
-           }
-          },
-        "content": {"type" : "string"},
-        "responseSets":{
-          "type" : "nested",
-           "properties" :{
-             "id" : {"type" : "string"},
-             "name" : {"type" : "string"}
-             }},
+        },
         "codes": {
           "type": "nested",
           "properties": {
-            "code":    { "type": "string"  },
-            "displayName": { "type": "string"  },
-            "codeSystem":     { "type": "string"   },
-            "codeSystemOid":   { "type": "string"   },
-            "date":    { "type": "date"    }
-          }
-        }
-      }
-    },
-    "form":{
-      "properties" :{
-        "suggest" : {"type" : "completion"},
-        "id" :{"type" : "string"},
-        "version_independent_id" : {"type" : "string"},
-        "version" : {"type" : "string"},
-        "status" :{"type" : "string"},
-        "category":{"type" : "string"},
-        "name" : {"type" : "string",
-          "fields": {
-              "trigram": {
-                "type": "text",
-                "analyzer": "trigram"
-              },
-              "reverse": {
-                "type": "text",
-                "analyzer": "reverse"
-              }
-            }},
-        "description" : {"type" : "string",
-          "fields": {
-              "trigram": {
-                "type": "text",
-                "analyzer": "trigram"
-              },
-              "reverse": {
-                "type": "text",
-                "analyzer": "reverse"
-              }
-            }},
-        "createdAt" :{"type" : "date"},
-        "updatedAt" :{"type" : "date"},
-        "createdBy":{
-          "type": "nested",
-          "properties": {
-            "name" : {"type": "string"},
-            "email" : {"type": "string"},
-            "id" : {"type": "string"}
-          }
-         },
-         "updatedBy":{
-           "type": "nested",
-           "properties": {
-             "name" : {"type": "string"},
-             "email" : {"type": "string"},
-             "id" : {"type": "string"}
-           }
-          },
-        "questions" : {
-          "type" : "nested",
-          "properties":{
-            "content":{"type" : "string"},
-            "responseSet":{"type" : "string"},
-            "id" : {"type" : "string"}
-          }
-        }
-      }
-    },
-    "responseSet":{
-      "properties" :{
-        "suggest" : {"type" : "completion"},
-        "id" :{"type" : "string"},
-        "version_independent_id" : {"type" : "string"},
-        "version" : {"type" : "string"},
-        "status" :{"type" : "string"},
-        "category":{"type" : "string"},
-        "name" : {"type" : "string",
-          "fields": {
-              "trigram": {
-                "type": "text",
-                "analyzer": "trigram"
-              },
-              "reverse": {
-                "type": "text",
-                "analyzer": "reverse"
-              }
-            }},
-        "description" : {"type" : "string",
-          "fields": {
-              "trigram": {
-                "type": "text",
-                "analyzer": "trigram"
-              },
-              "reverse": {
-                "type": "text",
-                "analyzer": "reverse"
-              }
-            }},
-        "createdAt" :{"type" : "date"},
-        "updatedAt" :{"type" : "date"},
-        "createdBy":{
-          "type": "nested",
-          "properties": {
-            "name" : {"type": "string"},
-            "email" : {"type": "string"},
-            "id" : {"type": "string"}
-          }
-         },
-         "updatedBy":{
-           "type": "nested",
-           "properties": {
-             "name" : {"type": "string"},
-             "email" : {"type": "string"},
-             "id" : {"type": "string"}
-           }
-          },
-          "codes": {
-            "type": "nested",
-            "properties": {
-              "code":    { "type": "string"  },
-              "displayName": { "type": "string"  },
-              "codeSystem":     { "type": "string"   },
-              "codeSystemOid":   { "type": "string"   },
-              "date":    { "type": "date"    }
+            "code": {
+              "type": "string"
+            },
+            "displayName": {
+              "type": "string"
+            },
+            "codeSystem": {
+              "type": "string"
+            },
+            "codeSystemOid": {
+              "type": "string"
+            },
+            "date": {
+              "type": "date"
             }
           }
+        }
+      }
+    },
+    "form": {
+      "properties": {
+        "suggest": {
+          "type": "completion"
+        },
+        "id": {
+          "type": "string"
+        },
+        "version_independent_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "fields": {
+            "trigram": {
+              "type": "text",
+              "analyzer": "trigram"
+            },
+            "reverse": {
+              "type": "text",
+              "analyzer": "reverse"
+            }
+          }
+        },
+        "description": {
+          "type": "string",
+          "fields": {
+            "trigram": {
+              "type": "text",
+              "analyzer": "trigram"
+            },
+            "reverse": {
+              "type": "text",
+              "analyzer": "reverse"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "date"
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "updatedBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "questions": {
+          "type": "nested",
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "responseSet": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "response_set": {
+      "properties": {
+        "suggest": {
+          "type": "completion"
+        },
+        "id": {
+          "type": "string"
+        },
+        "version_independent_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "fields": {
+            "trigram": {
+              "type": "text",
+              "analyzer": "trigram"
+            },
+            "reverse": {
+              "type": "text",
+              "analyzer": "reverse"
+            }
+          }
+        },
+        "description": {
+          "type": "string",
+          "fields": {
+            "trigram": {
+              "type": "text",
+              "analyzer": "trigram"
+            },
+            "reverse": {
+              "type": "text",
+              "analyzer": "reverse"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "date"
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "updatedBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "codes": {
+          "type": "nested",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "displayName": {
+              "type": "string"
+            },
+            "codeSystem": {
+              "type": "string"
+            },
+            "codeSystemOid": {
+              "type": "string"
+            },
+            "date": {
+              "type": "date"
+            }
+          }
+        }
       }
     }
   }

@@ -8,22 +8,31 @@ class ESFormSerializer < ActiveModel::Serializer
   attribute :status
   attribute :category
   attribute :description
-  attribute :createdAt
-  attribute :updatedAt
+  attribute :updated_at, key: :updatedAt
+  attribute :created_at, key: :createdAt
   attribute :suggest
-  attribute :updatedBy
-  attribute :createdBy
+  attribute :updated_by, key: :updatedBy
+  attribute :created_by, key: :createdBy
   attribute :questions
+  attribute(:codes) { codes }
 
   def codes
-    object.codes.collect { |c| CodeSerializer.new(c) }
+    [] # object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
+
+  def updated_at
+    object.updated_at.as_json if object.updated_at
+  end
+
+  def created_at
+    object.created_at.as_json if object.created_at
   end
 
   def questions
     object.form_questions.collect do |fq|
       { id: fq.question_id,
         name: fq.question.content,
-        codes: question_codes(fq.question.codes),
+        codes: (fq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
         response_set: fq.response_set.name,
         response_set_id: fq.response_set_id }
     end
@@ -31,5 +40,23 @@ class ESFormSerializer < ActiveModel::Serializer
 
   def suggest
     object.name
+  end
+
+  def category
+  end
+
+  def description
+  end
+
+  def status
+    'draft'
+  end
+
+  def updated_by
+    # UserSerializer.new(object.updated_by).as_json if object.updated_by
+  end
+
+  def created_by
+    UserSerializer.new(object.created_by).as_json if object.created_by
   end
 end

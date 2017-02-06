@@ -15,11 +15,11 @@ class ResponseSet < ApplicationRecord
   accepts_nested_attributes_for :responses, allow_destroy: true
 
   after_save do |form|
-    UpdateIndexJob.perform_async('form', ESFormSerializer.new(form))
+    UpdateIndexJob.perform_later('form', ESFormSerializer.new(form).as_json)
   end
 
-  after_delete do |form|
-    DeleteFromIndexJob.perform_async('form', form.id)
+  after_destroy do |form|
+    DeleteFromIndexJob.perform_later('form', form.id)
   end
 
   def self.search(search)
