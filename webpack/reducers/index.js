@@ -10,9 +10,10 @@ import responseSets from './response_sets_reducer';
 import currentUser from './current_user_reducer';
 import questionTypes from './question_types';
 import responseTypes from './response_types';
+import notifications from './notifications';
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, forms, questionTypes, responseTypes
+  questions, comments, stats, currentUser, responseSets, forms, questionTypes, responseTypes, notifications
 });
 
 export default rootReducer;
