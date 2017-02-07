@@ -9,6 +9,7 @@ import { responseSetsProps }  from '../prop-types/response_set_props';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchQuestionTypes } from '../actions/question_type_actions';
 import { fetchResponseSets }  from '../actions/response_set_actions';
+import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
 
 class QuestionEditContainer extends Component {
   componentWillMount() {
@@ -49,7 +50,7 @@ function mapStateToProps(state, ownProps) {
   }
   props.questionTypes = state.questionTypes;
   props.responseTypes = state.responseTypes;
-  props.responseSets  = state.responseSets;
+  props.responseSets  = getMostRecentResponseSets(state);
   return props;
 }
 

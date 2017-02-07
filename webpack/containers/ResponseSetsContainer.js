@@ -6,6 +6,7 @@ import ResponseSetList from '../components/ResponseSetList';
 import ResponseSetListSearch from '../components/ResponseSetListSearch';
 import Routes from '../routes';
 import { responseSetProps } from '../prop-types/response_set_props';
+import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
 
 class ResponseSetsContainer extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class ResponseSetsContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    responseSets: state.responseSets
+    responseSets: getMostRecentResponseSets(state)
   };
 }
 
