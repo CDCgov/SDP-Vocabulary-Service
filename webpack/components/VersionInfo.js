@@ -6,28 +6,15 @@ export default class VersionInfo extends Component {
 
   render() {
     const {versionable} = this.props;
-    if(!versionable.otherVersions || versionable.otherVersions.length < 1){
+    if(!versionable.allVersions || versionable.allVersions.length < 1){
       return null;
-    }
-    var mostRecent = '';
-    if(versionable.mostRecent){
-      mostRecent = (
-        <p>
-          <strong>Most Recent Version: </strong>
-          {versionable.version} (Currently Selected)
-        </p>
-      );
-    }else{
-      mostRecent = (
-        <p>
-          <strong>Most Recent Version: </strong>
-          {versionable.mostRecent} (Currently Selected)
-        </p>
-      );
     }
     return (
       <div>
-        {mostRecent}
+        <p>
+          <strong>Most Recent Version: </strong>
+          {versionable.mostRecent} {versionable.version === versionable.mostRecent ? '(Currently Selected)' : ''}
+        </p>
         <p>
           <strong>Versions:</strong>
         </p>
