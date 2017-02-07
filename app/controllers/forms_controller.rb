@@ -36,6 +36,7 @@ class FormsController < ApplicationController
   # POST /forms
   # POST /forms.json
   def create
+    binding.pry
     @form = Form.new(form_params)
     @form.created_by = current_user
 
