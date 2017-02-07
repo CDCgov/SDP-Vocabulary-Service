@@ -16,12 +16,15 @@ class Question < ApplicationRecord
   validates :content, presence: true
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
-  after_save do |question|
-    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question).as_json)
+  after_commit :index, on: [:create, :update]
+  after_commit :delete_index, on: :destroy
+
+  def index
+    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(self).as_json)
   end
 
-  after_destroy do |question|
-    DeleteFromIndexJob.perform_later('question', question.id)
+  def delete_index
+    DeleteFromIndexJob.perform_later('question', id)
   end
 
   def self.search(search)

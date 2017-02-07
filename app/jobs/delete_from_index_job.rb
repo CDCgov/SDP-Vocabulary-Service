@@ -6,7 +6,7 @@ class DeleteFromIndexJob < ApplicationJob
     # call elasticsearch
     SDP::Elasticsearch.with_client do |client|
       if client.exists?(index: 'vocabulary', type: type.underscore, id: id)
-        client.delete index: 'vocabulary', type: type.underscore, id: data[:id]
+        client.delete index: 'vocabulary', type: type.underscore, id: id
       end
     end
   end

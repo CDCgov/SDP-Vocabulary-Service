@@ -33,7 +33,7 @@ class ESFormSerializer < ActiveModel::Serializer
       { id: fq.question_id,
         name: fq.question.content,
         codes: (fq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
-        response_set: fq.response_set.name,
+        response_set: fq.response_set.try(:name),
         response_set_id: fq.response_set_id }
     end
   end
