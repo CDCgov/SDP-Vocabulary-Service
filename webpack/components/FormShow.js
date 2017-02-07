@@ -17,7 +17,7 @@ class FormShow extends Component {
         <p><strong>Created By:</strong> {form.userId} </p>
         <QuestionList questions={form.questions} routes={Routes} />
         <div className="no-print">
-          <a className="btn btn-default" href={Routes.reviseFormPath(form)}>Revise</a>
+          <a className="btn btn-default" href={`/landing#/forms/${this.props.form.id}/revise`}>Revise</a>
           <button className="btn btn-default">Print</button>
           <a className="btn btn-default" href={Routes.formPath(form)}>Export to Redcap</a>
         </div>

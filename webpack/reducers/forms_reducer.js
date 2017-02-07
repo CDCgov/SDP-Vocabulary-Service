@@ -18,6 +18,10 @@ export default function forms(state = {}, action) {
       return formClone;
     case ADD_QUESTION:
       var {question, form} = action.payload;
+      let formQuestionIds = form.questions.map((e) => e.id);
+      if (formQuestionIds.includes(question.id)) {
+        return state
+      }
       var newQuestion = Object.assign({}, question);
       var newForm = Object.assign({}, form);
       newForm.questions.push(newQuestion);
@@ -41,4 +45,11 @@ export default function forms(state = {}, action) {
     default:
       return state;
   }
+}
+
+
+let move = (array, from, to) => {
+  let copyArray = array.slice(0);
+  copyArray.splice(to, 0, copyArray.splice(from, 1)[0]);
+  return copyArray;
 }

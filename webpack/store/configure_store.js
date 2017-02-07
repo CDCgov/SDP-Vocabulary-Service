@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import createLogger from 'redux-logger';
 
@@ -23,7 +23,10 @@ export default function configureStore(initialState) {
     questionTypesFromQuestions
   );
 
-  let store = createStore(rootReducer, initialState, middleware);
+  // Sets up http://zalmoxisus.github.io/redux-devtools-extension/
+  const composeEnhancers = process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+  let store = createStore(rootReducer, initialState, composeEnhancers(middleware));
 
   return store;
 }
