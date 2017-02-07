@@ -1,5 +1,9 @@
 import axios from 'axios';
 import routes from '../routes';
+import { getCSRFToken } from './index';
+import {
+  FETCH_NOTIFICATIONS
+} from './types';
 
 export function readNotification(notificationIds) {
   axios.post(routes.notifications_mark_read_path(), {
@@ -8,15 +12,11 @@ export function readNotification(notificationIds) {
   });
 }
 
-function getCSRFToken() {
-  const metas = document.getElementsByTagName('meta');
-  for (let i = 0; i < metas.length; i++) {
-    const meta = metas[i];
-    if (meta.getAttribute('name') === 'csrf-token') {
-      return meta.getAttribute('content');
-    }
-  }
-
-  return null;
+export function fetchNotifications() {
+  return {
+    type: FETCH_NOTIFICATIONS,
+    payload: axios.get(routes.notificationsPath(), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    })
+  };
 }
-

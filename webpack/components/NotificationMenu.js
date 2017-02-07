@@ -20,7 +20,7 @@ export default class NotificationMenu extends Component {
 
   render() {
     return (
-      <div className="notification-menu">
+      <ul className="cdc-nav-dropdown">
         <ul>
           {this.props.notifications.map((notif) => {
             return(
@@ -28,7 +28,7 @@ export default class NotificationMenu extends Component {
             );
           })}
         </ul>
-      </div>
+      </ul>
     );
   }
 }

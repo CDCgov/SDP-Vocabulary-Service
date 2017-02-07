@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { readNotification } from '../actions/notification';
 
-export default class NotificationDropdown extends Component {
+class NotificationDropdown extends Component {
   constructor(props){
     super(props);
 
@@ -25,20 +25,20 @@ export default class NotificationDropdown extends Component {
   render() {
     if(this.state.notificationCount > 0){
       return (
-        <div className="notif-button" onClick={() => this.onDropdownClick(this.props.notifications)}>
+        <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onClick={() => this.onDropdownClick(this.props.notifications)}>
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
           Alerts
           <span className="caret"></span>
           <span className="alerts-badge">{this.state.notificationCount}</span>
-        </div>
+        </a>
       );
     } else {
       return (
-        <div className="notif-button">
+        <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
           Alerts
           <span className="caret"></span>
-        </div>
+        </a>
       );
     }
   }
@@ -48,3 +48,5 @@ NotificationDropdown.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number
 };
+
+export default NotificationDropdown;
