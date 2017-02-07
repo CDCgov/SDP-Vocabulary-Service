@@ -44,6 +44,7 @@ export function reorderQuestion(form, index, direction) {
 }
 
 export function fetchQuestions(searchTerms) {
+  console.log("FETCHING QUESTIONS");
   return {
     type: FETCH_QUESTIONS,
     payload: axios.get(routes.questionsPath(), {
