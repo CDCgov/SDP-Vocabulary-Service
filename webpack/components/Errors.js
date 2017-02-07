@@ -1,0 +1,30 @@
+import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
+export default class Errors extends Component {
+  render() {
+    if (_.keys(this.props.errors).length > 0) {
+      return (
+        <div id="error_explanation">
+          <h2>{this.errorCount()} error(s) prohibited this form from being saved:</h2>
+          <ul>
+          {_.map(this.errorList(), (e, i) => <li key={i}>{e}</li>)}
+          </ul>
+        </div>
+      );
+    } else {
+      return <div id="error_explanation" />;
+    }
+  }
+
+  errorCount() {
+    return _.reduce(_.values(this.props.errors), (sum, v) => sum + v.length, 0);
+  }
+
+  errorList() {
+    return _.flatten(_.values(this.props.errors));
+  }
+}
+
+Errors.propTypes = {
+  errors: PropTypes.objectOf(PropTypes.array)
+};

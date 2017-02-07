@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import CodedSetTableForm from './CodedSetTableForm';
+import Errors from './Errors';
 import { responseSetProps } from '../prop-types/response_set_props';
 
 export default class ResponseSetForm extends Component {
@@ -55,6 +56,7 @@ export default class ResponseSetForm extends Component {
   render() {
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
+        <Errors errors={this.state.errors} />
         <div className="row">
           <div className="row">
             <div className="col-md-4">
@@ -89,20 +91,24 @@ export default class ResponseSetForm extends Component {
                              childName={'response'} />
 
           <div className="actions">
-            <input type="submit" value={`${this.props.action} Response Set`}/>
+            <input type="submit" value={`${this.actionWord()} Response Set`}/>
           </div>
         </div>
       </form>
     );
   }
 
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend'};
+    return wordMap[this.props.action];
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-    this.props.responseSetSubmitter(this.state, (response) => {
-      // TODO: Handle when the saving response set fails.
-      if (response.status === 201) {
-        this.props.router.push(`/responseSets/${response.data.id}`);
-      }
+    this.props.responseSetSubmitter(this.state, (successResponse) => {
+      this.props.router.push(`/responseSets/${successResponse.data.id}`);
+    }, (failureResponse) => {
+      this.setState({errors: failureResponse.response.data});
     });
   }
 
