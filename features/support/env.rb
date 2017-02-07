@@ -7,61 +7,48 @@
 require 'cucumber/rails'
 
 require 'capybara/cucumber'
+require 'capybara/webkit'
 require 'capybara/accessible'
 require 'headless'
-require 'capybara/webkit'
 require 'axe/cucumber/step_definitions'
 
-# if ENV['IN_BROWSER']
-# On demand: non-headless tests via Selenium/WebDriver
-# To run the scenarios in browser (default: Firefox), use the following command line:
-# IN_BROWSER=true bundle exec cucumber
-# or (to have a pause of 1 second between each step):
-# IN_BROWSER=true PAUSE=1 bundle exec cucumber
-#  Capybara.default_driver = :accessible_selenium
-#  AfterStep do
-#    sleep(ENV['PAUSE'].to_i || 0)
-#  end
-# else
-
-Capybara::Webkit.configure do |config|
-  # config.debug = true
-  config.allow_url('fonts.googleapis.com')
-  config.skip_image_loading
-end
-
-class Capybara::Accessible::WebkitDriverAdapter
-  def modal_dialog_present?(_driver)
-    # driver.alert_messages.any?
-    false
+if ENV['IN_BROWSER']
+  # On demand: non-headless tests via Selenium/WebDriver
+  # To run the scenarios in browser (default: Firefox), use the following command line:
+  # IN_BROWSER=true bundle exec cucumber
+  # or (to have a pause of 1 second between each step):
+  # IN_BROWSER=true PAUSE=1 bundle exec cucumber
+  Capybara.default_driver = :accessible_selenium
+  AfterStep do
+    sleep(ENV['PAUSE'].to_i || 0)
   end
+else
+
+  Capybara::Webkit.configure do |config|
+    config.allow_url('fonts.googleapis.com')
+    config.skip_image_loading
+  end
+
+  class Capybara::Accessible::WebkitDriverAdapter
+    def modal_dialog_present?(_driver)
+      # driver.alert_messages.any?
+      false
+    end
+  end
+
+  Capybara.register_driver :accessible_webkit2 do |app|
+    driver = Capybara::Webkit::Driver.new(app, Capybara::Webkit::Configuration.to_hash)
+    adaptor = Capybara::Accessible::WebkitDriverAdapter.new
+    Capybara::Accessible.setup(driver, adaptor)
+  end
+
+  headless = Headless.new
+  headless.start
+
+  Capybara.default_driver = :accessible_webkit2
+  Capybara.javascript_driver = :acessible_webkit2
+
 end
-
-Capybara.register_driver :accessible_webkit2 do |app|
-  driver = Capybara::Webkit::Driver.new(app, Capybara::Webkit::Configuration.to_hash)
-  adaptor = Capybara::Accessible::WebkitDriverAdapter.new
-  Capybara::Accessible.setup(driver, adaptor)
-end
-
-#  Capybara.register_driver :webkit_accessible do |app|
-#    libs_path = Rails.root.join('features/support/js_libs/')
-#    js_log = File.open('log/test_phantomjs.log', 'a')
-#    driver = Capybara::Poltergeist::Driver.new(app,
-#                                               extensions: %W(#{libs_path}promise.js),
-#                                               phantomjs_logger: js_log)
-#    adaptor = Capybara::Accessible::PoltergeistDriverAdapter.new
-#    Capybara::Accessible.setup(driver, adaptor)
-#  end
-
-headless = Headless.new
-headless.start
-
-# Capybara.default_driver    = :accessible_poltergeist_with_promises
-Capybara.default_driver = :accessible_webkit2
-# Capybara.javascript_driver = :accessible_poltergeist
-Capybara.javascript_driver = :acessible_webkit2
-
-# end
 
 Capybara.default_max_wait_time = 5
 
