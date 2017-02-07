@@ -28,7 +28,7 @@ ReactDOM.render(
         <IndexRoute component={DashboardContainer} />
         <Route path='/forms' component={FormsIndexContainer} />
         <Route path='/forms/:formId' component={FormShowContainer} />
-        <Route path='/forms/:id/:action' component={FormsEditContainer} />
+        <Route path='/forms/:formId/:action' component={FormsEditContainer} />
         <Route path='/responseSets' component={ResponseSetsContainer} />
           <Route path='/responseSets/new' component={ResponseSetEditContainer} />
           <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
