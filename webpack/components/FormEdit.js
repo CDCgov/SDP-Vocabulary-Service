@@ -46,10 +46,11 @@ class FormEdit extends Component {
 
   stateForRevise(form) {
     const id = form.id;
-    const version = form.version;
+    const versionIndependentId = form.versionIndependentId;
+    const version = form.version + 1;
     const name = form.name || '';
-    const questions = form.questions || [];
-    return {name, questions, id, version}
+    const linkedQuestions = form.questions || [];
+    return {name, linkedQuestions, id, version, versionIndependentId}
   }
 
 
@@ -78,7 +79,10 @@ class FormEdit extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.formSubmitter(this.state, (response) => {
+    // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
+    let form = Object.assign({}, this.state)
+    form.linkedQuestions = this.props.form.questions.map((q) => q.id)
+    this.props.formSubmitter(form, (response) => {
       // TODO: Handle when the saving response set fails.
       if (response.status === 201) {
         this.props.router.push(`/forms/${response.data.id}`);
