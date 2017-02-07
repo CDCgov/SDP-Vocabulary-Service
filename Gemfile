@@ -42,8 +42,10 @@ group :development, :test do
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner.git'
   gem 'poltergeist'
   gem 'scss_lint', require: false
+  gem 'headless'
   gem 'capybara'
   gem 'capybara-accessible'
+  gem 'capybara-webkit'
   gem 'axe-matchers'
   gem 'selenium-webdriver', '2.48.0'
   gem 'parallel_tests'

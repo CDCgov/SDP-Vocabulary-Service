@@ -11,7 +11,7 @@ Given(/^I am on the "(.+)" page$/) do |url|
 end
 
 When(/^I go to the dashboard$/) do
-  visit '/'
+  visit '/landing/'
 end
 
 When(/^I wait (\d+) second\(s\)$/) do |seconds|
