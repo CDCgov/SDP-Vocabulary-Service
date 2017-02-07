@@ -18,6 +18,12 @@ class FormsContainer extends Component {
     this.props.fetchQuestions();
   }
 
+  componentWillUpdate(nextProps) {
+    if(this.props.params.formId != nextProps.params.formId) {
+      console.debug("New Form");
+    }
+  }
+
   render() {
     if(!this.props.form){
       return (
@@ -53,6 +59,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchResponseSets, fetchQuestions, fetchForm, removeQuestion, reorderQuestion, saveForm}, dispatch);
 }
 function mapStateToProps(state, ownProps) {
+  console.log("Map State");
   return {
     form: state.forms[ownProps.params.formId],
     responseSets: _.values(state.responseSets),
