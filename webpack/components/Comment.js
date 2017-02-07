@@ -17,7 +17,7 @@ class Comment extends Component {
               <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
             </button>
             <span className="label label-info">{this.props.comment.id}</span>
-            {moment(this.props.comment.created_at,'').fromNow()} by {this.props.comment.userName}
+            {moment(this.props.comment.createdAt,'').fromNow()} by {this.props.comment.userName}
           </div>
 
           <div className="panel-collapse collapse in" id={"comment_id_"+this.props.comment.id}>

@@ -4,10 +4,22 @@ import { bindActionCreators } from 'redux';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import { addComment, fetchComments} from '../actions/comment';
+import _ from 'lodash';
 // comments url
 // reply to url function
 //
 class CommentList extends Component {
+  componentWillMount() {
+    console.log(this.props.commentableType);
+    console.log(this.props.commentableId);
+    this.props.fetchComments(this.props.commentableType, this.props.commentableId);
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.commentableId !== this.props.commentableId) {
+      this.props.fetchComments(this.props.commentableType, this.props.commentableId);
+    }
+  }
 
   render() {
     return (
@@ -42,9 +54,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({addComment, fetchComments}, dispatch);
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    comments: state.comments
+    comments: state.comments.filter((comment) => comment.commentableId === ownProps.commentableId)
   };
 }
 
