@@ -33,12 +33,17 @@ class FormsController < ApplicationController
     @form = Form.find(params[:id])
   end
 
+
+  def link_questions(params)
+    @questions = Question.where(id: params[:form][:linked_questions])
+    @form.questions << @questions
+  end
   # POST /forms
   # POST /forms.json
   def create
-    binding.pry
     @form = Form.new(form_params)
     @form.created_by = current_user
+    link_questions(params)
 
     respond_to do |format|
       if @form.save
