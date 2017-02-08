@@ -61,6 +61,10 @@ module Versionable
     end
   end
 
+  def as_json(options = {})
+    super((options || {}).merge(methods: [:most_recent]))
+  end
+
   class_methods do
     def latest_versions
       joins("INNER JOIN (SELECT version_independent_id, MAX(version) as version
