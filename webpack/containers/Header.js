@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
-import NotificationDropdown from './NotificationDropdown';
-import NotificationMenu from './NotificationMenu';
-import { fetchNotifications } from '../actions/notification';
+import NotificationDropdown from '../components/NotificationDropdown';
+import NotificationMenu from '../components/NotificationMenu';
+import { fetchNotifications } from '../actions/notification_actions';
 
 let LoginMenu = ({currentUser={email:null}}) => {
   let loggedIn = currentUser ? true : false;
