@@ -1,13 +1,21 @@
 import React, { Component, PropTypes } from 'react';
-import { readNotification } from '../actions/notification';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { readNotifications } from '../actions/notification';
 
 class NotificationDropdown extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      notificationCount: props.notificationCount
+      notificationCount: this.props.notificationCount
     };
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.notificationCount !== this.props.notificationCount){
+      this.setState({ notificationCount: this.props.notificationCount });
+    }
   }
 
   onDropdownClick(notifications) {
@@ -15,7 +23,7 @@ class NotificationDropdown extends Component {
     notifications.forEach((notif) => {
       ids.push(notif.id);
     });
-    readNotification(ids);
+    this.props.readNotifications(ids);
 
     this.setState({
       notificationCount: 0
@@ -23,7 +31,7 @@ class NotificationDropdown extends Component {
   }
 
   render() {
-    if(this.state.notificationCount > 0){
+    if(this.state.notificationCount > 0 && this.props.notifications){
       return (
         <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onClick={() => this.onDropdownClick(this.props.notifications)}>
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
@@ -44,9 +52,14 @@ class NotificationDropdown extends Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({readNotifications}, dispatch);
+}
+
 NotificationDropdown.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object),
-  notificationCount: PropTypes.number
+  notificationCount: PropTypes.number,
+  readNotifications: PropTypes.func
 };
 
-export default NotificationDropdown;
+export default connect(null, mapDispatchToProps)(NotificationDropdown);
