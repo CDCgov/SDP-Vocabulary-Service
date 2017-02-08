@@ -2,14 +2,18 @@ import axios from 'axios';
 import routes from '../routes';
 import { getCSRFToken } from './index';
 import {
-  FETCH_NOTIFICATIONS
+  FETCH_NOTIFICATIONS,
+  READ_NOTIFICATIONS
 } from './types';
 
-export function readNotification(notificationIds) {
-  axios.post(routes.notifications_mark_read_path(), {
-    authenticityToken: getCSRFToken(),
-    ids: [notificationIds]
-  });
+export function readNotifications(notificationIds) {
+  return {
+    type: READ_NOTIFICATIONS,
+    payload: axios.post(routes.notifications_mark_read_path(), {
+      authenticityToken: getCSRFToken(),
+      ids: [notificationIds]
+    })
+  };
 }
 
 export function fetchNotifications() {
