@@ -23,6 +23,8 @@ if ENV['IN_BROWSER']
     sleep(ENV['PAUSE'].to_i || 0)
   end
 else
+  require 'fakeweb'
+  FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: 'Hello World!')
 
   Capybara.register_driver :accessible_poltergeist_with_promises do |app|
     libs_path = Rails.root.join('features/support/js_libs/')
