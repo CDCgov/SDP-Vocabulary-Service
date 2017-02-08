@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {formProps} from '../prop-types/form_props';
-import { responseSetsProps } from '../prop-types/response_set_props';
+import { responseSetProps } from '../prop-types/response_set_props';
 import QuestionItem from './QuestionItem';
 
 let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange}) => {
@@ -46,7 +46,7 @@ AddedQuestions.propTypes = {
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion: PropTypes.func.isRequired,
   handleResponseSetChange: PropTypes.func.isRequired,
-  responseSets: responseSetsProps
+  responseSets: PropTypes.arrayOf(responseSetProps)
 
 };
 
@@ -170,7 +170,7 @@ FormEdit.propTypes = {
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion: PropTypes.func.isRequired,
   router: PropTypes.object.isRequired,
-  responseSets: responseSetsProps
+  responseSets: PropTypes.arrayOf(responseSetProps)
 
 
 
