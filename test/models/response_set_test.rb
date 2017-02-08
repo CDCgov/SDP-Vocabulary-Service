@@ -59,13 +59,13 @@ class ResponseSetTest < ActiveSupport::TestCase
     rs.oid = "#{prefix}.8"
     rs.save
 
-    # Should rsind next available oid which is .7 NOT .9
+    # Should find next available oid which is .7 NOT .9
     rs = ResponseSet.new
     rs.id = 6
     rs.save
     assert_equal "#{prefix}.7", rs.oid
 
-    # Should rsollow special validation rules rsor new versions
+    # Should follow special validation rules for new versions
     rs2 = ResponseSet.new
     rs2.version_independent_id = rs.version_independent_id
     rs2.version = 2
