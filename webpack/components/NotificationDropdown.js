@@ -12,9 +12,9 @@ class NotificationDropdown extends Component {
     };
   }
 
-  componentDidUpdate(prevProps){
-    if(prevProps.notificationCount !== this.props.notificationCount){
-      this.setState({ notificationCount: this.props.notificationCount });
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.notificationCount !== this.props.notificationCount){
+      this.setState({ notificationCount: nextProps.notificationCount });
     }
   }
 

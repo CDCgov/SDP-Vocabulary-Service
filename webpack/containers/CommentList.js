@@ -4,14 +4,9 @@ import { bindActionCreators } from 'redux';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import { addComment, fetchComments} from '../actions/comment';
-import _ from 'lodash';
-// comments url
-// reply to url function
-//
+
 class CommentList extends Component {
   componentWillMount() {
-    console.log(this.props.commentableType);
-    console.log(this.props.commentableId);
     this.props.fetchComments(this.props.commentableType, this.props.commentableId);
   }
 
