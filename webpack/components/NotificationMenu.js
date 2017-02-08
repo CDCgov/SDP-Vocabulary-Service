@@ -21,7 +21,7 @@ export default class NotificationMenu extends Component {
   render() {
     return (
       <ul className="cdc-nav-dropdown">
-        <ul>
+        <ul className="notification-menu">
           {this.props.notifications.map((notif) => {
             return(
               <Notification key={notif.id} notification={notif} onNotifClick={(url) => this.notificationClick(url)} />
