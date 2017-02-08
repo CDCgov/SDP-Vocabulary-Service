@@ -7,7 +7,7 @@ module SDP
 
     def self.notify_of_reply(comment)
       if comment.parent && comment.parent.user != comment.user
-        message = "#{comment.user.full_name} replyed to your comment"
+        message = "#{comment.user.full_name} replied to your comment"
         url = commentable_url(comment)
         Notification.create(user: comment.parent.user,
                             message: message, url: url)
@@ -28,7 +28,7 @@ module SDP
       commentable = comment.commentable
       url = case commentable
             when Question
-              url_helper.question_url(commentable)
+              "/landing#/questions/#{commentable.id}"
             when ResponseSet
               url_helper.response_set_url(commentable)
             when Form
