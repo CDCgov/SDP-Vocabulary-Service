@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
   private
 
   def create_params
-    params.require(:comment).permit(:parent_id, :commentableType, :commentableId, :title, :comment)
+    params.require(:comment).permit(:parent_id, :commentable_type, :commentable_id, :title, :comment)
   end
 
   def find_commentable
