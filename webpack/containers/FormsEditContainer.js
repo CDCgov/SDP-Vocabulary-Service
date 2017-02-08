@@ -8,11 +8,11 @@ import { fetchResponseSets } from '../actions/response_set_actions';
 import { fetchQuestions } from '../actions/questions_actions';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
-import { questionsProps } from '../prop-types/question_props';
-import { responseSetsProps } from '../prop-types/response_set_props';
+import { questionProps } from '../prop-types/question_props';
+import { responseSetProps } from '../prop-types/response_set_props';
 import _ from 'lodash';
 
-class FormsContainer extends Component {
+class FormsEditContainer extends Component {
   componentWillMount() {
     this.props.fetchForm(this.props.params.formId);
     this.props.fetchResponseSets();
@@ -32,7 +32,6 @@ class FormsContainer extends Component {
           <QuestionSearchContainer
             allQs={this.props.questions}
             allRs={this.props.responseSets}
-            addQuestion={this.props.addQuestion}
             form={this.props.form} />
           </div>
           <FormEdit form={this.props.form}
@@ -60,18 +59,17 @@ function mapStateToProps(state, ownProps) {
     questions: _.values(state.questions)
   };
 }
-FormsContainer.propTypes = {
+FormsEditContainer.propTypes = {
   form: formProps,
   fetchForm: PropTypes.func,
-  removeQuestion: React.PropTypes.func.isRequired,
-  reorderQuestion: React.PropTypes.func.isRequired,
-  fetchResponseSets: React.PropTypes.func.isRequired,
-  fetchQuestions: React.PropTypes.func.isRequired,
-  params: React.PropTypes.object.isRequired,
-  questions: questionsProps,
-  responseSets: responseSetsProps,
-  addQuestion: React.PropTypes.func.isRequired,
-  saveForm: React.PropTypes.func.isRequired,
-  router: React.PropTypes.object.isRequired
+  removeQuestion: PropTypes.func.isRequired,
+  reorderQuestion: PropTypes.func.isRequired,
+  fetchResponseSets: PropTypes.func.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
+  questions: PropTypes.arrayOf(questionProps),
+  responseSets: PropTypes.arrayOf(responseSetProps),
+  saveForm: PropTypes.func.isRequired,
+  router: PropTypes.object.isRequired
 };
-export default connect(mapStateToProps, mapDispatchToProps)(FormsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);
