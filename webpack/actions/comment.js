@@ -27,10 +27,13 @@ export function fetchComments(commentableType, commentableId) {
     commentableType: commentableType,
     commentableId: commentableId,
     payload: axios.get(routes.comments_path(), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      },
       params: {
-        commentable_type: commentableType,
-        commentable_id: commentableId,
+        commentableType: commentableType,
+        commentableId: commentableId,
       }
     })
   };
