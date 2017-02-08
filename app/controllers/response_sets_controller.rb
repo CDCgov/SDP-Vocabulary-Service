@@ -44,7 +44,7 @@ class ResponseSetsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
     params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author, :coded, :version,
-                                         :version_independent_id,
+                                         :version_independent_id, :status,
                                          responses_attributes: [:id, :value, :display_name, :code_system])
   end
 end
