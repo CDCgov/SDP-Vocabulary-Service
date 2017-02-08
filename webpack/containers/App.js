@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Header from '../components/Header';
+import Header from './Header';
 
 import { connect } from 'react-redux';
 
