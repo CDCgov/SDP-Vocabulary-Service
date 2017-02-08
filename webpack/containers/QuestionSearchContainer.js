@@ -19,13 +19,20 @@ class QuestionSearchContainer extends Component {
     };
   }
 
+  componentWillUpdate(prevProps) {
+    if(prevProps.allQs != this.props.allQs) {
+      this.setState({
+        questions: this.props.allQs
+      });
+    }
+  }
   questionFilter(term) {
     var questionsFiltered = [];
 
     if (term == '') {
-      questionsFiltered = this.state.allQs;
+      questionsFiltered = this.props.allQs;
     } else {
-      this.state.allQs.map((q) => {
+      this.props.allQs.map((q) => {
         if (q.content.toLowerCase().includes(term.toLowerCase())){
           questionsFiltered.push(q);
         }

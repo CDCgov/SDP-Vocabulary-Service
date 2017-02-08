@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {formProps} from '../prop-types/form_props';
+import { responseSetsProps } from '../prop-types/response_set_props';
 import QuestionItem from './QuestionItem';
-import Routes from '../routes';
 
-let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets}) => {
+let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange}) => {
   return (
     <div id="added-questions" aria-label="Added">
     <div className="question-group">
@@ -19,7 +19,7 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets}) => 
         <div className="row" key={q.id}>
           <QuestionItem question={q} responseSets={responseSets} index={i}
                         removeQuestion={removeQuestion}
-                        reorderQuestion={reorderQuestion}/>
+                        reorderQuestion={reorderQuestion} handleResponseSetChange={handleResponseSetChange}/>
           <div className="col-md-3">
             <div className="btn btn-small btn-default move-up"
                  onClick={() => reorderQuestion(form, i, 1)}>
@@ -38,8 +38,17 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets}) => 
       )}
     </div>
     </div>
-  )
-}
+  );
+};
+
+AddedQuestions.propTypes = {
+  form: formProps,
+  reorderQuestion: PropTypes.func.isRequired,
+  removeQuestion: PropTypes.func.isRequired,
+  handleResponseSetChange: PropTypes.func.isRequired,
+  responseSets: responseSetsProps
+
+};
 
 
 class FormEdit extends Component {
@@ -50,7 +59,7 @@ class FormEdit extends Component {
     const version = form.version + 1;
     const name = form.name || '';
     const linkedQuestions = form.questions || [];
-    return {name, linkedQuestions, id, version, versionIndependentId}
+    return {name, linkedQuestions, id, version, versionIndependentId};
   }
 
 
@@ -69,6 +78,18 @@ class FormEdit extends Component {
     }
   }
 
+  handleResponseSetChange(container) {
+    // This function looks weird, we are passing the container all the way down so we can modify it from within subcomponents
+    return () => {
+      return (event) => {
+        let index = parseInt(event.target.getAttribute("data-question"));
+        let newState = Object.assign({}, container.state);
+        newState.linkedQuestions[index].responseSetId = event.target.value;
+        container.setState(newState);
+      };
+    };
+  }
+
   handleChange(field) {
     return (event) => {
       let newState = {};
@@ -80,8 +101,8 @@ class FormEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
-    let form = Object.assign({}, this.state)
-    form.linkedQuestions = this.props.form.questions.map((q) => q.id)
+    let form = Object.assign({}, this.state);
+    form.linkedQuestions = this.props.form.questions.map((q) => q.id);
     this.props.formSubmitter(form, (response) => {
       // TODO: Handle when the saving response set fails.
       if (response.status === 201) {
@@ -132,13 +153,27 @@ class FormEdit extends Component {
         <AddedQuestions form={this.props.form}
           responseSets={this.props.responseSets}
           reorderQuestion={this.props.reorderQuestion}
-          removeQuestion={this.props.removeQuestion}/>
+          removeQuestion={this.props.removeQuestion}
+          handleResponseSetChange={this.handleResponseSetChange(this)}
+          />
       </form>
       </div>
       </div>
-    )
+    );
   }
 }
 
+FormEdit.propTypes = {
+  form: formProps,
+  action: PropTypes.string.isRequired,
+  formSubmitter: PropTypes.func.isRequired,
+  reorderQuestion: PropTypes.func.isRequired,
+  removeQuestion: PropTypes.func.isRequired,
+  router: PropTypes.object.isRequired,
+  responseSets: responseSetsProps
+
+
+
+};
 
 export default FormEdit;

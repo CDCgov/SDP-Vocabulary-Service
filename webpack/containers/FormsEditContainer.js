@@ -1,27 +1,22 @@
 import React, { Component, PropTypes } from 'react';
-import FormList from '../components/FormList';
-import Routes from '../routes';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForm, saveForm } from '../actions/form_actions';
-import { removeQuestion, reorderQuestion, addQuestion } from '../actions/questions_actions';
+import { removeQuestion, reorderQuestion } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
 import { fetchResponseSets } from '../actions/response_set_actions';
 import { fetchQuestions } from '../actions/questions_actions';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
+import { questionsProps } from '../prop-types/question_props';
+import { responseSetsProps } from '../prop-types/response_set_props';
+import _ from 'lodash';
 
 class FormsContainer extends Component {
   componentWillMount() {
     this.props.fetchForm(this.props.params.formId);
     this.props.fetchResponseSets();
     this.props.fetchQuestions();
-  }
-
-  componentWillUpdate(nextProps) {
-    if(this.props.params.formId != nextProps.params.formId) {
-      console.debug("New Form");
-    }
   }
 
   render() {
@@ -51,7 +46,7 @@ class FormsContainer extends Component {
         </div>
       </div>
 
-  )
+    );
   }
 }
 
@@ -59,7 +54,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchResponseSets, fetchQuestions, fetchForm, removeQuestion, reorderQuestion, saveForm}, dispatch);
 }
 function mapStateToProps(state, ownProps) {
-  console.log("Map State");
   return {
     form: state.forms[ownProps.params.formId],
     responseSets: _.values(state.responseSets),
@@ -72,6 +66,12 @@ FormsContainer.propTypes = {
   removeQuestion: React.PropTypes.func.isRequired,
   reorderQuestion: React.PropTypes.func.isRequired,
   fetchResponseSets: React.PropTypes.func.isRequired,
-  fetchQuestions: React.PropTypes.func.isRequired
+  fetchQuestions: React.PropTypes.func.isRequired,
+  params: React.PropTypes.object.isRequired,
+  questions: questionsProps,
+  responseSets: responseSetsProps,
+  addQuestion: React.PropTypes.func.isRequired,
+  saveForm: React.PropTypes.func.isRequired,
+  router: React.PropTypes.object.isRequired
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FormsContainer);
