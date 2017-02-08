@@ -1,3 +1,4 @@
+Make sure you include the related JIRA issue in the title e.g. '[SDP-007] Fixed navbar issue'
 Make sure you have checked off the following before you issue your Pull Request:
 
 - [ ] Added unit tests for new functionality
