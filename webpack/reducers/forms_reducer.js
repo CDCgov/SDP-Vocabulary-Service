@@ -20,17 +20,17 @@ export default function forms(state = {}, action) {
       var {question, form} = action.payload;
       let formQuestionIds = form.questions.map((e) => e.id);
       if (formQuestionIds.includes(question.id)) {
-        return state
+        return state;
       }
       var newQuestion = Object.assign({}, question);
       var newForm = Object.assign({}, form);
       newForm.questions.push(newQuestion);
       var newState = Object.assign({}, state);
       newState[form.id] = newForm;
-      return newState
+      return newState;
     case REMOVE_QUESTION:
       var { form , index } = action.payload;
-      var newForm = Object.assign({}, form)
+      var newForm = Object.assign({}, form);
       newForm.questions.splice(index, 1);
       var newState = Object.assign({}, state);
       newState[form.id] = newForm;
@@ -52,4 +52,4 @@ let move = (array, from, to) => {
   let copyArray = array.slice(0);
   copyArray.splice(to, 0, copyArray.splice(from, 1)[0]);
   return copyArray;
-}
+};

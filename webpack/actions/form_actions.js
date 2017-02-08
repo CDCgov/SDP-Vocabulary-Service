@@ -35,7 +35,7 @@ export function fetchForm(id) {
 
 export function saveForm(form, callback=null) {
   const authenticityToken = getCSRFToken();
-  form.questionsAttributes = form.questions
+  form.questionsAttributes = form.questions;
   const postPromise = axios.post(routes.formsPath(),
                       {form, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
