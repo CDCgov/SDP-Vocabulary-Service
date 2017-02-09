@@ -9,6 +9,7 @@ import {
 import _ from 'lodash';
 
 export default function forms(state = {}, action) {
+  let form , index, newState, newForm, direction, question;
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
       return _.keyBy(action.payload.data, 'id');
@@ -17,29 +18,29 @@ export default function forms(state = {}, action) {
       formClone[action.payload.data.id] = action.payload.data;
       return formClone;
     case ADD_QUESTION:
-      var {question, form} = action.payload;
-      // let formQuestionIds = form.formQuestions.map((e) => e.id);
-      // if (formQuestionIds.includes(question.id)) {
-      //   return state;
-      // }
-      var newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id});
-      var newForm = Object.assign({}, form);
+      question = action.payload.question;
+      form = action.payload.form;
+      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id});
+      newForm = Object.assign({}, form);
       newForm.formQuestions.push(newFormQuestion);
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     case REMOVE_QUESTION:
-      var { form , index } = action.payload;
-      var newForm = Object.assign({}, form);
+      form = action.payload.form;
+      index = action.payload.index;
+      newForm = Object.assign({}, form);
       newForm.formQuestions.splice(index, 1);
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     case REORDER_QUESTION:
-      var { form, index, direction } = action.payload;
-      var newForm = Object.assign({}, form);
+      form = action.payload.form;
+      index = action.payload.index;
+      direction = action.payload.direction;
+      newForm = Object.assign({}, form);
       newForm.formQuestions = move(form.formQuestions, index, index-direction);
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     default:

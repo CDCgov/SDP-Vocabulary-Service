@@ -1,7 +1,7 @@
 import React from 'react';
 import { questionProps } from "../prop-types/question_props";
 
-const QuestionItem = ({question, responseSets, index, handleResponseSetChange, responseSetId}) => {
+const QuestionItem = ({question, responseSets, index, handleResponseSetChange=() => {}, responseSetId}) => {
   if (!question || !responseSets) {
     return "Loading...";
   }
@@ -31,7 +31,7 @@ QuestionItem.propTypes = {
   question: questionProps,
   responseSets: React.PropTypes.array.isRequired,
   index: React.PropTypes.number.isRequired,
-  handleResponseSetChange: React.PropTypes.func.isRequired,
+  handleResponseSetChange: React.PropTypes.func,
   responseSetId: React.PropTypes.number
 };
 
