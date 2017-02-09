@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import {formProps} from '../prop-types/form_props';
 import { responseSetProps } from '../prop-types/response_set_props';
+import { questionProps } from '../prop-types/question_props';
 import QuestionItem from './QuestionItem';
 
-let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange}) => {
+let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions}) => {
   return (
     <div id="added-questions" aria-label="Added">
     <div className="question-group">
@@ -15,7 +16,7 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
           </div>
       </div>
       <br/>
-      {form.questions.map((q, i) =>
+      {questions.map((q, i) =>
         <div className="row" key={q.id}>
           <QuestionItem question={q} responseSets={responseSets} index={i}
                         removeQuestion={removeQuestion}
@@ -43,6 +44,7 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
 
 AddedQuestions.propTypes = {
   form: formProps,
+  questions: PropTypes.arrayOf(questionProps),
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion: PropTypes.func.isRequired,
   handleResponseSetChange: PropTypes.func.isRequired,
@@ -59,7 +61,9 @@ class FormEdit extends Component {
     const version = form.version + 1;
     const name = form.name || '';
     const linkedQuestions = form.questions || [];
-    return {name, linkedQuestions, id, version, versionIndependentId};
+    let allQuestions = _.keyBy(this.props.questions, 'id');
+    let questions = this.props.form.questions.map((q) =>  allQuestions[q.id]);
+    return {name, questions, linkedQuestions, id, version, versionIndependentId};
   }
 
 
@@ -78,14 +82,29 @@ class FormEdit extends Component {
     }
   }
 
+  componentWillUpdate(prevProps) {
+    let allQuestions = _.keyBy(this.props.questions, 'id');
+    let questions = prevProps.form.formQuestions.map((q) =>  {
+      let formQuestion = allQuestions[q.questionId]
+      formQuestion.responseSetId = q.responseSetId;
+      return formQuestion;
+    });
+    if(!(JSON.stringify(questions) === JSON.stringify(this.state.questions))) {
+      this.setState({questions});
+    }
+  }
+
   handleResponseSetChange(container) {
     // This function looks weird, we are passing the container all the way down so we can modify it from within subcomponents
     return () => {
       return (event) => {
         let index = parseInt(event.target.getAttribute("data-question"));
         let newState = Object.assign({}, container.state);
-        newState.linkedQuestions[index].responseSetId = event.target.value;
+        newState.questions[index].responseSetId = event.target.value;
+        debugger
+        console.log(event.target.value);
         container.setState(newState);
+        console.log(newState);
       };
     };
   }
@@ -103,6 +122,7 @@ class FormEdit extends Component {
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let form = Object.assign({}, this.state);
     form.linkedQuestions = this.props.form.questions.map((q) => q.id);
+    form.linkedResponseSets = this.state.questions.map((q) => q.responseSetId);
     this.props.formSubmitter(form, (response) => {
       // TODO: Handle when the saving response set fails.
       if (response.status === 201) {
@@ -112,6 +132,7 @@ class FormEdit extends Component {
   }
 
   render() {
+
     return (
       <div className="col-md-8">
       <div className="col-md-8" id='form-div'>
@@ -150,7 +171,8 @@ class FormEdit extends Component {
           </div>
         </div>
         <b>Form Questions:</b>
-        <AddedQuestions form={this.props.form}
+        <AddedQuestions form={this.state}
+          questions={this.state.questions}
           responseSets={this.props.responseSets}
           reorderQuestion={this.props.reorderQuestion}
           removeQuestion={this.props.removeQuestion}
@@ -170,7 +192,8 @@ FormEdit.propTypes = {
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion: PropTypes.func.isRequired,
   router: PropTypes.object.isRequired,
-  responseSets: PropTypes.arrayOf(responseSetProps)
+  responseSets: PropTypes.arrayOf(responseSetProps),
+  questions: PropTypes.arrayOf(questionProps).isRequired
 
 
 
