@@ -84,9 +84,9 @@ class FormEdit extends Component {
 
   componentWillUpdate(prevProps) {
     let allQuestions = _.keyBy(this.props.questions, 'id');
-    let questions = prevProps.form.formQuestions.map((q) =>  {
-      let formQuestion = allQuestions[q.questionId]
-      formQuestion.responseSetId = q.responseSetId;
+    let questions = prevProps.form.questions.map((q) =>  {
+      let formQuestion = allQuestions[q.id]
+      // formQuestion.responseSetId = q.responseSetId;
       return formQuestion;
     });
     if(!(JSON.stringify(questions) === JSON.stringify(this.state.questions))) {
@@ -101,8 +101,6 @@ class FormEdit extends Component {
         let index = parseInt(event.target.getAttribute("data-question"));
         let newState = Object.assign({}, container.state);
         newState.questions[index].responseSetId = event.target.value;
-        debugger
-        console.log(event.target.value);
         container.setState(newState);
         console.log(newState);
       };
