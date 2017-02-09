@@ -172,7 +172,7 @@ class QuestionForm extends Component{
                       </div>
                   </div>
                   <div className="col-md-6 drop-target selected_response_sets">
-                    <label htmlFor="selected_response_sets">Selected</label>
+                    <label htmlFor="selected_response_sets">Selected Response Sets</label>
                     <DroppableTarget handleResponseSetsChange={this.handleResponseSetsChange} selectedResponseSets={question.responseSets.map((id) => this.props.responseSets[id])} routes={routes}/>
                   </div>
               </div>

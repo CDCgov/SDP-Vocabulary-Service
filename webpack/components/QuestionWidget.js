@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { questionProps }  from "../prop-types/question_props";
 import { deleteQuestion } from "../actions/questions_actions";
@@ -23,13 +24,10 @@ class QuestionWidget extends Component {
       return (
         <ul className="dropdown-menu">
           <li>
-            <a href={this.props.routes.reviseQuestionPath(this.props.question)}>Revise</a>
+            <Link to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
           </li>
           <li>
-            <a href={this.props.routes.questionPath(this.props.question)}>Details</a>
-          </li>
-          <li>
-            <span role='button' rel="nofollow" onClick={this.deleteQuestionClick}>Delete</span>
+            <Link to={`/questions/${this.props.question.id}`}>Details</Link>
           </li>
         </ul>
       );
