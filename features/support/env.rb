@@ -7,9 +7,9 @@
 require 'cucumber/rails'
 
 require 'capybara/cucumber'
-require 'capybara/poltergeist'
+require 'capybara/webkit'
 require 'capybara/accessible'
-
+require 'headless'
 require 'axe/cucumber/step_definitions'
 
 if ENV['IN_BROWSER']
@@ -24,18 +24,29 @@ if ENV['IN_BROWSER']
   end
 else
 
-  Capybara.register_driver :accessible_poltergeist_with_promises do |app|
-    libs_path = Rails.root.join('features/support/js_libs/')
-    js_log = File.open('log/test_phantomjs.log', 'a')
-    driver = Capybara::Poltergeist::Driver.new(app,
-                                               extensions: %W(#{libs_path}promise.js),
-                                               phantomjs_logger: js_log)
-    adaptor = Capybara::Accessible::PoltergeistDriverAdapter.new
+  Capybara::Webkit.configure do |config|
+    config.allow_url('fonts.googleapis.com')
+    config.skip_image_loading
+  end
+
+  class Capybara::Accessible::WebkitDriverAdapter
+    def modal_dialog_present?(_driver)
+      # driver.alert_messages.any?
+      false
+    end
+  end
+
+  Capybara.register_driver :accessible_webkit2 do |app|
+    driver = Capybara::Webkit::Driver.new(app, Capybara::Webkit::Configuration.to_hash)
+    adaptor = Capybara::Accessible::WebkitDriverAdapter.new
     Capybara::Accessible.setup(driver, adaptor)
   end
 
-  Capybara.default_driver    = :accessible_poltergeist_with_promises
-  Capybara.javascript_driver = :accessible_poltergeist
+  headless = Headless.new
+  headless.start
+
+  Capybara.default_driver = :accessible_webkit2
+  Capybara.javascript_driver = :acessible_webkit2
 
 end
 
