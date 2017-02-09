@@ -34,20 +34,15 @@ class FormsController < ApplicationController
   end
 
 
-  def link_questions(params)
-    @questions = Question.where(id: params[:form][:linked_questions])
-    @form.questions << @questions
-  end
   # POST /forms
   # POST /forms.json
   def create
+    binding.pry
     @form = Form.new(form_params)
     @form.created_by = current_user
-    link_questions(params)
-
     respond_to do |format|
       if @form.save
-        create_form_questions(@form.id, params[:question_ids], params[:response_set_ids])
+        create_form_questions(@form.id, params[:form][:linked_questions], params[:form][:linked_response_sets])
         format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
@@ -89,6 +84,7 @@ class FormsController < ApplicationController
   end
 
   def create_form_questions(form_id, question_ids, response_set_ids)
+    binding.pry
     if question_ids
       question_ids.zip(response_set_ids).each do |qid, rsid|
         FormQuestion.create(form_id: form_id, question_id: qid, response_set_id: rsid)
