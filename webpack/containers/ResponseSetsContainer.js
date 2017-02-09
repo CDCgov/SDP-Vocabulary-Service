@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 import { fetchResponseSets } from '../actions/response_set_actions';
 import ResponseSetList from '../components/ResponseSetList';
 import ResponseSetListSearch from '../components/ResponseSetListSearch';
@@ -33,7 +34,7 @@ class ResponseSetsContainer extends Component {
         <div className='col-md-12'>
           <ResponseSetListSearch search={this.search} />
           <ResponseSetList responseSets={this.props.responseSets} routes={Routes} />
-          <a className='btn btn-default' href={Routes.newResponseSetPath()}>New Response Set</a>
+          <Link className='btn btn-default' to='/responseSets/new'>New Response Set</Link>
         </div>
       </div>
     );
