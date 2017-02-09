@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-
 import { fetchResponseSet, saveResponseSet } from '../actions/response_set_actions';
 import ResponseSetForm from '../components/ResponseSetForm';
 import { responseSetProps } from '../prop-types/response_set_props';
@@ -27,6 +26,7 @@ class ResponseSetEditContainer extends Component {
         <ResponseSetForm responseSet={this.props.responseSet}
                          responseSetSubmitter={this.props.saveResponseSet}
                          action={action}
+                         route ={this.props.route}
                          router={this.props.router} />
       </div>
     );
@@ -48,6 +48,7 @@ ResponseSetEditContainer.propTypes = {
   fetchResponseSet: PropTypes.func,
   saveResponseSet: PropTypes.func,
   params: PropTypes.object,
+  route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired
 };
 

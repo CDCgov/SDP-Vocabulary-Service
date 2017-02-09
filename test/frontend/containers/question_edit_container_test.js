@@ -3,6 +3,7 @@ import {
   renderComponent
 } from '../test_helper';
 import QuestionEditContainer from '../../../webpack/containers/QuestionEditContainer';
+import MockRouter from '../mock_router';
 
 describe('QuestionEditContainer ', () => {
   it('will show question edit page', () => {
@@ -11,10 +12,12 @@ describe('QuestionEditContainer ', () => {
     questionTypes:{1: {id: 1, name: 'Test'}},
     responseSets: {1: {id: 1, name: 'Test'}},
     responseTypes:{1: {id: 1, name: 'Test'}},
-    router: {}
+    route: {id: 1, name: 'test'},
+    router: new MockRouter()
   }
     const component = renderComponent(QuestionEditContainer, props);
     expect(component.find("div[class='container']").length).to.exist;
+    expect(component.find("input[name='content']").length).to.exist;
     expect(component.find("form")).to.exist;
   });
 });

@@ -35,7 +35,8 @@ class QuestionEditContainer extends Component {
       <div className="container">
         <QuestionForm question={this.props.question} questionSubmitter={this.props.saveQuestion} action={action}
                       questionTypes={this.props.questionTypes} responseSets={this.props.responseSets}
-                      responseTypes={this.props.responseTypes} routes={Routes} router={this.props.router} />
+                      responseTypes={this.props.responseTypes} routes={Routes}
+                      router={this.props.router} route={this.props.route} />
       </div>
     );
   }
@@ -69,6 +70,7 @@ QuestionEditContainer.propTypes = {
   fetchResponseTypes: PropTypes.func.isRequired,
   fetchResponseSets:  PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
+  route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired
 };
 

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-
 import CodedSetTableForm from './CodedSetTableForm';
 import Errors from './Errors';
 import { responseSetProps } from '../prop-types/response_set_props';
@@ -7,6 +6,7 @@ import { responseSetProps } from '../prop-types/response_set_props';
 export default class ResponseSetForm extends Component {
   constructor(props) {
     super(props);
+    this.unsavedState = false;
     switch (this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(this.props.responseSet);
@@ -20,9 +20,27 @@ export default class ResponseSetForm extends Component {
     }
   }
 
+  componentDidMount() {
+    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+    window.onbeforeunload = this.windowWillUnload.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.unsavedState = false;
+    this.unbindHook();
+  }
+
+  routerWillLeave() {
+    return (!this.unsavedState || confirm('You are about to leave a page with unsaved changes. Are you sure you would like to proceed?'));
+  }
+
+  windowWillUnload() {
+    return (this.unsavedState || null);
+  }
+
   stateForRevise(responseSet) {
     const name = responseSet.name || '';
-    const oid = responseSet.oid || '';
+    const oid  = responseSet.oid || '';
     const coded = responseSet.coded || false;
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
@@ -106,6 +124,7 @@ export default class ResponseSetForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.responseSetSubmitter(this.state, (successResponse) => {
+      this.unsavedState = false;
       this.props.router.push(`/responseSets/${successResponse.data.id}`);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
@@ -114,6 +133,7 @@ export default class ResponseSetForm extends Component {
 
   handleResponsesChange(newResponses) {
     this.setState({responsesAttributes: newResponses});
+    this.unsavedState = true;
   }
 
   handleChange(field) {
@@ -121,6 +141,7 @@ export default class ResponseSetForm extends Component {
       let newState = {};
       newState[field] = event.target.value;
       this.setState(newState);
+      this.unsavedState = true;
     };
   }
 }
@@ -135,5 +156,6 @@ ResponseSetForm.propTypes = {
   responseSet: responseSetProps.isRequired,
   responseSetSubmitter: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
+  route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired
 };

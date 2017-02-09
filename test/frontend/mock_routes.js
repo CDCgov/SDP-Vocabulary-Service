@@ -1,4 +1,5 @@
 exports.questionPath = (q) => `/questions/${q.id}`;
+exports.questionsPath = (q) => `/questions/`;
 exports.reviseQuestionPath = (q) => `/questions/${q.id}/revise`;
 exports.formPath = (f) => `/forms/${f.id}/`;
 exports.formsPath = (f) => `/forms/`;
