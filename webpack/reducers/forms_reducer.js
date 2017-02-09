@@ -20,7 +20,7 @@ export default function forms(state = {}, action) {
       return formClone;
     case CREATE_FORM:
       newState = Object.assign({}, state);
-      newState["new"] = {formQuestions: [], questions: [], version: 1};
+      newState[0] = {formQuestions: [], questions: [], version: 1, id: 0};
       return newState;
     case ADD_QUESTION:
       question = action.payload.question;
@@ -46,7 +46,7 @@ export default function forms(state = {}, action) {
       newForm = Object.assign({}, form);
       newForm.formQuestions = move(form.formQuestions, index, index-direction);
       newState = Object.assign({}, state);
-      newState[form.id] = newForm;
+      newState[form.id||0] = newForm;
       return newState;
     default:
       return state;

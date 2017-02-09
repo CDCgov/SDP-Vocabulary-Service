@@ -8,8 +8,8 @@ class QuestionList extends Component {
   render() {
     return (
       <div className="question-group">
-        {_.values(this.props.questions).map((q) => {
-          return <QuestionWidget key={q.id} question={q} routes={this.props.routes} />;
+        {_.values(this.props.questions).map((q, i) => {
+          return <QuestionWidget key={i} question={q} routes={this.props.routes} />;
         })}
       </div>
     );
