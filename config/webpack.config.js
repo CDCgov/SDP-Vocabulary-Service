@@ -18,9 +18,7 @@ var config = {
   entry: {
     // Sources are expected to live in $app_root/webpack
     'application': './webpack/application.js',
-    'forms': './webpack/forms.js',
     'my_stuff': './webpack/my_stuff.js',
-    'form_list': './webpack/form_list.js',
     'search': './webpack/search.js',
     'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',
