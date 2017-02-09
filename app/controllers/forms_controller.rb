@@ -33,7 +33,6 @@ class FormsController < ApplicationController
     @form = Form.find(params[:id])
   end
 
-
   # POST /forms
   # POST /forms.json
   def create
