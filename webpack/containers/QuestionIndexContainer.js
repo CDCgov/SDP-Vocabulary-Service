@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 import { fetchQuestions } from '../actions/questions_actions';
 import { questionsProps } from "../prop-types/question_props";
 import currentUserProps from "../prop-types/current_user_props";
@@ -24,7 +25,7 @@ class QuestionIndexContainer extends Component {
 
   newQuestionButton(){
     if(this.props.currentUser && this.props.currentUser.id){
-      return(<a className="btn btn-default" href={Routes.new_question_path()}>New Question</a>);
+      return(<Link className="btn btn-default" to={'/questions/new'}>New Question</Link>);
     }
   }
 
