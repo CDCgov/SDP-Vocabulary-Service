@@ -58,7 +58,7 @@ Feature: Manage Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the "New Form" link
-    And I fill in the "form_name" field with "Test Form"
+    And I fill in the "form" field with "Test Form"
     And I fill in the "form_control_number" field with "1234-1234"
     And I click on the button to add the Question "What is your gender?"
     #Then I select the "Gender Full" option in the "response_set_ids" list
@@ -101,7 +101,7 @@ Feature: Manage Forms
     And I click on the button to add the Question "What is your gender?"
     #And I select the "Gender Partial" option in the "response_set_ids" list
     And I click on the "Save" button
-  
+
 
     Scenario: Export Form to Redcap
       Given I have a Form with the name "Test Form"
