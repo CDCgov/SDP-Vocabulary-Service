@@ -21,14 +21,16 @@ export function addComment(commentableType, commentableId, comment, parentId) {
   };
 }
 
-
-
 export function fetchComments(commentableType, commentableId) {
   return {
     type: FETCH_COMMENTS,
     commentableType: commentableType,
     commentableId: commentableId,
     payload: axios.get(routes.comments_path(), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      },
       params: {
         commentableType: commentableType,
         commentableId: commentableId,

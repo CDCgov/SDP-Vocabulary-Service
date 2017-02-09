@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
+import NotificationDropdown from '../components/NotificationDropdown';
+import NotificationMenu from '../components/NotificationMenu';
+import { fetchNotifications } from '../actions/notification_actions';
 
 let LoginMenu = ({currentUser={email:null}}) => {
   let loggedIn = currentUser ? true : false;
@@ -55,7 +60,8 @@ ContentMenu.propTypes = {
   currentUser: currentUserProps,
 };
 
-let SignedInMenu = ({currentUser={email:false}}) => {
+
+let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount}) => {
   let loggedIn = currentUser ? true : false;
   if(loggedIn) {
     return (
@@ -71,8 +77,14 @@ let SignedInMenu = ({currentUser={email:false}}) => {
           </ul>
         </li>
         <li className="dropdown">
-          <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
-
+          <NotificationDropdown notifications={notifications} notificationCount={notificationCount} />
+          { notificationCount > 0 ? (
+            <NotificationMenu notifications={notifications} />
+          ) : (
+            <ul className="cdc-nav-dropdown">
+              <ul><li className="notification-menu-item">No new notifications</li></ul>
+            </ul>
+          )}
         </li>
       </ul>
     );
@@ -81,31 +93,55 @@ let SignedInMenu = ({currentUser={email:false}}) => {
 };
 SignedInMenu.propTypes = {
   currentUser: currentUserProps,
+  notifications: PropTypes.arrayOf(PropTypes.object),
+  notificationCount: PropTypes.number
 };
 
-let Header = ({currentUser}) => {
-  return (
-    <nav className="cdc-utlt-nav navbar-fixed-top">
-      <div className="container">
-        <div className="navbar-header">
-          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span className="sr-only">Toggle navigation</span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-          </button>
-          <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
+class Header extends Component {
+  componentWillMount() {
+    this.props.fetchNotifications();
+  }
+
+  render() {
+    return (
+      <nav className="cdc-utlt-nav navbar-fixed-top">
+        <div className="container">
+          <div className="navbar-header">
+            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span className="sr-only">Toggle navigation</span>
+            <span className="icon-bar"></span>
+            <span className="icon-bar"></span>
+            <span className="icon-bar"></span>
+            </button>
+            <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
+          </div>
+          <SignedInMenu currentUser={this.props.currentUser} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
+          <LoginMenu currentUser={this.props.currentUser} />
+          <ContentMenu currentUser={this.props.currentUser} />
         </div>
-        <SignedInMenu currentUser={currentUser} />
-        <LoginMenu currentUser={currentUser} />
-        <ContentMenu currentUser={currentUser} />
-      </div>
 
-    </nav>
-  );
-};
+      </nav>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    notifications: state.notifications,
+    currentUser: state.currentUser,
+    notificationCount: state.notifications.length
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({fetchNotifications}, dispatch);
+}
+
 Header.propTypes = {
   currentUser: currentUserProps,
+  notifications: PropTypes.arrayOf(PropTypes.object),
+  notificationCount: PropTypes.number,
+  fetchNotifications: PropTypes.func
 };
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

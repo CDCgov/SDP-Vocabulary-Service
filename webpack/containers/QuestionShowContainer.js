@@ -5,6 +5,7 @@ import { fetchQuestion } from '../actions/questions_actions';
 import { questionProps } from "../prop-types/question_props";
 import CodedSetTable    from '../components/CodedSetTable';
 import QuestionDetails  from '../components/QuestionDetails';
+import CommentList from '../containers/CommentList';
 import { responseSetProps } from "../prop-types/response_set_props";
 import currentUserProps from "../prop-types/current_user_props";
 
@@ -38,6 +39,7 @@ class QuestionShowContainer extends Component {
           <CodedSetTable items={this.props.question.concepts} itemName={'Concept'} />
         </div>
         {this.reviseQuestionButton()}
+        <CommentList commentableType='Question' commentableId={this.props.question.id} />
       </div>
     );
   }
