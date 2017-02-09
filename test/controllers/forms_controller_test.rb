@@ -9,12 +9,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index' do
-    get forms_url
-    assert_response :success
-  end
-
-  test 'should get new' do
-    get new_form_url
+    get forms_url, xhr: true, params: nil
     assert_response :success
   end
 
@@ -22,23 +17,17 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 0
 
     assert_difference('Form.count') do
-      post forms_url, params: { form: { name: @form.name, created_by_id: @form.created_by_id } }
+      form_json = { form: { name: @form.name, created_by_id: @form.created_by_id } }.to_json
+      post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     end
     assert_enqueued_jobs 1
 
-    assert_redirected_to form_url(Form.last)
+    assert_response :success
   end
 
   test 'should show form' do
-    get form_url(@form)
+    get form_url(@form), xhr: true, params: nil
     assert_response :success
-  end
-
-  test 'should get revise' do
-    assert_enqueued_jobs 0
-    get revise_form_url(@form)
-    assert_response :success
-    assert_enqueued_jobs 0
   end
 
   test 'should get export' do
