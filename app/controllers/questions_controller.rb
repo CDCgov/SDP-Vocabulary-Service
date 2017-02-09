@@ -4,7 +4,6 @@ class QuestionsController < ApplicationController
   # GET /questions.json
   def index
     @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
-    render json: @questions
   end
 
   # GET /questions/1

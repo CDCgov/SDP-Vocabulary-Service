@@ -7,8 +7,7 @@ Feature: Manage Questions
     When I go to the list of Questions
     Then I should see "What is your gender?"
     When I click on the menu link for the Question with the content "What is your gender?"
-    Then I should see the option to Delete the Question with the content "What is your gender?"
-    And I should see the option to Details the Question with the content "What is your gender?"
+    Then I should see the option to Details the Question with the content "What is your gender?"
     And I should see the option to Revise the Question with the content "What is your gender?"
 
   Scenario: Show Question in Detail
