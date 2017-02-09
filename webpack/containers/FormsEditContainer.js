@@ -49,8 +49,9 @@ class FormsEditContainer extends Component {
             responseSets={this.props.responseSets}
             reorderQuestion={this.props.reorderQuestion}
             removeQuestion={this.props.removeQuestion}
-            action={this.props.params.action}
+            action={this.props.params.action || 'new'}
             formSubmitter={this.props.saveForm}
+            route={this.props.route}
             router={this.props.router}
             questions={this.props.questions}
             ref='form'
@@ -75,7 +76,7 @@ function mapStateToProps(state, ownProps) {
 FormsEditContainer.propTypes = {
   form: formProps,
   fetchForm: PropTypes.func,
-  removeQuestion: PropTypes.func.isRequired,
+  removeQuestion:  PropTypes.func.isRequired,
   reorderQuestion: PropTypes.func.isRequired,
   fetchResponseSets: PropTypes.func.isRequired,
   newForm: PropTypes.func.isRequired,
@@ -84,6 +85,7 @@ FormsEditContainer.propTypes = {
   questions: PropTypes.arrayOf(questionProps),
   responseSets: PropTypes.arrayOf(responseSetProps),
   saveForm: PropTypes.func.isRequired,
+  route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);

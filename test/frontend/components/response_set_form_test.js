@@ -1,24 +1,22 @@
 import { expect, renderComponent, createComponent } from '../test_helper';
 import TestUtils from 'react-addons-test-utils';
-import QuestionForm from '../../../webpack/components/QuestionForm';
+import ResponseSetForm from '../../../webpack/components/ResponseSetForm';
 import routes from '../mock_routes';
 import MockRouter from '../mock_router';
 
-describe('QuestionForm', () => {
+describe('ResponseSetForm', () => {
   let component, router, inputNode, props;
 
   beforeEach(() => {
     router = new MockRouter();
     props  = {
-      question: {id: 1, content: "Is this a question?", questionType: "", responseSets: [1], concepts: [{code:"Code 1",display:" Display Name 1",system:"Test system 1"}]},
+      responseSet: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1", 
+                    responses:[{value: 'val', codeSystem: 'codesystem', displayName: 'displayname'}]},
       router: router,
+      action: 'revise',
       routes: routes,
-      questionSubmitter: ()=>{},
-      questionTypes: {},
-      responseSets:  {1: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"}},
-      responseTypes: {}
     };
-    component = renderComponent(QuestionForm, props);
+    component = renderComponent(ResponseSetForm, props);
     inputNode = component.find("input[id='content']")[0]
   });
 

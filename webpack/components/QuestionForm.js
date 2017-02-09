@@ -78,6 +78,25 @@ class QuestionForm extends Component{
       this.state = this.stateForNew();
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
+    this.unsavedState = false;
+  }
+
+  componentDidMount() {
+    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+    window.onbeforeunload = this.windowWillUnload.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.unsavedState = false;
+    this.unbindHook();
+  }
+
+  routerWillLeave() {
+    return (!this.unsavedState || confirm('You are about to leave a page with unsaved changes. Are you sure you would like to proceed?'));
+  }
+
+  windowWillUnload() {
+    return (this.unsavedState || null);
   }
 
   stateForRevise(question) {
@@ -196,6 +215,7 @@ class QuestionForm extends Component{
     event.preventDefault();
     this.props.questionSubmitter(this.state, (response) => {
       // TODO: Handle when the saving question fails.
+      this.unsavedState = false;
       if (response.status === 201) {
         this.props.router.push(`/questions/${response.data.id}`);
       }
@@ -204,6 +224,7 @@ class QuestionForm extends Component{
 
   handleConceptsChange(newConcepts) {
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
+    this.unsavedState = true;
   }
 
   handleChange(field) {
@@ -211,11 +232,13 @@ class QuestionForm extends Component{
       let newState = {};
       newState[field] = event.target.value;
       this.setState(newState);
+      this.unsavedState = true;
     };
   }
 
   handleResponseSetsChange(newResponseSets){
     this.setState({linkedResponseSets: newResponseSets.map((r)=> r.id)});
+    this.unsavedState = true;
   }
 }
 
@@ -232,6 +255,7 @@ QuestionForm.propTypes = {
   routes: allRoutes,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
+  route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   action: PropTypes.string
 };

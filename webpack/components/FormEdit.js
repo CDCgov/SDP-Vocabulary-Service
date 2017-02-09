@@ -87,6 +87,25 @@ class FormEdit extends Component {
       default:
         this.state = this.stateForRevise({});
     }
+    this.unsavedState = false;
+  }
+
+  componentDidMount() {
+    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+    window.onbeforeunload = this.windowWillUnload.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.unsavedState = false;
+    this.unbindHook();
+  }
+
+  routerWillLeave() {
+    return (!this.unsavedState || confirm('You are about to leave a page with unsaved changes. Are you sure you would like to proceed?'));
+  }
+
+  windowWillUnload() {
+    return (this.unsavedState || null);
   }
 
   handleResponseSetChange(container) {
@@ -97,6 +116,7 @@ class FormEdit extends Component {
         let newState = Object.assign({}, container.state);
         newState.formQuestions[index].responseSetId = event.target.value;
         container.setState(newState);
+        this.unsavedState = true;
       };
     };
   }
@@ -106,6 +126,7 @@ class FormEdit extends Component {
       let newState = {};
       newState[field] = event.target.value;
       this.setState(newState);
+      this.unsavedState = true;
     };
   }
 
@@ -116,7 +137,8 @@ class FormEdit extends Component {
     form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
     form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId);
     this.props.formSubmitter(form, (response) => {
-      // TODO: Handle when the saving response set fails.
+      // TODO: Handle when the saving form fails.
+      this.unsavedState = false;
       if (response.status === 201) {
         this.props.router.push(`/forms/${response.data.id}`);
       }
@@ -181,17 +203,15 @@ class FormEdit extends Component {
 }
 
 FormEdit.propTypes = {
-  form: formProps,
+  form:   formProps,
   action: PropTypes.string.isRequired,
-  formSubmitter: PropTypes.func.isRequired,
+  formSubmitter:   PropTypes.func.isRequired,
   reorderQuestion: PropTypes.func.isRequired,
-  removeQuestion: PropTypes.func.isRequired,
+  removeQuestion:  PropTypes.func.isRequired,
+  route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   responseSets: PropTypes.arrayOf(responseSetProps),
   questions: PropTypes.arrayOf(questionProps).isRequired
-
-
-
 };
 
 export default FormEdit;
