@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchForm, saveForm } from '../actions/form_actions';
+import { fetchForm, saveForm, newForm } from '../actions/form_actions';
 import { removeQuestion, reorderQuestion, fetchQuestions } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
 import { fetchResponseSets } from '../actions/response_set_actions';
@@ -13,7 +13,13 @@ import _ from 'lodash';
 
 class FormsEditContainer extends Component {
   componentWillMount() {
-    this.props.fetchForm(this.props.params.formId);
+    if (this.props.params.formId) {
+      this.props.fetchForm(this.props.params.formId);
+    }    else {
+      this.props.newForm();
+      this.props.params.formId = 'new';
+      this.props.params.action = 'new';
+    }
     this.props.fetchResponseSets();
     this.props.fetchQuestions();
   }
@@ -25,7 +31,7 @@ class FormsEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.form){
+    if(!this.props.form || !this.props.questions){
       return (
         <div>Loading...</div>
       );
@@ -57,11 +63,11 @@ class FormsEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchResponseSets, fetchQuestions, fetchForm, removeQuestion, reorderQuestion, saveForm}, dispatch);
+  return bindActionCreators({fetchResponseSets, fetchQuestions, newForm, fetchForm, removeQuestion, reorderQuestion, saveForm}, dispatch);
 }
 function mapStateToProps(state, ownProps) {
   return {
-    form: state.forms[ownProps.params.formId],
+    form: state.forms[ownProps.params.formId||'new'],
     responseSets: _.values(state.responseSets),
     questions: _.values(state.questions)
   };
@@ -72,6 +78,7 @@ FormsEditContainer.propTypes = {
   removeQuestion: PropTypes.func.isRequired,
   reorderQuestion: PropTypes.func.isRequired,
   fetchResponseSets: PropTypes.func.isRequired,
+  newForm: PropTypes.func.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
   questions: PropTypes.arrayOf(questionProps),
