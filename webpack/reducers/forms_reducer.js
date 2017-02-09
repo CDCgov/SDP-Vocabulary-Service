@@ -3,7 +3,8 @@ import {
   FETCH_FORMS_FULFILLED,
   ADD_QUESTION,
   REMOVE_QUESTION,
-  REORDER_QUESTION
+  REORDER_QUESTION,
+  CREATE_FORM
 
 } from '../actions/types';
 import _ from 'lodash';
@@ -17,6 +18,10 @@ export default function forms(state = {}, action) {
       const formClone = Object.assign({}, state);
       formClone[action.payload.data.id] = action.payload.data;
       return formClone;
+    case CREATE_FORM:
+      newState = Object.assign({}, state);
+      newState["new"] = {formQuestions: [], questions: [], version: 1};
+      return newState;
     case ADD_QUESTION:
       question = action.payload.question;
       form = action.payload.form;
