@@ -37,7 +37,6 @@ class FormsController < ApplicationController
   # POST /forms
   # POST /forms.json
   def create
-    binding.pry
     @form = Form.new(form_params)
     @form.created_by = current_user
     respond_to do |format|
@@ -84,7 +83,6 @@ class FormsController < ApplicationController
   end
 
   def create_form_questions(form_id, question_ids, response_set_ids)
-    binding.pry
     if question_ids
       question_ids.zip(response_set_ids).each do |qid, rsid|
         FormQuestion.create(form_id: form_id, question_id: qid, response_set_id: rsid)
