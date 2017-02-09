@@ -10,7 +10,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index' do
-    get questions_url
+    get questions_url, xhr: true, params: nil
     assert_response :success
   end
 
