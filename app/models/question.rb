@@ -16,6 +16,17 @@ class Question < ApplicationRecord
   validates :content, presence: true
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
+  after_commit :index, on: [:create, :update]
+  after_commit :delete_index, on: :destroy
+
+  def index
+    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(self).as_json)
+  end
+
+  def delete_index
+    DeleteFromIndexJob.perform_later('question', id)
+  end
+
   def self.search(search)
     where('content ILIKE ?', "%#{search}%")
   end

@@ -14,6 +14,17 @@ class ResponseSet < ApplicationRecord
 
   accepts_nested_attributes_for :responses, allow_destroy: true
 
+  after_commit :index, on: [:create, :update]
+  after_commit :delete_index, on: :destroy
+
+  def index
+    UpdateIndexJob.perform_later('response_set', ESResponseSetSerializer.new(self).as_json)
+  end
+
+  def delete_index
+    DeleteFromIndexJob.perform_later('response_set', id)
+  end
+
   def self.search(search)
     where('name ILIKE ?', "%#{search}%")
   end

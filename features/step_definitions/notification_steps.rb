@@ -4,7 +4,7 @@ Given(/^I have a Notification with the message "([^"]*)" and the url "([^"]*)"$/
 end
 
 When(/^I click on the "([^"]*)" notification$/) do |message|
-  page.find('.notification-menu-item', text: message).trigger('click')
+  page.find('.notification-menu-item', text: message).click
 end
 
 Then(/^I should see "([^"]*)" new notifications$/) do |value|

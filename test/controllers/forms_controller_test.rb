@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FormsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-
+  include ActiveJob::TestHelper
   setup do
     @form = forms(:one)
     sign_in users(:admin)
@@ -19,9 +19,12 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should create form' do
+    assert_enqueued_jobs 0
+
     assert_difference('Form.count') do
       post forms_url, params: { form: { name: @form.name, created_by_id: @form.created_by_id } }
     end
+    assert_enqueued_jobs 1
 
     assert_redirected_to form_url(Form.last)
   end
@@ -32,8 +35,10 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get revise' do
+    assert_enqueued_jobs 0
     get revise_form_url(@form)
     assert_response :success
+    assert_enqueued_jobs 0
   end
 
   test 'should get export' do
@@ -49,10 +54,11 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy form' do
+    assert_enqueued_jobs 0
     assert_difference('Form.count', -1) do
       delete form_url(@form)
     end
-
+    assert_enqueued_jobs 1
     assert_redirected_to forms_url
   end
 

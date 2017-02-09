@@ -11,31 +11,29 @@ require 'capybara/poltergeist'
 require 'capybara/accessible'
 
 require 'axe/cucumber/step_definitions'
+require 'fakeweb'
+FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: 'Hello World!')
 
-if ENV['IN_BROWSER']
+Capybara.register_driver :chrome do |app|
+  driver =  Capybara::Selenium::Driver.new(app, browser: :chrome)
+  adaptor = Capybara::Accessible::SeleniumDriverAdapter.new
+  Capybara::Accessible.setup(driver, adaptor)
+end
+
+AfterStep do
+  sleep(ENV['PAUSE'].to_i || 0)
+end
+
+Capybara.default_driver = :chrome
+Capybara.javascript_driver = :chrome
+if ENV['HEADLESS']
   # On demand: non-headless tests via Selenium/WebDriver
   # To run the scenarios in browser (default: Firefox), use the following command line:
   # IN_BROWSER=true bundle exec cucumber
   # or (to have a pause of 1 second between each step):
   # IN_BROWSER=true PAUSE=1 bundle exec cucumber
-  Capybara.default_driver = :accessible_selenium
-  AfterStep do
-    sleep(ENV['PAUSE'].to_i || 0)
-  end
-else
 
-  Capybara.register_driver :accessible_poltergeist_with_promises do |app|
-    libs_path = Rails.root.join('features/support/js_libs/')
-    js_log = File.open('log/test_phantomjs.log', 'a')
-    driver = Capybara::Poltergeist::Driver.new(app,
-                                               extensions: %W(#{libs_path}promise.js),
-                                               phantomjs_logger: js_log)
-    adaptor = Capybara::Accessible::PoltergeistDriverAdapter.new
-    Capybara::Accessible.setup(driver, adaptor)
-  end
-
-  Capybara.default_driver    = :accessible_poltergeist_with_promises
-  Capybara.javascript_driver = :accessible_poltergeist
+  # need to setup headless testing here
 
 end
 

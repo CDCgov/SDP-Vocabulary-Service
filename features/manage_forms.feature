@@ -101,7 +101,7 @@ Feature: Manage Forms
     And I click on the button to add the Question "What is your gender?"
     And I select the "Gender Partial" option in the "response_set_ids" list
     And I click on the "Save" button
-    And I click on the "Print" link
+  
 
     Scenario: Export Form to Redcap
       Given I have a Form with the name "Test Form"
