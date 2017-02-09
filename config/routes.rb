@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get '/landing' => 'landing#index'
   get '/landing/stats' => 'landing#stats'
 
-  root to: 'dashboard#index'
+  root to: 'landing#index'
 
   devise_for :users, controllers: { registrations: 'registrations',
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
