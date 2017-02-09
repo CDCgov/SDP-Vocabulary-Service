@@ -69,7 +69,8 @@ class FormEdit extends Component {
     const version = form.version + 1;
     const name = form.name || '';
     const formQuestions = form.formQuestions;
-    return {formQuestions, name, id, version, versionIndependentId};
+    const controlNumber = form.controlNumber;
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber};
   }
 
 
@@ -154,6 +155,10 @@ class FormEdit extends Component {
           <div className="col-md-12">
             <label htmlFor="name">Name:</label>
             <input type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+          </div>
+          <div className="col-md-12">
+            <label htmlFor="controlNumber">OMB Number:</label>
+            <input type="text" value={this.state.controlNumber} name="controlNumber" onChange={this.handleChange('controlNumber')}/>
           </div>
         </div>
         <div className="row">
