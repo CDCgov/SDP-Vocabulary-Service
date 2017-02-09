@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForm, saveForm } from '../actions/form_actions';
-import { removeQuestion, reorderQuestion } from '../actions/questions_actions';
+import { removeQuestion, reorderQuestion, fetchQuestions } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
 import { fetchResponseSets } from '../actions/response_set_actions';
-import { fetchQuestions } from '../actions/questions_actions';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
 import { questionProps } from '../prop-types/question_props';
@@ -41,6 +40,7 @@ class FormsEditContainer extends Component {
             action={this.props.params.action}
             formSubmitter={this.props.saveForm}
             router={this.props.router}
+            questions={this.props.questions}
             />
         </div>
       </div>
