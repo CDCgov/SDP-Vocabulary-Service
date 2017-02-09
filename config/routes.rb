@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :export, on: :member
-    get :revise, on: :member
     get :redcap, on: :member
   end
   resources :question_response_sets
