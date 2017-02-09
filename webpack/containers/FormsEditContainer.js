@@ -18,6 +18,12 @@ class FormsEditContainer extends Component {
     this.props.fetchQuestions();
   }
 
+  componentDidUpdate() {
+    if(this.props.form && this.props.form.formQuestions) {
+      this.refs.form.setState(Object.assign(this.refs.form.state, {formQuestions: this.props.form.formQuestions}));
+    }
+  }
+
   render() {
     if(!this.props.form){
       return (
@@ -41,6 +47,7 @@ class FormsEditContainer extends Component {
             formSubmitter={this.props.saveForm}
             router={this.props.router}
             questions={this.props.questions}
+            ref='form'
             />
         </div>
       </div>

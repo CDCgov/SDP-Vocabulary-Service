@@ -18,27 +18,27 @@ export default function forms(state = {}, action) {
       return formClone;
     case ADD_QUESTION:
       var {question, form} = action.payload;
-      let formQuestionIds = form.questions.map((e) => e.id);
-      if (formQuestionIds.includes(question.id)) {
-        return state;
-      }
-      var newQuestion = Object.assign({}, question);
+      // let formQuestionIds = form.formQuestions.map((e) => e.id);
+      // if (formQuestionIds.includes(question.id)) {
+      //   return state;
+      // }
+      var newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id});
       var newForm = Object.assign({}, form);
-      newForm.questions.push(newQuestion);
+      newForm.formQuestions.push(newFormQuestion);
       var newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     case REMOVE_QUESTION:
       var { form , index } = action.payload;
       var newForm = Object.assign({}, form);
-      newForm.questions.splice(index, 1);
+      newForm.formQuestions.splice(index, 1);
       var newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     case REORDER_QUESTION:
       var { form, index, direction } = action.payload;
       var newForm = Object.assign({}, form);
-      newForm.questions = move(form.questions, index, index-direction);
+      newForm.formQuestions = move(form.formQuestions, index, index-direction);
       var newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
