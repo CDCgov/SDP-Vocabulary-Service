@@ -32,7 +32,7 @@ class FormsIndexContainer extends Component {
       <div className='col-md-12'>
         <FormListSearch search={this.search} />
         <FormList forms={this.props.forms} routes={Routes} />
-        <a className='btn btn-default' href={Routes.newFormPath()}>New Form</a>
+        <a className='btn btn-default' href={"#/forms/new"}>New Form</a>
       </div>
       </div>
     );

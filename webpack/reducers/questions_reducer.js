@@ -1,8 +1,5 @@
 import _ from 'lodash';
 import {
-  ADD_QUESTION,
-  REMOVE_QUESTION,
-  REORDER_QUESTION,
   SAVE_QUESTION_FULFILLED,
   FETCH_QUESTION_FULFILLED,
   FETCH_QUESTIONS_FULFILLED,
@@ -17,14 +14,6 @@ function addQuestionToState(action, state){
 
 export default function questions(state = {}, action) {
   switch (action.type) {
-    case ADD_QUESTION:
-      return addQuestionToState(action, state);
-    case REMOVE_QUESTION:
-      return _.omitBy(state,(v, k)=>{
-        return action.payload!=k;
-      });
-    case REORDER_QUESTION:
-      return state;
     case FETCH_QUESTIONS_FULFILLED:
       return Object.assign(_.keyBy(action.payload.data, 'id'), state);
     case SAVE_QUESTION_FULFILLED:

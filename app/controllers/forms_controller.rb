@@ -38,10 +38,9 @@ class FormsController < ApplicationController
   def create
     @form = Form.new(form_params)
     @form.created_by = current_user
-
     respond_to do |format|
       if @form.save
-        create_form_questions(@form.id, params[:question_ids], params[:response_set_ids])
+        create_form_questions(@form.id, params[:form][:linked_questions], params[:form][:linked_response_sets])
         format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else

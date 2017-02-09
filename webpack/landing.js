@@ -15,6 +15,7 @@ import FormShowContainer from './containers/FormShowContainer';
 import QuestionShowContainer from './containers/QuestionShowContainer';
 import ResponseSetEditContainer from './containers/ResponseSetEditContainer';
 import QuestionEditContainer from './containers/QuestionEditContainer';
+import FormsEditContainer from './containers/FormsEditContainer';
 import App from './containers/App';
 
 import configureStore from './store/configure_store';
@@ -26,7 +27,9 @@ ReactDOM.render(
       <Route path='/' component={App}>
         <IndexRoute component={DashboardContainer} />
         <Route path='/forms' component={FormsIndexContainer} />
-        <Route path='/forms/:formId' component={FormShowContainer} />
+          <Route path='/forms/new' component={FormsEditContainer} />
+          <Route path='/forms/:formId' component={FormShowContainer} />
+          <Route path='/forms/:formId/:action' component={FormsEditContainer} />
         <Route path='/responseSets' component={ResponseSetsContainer} />
           <Route path='/responseSets/new' component={ResponseSetEditContainer} />
           <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
