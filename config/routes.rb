@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get '/landing' => 'landing#index'
   get '/landing/stats' => 'landing#stats'
 
-  root to: 'dashboard#index'
+  root to: 'landing#index'
 
   devise_for :users, controllers: { registrations: 'registrations',
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :export, on: :member
-    get :revise, on: :member
     get :redcap, on: :member
   end
   resources :question_response_sets

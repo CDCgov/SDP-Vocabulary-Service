@@ -13,10 +13,10 @@ let LoginMenu = ({currentUser={email:null}}) => {
     return (
       <ul className="nav navbar-nav navbar-right">
         <li>
-          <a href="#">Login </a>
+          <a href="/users/sign_in">Login </a>
         </li>
         <li>
-          <a href="#"> Register </a>
+          <a href="/users/sign_up"> Register </a>
         </li>
       </ul>
     );
@@ -45,7 +45,7 @@ let ContentMenu = ({currentUser={email:false}}) => {
               <li><a href="#">System Activity</a></li>
               <li role="separator" className="divider"></li>
               <li>
-                <a href="#">Logout</a>
+                <a href="/users/sign_out">Logout</a>
               </li>
             </ul>
           </li>
