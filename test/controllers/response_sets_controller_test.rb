@@ -23,7 +23,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
       post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     end
     assert_enqueued_jobs 1
-    assert_redirected_to response_set_url(ResponseSet.last)
+    assert_response :success
   end
 
   test 'should show response_set' do
