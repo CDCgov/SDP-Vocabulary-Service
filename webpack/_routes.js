@@ -606,9 +606,6 @@ Based on Rails routes of Vocabulary::Application
 // responses => /responses(.:format)
   // function(options)
   responses_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"responses",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
-// revise_form => /forms/:id/revise(.:format)
-  // function(id, options)
-  revise_form_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // revise_question => /questions/:id/revise(.:format)
   // function(id, options)
   revise_question_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
