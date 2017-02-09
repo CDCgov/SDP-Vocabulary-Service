@@ -3,10 +3,16 @@ import routes from '../routes';
 import {
   FETCH_FORMS,
   FETCH_FORM,
-  SAVE_FORM
+  SAVE_FORM,
+  CREATE_FORM
 } from './types';
 import { getCSRFToken } from './index';
 
+export function newForm() {
+  return {
+    type: CREATE_FORM
+  };
+}
 
 export function fetchForms(searchTerms) {
   return {

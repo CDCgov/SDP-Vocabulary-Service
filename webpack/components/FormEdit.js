@@ -7,6 +7,8 @@ import _ from 'lodash';
 
 let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions}) => {
   let questionsLookup = _.keyBy(questions, 'id');
+  form.formQuestions = form.formQuestions || [];
+  form.version = form.version || 1;
   return (
     <div id="added-questions" aria-label="Added">
     <div className="question-group">
