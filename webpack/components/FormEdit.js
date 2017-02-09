@@ -123,7 +123,6 @@ class FormEdit extends Component {
   }
 
   render() {
-
     return (
       <div className="col-md-8">
       <div className="col-md-8" id='form-div'>
@@ -141,7 +140,7 @@ class FormEdit extends Component {
             </div>
             <div className="col-md-6">
               <div className="actions">
-                <input type="submit" value={`${this.props.action} Form`}/>
+                <input type="submit" value={`${this.props.action||'New'} Form`}/>
               </div>
             </div>
           </div>
