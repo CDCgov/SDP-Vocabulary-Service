@@ -26,7 +26,7 @@ export default class FormWidget extends Component {
               <span className="glyphicon glyphicon-option-horizontal"></span><span className="sr-only">Question Menu</span>
             </a>
             <ul className="dropdown-menu dropdown-menu-right">
-              <li><a href={this.props.routes.reviseFormPath(this.props.form)}>Revise</a></li>
+              <li><a href={`#/forms/${this.props.form.id}/revise`}>Revise</a></li>
               <li><Link to={'/forms/'+this.props.form.id}>View</Link></li>
               <li><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.formPath(this.props.form)}>Delete</a></li>
             </ul>
