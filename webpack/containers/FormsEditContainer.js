@@ -17,7 +17,7 @@ class FormsEditContainer extends Component {
       this.props.fetchForm(this.props.params.formId);
     }    else {
       this.props.newForm();
-      this.props.params.formId = 'new';
+      this.props.params.formId = 0;
       this.props.params.action = 'new';
     }
     this.props.fetchResponseSets();
@@ -67,7 +67,7 @@ function mapDispatchToProps(dispatch) {
 }
 function mapStateToProps(state, ownProps) {
   return {
-    form: state.forms[ownProps.params.formId||'new'],
+    form: state.forms[ownProps.params.formId||0],
     responseSets: _.values(state.responseSets),
     questions: _.values(state.questions)
   };
