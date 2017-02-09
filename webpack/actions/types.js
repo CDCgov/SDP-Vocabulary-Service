@@ -46,6 +46,7 @@ export const FETCH_FORM = 'FETCH_FORM';
 export const FETCH_FORM_FULFILLED = 'FETCH_FORM_FULFILLED';
 export const SAVE_FORM = 'SAVE_FORM';
 export const SAVE_FORM_FULFILLED = 'SAVE_FORM_FULFILLED';
+export const CREATE_FORM = 'CREATE_FORM';
 
 // Question Types
 export const FETCH_QUESTION_TYPE = 'FETCH_QUESTION_TYPE';
