@@ -29,6 +29,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
       delete question_url(@question)
     end
     assert_enqueued_jobs 1
-    assert_redirected_to questions_url
+    assert_response :success
   end
 end
