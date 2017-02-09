@@ -31,7 +31,8 @@ QuestionItem.propTypes = {
   question: questionProps,
   responseSets: React.PropTypes.array.isRequired,
   index: React.PropTypes.number.isRequired,
-  handleResponseSetChange: React.PropTypes.func.isRequired
+  handleResponseSetChange: React.PropTypes.func.isRequired,
+  responseSetId: React.PropTypes.number
 };
 
 export default QuestionItem;

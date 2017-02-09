@@ -13,7 +13,7 @@ class Form < ApplicationRecord
                              uniqueness: { message: 'forms should have different OMB Control Numbers',
                                            unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
 
-  accepts_nested_attributes_for :questions, allow_destroy: true                                             
+  accepts_nested_attributes_for :questions, allow_destroy: true
 
   def self.search(search)
     where('name ILIKE ?', "%#{search}%")

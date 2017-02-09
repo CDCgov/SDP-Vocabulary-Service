@@ -3,6 +3,7 @@ import {formProps} from '../prop-types/form_props';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import QuestionItem from './QuestionItem';
+import _ from 'lodash';
 
 let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions}) => {
   let questionsLookup = _.keyBy(questions, 'id');
@@ -83,19 +84,6 @@ class FormEdit extends Component {
       default:
         this.state = this.stateForRevise({});
     }
-  }
-
-  componentWillUpdate(prevProps) {
-
-    // let allQuestions = _.keyBy(this.props.questions, 'id');
-    // let questions = prevProps.form.formQuestions.map((q) =>  {
-    //   let formQuestion = allQuestions[q.id]
-    //   // formQuestion.responseSetId = q.responseSetId;
-    //   return formQuestion;
-    // });
-    // if(!(JSON.stringify(questions) === JSON.stringify(this.state.questions))) {
-    //   this.setState({questions});
-    // }
   }
 
   handleResponseSetChange(container) {
