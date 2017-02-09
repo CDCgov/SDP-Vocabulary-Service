@@ -3,7 +3,7 @@ import { questionProps } from "../prop-types/question_props";
 
 const QuestionItem = ({question, responseSets, index, handleResponseSetChange=() => {}, responseSetId}) => {
   if (!question || !responseSets) {
-    return "Loading...";
+    return (<div>"Loading..."</div>);
   }
   return (
     <div className='question-item'>
