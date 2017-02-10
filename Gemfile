@@ -41,10 +41,11 @@ group :development, :test do
   gem 'byebug'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner.git'
-  gem 'poltergeist'
   gem 'scss_lint', require: false
   gem 'capybara'
   gem 'capybara-accessible'
+  gem 'capybara-webkit'
+  gem 'headless'
   gem 'axe-matchers'
   gem 'selenium-webdriver', '2.48.0'
   gem 'parallel_tests'
