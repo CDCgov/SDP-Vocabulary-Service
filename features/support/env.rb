@@ -7,7 +7,6 @@
 require 'cucumber/rails'
 
 require 'capybara/cucumber'
-require 'capybara/poltergeist'
 require 'capybara/accessible'
 
 require 'axe/cucumber/step_definitions'
@@ -26,14 +25,37 @@ end
 
 Capybara.default_driver = :chrome
 Capybara.javascript_driver = :chrome
-if ENV['HEADLESS']
-  # On demand: non-headless tests via Selenium/WebDriver
-  # To run the scenarios in browser (default: Firefox), use the following command line:
-  # IN_BROWSER=true bundle exec cucumber
-  # or (to have a pause of 1 second between each step):
-  # IN_BROWSER=true PAUSE=1 bundle exec cucumber
 
-  # need to setup headless testing here
+if ENV['HEADLESS']
+  require 'headless'
+  require 'capybara/webkit'
+  Capybara::Webkit.configure do |config|
+    config.block_unknown_urls # allow_url('fonts.googleapis.com')
+    config.skip_image_loading
+  end
+
+  module Capybara
+    module Accessible
+      class WebkitDriverAdapter
+        def modal_dialog_present?(_driver)
+          # driver.alert_messages.any?
+          false
+        end
+      end
+    end
+  end
+
+  Capybara.register_driver :accessible_webkit2 do |app|
+    driver = Capybara::Webkit::Driver.new(app, Capybara::Webkit::Configuration.to_hash)
+    adaptor = Capybara::Accessible::WebkitDriverAdapter.new
+    Capybara::Accessible.setup(driver, adaptor)
+  end
+
+  headless = Headless.new
+  headless.start
+
+  Capybara.default_driver = :accessible_webkit2
+  Capybara.javascript_driver = :acessible_webkit2
 
 end
 

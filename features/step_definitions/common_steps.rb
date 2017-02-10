@@ -48,7 +48,8 @@ When(/^I confirm my action$/) do
   # So, apparently the poltergeist driver automatically accept/confirm/okays all alerts
   # Additionally, it doesn't support the code below, which is required when using selenium.
   # I'm torn on removing the step entirely, so I'm leaving it and this explanation for posterity.
-  page.driver.browser.switch_to.alert.accept
+
+  page.driver.browser.switch_to.alert.accept unless ENV['HEADLESS']
 end
 
 # Then clauses
