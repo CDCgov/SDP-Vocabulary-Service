@@ -34,10 +34,14 @@ if ENV['HEADLESS']
     config.skip_image_loading
   end
 
-  class Capybara::Accessible::WebkitDriverAdapter
-    def modal_dialog_present?(_driver)
-      # driver.alert_messages.any?
-      false
+  module Capybara
+    module Accessible
+      class WebkitDriverAdapter
+        def modal_dialog_present?(_driver)
+          # driver.alert_messages.any?
+          false
+        end
+      end
     end
   end
 
