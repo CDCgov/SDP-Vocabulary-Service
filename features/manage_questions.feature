@@ -57,6 +57,16 @@ Feature: Manage Questions
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
 
+  Scenario: Reject Blank Question
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question Type with the name "Multiple Choice"
+    And I have a Response Type with the name "Integer"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the "New Question" link
+    And I click on the "Create Question" button
+    And I should see "content - can't be blank"
+
   Scenario: Delete Question
     Given I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com

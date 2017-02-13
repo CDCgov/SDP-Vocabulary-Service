@@ -21,7 +21,9 @@ export default class Errors extends Component {
   }
 
   errorList() {
-    return _.flatten(_.values(this.props.errors));
+    return _.flatten(_.keys(this.props.errors).map((k) => {
+      return this.props.errors[k].map((e) => `${k} - ${e}`);
+    }));
   }
 }
 
