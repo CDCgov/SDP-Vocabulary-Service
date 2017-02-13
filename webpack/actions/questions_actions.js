@@ -62,15 +62,18 @@ export function fetchQuestion(id) {
   };
 }
 
-export function saveQuestion(question, callback=null) {
+export function saveQuestion(question, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();
   const linkedResponseSets = question.linkedResponseSets;
   delete question.linkedResponseSets;
   const postPromise = axios.post(routes.questionsPath(),
                       {question, authenticityToken, linkedResponseSets},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
-  if (callback) {
-    postPromise.then(callback);
+  if (failureHandler) {
+    postPromise.catch(failureHandler);
+  }
+  if (successHandler) {
+    postPromise.then(successHandler);
   }
   return {
     type: SAVE_QUESTION,
