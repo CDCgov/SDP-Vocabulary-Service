@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Draggable, Droppable } from './Draggable';
+import Errors from './Errors';
 import ResponseSetWidget from './ResponseSetWidget';
 import CodedSetTableForm from './CodedSetTableForm';
 import { questionProps } from '../prop-types/question_props';
@@ -135,6 +136,7 @@ class QuestionForm extends Component{
     }
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
+        <Errors errors={this.state.errors} />
         <div className="row"><br/>
           <div>
             <div className="panel panel-default">
@@ -213,12 +215,11 @@ class QuestionForm extends Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.questionSubmitter(this.state, (response) => {
-      // TODO: Handle when the saving question fails.
+    this.props.questionSubmitter(this.state, (successResponse) => {
       this.unsavedState = false;
-      if (response.status === 201) {
-        this.props.router.push(`/questions/${response.data.id}`);
-      }
+      this.props.router.push(`/questions/${successResponse.data.id}`);
+    }, (failureResponse) => {
+      this.setState({errors: failureResponse.response.data});
     });
   }
 
