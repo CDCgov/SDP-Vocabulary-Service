@@ -1,1 +1,3 @@
 default_url_helper_host: "localhost:3000"
+elasticsearch:
+  log: true

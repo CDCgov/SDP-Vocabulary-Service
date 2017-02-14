@@ -14,6 +14,17 @@ class ResponseSet < ApplicationRecord
 
   accepts_nested_attributes_for :responses, allow_destroy: true
 
+  after_commit :index, on: [:create, :update]
+  after_commit :delete_index, on: :destroy
+
+  def index
+    UpdateIndexJob.perform_later('response_set', ESResponseSetSerializer.new(self).as_json)
+  end
+
+  def delete_index
+    DeleteFromIndexJob.perform_later('response_set', id)
+  end
+
   def self.search(search)
     where('name ILIKE ?', "%#{search}%")
   end
@@ -23,7 +34,7 @@ class ResponseSet < ApplicationRecord
   def build_new_revision
     new_revision = ResponseSet.new(version_independent_id: version_independent_id,
                                    version: version + 1, description: description,
-                                   name: name, coded: coded, oid: oid)
+                                   status: status, name: name, coded: coded, oid: oid)
     responses.each do |r|
       new_revision.responses << r.dup
     end
@@ -35,7 +46,8 @@ class ResponseSet < ApplicationRecord
     extended_set = ResponseSet.new
     extended_set.name = name
     extended_set.description = description
-    extended_set.coded = coded
+    extended_set.status = status
+    extended_set.coded  = coded
     extended_set.parent = self
     extended_set.version = 1
     extended_set.version_independent_id = nil

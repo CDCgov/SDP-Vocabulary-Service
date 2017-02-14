@@ -7,8 +7,7 @@ Feature: Manage Questions
     When I go to the list of Questions
     Then I should see "What is your gender?"
     When I click on the menu link for the Question with the content "What is your gender?"
-    Then I should see the option to Delete the Question with the content "What is your gender?"
-    And I should see the option to Details the Question with the content "What is your gender?"
+    Then I should see the option to Details the Question with the content "What is your gender?"
     And I should see the option to Revise the Question with the content "What is your gender?"
 
   Scenario: Show Question in Detail
@@ -27,7 +26,7 @@ Feature: Manage Questions
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Content: What is your gender?"
     And I fill in the "Your Comment" field with "Is This a Comment?"
-    And I click on the "Send" button
+    And I click on the "Post" button
     Then I should see "Is This a Comment?"
 
   Scenario: Revise Question
@@ -58,6 +57,16 @@ Feature: Manage Questions
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
 
+  Scenario: Reject Blank Question
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question Type with the name "Multiple Choice"
+    And I have a Response Type with the name "Integer"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the "New Question" link
+    And I click on the "Create Question" button
+    And I should see "content - can't be blank"
+
   Scenario: Delete Question
     Given I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
@@ -65,7 +74,7 @@ Feature: Manage Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Delete the Question with the content "What is your gender?"
     And I confirm my action
-    Then I should see "Question was successfully destroyed."
+    #Then I should see "Question was successfully destroyed."
     And I should not see "Male"
 
   Scenario: Search for a Question

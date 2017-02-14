@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
   load_and_authorize_resource
 
-  # GET /questions
   # GET /questions.json
   def index
     @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
@@ -10,21 +9,6 @@ class QuestionsController < ApplicationController
   # GET /questions/1
   # GET /questions/1.json
   def show
-  end
-
-  # GET /questions/new
-  def new
-    @question = Question.new
-    @response_sets  = ResponseSet.latest_versions
-    @question_types = QuestionType.all
-    @question.concepts.build(value: '', code_system: '', display_name: '')
-  end
-
-  # GET /questions/1/edit
-  def revise
-    q_to_revise = Question.find(params[:id])
-    @question = q_to_revise.build_new_revision
-    @question_types = QuestionType.all
   end
 
   def link_response_sets(params)
@@ -87,10 +71,7 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1.json
   def destroy
     @question.destroy
-    respond_to do |format|
-      format.html { redirect_to questions_url, notice: 'Question was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: @question
   end
 
   private
@@ -98,6 +79,6 @@ class QuestionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
     params.require(:question).permit(:content, :response_set_id, :response_type_id, :question_type_id, :version, :version_independent_id,
-                                     concepts_attributes: [:id, :value, :display_name, :code_system])
+                                     :description, :status, concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

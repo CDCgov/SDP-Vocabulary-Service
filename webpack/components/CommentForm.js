@@ -8,7 +8,7 @@ export default class CommentForm extends Component {
               <label htmlFor={"comment"+this.props.parentId}>Your Comment</label>
               <textarea id={"comment"+this.props.parentId} ref={(input) => this.comment = input} name="comment" className="form-control" rows="3"></textarea>
             </div>
-            <button type="submit" className="btn btn-default">Send</button>
+            <button type="submit" className="btn btn-default">Post</button>
           </form>
     );
   }

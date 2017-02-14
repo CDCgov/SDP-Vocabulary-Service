@@ -1,8 +1,9 @@
 import React from 'react';
+import { questionProps } from "../prop-types/question_props";
 
-const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQuestion}) => {
+const QuestionItem = ({question, responseSets, index, handleResponseSetChange=() => {}, responseSetId}) => {
   if (!question || !responseSets) {
-    return "Loading...";
+    return (<div>"Loading..."</div>);
   }
   return (
     <div className='question-item'>
@@ -11,29 +12,15 @@ const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQue
         <div className="col-md-5" id={`question_id_${question.id}`} >{question.content}</div>
         <div className="col-md-3" >
           <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={question.id}/>
-          <select className="col-md-12" aria-label="Response Set IDs" name='response_set_ids[]' id='response_set_ids'>
-            {responseSets.map((r, i) => {
+          <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={index} value={responseSetId} onChange={handleResponseSetChange(index)}>
+            {responseSets.map((r) => {
               return (
-                <option value={r.id} key={i} >{r.name}</option>
+                <option value={r.id} key={r.id}>{r.name} </option>
               );
             })}
             <option aria-label=' '></option>
           </select>
 
-        </div>
-        <div className="col-md-3">
-          <div className="btn btn-small btn-default move-up"
-               onClick={() => reorderQuestion(index, 1)}>
-            <b>Move Up</b>
-          </div>
-          <div className="btn btn-small btn-default move-down"
-               onClick={() => reorderQuestion(index, -1)}>
-            <b>Move Down</b>
-          </div>
-          <div className="btn btn-small btn-default"
-               onClick={() => removeQuestion(index)}>
-            <b>Remove</b>
-          </div>
         </div>
       </div>
     </div>
@@ -41,11 +28,11 @@ const QuestionItem = ({question, responseSets, index, removeQuestion, reorderQue
 };
 
 QuestionItem.propTypes = {
-  question: React.PropTypes.object.isRequired,
+  question: questionProps,
   responseSets: React.PropTypes.array.isRequired,
   index: React.PropTypes.number.isRequired,
-  removeQuestion: React.PropTypes.func.isRequired,
-  reorderQuestion: React.PropTypes.func.isRequired
+  handleResponseSetChange: React.PropTypes.func,
+  responseSetId: React.PropTypes.number
 };
 
 export default QuestionItem;

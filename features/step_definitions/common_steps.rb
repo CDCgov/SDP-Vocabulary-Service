@@ -28,7 +28,7 @@ When(/^I click on the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |act
 end
 
 When(/^I click on the (.*) search filter$/) do |action|
-  page.find("#menu_item_#{action}").trigger('click')
+  page.find("#menu_item_#{action}").click
 end
 
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|
@@ -48,7 +48,8 @@ When(/^I confirm my action$/) do
   # So, apparently the poltergeist driver automatically accept/confirm/okays all alerts
   # Additionally, it doesn't support the code below, which is required when using selenium.
   # I'm torn on removing the step entirely, so I'm leaving it and this explanation for posterity.
-  # page.driver.browser.switch_to.alert.accept
+
+  page.driver.browser.switch_to.alert.accept unless ENV['HEADLESS']
 end
 
 # Then clauses

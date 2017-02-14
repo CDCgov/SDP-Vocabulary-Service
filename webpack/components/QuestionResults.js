@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { questionProps } from "../prop-types/question_props";
+import { formProps } from "../prop-types/form_props";
 
 export default class QuestionResults extends Component {
   render() {
@@ -15,7 +17,7 @@ export default class QuestionResults extends Component {
                 <div className="col-md-8" name="question_content" >{question.content}</div>
                 <div className="col-md-3">
                   <div id={"question_"+question.id+"_add"} className="btn btn-small btn-default"
-                       onClick={() => this.props.addQuestion(question)}>
+                       onClick={() => this.props.addQuestion(this.props.form, question)}>
                     <b>Add</b>
                   </div>
                 </div>
@@ -29,6 +31,7 @@ export default class QuestionResults extends Component {
 }
 
 QuestionResults.propTypes = {
-  questions: React.PropTypes.array.isRequired,
-  addQuestion: React.PropTypes.func.isRequired
+  questions: React.PropTypes.arrayOf(questionProps).isRequired,
+  addQuestion: React.PropTypes.func.isRequired,
+  form: formProps
 };

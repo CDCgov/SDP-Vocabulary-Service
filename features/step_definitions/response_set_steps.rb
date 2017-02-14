@@ -8,7 +8,7 @@ with the Responses (.+)$/) do |set_name, desc, response_values|
 end
 
 When(/^I go to the list of Response Sets$/) do
-  visit '/response_sets'
+  visit 'landing#/responseSets'
 end
 
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
@@ -23,5 +23,5 @@ When(/^I click on the link to remove the Response "([^"]*)"$/) do |response_name
 end
 When(/^I click on the menu link for the Response Set with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Response Set', attribute, attribute_value)
-  page.find("#response_set_#{object_id}_menu").trigger('click')
+  page.find("#response_set_#{object_id}_menu").click
 end

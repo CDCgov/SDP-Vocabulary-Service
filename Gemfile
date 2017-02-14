@@ -9,6 +9,7 @@ gem 'pg'
 gem 'puma', '~> 3.0'
 
 gem 'webpack-rails'
+gem 'olive_branch'
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'json_schema'
@@ -30,19 +31,21 @@ gem 'js-routes'
 gem 'acts_as_tree'
 gem 'acts_as_commentable'
 gem 'omniauth_openid_connect'
-
+gem 'elasticsearch'
 gem 'config'
 
 group :development, :test do
+  gem 'fakeweb', '~> 1.3'
   gem 'rubocop', '~> 0.44.1', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner.git'
-  gem 'poltergeist'
   gem 'scss_lint', require: false
   gem 'capybara'
   gem 'capybara-accessible'
+  gem 'capybara-webkit'
+  gem 'headless'
   gem 'axe-matchers'
   gem 'selenium-webdriver', '2.48.0'
   gem 'parallel_tests'

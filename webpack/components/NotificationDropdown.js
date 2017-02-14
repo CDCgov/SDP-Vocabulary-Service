@@ -1,13 +1,21 @@
 import React, { Component, PropTypes } from 'react';
-import { readNotification } from '../actions/notification';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { readNotifications } from '../actions/notification_actions';
 
-export default class NotificationDropdown extends Component {
+class NotificationDropdown extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      notificationCount: props.notificationCount
+      notificationCount: this.props.notificationCount
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.notificationCount !== this.props.notificationCount){
+      this.setState({ notificationCount: nextProps.notificationCount });
+    }
   }
 
   onDropdownClick(notifications) {
@@ -15,7 +23,7 @@ export default class NotificationDropdown extends Component {
     notifications.forEach((notif) => {
       ids.push(notif.id);
     });
-    readNotification(ids);
+    this.props.readNotifications(ids);
 
     this.setState({
       notificationCount: 0
@@ -23,28 +31,35 @@ export default class NotificationDropdown extends Component {
   }
 
   render() {
-    if(this.state.notificationCount > 0){
+    if(this.state.notificationCount > 0 && this.props.notifications){
       return (
-        <div className="notif-button" onClick={() => this.onDropdownClick(this.props.notifications)}>
+        <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onClick={() => this.onDropdownClick(this.props.notifications)}>
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
           Alerts
           <span className="caret"></span>
           <span className="alerts-badge">{this.state.notificationCount}</span>
-        </div>
+        </a>
       );
     } else {
       return (
-        <div className="notif-button">
+        <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
           Alerts
           <span className="caret"></span>
-        </div>
+        </a>
       );
     }
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({readNotifications}, dispatch);
+}
+
 NotificationDropdown.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object),
-  notificationCount: PropTypes.number
+  notificationCount: PropTypes.number,
+  readNotifications: PropTypes.func
 };
+
+export default connect(null, mapDispatchToProps)(NotificationDropdown);

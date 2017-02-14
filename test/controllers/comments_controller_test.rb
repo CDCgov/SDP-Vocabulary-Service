@@ -15,7 +15,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
   test 'can fetch comments by type and id ' do
     q = questions(:three)
-    get comments_path, params: { commentable_type: 'Question', commentable_id: q.id }
+    get comments_path, params: { commentableType: 'Question', commentableId: q.id }
     assert_response :success
   end
 end
