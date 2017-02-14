@@ -26,7 +26,7 @@ Feature: Manage Questions
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Content: What is your gender?"
     And I fill in the "Your Comment" field with "Is This a Comment?"
-    And I click on the "Send" button
+    And I click on the "Post" button
     Then I should see "Is This a Comment?"
 
   Scenario: Revise Question
