@@ -15,13 +15,16 @@ export function fetchCurrentUser() {
   };
 }
 
-export function logIn(user, callback=null) {
+export function logIn(user, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   const postPromise = axios.post('/users/sign_in',
                       {user, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
-  if (callback) {
-    postPromise.then(callback);
+  if (failureHandler) {
+    postPromise.catch(failureHandler);
+  }
+  if (successHandler) {
+    postPromise.then(successHandler);
   }
   return {
     type: LOG_IN,

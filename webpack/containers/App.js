@@ -7,14 +7,27 @@ import { fetchCurrentUser, logIn } from '../actions/current_user_actions';
 import currentUserProps from '../prop-types/current_user_props';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {logInOpen: false};
+  }
+
   componentWillMount() {
     this.props.fetchCurrentUser();
+  }
+
+  openLogInModal() {
+    this.setState({logInOpen: true});
+  }
+
+  closeLogInModal() {
+    this.setState({logInOpen: false});
   }
 
   render() {
     return (
       <div>
-        <Header currentUser={this.props.currentUser}/>
+        <Header currentUser={this.props.currentUser} modalOpener={() => this.openLogInModal()}/>
         <div className='main-content'>
           {this.props.children}
         </div>
@@ -28,7 +41,7 @@ class App extends Component {
             </div>
           </div>
         </footer>
-        <LogInModal logIn={this.props.logIn} />
+        <LogInModal logIn={this.props.logIn} show={this.state.logInOpen} closer={() => this.closeLogInModal()}/>
       </div>
     );
   }
