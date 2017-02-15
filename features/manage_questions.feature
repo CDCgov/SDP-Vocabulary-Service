@@ -57,6 +57,36 @@ Feature: Manage Questions
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
 
+  Scenario: Create New Question from List with Warning Modal
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question Type with the name "Multiple Choice"
+    And I have a Response Type with the name "Integer"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the "New Question" link
+    And I fill in the "Question" field with "What is your favorite animal?"
+    And I drag the "Gender Full" option to the "Selected Response Sets" list
+    And I select the "Multiple Choice" option in the "Type" list
+    And I select the "Integer" option in the "Primary Response Type" list
+    When I go to the list of Questions
+    And I click on the "Save & Leave" button
+    And I should see "What is your favorite animal?"
+
+  Scenario: Abandon New Question with Warning Modal
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question Type with the name "Multiple Choice"
+    And I have a Response Type with the name "Integer"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the "New Question" link
+    And I fill in the "Question" field with "What is your favorite animal?"
+    And I drag the "Gender Full" option to the "Selected Response Sets" list
+    And I select the "Multiple Choice" option in the "Type" list
+    And I select the "Integer" option in the "Primary Response Type" list
+    When I go to the list of Questions
+    And I click on the "Continue Without Saving" button
+    And I should not see "What is your favorite animal?"
+
   Scenario: Reject Blank Question
     Given I have a Response Set with the name "Gender Full"
     And I have a Question Type with the name "Multiple Choice"
