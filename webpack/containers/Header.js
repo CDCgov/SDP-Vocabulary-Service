@@ -13,7 +13,7 @@ let LoginMenu = ({currentUser={email:null}}) => {
     return (
       <ul className="nav navbar-nav navbar-right">
         <li>
-          <a href="/users/sign_in">Login </a>
+          <a data-toggle="modal" data-target="#logIn">Login </a>
         </li>
         <li>
           <a href="/users/sign_up"> Register </a>

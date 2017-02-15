@@ -38,6 +38,8 @@ export const SAVE_RESPONSE_SET_FULFILLED = 'SAVE_RESPONSE_SET_FULFILLED';
 // Current user types
 export const FETCH_CURRENT_USER = 'FETCH_CURRENT_USER';
 export const FETCH_CURRENT_USER_FULFILLED = 'FETCH_CURRENT_USER_FULFILLED';
+export const LOG_IN = 'LOG_IN';
+export const LOG_IN_FULFILLED = 'LOG_IN_FULFILLED';
 
 // Form types
 export const FETCH_FORMS = 'FETCH_FORMS';
