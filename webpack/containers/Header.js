@@ -7,13 +7,16 @@ import NotificationDropdown from '../components/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
-let LoginMenu = ({currentUser={email:null}}) => {
+let LoginMenu = ({modalOpener, currentUser={email:null}}) => {
   let loggedIn = currentUser ? true : false;
   if(!loggedIn) {
     return (
       <ul className="nav navbar-nav navbar-right">
         <li>
-          <a data-toggle="modal" data-target="#logIn">Login </a>
+          <a href="#" onClick={() => {
+            modalOpener();
+            return false;
+          }}>Login </a>
         </li>
         <li>
           <a href="/users/sign_up"> Register </a>
@@ -27,6 +30,7 @@ let LoginMenu = ({currentUser={email:null}}) => {
 
 LoginMenu.propTypes = {
   currentUser: currentUserProps,
+  modalOpener: PropTypes.func.isRequired
 };
 
 let ContentMenu = ({currentUser={email:false}}) => {
@@ -116,7 +120,7 @@ class Header extends Component {
             <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
           </div>
           <SignedInMenu currentUser={this.props.currentUser} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
-          <LoginMenu currentUser={this.props.currentUser} />
+          <LoginMenu currentUser={this.props.currentUser} modalOpener={this.props.modalOpener}/>
           <ContentMenu currentUser={this.props.currentUser} />
         </div>
 
@@ -141,7 +145,8 @@ Header.propTypes = {
   currentUser: currentUserProps,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,
-  fetchNotifications: PropTypes.func
+  fetchNotifications: PropTypes.func,
+  modalOpener: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
