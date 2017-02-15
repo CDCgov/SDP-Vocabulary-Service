@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Header from './Header';
-
+import LogInModal from '../components/accounts/LogInModal';
 import { connect } from 'react-redux';
 
-import { fetchCurrentUser } from '../actions/current_user_actions';
+import { fetchCurrentUser, logIn } from '../actions/current_user_actions';
 import currentUserProps from '../prop-types/current_user_props';
 
 class App extends Component {
@@ -28,6 +28,7 @@ class App extends Component {
             </div>
           </div>
         </footer>
+        <LogInModal logIn={this.props.logIn} />
       </div>
     );
   }
@@ -36,6 +37,7 @@ class App extends Component {
 App.propTypes = {
   currentUser: currentUserProps,
   fetchCurrentUser: PropTypes.func,
+  logIn: PropTypes.func,
   children: PropTypes.object
 };
 
@@ -43,4 +45,4 @@ function mapStateToProps(state) {
   return {currentUser: state.currentUser};
 }
 
-export default connect(mapStateToProps, {fetchCurrentUser})(App);
+export default connect(mapStateToProps, {fetchCurrentUser, logIn})(App);
