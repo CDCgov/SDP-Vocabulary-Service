@@ -12,7 +12,7 @@ const responseSetProps = PropTypes.shape({
   name: PropTypes.string,
   description: PropTypes.string,
   oid: PropTypes.string,
-  coded: PropTypes.boolean,
+  coded: PropTypes.bool,
   versionIndependentId: PropTypes.string,
   version: PropTypes.number,
   parent: PropTypes.object,

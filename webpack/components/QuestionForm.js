@@ -7,6 +7,7 @@ import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import allRoutes from '../prop-types/route_props';
 import _ from 'lodash';
+import ModalDialog from './ModalDialog';
 
 let setData = function(){
   return {"json/responseSet": JSON.stringify(this.props.responseSet)};
@@ -92,8 +93,25 @@ class QuestionForm extends Component{
     this.unbindHook();
   }
 
-  routerWillLeave() {
-    return (!this.unsavedState || confirm('You are about to leave a page with unsaved changes. Are you sure you would like to proceed?'));
+  routerWillLeave(nextLocation) {
+    this.setState({ showModal: this.unsavedState });
+    this.nextLocation = nextLocation;
+    return !this.unsavedState;
+  }
+
+  handleModalResponse(leavePage){
+    this.setState({ showModal: false });
+    if(leavePage){
+      this.unsavedState = false;
+      this.props.router.push(this.nextLocation.pathname);
+    }else{
+      this.props.questionSubmitter(this.state, () => {
+        this.unsavedState = false;
+        this.props.router.push(this.nextLocation.pathname);
+      }, (failureResponse) => {
+        this.setState({errors: failureResponse.response.data});
+      });
+    }
   }
 
   windowWillUnload() {
@@ -117,7 +135,8 @@ class QuestionForm extends Component{
       version: 1,
       responseTypeId: null,
       conceptsAttributes: [],
-      linkedResponseSets: []
+      linkedResponseSets: [],
+      showModal: false
     };
   }
 
@@ -136,6 +155,17 @@ class QuestionForm extends Component{
     }
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
+      <ModalDialog  show={this.state.showModal}
+                    title="Warning"
+                    subTitle="Unsaved Changes"
+                    warning={true}
+                    message="You are about to leave a page with unsaved changes. How would you like to proceed?"
+                    secondaryButtonMessage="Continue Without Saving"
+                    primaryButtonMessage="Save & Leave"
+                    cancelButtonMessage="Cancel"
+                    primaryButtonAction={()=> this.handleModalResponse(false)}
+                    cancelButtonAction ={()=> this.setState({ showModal: false })}
+                    secondaryButtonAction={()=> this.handleModalResponse(true)} />
         <Errors errors={this.state.errors} />
         <div className="row"><br/>
           <div>
