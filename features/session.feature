@@ -7,8 +7,8 @@ Feature: Session Management
     Then I should see "Sign up"
 
   Scenario: Create an account
-    Given I am on the "/users/sign_in" page
-    When I click on the "Sign up" link
+    Given I am on the "/" page
+    When I click on the "Register" link
     And I fill in the "user_email" field with "test_author@gmail.com"
     And I fill in the "user_password" field with "password"
     And I fill in the "user_password_confirmation" field with "password"
@@ -19,10 +19,10 @@ Feature: Session Management
     Given I am on the "/" page
     And a user "test_author@gmail.com" exists
     When I click on the "Login" link
-    And I fill in the "user_email" field with "test_author@gmail.com"
-    And I fill in the "user_password" field with "password"
-    And I click on the "Log in" button
-    Then I should see "Signed in successfully."
+    And I fill in the "email" field with "test_author@gmail.com"
+    And I fill in the "password" field with "password"
+    And I click on the "Log In" button
+    Then I should see "test_author@gmail.com"
 
   Scenario: Edit an existing account
     Given I am logged in as test_author@gmail.com
