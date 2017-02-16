@@ -4,6 +4,7 @@ import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import QuestionItem from './QuestionItem';
 import _ from 'lodash';
+import ModalDialog from './ModalDialog';
 
 let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions}) => {
   let questionsLookup = _.keyBy(questions, 'id');
@@ -63,17 +64,15 @@ AddedQuestions.propTypes = {
 class FormEdit extends Component {
 
   stateForRevise(form) {
-
     const id = form.id;
     const versionIndependentId = form.versionIndependentId;
     const version = form.version + 1;
     const name = form.name || '';
     const formQuestions = form.formQuestions;
     const controlNumber = form.controlNumber;
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber};
+    const showModal = false;
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, showModal};
   }
-
-
 
   constructor(props) {
     super(props);
@@ -100,8 +99,29 @@ class FormEdit extends Component {
     this.unbindHook();
   }
 
-  routerWillLeave() {
-    return (!this.unsavedState || confirm('You are about to leave a page with unsaved changes. Are you sure you would like to proceed?'));
+  routerWillLeave(nextLocation) {
+    this.setState({ showModal: this.unsavedState });
+    this.nextLocation = nextLocation;
+    return !this.unsavedState;
+  }
+
+  handleModalResponse(leavePage){
+    this.setState({ showModal: false });
+    if(leavePage){
+      this.unsavedState = false;
+      this.props.router.push(this.nextLocation.pathname);
+    }else{
+      let form = Object.assign({}, this.state);
+      form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
+      form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId);
+      this.props.formSubmitter(form, (response) => {
+      // TODO: Handle when the saving form fails.
+      this.unsavedState = false;
+      if (response.status === 201) {
+        this.props.router.push(this.nextLocation.pathname);
+      }
+    });
+    }
   }
 
   windowWillUnload() {
@@ -149,6 +169,17 @@ class FormEdit extends Component {
     return (
       <div className="col-md-8">
       <div className="col-md-8" id='form-div'>
+      <ModalDialog  show={this.state.showModal}
+        title="Warning"
+        subTitle="Unsaved Changes"
+        warning={true}
+        message="You are about to leave a page with unsaved changes. How would you like to proceed?"
+        secondaryButtonMessage="Continue Without Saving"
+        primaryButtonMessage="Save & Leave"
+        cancelButtonMessage="Cancel"
+        primaryButtonAction={()=> this.handleModalResponse(false)}
+        cancelButtonAction ={()=> {this.props.router.push(this.props.route.path); this.setState({ showModal: false });}}
+        secondaryButtonAction={()=> this.handleModalResponse(true)} />
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <div className="row" id="form-button-div">
           <div className="col-md-2">
