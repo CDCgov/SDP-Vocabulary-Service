@@ -40,6 +40,8 @@ export const FETCH_CURRENT_USER = 'FETCH_CURRENT_USER';
 export const FETCH_CURRENT_USER_FULFILLED = 'FETCH_CURRENT_USER_FULFILLED';
 export const LOG_IN = 'LOG_IN';
 export const LOG_IN_FULFILLED = 'LOG_IN_FULFILLED';
+export const SIGN_UP = 'SIGN_UP';
+export const SIGN_UP_FULFILLED = 'SIGN_UP_FULFILLED';
 
 // Form types
 export const FETCH_FORMS = 'FETCH_FORMS';

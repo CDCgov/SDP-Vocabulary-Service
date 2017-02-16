@@ -4,15 +4,15 @@ Feature: Session Management
   Scenario: Navigate to the sign in page
     Given I am on the "/" page
     When I click on the "Register" link
-    Then I should see "Sign up"
+    Then I should see "Sign Up"
 
   Scenario: Create an account
     Given I am on the "/" page
     When I click on the "Register" link
-    And I fill in the "user_email" field with "test_author@gmail.com"
-    And I fill in the "user_password" field with "password"
-    And I fill in the "user_password_confirmation" field with "password"
-    And I click on the "Sign up" button
+    And I fill in the "email" field with "test_author@gmail.com"
+    And I fill in the "password" field with "password"
+    And I fill in the "passwordConfirmation" field with "password"
+    And I click on the "Sign Up" button
     Then a user "test_author@gmail.com" should exist
 
   Scenario: Login to an existing account
