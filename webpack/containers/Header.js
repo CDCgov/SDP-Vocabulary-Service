@@ -7,19 +7,22 @@ import NotificationDropdown from '../components/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
-let LoginMenu = ({modalOpener, currentUser={email:null}}) => {
+let LoginMenu = ({logInOpener, signUpOpener, currentUser={email:null}}) => {
   let loggedIn = currentUser ? true : false;
   if(!loggedIn) {
     return (
       <ul className="nav navbar-nav navbar-right">
         <li>
           <a href="#" onClick={() => {
-            modalOpener();
+            logInOpener();
             return false;
           }}>Login </a>
         </li>
         <li>
-          <a href="/users/sign_up"> Register </a>
+          <a href="#" onClick={() => {
+            signUpOpener();
+            return false;
+          }}> Register </a>
         </li>
       </ul>
     );
@@ -30,7 +33,8 @@ let LoginMenu = ({modalOpener, currentUser={email:null}}) => {
 
 LoginMenu.propTypes = {
   currentUser: currentUserProps,
-  modalOpener: PropTypes.func.isRequired
+  logInOpener: PropTypes.func.isRequired,
+  signUpOpener: PropTypes.func.isRequired
 };
 
 let ContentMenu = ({currentUser={email:false}}) => {
@@ -120,7 +124,7 @@ class Header extends Component {
             <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
           </div>
           <SignedInMenu currentUser={this.props.currentUser} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
-          <LoginMenu currentUser={this.props.currentUser} modalOpener={this.props.modalOpener}/>
+          <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
           <ContentMenu currentUser={this.props.currentUser} />
         </div>
 
@@ -146,7 +150,8 @@ Header.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,
   fetchNotifications: PropTypes.func,
-  modalOpener: PropTypes.func.isRequired
+  logInOpener: PropTypes.func.isRequired,
+  signUpOpener: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
