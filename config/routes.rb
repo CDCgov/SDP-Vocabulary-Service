@@ -22,10 +22,10 @@ Rails.application.routes.draw do
   resources :question_response_sets
   resources :responses
   resources :concepts
-  resources :questions, except: [:edit, :update] do
+  resources :questions, except: [:edit] do
     get :revise, on: :member
+    patch :publish, on: :member
   end
-
   resources :comments do
     post :reply_to, on: :member
   end

@@ -49,20 +49,33 @@ class QuestionsController < ApplicationController
     @question.response_sets << @response_sets
   end
 
+  # PATCH/PUT /questions/1/publish
+  def publish
+    if @question.status == 'draft'
+      @question.publish
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
-    update_response_sets(params)
-    @question.updated_by = current_user
+    if @question.status == 'published'
+      render json: @question.errors, status: :unprocessable_entity
+    else
+      update_response_sets(params)
+      @question.updated_by = current_user
 
-    respond_to do |format|
-      if @question.update(question_params)
-        format.html { redirect_to @question, notice: 'Question was successfully updated.' }
-        format.json { render :show, status: :ok, location: @question }
-      else
-        @question_types = QuestionType.all
-        format.html { render :edit }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @question.update(question_params)
+          format.html { redirect_to @question, notice: 'Question was successfully updated.' }
+          format.json { render :show, status: :ok, location: @question }
+        else
+          @question_types = QuestionType.all
+          format.html { render :edit }
+          format.json { render json: @question.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

@@ -32,8 +32,21 @@ class Ability
     # user ||= User.new # guest user (not logged in)
     if user
       can :manage, :all
+      cannot :manage, Question
+      cannot :manage, Form
+      # TODO
+      # cannot :manage, ResponseSet
+      can :manage, Question, status: 'published'
+      can :manage, Question, status: 'draft', created_by: user
+      can :manage, Form, status: 'published'
+      can :manage, Form, status: 'draft', created_by: user
+      # can :manage, ResponseSet, { status: 'published' }
+      # can :manage, ResponseSet, { status: 'draft', created_by: user }
     else
       can :read, :all
+      cannot :read, Question, status: 'draft'
+      cannot :read, Form, status: 'draft'
+      # cannot :read, ResponseSet, { status: 'draft' }
     end
   end
 end
