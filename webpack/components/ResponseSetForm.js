@@ -103,7 +103,10 @@ export default class ResponseSetForm extends Component {
                 primaryButtonMessage="Save & Leave"
                 cancelButtonMessage="Cancel"
                 primaryButtonAction={()=> this.handleModalResponse(false)}
-                cancelButtonAction ={()=> {this.props.router.push(this.props.route.path); this.setState({ showModal: false });}}
+                cancelButtonAction ={()=> {
+                  this.props.router.push(this.props.route.path);
+                  this.setState({ showModal: false });
+                }}
                 secondaryButtonAction={()=> this.handleModalResponse(true)} />
         <Errors errors={this.state.errors} />
         <div className="row">
