@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
+import Errors from '../errors.js';
 
 export default class SignUpModal extends Component {
   constructor(props) {
     super(props);
     this.state = {email: '', firstName: '', lastName: '', password: '',
-      passwordConfirmation: '', invalidRegistration: false};
+      passwordConfirmation: '', errors: {}};
   }
 
   render() {
@@ -16,7 +17,7 @@ export default class SignUpModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <form>
-            <div hidden={!this.state.invalidRegistration}>Invalid Credentials</div>
+            <Errors errors={this.state.errors} />
             <div className="control-group">
               <label className="control-label" htmlFor="email">E-mail</label>
               <div className="controls">
@@ -65,7 +66,7 @@ export default class SignUpModal extends Component {
 
   attemptSignUp() {
     const successHandler = () => this.props.closer();
-    const failureHandler = () => this.setState({invalidRegistration: true});
+    const failureHandler = (failureResponse) => this.setState({errors: failureResponse.response.data.errors});
     this.props.signUp(this.state, successHandler, failureHandler);
   }
 
