@@ -68,10 +68,11 @@ class FormEdit extends Component {
     const versionIndependentId = form.versionIndependentId;
     const version = form.version + 1;
     const name = form.name || '';
+    const description = form.description || '';
     const formQuestions = form.formQuestions;
     const controlNumber = form.controlNumber;
     const showModal = false;
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, showModal};
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showModal};
   }
 
   constructor(props) {
@@ -197,7 +198,8 @@ class FormEdit extends Component {
             </div>
             <div className="col-md-6">
               <div className="actions">
-                <input type="submit" value={`${this.props.action||'New'} Form`}/>
+                <label htmlFor={`${this.props.action||'New'} Form`}></label>
+                <input name={`${this.props.action||'New'} Form`} type="submit" value={`${this.props.action||'New'} Form`}/>
               </div>
             </div>
           </div>
@@ -211,6 +213,10 @@ class FormEdit extends Component {
           <div className="col-md-12">
             <label htmlFor="name">Name:</label>
             <input type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+          </div>
+          <div className="col-md-12">
+            <label htmlFor="description">Description:</label>
+            <textarea type="text" value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
           </div>
           <div className="col-md-12">
             <label htmlFor="controlNumber">OMB Number:</label>
