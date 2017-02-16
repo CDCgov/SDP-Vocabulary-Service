@@ -14,11 +14,11 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   test 'latest versions' do
-    assert_equal 3, Question.latest_versions.count
+    assert_equal 4, Question.latest_versions.count
   end
 
   test 'search' do
-    assert 3, Question.count
+    assert 4, Question.count
     found = Question.search('gender')
     assert 1, found.count
     assert 'What is your gender?', found.first.content
@@ -39,7 +39,7 @@ class QuestionTest < ActiveSupport::TestCase
 
   test 'last_published' do
     assert_equal 0, Question.last_published.count
-    assert_equal 3, Question.latest_versions.count
+    assert_equal 4, Question.latest_versions.count
     Question.last.publish
     assert_equal 1, Question.last_published.count
   end

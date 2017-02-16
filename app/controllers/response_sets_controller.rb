@@ -29,6 +29,15 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /response_sets/1/publish
+  def publish
+    if @response_set.status == 'draft'
+      @response_set.publish
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /response_sets/1
   # DELETE /response_sets/1.json
   def destroy
