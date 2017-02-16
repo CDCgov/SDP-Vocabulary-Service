@@ -31,7 +31,7 @@ if ENV['HEADLESS']
   require 'capybara/webkit'
   Capybara::Webkit.configure do |config|
     config.block_unknown_urls
-    allow_url('fonts.googleapis.com')
+    config.allow_url('fonts.googleapis.com')
     config.skip_image_loading
   end
 
