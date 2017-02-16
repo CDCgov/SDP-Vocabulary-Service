@@ -52,6 +52,15 @@ class FormsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /forms/1/publish
+  def publish
+    if @form.status == 'draft'
+      @form.publish
+    else
+      render json: @form.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /forms/1/redcap
   def redcap
     xml = render_to_string 'forms/redcap.xml', layout: false

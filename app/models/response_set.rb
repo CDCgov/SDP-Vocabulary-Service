@@ -29,6 +29,10 @@ class ResponseSet < ApplicationRecord
     where('name ILIKE ?', "%#{search}%")
   end
 
+  def publish
+    update(status: 'published')
+  end
+
   # Builds a new ResponseSet object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
