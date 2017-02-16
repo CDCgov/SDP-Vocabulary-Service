@@ -77,6 +77,36 @@ Feature: Manage Response Sets
     And I should see "m-code"
     And I should see "f-code"
 
+  Scenario: Create New Response Set with warning modal
+    Given I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the "New Response Set" link
+    And I fill in the "Name" field with "Gender Partial"
+    And I fill in the "Description" field with "M / F"
+    And I click on the "Add Row" link
+    And I fill in the "response_set_responses_attributes_0_value" field with "m-code"
+    And I fill in the "response_set_responses_attributes_0_display_name" field with "Male"
+    And I fill in the "response_set_responses_attributes_1_value" field with "f-code"
+    And I fill in the "response_set_responses_attributes_1_display_name" field with "Female"
+    When I go to the list of Response Sets
+    And I click on the "Save & Leave" button
+    And I should see "Gender Partial"
+
+  Scenario: Abandon New Response Set with warning modal
+    Given I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the "New Response Set" link
+    And I fill in the "Name" field with "Gender Partial"
+    And I fill in the "Description" field with "M / F"
+    And I click on the "Add Row" link
+    And I fill in the "response_set_responses_attributes_0_value" field with "m-code"
+    And I fill in the "response_set_responses_attributes_0_display_name" field with "Male"
+    And I fill in the "response_set_responses_attributes_1_value" field with "f-code"
+    And I fill in the "response_set_responses_attributes_1_display_name" field with "Female"
+    When I go to the list of Response Sets
+    And I click on the "Continue Without Saving" button
+    And I should not see "Gender Partial"
+
   Scenario: Response Set Delete
     Given I have a Response Set with the name "Gender Full"
     And I am logged in as test_author@gmail.com

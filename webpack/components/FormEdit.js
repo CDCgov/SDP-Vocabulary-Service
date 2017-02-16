@@ -115,12 +115,12 @@ class FormEdit extends Component {
       form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
       form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId);
       this.props.formSubmitter(form, (response) => {
-      // TODO: Handle when the saving form fails.
-      this.unsavedState = false;
-      if (response.status === 201) {
-        this.props.router.push(this.nextLocation.pathname);
-      }
-    });
+        // TODO: Handle when the saving form fails.
+        this.unsavedState = false;
+        if (response.status === 201) {
+          this.props.router.push(this.nextLocation.pathname);
+        }
+      });
     }
   }
 
@@ -178,7 +178,10 @@ class FormEdit extends Component {
         primaryButtonMessage="Save & Leave"
         cancelButtonMessage="Cancel"
         primaryButtonAction={()=> this.handleModalResponse(false)}
-        cancelButtonAction ={()=> {this.props.router.push(this.props.route.path); this.setState({ showModal: false });}}
+        cancelButtonAction ={()=> {
+          this.props.router.push(this.props.route.path);
+          this.setState({ showModal: false });
+        }}
         secondaryButtonAction={()=> this.handleModalResponse(true)} />
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <div className="row" id="form-button-div">
