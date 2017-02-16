@@ -17,6 +17,10 @@ export default class QuestionDetails extends Component {
         { question.content }
         </p>
         <p>
+        <strong>Description: </strong>
+        { question.description }
+        </p>
+        <p>
           <strong>Author: </strong>
           { question.createdBy && question.createdBy.email }
         </p>
