@@ -18,12 +18,8 @@ var config = {
   entry: {
     // Sources are expected to live in $app_root/webpack
     'application': './webpack/application.js',
-    'my_stuff': './webpack/my_stuff.js',
-    'search': './webpack/search.js',
     'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',
-    'notification_menu': './webpack/notification_menu.js',
-    'notification_dropdown': './webpack/notification_dropdown.js',
     'landing': './webpack/landing.js'
     },
 
