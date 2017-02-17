@@ -11,7 +11,7 @@ describe('QuestionDetails', () => {
   });
 
   it('should display a question', () => {
-    expect(component.find("p").length).to.equal(7);
+    expect(component.find("p").length).to.equal(8);
   });
 
 });

@@ -130,6 +130,7 @@ class QuestionForm extends Component{
   stateForNew() {
     return {
       content: '',
+      description: '',
       questionTypeId: null,
       versionIndependentId: null,
       version: 1,
@@ -195,15 +196,18 @@ class QuestionForm extends Component{
               </div>
 
               <div className="row ">
-                  <div className="col-md-8 question-form-group">
-                      <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
-                      <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
-                        {_.values(responseTypes).map((rt) => {
-                          return (<option key={rt.id} value={rt.id}>{rt.name}</option>);
-                        })}
-                      </select>
-                  </div>
-                  <div className="col-md-4 question-form-group"></div>
+                <div className="col-md-8 question-form-group">
+                  <label className="input-label" htmlFor="content">Description</label>
+                  <textarea className="input-format" placeholder="Question description" type="text" name="description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
+                </div>
+                <div className="col-md-4 question-form-group">
+                    <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
+                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
+                      {_.values(responseTypes).map((rt) => {
+                        return (<option key={rt.id} value={rt.id}>{rt.name}</option>);
+                      })}
+                    </select>
+                </div>
               </div>
 
               <div className="row ">
