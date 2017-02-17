@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import CodedSetTableForm from './CodedSetTableForm';
 import Errors from './Errors';
 import { responseSetProps } from '../prop-types/response_set_props';
+import ModalDialog from './ModalDialog';
 
 export default class ResponseSetForm extends Component {
   constructor(props) {
@@ -30,8 +31,25 @@ export default class ResponseSetForm extends Component {
     this.unbindHook();
   }
 
-  routerWillLeave() {
-    return (!this.unsavedState || confirm('You are about to leave a page with unsaved changes. Are you sure you would like to proceed?'));
+  routerWillLeave(nextLocation) {
+    this.setState({ showModal: this.unsavedState });
+    this.nextLocation = nextLocation;
+    return !this.unsavedState;
+  }
+
+  handleModalResponse(leavePage){
+    this.setState({ showModal: false });
+    if(leavePage){
+      this.unsavedState = false;
+      this.props.router.push(this.nextLocation.pathname);
+    }else{
+      this.props.responseSetSubmitter(this.state, () => {
+        this.unsavedState = false;
+        this.props.router.push(this.nextLocation.pathname);
+      }, (failureResponse) => {
+        this.setState({errors: failureResponse.response.data});
+      });
+    }
   }
 
   windowWillUnload() {
@@ -40,40 +58,56 @@ export default class ResponseSetForm extends Component {
 
   stateForRevise(responseSet) {
     const name = responseSet.name || '';
-    const oid  = responseSet.oid || '';
+    const oid  = responseSet.oid  || '';
     const coded = responseSet.coded || false;
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = responseSet.version + 1;
     const versionIndependentId = responseSet.versionIndependentId;
+    const showModal = false;
     return {name, oid, description, coded, responsesAttributes,
-      version, versionIndependentId};
+      version, versionIndependentId, showModal};
   }
 
   stateForNew() {
     return {
       name: '', oid: '', coded: false, description: '',
       responsesAttributes: [{displayName: '', value: '', codeSystem: ''}],
-      version: 1, versionIndependentId: null
+      version: 1, versionIndependentId: null, showModal: false
     };
   }
 
   stateForExtend(responseSet) {
     const name = responseSet.name || '';
-    const oid = '';
+    const oid  = '';
     const coded = responseSet.coded || false;
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = 1;
     const versionIndependentId = null;
-    const parentId = responseSet.id;
+    const parentId  = responseSet.id;
+    const showModal = false;
     return {name, oid, description, coded, responsesAttributes,
-      version, versionIndependentId, parentId};
+      version, versionIndependentId, parentId, showModal};
   }
 
   render() {
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
+        <ModalDialog  show={this.state.showModal}
+                title="Warning"
+                subTitle="Unsaved Changes"
+                warning={true}
+                message="You are about to leave a page with unsaved changes. How would you like to proceed?"
+                secondaryButtonMessage="Continue Without Saving"
+                primaryButtonMessage="Save & Leave"
+                cancelButtonMessage="Cancel"
+                primaryButtonAction={()=> this.handleModalResponse(false)}
+                cancelButtonAction ={()=> {
+                  this.props.router.push(this.props.route.path);
+                  this.setState({ showModal: false });
+                }}
+                secondaryButtonAction={()=> this.handleModalResponse(true)} />
         <Errors errors={this.state.errors} />
         <div className="row">
           <div className="row">
