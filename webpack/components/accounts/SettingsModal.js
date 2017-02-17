@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
-import Errors from '../errors.js';
+import Errors from '../Errors.js';
 import currentUserProps from '../../prop-types/current_user_props';
 
 export default class SettingsModal extends Component {
