@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
-import Errors from '../errors.js';
+import Errors from '../Errors.js';
 
 export default class SignUpModal extends Component {
   constructor(props) {
