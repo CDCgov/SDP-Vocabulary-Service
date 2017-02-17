@@ -1,7 +1,8 @@
 import {
   FETCH_CURRENT_USER,
   LOG_IN,
-  SIGN_UP
+  SIGN_UP,
+  UPDATE_USER
 } from './types';
 
 import { getCSRFToken } from './index';
@@ -46,6 +47,23 @@ export function signUp(user, successHandler=null, failureHandler=null) {
   }
   return {
     type: SIGN_UP,
+    payload: postPromise
+  };
+}
+
+export function updateUser(user, successHandler=null, failureHandler=null) {
+  const authenticityToken = getCSRFToken();
+  const postPromise = axios.put('/users',
+                      {user, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  if (failureHandler) {
+    postPromise.catch(failureHandler);
+  }
+  if (successHandler) {
+    postPromise.then(successHandler);
+  }
+  return {
+    type: UPDATE_USER,
     payload: postPromise
   };
 }

@@ -29,6 +29,10 @@ export default class LogInModal extends Component {
               <input type="checkbox" value={this.state.rememberMe} name="rememberMe" id="rememberMe" onChange={this.handleChange('rememberMe')}/>
               <label htmlFor="rememberMe">Remember me</label>
             </div>
+
+            <div>
+              <a href="/users/auth/openid_connect">Sign in with OpenID Connect</a>
+            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>

@@ -42,6 +42,8 @@ export const LOG_IN = 'LOG_IN';
 export const LOG_IN_FULFILLED = 'LOG_IN_FULFILLED';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_UP_FULFILLED = 'SIGN_UP_FULFILLED';
+export const UPDATE_USER = 'UPDATE_USER';
+export const UPDATE_USER_FULFILLED = 'UPDATE_USER_FULFILLED';
 
 // Form types
 export const FETCH_FORMS = 'FETCH_FORMS';
