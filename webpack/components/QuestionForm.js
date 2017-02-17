@@ -134,6 +134,7 @@ class QuestionForm extends Component{
       questionTypeId: null,
       versionIndependentId: null,
       version: 1,
+      harmonized: false,
       responseTypeId: null,
       conceptsAttributes: [],
       linkedResponseSets: [],
@@ -197,8 +198,12 @@ class QuestionForm extends Component{
 
               <div className="row ">
                 <div className="col-md-8 question-form-group">
-                  <label className="input-label" htmlFor="content">Description</label>
+                  <label className="input-label" htmlFor="description">Description</label>
                   <textarea className="input-format" placeholder="Question description" type="text" name="description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
+                </div>
+                <div className="col-md-8 question-form-group">
+                  <label className="input-label" htmlFor="harmonized">Harmonized: </label>
+                  <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggelHarmonized()} />
                 </div>
                 <div className="col-md-4 question-form-group">
                     <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
@@ -272,6 +277,10 @@ class QuestionForm extends Component{
       this.setState(newState);
       this.unsavedState = true;
     };
+  }
+
+  toggelHarmonized() {
+    this.setState({harmonized: !this.state.harmonized});
   }
 
   handleResponseSetsChange(newResponseSets){
