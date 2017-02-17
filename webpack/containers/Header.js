@@ -37,7 +37,7 @@ LoginMenu.propTypes = {
   signUpOpener: PropTypes.func.isRequired
 };
 
-let ContentMenu = ({currentUser={email:false}}) => {
+let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
   let loggedIn = currentUser ? true : false;
   if(loggedIn) {
     let {email} = currentUser;
@@ -48,7 +48,10 @@ let ContentMenu = ({currentUser={email:false}}) => {
             <a href="#" id="account-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
             <ul className="dropdown-menu">
               <li><a href="#"> My Stuff</a></li>
-              <li><a href="/users/edit">Settings</a></li>
+              <li><a href="#" onClick={() => {
+                settingsOpener();
+                return false;
+              }}>Settings</a></li>
               <li><a href="#">Saved Searches</a></li>
               <li><a href="#">System Activity</a></li>
               <li role="separator" className="divider"></li>
@@ -66,6 +69,7 @@ let ContentMenu = ({currentUser={email:false}}) => {
 };
 ContentMenu.propTypes = {
   currentUser: currentUserProps,
+  settingsOpener: PropTypes.func.isRequired
 };
 
 
@@ -125,7 +129,7 @@ class Header extends Component {
           </div>
           <SignedInMenu currentUser={this.props.currentUser} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
           <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
-          <ContentMenu currentUser={this.props.currentUser} />
+          <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
         </div>
 
       </nav>
@@ -151,7 +155,8 @@ Header.propTypes = {
   notificationCount: PropTypes.number,
   fetchNotifications: PropTypes.func,
   logInOpener: PropTypes.func.isRequired,
-  signUpOpener: PropTypes.func.isRequired
+  signUpOpener: PropTypes.func.isRequired,
+  settingsOpener: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

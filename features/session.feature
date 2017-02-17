@@ -33,5 +33,6 @@ Feature: Session Management
     Then I should see "Account Details"
 
   Scenario: Login via OpenID Connect
-    Given I am on the "/users/sign_in" page
-    Then I should see the "Sign in with OpenIDConnect" link
+    Given I am on the "/" page
+    When I click on the "Login" link
+    Then I should see the "Sign in with OpenID Connect" link
