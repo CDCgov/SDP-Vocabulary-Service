@@ -21,6 +21,10 @@ export default class QuestionDetails extends Component {
         { question.description }
         </p>
         <p>
+        <strong>Harmonized: </strong>
+        { question.harmonized ? 'yes' : 'no' }
+        </p>
+        <p>
           <strong>Author: </strong>
           { question.createdBy && question.createdBy.email }
         </p>
