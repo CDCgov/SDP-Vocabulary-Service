@@ -1,3 +1,9 @@
+Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"$/) do |content, description, type|
+  user = get_user('test_author@gmail.com')
+  qt314 = QuestionType.find_or_create_by(name: type)
+  Question.create!(content: content, description: description, question_type_id: qt314.id, version: 1, created_by: user)
+end
+
 Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) do |content, type|
   user = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
@@ -9,7 +15,7 @@ Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
 end
 
 When(/^I go to the list of Questions$/) do
-  visit '/questions'
+  visit 'landing#/questions'
 end
 
 # When clauses

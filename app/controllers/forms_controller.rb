@@ -4,7 +4,7 @@ class FormsController < ApplicationController
   # GET /forms
   # GET /forms.json
   def index
-    @forms = Form.latest_versions
+    @forms = params[:search] ? Form.search(params[:search]).latest_versions : Form.latest_versions
     @users = User.all
   end
 
@@ -19,15 +19,6 @@ class FormsController < ApplicationController
     load_supporting_resources_for_editing
   end
 
-  # GET /forms/1/revise
-  def revise
-    load_supporting_resources_for_editing
-
-    original_form = Form.find(params[:id])
-    @form = original_form.build_new_revision
-    @selected_questions = original_form.questions
-  end
-
   # GET /forms/1/export
   def export
     @form = Form.find(params[:id])
@@ -38,10 +29,9 @@ class FormsController < ApplicationController
   def create
     @form = Form.new(form_params)
     @form.created_by = current_user
-
     respond_to do |format|
       if @form.save
-        create_form_questions(@form.id, params[:question_ids], params[:response_set_ids])
+        create_form_questions(@form.id, params[:form][:linked_questions], params[:form][:linked_response_sets])
         format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
@@ -92,7 +82,7 @@ class FormsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params
-    params.require(:form).permit(:name, :user_id, :search, :version,
-                                 :version_independent_id, :control_number)
+    params.require(:form).permit(:name, :user_id, :search, :version, :description,
+                                 :status, :version_independent_id, :control_number)
   end
 end

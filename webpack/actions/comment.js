@@ -1,5 +1,6 @@
 import axios from 'axios';
 import routes from '../routes';
+import { getCSRFToken } from './index';
 import {
   ADD_COMMENT,
   FETCH_COMMENTS
@@ -20,31 +21,20 @@ export function addComment(commentableType, commentableId, comment, parentId) {
   };
 }
 
-
-
 export function fetchComments(commentableType, commentableId) {
   return {
     type: FETCH_COMMENTS,
     commentableType: commentableType,
     commentableId: commentableId,
     payload: axios.get(routes.comments_path(), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      },
       params: {
         commentableType: commentableType,
         commentableId: commentableId,
       }
     })
   };
-}
-
-
-function getCSRFToken() {
-  const metas = document.getElementsByTagName('meta');
-  for (let i = 0; i < metas.length; i++) {
-    const meta = metas[i];
-    if (meta.getAttribute('name') === 'csrf-token') {
-      return meta.getAttribute('content');
-    }
-  }
-
-  return null;
 }

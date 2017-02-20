@@ -13,11 +13,11 @@ class Comment extends Component {
     return (
       <div className="media">
           <div className="media-heading">
-            <button className="btn btn-default btn-collapse btn-xs" type="button" data-toggle="collapse" data-target={"#comment_id_"+this.props.comment.id} aria-expanded="false" aria-controls="collapseExample">
+            <button className="btn btn-default btn-collapse btn-xs" type="button" data-toggle="collapse" data-target={"#comment_id_"+this.props.comment.id} aria-expanded="false" aria-controls={"comment_id_"+this.props.comment.id} aria-label="collapse">
               <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
             </button>
             <span className="label label-info">{this.props.comment.id}</span>
-            {moment(this.props.comment.created_at,'').fromNow()} by {this.props.comment.userName}
+            {moment(this.props.comment.createdAt,'').fromNow()} by {this.props.comment.userName}
           </div>
 
           <div className="panel-collapse collapse in" id={"comment_id_"+this.props.comment.id}>
@@ -33,7 +33,7 @@ class Comment extends Component {
               </p>
               <div className="comment-meta">
                 <span>
-                  <a className="" ref={(input) => this.collapse = input}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls="collapseExample">reply</a>
+                  <a className="" ref={(input) => this.collapse = input}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls={"replyComment_"+this.props.comment.id}>reply</a>
                 </span>
                 <div className="collapse" id={"replyComment_"+this.props.comment.id}>
                  <CommentForm ref={(input) => this.form = input}

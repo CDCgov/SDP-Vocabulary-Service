@@ -1,14 +1,19 @@
 Rails.application.routes.draw do
-  root to: 'dashboard#index'
+  get 'response_types', to: 'response_types#index', as: :response_types
+
+  get '/landing' => 'landing#index'
+  get '/landing/stats' => 'landing#stats'
+
+  root to: 'landing#index'
 
   devise_for :users, controllers: { registrations: 'registrations',
+                                    sessions: 'sessions',
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :authentications
   get '/mystuff' => 'mystuff#index'
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
     get :export, on: :member
-    get :revise, on: :member
     get :redcap, on: :member
   end
   resources :question_response_sets
@@ -23,10 +28,7 @@ Rails.application.routes.draw do
   end
   resources :question_types
 
-  resources :response_sets, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
-    get :revise, on: :member
-    get :extend, on: :member
-  end
+  resources :response_sets, except: [:edit, :update] # No editing/updating on response sets, we only revise them
 
   get 'notifications', to: 'notifications#index', as: :notifications
   post 'notifications/mark_read', to: 'notifications#mark_read', as: :notifications_mark_read

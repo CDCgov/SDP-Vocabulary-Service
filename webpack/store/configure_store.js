@@ -1,16 +1,32 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import createLogger from 'redux-logger';
+
+import questionsFromResponseSets from '../middleware/questions_from_response_sets';
+import questionsFromForms from '../middleware/questions_from_forms';
+import responseSetsFromQuestions from '../middleware/response_sets_from_questions';
+import parentFromResponseSets from '../middleware/parent_from_response_sets';
+import responseTypesFromQuestions from '../middleware/response_types_from_questions';
+import questionTypesFromQuestions from '../middleware/question_types_from_questions';
 
 import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
   let middleware = applyMiddleware(
     promiseMiddleware(),
-    createLogger()
+    createLogger(),
+    questionsFromResponseSets,
+    questionsFromForms,
+    responseSetsFromQuestions,
+    parentFromResponseSets,
+    responseTypesFromQuestions,
+    questionTypesFromQuestions
   );
 
-  let store = createStore(rootReducer, initialState, middleware);
+  // Sets up http://zalmoxisus.github.io/redux-devtools-extension/
+  const composeEnhancers = process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+  let store = createStore(rootReducer, initialState, composeEnhancers(middleware));
 
   return store;
 }

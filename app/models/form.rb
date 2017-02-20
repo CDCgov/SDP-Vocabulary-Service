@@ -13,6 +13,8 @@ class Form < ApplicationRecord
                              uniqueness: { message: 'forms should have different OMB Control Numbers',
                                            unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
 
+  accepts_nested_attributes_for :questions, allow_destroy: true
+
   after_commit :index, on: [:create, :update]
   after_commit :delete_index, on: :destroy
 
@@ -24,10 +26,15 @@ class Form < ApplicationRecord
     DeleteFromIndexJob.perform_later('form', id)
   end
 
+  def self.search(search)
+    where('name ILIKE ?', "%#{search}%")
+  end
+
   # Builds a new Form object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
     new_revision = Form.new(version_independent_id: version_independent_id,
+                            description: description, status: status,
                             version: version + 1, name: name, oid: oid,
                             created_by: created_by, control_number: control_number)
 

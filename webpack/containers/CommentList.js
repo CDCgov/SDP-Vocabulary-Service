@@ -4,14 +4,21 @@ import { bindActionCreators } from 'redux';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import { addComment, fetchComments} from '../actions/comment';
-// comments url
-// reply to url function
-//
+
 class CommentList extends Component {
+  componentWillMount() {
+    this.props.fetchComments(this.props.commentableType, this.props.commentableId);
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.commentableId !== this.props.commentableId) {
+      this.props.fetchComments(this.props.commentableType, this.props.commentableId);
+    }
+  }
 
   render() {
     return (
-      <div className="container col-md-12 post-comments">
+      <div className="post-comments">
       <CommentForm commentableType={this.props.commentableType}
                    commentableId={this.props.commentableId}
                    addComment={this.props.addComment}/>
@@ -42,9 +49,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({addComment, fetchComments}, dispatch);
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    comments: state.comments
+    comments: state.comments.filter((comment) => comment.commentableId === ownProps.commentableId)
   };
 }
 

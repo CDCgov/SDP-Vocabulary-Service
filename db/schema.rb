@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105171917) do
+ActiveRecord::Schema.define(version: 20170208201558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,8 @@ ActiveRecord::Schema.define(version: 20170105171917) do
     t.integer  "version",                          default: 1
     t.string   "control_number",         limit: 9
     t.string   "oid"
+    t.text     "description"
+    t.string   "status"
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -103,6 +105,8 @@ ActiveRecord::Schema.define(version: 20170105171917) do
     t.integer  "version",                default: 1
     t.integer  "response_type_id"
     t.string   "oid"
+    t.text     "description"
+    t.string   "status"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
     t.index ["response_type_id"], name: "index_questions_on_response_type_id", using: :btree
@@ -121,6 +125,7 @@ ActiveRecord::Schema.define(version: 20170105171917) do
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
     t.integer  "parent_id"
+    t.string   "status"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end

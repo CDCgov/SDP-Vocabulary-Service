@@ -16,12 +16,15 @@ module OidGenerator
   # Callback that assigns the oid. This should never be called directly.
   def assign_oid
     if version > 1
-      # If not first version, set the oid to whatever the parent's oid was, even if that means it will be blank
+      # If not first version, set the oid to whatever the parent's oid was
       parent_oid = self.class.where(version_independent_id: version_independent_id, version: 1)
                        .limit(1)
                        .pluck(:oid)
                        .first
-      update_attribute(:oid, parent_oid)
+      # If parent oid is blank, we get an infinite loop
+      if parent_oid != oid && !parent_oid.blank?
+        update_attribute(:oid, parent_oid)
+      end
     else
       new_oid = "#{self.class.oid_prefix}.#{id}"
       if self.class.where(oid: new_oid).count > 0

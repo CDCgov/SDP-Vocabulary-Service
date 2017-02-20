@@ -2,12 +2,18 @@ import {
   combineReducers
 } from 'redux';
 
-import questions from './questions';
+import questions from './questions_reducer';
+import forms from './forms_reducer';
 import comments from './comments';
+import stats from './stats';
+import responseSets from './response_sets_reducer';
+import currentUser from './current_user_reducer';
+import questionTypes from './question_types';
+import responseTypes from './response_types';
+import notifications from './notifications';
 
 const rootReducer = combineReducers({
-  questions: questions,
-  comments: comments
+  questions, comments, stats, currentUser, responseSets, forms, questionTypes, responseTypes, notifications
 });
 
 export default rootReducer;

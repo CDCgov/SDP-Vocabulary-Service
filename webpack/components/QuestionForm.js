@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { Draggable, Droppable } from './Draggable';
+import Errors from './Errors';
 import ResponseSetWidget from './ResponseSetWidget';
 import CodedSetTableForm from './CodedSetTableForm';
-
+import { questionProps } from '../prop-types/question_props';
+import { responseSetsProps } from '../prop-types/response_set_props';
+import allRoutes from '../prop-types/route_props';
+import _ from 'lodash';
+import ModalDialog from './ModalDialog';
 
 let setData = function(){
   return {"json/responseSet": JSON.stringify(this.props.responseSet)};
@@ -17,6 +22,7 @@ let onDrop = (evt, self) => {
     return r.id == rs.id;
   })) {
     selectedResponseSets.push(rs);
+    self.props.handleResponseSetsChange(selectedResponseSets);
     self.setState({selectedResponseSets});
   }
 };
@@ -33,6 +39,7 @@ class DropTarget extends Component {
 
     let removeResponseSet = (id) => {
       let selectedResponseSets = this.state.selectedResponseSets.filter((rs) => rs.id != id);
+      this.props.handleResponseSetsChange(selectedResponseSets);
       this.setState({selectedResponseSets});
     };
 
@@ -55,6 +62,7 @@ class DropTarget extends Component {
 
 
 DropTarget.propTypes = {
+  handleResponseSetsChange: PropTypes.func.isRequired,
   selectedResponseSets: PropTypes.array,
   routes: PropTypes.object,
   isValidDrop: PropTypes.bool
@@ -62,96 +70,232 @@ DropTarget.propTypes = {
 
 let DroppableTarget = Droppable(DropTarget, onDrop);
 
-let QuestionForm = ({question= {}, selectedResponseSets=[], responseSets = [], routes, questionTypes = [], responseTypes = [], concepts=[]}) => {
-  let submitText = "Create Question";
-  let titleText = "New Question";
-  if (question.version_independent_id) {
-    submitText = "Revise Question";
-    titleText = "Revise Question";
+class QuestionForm extends Component{
+
+  constructor(props) {
+    super(props);
+    if(this.props.action === 'revise'){
+      this.state = this.stateForRevise(this.props.question);
+    }else{
+      this.state = this.stateForNew();
+    }
+    this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
+    this.unsavedState = false;
   }
-  return (
-    <div className="row"><br/>
-      <div>
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">{titleText}</h3>
-          </div>
-          <div className="panel-body">
-          <div className="row">
-              <div className="col-md-8 question-form-group">
-                  <label className="input-label" htmlFor="question_content">Question</label>
-                  <input className="input-format" placeholder="Question text" type="text" name="question[content]" id="question_content" defaultValue={question.content}/>
+
+  componentDidMount() {
+    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+    window.onbeforeunload = this.windowWillUnload.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.unsavedState = false;
+    this.unbindHook();
+  }
+
+  routerWillLeave(nextLocation) {
+    this.setState({ showModal: this.unsavedState });
+    this.nextLocation = nextLocation;
+    return !this.unsavedState;
+  }
+
+  handleModalResponse(leavePage){
+    this.setState({ showModal: false });
+    if(leavePage){
+      this.unsavedState = false;
+      this.props.router.push(this.nextLocation.pathname);
+    }else{
+      this.props.questionSubmitter(this.state, () => {
+        this.unsavedState = false;
+        this.props.router.push(this.nextLocation.pathname);
+      }, (failureResponse) => {
+        this.setState({errors: failureResponse.response.data});
+      });
+    }
+  }
+
+  windowWillUnload() {
+    return (this.unsavedState || null);
+  }
+
+  stateForRevise(question) {
+    var reviseState = {};
+    _.forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
+    reviseState.conceptsAttributes = filterConcepts(question.concepts);
+    reviseState.linkedResponseSets = question.responseSets;
+    reviseState.version += 1;
+    return reviseState;
+  }
+
+  stateForNew() {
+    return {
+      content: '',
+      description: '',
+      questionTypeId: null,
+      versionIndependentId: null,
+      version: 1,
+      responseTypeId: null,
+      conceptsAttributes: [],
+      linkedResponseSets: [],
+      showModal: false
+    };
+  }
+
+  render(){
+    const {question, questionTypes, responseSets, responseTypes, routes} = this.props;
+    const state = this.state;
+    if(!question || !questionTypes || !responseSets || !responseTypes){
+      return (<div>Loading....</div>);
+    }
+
+    let submitText = "Create Question";
+    let titleText  = "New Question";
+    if (question.versionIndependentId) {
+      submitText = "Revise Question";
+      titleText  = "Revise Question";
+    }
+    return (
+      <form onSubmit={(e) => this.handleSubmit(e)}>
+      <ModalDialog  show={this.state.showModal}
+                    title="Warning"
+                    subTitle="Unsaved Changes"
+                    warning={true}
+                    message="You are about to leave a page with unsaved changes. How would you like to proceed?"
+                    secondaryButtonMessage="Continue Without Saving"
+                    primaryButtonMessage="Save & Leave"
+                    cancelButtonMessage="Cancel"
+                    primaryButtonAction={()=> this.handleModalResponse(false)}
+                    cancelButtonAction ={()=> {
+                      this.props.router.push(this.props.route.path);
+                      this.setState({ showModal: false });
+                    }}
+                    secondaryButtonAction={()=> this.handleModalResponse(true)} />
+        <Errors errors={this.state.errors} />
+        <div className="row"><br/>
+          <div>
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">{titleText}</h3>
               </div>
+              <div className="panel-body">
+              <div className="row">
+                  <div className="col-md-8 question-form-group">
+                      <label className="input-label" htmlFor="content">Question</label>
+                      <input className="input-format" placeholder="Question text" type="text" name="content" id="content" defaultValue={state.content} onChange={this.handleChange('content')} />
+                  </div>
 
-              <div className="col-md-4 question-form-group">
-                  <label className="input-label" htmlFor="question_question_type_id">Type</label>
-                  <select className="input-format" name="question[question_type_id]" id="question_question_type_id" defaultValue={question.question_type_id}>
-                    <option value=""></option>
-                    {questionTypes.map((qt) => {
-                      return <option key={qt.id} value={qt.id}>{qt.name}</option>;
-                    })}
-                  </select>
-              </div>
-          </div>
-
-          <div className="row ">
-              <div className="col-md-8 question-form-group">
-                  <label className="input-label" htmlFor="response_type_id">Primary Response Type</label>
-                  <select name="response_type_id" id="response_type_id" className="input-format" defaultValue={question.response_type_id}>
-                    {responseTypes.map((rt) => {
-                      return (<option key={rt.id} value={rt.id}>{rt.name}</option>);
-                    })}
-                  </select>
-              </div>
-              <div className="col-md-4 question-form-group"></div>
-          </div>
-
-          <div className="row ">
-              <div className="col-md-8 form-group">
-                  <label className="input-label" htmlFor="concept_id">Concepts</label>
-                  <CodedSetTableForm initialItems={concepts} childName={'concept'} parentName={'question'}/>
-              </div>
-          </div>
-
-          <div className="row ">
-
-              <div className="col-md-6 question-form-group">
-                <label htmlFor="linked_response_sets">Response Sets</label>
-                  <div name="linked_response_sets">
-                    {responseSets.map((rs, i) => {
-                      return <DraggableResponseSet key={i} responseSet={rs} routes={routes}/>;
-                    })}
+                  <div className="col-md-4 question-form-group">
+                      <label className="input-label" htmlFor="questionTypeId">Type</label>
+                      <select className="input-format" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
+                        <option value=""></option>
+                        {_.values(questionTypes).map((qt) => {
+                          return <option key={qt.id} value={qt.id}>{qt.name}</option>;
+                        })}
+                      </select>
                   </div>
               </div>
-              <div className="col-md-6 drop-target selected_response_sets">
-                <label htmlFor="selected_response_sets">Selected</label>
-                <DroppableTarget selectedResponseSets={selectedResponseSets} routes={routes}/>
-              </div>
-          </div>
 
-          <div className="panel-footer">
-            <div className="actions form-group">
-              <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
-              <a className="btn btn-default" href={routes.questions_path()}>Cancel</a>
+              <div className="row ">
+                <div className="col-md-8 question-form-group">
+                  <label className="input-label" htmlFor="content">Description</label>
+                  <textarea className="input-format" placeholder="Question description" type="text" name="description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
+                </div>
+                <div className="col-md-4 question-form-group">
+                    <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
+                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
+                      {_.values(responseTypes).map((rt) => {
+                        return (<option key={rt.id} value={rt.id}>{rt.name}</option>);
+                      })}
+                    </select>
+                </div>
+              </div>
+
+              <div className="row ">
+                  <div className="col-md-8 form-group">
+                      <label className="input-label" htmlFor="concept_id">Concepts</label>
+                      <CodedSetTableForm itemWatcher={(r) => this.handleConceptsChange(r)}
+                               initialItems={question.concepts}
+                               parentName={'question'}
+                               childName={'concept'} />
+                  </div>
+              </div>
+
+              <div className="row ">
+                  <div className="col-md-6 question-form-group">
+                    <label htmlFor="linked_response_sets">Response Sets</label>
+                      <div name="linked_response_sets">
+                        {_.values(responseSets).map((rs, i) => {
+                          return <DraggableResponseSet key={i} responseSet={rs} routes={routes}/>;
+                        })}
+                      </div>
+                  </div>
+                  <div className="col-md-6 drop-target selected_response_sets">
+                    <label htmlFor="selected_response_sets">Selected Response Sets</label>
+                    <DroppableTarget handleResponseSetsChange={this.handleResponseSetsChange} selectedResponseSets={question.responseSets.map((id) => this.props.responseSets[id])} routes={routes}/>
+                  </div>
+              </div>
+
+              <div className="panel-footer">
+                <div className="actions form-group">
+                  <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
+                  <a className="btn btn-default" href={routes.questionsPath()}>Cancel</a>
+                </div>
+              </div>
+
+              </div>
             </div>
           </div>
-
-
-          </div>
         </div>
-      </div>
-    </div>
-  );
-};
+      </form>
+    );
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.questionSubmitter(this.state, (successResponse) => {
+      this.unsavedState = false;
+      this.props.router.push(`/questions/${successResponse.data.id}`);
+    }, (failureResponse) => {
+      this.setState({errors: failureResponse.response.data});
+    });
+  }
+
+  handleConceptsChange(newConcepts) {
+    this.setState({conceptsAttributes: filterConcepts(newConcepts)});
+    this.unsavedState = true;
+  }
+
+  handleChange(field) {
+    return (event) => {
+      let newState = {};
+      newState[field] = event.target.value;
+      this.setState(newState);
+      this.unsavedState = true;
+    };
+  }
+
+  handleResponseSetsChange(newResponseSets){
+    this.setState({linkedResponseSets: newResponseSets.map((r)=> r.id)});
+    this.unsavedState = true;
+  }
+}
+
+function filterConcepts(concepts) {
+  return concepts.map((nc) => {
+    return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
+  });
+}
 
 QuestionForm.propTypes = {
-  question: PropTypes.object,
-  selectedResponseSets: PropTypes.array,
-  responseSets: PropTypes.array,
-  routes: PropTypes.object,
-  questionTypes: PropTypes.array,
-  responseTypes: PropTypes.array,
-  concepts: PropTypes.array
+  question: questionProps,
+  questionSubmitter: PropTypes.func.isRequired,
+  responseSets: responseSetsProps,
+  routes: allRoutes,
+  questionTypes: PropTypes.object,
+  responseTypes: PropTypes.object,
+  route:  PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+  action: PropTypes.string
 };
 
 export default QuestionForm;

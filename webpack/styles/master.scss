@@ -2,7 +2,15 @@
 // Do not copy over the following:
 //  - //BOOTSTRAP//
 // Last Sync Date: 12/16/16
+/* ------------------------- IMPORT VARIABLES ------------------------------ */
 
+@import "base/variables";
+
+/* ------------------------- IMPORT 3RD PARTY VENDORS ---------------------- */
+@import "~bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~font-awesome/scss/font-awesome";
+@import "widgets/comments";
 //BASE//
 @import "base/colors";
 @import "base/fonts";
