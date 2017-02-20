@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {formProps} from '../prop-types/form_props';
-import QuestionList from './QuestionList';
+import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
 import _ from 'lodash';
 import VersionInfo from './VersionInfo';
