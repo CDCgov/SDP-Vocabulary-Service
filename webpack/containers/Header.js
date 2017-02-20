@@ -7,16 +7,22 @@ import NotificationDropdown from '../components/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
-let LoginMenu = ({currentUser={email:null}}) => {
+let LoginMenu = ({logInOpener, signUpOpener, currentUser={email:null}}) => {
   let loggedIn = currentUser ? true : false;
   if(!loggedIn) {
     return (
       <ul className="nav navbar-nav navbar-right">
         <li>
-          <a href="/users/sign_in">Login </a>
+          <a href="#" onClick={() => {
+            logInOpener();
+            return false;
+          }}>Login </a>
         </li>
         <li>
-          <a href="/users/sign_up"> Register </a>
+          <a href="#" onClick={() => {
+            signUpOpener();
+            return false;
+          }}> Register </a>
         </li>
       </ul>
     );
@@ -27,9 +33,11 @@ let LoginMenu = ({currentUser={email:null}}) => {
 
 LoginMenu.propTypes = {
   currentUser: currentUserProps,
+  logInOpener: PropTypes.func.isRequired,
+  signUpOpener: PropTypes.func.isRequired
 };
 
-let ContentMenu = ({currentUser={email:false}}) => {
+let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
   let loggedIn = currentUser ? true : false;
   if(loggedIn) {
     let {email} = currentUser;
@@ -40,7 +48,10 @@ let ContentMenu = ({currentUser={email:false}}) => {
             <a href="#" id="account-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
             <ul className="dropdown-menu">
               <li><a href="#"> My Stuff</a></li>
-              <li><a href="/users/edit">Settings</a></li>
+              <li><a href="#" onClick={() => {
+                settingsOpener();
+                return false;
+              }}>Settings</a></li>
               <li><a href="#">Saved Searches</a></li>
               <li><a href="#">System Activity</a></li>
               <li role="separator" className="divider"></li>
@@ -58,6 +69,7 @@ let ContentMenu = ({currentUser={email:false}}) => {
 };
 ContentMenu.propTypes = {
   currentUser: currentUserProps,
+  settingsOpener: PropTypes.func.isRequired
 };
 
 
@@ -116,8 +128,8 @@ class Header extends Component {
             <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
           </div>
           <SignedInMenu currentUser={this.props.currentUser} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
-          <LoginMenu currentUser={this.props.currentUser} />
-          <ContentMenu currentUser={this.props.currentUser} />
+          <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
+          <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
         </div>
 
       </nav>
@@ -141,7 +153,10 @@ Header.propTypes = {
   currentUser: currentUserProps,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,
-  fetchNotifications: PropTypes.func
+  fetchNotifications: PropTypes.func,
+  logInOpener: PropTypes.func.isRequired,
+  signUpOpener: PropTypes.func.isRequired,
+  settingsOpener: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
