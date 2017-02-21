@@ -16,9 +16,37 @@
 }
 
 .search-result-heading {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: $dark-gray;
+}
+
+.search-result{
+  hr {
+    margin-top: 5px;
+  }
+  .search-result-name {
+    font-size: 18px;
+    color: $cdc-blue;
+    margin-bottom: 5px;
+  }
+  .search-result-description {
+    font-size: 14px;
+    color: $dark-gray;
+  }
+  .search-result-stats {
+    font-size: 10px;
+    hr {
+      border:none;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border-top:2px dotted $light-gray;
+      color:#fff;
+      background-color:#fff;
+      height:2px;
+      width:100%;
+    }
+  }
 }
 
 .search-category-btn {

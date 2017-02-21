@@ -2,27 +2,44 @@ require 'elasticsearch'
 require 'sdp/elastic_search'
 
 class ElasticsearchController < ApplicationController
+  def query_with_type(client, type, query_string)
+    client.search index: 'vocabulary', type: type, body: {
+      query: {
+        match: {
+          _all: query_string
+        }
+      },
+      highlight: {
+        fields: {
+          _all: {}
+        }
+      }
+    }
+  end
+
+  def query_without_type(client, query_string)
+    client.search index: 'vocabulary', body: {
+      query: {
+        match: {
+          name: query_string
+        }
+      },
+      highlight: {
+        fields: {
+          name: {}
+        }
+      }
+    }
+  end
+
   def search_on_string(client, type, query_string)
     if type
-      results = client.search index: 'vocabulary', type: type, body: {
-        query: {
-          match: {
-            name: query_string
-          }
-        }
-      }
+      query_with_type(client, type, query_string)
     elsif query_string
-      results = client.search index: 'vocabulary', body: {
-        query: {
-          match: {
-            name: query_string
-          }
-        }
-      }
+      query_without_type(client, query_string)
     else
-      results = client.search index: 'vocabulary'
+      client.search index: 'vocabulary'
     end
-    results
   end
 
   def index

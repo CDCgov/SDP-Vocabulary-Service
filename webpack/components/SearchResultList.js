@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import SearchResult from './SearchResult';
+import currentUserProps from "../prop-types/current_user_props";
 
 export default class SearchResultList extends Component {
   render() {
@@ -8,12 +9,12 @@ export default class SearchResultList extends Component {
         {this.props.searchResults.hits &&
           <row className="search-result-heading">
             <div>Search Results ({this.props.searchResults.hits.total})</div>
-            <hr/><br/>
+            <hr/>
           </row>
         }
         {this.props.searchResults.hits && this.props.searchResults.hits.hits.map((sr) => {
           return(
-            <SearchResult key={sr.Id} type={sr.Type} result={sr.Source} />
+            <SearchResult key={sr.Source.versionIndependentId} type={sr.Type} result={sr} currentUser={this.props.currentUser} />
           );
         })}
       </div>
@@ -22,5 +23,6 @@ export default class SearchResultList extends Component {
 }
 
 SearchResultList.propTypes = {
-  searchResults: PropTypes.object.isRequired
+  searchResults: PropTypes.object.isRequired,
+  currentUser: currentUserProps
 };

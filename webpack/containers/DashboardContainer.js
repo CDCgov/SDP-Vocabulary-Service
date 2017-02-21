@@ -6,6 +6,7 @@ import { fetchStats } from '../actions/landing';
 import { fetchSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
+import currentUserProps from '../prop-types/current_user_props';
 
 class DashboardContainer extends Component {
   constructor(props){
@@ -30,7 +31,7 @@ class DashboardContainer extends Component {
               </div>
 
               <DashboardSearch search={this.search} />
-              <SearchResultList searchResults={this.props.searchResults} />
+              <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
             </div>
           </div>
 
@@ -130,7 +131,8 @@ function mapStateToProps(state) {
     formCount: state.stats.formCount,
     questionCount: state.stats.questionCount,
     responseSetCount: state.stats.responseSetCount,
-    searchResults: state.searchResults
+    searchResults: state.searchResults,
+    currentUser: state.currentUser
   };
 }
 
@@ -143,7 +145,8 @@ DashboardContainer.propTypes = {
   questionCount: PropTypes.number,
   responseSetCount: PropTypes.number,
   fetchStats: PropTypes.func,
-  fetchSearchResults: PropTypes.func
+  fetchSearchResults: PropTypes.func,
+  currentUser: currentUserProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);
