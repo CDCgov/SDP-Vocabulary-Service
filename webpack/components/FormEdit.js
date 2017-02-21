@@ -3,6 +3,7 @@ import {formProps} from '../prop-types/form_props';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import QuestionItem from './QuestionItem';
+import Errors from './Errors';
 import _ from 'lodash';
 import ModalDialog from './ModalDialog';
 
@@ -163,6 +164,8 @@ class FormEdit extends Component {
       if (response.status === 201) {
         this.props.router.push(`/forms/${response.data.id}`);
       }
+    }, (failureResponse) => {
+      this.setState({errors: failureResponse.response.data});
     });
   }
 
@@ -185,6 +188,7 @@ class FormEdit extends Component {
         }}
         secondaryButtonAction={()=> this.handleModalResponse(true)} />
       <form onSubmit={(e) => this.handleSubmit(e)}>
+        <Errors errors={this.state.errors} />
         <div className="row" id="form-button-div">
           <div className="col-md-2">
             <div className="btn btn-default btn-sm" disabled>

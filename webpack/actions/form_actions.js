@@ -39,14 +39,17 @@ export function fetchForm(id) {
   };
 }
 
-export function saveForm(form, callback=null) {
+export function saveForm(form, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   form.questionsAttributes = form.questions;
   const postPromise = axios.post(routes.formsPath(),
                       {form, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
-  if (callback) {
-    postPromise.then(callback);
+  if (successHandler) {
+    postPromise.then(successHandler);
+  }
+  if (failureHandler ) {
+    postPromise.catch(failureHandler);
   }
   return {
     type: SAVE_FORM,
