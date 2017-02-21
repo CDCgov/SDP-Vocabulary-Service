@@ -11,7 +11,7 @@ class ElasticsearchController < ApplicationController
           }
         }
       }
-    else
+    elsif query_string
       results = client.search index: 'vocabulary', body: {
         query: {
           match: {
@@ -19,6 +19,8 @@ class ElasticsearchController < ApplicationController
           }
         }
       }
+    else
+      results = client.search index: 'vocabulary'
     end
     results
   end

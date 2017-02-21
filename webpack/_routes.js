@@ -486,6 +486,9 @@ Based on Rails routes of Vocabulary::Application
 // edit_user_registration => /users/edit(.:format)
   // function(options)
   edit_user_registration_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// elasticsearch => /elasticsearch(.:format)
+  // function(options)
+  elasticsearch_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"elasticsearch",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
 // export_form => /forms/:id/export(.:format)
   // function(id, options)
   export_form_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"export",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
