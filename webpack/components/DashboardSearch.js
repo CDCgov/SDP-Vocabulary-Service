@@ -28,7 +28,7 @@ class DashboardSearch extends Component {
             <label htmlFor="search" className="hidden">Search</label>
             <input onChange={this.onInputChange} type="text" id="search" name="search" className="search-input" placeholder="Search..."/>
             <span className="input-group-btn">
-              <button className="search-btn search-btn-default" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
+              <button id="search-btn" className="search-btn search-btn-default" aria-label="search-btn" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
           </div>
         </div>
