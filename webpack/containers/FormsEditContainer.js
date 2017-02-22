@@ -39,7 +39,8 @@ class FormsEditContainer extends Component {
     return (
       <div className="container basic-bg">
         <div className="row">
-          <div className="col-md-4">
+          <h2>{_.capitalize(this.props.params.action)} Form </h2>
+          <div className="col-md-6">
           <QuestionSearchContainer
             allQs={this.props.questions}
             allRs={this.props.responseSets}
