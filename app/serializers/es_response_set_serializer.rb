@@ -30,7 +30,7 @@ class ESResponseSetSerializer < ActiveModel::Serializer
 
   def questions
     object.questions.collect do |q|
-      { id: q.question_id, name: q.question.content }
+      { id: q.id, name: q.content }
     end
   end
 
