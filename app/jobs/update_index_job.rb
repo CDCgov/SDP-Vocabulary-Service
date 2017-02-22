@@ -4,6 +4,7 @@ class UpdateIndexJob < ApplicationJob
 
   def perform(type, data)
     # call elasticsearch
+    SDP::Elasticsearch.ensure_index
     SDP::Elasticsearch.with_client do |client|
       if client.exists? index: 'vocabulary', type: type.underscore, id: data[:id]
         client.update index: 'vocabulary', type: type.underscore, id: data[:id], body: { doc: data }

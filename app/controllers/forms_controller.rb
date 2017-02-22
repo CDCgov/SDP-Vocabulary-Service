@@ -29,9 +29,9 @@ class FormsController < ApplicationController
   def create
     @form = Form.new(form_params)
     @form.created_by = current_user
+    @form.form_questions = create_form_questions(params[:form][:linked_questions], params[:form][:linked_response_sets])
     respond_to do |format|
       if @form.save
-        create_form_questions(@form.id, params[:form][:linked_questions], params[:form][:linked_response_sets])
         format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
@@ -72,12 +72,14 @@ class FormsController < ApplicationController
     "Form was successfully #{action}."
   end
 
-  def create_form_questions(form_id, question_ids, response_set_ids)
+  def create_form_questions(question_ids, response_set_ids)
+    form_questions = []
     if question_ids
       question_ids.zip(response_set_ids).each do |qid, rsid|
-        FormQuestion.create(form_id: form_id, question_id: qid, response_set_id: rsid)
+        form_questions << FormQuestion.new(question_id: qid, response_set_id: rsid)
       end
     end
+    form_questions
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
