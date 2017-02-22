@@ -40,11 +40,13 @@ Feature: Manage Questions
     And I click on the option to Revise the Question with the content "What is your gender?"
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a revised description"
+    And I check the harmonized box
     And I drag the "Gender Partial" option to the "Selected Response Sets" list
     And I select the "Response Set" option in the "Primary Response Type" list
     And I click on the "Revise Question" button
     And I should see "What is your favorite color?"
     And I should see "This is a revised description"
+    And I should see "Harmonized: yes"
 
   Scenario: Create New Question from List
     Given I have a Response Set with the name "Gender Full"
