@@ -5,13 +5,18 @@ class ElasticsearchController < ApplicationController
   def query_with_type(client, type, query_string)
     client.search index: 'vocabulary', type: type, body: {
       query: {
-        match: {
-          _all: query_string
+        dis_max: {
+          queries: [
+            { match: { name: query_string } },
+            { match: { description: query_string } }
+          ]
         }
       },
       highlight: {
+        pre_tags: ['<strong>'],
+        post_tags: ['</strong>'],
         fields: {
-          _all: {}
+          name: {}, description: {}
         }
       }
     }
@@ -20,13 +25,18 @@ class ElasticsearchController < ApplicationController
   def query_without_type(client, query_string)
     client.search index: 'vocabulary', body: {
       query: {
-        match: {
-          name: query_string
+        dis_max: {
+          queries: [
+            { match: { name: query_string } },
+            { match: { description: query_string } }
+          ]
         }
       },
       highlight: {
+        pre_tags: ['<strong>'],
+        post_tags: ['</strong>'],
         fields: {
-          name: {}
+          name: {}, description: {}
         }
       }
     }

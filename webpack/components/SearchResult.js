@@ -26,15 +26,15 @@ export default class SearchResult extends Component {
     }
   }
 
-  questionDropdownMenu(question){
+  questionDropdownMenu(question, resultType){
     if(this.props.currentUser && this.props.currentUser.id){
       return (
         <ul className="dropdown-menu">
           <li>
-            <Link to={`/questions/${question.id}/revise`}>Revise</Link>
+            <Link to={`/${resultType}s/${question.id}/revise`}>Revise</Link>
           </li>
           <li>
-            <Link to={`/questions/${question.id}`}>Details</Link>
+            <Link to={`/${resultType}s/${question.id}`}>Details</Link>
           </li>
         </ul>
       );
@@ -42,7 +42,7 @@ export default class SearchResult extends Component {
       return (
         <ul className="dropdown-menu">
           <li>
-            <Link to={`/questions/${question.id}`}>Details</Link>
+            <Link to={`/${resultType}s/${question.id}`}>Details</Link>
           </li>
         </ul>
       );
@@ -53,27 +53,35 @@ export default class SearchResult extends Component {
     return (
       <div className="search-result">
         <div className="search-result-name">
+          <text className="search-result-type">Question: </text>
           <Link to={`/questions/${result.id}`}>
-            <strong>Question: </strong>
-            {highlight && highlight.name ? highlight.name[0] : result.name}
+            {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
           </Link>
           <div className="pull-right question-menu">
             <div className="dropdown">
               <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.questionDropdownMenu(result)}
+              {this.questionDropdownMenu(result, 'question')}
             </div>
           </div>
         </div>
         <div className="search-result-description">
-          {result.description && result.description}
+          {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
         </div>
         <div className="search-result-stats">
           <hr/>
-          <div>
-            Response Sets:
-          </div>
+          {result.responseSets.length > 0 &&
+            <div>
+              Linked Response Sets: |{result.responseSets.map((rs) => {
+                return(
+                  <text key={`response-set-${rs.id}`}>
+                    <Link to={`/responseSets/${rs.id}`}> {rs.name}</Link> |
+                  </text>
+                );
+              })}
+            </div>
+          }
         </div>
 
         <hr/>
@@ -85,15 +93,35 @@ export default class SearchResult extends Component {
     return (
       <div className="search-result">
         <div className="search-result-name">
+          <text className="search-result-type">Response Set: </text>
           <Link to={`/responseSets/${result.id}`}>
-            <strong>Response Set: </strong>
-            {highlight && highlight.name ? highlight.name[0] : result.name}
+            {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
           </Link>
+          <div className="pull-right response-set-menu">
+            <div className="dropdown">
+              <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                <span className="fa fa-ellipsis-h"></span>
+              </a>
+              {this.questionDropdownMenu(result, 'responseSet')}
+            </div>
+          </div>
         </div>
         <div className="search-result-description">
-          {result.description && result.description}
+          {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
         </div>
         <div className="search-result-stats">
+          <hr/>
+          {result.questions.length > 0 &&
+            <div>
+              Linked Questions: |{result.questions.map((q) => {
+                return(
+                  <text key={`question-${q.id}`}>
+                    <Link to={`/questions/${q.id}`}> {q.name}</Link> |
+                  </text>
+                );
+              })}
+            </div>
+          }
         </div>
         <hr/>
       </div>
@@ -104,15 +132,35 @@ export default class SearchResult extends Component {
     return (
       <div className="search-result">
         <div className="search-result-name">
+          <text className="search-result-type">Form: </text>
           <Link to={`/forms/${result.id}`}>
-            <strong>Form: </strong>
-            {highlight && highlight.name ? highlight.name[0] : result.name}
+            {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
           </Link>
+          <div className="pull-right form-menu">
+            <div className="dropdown">
+              <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                <span className="fa fa-ellipsis-h"></span>
+              </a>
+              {this.questionDropdownMenu(result, 'form')}
+            </div>
+          </div>
         </div>
         <div className="search-result-description">
-          {result.description && result.description}
+          {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
         </div>
         <div className="search-result-stats">
+          <hr/>
+          {result.questions.length > 0 &&
+            <div>
+              Questions Used: |{result.questions.map((q) => {
+                return(
+                  <text key={`question-${q.id}`}>
+                    <Link to={`/questions/${q.id}`}> {q.name}</Link> |
+                  </text>
+                );
+              })}
+            </div>
+          }
         </div>
         <hr/>
       </div>

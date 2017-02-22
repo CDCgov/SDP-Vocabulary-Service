@@ -9,6 +9,7 @@
 .search-result-list {
   margin-left: 20px;
   margin-right: 20px;
+  padding-bottom: 20px;
 }
 
 .search-group-btn {
@@ -23,24 +24,32 @@
 
 .search-result{
   hr {
+    border: none;
     margin-top: 5px;
+    margin-bottom: 25px;
+    height: 1px;
+    color: #e6e5e5;
+    background-color: #e6e5e5;
   }
   .search-result-name {
     font-size: 18px;
     color: $cdc-blue;
     margin-bottom: 5px;
+    .search-result-type {
+      color: $dark-gray;
+    }
   }
   .search-result-description {
     font-size: 14px;
     color: $dark-gray;
   }
   .search-result-stats {
-    font-size: 10px;
+    font-size: 11px;
     hr {
       border:none;
       margin-top: 5px;
       margin-bottom: 5px;
-      border-top:2px dotted $light-gray;
+      border-top:2px dashed $light-gray;
       color:#fff;
       background-color:#fff;
       height:2px;
