@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get '/mystuff' => 'mystuff#index'
   resources :form_questions
   resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
+    get :revise, on: :member
     get :export, on: :member
     get :redcap, on: :member
   end
@@ -24,14 +25,16 @@ Rails.application.routes.draw do
   resources :concepts
   resources :questions, except: [:edit] do
     get :revise, on: :member
-    patch :publish, on: :member
+    put :publish, on: :member
   end
   resources :comments do
     post :reply_to, on: :member
   end
   resources :question_types
 
-  resources :response_sets, except: [:edit, :update] # No editing/updating on response sets, we only revise them
+  resources :response_sets, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
+    get :revise, on: :member
+  end
 
   get 'notifications', to: 'notifications#index', as: :notifications
   post 'notifications/mark_read', to: 'notifications#mark_read', as: :notifications_mark_read
@@ -45,8 +48,6 @@ Rails.application.routes.draw do
       get :usage, on: :member
     end
   end
-
-  # get 'questions' => 'questions#index'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
