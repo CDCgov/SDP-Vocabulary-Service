@@ -92,6 +92,11 @@ export default class ResponseSetForm extends Component {
   }
 
   render() {
+    let titleText  = "New Response Set";
+    if (this.props.responseSet.versionIndependentId) {
+      titleText  = "Revise Response Set";
+    }
+
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <ModalDialog  show={this.state.showModal}
@@ -109,41 +114,49 @@ export default class ResponseSetForm extends Component {
                 }}
                 secondaryButtonAction={()=> this.handleModalResponse(true)} />
         <Errors errors={this.state.errors} />
-        <div className="row">
-          <div className="row">
-            <div className="col-md-4">
-              <label htmlFor="name">Name</label>
-              <input type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+        <div>
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">{titleText}</h3>
             </div>
+            <div className="panel-body">
+                <div className="row">
+                  <div className="col-md-8 question-form-group">
+                    <label className="input-label" htmlFor="name">Name</label>
+                    <input className="input-format" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+                  </div>
 
-            <div className="col-md-4">
-              <label htmlFor="oid">OID</label>
-              <input type="text" value={this.state.oid} name="oid" id="oid" onChange={this.handleChange('oid')}/>
+                  <div className="col-md-4 question-form-group">
+                    <label className="input-label"  htmlFor="coded">Coded</label>
+                    <input  className=" big-checkbox checkbox" type="checkbox" value={this.state.coded} name="coded" id="coded" onChange={this.handleChange('coded')}/>
+                  </div>
+                  <div className="hidden">
+                    <input type="hidden" name="parentId" id="parentId" value={this.state.parentId} />
+                  </div>
+                </div>
+
+                <div className="row">
+                <div className="col-md-8 question-form-group">
+                    <label className="input-label"  htmlFor="description">Description</label>
+                    <textarea className="input-format"  value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-12">
+                    <label className="input-label" >Responses</label>
+                    </div>
+                  </div>
+                <CodedSetTableForm itemWatcher={(r) => this.handleResponsesChange(r)}
+                                   initialItems={this.state.responsesAttributes}
+                                   parentName={'response_set'}
+                                   childName={'response'} />
+                </div>
+                <div className="panel-footer">
+
+                    <input className=" btn btn-default " type="submit" value={`${this.actionWord()} Response Set`}/>
+
             </div>
-
-            <div className="col-md-2">
-              <label htmlFor="coded">Coded</label>
-              <input type="checkbox" value={this.state.coded} name="coded" id="coded" onChange={this.handleChange('coded')}/>
-            </div>
-            <div className="hidden">
-              <input type="hidden" name="parentId" id="parentId" value={this.state.parentId} />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-4">
-              <label htmlFor="description">Description</label>
-              <textarea value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
-            </div>
-          </div>
-
-          <CodedSetTableForm itemWatcher={(r) => this.handleResponsesChange(r)}
-                             initialItems={this.state.responsesAttributes}
-                             parentName={'response_set'}
-                             childName={'response'} />
-
-          <div className="actions">
-            <input type="submit" value={`${this.actionWord()} Response Set`}/>
           </div>
         </div>
       </form>

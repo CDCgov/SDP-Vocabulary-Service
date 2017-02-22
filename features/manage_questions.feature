@@ -58,7 +58,7 @@ Feature: Manage Questions
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
-    And I select the "Multiple Choice" option in the "Type" list
+    And I select the "Multiple Choice" option in the "Category" list
     And I select the "Integer" option in the "Primary Response Type" list
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
@@ -73,7 +73,7 @@ Feature: Manage Questions
     And I click on the "New Question" link
     And I fill in the "Question" field with "What is your favorite animal?"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
-    And I select the "Multiple Choice" option in the "Type" list
+    And I select the "Multiple Choice" option in the "Category" list
     And I select the "Integer" option in the "Primary Response Type" list
     When I go to the list of Questions
     And I click on the "Save & Leave" button
@@ -88,7 +88,7 @@ Feature: Manage Questions
     And I click on the "New Question" link
     And I fill in the "Question" field with "What is your favorite animal?"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
-    And I select the "Multiple Choice" option in the "Type" list
+    And I select the "Multiple Choice" option in the "Category" list
     And I select the "Integer" option in the "Primary Response Type" list
     When I go to the list of Questions
     And I click on the "Continue Without Saving" button

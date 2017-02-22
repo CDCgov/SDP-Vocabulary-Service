@@ -186,7 +186,7 @@ class QuestionForm extends Component{
                   </div>
 
                   <div className="col-md-4 question-form-group">
-                      <label className="input-label" htmlFor="questionTypeId">Type</label>
+                      <label className="input-label" htmlFor="questionTypeId">Category</label>
                       <select className="input-format" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
                         {_.values(questionTypes).map((qt) => {
@@ -216,7 +216,7 @@ class QuestionForm extends Component{
               </div>
 
               <div className="row ">
-                  <div className="col-md-8 form-group">
+                  <div className="col-md-12 ">
                       <label className="input-label" htmlFor="concept_id">Concepts</label>
                       <CodedSetTableForm itemWatcher={(r) => this.handleConceptsChange(r)}
                                initialItems={question.concepts}
