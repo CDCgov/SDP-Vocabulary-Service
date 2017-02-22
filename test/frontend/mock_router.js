@@ -6,9 +6,6 @@ class MockRouter {
   }
 
   setRouteLeaveHook(route, leaveHook){
-    console.log('setleavehook')
-    console.log(route)
-    console.log(leaveHook)
     this.route = route;
     this.leaveHook = leaveHook;
   }

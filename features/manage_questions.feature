@@ -11,12 +11,13 @@ Feature: Manage Questions
     And I should see the option to Revise the Question with the content "What is your gender?"
 
   Scenario: Show Question in Detail
-    Given I have a Question with the content "What is your gender?" and the type "MC"
+    Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Content: What is your gender?"
+    Then I should see "Description: This is a question"
 
   Scenario: Comment on a Question in Detail
     Given I have a Question with the content "What is your gender?" and the type "MC"
@@ -30,7 +31,7 @@ Feature: Manage Questions
     Then I should see "Is This a Comment?"
 
   Scenario: Revise Question
-    Given I have a Question with the content "What is your gender?" and the type "MC"
+    Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
     And I have a Response Set with the name "Gender Partial"
     And I have a Response Type with the name "Response Set"
     And I am logged in as test_author@gmail.com
@@ -38,10 +39,12 @@ Feature: Manage Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Revise the Question with the content "What is your gender?"
     And I fill in the "Question" field with "What is your favorite color?"
+    And I fill in the "Description" field with "This is a revised description"
     And I drag the "Gender Partial" option to the "Selected Response Sets" list
     And I select the "Response Set" option in the "Primary Response Type" list
     And I click on the "Revise Question" button
     And I should see "What is your favorite color?"
+    And I should see "This is a revised description"
 
   Scenario: Create New Question from List
     Given I have a Response Set with the name "Gender Full"
@@ -51,11 +54,53 @@ Feature: Manage Questions
     When I go to the list of Questions
     And I click on the "New Question" link
     And I fill in the "Question" field with "What is your favorite color?"
+    And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
     And I select the "Multiple Choice" option in the "Type" list
     And I select the "Integer" option in the "Primary Response Type" list
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
+    And I should see "This is a description"
+
+  Scenario: Create New Question from List with Warning Modal
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question Type with the name "Multiple Choice"
+    And I have a Response Type with the name "Integer"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the "New Question" link
+    And I fill in the "Question" field with "What is your favorite animal?"
+    And I drag the "Gender Full" option to the "Selected Response Sets" list
+    And I select the "Multiple Choice" option in the "Type" list
+    And I select the "Integer" option in the "Primary Response Type" list
+    When I go to the list of Questions
+    And I click on the "Save & Leave" button
+    And I should see "What is your favorite animal?"
+
+  Scenario: Abandon New Question with Warning Modal
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question Type with the name "Multiple Choice"
+    And I have a Response Type with the name "Integer"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the "New Question" link
+    And I fill in the "Question" field with "What is your favorite animal?"
+    And I drag the "Gender Full" option to the "Selected Response Sets" list
+    And I select the "Multiple Choice" option in the "Type" list
+    And I select the "Integer" option in the "Primary Response Type" list
+    When I go to the list of Questions
+    And I click on the "Continue Without Saving" button
+    And I should not see "What is your favorite animal?"
+
+  Scenario: Reject Blank Question
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question Type with the name "Multiple Choice"
+    And I have a Response Type with the name "Integer"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the "New Question" link
+    And I click on the "Create Question" button
+    And I should see "content - can't be blank"
 
   Scenario: Reject Blank Question
     Given I have a Response Set with the name "Gender Full"
