@@ -1,3 +1,5 @@
+/* eslint react/no-danger: 0 */
+
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import currentUserProps from "../prop-types/current_user_props";
@@ -83,7 +85,6 @@ export default class SearchResult extends Component {
             </div>
           }
         </div>
-
         <hr/>
       </div>
     );
@@ -150,17 +151,6 @@ export default class SearchResult extends Component {
         </div>
         <div className="search-result-stats">
           <hr/>
-          {result.questions.length > 0 &&
-            <div>
-              Questions Used: |{result.questions.map((q) => {
-                return(
-                  <text key={`question-${q.id}`}>
-                    <Link to={`/questions/${q.id}`}> {q.name}</Link> |
-                  </text>
-                );
-              })}
-            </div>
-          }
         </div>
         <hr/>
       </div>

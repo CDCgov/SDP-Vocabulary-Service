@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 import {
   FETCH_SEARCH_RESULTS_FULFILLED,
 } from '../actions/types';

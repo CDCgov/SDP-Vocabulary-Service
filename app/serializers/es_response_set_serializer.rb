@@ -28,15 +28,9 @@ class ESResponseSetSerializer < ActiveModel::Serializer
     object.created_at.as_json if object.created_at
   end
 
-  def forms
-    object.form_questions.collect do |fq|
-      { id: fq.form.id, name: fq.form.name }
-    end
-  end
-
   def questions
-    object.form_questions.collect do |fq|
-      { id: fq.question_id, name: fq.question.content }
+    object.questions.collect do |q|
+      { id: q.question_id, name: q.question.content }
     end
   end
 

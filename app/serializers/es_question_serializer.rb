@@ -45,9 +45,6 @@ class ESQuestionSerializer < ActiveModel::Serializer
     'draft'
   end
 
-  def description
-  end
-
   def updated_at
     object.updated_at.as_json if object.updated_at
   end

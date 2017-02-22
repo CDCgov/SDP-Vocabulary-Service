@@ -1,6 +1,5 @@
 import axios from 'axios';
 import routes from '../routes';
-import { getCSRFToken } from './index';
 import {
   FETCH_SEARCH_RESULTS
 } from './types';

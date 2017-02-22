@@ -146,7 +146,8 @@ DashboardContainer.propTypes = {
   responseSetCount: PropTypes.number,
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
-  currentUser: currentUserProps
+  currentUser: currentUserProps,
+  searchResults: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);
