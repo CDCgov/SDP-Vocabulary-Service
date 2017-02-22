@@ -74,10 +74,10 @@ class QuestionForm extends Component{
 
   constructor(props) {
     super(props);
-    if(this.props.action === 'revise'){
-      this.state = this.stateForRevise(this.props.question);
-    }else{
+    if(this.props.action === 'new'){
       this.state = this.stateForNew();
+    }else{
+      this.state = this.stateForRevise(this.props.question);
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.unsavedState = false;
@@ -123,7 +123,9 @@ class QuestionForm extends Component{
     _.forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
     reviseState.conceptsAttributes = filterConcepts(question.concepts);
     reviseState.linkedResponseSets = question.responseSets;
-    reviseState.version += 1;
+    if (this.props.action === 'revise') {
+      reviseState.version += 1;
+    }
     return reviseState;
   }
 
@@ -151,9 +153,12 @@ class QuestionForm extends Component{
 
     let submitText = "Create Question";
     let titleText  = "New Question";
-    if (question.versionIndependentId) {
+    if (this.props.action === 'revise') {
       submitText = "Revise Question";
       titleText  = "Revise Question";
+    } else if (this.props.action === 'edit') {
+      submitText = "Edit Draft";
+      titleText  = "Edit Draft";
     }
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
@@ -257,12 +262,22 @@ class QuestionForm extends Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.questionSubmitter(this.state, (successResponse) => {
-      this.unsavedState = false;
-      this.props.router.push(`/questions/${successResponse.data.id}`);
-    }, (failureResponse) => {
-      this.setState({errors: failureResponse.response.data});
-    });
+    if (this.props.action === 'edit') {
+      this.props.draftSubmitter(this.props.id, this.state, (response) => {
+        // TODO: Handle when the saving question fails.
+        this.unsavedState = false;
+        if (response.status === 200) {
+          this.props.router.push(`/questions/${response.data.id}`);
+        }
+      });
+    } else {
+      this.props.questionSubmitter(this.state, (successResponse) => {
+        this.unsavedState = false;
+        this.props.router.push(`/questions/${successResponse.data.id}`);
+      }, (failureResponse) => {
+        this.setState({errors: failureResponse.response.data});
+      });
+    }
   }
 
   handleConceptsChange(newConcepts) {
@@ -300,13 +315,15 @@ function filterConcepts(concepts) {
 QuestionForm.propTypes = {
   question: questionProps,
   questionSubmitter: PropTypes.func.isRequired,
+  draftSubmitter: PropTypes.func.isRequired,
   responseSets: responseSetsProps,
   routes: allRoutes,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
-  action: PropTypes.string
+  action: PropTypes.string,
+  id: PropTypes.string
 };
 
 export default QuestionForm;

@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   # GET /questions.json
   def index
     @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
+    # @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.last_published
   end
 
   # GET /questions/1
@@ -53,6 +54,10 @@ class QuestionsController < ApplicationController
   def publish
     if @question.status == 'draft'
       @question.publish
+      respond_to do |format|
+        format.html { redirect_to @question, notice: 'Draft question published' }
+        format.json { render :show, statis: :published, location: @question }
+      end
     else
       render json: @question.errors, status: :unprocessable_entity
     end
@@ -65,6 +70,7 @@ class QuestionsController < ApplicationController
       render json: @question.errors, status: :unprocessable_entity
     else
       update_response_sets(params)
+      update_concepts(params)
       @question.updated_by = current_user
 
       respond_to do |format|
@@ -78,6 +84,12 @@ class QuestionsController < ApplicationController
         end
       end
     end
+  end
+
+  def update_concepts(_params)
+    @concepts = Concept.where(question_id: @question.id)
+    @question.concepts.destroy_all
+    @question.concepts << @concepts
   end
 
   # DELETE /questions/1

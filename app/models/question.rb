@@ -32,7 +32,7 @@ class Question < ApplicationRecord
   end
 
   def publish
-    update(status: 'published')
+    update(status: 'published') if status == 'draft'
   end
 
   def build_new_revision

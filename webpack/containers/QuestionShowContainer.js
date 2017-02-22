@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion } from '../actions/questions_actions';
+import { fetchQuestion, publishQuestion } from '../actions/questions_actions';
 import { questionProps } from "../prop-types/question_props";
 import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
@@ -20,6 +20,33 @@ class QuestionShowContainer extends Component {
     }
   }
 
+  reviseQuestionButton(){
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
+      if(this.props.question.status == 'draft'){
+        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/edit`}>Edit</a> );
+      } else {
+        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/revise`}>Revise</a> );
+      }
+    }
+  }
+
+  publishQuestionButton(){
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question ){
+      let q = this.props.question;
+      if(q.status == 'draft'){
+        return( <button className="btn btn-primary" onClick={() => this.handlePublish(q) }>Publish</button> );
+      } else if(q.status == 'published'){
+        //return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/deprecate`}>Deprecate</a> );
+      }
+    }
+  }
+
+  handlePublish(q){
+    publishQuestion(q.id, () => {
+      // How do I trigger a refresh here? forceUpdate didn't work
+    });
+  }
+
   render() {
     if(!this.props.question){
       return null;
@@ -33,6 +60,9 @@ class QuestionShowContainer extends Component {
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>
         </div>
+        {this.reviseQuestionButton()}
+        {this.publishQuestionButton()}
+        <CommentList commentableType='Question' commentableId={this.props.question.id} />
       </div>
     );
   }
