@@ -5,6 +5,7 @@ import { fetchForm } from '../actions/form_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
 import CommentList from '../containers/CommentList';
+import currentUserProps from '../prop-types/current_user_props';
 
 class FormShowContainer extends Component {
   componentWillMount() {
@@ -27,7 +28,7 @@ class FormShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <FormShow form={this.props.form} />
+            <FormShow currentUser={this.props.currentUser} form={this.props.form} />
             <div className="col-md-12 showpage-comments-title">Comments:</div>
             <CommentList commentableType='Form' commentableId={this.props.form.id} />
           </div>
@@ -39,6 +40,7 @@ class FormShowContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   const props = {};
+  props.currentUser = state.currentUser;
   props.form = state.forms[ownProps.params.formId];
   if (props.form) {
     props.questions = props.form.questions.map((qId) => state.questions[qId]);
@@ -52,6 +54,7 @@ function mapDispatchToProps(dispatch) {
 
 FormShowContainer.propTypes = {
   form: formProps,
+  currentUser: currentUserProps,
   fetchForm: PropTypes.func,
   params: PropTypes.object
 };

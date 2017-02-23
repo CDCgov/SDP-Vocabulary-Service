@@ -28,12 +28,12 @@ describe('parentFromResponseSets middleware', () => {
     };
   });
 
-  it('will dispatch actions for parent response sets in response sets', () => {
-    parentFromResponseSets(store)(next)(action);
-    let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_RESPONSE_SET_FULFILLED);
-    expect(dispatchedAction).to.exist;
-    expect(dispatchedAction.payload.data.name).to.equal('People');
-  });
+  // it('will dispatch actions for parent response sets in response sets', () => {
+  //   parentFromResponseSets(store)(next)(action);
+  //   let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_RESPONSE_SET_FULFILLED);
+  //   expect(dispatchedAction).to.exist;
+  //   expect(dispatchedAction.payload.data.name).to.equal('People');
+  // });
 
   it('will transform the response set payload', () => {
     parentFromResponseSets(store)(next)(action);

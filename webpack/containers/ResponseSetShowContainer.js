@@ -5,6 +5,8 @@ import { fetchResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
+import CommentList from '../containers/CommentList';
+import currentUserProps from "../prop-types/current_user_props";
 import _ from 'lodash';
 
 class ResponseSetShowContainer extends Component {
@@ -25,8 +27,14 @@ class ResponseSetShowContainer extends Component {
       );
     }
     return (
-      <div className="basic-bg">
-        <ResponseSetDetails responseSet={this.props.responseSet} questions={this.props.questions}/>
+      <div className="container">
+        <div className="row basic-bg">
+          <div className="col-md-12">
+            <ResponseSetDetails responseSet={this.props.responseSet} currentUser={this.props.currentUser} questions={this.props.questions}/>
+            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
+          </div>
+        </div>
       </div>
     );
   }
@@ -34,6 +42,7 @@ class ResponseSetShowContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   const props = {};
+  props.currentUser = state.currentUser;
   props.responseSet = state.responseSets[ownProps.params.rsId];
   if (props.responseSet && props.responseSet.questions) {
     props.questions = _.compact(props.responseSet.questions.map((qId) => state.questions[qId]));
@@ -47,6 +56,7 @@ function mapDispatchToProps(dispatch) {
 
 ResponseSetShowContainer.propTypes = {
   responseSet: responseSetProps,
+  currentUser: currentUserProps,
   questions: PropTypes.arrayOf(questionProps),
   fetchResponseSet: PropTypes.func,
   params: PropTypes.object
