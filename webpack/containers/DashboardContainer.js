@@ -38,7 +38,6 @@ class DashboardContainer extends Component {
           <div className="col-md-4">
             <div className="dashboard-activity">
               {this.recentItems()}
-              {this.activityPanel()}
             </div>
           </div>
         </div>
@@ -102,23 +101,6 @@ class DashboardContainer extends Component {
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
               <div className="recent-items-value">{this.props.formCount} Forms</div>
             </li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
-
-  activityPanel() {
-    return (
-      <div className="panel panel-default">
-        <div className="panel-heading">System Activity</div>
-        <div className="panel-body">
-          <ul className="list-group">
-            <li className="list-group-item">Activity 1</li>
-            <li className="list-group-item">Activity 2</li>
-            <li className="list-group-item">Activity 3</li>
-            <li className="list-group-item">Activity 4</li>
-            <li className="list-group-item">Activity 4</li>
           </ul>
         </div>
       </div>

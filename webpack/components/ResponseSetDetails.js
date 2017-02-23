@@ -7,6 +7,8 @@ import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
 import QuestionList from './QuestionList';
+import currentUserProps from "../prop-types/current_user_props";
+import _ from 'lodash';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -48,10 +50,10 @@ export default class ResponseSetDetails extends Component {
   mainContent(responseSet) {
     return (
       <div className="col-md-9 nopadding maincontent">
-        <div className="action_bar no-print">
+        {this.props.currentUser && this.props.currentUser.id && <div className="action_bar no-print">
           <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/revise`}>Revise</a>
           <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/extend`}>Extend</a>
-        </div>
+        </div>}
         <div className="maincontent-details">
           <h3 className="maincontent-item-name"><strong>Name:</strong> {responseSet.name} </h3>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy.email} </p>
@@ -69,10 +71,8 @@ export default class ResponseSetDetails extends Component {
             </div>
             { responseSet.parent &&
               <div className="box-content">
-                <p>
-                  <strong>Extended from: </strong>
-                  <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
-                </p>
+                <strong>Extended from: </strong>
+                <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
               </div>
             }
             <div className="box-content">
@@ -107,7 +107,7 @@ export default class ResponseSetDetails extends Component {
               </table>
             </div>
           </div>
-          {this.props.questions.length > 0 && 
+          {this.props.questions.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">Linked Questions</h3>
@@ -125,5 +125,6 @@ export default class ResponseSetDetails extends Component {
 
 ResponseSetDetails.propTypes = {
   responseSet: responseSetProps,
+  currentUser: currentUserProps,
   questions: PropTypes.arrayOf(questionProps)
 };

@@ -5,6 +5,7 @@ import Routes from '../routes';
 import _ from 'lodash';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
+import currentUserProps from '../prop-types/current_user_props';
 
 class FormShow extends Component {
   render() {
@@ -46,7 +47,9 @@ class FormShow extends Component {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
-          <a className="btn btn-default" href={`/landing#/forms/${form.id}/revise`}>Revise</a>
+          {this.props.currentUser && this.props.currentUser.id &&
+            <a className="btn btn-default" href={`/landing#/forms/${form.id}/revise`}>Revise</a>
+          }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           <a className="btn btn-default" href={Routes.redcapFormPath(form)}>Export to Redcap</a>
         </div>
@@ -69,6 +72,7 @@ class FormShow extends Component {
 }
 
 FormShow.propTypes = {
+  currentUser: currentUserProps,
   form: formProps
 };
 
