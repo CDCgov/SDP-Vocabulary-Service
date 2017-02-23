@@ -4,6 +4,7 @@ import {
 } from '../actions/types';
 
 const parentFromResponseSets = store => next => action => {
+  if(store == null) return;
   switch (action.type) {
     case FETCH_RESPONSE_SETS_FULFILLED:
       const responseSets = action.payload.data;
