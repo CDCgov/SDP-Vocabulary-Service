@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchQuestion } from '../actions/questions_actions';
 import { questionProps } from "../prop-types/question_props";
-import CodedSetTable    from '../components/CodedSetTable';
 import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
 import { responseSetProps } from "../prop-types/response_set_props";
@@ -30,9 +29,6 @@ class QuestionShowContainer extends Component {
         <div className="row basic-bg">
           <div className="col-md-12">
             <QuestionDetails question={this.props.question} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
-            <div id="concepts-table">
-              <CodedSetTable items={this.props.question.concepts} itemName={'Concept'} />
-            </div>
             <div className="col-md-12 showpage-comments-title">Comments:</div>
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>

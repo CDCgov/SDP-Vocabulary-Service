@@ -16,7 +16,7 @@ Feature: Manage Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    Then I should see "Content: What is your gender?"
+    Then I should see "Name: What is your gender?"
     Then I should see "Description: This is a question"
 
   Scenario: Comment on a Question in Detail
@@ -25,7 +25,7 @@ Feature: Manage Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    Then I should see "Content: What is your gender?"
+    Then I should see "Name: What is your gender?"
     And I fill in the "Your Comment" field with "Is This a Comment?"
     And I click on the "Post" button
     Then I should see "Is This a Comment?"
@@ -46,7 +46,7 @@ Feature: Manage Questions
     And I click on the "Revise Question" button
     And I should see "What is your favorite color?"
     And I should see "This is a revised description"
-    And I should see "Harmonized: yes"
+    And I should see "Harmonized: Yes"
 
   Scenario: Create New Question from List
     Given I have a Response Set with the name "Gender Full"

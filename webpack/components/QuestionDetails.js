@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { questionProps } from "../prop-types/question_props";
 import VersionInfo from "./VersionInfo";
+import ResponseSetList from "./ResponseSetList";
+import CodedSetTable from "../components/CodedSetTable";
 import moment from 'moment';
+import _ from 'lodash';
+import Routes from "../routes";
 import { hashHistory } from 'react-router';
+import currentUserProps from "../prop-types/current_user_props";
 
 export default class QuestionDetails extends Component {
   render() {
@@ -21,25 +26,12 @@ export default class QuestionDetails extends Component {
           </ul>
         </div>
         {this.historyBar(question)}
-        {this.mainContent(question)}
-
-        <p>
-          <strong>Response Set Names:</strong>
-          <br/>
-          {responseSets && responseSets.map((rs) => {
-            return (
-              <span key={rs.id}>
-                <a href={`/landing#/responseSets/${rs.id}`}>{rs.name}</a>
-                <br/>
-              </span>
-            );
-          })}
-        </p>
+        {this.mainContent(question, responseSets)}
       </div>
     );
   }
 
-  mainContent(question) {
+  mainContent(question, responseSets) {
     return (
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
@@ -75,6 +67,28 @@ export default class QuestionDetails extends Component {
               {question.responsetype.name}
             </div>}
           </div>
+          {question.concepts.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">Concepts</h3>
+              </div>
+              <div className="box-content">
+                <div id="concepts-table">
+                  <CodedSetTable items={question.concepts} itemName={'Concept'} />
+                </div>
+              </div>
+            </div>
+          }
+          {responseSets.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">Linked Response Sets</h3>
+              </div>
+              <div className="box-content">
+                <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} routes={Routes} />
+              </div>
+            </div>
+          }
         </div>
       </div>
     );
@@ -96,5 +110,6 @@ export default class QuestionDetails extends Component {
 
 QuestionDetails.propTypes = {
   question:  questionProps,
+  currentUser:   currentUserProps,
   responseSets: PropTypes.array
 };
