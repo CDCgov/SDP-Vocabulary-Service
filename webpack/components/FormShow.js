@@ -30,7 +30,7 @@ class FormShow extends Component {
 
   historyBar(form) {
     return (
-      <div className="col-md-4 nopadding no-print">
+      <div className="col-md-3 nopadding no-print">
         <div className="showpage_sidenav_subtitle">
           <ul className="list-inline">
             <li className="subtitle_icon"><span className="fa fa-history" aria-hidden="true"></span></li>
@@ -44,7 +44,7 @@ class FormShow extends Component {
 
   mainContent(form) {
     return (
-      <div className="col-md-8 nopadding maincontent">
+      <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
           <a className="btn btn-default" href={`/landing#/forms/${form.id}/revise`}>Revise</a>
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>

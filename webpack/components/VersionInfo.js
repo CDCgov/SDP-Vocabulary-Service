@@ -15,11 +15,11 @@ export default class VersionInfo extends Component {
           {versionable.allVersions && versionable.allVersions.map((v)=>{
             if(versionable.version == v.version){
               return (
-                <li key={v.id} role="presentation" className="active"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {versionable.version} - Created {moment(v.createdAt,'').fromNow()} </Link></li>
+                <li key={v.id} role="presentation" className="active"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {versionable.version} </Link></li>
               );
             }else{
               return (
-                <li key={v.id} role="presentation"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {v.version} - Created {moment(v.createdAt,'').fromNow()}</Link></li>
+                <li key={v.id} role="presentation"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {v.version} </Link></li>
               );
             }
           })}
