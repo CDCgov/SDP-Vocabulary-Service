@@ -11,6 +11,16 @@
   font-weight: bold;
 }
 
+.showpage-comments-title {
+  font-size: 20px;
+  border-top: 1px dashed $light-gray;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: $dark-gray;
+  font-weight: bold;
+}
 .showpage_button {
   border-right: 1px solid $light-gray;
   width: 48px;
@@ -23,7 +33,6 @@
   height: 42px;
   padding-top: 6px;
   padding-left: 8px;
-  border-right: 1px solid $light-gray;
   border-bottom: 1px solid $light-gray;
 }
 

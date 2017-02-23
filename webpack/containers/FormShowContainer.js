@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchForm } from '../actions/form_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
+import CommentList from '../containers/CommentList';
 
 class FormShowContainer extends Component {
   componentWillMount() {
@@ -27,6 +28,8 @@ class FormShowContainer extends Component {
         <div className="row basic-bg">
           <div className="col-md-12">
             <FormShow form={this.props.form} />
+            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <CommentList commentableType='Form' commentableId={this.props.form.id} />
           </div>
         </div>
       </div>
