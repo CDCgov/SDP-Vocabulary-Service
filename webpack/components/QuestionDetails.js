@@ -24,35 +24,6 @@ export default class QuestionDetails extends Component {
         {this.mainContent(question)}
 
         <p>
-        <strong>Content: </strong>
-        { question.content }
-        </p>
-        <p>
-        <strong>Description: </strong>
-        { question.description }
-        </p>
-        <p>
-        <strong>Harmonized: </strong>
-        { question.harmonized ? 'yes' : 'no' }
-        </p>
-        <p>
-          <strong>Author: </strong>
-          { question.createdBy && question.createdBy.email }
-        </p>
-        <p>
-          <strong>Created: </strong>
-          { moment(question.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
-        </p>
-        <p>
-          <strong>Updated: </strong>
-          { question.updatedby && question.updatedby.email }
-          { moment(question.updatedAt,'').format('MMMM Do YYYY, h:mm:ss a') }
-        </p>
-        <p>
-          <strong>Primary Response Type: </strong><br/>
-            { question.responsetype && question.responsetype.name}
-        </p>
-        <p>
           <strong>Response Set Names:</strong>
           <br/>
           {responseSets && responseSets.map((rs) => {
@@ -64,11 +35,6 @@ export default class QuestionDetails extends Component {
             );
           })}
         </p>
-        <p>
-          <strong>Question Type: </strong>
-          { question.questionType && question.questionType.name }
-        </p>
-        <VersionInfo versionable={question} versionableType='Question' />
       </div>
     );
   }
@@ -81,6 +47,35 @@ export default class QuestionDetails extends Component {
             <a className="btn btn-default" href={`/landing#/questions/${question.id}/revise`}>Revise</a>
           </div>
         }
+        <div className="maincontent-details">
+          <h3 className="maincontent-item-name"><strong>Name:</strong> {question.content} </h3>
+          <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy.email} </p>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Details</h3>
+            </div>
+            <div className="box-content">
+              <strong>Description: </strong>
+              {question.description}
+            </div>
+            <div className="box-content">
+              <strong>Created: </strong>
+              { moment(question.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
+            </div>
+            <div className="box-content">
+              <strong>Harmonized: </strong>
+              {question.harmonized ? 'Yes' : 'No'}
+            </div>
+            {question.questionType && <div className="box-content">
+              <strong>Question Type: </strong>
+              {question.questionType.name}
+            </div>}
+            {question.responsetype && <div className="box-content">
+              <strong>Primary Response Type: </strong>
+              {question.responsetype.name}
+            </div>}
+          </div>
+        </div>
       </div>
     );
   }
