@@ -202,8 +202,19 @@ class FormEdit extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <label htmlFor="name">Name:</label>
-            <input type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+            <div className="form-group">
+              <label htmlFor="name">Name:</label>
+              <input className="form-control" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description:</label>
+              <input className="form-control" type="text" value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="controlNumber">OMB Approval:</label>
+              <input className="form-control" type="text" value={this.state.controlNumber} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+            </div>
+
           </div>
         </div>
         <AddedQuestions form={this.state}
