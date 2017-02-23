@@ -20,7 +20,7 @@ export default class ResponseSetDetails extends Component {
     }
 
     return (
-      <div id={"response_set_id_"+responseSet}>
+      <div id={"response_set_id_"+responseSet.id}>
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
@@ -50,10 +50,12 @@ export default class ResponseSetDetails extends Component {
   mainContent(responseSet) {
     return (
       <div className="col-md-9 nopadding maincontent">
-        {this.props.currentUser && this.props.currentUser.id && <div className="action_bar no-print">
-          <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/revise`}>Revise</a>
-          <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/extend`}>Extend</a>
-        </div>}
+        {this.props.currentUser && this.props.currentUser.id &&
+          <div className="action_bar no-print">
+            {responseSet.mostRecent == responseSet.version && <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/revise`}>Revise</a>}
+            <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/extend`}>Extend</a>
+          </div>
+        }
         <div className="maincontent-details">
           <h3 className="maincontent-item-name"><strong>Name:</strong> {responseSet.name} </h3>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
