@@ -5,6 +5,7 @@ import moment from 'moment';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
+import { hashHistory } from 'react-router';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -16,7 +17,15 @@ export default class ResponseSetDetails extends Component {
     }
 
     return (
-      <div className="panel">
+      <div id={"response_set_id_"+responseSet} className="panel">
+        <div className="showpage_header_container no-print">
+          <ul className="list-inline">
+            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+            <li className="showpage_title">Response Set Details</li>
+          </ul>
+        </div>
+        {this.historyBar(responseSet)}
+        {this.mainContent(responseSet)}
         <p>
           <strong>Name: </strong>
           { responseSet.name }
@@ -82,13 +91,20 @@ export default class ResponseSetDetails extends Component {
           { responseSet.updated_by && responseSet.updated_by.email }
           { moment(responseSet.updatedAt,'').format('MMMM Do YYYY, h:mm:ss a') }
         </p>
+      </div>
+    );
+  }
+
+  historyBar(responseSet) {
+    return (
+      <div className="col-md-3 nopadding no-print">
+        <div className="showpage_sidenav_subtitle">
+          <ul className="list-inline">
+            <li className="subtitle_icon"><span className="fa fa-history" aria-hidden="true"></span></li>
+            <li className="subtitle">History</li>
+          </ul>
+        </div>
         <VersionInfo versionable={responseSet} versionableType='ResponseSet' />
-        <Link to={`/responseSets/${this.props.responseSet.id}/revise`}>
-          Revise
-        </Link> |
-        <Link to={`/responseSets/${this.props.responseSet.id}/extend`}>
-          Extend
-        </Link>
       </div>
     );
   }
