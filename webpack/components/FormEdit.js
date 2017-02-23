@@ -33,15 +33,15 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
           <div className="col-md-3">
             <div className="btn btn-small btn-default move-up"
                  onClick={() => reorderQuestion(form, i, 1)}>
-              <b>Move Up</b>
+              <i title="Move Up" className="fa fa fa-arrow-up"></i>
             </div>
             <div className="btn btn-small btn-default move-down"
                  onClick={() => reorderQuestion(form, i, -1)}>
-              <b>Move Down</b>
+              <i className="fa fa fa-arrow-down" title="Move Down"></i>
             </div>
             <div className="btn btn-small btn-default"
                  onClick={() => removeQuestion(form, i)}>
-              <b>Remove</b>
+              <i className="fa fa fa-trash" title="Remove"></i>
             </div>
           </div>
         </div>
