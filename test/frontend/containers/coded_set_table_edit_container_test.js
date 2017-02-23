@@ -3,18 +3,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import { expect } from '../test_helper';
-import CodedSetTableForm from '../../../webpack/components/CodedSetTableForm';
+import CodedSetTableEditContainer from '../../../webpack/containers/CodedSetTableEditContainer';
 
 const $ = _$(window);
 
-describe('CodedSetTableForm', () => {
+describe('CodedSetTableEditContainer', () => {
   let component, componentInstance;
 
   beforeEach(() => {
     const concepts = [{value: "Code1", displayName: "Display Name 1", codeSystem:"Test system 1"},
                       {value: "Code2", displayName: "Display Name 2", codeSystem:"Test system 2"},
                       {value: "Code3", displayName: "Display Name 3", codeSystem:"Test system 3"}];
-    componentInstance =  TestUtils.renderIntoDocument(<CodedSetTableForm initialItems={concepts} parentName={'question'} childName={'concept'}/>);
+    componentInstance =  TestUtils.renderIntoDocument(<CodedSetTableEditContainer initialItems={concepts} parentName={'question'} childName={'concept'}/>);
     component = $(ReactDOM.findDOMNode(componentInstance));
   });
 

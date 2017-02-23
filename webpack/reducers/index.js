@@ -12,9 +12,11 @@ import questionTypes from './question_types';
 import responseTypes from './response_types';
 import notifications from './notifications';
 import searchResults from './search_results_reducer';
+import concepts from './concepts_reducer';
+import conceptSystems from './concept_systems_reducer';
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, forms, questionTypes, responseTypes, notifications, searchResults
+  questions, comments, stats, currentUser, responseSets, forms, questionTypes, responseTypes, notifications, searchResults, concepts, conceptSystems
 });
 
 export default rootReducer;

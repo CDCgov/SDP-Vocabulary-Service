@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Draggable, Droppable } from './Draggable';
 import Errors from './Errors';
 import ResponseSetWidget from './ResponseSetWidget';
-import CodedSetTableForm from './CodedSetTableForm';
+import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import allRoutes from '../prop-types/route_props';
@@ -83,10 +83,10 @@ class QuestionForm extends Component{
     this.unsavedState = false;
   }
 
-  componentDidMount() {
-    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
-    window.onbeforeunload = this.windowWillUnload.bind(this);
-  }
+  // componentDidMount() {
+  //   this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+  //   window.onbeforeunload = this.windowWillUnload.bind(this);
+  // }
 
   componentWillUnmount() {
     this.unsavedState = false;
@@ -94,6 +94,7 @@ class QuestionForm extends Component{
   }
 
   routerWillLeave(nextLocation) {
+    console.log('uleaaavveeee')
     this.setState({ showModal: this.unsavedState });
     this.nextLocation = nextLocation;
     return !this.unsavedState;
@@ -115,6 +116,7 @@ class QuestionForm extends Component{
   }
 
   windowWillUnload() {
+    console.log('unlooooad')
     return (this.unsavedState || null);
   }
 
@@ -218,7 +220,7 @@ class QuestionForm extends Component{
               <div className="row ">
                   <div className="col-md-12 ">
                       <label className="input-label" htmlFor="concept_id">Concepts</label>
-                      <CodedSetTableForm itemWatcher={(r) => this.handleConceptsChange(r)}
+                      <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                                initialItems={question.concepts}
                                parentName={'question'}
                                childName={'concept'} />
