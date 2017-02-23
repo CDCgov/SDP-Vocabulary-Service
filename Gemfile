@@ -33,10 +33,10 @@ gem 'acts_as_commentable'
 gem 'omniauth_openid_connect'
 gem 'elasticsearch'
 gem 'config'
+gem 'rubocop', '~> 0.44.1', require: false
 
 group :development, :test do
   gem 'fakeweb', '~> 1.3'
-  gem 'rubocop', '~> 0.44.1', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'cucumber-rails', require: false
