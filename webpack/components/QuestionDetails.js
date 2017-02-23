@@ -41,7 +41,7 @@ export default class QuestionDetails extends Component {
         }
         <div className="maincontent-details">
           <h3 className="maincontent-item-name"><strong>Name:</strong> {question.content} </h3>
-          <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy.email} </p>
+          <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
               <h3 className="panel-title">Details</h3>
@@ -67,7 +67,7 @@ export default class QuestionDetails extends Component {
               {question.responsetype.name}
             </div>}
           </div>
-          {question.concepts.length > 0 &&
+          {question.concepts && question.concepts.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">Concepts</h3>
@@ -79,7 +79,7 @@ export default class QuestionDetails extends Component {
               </div>
             </div>
           }
-          {responseSets.length > 0 &&
+          {responseSets && responseSets.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">Linked Response Sets</h3>
