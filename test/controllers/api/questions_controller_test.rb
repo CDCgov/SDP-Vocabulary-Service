@@ -31,4 +31,11 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     res = JSON.parse response.body
     assert_equal(res['version'], 1)
   end
+
+  test 'api should 404 on question that doesnt exist' do
+    get api_question_url(@question.version_independent_id, version: 99)
+    assert_response :not_found
+    res = JSON.parse response.body
+    assert_equal(res['message'], 'Resource Not Found')
+  end
 end

@@ -7,6 +7,6 @@ class FormQuestionsSerializer < ActiveModel::Serializer
   end
 
   def response_set
-    ValueSetsSerializer.new(object.response_set)
+    ValueSetsSerializer.new(object.response_set) if object.response_set
   end
 end

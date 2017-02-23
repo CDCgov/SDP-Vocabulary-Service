@@ -1,5 +1,6 @@
 module Api
-  class QuestionsController < ApplicationController
+  class QuestionsController < Api::ApplicationController
+    include Api
     respond_to :json
 
     def index
@@ -11,11 +12,19 @@ module Api
 
     def show
       @question = Question.by_id_and_version(params[:id], params[:version])
+      if @question.nil?
+        not_found
+        return
+      end
       render json: @question, serializer: QuestionsSerializer
     end
 
     def usage
       @question = Question.by_id_and_version(params[:id, params[:version]])
+      if @question.nil?
+        not_found
+        return
+      end
       render json: @question, serializer: UsageSerializer
     end
   end
