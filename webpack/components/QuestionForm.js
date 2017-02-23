@@ -248,6 +248,7 @@ class QuestionForm extends Component{
               <div className="panel-footer">
                 <div className="actions form-group">
                   <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
+                  {this.publishButton()}
                   <a className="btn btn-default" href={routes.questionsPath()}>Cancel</a>
                 </div>
               </div>
@@ -258,6 +259,19 @@ class QuestionForm extends Component{
         </div>
       </form>
     );
+  }
+  publishButton() {
+    if (this.props.action === 'edit') {
+      return (<button name="publish" className="btn btn-default" data-disable-with='Publish' onClick={() => this.handlePublish()}>Publish</button>);
+    }
+  }
+
+  handlePublish() {
+    this.props.publishSubmitter(this.props.id, (response) => {
+      if (response.status == 200) {
+        this.props.router.push(`/questions/${response.data.id}`);
+      }
+    });
   }
 
   handleSubmit(event) {
@@ -316,6 +330,7 @@ QuestionForm.propTypes = {
   question: questionProps,
   questionSubmitter: PropTypes.func.isRequired,
   draftSubmitter: PropTypes.func.isRequired,
+  publishSubmitter: PropTypes.func.isRequired,
   responseSets: responseSetsProps,
   routes: allRoutes,
   questionTypes: PropTypes.object,
