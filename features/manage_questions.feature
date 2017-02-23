@@ -146,7 +146,7 @@ Feature: Manage Questions
     When I go to the dashboard
     And I fill in the "search" field with "why"
     And I click on the "search-btn" button
-    Then I should see "Why?"
+    Then I should see "Why"
     And I should see "Reasons"
     And I should not see "What?"
 

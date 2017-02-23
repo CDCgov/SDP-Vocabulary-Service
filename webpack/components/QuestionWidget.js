@@ -35,7 +35,7 @@ class QuestionWidget extends Component {
       return (
         <ul className="dropdown-menu">
           <li>
-            <a href={this.props.routes.questionPath(this.props.question)}>Details</a>
+            <Link to={`/questions/${this.props.question.id}`}>Details</Link>
           </li>
         </ul>
       );

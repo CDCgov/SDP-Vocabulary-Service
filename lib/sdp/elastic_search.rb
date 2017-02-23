@@ -5,6 +5,56 @@ module SDP
       yield client if client.ping
     end
 
+    def self.query_with_type(client, type, query_string)
+      client.search index: 'vocabulary', type: type, body: {
+        query: {
+          dis_max: {
+            queries: [
+              { match: { name: query_string } },
+              { match: { description: query_string } }
+            ]
+          }
+        },
+        highlight: {
+          pre_tags: ['<strong>'],
+          post_tags: ['</strong>'],
+          fields: {
+            name: {}, description: {}
+          }
+        }
+      }
+    end
+
+    def self.query_without_type(client, query_string)
+      client.search index: 'vocabulary', body: {
+        query: {
+          dis_max: {
+            queries: [
+              { match: { name: query_string } },
+              { match: { description: query_string } }
+            ]
+          }
+        },
+        highlight: {
+          pre_tags: ['<strong>'],
+          post_tags: ['</strong>'],
+          fields: {
+            name: {}, description: {}
+          }
+        }
+      }
+    end
+
+    def self.search_on_string(client, type, query_string)
+      if type
+        query_with_type(client, type, query_string)
+      elsif query_string
+        query_without_type(client, query_string)
+      else
+        client.search index: 'vocabulary'
+      end
+    end
+
     def self.ensure_index
       with_client do |client|
         unless client.indices.exists? index: 'vocabulary'

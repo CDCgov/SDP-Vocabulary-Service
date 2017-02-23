@@ -45,9 +45,6 @@ class ESFormSerializer < ActiveModel::Serializer
   def category
   end
 
-  def description
-  end
-
   def status
     'draft'
   end

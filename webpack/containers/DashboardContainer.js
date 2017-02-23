@@ -1,9 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
+import { fetchSearchResults } from '../actions/search_results_actions';
+import DashboardSearch from '../components/DashboardSearch';
+import SearchResultList from '../components/SearchResultList';
+import currentUserProps from '../prop-types/current_user_props';
 
 class DashboardContainer extends Component {
+  constructor(props){
+    super(props);
+    this.search = this.search.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetchStats();
   }
@@ -20,8 +30,8 @@ class DashboardContainer extends Component {
                 </div>
               </div>
 
-              <div id="search-widget">
-              </div>
+              <DashboardSearch search={this.search} />
+              <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
             </div>
           </div>
 
@@ -34,6 +44,13 @@ class DashboardContainer extends Component {
         </div>
       </div>
     );
+  }
+
+  search(searchTerms){
+    if(searchTerms == ''){
+      searchTerms = null;
+    }
+    this.props.fetchSearchResults(searchTerms, null);
   }
 
   analyticsGroup() {
@@ -113,15 +130,24 @@ function mapStateToProps(state) {
   return {
     formCount: state.stats.formCount,
     questionCount: state.stats.questionCount,
-    responseSetCount: state.stats.responseSetCount
+    responseSetCount: state.stats.responseSetCount,
+    searchResults: state.searchResults,
+    currentUser: state.currentUser
   };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({fetchStats, fetchSearchResults}, dispatch);
 }
 
 DashboardContainer.propTypes = {
   formCount: PropTypes.number,
   questionCount: PropTypes.number,
   responseSetCount: PropTypes.number,
-  fetchStats: PropTypes.func
+  fetchStats: PropTypes.func,
+  fetchSearchResults: PropTypes.func,
+  currentUser: currentUserProps,
+  searchResults: PropTypes.object
 };
 
-export default connect(mapStateToProps, {fetchStats})(DashboardContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);
