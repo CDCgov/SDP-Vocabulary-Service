@@ -225,7 +225,7 @@
         "questions": {
           "type": "nested",
           "properties": {
-            "content": {
+            "name": {
               "type": "string"
             },
             "responseSet": {
@@ -233,6 +233,12 @@
             },
             "id": {
               "type": "string"
+            },
+            "responseSetID": {
+              "type": "string"
+            },
+            "codes" :{
+              "type" : "object"
             }
           }
         }
