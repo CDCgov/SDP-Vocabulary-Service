@@ -2,6 +2,15 @@ class AddCodeAndDescriptionToResponseType < ActiveRecord::Migration[5.0]
   def change
     add_column :response_types, :code, :string
     add_column :response_types, :description, :text
+    # update the questions that may have one of these types by changing them to their HL7 equivs
+    rs = ResponseType.find_by(name: 'Response Set')
+    if rs
+      rs.name = 'Choice'
+      rs.save
+    end
+
+    rs = ResponseType.find_by(name: 'Free Text')
+    rs.name = 'text' if rs
 
     types = [{ code: 'decimal', name: 'Decimal',
                description: 'Answer is a floating point number.' },
