@@ -5,7 +5,6 @@ import Routes from '../routes';
 import _ from 'lodash';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
-import { Link } from 'react-router';
 
 class FormShow extends Component {
   render() {

@@ -25,8 +25,4 @@ describe('VersionInfo', () => {
     expect(component.find("li").length).to.equal(4);
   });
 
-  it('should show the currently selected version', () => {
-    expect(component.find("li:nth-child(3)")).to.contain('(Currently Selected)');
-  });
-
 });
