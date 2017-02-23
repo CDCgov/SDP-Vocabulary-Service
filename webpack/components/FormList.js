@@ -14,28 +14,17 @@ class FormList extends Component {
       let endIndex = startIndex+numberPerRow;
       rows.push(this.renderRow(values.slice(startIndex, endIndex)));
     }
-    return (
-
-      <div className='form-group col-md-12 nopadding'>
-        {_.values(this.props.forms).map((aForm) => {
-          return <FormWidget key={aForm.id} form={aForm} routes={this.props.routes} />;
-        })}
-
-
-    );
+    return (<div>{rows}</div>);
   }
 
-  rows(){
-    return <div>{rows}</div>
-  }
   renderRow(rowValues) {
     let items = _.values(rowValues).map( (aForm) => {
-        return <FormWidget key={aForm.id} form={aForm} routes={this.props.routes} />;
-      }
+      return <FormWidget key={aForm.id} form={aForm} routes={this.props.routes} />;
+    }
     );
 
     return (
-      <div className='row'>
+      <div className='form-group row'>
       {items}
       </div>
     );
