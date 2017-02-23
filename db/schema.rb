@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 20170217164345) do
     t.integer  "response_type_id"
     t.string   "oid"
     t.text     "description"
-    t.string   "status"
+    t.string   "status",                 default: "draft"
     t.boolean  "harmonized"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
