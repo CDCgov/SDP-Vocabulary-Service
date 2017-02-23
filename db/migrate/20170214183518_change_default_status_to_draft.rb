@@ -1,4 +1,4 @@
-class ChangeDefaultStatusToPublished < ActiveRecord::Migration[5.0]
+class ChangeDefaultStatusToDraft < ActiveRecord::Migration[5.0]
   def change
     change_column_default(:forms, :status, 'draft')
     change_column_default(:questions, :status, 'draft')
