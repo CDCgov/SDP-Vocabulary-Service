@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import moment from 'moment';
 import { Link } from 'react-router';
 
 export default class VersionInfo extends Component {
