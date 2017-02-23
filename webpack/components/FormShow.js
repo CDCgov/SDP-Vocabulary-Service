@@ -4,6 +4,8 @@ import QuestionList from './QuestionList';
 import Routes from '../routes';
 import _ from 'lodash';
 import VersionInfo from './VersionInfo';
+import { hashHistory } from 'react-router';
+import { Link } from 'react-router';
 
 class FormShow extends Component {
   render() {
@@ -15,13 +17,13 @@ class FormShow extends Component {
     }
     return (
       <div id={"form_id_"+form.id}>
-        <div className="showpage_header_container">
+        <div className="showpage_header_container no-print">
           <ul className="list-inline">
-            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true"></span></li>
+            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
             <li className="showpage_title">Form Details</li>
           </ul>
         </div> 
-        <div className="col-md-4 nopadding">
+        <div className="col-md-4 nopadding no-print">
           <div className="showpage_sidenav_subtitle">
             <ul className="list-inline">
               <li className="subtitle_icon"><span className="fa fa-history" aria-hidden="true"></span></li>
@@ -31,12 +33,10 @@ class FormShow extends Component {
           <VersionInfo versionable={form} versionableType='form' />
         </div>
         <div className="col-md-8 nopadding maincontent">
-          <div className="action_bar">
-            <div className="no-print">
-              <a className="btn btn-default" href={`/landing#/forms/${this.props.form.id}/revise`}>Revise</a>
-              <button className="btn btn-default" disabled>Print</button>
-              <a className="btn btn-default" href={Routes.formPath(form)} disabled>Export to Redcap</a>
-            </div>
+          <div className="action_bar no-print">
+            <a className="btn btn-default" href={`/landing#/forms/${this.props.form.id}/revise`}>Revise</a>
+            <button className="btn btn-default" onClick={() => window.print()}>Print</button>
+            <a className="btn btn-default" href={Routes.redcapFormPath(form)}>Export to Redcap</a>
           </div>
           <div className="maincontent">
             <h3 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h3>

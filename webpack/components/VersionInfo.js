@@ -10,12 +10,12 @@ export default class VersionInfo extends Component {
       return null;
     }
     return (
-      <div>
+      <div className="">
         <ul className="nav nav-pills nav-stacked">
           {versionable.allVersions && versionable.allVersions.map((v)=>{
             if(versionable.version == v.version){
               return (
-                <li key={v.id} role="presentation" className="active">Version {versionable.version} - Created {moment(v.createdAt,'').fromNow()} </li>
+                <li key={v.id} role="presentation" className="active"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {versionable.version} - Created {moment(v.createdAt,'').fromNow()} </Link></li>
               );
             }else{
               return (
