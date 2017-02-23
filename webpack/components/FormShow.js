@@ -48,10 +48,10 @@ class FormShow extends Component {
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
           {this.props.currentUser && this.props.currentUser.id &&
-            <a className="btn btn-default" href={`/landing#/forms/${form.id}/revise`}>Revise</a>
+              <a className="btn btn-default" href={`/landing#/forms/${form.id}/revise`}>Revise</a>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
-          <a className="btn btn-default" href={Routes.redcapFormPath(form)}>Export to Redcap</a>
+          {this.props.currentUser && this.props.currentUser.id && <a className="btn btn-default" href={Routes.redcapFormPath(form)}>Export to Redcap</a>}
         </div>
         <div className="maincontent-details">
           <h3 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h3>
