@@ -3,10 +3,10 @@
   margin-top: 20px;
   text-align: left;
   margin-bottom: 20px;
-  width: 180px;
 }
 .form {
-  @extend .panel; 
+  @extend .panel;
+  width: 180px;
   border-radius: 0px;
   border: 1px solid $light-gray;
 }	
