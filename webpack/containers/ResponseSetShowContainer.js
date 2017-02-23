@@ -5,6 +5,7 @@ import { fetchResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
+import CommentList from '../containers/CommentList';
 import _ from 'lodash';
 
 class ResponseSetShowContainer extends Component {
@@ -25,8 +26,14 @@ class ResponseSetShowContainer extends Component {
       );
     }
     return (
-      <div className="basic-bg">
-        <ResponseSetDetails responseSet={this.props.responseSet} questions={this.props.questions}/>
+      <div className="container">
+        <div className="row basic-bg">
+          <div className="col-md-12">
+            <ResponseSetDetails responseSet={this.props.responseSet} questions={this.props.questions}/>
+            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
+          </div>
+        </div>
       </div>
     );
   }

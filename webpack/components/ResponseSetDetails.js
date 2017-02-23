@@ -6,6 +6,7 @@ import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
+import QuestionList from './QuestionList';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -17,7 +18,7 @@ export default class ResponseSetDetails extends Component {
     }
 
     return (
-      <div id={"response_set_id_"+responseSet} className="panel">
+      <div id={"response_set_id_"+responseSet}>
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
@@ -26,71 +27,6 @@ export default class ResponseSetDetails extends Component {
         </div>
         {this.historyBar(responseSet)}
         {this.mainContent(responseSet)}
-        <p>
-          <strong>Name: </strong>
-          { responseSet.name }
-        </p>
-        <p>
-          <strong>Description:</strong><br/>
-          { responseSet.description }
-        </p>
-        <p>
-          <strong>Responses:</strong><br/>
-        </p>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Response Code</th>
-              <th>Code System</th>
-              <th>Display Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            { responseSet.responses && responseSet.responses.map((response) => {
-              return (
-                <tr key={"response_" + response.id}>
-                  <td>{ response.value }</td>
-                  <td>{ response.codeSystem }</td>
-                  <td>{ response.displayName }</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table><br/>
-        <p>
-          <strong>Questions:</strong><br/>
-        </p>
-        { this.props.questions && this.props.questions.map((q) => {
-          return (
-            <div key={"rs_question_" + q.id}>
-              <a href={Routes.questionPath(q.id)}>{q.content}</a><br/>
-            </div>
-          );
-        })}
-        <br/>
-        <p>
-          <strong>Oid: </strong>
-          { responseSet.oid }
-        </p>
-        <p>
-          <strong>Author: </strong>
-          { responseSet.createdBy && responseSet.createdBy.email }
-        </p>
-        { responseSet.parent &&
-          <p>
-            <strong>Extended from: </strong>
-            <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
-          </p>
-        }
-        <p>
-          <strong>Created: </strong>
-          { moment(responseSet.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
-        </p>
-        <p>
-          <strong>Updated: </strong>
-          { responseSet.updated_by && responseSet.updated_by.email }
-          { moment(responseSet.updatedAt,'').format('MMMM Do YYYY, h:mm:ss a') }
-        </p>
       </div>
     );
   }
@@ -105,6 +41,83 @@ export default class ResponseSetDetails extends Component {
           </ul>
         </div>
         <VersionInfo versionable={responseSet} versionableType='ResponseSet' />
+      </div>
+    );
+  }
+
+  mainContent(responseSet) {
+    return (
+      <div className="col-md-9 nopadding maincontent">
+        <div className="action_bar no-print">
+          <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/revise`}>Revise</a>
+          <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/extend`}>Extend</a>
+        </div>
+        <div className="maincontent-details">
+          <h3 className="maincontent-item-name"><strong>Name:</strong> {responseSet.name} </h3>
+          <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy.email} </p>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Details</h3>
+            </div>
+            <div className="box-content">
+              <strong>Description: </strong>
+              {responseSet.description}
+            </div>
+            <div className="box-content">
+              <strong>Created: </strong>
+              { moment(responseSet.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
+            </div>
+            { responseSet.parent &&
+              <div className="box-content">
+                <p>
+                  <strong>Extended from: </strong>
+                  <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
+                </p>
+              </div>
+            }
+            <div className="box-content">
+              <strong>OID: </strong>
+              {responseSet.oid}
+            </div>
+          </div>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Responses</h3>
+            </div>
+            <div className="box-content">
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Response Code</th>
+                    <th>Code System</th>
+                    <th>Display Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { responseSet.responses && responseSet.responses.map((response) => {
+                    return (
+                      <tr key={"response_" + response.id}>
+                        <td>{ response.value }</td>
+                        <td>{ response.codeSystem }</td>
+                        <td>{ response.displayName }</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {this.props.questions.length > 0 && 
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">Linked Questions</h3>
+              </div>
+              <div className="box-content">
+                <QuestionList questions={_.keyBy(this.props.questions, 'id')} routes={Routes} />
+              </div>
+            </div>
+          }
+        </div>
       </div>
     );
   }
