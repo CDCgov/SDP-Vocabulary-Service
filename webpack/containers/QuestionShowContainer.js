@@ -21,25 +21,22 @@ class QuestionShowContainer extends Component {
     }
   }
 
-  reviseQuestionButton(){
-    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
-      return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/revise`}>Revise</a> );
-    }
-  }
-
   render() {
     if(!this.props.question){
       return null;
     }
     return (
-      <div className="basic-bg">
-        <QuestionDetails question={this.props.question} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
-        <h4>Concepts</h4>
-        <div id="concepts-table">
-          <CodedSetTable items={this.props.question.concepts} itemName={'Concept'} />
+      <div className="container">
+        <div className="row basic-bg">
+          <div className="col-md-12">
+            <QuestionDetails question={this.props.question} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
+            <div id="concepts-table">
+              <CodedSetTable items={this.props.question.concepts} itemName={'Concept'} />
+            </div>
+            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <CommentList commentableType='Question' commentableId={this.props.question.id} />
+          </div>
         </div>
-        {this.reviseQuestionButton()}
-        <CommentList commentableType='Question' commentableId={this.props.question.id} />
       </div>
     );
   }

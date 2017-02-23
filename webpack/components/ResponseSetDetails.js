@@ -20,7 +20,7 @@ export default class ResponseSetDetails extends Component {
     }
 
     return (
-      <div id={"response_set_id_"+responseSet}>
+      <div id={"response_set_id_"+responseSet.id}>
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
