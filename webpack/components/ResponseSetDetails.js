@@ -107,7 +107,7 @@ export default class ResponseSetDetails extends Component {
               </table>
             </div>
           </div>
-          {this.props.questions.length > 0 &&
+          {this.props.questions && this.props.questions.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">Linked Questions</h3>
