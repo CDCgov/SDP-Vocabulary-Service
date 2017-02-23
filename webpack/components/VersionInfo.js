@@ -11,27 +11,19 @@ export default class VersionInfo extends Component {
     }
     return (
       <div>
-        <p>
-          <strong>Most Recent Version: </strong>
-          {versionable.mostRecent} {versionable.version === versionable.mostRecent ? '(Currently Selected)' : ''}
-        </p>
-        <p>
-          <strong>Versions:</strong>
-        </p>
-        <ol>
+        <ul className="nav nav-pills nav-stacked">
           {versionable.allVersions && versionable.allVersions.map((v)=>{
             if(versionable.version == v.version){
               return (
-                <li key={v.id}>Version: {versionable.version} - Created {moment(v.createdAt,'').fromNow()} (Currently Selected)
-                </li>
+                <li key={v.id} role="presentation" className="active">Version {versionable.version} - Created {moment(v.createdAt,'').fromNow()} </li>
               );
             }else{
               return (
-                <li key={v.id}><Link to={`/${this.props.versionableType}s/${v.id}`}>Version: {v.version}</Link> - Created {moment(v.createdAt,'').fromNow()}</li>
+                <li key={v.id} role="presentation"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {v.version} - Created {moment(v.createdAt,'').fromNow()}</Link></li>
               );
             }
           })}
-        </ol>
+        </ul>
       </div>
     );
   }

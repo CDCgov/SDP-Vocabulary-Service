@@ -23,9 +23,11 @@ class FormShowContainer extends Component {
       );
     }
     return (
-      <div className="row basic-bg">
-        <div className="col-md-12">
-          <FormShow form={this.props.form} />
+      <div className="container">
+        <div className="row basic-bg">
+          <div className="col-md-12">
+            <FormShow form={this.props.form} />
+          </div>
         </div>
       </div>
     );

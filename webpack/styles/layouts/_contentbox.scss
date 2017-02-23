@@ -1,0 +1,15 @@
+.basic-c-box {
+  @extend .panel;
+  border-left: none;
+  border-right: none;
+  border-radius: 0px;
+  padding-bottom: 12px;
+  background-color: $very-light-gray;
+}
+
+.box-content {
+  @extend .panel-body;
+  border-bottom: 1px solid $light-gray;
+  margin-left: 8px;
+  margin-right: 8px;
+}

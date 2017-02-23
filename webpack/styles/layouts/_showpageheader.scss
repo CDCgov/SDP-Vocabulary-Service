@@ -1,0 +1,48 @@
+.showpage_header_container {
+  border-bottom: 1px solid $light-gray;
+  height: 58px;
+  padding-top: 8px;   
+}
+
+.showpage_title {
+  font-size: 24px;
+  color: $cdc-blue;
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.showpage_button {
+  border-right: 1px solid $light-gray;
+  width: 48px;
+  text-align: center;
+}
+
+.showpage_sidenav_subtitle {
+  font-size: 18px;
+  color: $dark-gray;
+  height: 42px;
+  padding-top: 6px;
+  padding-left: 8px;
+  border-right: 1px solid $light-gray;
+  border-bottom: 1px solid $light-gray;
+}
+
+.action_bar {
+  text-align: right;
+  border-bottom: 1px solid $light-gray;
+  height: 42px;
+  padding-top: 4px; 
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.subtitle {
+  color: gray;
+  span {
+    margin-left: 10px;
+    margin-right: 6px;
+  }
+}

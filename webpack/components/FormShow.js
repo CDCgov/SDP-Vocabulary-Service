@@ -3,6 +3,7 @@ import {formProps} from '../prop-types/form_props';
 import QuestionList from './QuestionList';
 import Routes from '../routes';
 import _ from 'lodash';
+import VersionInfo from './VersionInfo';
 
 class FormShow extends Component {
   render() {
@@ -14,14 +15,42 @@ class FormShow extends Component {
     }
     return (
       <div id={"form_id_"+form.id}>
-        <p><strong>Name:</strong> {form.name} </p>
-        <p><strong>Description:</strong> {form.description} </p>
-        <p><strong>Created By:</strong>  {form.userId} </p>
-        <QuestionList questions={_.keyBy(form.questions, 'id')} routes={Routes} />
-        <div className="no-print">
-          <a className="btn btn-default" href={`/landing#/forms/${this.props.form.id}/revise`}>Revise</a>
-          <button className="btn btn-default">Print</button>
-          <a className="btn btn-default" href={Routes.formPath(form)}>Export to Redcap</a>
+        <div className="showpage_header_container">
+          <ul className="list-inline">
+            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true"></span></li>
+            <li className="showpage_title">Form Details</li>
+          </ul>
+        </div> 
+        <div className="col-md-4 nopadding">
+          <div className="showpage_sidenav_subtitle">
+            <ul className="list-inline">
+              <li className="subtitle_icon"><span className="fa fa-history" aria-hidden="true"></span></li>
+              <li className="subtitle">History</li>
+            </ul>
+          </div>
+          <VersionInfo versionable={form} versionableType='form' />
+        </div>
+        <div className="col-md-8 nopadding maincontent">
+          <div className="action_bar">
+            <div className="no-print">
+              <a className="btn btn-default" href={`/landing#/forms/${this.props.form.id}/revise`}>Revise</a>
+              <button className="btn btn-default" disabled>Print</button>
+              <a className="btn btn-default" href={Routes.formPath(form)} disabled>Export to Redcap</a>
+            </div>
+          </div>
+          <div className="maincontent">
+            <h3 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h3>
+            <p className="maincontent-item-info">Version: {form.version} - Author: {form.userId} </p>
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">Description</h3>
+              </div>
+              <div className="box-content">
+                {form.description}
+              </div>
+            </div>
+            <QuestionList questions={_.keyBy(form.questions, 'id')} routes={Routes} />
+          </div>
         </div>
       </div>
     );
