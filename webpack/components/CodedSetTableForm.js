@@ -39,12 +39,17 @@ export default class CodedSetTableForm extends Component {
     let idPrefix  = `${this.state.parentName}_${this.state.childName}s_attributes`;
     let attrsName = `${this.state.parentName}[${this.state.childName}s_attributes]`;
     return (
-      <table className="table table-striped">
+      <table className="set-table ">
         <thead>
           <tr>
             <th>{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
             <th>Code System</th>
             <th>Display Name</th>
+            <th > <a  title="Add Row" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.addItemRow();
+            }}><i className="fa fa-plus fa-2x"></i></a>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -53,33 +58,25 @@ export default class CodedSetTableForm extends Component {
               <tr key={i}>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_value`}>Value</label>
-                  <input type="text" value={r.value}    name={`${attrsName}[${i}][value]`} id={`${idPrefix}_${i}_value`} onChange={this.handleChange(i, 'value')}/>
+                  <input className="input-format"  type="text" value={r.value}    name={`${attrsName}[${i}][value]`} id={`${idPrefix}_${i}_value`} onChange={this.handleChange(i, 'value')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_code_system`}>Code system</label>
-                  <input type="text" value={r.codeSystem}  name={`${attrsName}[${i}][code_system]`} id={`${idPrefix}_${i}_code_system`} onChange={this.handleChange(i, 'codeSystem')}/>
+                  <input className="input-format"  type="text" value={r.codeSystem}  name={`${attrsName}[${i}][code_system]`} id={`${idPrefix}_${i}_code_system`} onChange={this.handleChange(i, 'codeSystem')}/>
                 </td>
                 <td>
                   <label className="hidden" htmlFor={`${idPrefix}_${i}_display_name`}>Display name</label>
-                  <input type="text" value={r.displayName} name={`${attrsName}[${i}][display_name]`} id={`${idPrefix}_${i}_display_name`} onChange={this.handleChange(i, 'displayName')}/>
+                  <input className="input-format" type="text" value={r.displayName} name={`${attrsName}[${i}][display_name]`} id={`${idPrefix}_${i}_display_name`} onChange={this.handleChange(i, 'displayName')}/>
                 </td>
                 <td>
-                  <a href="#" onClick={(e) => {
+                  <a href="#" title="Remove" onClick={(e) => {
                     e.preventDefault();
                     this.removeItemRow(i);
-                  }}>Remove</a>
+                  }}><i className="fa fa-2x fa-trash"></i></a>
                 </td>
               </tr>
             );
           })}
-          <tr>
-            <td>
-              <a href="#" onClick={(e) => {
-                e.preventDefault();
-                this.addItemRow();
-              }}>Add Row</a>
-            </td>
-          </tr>
         </tbody>
       </table>
     );

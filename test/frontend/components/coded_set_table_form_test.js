@@ -19,7 +19,7 @@ describe('CodedSetTableForm', () => {
   });
 
   it('should create the table', () => {
-    expect(component.find("tr").length).to.equal(5);
+    expect(component.find("tr").length).to.equal(4);
   });
 
   it('should update the state when a value is changed', () => {
@@ -29,13 +29,13 @@ describe('CodedSetTableForm', () => {
   });
 
   it('should add a row', () => {
-    TestUtils.Simulate.click(component.find("a")[3]); // add button
-    expect(component.find("tr").length).to.equal(6);
+    TestUtils.Simulate.click(component.find("a")[0]); // add button
+    expect(component.find("tr").length).to.equal(5);
   });
 
   it('should remove a row', () => {
-    TestUtils.Simulate.click(component.find("a")[0]); // Remove first row
-    expect(component.find("tr").length).to.equal(4);
+    TestUtils.Simulate.click(component.find("a")[1]); // Remove first row
+    expect(component.find("tr").length).to.equal(3);
     expect(component.find("input[value=Code1]").length).to.equal(0);
     expect(component.find("input[value=Code2]").length).to.equal(1);
   });
