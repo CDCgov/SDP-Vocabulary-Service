@@ -35,8 +35,8 @@ gem 'elasticsearch'
 gem 'config'
 
 group :development, :test do
-  gem 'fakeweb', '~> 1.3'
   gem 'rubocop', '~> 0.44.1', require: false
+  gem 'fakeweb', '~> 1.3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'cucumber-rails', require: false
