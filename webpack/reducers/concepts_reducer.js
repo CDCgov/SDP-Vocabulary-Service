@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
   FETCH_CONCEPTS_FULFILLED
 } from '../actions/types';
@@ -6,7 +5,7 @@ import {
 export default function concepts(state = {}, action) {
   switch (action.type) {
     case FETCH_CONCEPTS_FULFILLED:
-      var newState = {}
+      var newState = {};
       newState[action.payload.config.params.system] = action.payload.data.expansion.contains;
       return newState;
     default:

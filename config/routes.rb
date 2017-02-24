@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get '/landing' => 'landing#index'
   get '/landing/stats' => 'landing#stats'
+  get 'concept_service/systems' => 'concept_service#systems'
+  get 'concept_service/search'  => 'concept_service#search'
 
   root to: 'landing#index'
 

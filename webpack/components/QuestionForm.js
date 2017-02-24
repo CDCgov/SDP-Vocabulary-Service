@@ -83,10 +83,10 @@ class QuestionForm extends Component{
     this.unsavedState = false;
   }
 
-  // componentDidMount() {
-  //   this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
-  //   window.onbeforeunload = this.windowWillUnload.bind(this);
-  // }
+  componentDidMount() {
+    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+    window.onbeforeunload = this.windowWillUnload.bind(this);
+  }
 
   componentWillUnmount() {
     this.unsavedState = false;
@@ -94,7 +94,6 @@ class QuestionForm extends Component{
   }
 
   routerWillLeave(nextLocation) {
-    console.log('uleaaavveeee')
     this.setState({ showModal: this.unsavedState });
     this.nextLocation = nextLocation;
     return !this.unsavedState;
@@ -116,7 +115,6 @@ class QuestionForm extends Component{
   }
 
   windowWillUnload() {
-    console.log('unlooooad')
     return (this.unsavedState || null);
   }
 
@@ -138,7 +136,7 @@ class QuestionForm extends Component{
       version: 1,
       harmonized: false,
       responseTypeId: null,
-      conceptsAttributes: [],
+      conceptsAttributes: [{displayName: '', value: '', codeSystem: ''}],
       linkedResponseSets: [],
       showModal: false
     };
@@ -221,7 +219,7 @@ class QuestionForm extends Component{
                   <div className="col-md-12 ">
                       <label className="input-label" htmlFor="concept_id">Concepts</label>
                       <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
-                               initialItems={question.concepts}
+                               initialItems={this.state.conceptsAttributes}
                                parentName={'question'}
                                childName={'concept'} />
                   </div>
@@ -293,7 +291,9 @@ class QuestionForm extends Component{
 
 function filterConcepts(concepts) {
   return concepts.map((nc) => {
-    return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
+    if(nc.value!=='' ||  nc.codeSystem !== '', nc.displayName !==''){
+      return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
+    }
   });
 }
 

@@ -450,12 +450,12 @@ Based on Rails routes of Vocabulary::Application
 // comments => /comments(.:format)
   // function(options)
   comments_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"comments",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
-// concept => /concepts/:id(.:format)
-  // function(id, options)
-  concept_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"concepts",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
-// concepts => /concepts(.:format)
+// concept_service_search => /concept_service/search(.:format)
   // function(options)
-  concepts_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"concepts",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
+  concept_service_search_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"concept_service",false],[2,[7,"/",false],[2,[6,"search",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// concept_service_systems => /concept_service/systems(.:format)
+  // function(options)
+  concept_service_systems_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"concept_service",false],[2,[7,"/",false],[2,[6,"systems",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
 // destroy_user_session => /users/sign_out(.:format)
   // function(options)
   destroy_user_session_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"sign_out",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
@@ -465,9 +465,6 @@ Based on Rails routes of Vocabulary::Application
 // edit_comment => /comments/:id/edit(.:format)
   // function(id, options)
   edit_comment_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
-// edit_concept => /concepts/:id/edit(.:format)
-  // function(id, options)
-  edit_concept_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"concepts",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // edit_form_question => /form_questions/:id/edit(.:format)
   // function(id, options)
   edit_form_question_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"form_questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
@@ -519,9 +516,6 @@ Based on Rails routes of Vocabulary::Application
 // new_comment => /comments/new(.:format)
   // function(options)
   new_comment_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
-// new_concept => /concepts/new(.:format)
-  // function(options)
-  new_concept_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"concepts",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
 // new_form => /forms/new(.:format)
   // function(options)
   new_form_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),

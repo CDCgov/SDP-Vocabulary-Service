@@ -2,7 +2,7 @@ import _$ from 'jquery';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import { expect } from '../test_helper';
+import {expect, renderComponent} from '../test_helper';
 import CodedSetTableEditContainer from '../../../webpack/containers/CodedSetTableEditContainer';
 
 const $ = _$(window);
@@ -11,32 +11,16 @@ describe('CodedSetTableEditContainer', () => {
   let component, componentInstance;
 
   beforeEach(() => {
-    const concepts = [{value: "Code1", displayName: "Display Name 1", codeSystem:"Test system 1"},
-                      {value: "Code2", displayName: "Display Name 2", codeSystem:"Test system 2"},
-                      {value: "Code3", displayName: "Display Name 3", codeSystem:"Test system 3"}];
-    componentInstance =  TestUtils.renderIntoDocument(<CodedSetTableEditContainer initialItems={concepts} parentName={'question'} childName={'concept'}/>);
-    component = $(ReactDOM.findDOMNode(componentInstance));
+    const props = {initialItems: [{value: "Code1", displayName: "Display Name 1", codeSystem:"Test system 1"},
+                    {value: "Code2", displayName: "Display Name 2", codeSystem:"Test system 2"},
+                    {value: "Code3", displayName: "Display Name 3", codeSystem:"Test system 3"}],
+                    parentName:'question',
+                    childName:'concept'
+    }
+    component = renderComponent(CodedSetTableEditContainer, props);
   });
 
   it('should create the table', () => {
     expect(component.find("tr").length).to.equal(4);
-  });
-
-  it('should update the state when a value is changed', () => {
-    const input = component.find("input[value=Code1]")[0];
-    TestUtils.Simulate.change(input, {target: {value: 'different'}});
-    expect(componentInstance.state.items[0].value).to.equal('different');
-  });
-
-  it('should add a row', () => {
-    TestUtils.Simulate.click(component.find("a")[0]); // add button
-    expect(component.find("tr").length).to.equal(5);
-  });
-
-  it('should remove a row', () => {
-    TestUtils.Simulate.click(component.find("a")[1]); // Remove first row
-    expect(component.find("tr").length).to.equal(3);
-    expect(component.find("input[value=Code1]").length).to.equal(0);
-    expect(component.find("input[value=Code2]").length).to.equal(1);
   });
 });
