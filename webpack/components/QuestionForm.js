@@ -291,7 +291,7 @@ class QuestionForm extends Component{
 
 function filterConcepts(concepts) {
   return concepts.map((nc) => {
-    if(nc.value!=='' ||  nc.codeSystem !== '', nc.displayName !==''){
+    if(nc.value!=='' ||  nc.codeSystem !== '' || nc.displayName !==''){
       return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
     }
   });

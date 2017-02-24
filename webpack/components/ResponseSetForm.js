@@ -195,7 +195,7 @@ export default class ResponseSetForm extends Component {
 
 function filterResponses(responses) {
   return responses.map((nr) => {
-    if(nr.value!=='' ||  nr.codeSystem !== '', nr.displayName !==''){
+    if(nr.value!=='' ||  nr.codeSystem !== ''|| nr.displayName !==''){
       return {value: nr.value, codeSystem: nr.codeSystem, displayName: nr.displayName};
     }
   });
