@@ -68,9 +68,14 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     # TODO: deprecation
   end
 
-  test 'should destroy question' do
+  test 'should destroy  a draft question' do
+    post questions_url, params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
     assert_equal Question.last.status, 'draft'
-    delete question_url(Question.last)
+    last_id = Question.last.id
+    assert_difference('Question.count', -1) do
+      delete question_url(Question.last)
+    end
     assert_response :success
+    assert_not_equal last_id, Question.last
   end
 end
