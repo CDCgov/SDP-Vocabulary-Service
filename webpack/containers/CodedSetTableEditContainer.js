@@ -160,7 +160,7 @@ class CodedSetTableEditContainer extends Component {
       {this.conceptModal()}
         <thead>
           <tr>
-            <th><a  title="Add Row" href="#" onClick={(e)=>{
+            <th><a  title="Search Codes" href="#" onClick={(e)=>{
               e.preventDefault();
               this.showCodeSearch();
             }}><i className="fa fa-search fa-2x"></i></a></th>
@@ -175,7 +175,9 @@ class CodedSetTableEditContainer extends Component {
           </tr>
         </thead>
         <tbody>
+
           {this.state.items.map((r, i) => {
+
             return (
               <tr key={i}>
               <td>
