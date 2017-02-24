@@ -95,8 +95,13 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
-    @question.destroy
-    render json: @question
+    if @question.status == 'draft'
+      @question.concepts.destroy_all
+      @question.destroy
+      render json: @question
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
   end
 
   private

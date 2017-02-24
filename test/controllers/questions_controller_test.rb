@@ -57,14 +57,20 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'published', Question.last.status
   end
 
+  test 'should fail to destroy a published question' do
+    post questions_url, params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
+    assert_equal 'draft', Question.last.status
+    put publish_question_path(Question.last, format: :json)
+    assert_equal 'published', Question.last.status
+    assert_response :success
+    delete question_url(Question.last)
+    assert_response 422
+    # TODO: deprecation
+  end
+
   test 'should destroy question' do
-    # TODO
-    assert false
-    # assert_enqueued_jobs 0
-    # assert_difference('Question.count', -1) do
-    # delete question_url(@question)
-    # end
-    # assert_enqueued_jobs 1
-    # assert_response :success
+    assert_equal Question.last.status, 'draft'
+    delete question_url(Question.last)
+    assert_response :success
   end
 end
