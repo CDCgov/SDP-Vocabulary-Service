@@ -10,7 +10,7 @@ describe('QuestionForm', () => {
   beforeEach(() => {
     router = new MockRouter();
     props  = {
-      question: {id: 1, content: "Is this a question?", questionType: "", responseSets: [1], concepts: [{code:"Code 1",display:" Display Name 1",system:"Test system 1"}]},
+      question: {id: 1, content: "Is this a question?", questionType: "", responseSets: [1], concepts: [{code:"Code 1", display:" Display Name 1", system:"Test system 1"}]},
       router: router,
       routes: routes,
       questionSubmitter: ()=>{},

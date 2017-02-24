@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Draggable, Droppable } from './Draggable';
 import Errors from './Errors';
 import ResponseSetWidget from './ResponseSetWidget';
-import CodedSetTableForm from './CodedSetTableForm';
+import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import allRoutes from '../prop-types/route_props';
@@ -136,7 +136,7 @@ class QuestionForm extends Component{
       version: 1,
       harmonized: false,
       responseTypeId: null,
-      conceptsAttributes: [],
+      conceptsAttributes: [{displayName: '', value: '', codeSystem: ''}],
       linkedResponseSets: [],
       showModal: false
     };
@@ -218,8 +218,8 @@ class QuestionForm extends Component{
               <div className="row ">
                   <div className="col-md-12 ">
                       <label className="input-label" htmlFor="concept_id">Concepts</label>
-                      <CodedSetTableForm itemWatcher={(r) => this.handleConceptsChange(r)}
-                               initialItems={question.concepts}
+                      <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
+                               initialItems={this.state.conceptsAttributes}
                                parentName={'question'}
                                childName={'concept'} />
                   </div>
@@ -291,7 +291,9 @@ class QuestionForm extends Component{
 
 function filterConcepts(concepts) {
   return concepts.map((nc) => {
-    return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
+    if(nc.value!=='' ||  nc.codeSystem !== '', nc.displayName !==''){
+      return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
+    }
   });
 }
 

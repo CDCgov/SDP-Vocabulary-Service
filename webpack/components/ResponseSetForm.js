@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import CodedSetTableForm from './CodedSetTableForm';
+import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import Errors from './Errors';
 import { responseSetProps } from '../prop-types/response_set_props';
 import ModalDialog from './ModalDialog';
@@ -147,7 +147,7 @@ export default class ResponseSetForm extends Component {
                     <label className="input-label" >Responses</label>
                     </div>
                   </div>
-                <CodedSetTableForm itemWatcher={(r) => this.handleResponsesChange(r)}
+                <CodedSetTableEditContainer itemWatcher={(r) => this.handleResponsesChange(r)}
                                    initialItems={this.state.responsesAttributes}
                                    parentName={'response_set'}
                                    childName={'response'} />
@@ -195,7 +195,9 @@ export default class ResponseSetForm extends Component {
 
 function filterResponses(responses) {
   return responses.map((nr) => {
-    return {value: nr.value, codeSystem: nr.codeSystem, displayName: nr.displayName};
+    if(nr.value!=='' ||  nr.codeSystem !== '', nr.displayName !==''){
+      return {value: nr.value, codeSystem: nr.codeSystem, displayName: nr.displayName};
+    }
   });
 }
 

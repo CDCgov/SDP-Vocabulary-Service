@@ -453,6 +453,12 @@ Based on Rails routes of Vocabulary::Application
 // concept => /concepts/:id(.:format)
   // function(id, options)
   concept_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"concepts",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// concept_service_search => /concept_service/search(.:format)
+  // function(options)
+  concept_service_search_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"concept_service",false],[2,[7,"/",false],[2,[6,"search",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// concept_service_systems => /concept_service/systems(.:format)
+  // function(options)
+  concept_service_systems_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"concept_service",false],[2,[7,"/",false],[2,[6,"systems",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
 // concepts => /concepts(.:format)
   // function(options)
   concepts_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"concepts",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),

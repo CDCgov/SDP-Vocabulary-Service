@@ -33,6 +33,7 @@ gem 'acts_as_commentable'
 gem 'omniauth_openid_connect'
 gem 'elasticsearch'
 gem 'config'
+gem 'httparty'
 
 group :development, :test do
   gem 'rubocop', '~> 0.44.1', require: false
