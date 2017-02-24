@@ -81,14 +81,17 @@ Feature: Manage Forms
     And I click on the "New Form" link
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
+    And I fill in the "search" field with "What"
+    And I click on the button to add the Question "What is your gender?"
     When I go to the list of Forms
     And I click on the "Save & Leave" button
     Then I should see "Test Form"
-    And I fill in the "search" field with "What"
-    And I should see "What is your gender?"
-    Then I should see "Name: Test Form"
-    Then I should see "Description: Form description"
-    And I should see "What is your gender?"
+    And I fill in the "search" field with "Test"
+    And I click on the "Go!" button
+    Then I should see "Test Form"
+    And I fill in the "search" field with "Missing"
+    And I click on the "Go!" button
+    Then I should not see "Test Form"
 
   Scenario: Abandon New Form from List with warning modal
     Given I have a Response Set with the name "Gender Full"
