@@ -60,12 +60,22 @@ export default class QuestionDetails extends Component {
     }
   }
 
+  reviseQuestionButton(){
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
+      if(this.props.question.status && this.props.question.status == 'draft'){
+        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/edit`}>Edit</a> );
+      } else {
+        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/revise`}>Revise</a> );
+      }
+    }
+  }
+
   mainContent(question, responseSets) {
     return (
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
           <div className="action_bar no-print">
-            <a className="btn btn-default" href={`/landing#/questions/${question.id}/revise`}>Revise</a>
+            {this.reviseQuestionButton()}
           </div>
         }
         <div className="maincontent-details">

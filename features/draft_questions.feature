@@ -23,18 +23,18 @@ Feature: Draft, Publish, and Revise Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    Then I should see "Content: What is your gender?"
+    Then I should see "What is your gender?"
     And I should see "Description: This is a question"
     And I should see "Edit"
     When I click on the "Edit" button
     And I fill in the "Description" field with "This is NOT a good description"
     And I click on the "Edit" button
-    Then I should see "Content: What is your gender?"
+    Then I should see "What is your gender?"
     And I should see "Description: This is NOT a good description"
-    And I should see "Version: 1 - Created a few seconds ago (Currently Selected)"
+    And I should see "Version: 1"
+    And I should not see "Version: 2"
     And I should see "Edit"
     And I should see "Publish"
-    And I should not see "Revise"
 
   Scenario: Publish a Question via Show
     Given I have a Question with the content "What is your gender?" and the type "MC"
@@ -62,18 +62,15 @@ Feature: Draft, Publish, and Revise Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    Then I should see "Edit"
-    And I should not see "Revise"
-    When I click on the "Edit" button
+    And I click on the "Edit" button
     And I click on the "Publish" button
     Then I should see "What is your gender?"
     And I should see "Revise"
     When I click on the "Revise" button
     And I fill in the "Description" field with "This is a description"
     And I click on the "Revise" button
-    Then I should see "Content: What is your gender?"
+    Then I should see "What is your gender?"
     And I should see "Description: This is a description"
-    And I should see "Version: 2 - Created a few seconds ago (Currently Selected)"
+    And I should see "Version: 2"
     And I should see "Edit"
     And I should see "Publish"
-    And I should not see "Revise"

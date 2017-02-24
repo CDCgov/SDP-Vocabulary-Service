@@ -20,16 +20,6 @@ class QuestionShowContainer extends Component {
     }
   }
 
-  reviseQuestionButton(){
-    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
-      if(this.props.question.status == 'draft'){
-        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/edit`}>Edit</a> );
-      } else {
-        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/revise`}>Revise</a> );
-      }
-    }
-  }
-
   publishQuestionButton(){
     if(this.props.currentUser && this.props.currentUser.id && this.props.question ){
       let q = this.props.question;
@@ -57,12 +47,10 @@ class QuestionShowContainer extends Component {
           <div className="col-md-12">
             <QuestionDetails question={this.props.question} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
             <div className="col-md-12 showpage-comments-title">Comments:</div>
+            {this.publishQuestionButton()}
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>
         </div>
-        {this.reviseQuestionButton()}
-        {this.publishQuestionButton()}
-        <CommentList commentableType='Question' commentableId={this.props.question.id} />
       </div>
     );
   }
