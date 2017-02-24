@@ -15,7 +15,6 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
     <div id="added-questions" aria-label="Added">
     <div className="question-group">
       <div className="row">
-        <div className="col-md-1"><b>ID</b></div>
           <div>
             <div className="col-md-5"><b>Content</b></div>
             <div className="col-md-6"><b>Response Sets</b></div>

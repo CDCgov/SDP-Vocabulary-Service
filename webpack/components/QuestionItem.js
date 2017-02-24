@@ -7,7 +7,6 @@ const QuestionItem = ({question, responseSets, index, handleResponseSetChange=()
   }
   return (
     <div className='question-item'>
-      <div className="col-md-1" >{question.id}</div>
       <div>
         <div className="col-md-5" id={`question_id_${question.id}`} >{question.content}</div>
         <div className="col-md-3" >
