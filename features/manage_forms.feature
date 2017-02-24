@@ -30,9 +30,10 @@ Feature: Manage Forms
     And I click on the option to Revise the Form with the name "Test Form"
     And I fill in the "name" field with "Gender Form"
     And I fill in the "description" field with "Revised Description"
+    And I fill in the "search" field with "What"
     And I click on the button to add the Question "What is your gender?"
-    Then I select the "Gender Partial" option in the "response_set_ids" list
-    And I click on the "new Form" button
+    Then I select the "Gender Partial" option in the "responseSet" list
+    And I click on the "Save" button
     Then I should see "Name: Gender Form"
     Then I should see "Revised Description"
     And I should see "What is your gender?"
@@ -47,11 +48,12 @@ Feature: Manage Forms
     When I go to the list of Forms
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Revise the Form with the name "Test Form"
+    And I fill in the "search" field with "What"
     And I click on the button to add the Question "What is your gender?"
     And I click on the button to add the Question "What is your name?"
     And I move the Question "What is your name?" up
     And I move the Question "What is your name?" down
-    And I click on the "new Form" button
+    And I click on the "Save" button
     And I should see "What is your gender?"
     And I should see "Gender Partial"
 
@@ -64,9 +66,10 @@ Feature: Manage Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
+    And I fill in the "search" field with "What"
     And I click on the button to add the Question "What is your gender?"
-    Then I select the "Gender Full" option in the "response_set_ids" list
-    And I click on the "new Form" button
+    Then I select the "Gender Full" option in the "responseSet" list
+    And I click on the "Save" button
     Then I should see "Test Form"
     And I should see "What is your gender?"
 
@@ -81,6 +84,7 @@ Feature: Manage Forms
     When I go to the list of Forms
     And I click on the "Save & Leave" button
     Then I should see "Test Form"
+    And I fill in the "search" field with "What"
     And I should see "What is your gender?"
     Then I should see "Name: Test Form"
     Then I should see "Description: Form description"
@@ -106,9 +110,10 @@ Feature: Manage Forms
     And I click on the "New Form" link
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234"
+    And I fill in the "search" field with "What"
     And I click on the button to add the Question "What is your gender?"
-    Then I select the "Gender Full" option in the "response_set_ids" list
-    And I click on the "new Form" button
+    Then I select the "Gender Full" option in the "responseSet" list
+    And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"
     And I should see "Control number: must be a valid OMB Control Number"
 
@@ -130,9 +135,10 @@ Feature: Manage Forms
     When I go to the list of Forms
     And I click on the "New Form" link
     And I fill in the "name" field with "Test Form"
+    And I fill in the "search" field with "What"
     And I click on the button to add the Question "What is your gender?"
-    And I select the "Gender Partial" option in the "response_set_ids" list
-    And I click on the "new Form" button
+    And I select the "Gender Partial" option in the "responseSet" list
+    And I click on the "Save" button
 
 
   Scenario: Export Form to Redcap
@@ -143,8 +149,8 @@ Feature: Manage Forms
     When I go to the list of Forms
     And I click on the "New Form" link
     And I fill in the "name" field with "Test Form"
+    And I fill in the "search" field with "What"
     And I click on the button to add the Question "What is your gender?"
-    And I select the "Gender Partial" option in the "response_set_ids" list
-    And I click on the "new Form" button
-    And I click on the "Export to Redcap" link
-    Then I should get a download with the filename "test form_redcap.xml"
+    And I select the "Gender Partial" option in the "responseSet" list
+    And I click on the "Save" button
+    Then I should see the link "Export to Redcap" 

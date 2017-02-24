@@ -31,3 +31,7 @@ When(/^I move the Question "([^"]*)" (up|down)$/) do |question_content, directio
   assert(old_index != new_index)
   assert(old_index + offset == new_index)
 end
+
+Then(/^I should see the link "([^"]*)"$/) do |link|
+  page.find(link)
+end

@@ -3,6 +3,7 @@ import {formProps} from '../prop-types/form_props';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import QuestionItem from './QuestionItem';
+import Errors from './Errors';
 import _ from 'lodash';
 import ModalDialog from './ModalDialog';
 
@@ -14,7 +15,6 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
     <div id="added-questions" aria-label="Added">
     <div className="question-group">
       <div className="row">
-        <div className="col-md-1"><b>ID</b></div>
           <div>
             <div className="col-md-5"><b>Content</b></div>
             <div className="col-md-6"><b>Response Sets</b></div>
@@ -32,15 +32,15 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
           <div className="col-md-3">
             <div className="btn btn-small btn-default move-up"
                  onClick={() => reorderQuestion(form, i, 1)}>
-              <b>Move Up</b>
+              <i title="Move Up" className="fa fa fa-arrow-up"></i>
             </div>
             <div className="btn btn-small btn-default move-down"
                  onClick={() => reorderQuestion(form, i, -1)}>
-              <b>Move Down</b>
+              <i className="fa fa fa-arrow-down" title="Move Down"></i>
             </div>
             <div className="btn btn-small btn-default"
                  onClick={() => removeQuestion(form, i)}>
-              <b>Remove</b>
+              <i className="fa fa fa-trash" title="Remove"></i>
             </div>
           </div>
         </div>
@@ -163,13 +163,15 @@ class FormEdit extends Component {
       if (response.status === 201) {
         this.props.router.push(`/forms/${response.data.id}`);
       }
+    }, (failureResponse) => {
+      this.setState({errors: failureResponse.response.data});
     });
   }
 
   render() {
     return (
-      <div className="col-md-8">
-      <div className="col-md-8" id='form-div'>
+      <div className="col-md-6">
+      <div className="" id='form-div'>
       <ModalDialog  show={this.state.showModal}
         title="Warning"
         subTitle="Unsaved Changes"
@@ -185,25 +187,13 @@ class FormEdit extends Component {
         }}
         secondaryButtonAction={()=> this.handleModalResponse(true)} />
       <form onSubmit={(e) => this.handleSubmit(e)}>
-        <div className="row" id="form-button-div">
-          <div className="col-md-2">
-            <div className="btn btn-default btn-sm" disabled>
-              <span className="fa fa-navicon"></span>
-            </div>
+        <Errors errors={this.state.errors} />
+          <div className="form-inline">
+            <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span></button>
+
+            <input className='btn btn-default pull-right' name={`${this.props.action||'New'} Form`} type="submit" value={`Save`}/>
+            <button className="btn btn-default pull-right" disabled>Export</button>
           </div>
-          <div className="col-md-7"></div>
-          <div className="col-md-3">
-            <div className="col-md-6">
-              <div className="btn btn-default" disabled>Export</div>
-            </div>
-            <div className="col-md-6">
-              <div className="actions">
-                <label htmlFor={`${this.props.action||'New'} Form`}></label>
-                <input name={`${this.props.action||'New'} Form`} type="submit" value={`${this.props.action||'New'} Form`}/>
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="row">
           <div className="col-md-12">
             <hr />
@@ -211,23 +201,21 @@ class FormEdit extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <label htmlFor="name">Name:</label>
-            <input type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
-          </div>
-          <div className="col-md-12">
-            <label htmlFor="description">Description:</label>
-            <textarea type="text" value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
-          </div>
-          <div className="col-md-12">
-            <label htmlFor="controlNumber">OMB Number:</label>
-            <input type="text" value={this.state.controlNumber} name="controlNumber" onChange={this.handleChange('controlNumber')}/>
+            <div className="form-group">
+              <label htmlFor="name">Name:</label>
+              <input className="form-control" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description:</label>
+              <input className="form-control" type="text" value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="controlNumber">OMB Approval:</label>
+              <input className="form-control" type="text" value={this.state.controlNumber} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+            </div>
+
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-12">
-          </div>
-        </div>
-        <b>Form Questions:</b>
         <AddedQuestions form={this.state}
           questions={this.props.questions}
           responseSets={this.props.responseSets}

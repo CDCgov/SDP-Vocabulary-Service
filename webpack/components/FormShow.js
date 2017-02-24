@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {formProps} from '../prop-types/form_props';
-import QuestionList from './QuestionList';
+import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
-import _ from 'lodash';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
@@ -66,7 +65,7 @@ class FormShow extends Component {
               {form.description}
             </div>
           </div>
-          <QuestionList questions={_.keyBy(form.questions, 'id')} routes={Routes} />
+          <FormQuestionList questions={form.questions} routes={Routes} />
         </div>
       </div>
     );
