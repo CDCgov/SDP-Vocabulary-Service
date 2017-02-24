@@ -12,19 +12,19 @@ class FormList extends Component {
     for(var i = 0; i < numberOfRows; i++){
       let startIndex = i*numberPerRow;
       let endIndex = startIndex+numberPerRow;
-      rows.push(this.renderRow(values.slice(startIndex, endIndex)));
+      rows.push(this.renderRow(values.slice(startIndex, endIndex), i));
     }
     return (<div>{rows}</div>);
   }
 
-  renderRow(rowValues) {
+  renderRow(rowValues, key) {
     let items = _.values(rowValues).map( (aForm) => {
       return <FormWidget key={aForm.id} form={aForm} routes={this.props.routes} />;
     }
     );
 
     return (
-      <div className='form-group row'>
+      <div key={key} className='form-group row'>
       {items}
       </div>
     );
