@@ -1,3 +1,10 @@
+Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and\
+ the response "([^"]*)"$/) do |set_name, desc, response|
+  user = get_user 'test_author@gmail.com'
+  ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user,\
+                      responses_attributes: [{ value: '', display_name: response, code_system: '' }])
+end
+
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and \
 with the Responses (.+)$/) do |set_name, desc, response_values|
   user = get_user 'test_author@gmail.com'
@@ -5,6 +12,11 @@ with the Responses (.+)$/) do |set_name, desc, response_values|
   response_values.split(', ').each do |value|
     Response.create!(value: value, response_set_id: set['id'])
   end
+end
+
+Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)"$/) do |set_name, desc|
+  user = get_user 'test_author@gmail.com'
+  ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user)
 end
 
 When(/^I go to the list of Response Sets$/) do

@@ -8,7 +8,8 @@ import _ from 'lodash';
 class CodedSetTableEditContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {items: props.initialItems, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem:'', selectedConcepts:[]};
+    var items = props.initialItems.length < 1 ? [{value: '', codeSystem: '', displayName: ''}] : props.initialItems;
+    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem:'', selectedConcepts:[]};
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.hideCodeSearch = this.hideCodeSearch.bind(this);
   }
@@ -183,19 +184,20 @@ class CodedSetTableEditContainer extends Component {
               <td>
               </td>
                 <td>
-                  <label className="hidden" htmlFor="value">Value</label>
-                  <input className="input-format" type="text" value={r.value} name="value" id="value" onChange={this.handleChange(i, 'value')}/>
+                  <label className="hidden" htmlFor={`value_${i}`}>Value</label>
+                  <input className="input-format" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
                 </td>
                 <td>
-                  <label className="hidden" htmlFor="codeSystem">Code system</label>
-                  <input className="input-format" type="text" value={r.codeSystem}  name="codeSystem" id="codeSystem" onChange={this.handleChange(i, 'codeSystem')}/>
+                  <label className="hidden" htmlFor={`codeSystem_${i}`}>Code system</label>
+                  <input className="input-format" type="text" value={r.codeSystem}  name="codeSystem" id={`codeSystem_${i}`} onChange={this.handleChange(i, 'codeSystem')}/>
                 </td>
                 <td>
-                  <label className="hidden" htmlFor="displayName">Display name</label>
-                  <input className="input-format" type="text" value={r.displayName} name="displayName" id="displayName" onChange={this.handleChange(i, 'displayName')}/>
+                  <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
+                  <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                 </td>
                 <td>
-                  <a href="#" title="Remove" onClick={(e) => {
+                <label className="hidden" htmlFor={`remove_${i}`}>Remove</label>
+                  <a href="#" title="Remove" id={`remove_${i}`} onClick={(e) => {
                     e.preventDefault();
                     this.removeItemRow(i);
                   }}><i className="fa fa-2x fa-trash"></i></a>
