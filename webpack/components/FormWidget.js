@@ -8,10 +8,10 @@ export default class FormWidget extends Component {
     return (
   <div className="col-sm-4">
   <div className="form" id={"form_id_"+this.props.form.id}>
-  <div className="panel-title">
-  <ul className="list-inline">
-    <li className="form-title"><Link to={'/forms/'+this.props.form.id}>{this.props.form.name}</Link></li>
-  </ul>
+  <div className="form-title">
+    <ul className="list-inline">
+      <li ><Link to={'/forms/'+this.props.form.id}>{this.props.form.name}</Link></li>
+    </ul>
   </div>
     <div className="form-container">
 
