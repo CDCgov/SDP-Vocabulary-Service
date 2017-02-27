@@ -20,7 +20,7 @@ Information pertaining to downloading and installtion Elasticsearch can be found
 
 By default, the Vocabulary Service expects the Elasticsearch server to be running locally on the same system and accessible  via 127.0.0.1 on port 9200.  This can be configured in the config/settings.yml file by providing host and port parameters in the elasticsearch section of the configuration.   
 
-Please note that the config/settings.yml file works inconjuntion with the files in the config/settings directory.  Each file in said directory provides overrides for any given Rails environment that the service will be run in.  In addition, another settings file, config/settings.local.yml, which is not checked into the repository, provides local developer overrides for all environments.  So the hierarchy of settings files goes config/settings.yml -> config/settings/<environment>.yml -> config/settings.local.yml
+Please note that the config/settings.yml file works inconjuntion with the files in the config/settings directory.  Each file in said directory provides overrides for any given Rails environment that the service will be run in.  In addition, another settings file, config/settings.local.yml, which is not checked into the repository, provides local developer overrides for all environments.  So the hierarchy of settings files goes config/settings.yml -> config/settings/(environment).yml -> config/settings.local.yml
 
 ### Install Concept Service
 
