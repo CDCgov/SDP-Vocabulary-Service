@@ -7,8 +7,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # Setup single user for testing:
-ResponseType.create name: 'Response Set'
-ResponseType.create name: 'Free Text'
-ResponseType.create name: 'Date'
-ResponseType.create name: 'Integer'
-ResponseType.create name: 'Decimal'
+ResponseType.find_or_create_by name: 'Response Set'
+ResponseType.find_or_create_by name: 'Free Text'
+ResponseType.find_or_create_by name: 'Date'
+ResponseType.find_or_create_by name: 'Integer'
+ResponseType.find_or_create_by name: 'Decimal'

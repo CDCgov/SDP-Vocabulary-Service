@@ -9,7 +9,8 @@
   width: 180px;
   border-radius: 0px;
   border: 1px solid $light-gray;
-}	
+
+}
 .form-container {
   @extend .panel-body;
   border-bottom: 1px solid $light-gray;
@@ -20,8 +21,12 @@
   padding: 6px 8px 6px 10px;
 }
 .form-title {
+  @extend .panel-title;
   border-bottom: 1px solid $light-gray;
-  padding-bottom: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-left: 10px;
+  margin-right: 8px;
 }
 .form-list-group {
   @extend .list-group;

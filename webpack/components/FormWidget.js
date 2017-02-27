@@ -6,11 +6,15 @@ import {formProps} from '../prop-types/form_props';
 export default class FormWidget extends Component {
   render() {
     return (
+  <div className="col-sm-4">
   <div className="form" id={"form_id_"+this.props.form.id}>
+  <div className="form-title">
+    <ul className="list-inline">
+      <li ><Link to={'/forms/'+this.props.form.id}>{this.props.form.name}</Link></li>
+    </ul>
+  </div>
     <div className="form-container">
-      <ul className="list-inline">
-        <li className="form-title"><Link to={'/forms/'+this.props.form.id}>{this.props.form.name}</Link></li>
-      </ul>
+
       <ul className="form-list-group list-inline">
         <li className="form-list-group-item"><h2 className="form-item-title">Systems</h2><i className="fa fa-info-circle fa-lg form-item-icon" aria-hidden="true"></i><p className="form-item-value">145</p></li>
         <li className="form-list-group-item"><h2 className="form-item-title">Programs</h2><i className="fa fa-info-circle fa-lg form-item-icon" aria-hidden="true"></i><p className="form-item-value">89</p></li>
@@ -34,6 +38,7 @@ export default class FormWidget extends Component {
         </li>
       </ul>
     </div>
+  </div>
   </div>
     );
   }
