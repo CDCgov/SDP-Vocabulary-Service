@@ -72,7 +72,7 @@ export default class ResponseSetForm extends Component {
   stateForNew() {
     return {
       name: '', oid: '', coded: false, description: '',
-      responsesAttributes: [{displayName: '', value: '', codeSystem: ''}],
+      responsesAttributes: [],
       version: 1, versionIndependentId: null, showModal: false
     };
   }
@@ -194,10 +194,10 @@ export default class ResponseSetForm extends Component {
 }
 
 function filterResponses(responses) {
-  return responses.map((nr) => {
-    if(nr.value!=='' ||  nr.codeSystem !== '', nr.displayName !==''){
-      return {value: nr.value, codeSystem: nr.codeSystem, displayName: nr.displayName};
-    }
+  return responses.filter((r)=>{
+    return (r.value!=='' ||  r.codeSystem !== '' || r.displayName !=='');
+  }).map((r) => {
+    return {value: r.value, codeSystem: r.codeSystem, displayName: r.displayName};
   });
 }
 

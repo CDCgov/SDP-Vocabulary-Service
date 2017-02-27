@@ -6,7 +6,8 @@ import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
-import QuestionList from './QuestionList';
+import QuestionList  from './QuestionList';
+import CodedSetTable from "../components/CodedSetTable";
 import currentUserProps from "../prop-types/current_user_props";
 import _ from 'lodash';
 
@@ -87,26 +88,7 @@ export default class ResponseSetDetails extends Component {
               <h3 className="panel-title">Responses</h3>
             </div>
             <div className="box-content">
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Response Code</th>
-                    <th>Code System</th>
-                    <th>Display Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  { responseSet.responses && responseSet.responses.map((response) => {
-                    return (
-                      <tr key={"response_" + response.id}>
-                        <td>{ response.value }</td>
-                        <td>{ response.codeSystem }</td>
-                        <td>{ response.displayName }</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <CodedSetTable items={responseSet.responses} itemName={'Response'} />
             </div>
           </div>
           {this.props.questions && this.props.questions.length > 0 &&

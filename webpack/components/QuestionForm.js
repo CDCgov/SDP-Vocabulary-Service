@@ -136,7 +136,7 @@ class QuestionForm extends Component{
       version: 1,
       harmonized: false,
       responseTypeId: null,
-      conceptsAttributes: [{displayName: '', value: '', codeSystem: ''}],
+      conceptsAttributes: [],
       linkedResponseSets: [],
       showModal: false
     };
@@ -290,10 +290,10 @@ class QuestionForm extends Component{
 }
 
 function filterConcepts(concepts) {
-  return concepts.map((nc) => {
-    if(nc.value!=='' ||  nc.codeSystem !== '', nc.displayName !==''){
-      return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
-    }
+  return concepts.filter((nc)=>{
+    return (nc.value!=='' ||  nc.codeSystem !== '' || nc.displayName !=='');
+  }).map((nc) => {
+    return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
   });
 }
 

@@ -31,6 +31,35 @@ export default class QuestionDetails extends Component {
     );
   }
 
+  conceptTable(concepts){
+    if(!concepts || concepts.length < 1){
+      return (<h1>No Responses Selected</h1>);
+    }else{
+      return (
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Response Code</th>
+              <th>Code System</th>
+              <th>Display Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            { concepts.map((concept) => {
+              return (
+                <tr key={"concept_" + concept.id}>
+                  <td>{ concept.value }</td>
+                  <td>{ concept.codeSystem }</td>
+                  <td>{ concept.displayName }</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      );
+    }
+  }
+
   mainContent(question, responseSets) {
     return (
       <div className="col-md-9 nopadding maincontent">
@@ -67,7 +96,6 @@ export default class QuestionDetails extends Component {
               {question.responsetype.name}
             </div>}
           </div>
-          {question.concepts && question.concepts.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">Concepts</h3>
@@ -78,7 +106,6 @@ export default class QuestionDetails extends Component {
                 </div>
               </div>
             </div>
-          }
           {responseSets && responseSets.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
