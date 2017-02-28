@@ -15,7 +15,7 @@ function addQuestionToState(action, state){
 export default function questions(state = {}, action) {
   switch (action.type) {
     case FETCH_QUESTIONS_FULFILLED:
-      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'), state);
+      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
     case SAVE_QUESTION_FULFILLED:
     case FETCH_QUESTION_FULFILLED:
       return addQuestionToState(action, state);
