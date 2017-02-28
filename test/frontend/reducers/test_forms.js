@@ -23,6 +23,15 @@ describe('forms reducer', () => {
     expect(Object.keys(nextState).length).to.equal(2);
   });
 
+  it('should not overwrite forms already in store', () => {
+    const payloadData = {data: twoForms};
+    const action = {type: FETCH_FORMS_FULFILLED, payload: payloadData};
+    const preExistingForm = {id: 2, name:"Existing Form", userId: "testAuthor@gmail.com", questions: []};
+    const startState = {2: preExistingForm};
+    const nextState = forms(startState, action);
+    expect(Object.keys(nextState).length).to.equal(3);
+  });
+
   it('should add a question', () => {
     const form = {id: 1, name: "Red Form",  userId: "testAuthor@gmail.com", formQuestions:[]}
     const question = {id: 1, content: "Is this a question?", questionType: ""};

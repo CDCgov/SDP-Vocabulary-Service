@@ -29,6 +29,16 @@ describe('questions reducer', () => {
     expect(Object.keys(nextState).length).to.equal(3);
   });
 
+  it('should not overwrite questions already in store', () => {
+    const questionData = {data: [{id: 1, content: "Is this a question?", questionType: ""},
+                                 {id: 2, content: "Whats your name", questionType: ""}]};
+    const preExistingQuestion = {id: 3, content: "What is a question?", questionType: ""};
+    const action = {type: FETCH_QUESTIONS_FULFILLED, payload: questionData};
+    const startState = {3: preExistingQuestion};
+    const nextState = questions(startState, action);
+    expect(Object.keys(nextState).length).to.equal(3);
+  });
+
   it('should fetch a question', () => {
     const questionData = {data: {id: 1, content: "Is this a question?", questionType: ""}};
     const action = {type: FETCH_QUESTION_FULFILLED, payload: questionData};
