@@ -25,7 +25,7 @@ end
 When(/^I move the Question "([^"]*)" (up|down)$/) do |question_content, direction|
   object_id = Question.search(question_content).first.id.to_s
   old_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
-  page.find("#question_id_#{object_id}").find(:xpath, '..').find(".move-#{direction}").click
+  page.find("#question_id_#{object_id}").find(:xpath, '../../..').find(".move-#{direction}").click
   new_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
   offset = direction.eql?('up') ? -1 : 1
   assert(old_index != new_index)

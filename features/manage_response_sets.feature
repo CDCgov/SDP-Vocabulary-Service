@@ -140,16 +140,7 @@ Feature: Manage Response Sets
     And I click on the "Continue Without Saving" button
     And I should not see "Gender Partial"
 
-  Scenario: Response Set Delete
-    Given I have a Response Set with the name "Gender Full"
-    And I am logged in as test_author@gmail.com
-    When I go to the list of Response Sets
-    When I click on the menu link for the Response Set with the name "Gender Full"
-    And I click on the option to Delete the Response Set with the name "Gender Full"
-    Then I should see "Response set was successfully destroyed."
-    And I should not see "Gender Full"
-
-  Scenario: Search for a Response Set
+  Scenario: Search for a Response Set on the Response Set Index Page
     Given I have a Response Set with the name "Gender1"
     And I have a Response Set with the name "gender lowercase"
     And I have a Response Set with the name "Temp Partial"
@@ -163,16 +154,3 @@ Feature: Manage Response Sets
     And I should not see "Temp"
     And I should not see "True"
     And I should not see "Other"
-
-  Scenario: Filter for Response Sets on Dashboard
-    Given I have a Question with the content "Why?" and the type "MC"
-    And I have a Question with the content "What?" and the type "MC"
-    And I have a Response Set with the name "Reasons why"
-    When I go to the dashboard
-    And I click on the "search-group-btn" button
-    And I click on the response_sets search filter
-    And I fill in the "search" field with "why"
-    And I click on the "search-btn" button
-    Then I should not see "Why?"
-    And I should see "Reasons"
-    And I should not see "What?"

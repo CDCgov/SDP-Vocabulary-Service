@@ -18,4 +18,4 @@ Feature: Manage Notifications
     When I go to the dashboard
     And I click on the "notification-dropdown" link
     And I click on the "User1 has replied to your comment" notification
-    Then I should see "Content: Who?"
+    Then I should see "Name: Who?"
