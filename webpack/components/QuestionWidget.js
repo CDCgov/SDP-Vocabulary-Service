@@ -48,7 +48,7 @@ class QuestionWidget extends Component {
         <div className="panel panel-default">
           <div className="question-container">
             <ul className="list-inline">
-              <li><a href={`/landing#/questions/${this.props.question.id}`}>{this.props.question.content}</a></li>
+              <li><Link to={`/questions/${this.props.question.id}`}>{this.props.question.content}</Link></li>
               <li className="pull-right">
                 <a>
                   <span className="fa fa-signal"></span>

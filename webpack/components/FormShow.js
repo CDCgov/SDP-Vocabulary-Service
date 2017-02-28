@@ -3,7 +3,7 @@ import {formProps} from '../prop-types/form_props';
 import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
 import VersionInfo from './VersionInfo';
-import { hashHistory } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
 
 class FormShow extends Component {
@@ -47,7 +47,7 @@ class FormShow extends Component {
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
           {this.props.currentUser && this.props.currentUser.id && form.mostRecent == form.version &&
-              <a className="btn btn-default" href={`/landing#/forms/${form.id}/revise`}>Revise</a>
+              <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           {this.props.currentUser && this.props.currentUser.id &&

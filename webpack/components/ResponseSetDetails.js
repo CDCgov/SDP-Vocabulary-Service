@@ -53,8 +53,8 @@ export default class ResponseSetDetails extends Component {
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
-            {responseSet.mostRecent == responseSet.version && <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/revise`}>Revise</a>}
-            <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/extend`}>Extend</a>
+            {responseSet.mostRecent == responseSet.version && <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>}
+            <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
           </div>
         }
         <div className="maincontent-details">
