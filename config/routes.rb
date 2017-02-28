@@ -36,6 +36,9 @@ Rails.application.routes.draw do
   get 'notifications', to: 'notifications#index', as: :notifications
   post 'notifications/mark_read', to: 'notifications#mark_read', as: :notifications_mark_read
 
+  get 'notifications', to: 'notifications#index', as: :notifications
+  post 'notifications/mark_read', to: 'notifications#mark_read', as: :notifications_mark_read
+
   namespace :api, defaults: { format: :json } do
     resources :questions, only: [:index, :show] do
       get :usage, on: :member
