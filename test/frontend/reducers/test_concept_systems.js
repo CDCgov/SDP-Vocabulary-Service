@@ -11,7 +11,6 @@ describe('concept systems reducer', () => {
     const action = {type: FETCH_CONCEPT_SYSTEMS_FULFILLED, payload: conceptData};
     const startState = {};
     const nextState = conceptSystems(startState, action);
-    console.log(nextState)
     expect(Object.keys(nextState).length).to.equal(1);
   });
 });

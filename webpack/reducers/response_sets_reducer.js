@@ -9,7 +9,7 @@ import {
 export default function responseSets(state = {}, action) {
   switch (action.type) {
     case FETCH_RESPONSE_SETS_FULFILLED:
-      return Object.assign(_.keyBy(action.payload.data, 'id'), state);
+      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
     case FETCH_RESPONSE_SET_FULFILLED:
     case SAVE_RESPONSE_SET_FULFILLED:
       const responseSetClone = Object.assign({}, state);

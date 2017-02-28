@@ -13,7 +13,7 @@ export default function forms(state = {}, action) {
   let form , index, newState, newForm, direction, question;
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
-      return _.keyBy(action.payload.data, 'id');
+      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
     case FETCH_FORM_FULFILLED:
       const formClone = Object.assign({}, state);
       formClone[action.payload.data.id] = action.payload.data;
