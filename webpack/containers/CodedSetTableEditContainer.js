@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {Modal, Glyphicon, Checkbox, Button, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem} from 'react-bootstrap';
+import {Modal, Glyphicon, Checkbox, Button, ControlLabel, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem} from 'react-bootstrap';
 import { fetchConcepts, fetchConceptSystems } from '../actions/concepts_actions';
 import _ from 'lodash';
 
@@ -137,7 +137,7 @@ class CodedSetTableEditContainer extends Component {
               {_.values(this.props.concepts[this.state.selectedSystem]).map((c,i) => {
                 return (
                   <tr key={i}>
-                  <td><Checkbox onChange={(e)=>this.selectConcept(e,i)}></Checkbox></td>
+                  <td><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e)=>this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
                    <td>{c.display}</td>
                    <td>{c.code}</td>
                    <td>{c.system}</td>
