@@ -140,17 +140,17 @@ Feature: Manage Response Sets
     And I click on the "Continue Without Saving" button
     And I should not see "Gender Partial"
 
-  Scenario: Search for a Response Set on the Response Set Index Page
-    Given I have a Response Set with the name "Gender1"
-    And I have a Response Set with the name "gender lowercase"
-    And I have a Response Set with the name "Temp Partial"
-    And I have a Response Set with the name "Other Partial"
-    And I have a Response Set with the name "True / False"
-    When I go to the list of Response Sets
-    And I fill in the "search" field with "Gender"
-    And I click on the "Go!" button
-    Then I should see "Gender1"
-    And I should see "gender lowercase"
-    And I should not see "Temp"
-    And I should not see "True"
-    And I should not see "Other"
+#  Scenario: Search for a Response Set on the Response Set Index Page
+#    Given I have a Response Set with the name "Gender1"
+#    And I have a Response Set with the name "gender lowercase"
+#    And I have a Response Set with the name "Temp Partial"
+#    And I have a Response Set with the name "Other Partial"
+#    And I have a Response Set with the name "True / False"
+#    When I go to the list of Response Sets
+#    And I fill in the "search" field with "Gender"
+#    And I click on the "Go!" button
+#    Then I should see "Gender1"
+#    And I should see "gender lowercase"
+#    And I should not see "Temp"
+#    And I should not see "True"
+#    And I should not see "Other"

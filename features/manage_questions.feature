@@ -146,20 +146,20 @@ Feature: Manage Questions
     And I click on the "Create Question" button
     And I should see "content - can't be blank"
 
-  Scenario: Search for a Question on the Question Index Page
-    Given I have a Question with the content "Cat?" and the type "MC"
-    And I have a Question with the content "Hat?" and the type "MC"
-    And I have a Question with the content "Fat?" and the type "MC"
-    And I have a Question with the content "Cancer?" and the type "MC"
-    And I have a Question with the content "Broken Legs?" and the type "MC"
-    When I go to the list of Questions
-    And I fill in the "search" field with "at"
-    And I click on the "Go!" button
-    Then I should see "Cat?"
-    And I should see "Hat?"
-    And I should see "Fat?"
-    And I should not see "Cancer?"
-    And I should not see "Broken Legs?"
+#  Scenario: Search for a Question on the Question Index Page
+#    Given I have a Question with the content "Cat?" and the type "MC"
+#    And I have a Question with the content "Hat?" and the type "MC"
+#    And I have a Question with the content "Fat?" and the type "MC"
+#    And I have a Question with the content "Cancer?" and the type "MC"
+#    And I have a Question with the content "Broken Legs?" and the type "MC"
+#    When I go to the list of Questions
+#    And I fill in the "search" field with "at"
+#    And I click on the "Go!" button
+#    Then I should see "Cat?"
+#    And I should see "Hat?"
+#    And I should see "Fat?"
+#    And I should not see "Cancer?"
+#    And I should not see "Broken Legs?"
 
   Scenario: Search for a Question on Dashboard
     Given I have a Question with the content "Why?" and the type "MC"
