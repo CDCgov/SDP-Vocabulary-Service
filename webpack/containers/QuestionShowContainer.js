@@ -32,8 +32,8 @@ class QuestionShowContainer extends Component {
   }
 
   handlePublish(q){
-    publishQuestion(q.id, () => {
-      // How do I trigger a refresh here? forceUpdate didn't work
+    publishQuestion(q.id, (response) => {
+      this.props.fetchQuestion(response.data.id);
     });
   }
 
