@@ -31,6 +31,10 @@ class Question < ApplicationRecord
     where('content ILIKE ?', "%#{search}%")
   end
 
+  def publish
+    update(status: 'published') if status == 'draft'
+  end
+
   def build_new_revision
     new_revision = Question.new(content: content, description: description, status: status,
                                 version_independent_id: version_independent_id,

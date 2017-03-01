@@ -7,6 +7,8 @@ import {
   DELETE_QUESTION,
   REORDER_QUESTION,
   SAVE_QUESTION,
+  SAVE_DRAFT_QUESTION,
+  PUBLISH_QUESTION,
   FETCH_QUESTION,
   FETCH_QUESTIONS
 } from './types';
@@ -26,13 +28,27 @@ export function removeQuestion(form, index) {
   };
 }
 
-export function deleteQuestion(id, csrf) {
+export function deleteQuestion(id, callback=null) {
+  const authenticityToken = getCSRFToken();
+  let data = new FormData();
+  data.set('authenticity_token', authenticityToken);
+  data.set('_method', 'delete');
+  const delPromise = axios.request({
+    url: routes.question_path(id),
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-Key-Inflection': 'camel',
+      'Accept': 'application/json'
+    }
+  });
+  if (callback) {
+    delPromise.then(callback);
+  }
   return {
     type: DELETE_QUESTION,
-    payload: axios.delete(routes.questions_path()+'/'+id, {
-      headers: {'Accept': 'application/json'},
-      params:  {'authenticity_token': csrf}
-    })
+    payload: delPromise
   };
 }
 
@@ -78,5 +94,36 @@ export function saveQuestion(question, successHandler=null, failureHandler=null)
   return {
     type: SAVE_QUESTION,
     payload: postPromise
+  };
+}
+
+export function saveDraftQuestion(id, question, callback=null) {
+  const authenticityToken  = getCSRFToken();
+  const linkedResponseSets = question.linkedResponseSets;
+  delete question.linkedResponseSets;
+  const putPromise = axios.put(routes.questions_path()+'/'+id,
+                      {question, authenticityToken, linkedResponseSets},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  if (callback) {
+    putPromise.then(callback);
+  }
+  return {
+    type: SAVE_DRAFT_QUESTION,
+    payload: putPromise
+  };
+}
+
+export function publishQuestion(id, callback=null) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.publish_question_path(id),
+    {authenticityToken},
+    {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}
+    });
+  if (callback) {
+    putPromise.then(callback);
+  }
+  return {
+    type: PUBLISH_QUESTION,
+    payload: putPromise
   };
 }

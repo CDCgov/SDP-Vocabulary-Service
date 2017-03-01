@@ -61,14 +61,14 @@ ActiveRecord::Schema.define(version: 20170217164345) do
   create_table "forms", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "version_independent_id"
     t.integer  "version",                          default: 1
     t.string   "control_number",         limit: 9
     t.string   "oid"
     t.text     "description"
-    t.string   "status"
+    t.string   "status",                           default: "draft"
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -97,8 +97,8 @@ ActiveRecord::Schema.define(version: 20170217164345) do
 
   create_table "questions", force: :cascade do |t|
     t.text     "content"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "question_type_id"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170217164345) do
     t.integer  "response_type_id"
     t.string   "oid"
     t.text     "description"
-    t.string   "status"
+    t.string   "status",                 default: "draft"
     t.boolean  "harmonized"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
@@ -119,15 +119,15 @@ ActiveRecord::Schema.define(version: 20170217164345) do
     t.string   "name"
     t.text     "description"
     t.string   "oid"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.boolean  "coded"
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
     t.integer  "parent_id"
-    t.string   "status"
+    t.string   "status",                 default: "draft"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
