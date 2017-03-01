@@ -5,7 +5,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
   setup do
-    @question = questions(:one)
+    @question  = questions(:one)
     @question5 = questions(:five)
     @current_user = users(:admin)
     sign_in @current_user
@@ -37,7 +37,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   test 'should be unable to update a draft question owned by someone else' do
     patch question_url(@question5, format: :json), params: { question: { content: 'new content' } }
     assert_response :unauthorized
-    # assert_equal 'new content', Question.last.content
   end
 
   test 'should be unable to update a published question' do

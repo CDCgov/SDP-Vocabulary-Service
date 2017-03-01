@@ -5,7 +5,7 @@ class ConceptsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @question = questions(:one)
-    @concept = concepts(:one)
+    @concept  = concepts(:one)
     sign_in users(:admin)
   end
 

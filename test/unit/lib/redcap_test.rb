@@ -17,15 +17,15 @@ class Redcap < ActiveSupport::TestCase
     assert_equal 5, forms.values.length
 
     rscount = ResponseSet.count
-    qcount = Question.count
+    qcount  = Question.count
     formcount = Form.count
 
     forms.each_pair do |_k, v|
       v.save
     end
 
-    assert_equal rscount + 67, ResponseSet.count
-    assert_equal qcount + 198, Question.count
+    assert_equal rscount + 67,  ResponseSet.count
+    assert_equal qcount  + 198, Question.count
     assert_equal formcount + 5, Form.count
   end
 end
