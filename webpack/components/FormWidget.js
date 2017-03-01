@@ -30,7 +30,7 @@ export default class FormWidget extends Component {
               <span className="glyphicon glyphicon-option-horizontal"></span><span className="sr-only">Question Menu</span>
             </a>
             <ul className="dropdown-menu dropdown-menu-right">
-              <li><Link to={`#/forms/${this.props.form.id}/revise`}>Revise</Link></li>
+              <li><Link to={`/forms/${this.props.form.id}/revise`}>Revise</Link></li>
               <li><Link to={'/forms/'+this.props.form.id}>View</Link></li>
             </ul>
           </div>
