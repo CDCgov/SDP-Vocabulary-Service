@@ -20,7 +20,7 @@ class DashboardContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="row dashboard">
           <div className="col-md-8">
             <div className="dashboard-details">
