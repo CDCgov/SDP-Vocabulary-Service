@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import Routes from "../routes";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion } from '../actions/questions_actions';
+import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../actions/questions_actions';
+
 import QuestionForm from '../components/QuestionForm';
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps }  from '../prop-types/response_set_props';
@@ -36,7 +37,7 @@ class QuestionEditContainer extends Component {
       <div className="container">
         <QuestionForm question={this.props.question} questionSubmitter={this.props.saveQuestion}
                       draftSubmitter={this.props.saveDraftQuestion} publishSubmitter={this.props.publishQuestion} action={action} id={id}
-                      questionTypes={this.props.questionTypes} responseSets={this.props.responseSets}
+                      deleteSubmitter={this.props.deleteQuestion} questionTypes={this.props.questionTypes} responseSets={this.props.responseSets}
                       responseTypes={this.props.responseTypes} routes={Routes}
                       router={this.props.router} route={this.props.route} />
       </div>
@@ -58,7 +59,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets}, dispatch);
+  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
@@ -70,6 +71,7 @@ QuestionEditContainer.propTypes = {
   saveQuestion: PropTypes.func.isRequired,
   saveDraftQuestion: PropTypes.func.isRequired,
   publishQuestion: PropTypes.func.isRequired,
+  deleteQuestion: PropTypes.func.isRequired,
   fetchQuestionTypes: PropTypes.func.isRequired,
   fetchResponseTypes: PropTypes.func.isRequired,
   fetchResponseSets:  PropTypes.func.isRequired,
