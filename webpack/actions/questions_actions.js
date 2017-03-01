@@ -7,6 +7,8 @@ import {
   DELETE_QUESTION,
   REORDER_QUESTION,
   SAVE_QUESTION,
+  SAVE_DRAFT_QUESTION,
+  PUBLISH_QUESTION,
   FETCH_QUESTION,
   FETCH_QUESTIONS
 } from './types';
@@ -78,5 +80,36 @@ export function saveQuestion(question, successHandler=null, failureHandler=null)
   return {
     type: SAVE_QUESTION,
     payload: postPromise
+  };
+}
+
+export function saveDraftQuestion(id, question, callback=null) {
+  const authenticityToken  = getCSRFToken();
+  const linkedResponseSets = question.linkedResponseSets;
+  delete question.linkedResponseSets;
+  const putPromise = axios.put(routes.questions_path()+'/'+id,
+                      {question, authenticityToken, linkedResponseSets},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  if (callback) {
+    putPromise.then(callback);
+  }
+  return {
+    type: SAVE_DRAFT_QUESTION,
+    payload: putPromise
+  };
+}
+
+export function publishQuestion(id, callback=null) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.publish_question_path(id),
+    {authenticityToken},
+    {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}
+    });
+  if (callback) {
+    putPromise.then(callback);
+  }
+  return {
+    type: PUBLISH_QUESTION,
+    payload: putPromise
   };
 }

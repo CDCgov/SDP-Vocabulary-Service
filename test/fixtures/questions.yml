@@ -26,3 +26,10 @@ gfv2:
   question_type: one
   version: 2
   version_independent_id: Q-3
+
+five:
+  content: Who did this?
+  created_by: not_admin
+  question_type: one
+  version: 1
+  version_independent_id: Q-5

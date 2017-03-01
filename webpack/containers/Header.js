@@ -83,7 +83,6 @@ let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount
           <a href="#" className="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
           <ul className="cdc-nav-dropdown">
             <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
-            <li className="nav-dropdown-item"><Link to="/question_types/new">Question Types</Link></li>
             <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
             <li className="nav-dropdown-item"><Link to="/forms/new">Forms</Link></li>
           </ul>

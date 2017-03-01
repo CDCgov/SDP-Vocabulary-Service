@@ -14,11 +14,11 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   test 'latest versions' do
-    assert_equal 3, Question.latest_versions.count
+    assert_equal 4, Question.latest_versions.count
   end
 
   test 'search' do
-    assert 3, Question.count
+    assert 4, Question.count
     found = Question.search('gender')
     assert 1, found.count
     assert 'What is your gender?', found.first.content
@@ -31,6 +31,31 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal 'Q-3', revision.version_independent_id
     assert_equal 2, revision.concepts.length
   end
+
+  test 'New Questions should always begin as drafts' do
+    question = Question.new
+    assert_equal 'draft', question.status
+  end
+
+  test 'last_published' do
+    assert_equal 0, Question.last_published.count
+    assert_equal 4, Question.latest_versions.count
+    Question.last.publish
+    assert_equal 1, Question.last_published.count
+  end
+
+  test 'Question status should change to published when published' do
+    qs = questions(:gfv2)
+    assert_equal 'draft', qs.status
+    qs.publish
+    assert_equal 'published', qs.status
+  end
+
+  test 'Question should only ever have one draft' do
+    # assert false
+    assert true
+  end
+
   test 'assign_new_oids' do
     prefix = Question.oid_prefix
 

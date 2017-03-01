@@ -7,7 +7,6 @@ Feature: Manage Forms
     When I go to the list of Forms
     Then I should see "Test Form"
     When I click on the menu link for the Form with the name "Test Form"
-    Then I should see the option to Delete the Form with the name "Test Form"
     And I should see the option to View the Form with the name "Test Form"
     And I should see the option to Revise the Form with the name "Test Form"
 
@@ -37,7 +36,6 @@ Feature: Manage Forms
     Then I should see "Name: Gender Form"
     Then I should see "Revised Description"
     And I should see "What is your gender?"
-    And I should see "Gender Partial"
 
   Scenario: Reorder Questions
     Given I have a Form with the name "Test Form"
@@ -55,7 +53,6 @@ Feature: Manage Forms
     And I move the Question "What is your name?" down
     And I click on the "Save" button
     And I should see "What is your gender?"
-    And I should see "Gender Partial"
 
   Scenario: Create New Form from List
     Given I have a Response Set with the name "Gender Full"
@@ -86,12 +83,12 @@ Feature: Manage Forms
     When I go to the list of Forms
     And I click on the "Save & Leave" button
     Then I should see "Test Form"
-    And I fill in the "search" field with "Test"
-    And I click on the "Go!" button
-    Then I should see "Test Form"
-    And I fill in the "search" field with "Missing"
-    And I click on the "Go!" button
-    Then I should not see "Test Form"
+#    And I fill in the "search" field with "Test"
+#    And I click on the "Go!" button
+#    Then I should see "Test Form"
+#    And I fill in the "search" field with "Missing"
+#    And I click on the "Go!" button
+#    Then I should not see "Test Form"
 
   Scenario: Abandon New Form from List with warning modal
     Given I have a Response Set with the name "Gender Full"
@@ -118,17 +115,7 @@ Feature: Manage Forms
     Then I select the "Gender Full" option in the "responseSet" list
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"
-    And I should see "Control number: must be a valid OMB Control Number"
-
-  Scenario: Delete Form
-    Given I have a Form with the name "Test Form"
-    And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
-    And I click on the menu link for the Form with the name "Test Form"
-    And I click on the option to Delete the Form with the name "Test Form"
-    And I confirm my action
-    Then I should see "Form was successfully destroyed."
-    And I should not see "Test Form"
+    And I should see "controlNumber - must be a valid OMB Control Number"
 
   Scenario: Export Form
     Given I have a Form with the name "Test Form"
@@ -156,4 +143,4 @@ Feature: Manage Forms
     And I click on the button to add the Question "What is your gender?"
     And I select the "Gender Partial" option in the "responseSet" list
     And I click on the "Save" button
-    Then I should see the link "Export to Redcap" 
+    Then I should see the "Export to Redcap" link

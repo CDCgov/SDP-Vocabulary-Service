@@ -23,7 +23,7 @@ export default class FormWidget extends Component {
     </div>
     <div className="question-set-details">
       <ul className="list-inline question-set-items">
-        <li className="question-number"><i className="fa fa-question-circle fa-2x" aria-hidden="true"></i><p>{this.props.form.questions.length}</p></li>
+        <li className="question-number"><i className="fa fa-question-circle fa-2x" aria-hidden="true"></i><p>{this.props.form.questions && this.props.form.questions.length}</p></li>
         <li className="pull-right question-menu">
           <div className="dropdown">
             <a id={"form_"+this.props.form.id+"_menu"} className="dropdown-toggle" type="" data-toggle="dropdown" role="navigation">
@@ -32,7 +32,6 @@ export default class FormWidget extends Component {
             <ul className="dropdown-menu dropdown-menu-right">
               <li><a href={`#/forms/${this.props.form.id}/revise`}>Revise</a></li>
               <li><Link to={'/forms/'+this.props.form.id}>View</Link></li>
-              <li><a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.formPath(this.props.form)}>Delete</a></li>
             </ul>
           </div>
         </li>

@@ -146,40 +146,20 @@ Feature: Manage Questions
     And I click on the "Create Question" button
     And I should see "content - can't be blank"
 
-  Scenario: Reject Blank Question
-    Given I have a Response Set with the name "Gender Full"
-    And I have a Question Type with the name "Multiple Choice"
-    And I have a Response Type with the name "Integer"
-    And I am logged in as test_author@gmail.com
-    When I go to the list of Questions
-    And I click on the "New Question" link
-    And I click on the "Create Question" button
-    And I should see "content - can't be blank"
-
-  Scenario: Delete Question
-    Given I have a Question with the content "What is your gender?" and the type "MC"
-    And I am logged in as test_author@gmail.com
-    When I go to the list of Questions
-    When I click on the menu link for the Question with the content "What is your gender?"
-    And I click on the option to Delete the Question with the content "What is your gender?"
-    And I confirm my action
-    #Then I should see "Question was successfully destroyed."
-    And I should not see "Male"
-
-  Scenario: Search for a Question
-    Given I have a Question with the content "Cat?" and the type "MC"
-    And I have a Question with the content "Hat?" and the type "MC"
-    And I have a Question with the content "Fat?" and the type "MC"
-    And I have a Question with the content "Cancer?" and the type "MC"
-    And I have a Question with the content "Broken Legs?" and the type "MC"
-    When I go to the list of Questions
-    And I fill in the "search" field with "at"
-    And I click on the "Go!" button
-    Then I should see "Cat?"
-    And I should see "Hat?"
-    And I should see "Fat?"
-    And I should not see "Cancer?"
-    And I should not see "Broken Legs?"
+#  Scenario: Search for a Question on the Question Index Page
+#    Given I have a Question with the content "Cat?" and the type "MC"
+#    And I have a Question with the content "Hat?" and the type "MC"
+#    And I have a Question with the content "Fat?" and the type "MC"
+#    And I have a Question with the content "Cancer?" and the type "MC"
+#    And I have a Question with the content "Broken Legs?" and the type "MC"
+#    When I go to the list of Questions
+#    And I fill in the "search" field with "at"
+#    And I click on the "Go!" button
+#    Then I should see "Cat?"
+#    And I should see "Hat?"
+#    And I should see "Fat?"
+#    And I should not see "Cancer?"
+#    And I should not see "Broken Legs?"
 
   Scenario: Search for a Question on Dashboard
     Given I have a Question with the content "Why?" and the type "MC"
@@ -190,17 +170,4 @@ Feature: Manage Questions
     And I click on the "search-btn" button
     Then I should see "Why"
     And I should see "Reasons"
-    And I should not see "What?"
-
-  Scenario: Filter for Questions on Dashboard
-    Given I have a Question with the content "Why?" and the type "MC"
-    And I have a Question with the content "What?" and the type "MC"
-    And I have a Response Set with the name "Reasons why"
-    When I go to the dashboard
-    And I click on the "search-group-btn" button
-    And I click on the questions search filter
-    And I fill in the "search" field with "why"
-    And I click on the "search-btn" button
-    Then I should see "Why?"
-    And I should not see "Reasons"
     And I should not see "What?"

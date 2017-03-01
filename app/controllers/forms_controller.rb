@@ -35,8 +35,7 @@ class FormsController < ApplicationController
         format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
-        errors = @form.errors.map { |k, v| "#{k.to_s.humanize}: #{v}" }
-        format.json { render json: errors, status: :unprocessable_entity }
+        format.json { render json: @form.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -49,6 +48,15 @@ class FormsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to forms_url, notice: 'Form was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  # PATCH/PUT /forms/1/publish
+  def publish
+    if @form.status == 'draft'
+      @form.publish
+    else
+      render json: @form.errors, status: :unprocessable_entity
     end
   end
 
