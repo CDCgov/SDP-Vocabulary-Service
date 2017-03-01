@@ -35,8 +35,7 @@ class FormsController < ApplicationController
         format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
-        errors = @form.errors.map { |k, v| "#{k.to_s.humanize}: #{v}" }
-        format.json { render json: errors, status: :unprocessable_entity }
+        format.json { render json: @form.errors, status: :unprocessable_entity }
       end
     end
   end

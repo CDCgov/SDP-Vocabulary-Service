@@ -115,7 +115,7 @@ Feature: Manage Forms
     Then I select the "Gender Full" option in the "responseSet" list
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"
-    And I should see "Control number: must be a valid OMB Control Number"
+    And I should see "controlNumber - must be a valid OMB Control Number"
 
   Scenario: Export Form
     Given I have a Form with the name "Test Form"
