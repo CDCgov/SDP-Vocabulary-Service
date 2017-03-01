@@ -34,10 +34,9 @@ class FormsIndexContainer extends Component {
           <div className='col-md-9'>
             <FormListSearch search={this.search} />
             <FormList forms={this.props.forms} routes={Routes} />
-            <Link className='btn btn-default' to={"/forms/new"}>New Form</a>
+            <Link className='btn btn-default' to={"/forms/new"}>New Form</Link>
           </div>
         </div>
-      </div>
       </div>
     );
   }
