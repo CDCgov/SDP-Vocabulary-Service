@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217164345) do
+ActiveRecord::Schema.define(version: 20170228204340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,11 @@ ActiveRecord::Schema.define(version: 20170217164345) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
+  end
+
+  create_table "codes", id: false, force: :cascade do |t|
+    t.text "code"
+    t.text "description"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -127,14 +132,17 @@ ActiveRecord::Schema.define(version: 20170217164345) do
     t.integer  "version",                default: 1
     t.integer  "parent_id"
     t.string   "status",                 default: "draft"
+    t.string   "source",                 default: "local"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
 
   create_table "response_types", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "code"
+    t.text     "description"
   end
 
   create_table "responses", force: :cascade do |t|
