@@ -75,10 +75,19 @@ class QuestionForm extends Component{
 
   constructor(props) {
     super(props);
-    if(this.props.action === 'new'){
-      this.state = this.stateForNew();
-    }else{
-      this.state = this.stateForRevise(this.props.question);
+
+    switch(this.props.action) {
+      case 'revise':
+        this.state = this.stateForRevise(this.props.question);
+        break;
+      case 'extend':
+        this.state = this.stateForExtend(this.props.question);
+        break;
+      case 'new':
+        this.state = this.stateForNew();
+        break;
+      default:
+        this.state = this.stateForRevise(this.props.question);
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.unsavedState = false;
@@ -127,6 +136,7 @@ class QuestionForm extends Component{
     if (this.props.action === 'revise') {
       reviseState.version += 1;
     }
+    reviseState.parentId  = question.parent ? question.parent.id : null;
     return reviseState;
   }
 
@@ -145,6 +155,19 @@ class QuestionForm extends Component{
     };
   }
 
+  stateForExtend(question) {
+    var extendState = {};
+    _.forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
+    extendState.conceptsAttributes = filterConcepts(question.concepts);
+    extendState.linkedResponseSets = question.responseSets;
+    extendState.version = 1;
+    extendState.parentId  = question.id;
+    extendState.oid = '';
+    extendState.harmonized = false;
+    extendState.versionIndependentId = null;
+    return reviseState;
+  }
+
   render(){
     const {question, questionTypes, responseSets, responseTypes, routes} = this.props;
     const state = this.state;
@@ -152,15 +175,6 @@ class QuestionForm extends Component{
       return (<div>Loading....</div>);
     }
 
-    let submitText = "Create Question";
-    let titleText  = "New Question";
-    if (this.props.action === 'revise') {
-      submitText = "Revise Question";
-      titleText  = "Revise Question";
-    } else if (this.props.action === 'edit') {
-      submitText = "Edit Draft";
-      titleText  = "Edit Draft";
-    }
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
       <ModalDialog  show={this.state.showModal}
@@ -182,7 +196,7 @@ class QuestionForm extends Component{
           <div>
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">{titleText}</h3>
+                <h3 className="panel-title">{`${this.actionWord()} Question`}</h3>
               </div>
               <div className="panel-body">
               <div className="row">
@@ -248,7 +262,7 @@ class QuestionForm extends Component{
 
               <div className="panel-footer">
                 <div className="actions form-group">
-                  <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
+                  <button type="submit" name="commit" className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
                   {this.publishButton()}
                   {this.deleteButton()}
                   {this.cancelButton()}
@@ -301,6 +315,11 @@ class QuestionForm extends Component{
         this.props.router.push(`/questions`);
       }
     });
+  }
+
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit Draft of'};
+    return wordMap[this.props.action];
   }
 
   handleSubmit(event) {
