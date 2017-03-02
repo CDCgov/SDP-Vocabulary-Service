@@ -223,25 +223,18 @@ class QuestionForm extends Component{
                 </div>
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
-                  <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
-                    {responseTypes && _.values(responseTypes).map((rt) => {
-                      return (<option key={rt.id} value={rt.id}>{rt.name}</option>);
-                    })}
-                  </select>
-                </div>
-                <div className="col-md-8 question-form-group">
-                  <label className="input-label" htmlFor="harmonized">Harmonized: </label>
-                  <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggelHarmonized()} />
-                </div>
-
-                <div className="col-md-4 question-form-group">
-                    <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
                       {_.values(responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id}>{rt.name} - {rt.description}</option>);
                       })}
                     </select>
                 </div>
+                <div className="col-md-8 question-form-group">
+                  <label className="input-label" htmlFor="harmonized">Harmonized: </label>
+                  <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggelHarmonized()} />
+                </div>
+
+
               </div>
 
               <div className="row ">

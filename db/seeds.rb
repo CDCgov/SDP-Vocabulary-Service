@@ -8,7 +8,6 @@
 
 # Setup single user for testing:
 
-
 ResponseType.find_or_create_by code: 'boolean', name: 'Boolean',
                                description: 'Answer is a yes/no answer.'
 ResponseType.find_or_create_by code: 'decimal', name: 'Decimal',
