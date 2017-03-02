@@ -11,14 +11,14 @@ const parentFromQuestions = store => next => action => {
       questions.forEach((q) => {
         if(q.parent){
           //store.dispatch({type: FETCH_QUESTION_FULFILLED, payload: {data: q.parent}});
-          q.parent = ({id: q.parent.id, name: q.parent.name});
+          q.parent = ({id: q.parent.id, name: q.parent.content});
         }
       });
       break;
     case FETCH_QUESTION_FULFILLED:
       if(action.payload.data.parent){
         //store.dispatch({type: FETCH_QUESTION_FULFILLED, payload: {data: action.payload.data.parent}});
-        action.payload.data.parent = ({id: action.payload.data.parent.id, name: action.payload.data.parent.name});
+        action.payload.data.parent = ({id: action.payload.data.parent.id, name: action.payload.data.parent.content});
       }
   }
 

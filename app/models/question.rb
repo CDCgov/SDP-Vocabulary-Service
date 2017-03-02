@@ -12,7 +12,7 @@ class Question < ApplicationRecord
   belongs_to :question_type
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
-  belongs_to :parent, class_name: 'ResponseSet'
+  belongs_to :parent, class_name: 'Question'
 
   validates :content, presence: true
   accepts_nested_attributes_for :concepts, allow_destroy: true

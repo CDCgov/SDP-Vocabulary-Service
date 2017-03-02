@@ -45,9 +45,9 @@ class QuestionShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <QuestionDetails question={this.props.question} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
+            <QuestionDetails question={this.props.question} publishButton={this.publishQuestionButton()} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
+
             <div className="col-md-12 showpage-comments-title">Comments:</div>
-            {this.publishQuestionButton()}
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>
         </div>
