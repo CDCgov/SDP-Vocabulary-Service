@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class ResponseSetTest < ActiveSupport::TestCase
-  DRAFT = 'draft'
-  PUBLISHED = 'published'
-  
+  DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
+
   setup do
     @user = users(:admin)
   end

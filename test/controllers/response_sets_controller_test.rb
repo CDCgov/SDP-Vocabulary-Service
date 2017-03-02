@@ -3,6 +3,8 @@ require 'test_helper'
 class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+  DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
   setup do
     @response_set  = response_sets(:one)
     @response_set2 = response_sets(:two)
@@ -10,6 +12,39 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     @resp2 = responses(:two)
     @current_user = users(:admin)
     sign_in @current_user
+  end
+
+  test 'new rs should be draft' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal DRAFT, ResponseSet.last.status
+  end
+
+  test 'revised rs should be draft' do
+    assert true
+  end
+
+  test 'should be able to publish a draft rs' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    ResponseSet.last.publish
+    assert_equal PUBLISHED, ResponseSet.last.status
+  end
+
+  test 'should be able to delete a draft rs' do
+    assert true
+  end
+
+  test 'should not be able to delete a published rs' do
+    assert true
+  end
+
+  test 'should be able to update a draft rs' do
+    assert true
+  end
+
+  test 'should not be able to update a published rs' do
+    assert true
   end
 
   test 'should get index' do
