@@ -4,7 +4,7 @@ import LogInModal from '../components/accounts/LogInModal';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SettingsModal from '../components/accounts/SettingsModal';
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router';
 import { fetchCurrentUser, logIn, signUp, updateUser } from '../actions/current_user_actions';
 import currentUserProps from '../prop-types/current_user_props';
 
@@ -56,7 +56,7 @@ class App extends Component {
           <div className="container">
             2016 Centers for Disease Control and Prevention. All rights reserved.
             <div className="nav-links">
-              <span href="#">Privacy</span>
+              <Link to="/privacy">Privacy</Link>
               <span href="#">Security</span>
               <span href="#">Terms of Service</span>
             </div>
