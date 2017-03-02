@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 one:
   content: What is your gender?
-  status: draft
   created_by: admin
   question_type: one
   version: 1
