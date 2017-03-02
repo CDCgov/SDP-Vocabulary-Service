@@ -23,9 +23,9 @@ class NotificationTest < ActiveSupport::TestCase
 
   test 'can delete notification' do
     note = Notification.first
-    count = Notification.count
-    note.destroy
-    assert_equal count - 1, Notification.count
+    assert_difference('Notification.count', -1) do
+      note.destroy
+    end
   end
 
   test 'can mark notification as read' do

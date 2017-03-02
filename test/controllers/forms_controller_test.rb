@@ -38,7 +38,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'should get redcap export ' do
     get redcap_form_url(@form)
     assert response.headers['Content-Disposition'].index("filename=\"#{@form.name.underscore}_redcap.xml\"")
-    valiedate_redcap(response.body)
+    validate_redcap(response.body)
     assert_response :success
   end
 
@@ -59,7 +59,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
 
   private
 
-  def valiedate_redcap(xml)
+  def validate_redcap(xml)
     doc = Nokogiri::XML::Document.parse(xml)
     doc.root.add_namespace_definition('odm', 'http://www.cdisc.org/ns/odm/v1.3')
     doc.root.add_namespace_definition('ds', 'http://www.w3.org/2000/09/xmldsig#')

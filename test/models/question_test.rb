@@ -2,9 +2,10 @@ require 'test_helper'
 
 class QuestionTest < ActiveSupport::TestCase
   test 'Question should allow type to be set' do
-    question = Question.new
+    question = Question.new(content: 'content')
     type = QuestionType.new(name: 'TestName')
     question.question_type = type
+    assert question.save
     assert_equal question.question_type, type
   end
 
@@ -14,34 +15,41 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   test 'latest versions' do
-    assert_equal 4, Question.latest_versions.count
+    assert Question.latest_versions.count < Question.all.count
+  end
+
+  test 'versions must be unique' do
+    q1 = Question.new(content: 'content')
+    assert q1.save
+    q2 = Question.new(content: 'content', version: 1, version_independent_id: q1.version_independent_id)
+    assert_not q2.save
+    q2.version = 2
+    assert q2.save
   end
 
   test 'search' do
-    assert 4, Question.count
     found = Question.search('gender')
-    assert 1, found.count
-    assert 'What is your gender?', found.first.content
+    assert found.count.between?(0, Question.count)
+    assert_equal 'What is your gender?', found.first.content
   end
 
   test 'build_new_revision' do
-    qs = questions(:gfv2)
-    revision = qs.build_new_revision
-    assert_equal 3, revision.version
-    assert_equal 'Q-3', revision.version_independent_id
-    assert_equal 2, revision.concepts.length
+    q = questions(:gfv2)
+    revision = q.build_new_revision
+    assert_equal q.version + 1, revision.version
+    assert_equal q.version_independent_id, revision.version_independent_id
+    assert_equal q.concepts.length, revision.concepts.length
   end
 
   test 'New Questions should always begin as drafts' do
-    question = Question.new
-    assert_equal 'draft', question.status
+    assert_equal 'draft', Question.new.status
   end
 
   test 'last_published' do
-    assert_equal 0, Question.last_published.count
-    assert_equal 4, Question.latest_versions.count
-    Question.last.publish
-    assert_equal 1, Question.last_published.count
+    q = questions(:one)
+    assert_difference('Question.last_published.count') do
+      assert q.publish
+    end
   end
 
   test 'Question status should change to published when published' do
@@ -52,52 +60,50 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   test 'Question should only ever have one draft' do
-    # assert false
     assert true
   end
 
   test 'assign_new_oids' do
     prefix = Question.oid_prefix
 
-    q = Question.new(id: 3, content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q.id = 3
-    q.save
-    assert_equal 1, q.version
-    assert_equal 'Q-3', q.version_independent_id
-    assert_equal "#{prefix}.3", q.oid
+    q1 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
+    assert q1.save
+    assert_equal 1, q1.version
+    assert_equal "Q-#{q1.id}", q1.version_independent_id
+    assert_equal "#{prefix}.#{q1.id}", q1.oid
 
-    q = Question.new(id: 4, content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q.oid = "#{prefix}.3"
-    assert_not q.valid?
-    q.oid = "#{prefix}.4"
-    assert q.valid?
-    q.save
-
-    q = Question.new(id: 5, content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q.oid = "#{prefix}.7"
-    q.save
-
-    q = Question.new(id: 6, content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q.oid = "#{prefix}.9"
-    q.save
-
-    # Should find next available oid which is .8 NOT .10
-    q = Question.new(id: 7, content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q.save
-    assert_equal "#{prefix}.8", q.oid
-
-    # Should follow special validation rules for new versions
     q2 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q2.version_independent_id = q.version_independent_id
-    q2.version = 2
-    q2.save
-    assert_equal q.oid, q2.oid
+    q2.oid = "#{prefix}.#{q1.id}"
+    assert_not q2.valid?
+    q2.oid = "#{prefix}.#{q1.id + 1}"
+    assert q2.valid?
+    assert q2.save
 
     q3 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q3.version_independent_id = q.version_independent_id
-    q3.version = 3
-    q3.oid = q.oid
-    q3.save
-    assert_equal q.oid, q3.oid
+    q3.oid = "#{prefix}.#{q2.id + 3}"
+    assert q3.save
+
+    q4 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
+    q4.oid = "#{prefix}.#{q2.id + 5}"
+    assert q4.save
+
+    # Should find next available oid which is q2.id+4 NOT q2.id+5
+    q5 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
+    assert q5.save
+    assert_equal "#{prefix}.#{q2.id + 4}", q5.oid
+
+    # Should follow special validation rules for new versions
+    q6 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
+    q6.version_independent_id = q1.version_independent_id
+    q6.version = q1.version + 1
+    assert q6.save
+    assert_equal q1.oid, q6.oid
+
+    q7 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
+    q7.version_independent_id = q1.version_independent_id
+    q7.version = q1.version + 2
+    q7.oid = q1.oid
+    assert q7.save
+    assert_equal q1.oid, q7.oid
   end
 end
