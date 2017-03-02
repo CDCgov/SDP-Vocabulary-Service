@@ -13,7 +13,22 @@ This service is designed as part of the SDP and other services are available thr
 
 The SDP Vocabulary Service requires: Ruby (version 2.3 or later), bundler (version 1.13.6 or later), Node.js (version 5.5 or later) and Postgres (version 9.6 or later).
 
-### Install Dependencies
+### Install Elasticsearch
+
+The service relies on an Elasticsearch index for searching content in the application.
+Information pertaining to downloading and installtion Elasticsearch can be found [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html)
+
+By default, the Vocabulary Service expects the Elasticsearch server to be running locally on the same system and accessible  via 127.0.0.1 on port 9200.  This can be configured in the config/settings.yml file by providing host and port parameters in the elasticsearch section of the configuration.   
+
+Please note that the config/settings.yml file works inconjuntion with the files in the config/settings directory.  Each file in said directory provides overrides for any given Rails environment that the service will be run in.  In addition, another settings file, config/settings.local.yml, which is not checked into the repository, provides local developer overrides for all environments.  So the hierarchy of settings files goes config/settings.yml -> config/settings/(environment).yml -> config/settings.local.yml
+
+### Install Concept Service
+
+While not absolutely critical for the Vocabulary Service to function, the Concept Service provides users the ability to look up codes in different code systems for different tasks inside the application.  These tasks can also be preformed by manual entry so the lookup service is a convenience function for a better end user experience.  Installation of the Concept Service can be found in [here](https://github.com/CDCgov/concept-dictionary-manager)
+
+Configuration the configuration url for the concept service is provided in the config/settings.yml file.  Note the same settings overrides described in the Ealsticsearch section apply here as well.
+
+### Install Service library Dependencies
 
     bundle install
     npm install
@@ -31,11 +46,11 @@ Running the tests requires phantomjs (version 2.1.1 or later) to be installed.
 
     foreman start webpack
     rake
-    
+
 ### Start the Service
 
     foreman start -p 3000
-    
+
 ### Developer Notes
 
 This application manages assets, such as JavaScript and CSS/SCSS with [webpack](https://webpack.github.io/). All development of assets should be done in the webpack folder.
@@ -46,7 +61,7 @@ This application manages assets, such as JavaScript and CSS/SCSS with [webpack](
 To regenerate the ERD from the Rails database models, first install graphviz, then:
 
     rake generate_erd
-    
+
 ## Public Domain
 This project constitutes a work of the United States government and is not subject to domestic copyright protection under 17 USC Section 105. This project is in the public domain within the United States, and copyright related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/). All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
 
