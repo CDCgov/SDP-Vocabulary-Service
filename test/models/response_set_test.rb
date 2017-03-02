@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class ResponseSetTest < ActiveSupport::TestCase
+  DRAFT = 'draft'
+  PUBLISHED = 'published'
+  
   setup do
     @user = users(:admin)
   end
@@ -34,6 +37,13 @@ class ResponseSetTest < ActiveSupport::TestCase
 
     rs.source = 'NLM VSAC'
     assert !rs.valid?, 'Response set should not be valid with source something other than local or PHIN_VADS'
+  end
+
+  test 'publish' do
+    rs1 = ResponseSet.new
+    assert_equal DRAFT, rs1.status
+    rs1.publish
+    assert_equal PUBLISHED, rs1.status
   end
 
   test 'latest_versions' do
