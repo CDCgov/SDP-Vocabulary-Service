@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import Errors from './Errors';
 import { responseSetProps } from '../prop-types/response_set_props';
@@ -91,6 +92,13 @@ export default class ResponseSetForm extends Component {
       version, versionIndependentId, parentId, showModal};
   }
 
+  cancelButton() {
+    if (this.props.responseSet && this.props.responseSet.id) {
+      return(<Link className="btn btn-default" to={`/responseSets/${this.props.responseSet.id}`}>Cancel</Link>);
+    }
+    return(<Link className="btn btn-default" to='/responseSets/'>Cancel</Link>);
+  }
+
   render() {
     let titleText  = "New Response Set";
     if (this.props.responseSet.versionIndependentId) {
@@ -155,7 +163,7 @@ export default class ResponseSetForm extends Component {
                 <div className="panel-footer">
 
                     <input className=" btn btn-default " type="submit" value={`${this.actionWord()} Response Set`}/>
-
+                {this.cancelButton()}
             </div>
           </div>
         </div>

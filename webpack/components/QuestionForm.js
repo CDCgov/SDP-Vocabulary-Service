@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { Draggable, Droppable } from './Draggable';
 import Errors from './Errors';
 import ResponseSetWidget from './ResponseSetWidget';
@@ -250,7 +251,7 @@ class QuestionForm extends Component{
                   <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
                   {this.publishButton()}
                   {this.deleteButton()}
-                  <a className="btn btn-default" href={routes.questionsPath()}>Cancel</a>
+                  {this.cancelButton()}
                 </div>
               </div>
 
@@ -261,6 +262,14 @@ class QuestionForm extends Component{
       </form>
     );
   }
+
+  cancelButton() {
+    if (this.props.question && this.props.question.id) {
+      return(<Link className="btn btn-default" to={`/questions/${this.props.question.id}`}>Cancel</Link>);
+    }
+    return(<Link className="btn btn-default" to='/questions/'>Cancel</Link>);
+  }
+
   publishButton() {
     if (this.props.action === 'edit') {
       return (
