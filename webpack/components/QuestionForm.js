@@ -154,7 +154,7 @@ class QuestionForm extends Component{
       showModal: false
     };
   }
-
+  //not working because of map => questionType
   stateForExtend(question) {
     var extendState = {};
     _.forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
@@ -165,7 +165,7 @@ class QuestionForm extends Component{
     extendState.oid = '';
     extendState.harmonized = false;
     extendState.versionIndependentId = null;
-    return reviseState;
+    return extendState;
   }
 
   render(){
@@ -209,7 +209,7 @@ class QuestionForm extends Component{
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
                       <select className="input-format" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
-                        {_.values(questionTypes).map((qt) => {
+                        {questionTypes && _.values(questionTypes).map((qt) => {
                           return <option key={qt.id} value={qt.id}>{qt.name}</option>;
                         })}
                       </select>
@@ -224,7 +224,7 @@ class QuestionForm extends Component{
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
                   <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
-                    {_.values(responseTypes).map((rt) => {
+                    {responseTypes && _.values(responseTypes).map((rt) => {
                       return (<option key={rt.id} value={rt.id}>{rt.name}</option>);
                     })}
                   </select>
@@ -249,14 +249,14 @@ class QuestionForm extends Component{
                   <div className="col-md-6 question-form-group">
                     <label htmlFor="linked_response_sets">Response Sets</label>
                       <div name="linked_response_sets">
-                        {_.values(responseSets).map((rs, i) => {
+                        {responseSets && _.values(responseSets).map((rs, i) => {
                           return <DraggableResponseSet key={i} responseSet={rs} routes={routes}/>;
                         })}
                       </div>
                   </div>
                   <div className="col-md-6 drop-target selected_response_sets">
                     <label htmlFor="selected_response_sets">Selected Response Sets</label>
-                    <DroppableTarget handleResponseSetsChange={this.handleResponseSetsChange} selectedResponseSets={question.responseSets.map((id) => this.props.responseSets[id])} routes={routes}/>
+                    <DroppableTarget handleResponseSetsChange={this.handleResponseSetsChange} selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} routes={routes}/>
                   </div>
               </div>
 

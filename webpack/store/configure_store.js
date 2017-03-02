@@ -6,6 +6,7 @@ import questionsFromResponseSets from '../middleware/questions_from_response_set
 import questionsFromForms from '../middleware/questions_from_forms';
 import responseSetsFromQuestions from '../middleware/response_sets_from_questions';
 import parentFromResponseSets from '../middleware/parent_from_response_sets';
+import parentFromQuestions from '../middleware/parent_from_questions';
 import responseTypesFromQuestions from '../middleware/response_types_from_questions';
 import questionTypesFromQuestions from '../middleware/question_types_from_questions';
 
@@ -19,6 +20,7 @@ export default function configureStore(initialState) {
     questionsFromForms,
     responseSetsFromQuestions,
     parentFromResponseSets,
+    parentFromQuestions,
     responseTypesFromQuestions,
     questionTypesFromQuestions
   );
