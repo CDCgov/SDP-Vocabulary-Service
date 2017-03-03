@@ -68,10 +68,7 @@ class ResponseSetsController < ApplicationController
   def destroy
     if @response_set.status == 'draft'
       @response_set.destroy
-      respond_to do |format|
-        format.html { redirect_to response_sets_url, notice: 'Response set was successfully destroyed.' }
-        format.json { render { head :no_content } }
-      end
+      render json: @response_set
     else
       render json: @response_set.errors, status: :unprocessable_entity
     end

@@ -19,10 +19,11 @@ Rails.application.routes.draw do
   get '/my_response_sets' => 'response_sets#my_response_sets'
 
   resources :form_questions
-  resources :forms, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
+  resources :forms, except: [:edit] do
     get :revise, on: :member
     get :export, on: :member
     get :redcap, on: :member
+    put :publish, on: :member
   end
   resources :question_response_sets
   resources :responses
@@ -36,8 +37,9 @@ Rails.application.routes.draw do
   end
   resources :question_types
 
-  resources :response_sets, except: [:edit, :update] do # No editing/updating on response sets, we only revise them
+  resources :response_sets, except: [:edit] do
     get :revise, on: :member
+    put :publish, on: :member
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications
