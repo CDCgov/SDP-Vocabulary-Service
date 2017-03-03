@@ -93,7 +93,7 @@ class ResponseSetTest < ActiveSupport::TestCase
     rs = ResponseSet.new(name: 'Test', created_by: @user)
     rs.id = 5
     rs.oid = "#{prefix}.8"
-    asssert rs.save
+    assert rs.save
 
     # Should find next available oid which is .7 NOT .9
     rs = ResponseSet.new(name: 'Test', created_by: @user)
