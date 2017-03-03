@@ -41,10 +41,36 @@ class FormsController < ApplicationController
     @form.form_questions = create_form_questions(params[:form][:linked_questions], params[:form][:linked_response_sets])
     respond_to do |format|
       if @form.save
-        format.html { redirect_to @form, notice: save_message(@form) }
         format.json { render :show, status: :created, location: @form }
       else
         format.json { render json: @form.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /forms/1
+  # PATCH/PUT /forms/1.json
+  def update
+    if @form.status == 'published'
+      render json: { status: 'Published forms cannot be updated.' }, status: :unprocessable_entity
+    else
+      update_successful = nil
+      @form.transaction do
+        # @form.updated_by = current_user
+        @form.form_questions.destroy_all
+        create_form_questions(params[:question_ids], params[:response_set_ids])
+        # When we assign update_successful, it is the last expression in the block
+        # That means, if the form fails to update, this block will return false,
+        # which will cause the transaction to rollback.
+        # Otherwise, we have killed all FormQuestions, without replacing them.
+        update_successful = @form.update(form_params)
+      end
+      respond_to do |format|
+        if update_successful
+          format.json { render :show, status: :ok, location: @question }
+        else
+          format.json { render json: @form.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

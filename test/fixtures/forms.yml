@@ -6,12 +6,14 @@ one:
   version_independent_id: F-1
   created_by: admin
   control_number: 1234-5678
+  status: published
   oid: 2.16.840.1.113883.3.1502.1.1
 
 two:
   name: MyString
   created_by: admin
   version: 1
+  status: published
   version_independent_id: F-2
 
 three:
@@ -19,3 +21,10 @@ three:
   created_by: not_admin
   version: 1
   version_independent_id: F-3
+
+draft:
+  name: DraftForm
+  created_by: admin
+  version: 1
+  status: draft
+  version_independent_id: F-4

@@ -34,8 +34,31 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should update a form' do
+    assert_enqueued_jobs 0
+
+    draft_form = forms(:draft)
+
+    form_json = { form: { name: draft_form.name, created_by_id: @form.created_by_id, control_number: '5678-5678' } }.to_json
+    put form_url(draft_form), params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+
+    assert_enqueued_jobs 1
+
+    assert_response :success
+  end
+
   test 'should show form' do
     get form_url(@form), xhr: true, params: nil
+    assert_response :success
+  end
+
+  test 'should not publish an already published form' do
+    put publish_form_url(@form), xhr: true, params: nil
+    assert_response :unprocessable_entity
+  end
+
+  test 'should publish a draft form' do
+    put publish_form_url(forms(:draft)), xhr: true, params: nil
     assert_response :success
   end
 
