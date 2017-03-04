@@ -14,7 +14,6 @@ Rails.application.routes.draw do
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
   resources :authentications
 
-  get '/mystuff'  => 'mystuff#index'
   get '/my_forms' => 'forms#my_forms'
   get '/my_questions' => 'questions#my_questions'
   get '/my_response_sets' => 'response_sets#my_response_sets'

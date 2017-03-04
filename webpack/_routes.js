@@ -525,9 +525,6 @@ Based on Rails routes of Vocabulary::Application
 // my_response_sets => /my_response_sets(.:format)
   // function(options)
   my_response_sets_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"my_response_sets",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
-// mystuff => /mystuff(.:format)
-  // function(options)
-  mystuff_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"mystuff",false],[1,[2,[8,".",false],[3,"format",false]],false]]], {}),
 // new_authentication => /authentications/new(.:format)
   // function(options)
   new_authentication_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"authentications",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
