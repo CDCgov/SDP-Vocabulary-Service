@@ -48,7 +48,7 @@ let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
           <li className="dropdown">
             <a href="#" id="account-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="#"> My Stuff</a></li>
+              <li><Link to='/mystuff'>My Stuff</Link></li>
               <li><a href="#" onClick={() => {
                 settingsOpener();
                 return false;

@@ -8,12 +8,21 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     @response_set2 = response_sets(:two)
     @resp  = responses(:one)
     @resp2 = responses(:two)
-    sign_in users(:admin)
+    @current_user = users(:admin)
+    sign_in @current_user
   end
 
   test 'should get index' do
     get response_sets_url, xhr: true, params: nil
     assert_response :success
+  end
+
+  test 'should get my response sets' do
+    get my_response_sets_url, xhr: true, params: nil
+    assert_response :success
+    JSON.parse(response.body).each do |f|
+      assert f['created_by_id'] == @current_user.id
+    end
   end
 
   test 'should create response_set' do

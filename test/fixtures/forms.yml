@@ -13,3 +13,9 @@ two:
   created_by: admin
   version: 1
   version_independent_id: F-2
+
+three:
+  name: MyString
+  created_by: not_admin
+  version: 1
+  version_independent_id: F-3

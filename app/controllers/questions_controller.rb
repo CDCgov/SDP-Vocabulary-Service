@@ -4,7 +4,14 @@ class QuestionsController < ApplicationController
   # GET /questions.json
   def index
     @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
-    # @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.last_published
+  end
+
+  def my_questions
+    @questions = if params[:search]
+                   Question.where(created_by_id: current_user.id).search(params[:search]).latest_versions
+                 else
+                   Question.where(created_by_id: current_user.id).latest_versions
+                 end
   end
 
   # GET /questions/1

@@ -5,12 +5,21 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
   setup do
     @form = forms(:one)
-    sign_in users(:admin)
+    @current_user = users(:admin)
+    sign_in @current_user
   end
 
   test 'should get index' do
     get forms_url, xhr: true, params: nil
     assert_response :success
+  end
+
+  test 'should get my forms' do
+    get my_forms_url, xhr: true, params: nil
+    assert_response :success
+    JSON.parse(response.body).each do |f|
+      assert f['created_by_id'] == @current_user.id
+    end
   end
 
   test 'should create form' do

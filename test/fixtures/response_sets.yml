@@ -14,6 +14,13 @@ two:
   version_independent_id: RS-2
   created_by_id: admin
 
+three:
+  name: Gender Full
+  description: M/F/NA
+  version: 1
+  version_independent_id: RS-3
+  created_by_id: not_admin
+
 gfv2:
   name: Gender Full
   description: Tweak

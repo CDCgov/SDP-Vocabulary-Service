@@ -8,6 +8,14 @@ class FormsController < ApplicationController
     @users = User.all
   end
 
+  def my_forms
+    @forms = if params[:search]
+               Form.where(created_by_id: current_user.id).search(params[:search]).latest_versions
+             else
+               Form.where(created_by_id: current_user.id).latest_versions
+             end
+  end
+
   # GET /forms/1
   # GET /forms/1.json
   def show
