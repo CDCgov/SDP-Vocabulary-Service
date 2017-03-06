@@ -56,10 +56,15 @@ class ResponseSetsController < ApplicationController
   def update
     if @response_set.status == 'draft'
       @response_set.updated_by = current_user
-      if @response_set.update(response_set_params)
-        render :show, status: :ok, location: @response_set
-      else
-        render json: @response_set.errors, status: :unprocessable_entity
+
+      respond_to do |format|
+        if @response_set.update(response_set_params)
+          format.html { redirect_to @response_set, notice: 'Reponse set was successfully updated.' }
+          format.json { render :show, status: :ok, location: @response_set }
+        else
+          format.html { render :edit }
+          format.json { render json: @response_set.errors, status: :unprocessable_entity }
+        end
       end
     else
       render json: @response_set.errors, status: :unprocessable_entity
