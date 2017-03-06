@@ -22,7 +22,7 @@ class QuestionWidget extends Component {
   dropdownMenu(){
     if(this.props.currentUser && this.props.currentUser.id){
       return (
-        <ul className="dropdown-menu">
+        <ul className="dropdown-menu dropdown-menu-right">
           <li>
             <Link to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
           </li>
@@ -33,7 +33,7 @@ class QuestionWidget extends Component {
       );
     }else{
       return (
-        <ul className="dropdown-menu">
+        <ul className="dropdown-menu dropdown-menu-right">
           <li>
             <Link to={`/questions/${this.props.question.id}`}>Details</Link>
           </li>

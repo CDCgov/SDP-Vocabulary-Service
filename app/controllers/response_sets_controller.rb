@@ -7,6 +7,15 @@ class ResponseSetsController < ApplicationController
     @response_sets = params[:search] ? ResponseSet.search(params[:search]).latest_versions : ResponseSet.latest_versions
   end
 
+  def my_response_sets
+    @response_sets = if params[:search]
+                       ResponseSet.where(created_by_id: current_user.id).search(params[:search]).latest_versions
+                     else
+                       ResponseSet.where(created_by_id: current_user.id).latest_versions
+                     end
+    render action: :index, collection: @response_sets
+  end
+
   # GET /response_sets/1
   # GET /response_sets/1.json
   def show

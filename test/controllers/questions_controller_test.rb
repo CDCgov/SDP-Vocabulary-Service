@@ -16,6 +16,14 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get my questions' do
+    get my_questions_url, xhr: true, params: nil
+    assert_response :success
+    JSON.parse(response.body).each do |f|
+      assert f['created_by']['id'] == @current_user.id
+    end
+  end
+
   test 'should create a draft question' do
     assert_enqueued_jobs 0
     assert_difference('Question.count') do
