@@ -42,7 +42,10 @@ class ResponseSetsController < ApplicationController
   def publish
     if @response_set.status == 'draft'
       @response_set.publish
-      render :show, status: :published, location: @response_set
+      respond_to do |format|
+        format.html { redirect_to @response_set, notice: 'Draft question published' }
+        format.json { render :show, statis: :published, location: @response_set }
+      end
     else
       render json: @response_set.errors, status: :unprocessable_entity
     end
