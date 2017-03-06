@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import {formProps} from '../prop-types/form_props';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
@@ -168,6 +169,13 @@ class FormEdit extends Component {
     });
   }
 
+  cancelButton() {
+    if(this.props.form && this.props.form.id) {
+      return(<Link className="btn btn-default pull-right" to={`/forms/${this.props.form.id}`}>Cancel</Link>);
+    }
+    return(<Link className="btn btn-default pull-right" to='/forms/'>Cancel</Link>);
+  }
+
   render() {
     return (
       <div className="col-md-6">
@@ -193,6 +201,7 @@ class FormEdit extends Component {
 
             <input className='btn btn-default pull-right' name={`${this.props.action||'New'} Form`} type="submit" value={`Save`}/>
             <button className="btn btn-default pull-right" disabled>Export</button>
+            {this.cancelButton()}
           </div>
         <div className="row">
           <div className="col-md-12">
