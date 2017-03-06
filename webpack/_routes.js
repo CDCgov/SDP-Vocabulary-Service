@@ -541,9 +541,15 @@ Based on Rails routes of Vocabulary::Application
 // landing_stats => /landing/stats(.:format)
   // function(options)
   landing_stats_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"landing",false],[2,[7,"/",false],[2,[6,"stats",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// mystuff => /mystuff(.:format)
+// my_forms => /my_forms(.:format)
   // function(options)
-  mystuff_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"mystuff",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+  my_forms_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"my_forms",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// my_questions => /my_questions(.:format)
+  // function(options)
+  my_questions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"my_questions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// my_response_sets => /my_response_sets(.:format)
+  // function(options)
+  my_response_sets_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"my_response_sets",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // new_authentication => /authentications/new(.:format)
   // function(options)
   new_authentication_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"authentications",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
