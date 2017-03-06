@@ -4,7 +4,8 @@ import {
   FETCH_FORMS,
   FETCH_FORM,
   SAVE_FORM,
-  CREATE_FORM
+  CREATE_FORM,
+  PUBLISH_FORM
 } from './types';
 import { getCSRFToken } from './index';
 
@@ -49,6 +50,15 @@ export function fetchForm(id) {
         'Accept': 'application/json'
       }
     })
+  };
+}
+
+export function publishForm(id) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: PUBLISH_FORM,
+    payload: axios.put(routes.publishFormPath(id),
+     {authenticityToken}, {headers: { 'Accept': 'application/json'}})
   };
 }
 

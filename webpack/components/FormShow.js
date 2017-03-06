@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {formProps} from '../prop-types/form_props';
 import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
@@ -46,6 +46,12 @@ class FormShow extends Component {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
+          {this.props.currentUser && this.props.currentUser.id && form.status === 'draft' &&
+              <a className="btn btn-default" href="#" onClick={() => {
+                this.props.publishForm(form.id);
+                return false;
+              }}>Publish</a>
+          }
           {this.props.currentUser && this.props.currentUser.id && form.mostRecent == form.version &&
               <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
           }
@@ -74,7 +80,8 @@ class FormShow extends Component {
 
 FormShow.propTypes = {
   currentUser: currentUserProps,
-  form: formProps
+  form: formProps,
+  publishForm: PropTypes.func
 };
 
 export default FormShow;

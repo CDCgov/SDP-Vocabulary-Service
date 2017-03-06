@@ -90,6 +90,7 @@ class FormsController < ApplicationController
   def publish
     if @form.status == 'draft'
       @form.publish
+      render :show
     else
       render json: @form.errors, status: :unprocessable_entity
     end
