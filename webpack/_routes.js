@@ -570,9 +570,15 @@ Based on Rails routes of Vocabulary::Application
 // notifications_mark_read => /notifications/mark_read(.:format)
   // function(options)
   notifications_mark_read_path: Utils.route([], ["format"], [2,[7,"/",false],[2,[6,"notifications",false],[2,[7,"/",false],[2,[6,"mark_read",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
+// publish_form => /forms/:id/publish(.:format)
+  // function(id, options)
+  publish_form_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // publish_question => /questions/:id/publish(.:format)
   // function(id, options)
   publish_question_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
+// publish_response_set => /response_sets/:id/publish(.:format)
+  // function(id, options)
+  publish_response_set_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]], {}),
 // question => /questions/:id(.:format)
   // function(id, options)
   question_path: Utils.route(["id"], ["format"], [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]], {}),
