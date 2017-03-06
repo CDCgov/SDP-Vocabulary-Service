@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
@@ -8,7 +9,7 @@ import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
 let LoginMenu = ({logInOpener, signUpOpener, currentUser={email:null}}) => {
-  let loggedIn = currentUser ? true : false;
+  let loggedIn = ! _.isEmpty(currentUser);
   if(!loggedIn) {
     return (
       <ul className="nav navbar-nav navbar-right">
@@ -38,7 +39,7 @@ LoginMenu.propTypes = {
 };
 
 let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
-  let loggedIn = currentUser ? true : false;
+  let loggedIn = ! _.isEmpty(currentUser);
   if(loggedIn) {
     let {email} = currentUser;
     return(

@@ -2,7 +2,7 @@ class AuthenticationsController < ApplicationController
   def index
     respond_to do |format|
       format.html { @authentications = current_user.authentications if current_user }
-      format.json { render json: current_user }
+      format.json { render json: current_user || {} }
     end
   end
 
