@@ -14,6 +14,7 @@ class FormsController < ApplicationController
              else
                Form.where(created_by_id: current_user.id).latest_versions
              end
+    render action: :index, collection: @forms
   end
 
   # GET /forms/1

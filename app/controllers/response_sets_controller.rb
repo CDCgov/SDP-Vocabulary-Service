@@ -13,6 +13,7 @@ class ResponseSetsController < ApplicationController
                      else
                        ResponseSet.where(created_by_id: current_user.id).latest_versions
                      end
+    render action: :index, collection: @response_sets
   end
 
   # GET /response_sets/1

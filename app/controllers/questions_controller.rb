@@ -12,6 +12,7 @@ class QuestionsController < ApplicationController
                  else
                    Question.where(created_by_id: current_user.id).latest_versions
                  end
+    render action: :index, collection: @questions
   end
 
   # GET /questions/1
