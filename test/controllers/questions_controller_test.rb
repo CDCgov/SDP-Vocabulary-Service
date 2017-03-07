@@ -5,6 +5,8 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
   DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
+
   setup do
     @question  = questions(:one)
     @question5 = questions(:five)
@@ -60,13 +62,13 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_enqueued_jobs 1
     assert_response :created
-    assert_equal 'draft', Question.last.status
+    assert_equal DRAFT, Question.last.status
     assert_equal 'Unique content', Question.last.content
   end
 
   test 'should update a draft question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
-    assert_equal 'draft', Question.last.status
+    assert_equal DRAFT, Question.last.status
     put question_url(Question.last, format: :json), params: { question: { content: 'new content' } }
     assert_equal 'new content', Question.last.content
   end
@@ -78,9 +80,9 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should be unable to update a published question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
-    assert_equal 'draft', Question.last.status
+    assert_equal DRAFT, Question.last.status
     put publish_question_path(Question.last, format: :json)
-    assert_equal 'published', Question.last.status
+    assert_equal PUBLISHED, Question.last.status
     patch question_url(Question.last, format: :json), params: { question: { content: 'secret content' } }
     assert_response :unprocessable_entity
     assert_nil Question.find_by(content: 'secret content')
@@ -88,16 +90,16 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should publish a draft question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
-    assert_equal 'draft', Question.last.status
+    assert_equal DRAFT, Question.last.status
     put publish_question_path(Question.last, format: :json)
-    assert_equal 'published', Question.last.status
+    assert_equal PUBLISHED, Question.last.status
   end
 
   test 'should fail to destroy a published question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
-    assert_equal 'draft', Question.last.status
+    assert_equal DRAFT, Question.last.status
     put publish_question_path(Question.last, format: :json)
-    assert_equal 'published', Question.last.status
+    assert_equal PUBLISHED, Question.last.status
     assert_response :success
     delete question_url(Question.last)
     assert_response 422
