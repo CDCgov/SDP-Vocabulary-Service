@@ -29,12 +29,10 @@ class ResponseSetsController < ApplicationController
     @response_set.created_by = current_user
     @response_set.updated_by = current_user
 
-    respond_to do |format|
-      if @response_set.save
-        format.json { render :show, status: :created, location: @response_set }
-      else
-        format.json { render json: @response_set.errors, status: :unprocessable_entity }
-      end
+    if @response_set.save
+      render :show, status: :created, location: @response_set
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
     end
   end
 
@@ -42,10 +40,7 @@ class ResponseSetsController < ApplicationController
   def publish
     if @response_set.status == 'draft'
       @response_set.publish
-      respond_to do |format|
-        format.html { redirect_to @response_set, notice: 'Draft question published' }
-        format.json { render :show, statis: :published, location: @response_set }
-      end
+      render :show, statis: :published, location: @response_set
     else
       render json: @response_set.errors, status: :unprocessable_entity
     end
@@ -57,14 +52,10 @@ class ResponseSetsController < ApplicationController
     if @response_set.status == 'draft'
       @response_set.updated_by = current_user
 
-      respond_to do |format|
-        if @response_set.update(response_set_params)
-          format.html { redirect_to @response_set, notice: 'Reponse set was successfully updated.' }
-          format.json { render :show, status: :ok, location: @response_set }
-        else
-          format.html { render :edit }
-          format.json { render json: @response_set.errors, status: :unprocessable_entity }
-        end
+      if @response_set.update(response_set_params)
+        render :show, status: :ok, location: @response_set
+      else
+        render json: @response_set.errors, status: :unprocessable_entity
       end
     else
       render json: @response_set.errors, status: :unprocessable_entity
