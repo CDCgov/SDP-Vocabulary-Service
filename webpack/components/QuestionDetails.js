@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
 import { questionProps } from "../prop-types/question_props";
 import VersionInfo from "./VersionInfo";
 import ResponseSetList from "./ResponseSetList";
@@ -7,7 +6,7 @@ import CodedSetTable from "../components/CodedSetTable";
 import moment from 'moment';
 import _ from 'lodash';
 import Routes from "../routes";
-import { hashHistory } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 import currentUserProps from "../prop-types/current_user_props";
 
 export default class QuestionDetails extends Component {
@@ -64,9 +63,9 @@ export default class QuestionDetails extends Component {
   reviseQuestionButton(){
     if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
       if(this.props.question.status && this.props.question.status == 'draft'){
-        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/edit`}>Edit</a> );
+        return( <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/edit`}>Edit</Link> );
       } else {
-        return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/revise`}>Revise</a> );
+        return( <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link> );
       }
     }
   }
