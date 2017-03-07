@@ -31,6 +31,22 @@ Feature: Manage Forms
     Then I should not see "Publish"
     And I should not see "Revise"
 
+  Scenario: Edit a Draft Form
+    Given I have a Form with the name "Test Form" and the description "Form description"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Forms
+    And I click on the menu link for the Form with the name "Test Form"
+    And I click on the option to View the Form with the name "Test Form"
+    Then I should see "Test Form"
+    Then I should see "Form description"
+    When I click on the "Edit" link
+    And I fill in the "name" field with "Edited Form"
+    And I click on the "Save" button
+    Then I should see "Name: Edited Form"
+    Then I should see "Form description"
+    And I should see "Publish"
+    And I should see "Edit"
+
   Scenario: Revise Form
     Given I have a Form with the name "Test Form" and the description "Form description"
     And I have a Question with the content "What is your gender?" and the type "MC"
@@ -48,6 +64,8 @@ Feature: Manage Forms
     Then I should see "Name: Gender Form"
     Then I should see "Revised Description"
     And I should see "What is your gender?"
+    And I should see "Publish"
+    And I should see "Edit"
 
   Scenario: Reorder Questions
     Given I have a Form with the name "Test Form"

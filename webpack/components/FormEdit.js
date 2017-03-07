@@ -76,6 +76,18 @@ class FormEdit extends Component {
     return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showModal};
   }
 
+  stateForEdit(form) {
+    const id = form.id;
+    const versionIndependentId = form.versionIndependentId;
+    const version = form.version;
+    const name = form.name || '';
+    const description = form.description || '';
+    const formQuestions = form.formQuestions;
+    const controlNumber = form.controlNumber;
+    const showModal = false;
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showModal};
+  }
+
   constructor(props) {
     super(props);
     // This switch is currently effectively a no-op but I retained the structure
@@ -84,6 +96,9 @@ class FormEdit extends Component {
     switch (this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(props.form);
+        break;
+      case 'edit':
+        this.state = this.stateForEdit(props.form);
         break;
       default:
         this.state = this.stateForRevise({});
@@ -159,11 +174,8 @@ class FormEdit extends Component {
     form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
     form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId);
     this.props.formSubmitter(form, (response) => {
-      // TODO: Handle when the saving form fails.
       this.unsavedState = false;
-      if (response.status === 201) {
-        this.props.router.push(`/forms/${response.data.id}`);
-      }
+      this.props.router.push(`/forms/${response.data.id}`);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
     });
@@ -199,7 +211,7 @@ class FormEdit extends Component {
           <div className="form-inline">
             <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span></button>
 
-            <input className='btn btn-default pull-right' name={`${this.props.action||'New'} Form`} type="submit" value={`Save`}/>
+            <input className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
             <button className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>

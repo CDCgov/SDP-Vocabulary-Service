@@ -4,6 +4,7 @@ import {
   FETCH_FORMS,
   FETCH_FORM,
   SAVE_FORM,
+  SAVE_DRAFT_FORM,
   CREATE_FORM,
   PUBLISH_FORM
 } from './types';
@@ -63,19 +64,35 @@ export function publishForm(id) {
 }
 
 export function saveForm(form, successHandler=null, failureHandler=null) {
+  const fn = axios.post;
+  const postPromise = createPostPromise(form, routes.formsPath(), fn, successHandler, failureHandler);
+  return {
+    type: SAVE_FORM,
+    payload: postPromise
+  };
+}
+
+export function saveDraftForm(form, successHandler=null, failureHandler=null) {
+  const fn = axios.put;
+  const postPromise = createPostPromise(form, routes.formPath(form.id), fn, successHandler, failureHandler);
+  return {
+    type: SAVE_DRAFT_FORM,
+    payload: postPromise
+  };
+}
+
+function createPostPromise(form, url, fn, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   form.questionsAttributes = form.questions;
-  const postPromise = axios.post(routes.formsPath(),
+  const postPromise = fn(url,
                       {form, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (successHandler) {
     postPromise.then(successHandler);
   }
-  if (failureHandler ) {
+  if (failureHandler) {
     postPromise.catch(failureHandler);
   }
-  return {
-    type: SAVE_FORM,
-    payload: postPromise
-  };
+
+  return postPromise;
 }

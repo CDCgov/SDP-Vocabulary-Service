@@ -46,14 +46,17 @@ class FormShow extends Component {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
-          {this.props.currentUser && this.props.currentUser.id && form.status === 'draft' &&
+          {this.isPublishable(form) &&
               <a className="btn btn-default" href="#" onClick={() => {
                 this.props.publishForm(form.id);
                 return false;
               }}>Publish</a>
           }
-          {this.props.currentUser && this.props.currentUser.id && form.mostRecent == form.version &&
+          {this.isRevisable(form) &&
               <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
+          }
+          {this.isEditable(form) &&
+              <Link className="btn btn-default" to={`forms/${form.id}/edit`}>Edit</Link>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           {this.props.currentUser && this.props.currentUser.id &&
@@ -75,6 +78,24 @@ class FormShow extends Component {
         </div>
       </div>
     );
+  }
+
+  isRevisable(form) {
+    return this.props.currentUser && this.props.currentUser.id &&
+      form.mostRecent === form.version &&
+      form.status === 'published' &&
+      form.createdById === this.props.currentUser.id;
+  }
+
+  isPublishable(form) {
+    return this.isEditable(form);
+  }
+
+  isEditable(form) {
+    return this.props.currentUser && this.props.currentUser.id &&
+      form.mostRecent === form.version &&
+      form.status === 'draft' &&
+      form.createdById === this.props.currentUser.id;
   }
 }
 

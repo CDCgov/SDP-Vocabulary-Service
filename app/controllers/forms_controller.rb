@@ -58,7 +58,7 @@ class FormsController < ApplicationController
       @form.transaction do
         # @form.updated_by = current_user
         @form.form_questions.destroy_all
-        create_form_questions(params[:question_ids], params[:response_set_ids])
+        @form.form_questions = create_form_questions(params[:form][:linked_questions], params[:form][:linked_response_sets])
         # When we assign update_successful, it is the last expression in the block
         # That means, if the form fails to update, this block will return false,
         # which will cause the transaction to rollback.
