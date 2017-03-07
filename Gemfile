@@ -35,6 +35,10 @@ gem 'elasticsearch'
 gem 'config'
 gem 'httparty'
 
+# Gems to support MMG spreadsheet import
+gem 'roo', '~> 2.4.0'
+gem 'roo-xls', '~> 1.0.0'
+
 group :development, :test do
   gem 'rubocop', '~> 0.44.1', require: false
   gem 'fakeweb', '~> 1.3'
