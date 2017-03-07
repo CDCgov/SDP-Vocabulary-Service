@@ -35,10 +35,13 @@ fake_body = <<-EOS
 }}
 EOS
 FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
+FakeWeb.register_uri(:any, %r{http://concept-manager\..*\.xip\.io}, body: '{}')
 
 Capybara.register_driver :chrome do |app|
   driver =  Capybara::Selenium::Driver.new(app, browser: :chrome)
   adaptor = Capybara::Accessible::SeleniumDriverAdapter.new
+  window = driver.browser.manage.window
+  window.resize_to(1280, 800)
   Capybara::Accessible.setup(driver, adaptor)
 end
 
