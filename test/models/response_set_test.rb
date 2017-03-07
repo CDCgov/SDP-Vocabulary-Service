@@ -37,7 +37,7 @@ class ResponseSetTest < ActiveSupport::TestCase
   end
 
   test 'latest_versions' do
-    assert_equal 2, ResponseSet.latest_versions.count
+    assert_equal 3, ResponseSet.latest_versions.count
   end
 
   test 'build_new_revision' do

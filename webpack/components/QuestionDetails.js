@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { questionProps } from "../prop-types/question_props";
 import VersionInfo from "./VersionInfo";
 import ResponseSetList from "./ResponseSetList";
@@ -70,12 +71,22 @@ export default class QuestionDetails extends Component {
     }
   }
 
+  extendQuestionButton() {
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
+      if(this.props.question.status && this.props.question.status == 'published'){
+        return( <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link> );
+      }
+    }
+  }
+
   mainContent(question, responseSets) {
     return (
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
           <div className="action_bar no-print">
             {this.reviseQuestionButton()}
+            {this.extendQuestionButton()}
+            {this.props.publishButton}
           </div>
         }
         <div className="maincontent-details">
@@ -97,6 +108,12 @@ export default class QuestionDetails extends Component {
               <strong>Harmonized: </strong>
               {question.harmonized ? 'Yes' : 'No'}
             </div>
+            { question.parent &&
+              <div className="box-content">
+                <strong>Extended from: </strong>
+                <Link to={`/questions/${question.parent.id}`}>{ question.parent.name }</Link>
+              </div>
+            }
             {question.questionType && <div className="box-content">
               <strong>Question Type: </strong>
               {question.questionType.name}
@@ -148,5 +165,6 @@ export default class QuestionDetails extends Component {
 QuestionDetails.propTypes = {
   question:  questionProps,
   currentUser:   currentUserProps,
+  publishButton: PropTypes.object,
   responseSets: PropTypes.array
 };

@@ -64,10 +64,11 @@ export default class ResponseSetForm extends Component {
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = responseSet.version + 1;
+    const parentId  = responseSet.parent ? responseSet.parent.id : null;
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
     return {name, oid, description, coded, responsesAttributes,
-      version, versionIndependentId, showModal};
+      version, parentId, versionIndependentId, showModal};
   }
 
   stateForNew() {
@@ -100,11 +101,6 @@ export default class ResponseSetForm extends Component {
   }
 
   render() {
-    let titleText  = "New Response Set";
-    if (this.props.responseSet.versionIndependentId) {
-      titleText  = "Revise Response Set";
-    }
-
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <ModalDialog  show={this.state.showModal}
@@ -125,7 +121,7 @@ export default class ResponseSetForm extends Component {
         <div>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">{titleText}</h3>
+              <h3 className="panel-title">{`${this.actionWord()} Response Set`}</h3>
             </div>
             <div className="panel-body">
                 <div className="row">

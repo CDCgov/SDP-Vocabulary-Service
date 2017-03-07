@@ -44,7 +44,8 @@ class ResponseSet < ApplicationRecord
   def build_new_revision
     new_revision = ResponseSet.new(version_independent_id: version_independent_id,
                                    version: version + 1, description: description,
-                                   status: status, name: name, coded: coded, oid: oid)
+                                   status: status, name: name, coded: coded,
+                                   parent_id: parent_id, oid: oid)
     responses.each do |r|
       new_revision.responses << r.dup
     end

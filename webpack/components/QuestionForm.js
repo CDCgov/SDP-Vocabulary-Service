@@ -75,10 +75,19 @@ class QuestionForm extends Component{
 
   constructor(props) {
     super(props);
-    if(this.props.action === 'new'){
-      this.state = this.stateForNew();
-    }else{
-      this.state = this.stateForRevise(this.props.question);
+
+    switch(this.props.action) {
+      case 'revise':
+        this.state = this.stateForRevise(this.props.question);
+        break;
+      case 'extend':
+        this.state = this.stateForExtend(this.props.question);
+        break;
+      case 'new':
+        this.state = this.stateForNew();
+        break;
+      default:
+        this.state = this.stateForRevise(this.props.question);
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.unsavedState = false;
@@ -127,6 +136,7 @@ class QuestionForm extends Component{
     if (this.props.action === 'revise') {
       reviseState.version += 1;
     }
+    reviseState.parentId  = question.parent ? question.parent.id : null;
     return reviseState;
   }
 
@@ -144,6 +154,19 @@ class QuestionForm extends Component{
       showModal: false
     };
   }
+  //not working because of map => questionType
+  stateForExtend(question) {
+    var extendState = {};
+    _.forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
+    extendState.conceptsAttributes = filterConcepts(question.concepts);
+    extendState.linkedResponseSets = question.responseSets;
+    extendState.version = 1;
+    extendState.parentId  = question.id;
+    extendState.oid = '';
+    extendState.harmonized = false;
+    extendState.versionIndependentId = null;
+    return extendState;
+  }
 
   render(){
     const {question, questionTypes, responseSets, responseTypes, routes} = this.props;
@@ -152,15 +175,6 @@ class QuestionForm extends Component{
       return (<div>Loading....</div>);
     }
 
-    let submitText = "Create Question";
-    let titleText  = "New Question";
-    if (this.props.action === 'revise') {
-      submitText = "Revise Question";
-      titleText  = "Revise Question";
-    } else if (this.props.action === 'edit') {
-      submitText = "Edit Draft";
-      titleText  = "Edit Draft";
-    }
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
       <ModalDialog  show={this.state.showModal}
@@ -182,7 +196,7 @@ class QuestionForm extends Component{
           <div>
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">{titleText}</h3>
+                <h3 className="panel-title">{`${this.actionWord()} Question`}</h3>
               </div>
               <div className="panel-body">
               <div className="row">
@@ -195,7 +209,7 @@ class QuestionForm extends Component{
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
                       <select className="input-format" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
-                        {_.values(questionTypes).map((qt) => {
+                        {questionTypes && _.values(questionTypes).map((qt) => {
                           return <option key={qt.id} value={qt.id}>{qt.name}</option>;
                         })}
                       </select>
@@ -210,7 +224,7 @@ class QuestionForm extends Component{
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
                   <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
-                    {_.values(responseTypes).map((rt) => {
+                    {responseTypes && _.values(responseTypes).map((rt) => {
                       return (<option key={rt.id} value={rt.id}>{rt.name}</option>);
                     })}
                   </select>
@@ -235,20 +249,20 @@ class QuestionForm extends Component{
                   <div className="col-md-6 question-form-group">
                     <label htmlFor="linked_response_sets">Response Sets</label>
                       <div name="linked_response_sets">
-                        {_.values(responseSets).map((rs, i) => {
+                        {responseSets && _.values(responseSets).map((rs, i) => {
                           return <DraggableResponseSet key={i} responseSet={rs} routes={routes}/>;
                         })}
                       </div>
                   </div>
                   <div className="col-md-6 drop-target selected_response_sets">
                     <label htmlFor="selected_response_sets">Selected Response Sets</label>
-                    <DroppableTarget handleResponseSetsChange={this.handleResponseSetsChange} selectedResponseSets={question.responseSets.map((id) => this.props.responseSets[id])} routes={routes}/>
+                    <DroppableTarget handleResponseSetsChange={this.handleResponseSetsChange} selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} routes={routes}/>
                   </div>
               </div>
 
               <div className="panel-footer">
                 <div className="actions form-group">
-                  <button type="submit" name="commit" className="btn btn-default" data-disable-with={submitText}>{submitText}</button>
+                  <button type="submit" name="commit" className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
                   {this.publishButton()}
                   {this.deleteButton()}
                   {this.cancelButton()}
@@ -301,6 +315,11 @@ class QuestionForm extends Component{
         this.props.router.push(`/questions`);
       }
     });
+  }
+
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit Draft of'};
+    return wordMap[this.props.action];
   }
 
   handleSubmit(event) {
