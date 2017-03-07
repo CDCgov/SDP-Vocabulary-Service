@@ -64,6 +64,22 @@ Feature: Manage Questions
     And I should not see "New Concept Name"
     And I should see "Test Concept 2"
 
+  Scenario: Extend Question
+    Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    When I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    And I click on the "Publish" button
+    And I click on the "Extend" button
+    And I fill in the "Description" field with "This is an extended description"
+    And I click on the "Extend Question" button
+    Then I should see "Version: 1"
+    And I should see "Extended from: What is your gender?"
+    And I should see "New Concept"
+    And I should see "This is an extended description"
+    And I should not see "This is a question"
+
   Scenario: Create New Question from List
     Given I have a Response Set with the name "Gender Full"
     And I have a Question Type with the name "Multiple Choice"
