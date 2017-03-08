@@ -79,7 +79,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Form.count', -1) do
       delete form_url(@form)
     end
-    assert_enqueued_jobs 1
+    assert_enqueued_jobs 3
     assert_redirected_to forms_url
   end
 
