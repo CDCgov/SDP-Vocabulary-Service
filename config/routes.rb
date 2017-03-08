@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get '/my_response_sets' => 'response_sets#my_response_sets'
 
   resources :form_questions
-  resources :forms, except: [:edit] do
+  resources :forms, except: [:edit] do # No need for edit as that is handled on the react side
     get :revise, on: :member
     get :export, on: :member
     get :redcap, on: :member

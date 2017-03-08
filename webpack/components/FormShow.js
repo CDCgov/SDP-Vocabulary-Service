@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {formProps} from '../prop-types/form_props';
 import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
@@ -46,8 +46,18 @@ class FormShow extends Component {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
-          {this.props.currentUser && this.props.currentUser.id && form.mostRecent == form.version &&
+          {this.isPublishable(form) &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.publishForm(form.id);
+                return false;
+              }}>Publish</a>
+          }
+          {this.isRevisable(form) &&
               <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
+          }
+          {this.isEditable(form) &&
+              <Link className="btn btn-default" to={`forms/${form.id}/edit`}>Edit</Link>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           {this.props.currentUser && this.props.currentUser.id &&
@@ -70,11 +80,30 @@ class FormShow extends Component {
       </div>
     );
   }
+
+  isRevisable(form) {
+    return this.props.currentUser && this.props.currentUser.id &&
+      form.mostRecent === form.version &&
+      form.status === 'published' &&
+      form.createdById === this.props.currentUser.id;
+  }
+
+  isPublishable(form) {
+    return this.isEditable(form);
+  }
+
+  isEditable(form) {
+    return this.props.currentUser && this.props.currentUser.id &&
+      form.mostRecent === form.version &&
+      form.status === 'draft' &&
+      form.createdById === this.props.currentUser.id;
+  }
 }
 
 FormShow.propTypes = {
   currentUser: currentUserProps,
-  form: formProps
+  form: formProps,
+  publishForm: PropTypes.func
 };
 
 export default FormShow;
