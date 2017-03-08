@@ -47,7 +47,8 @@ class FormShow extends Component {
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
           {this.isPublishable(form) &&
-              <a className="btn btn-default" href="#" onClick={() => {
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
                 this.props.publishForm(form.id);
                 return false;
               }}>Publish</a>
