@@ -37,7 +37,7 @@ Given(/^I have a published Response Set with the name "([^"]*)" and the descript
  the response "([^"]*)"$/) do |set_name, desc, response|
   user = get_user 'test_author@gmail.com'
   rs = ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user,\
-                      responses_attributes: [{ value: '', display_name: response, code_system: '' }])
+                           responses_attributes: [{ value: '', display_name: response, code_system: '' }])
   rs.publish
 end
 
