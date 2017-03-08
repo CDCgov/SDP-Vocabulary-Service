@@ -7,7 +7,7 @@ export default class ResponseSetList extends Component {
     return (
       <div className="response-set-list">
         {_.values(this.props.responseSets).map((rs) => {
-          return <ResponseSetWidget key={rs.id} responseSet={rs} routes={this.props.routes} />;
+          return <ResponseSetWidget key={rs.id} responseSet={rs} />;
         })}
       </div>
     );
@@ -15,6 +15,5 @@ export default class ResponseSetList extends Component {
 }
 
 ResponseSetList.propTypes = {
-  responseSets: PropTypes.object.isRequired,
-  routes: ResponseSetWidget.propTypes.routes.isRequired
+  responseSets: PropTypes.object.isRequired
 };

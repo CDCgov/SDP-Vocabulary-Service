@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { questionProps }  from "../prop-types/question_props";
 import { deleteQuestion } from "../actions/questions_actions";
 import currentUserProps from "../prop-types/current_user_props";
-import allRoutes from '../prop-types/route_props';
 
 class QuestionWidget extends Component {
   constructor(props){
@@ -97,8 +96,7 @@ function mapDispatchToProps(dispatch) {
 QuestionWidget.propTypes = {
   question: questionProps,
   currentUser: currentUserProps,
-  deleteQuestion: PropTypes.func,
-  routes: allRoutes
+  deleteQuestion: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionWidget);

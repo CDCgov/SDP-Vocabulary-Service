@@ -1,13 +1,12 @@
 import { expect, renderComponent } from '../test_helper';
 import FormWidget from '../../../webpack/components/FormWidget';
-import routes from '../mock_routes';
 
 describe('FormWidget', () => {
   let component;
 
   beforeEach(() => {
     const form = {id:1,name:"Bloop",createdBy:{email:"test_author@gmail.com"},createdAt:"2016-12-27T23:40:54.505Z",updatedAt:"2016-12-27T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]};
-    component = renderComponent(FormWidget, {form, routes});
+    component = renderComponent(FormWidget, {form});
   });
 
   it('should create a form block', () => {

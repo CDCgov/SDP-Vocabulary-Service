@@ -1,6 +1,5 @@
 import { expect, renderComponent } from '../test_helper';
 import SearchResult from '../../../webpack/components/SearchResult';
-import routes from '../mock_routes';
 
 describe('SearchResult', () => {
   let qComponent;

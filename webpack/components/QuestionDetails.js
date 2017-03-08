@@ -5,7 +5,6 @@ import ResponseSetList from "./ResponseSetList";
 import CodedSetTable from "../components/CodedSetTable";
 import moment from 'moment';
 import _ from 'lodash';
-import Routes from "../routes";
 import { hashHistory, Link } from 'react-router';
 import currentUserProps from "../prop-types/current_user_props";
 
@@ -138,7 +137,7 @@ export default class QuestionDetails extends Component {
                 <h3 className="panel-title">Linked Response Sets</h3>
               </div>
               <div className="box-content">
-                <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} routes={Routes} />
+                <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} />
               </div>
             </div>
           }

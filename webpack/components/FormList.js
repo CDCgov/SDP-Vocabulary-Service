@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import FormWidget from './FormWidget';
-import allRoutes from '../prop-types/route_props';
 import _ from 'lodash';
 
 class FormList extends Component {
@@ -19,7 +18,7 @@ class FormList extends Component {
 
   renderRow(rowValues, key) {
     let items = _.values(rowValues).map( (aForm) => {
-      return <FormWidget key={aForm.id} form={aForm} routes={this.props.routes} />;
+      return <FormWidget key={aForm.id} form={aForm} />;
     }
     );
 
@@ -34,7 +33,6 @@ class FormList extends Component {
 
 FormList.propTypes = {
   forms: PropTypes.object.isRequired,
-  routes: allRoutes
 };
 
 export default FormList;

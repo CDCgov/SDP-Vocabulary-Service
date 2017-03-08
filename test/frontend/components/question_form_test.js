@@ -1,7 +1,5 @@
-import { expect, renderComponent, createComponent } from '../test_helper';
-import TestUtils from 'react-addons-test-utils';
+import { expect, renderComponent } from '../test_helper';
 import QuestionForm from '../../../webpack/components/QuestionForm';
-import routes from '../mock_routes';
 import MockRouter from '../mock_router';
 
 describe('QuestionForm', () => {
@@ -12,7 +10,6 @@ describe('QuestionForm', () => {
     props  = {
       question: {id: 1, content: "Is this a question?", questionType: "", responseSets: [1], concepts: [{code:"Code 1", display:" Display Name 1", system:"Test system 1"}]},
       router: router,
-      routes: routes,
       questionSubmitter: ()=>{},
       questionTypes: {},
       responseSets:  {1: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"}},

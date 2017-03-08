@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { responseSetProps } from '../prop-types/response_set_props';
+import routes from '../routes';
 
 export default class ResponseSetWidget extends Component {
   render() {
@@ -42,7 +43,7 @@ export default class ResponseSetWidget extends Component {
                       </Link>
                     </li>
                     <li>
-                      <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={this.props.routes.responseSetPath(this.props.responseSet)}>Delete</a>
+                      <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={routes.responseSetPath(this.props.responseSet)}>Delete</a>
                     </li>
                   </ul>
                 </div>
@@ -56,8 +57,5 @@ export default class ResponseSetWidget extends Component {
 }
 
 ResponseSetWidget.propTypes = {
-  responseSet: responseSetProps,
-  routes: PropTypes.shape({
-    responseSetPath: PropTypes.func.isRequired
-  })
+  responseSet: responseSetProps
 };

@@ -1,6 +1,5 @@
 import { expect, renderComponent } from '../test_helper';
 import QuestionDetails from '../../../webpack/components/QuestionDetails';
-import routes from '../mock_routes';
 
 describe('QuestionDetails', () => {
   let component;
@@ -8,7 +7,7 @@ describe('QuestionDetails', () => {
   beforeEach(() => {
     const question = {id: 1, concepts: [], content: "Is this a question?", createdBy: { email: "test@test.com" }, questionType: ""};
     const currentUser = {id: 1, email: "test@test.com"};
-    const responseSets = []
+    const responseSets = [];
     component = renderComponent(QuestionDetails, {question, responseSets, currentUser});
   });
 
