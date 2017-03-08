@@ -234,7 +234,6 @@ class FormEdit extends Component {
               <label htmlFor="controlNumber">OMB Approval:</label>
               <input className="form-control" type="text" value={this.state.controlNumber} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
             </div>
-
           </div>
         </div>
         <AddedQuestions form={this.state}
@@ -242,8 +241,7 @@ class FormEdit extends Component {
           responseSets={this.props.responseSets}
           reorderQuestion={this.props.reorderQuestion}
           removeQuestion={this.props.removeQuestion}
-          handleResponseSetChange={this.handleResponseSetChange(this)}
-          />
+          handleResponseSetChange={this.handleResponseSetChange(this)} />
       </form>
       </div>
       </div>

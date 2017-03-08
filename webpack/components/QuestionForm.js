@@ -189,8 +189,9 @@ class QuestionForm extends Component{
                 </div>
               </div>
 
-              <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange} responseSets={responseSets}
-                selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} />
+              <ResponseSetDragWidget responseSets={responseSets}
+                                     handleResponseSetsChange={this.handleResponseSetsChange}
+                                     selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} />
 
               <div className="panel-footer">
                 <div className="actions form-group">

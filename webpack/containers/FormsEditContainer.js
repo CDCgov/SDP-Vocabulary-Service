@@ -2,10 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
-import { removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions} from '../actions/questions_actions';
+import { removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
-import { fetchResponseSets } from '../actions/response_set_actions';
-import QuestionModalContainer from './QuestionModalContainer';
+import { fetchResponseSets }   from '../actions/response_set_actions';
+import QuestionModalContainer  from './QuestionModalContainer';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
 import { questionProps } from '../prop-types/question_props';
@@ -14,6 +14,7 @@ import {Button} from 'react-bootstrap';
 import _ from 'lodash';
 
 class FormsEditContainer extends Component {
+
   constructor(props) {
     super(props);
     let selectedFormSaver = this.props.saveForm;
@@ -63,7 +64,11 @@ class FormsEditContainer extends Component {
     }
     return (
       <div className="container basic-bg form-edit-container">
-      <QuestionModalContainer showModal={this.state.showQuestionModal} closeQuestionModal={()=>this.setState({showQuestionModal: false})} route={this.props.route} router={this.props.router} saveQuestionSuccess={this.saveQuestionSuccess}/>
+      <QuestionModalContainer showModal={this.state.showQuestionModal}
+                              closeQuestionModal={()=>this.setState({showQuestionModal: false})}
+                              route={this.props.route}
+                              router={this.props.router}
+                              saveQuestionSuccess={this.saveQuestionSuccess}/>
         <div className="row">
           <h2>{_.capitalize(this.props.params.action)} Form </h2>
           <div className="col-md-6">
@@ -111,7 +116,7 @@ FormsEditContainer.propTypes = {
   newForm: PropTypes.func,
   saveForm: PropTypes.func,
   fetchForm: PropTypes.func,
-  fetchQuestion: PropTypes.func,
+  fetchQuestion:  PropTypes.func,
   fetchQuestions: PropTypes.func,
   removeQuestion: PropTypes.func,
   reorderQuestion: PropTypes.func,
@@ -123,4 +128,5 @@ FormsEditContainer.propTypes = {
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);

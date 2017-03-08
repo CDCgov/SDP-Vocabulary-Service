@@ -22,7 +22,6 @@ let onDrop = (evt, self) => {
   }
 };
 
-
 class DropTarget extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +54,6 @@ class DropTarget extends Component {
   }
 }
 
-
 DropTarget.propTypes = {
   handleResponseSetsChange: PropTypes.func.isRequired,
   selectedResponseSets: PropTypes.array,
@@ -87,8 +85,9 @@ class ResponseSetDragWidget extends Component{
     );
   }
 }
+
 ResponseSetDragWidget.propTypes = {
-  responseSets: responseSetsProps,
+  responseSets: responseSetsProps.isRequired,
   selectedResponseSets: PropTypes.array,
   handleResponseSetsChange: PropTypes.func.isRequired
 };
