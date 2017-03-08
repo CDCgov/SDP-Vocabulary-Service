@@ -6,13 +6,13 @@ namespace :spreadsheet do
     if user.nil?
       STDERR.puts "Unable to find user #{args.user_email}"
       exit(-1)
-    end 
+    end
     parser = SDP::Importers::Spreadsheet.new(args.file, user)
-    errs = parser.parse!
+    parser.parse!
     parser.errors.each do |err|
       STDERR.puts err
     end
-    if args.verbose && (args.verbose=='y' || args.verbose=='Y')
+    if args.verbose && (args.verbose == 'y' || args.verbose == 'Y')
       parser.sections do |name, data_elements|
         puts "#{name}: #{data_elements.length}"
         data_elements.each do |data_element|
@@ -20,6 +20,6 @@ namespace :spreadsheet do
         end
       end
     end
-    parser.save!    
+    parser.save!
   end
 end
