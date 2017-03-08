@@ -33,18 +33,29 @@ class FormsController < ApplicationController
     @form = Form.find(params[:id])
   end
 
+  def assign_author
+    @form.created_by = current_user
+    # @form.updated_by = current_user
+  end
+
   # POST /forms
   # POST /forms.json
   def create
     @form = Form.new(form_params)
-    @form.created_by = current_user
-    @form.form_questions = create_form_questions(params[:form][:linked_questions], params[:form][:linked_response_sets])
-    respond_to do |format|
-      if @form.save
-        format.json { render :show, status: :created, location: @form }
-      else
-        format.json { render json: @form.errors, status: :unprocessable_entity }
+    if @form.all_versions.count >= 1
+      if @form.all_versions.last.created_by != current_user
+        render(json: @form.errors, status: :unauthorized) && return
+      elsif @form.all_versions.last.status == 'draft'
+        render(json: @form.errors, status: :unprocessable_entity) && return
       end
+      @form.version = @form.most_recent + 1
+    end
+    assign_author
+    @form.form_questions = create_form_questions
+    if @form.save
+      render :show, status: :created, location: @form
+    else
+      render json: @form.errors, status: :unprocessable_entity
     end
   end
 
@@ -58,7 +69,7 @@ class FormsController < ApplicationController
       @form.transaction do
         # @form.updated_by = current_user
         @form.form_questions.destroy_all
-        @form.form_questions = create_form_questions(params[:form][:linked_questions], params[:form][:linked_response_sets])
+        @form.form_questions = create_form_questions
         # When we assign update_successful, it is the last expression in the block
         # That means, if the form fails to update, this block will return false,
         # which will cause the transaction to rollback.
@@ -116,7 +127,9 @@ class FormsController < ApplicationController
     "Form was successfully #{action}."
   end
 
-  def create_form_questions(question_ids, response_set_ids)
+  def create_form_questions
+    question_ids = params[:form][:linked_questions]
+    response_set_ids = params[:form][:linked_response_sets]
     form_questions = []
     if question_ids
       question_ids.zip(response_set_ids).each do |qid, rsid|
@@ -128,7 +141,7 @@ class FormsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params
-    params.require(:form).permit(:name, :user_id, :search, :version, :description,
+    params.require(:form).permit(:name, :user_id, :search, :description,
                                  :status, :version_independent_id, :control_number)
   end
 end

@@ -22,17 +22,30 @@ class ResponseSetsController < ApplicationController
     @response_set = ResponseSet.includes(:responses, :questions, :parent).find(params[:id])
   end
 
+  def assign_author
+    @response_set.created_by = current_user
+    @response_set.updated_by = current_user
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create
     @response_set = ResponseSet.new(response_set_params)
-    @response_set.created_by = current_user
-    @response_set.updated_by = current_user
-
-    if @response_set.save
-      render :show, status: :created, location: @response_set
-    else
-      render json: @response_set.errors, status: :unprocessable_entity
+    if @response_set.all_versions.count >= 1
+      if @response_set.all_versions.last.created_by != current_user
+        render(json: @response_set.errors, status: :unauthorized) && return
+      elsif @response_set.all_versions.last.status == 'draft'
+        render(json: @response_set.errors, status: :unprocessable_entity) && return
+      end
+      @response_set.version = @response_set.most_recent + 1
+    end
+    assign_author
+    respond_to do |format|
+      if @response_set.save
+        format.json { render :show, status: :created, location: @response_set }
+      else
+        format.json { render json: @response_set.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -77,7 +90,7 @@ class ResponseSetsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
-    params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author, :coded, :version,
+    params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author, :coded,
                                          :version_independent_id, :status,
                                          responses_attributes: [:id, :value, :display_name, :code_system])
   end
