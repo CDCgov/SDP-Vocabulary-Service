@@ -59,7 +59,7 @@ export function publishForm(id) {
   return {
     type: PUBLISH_FORM,
     payload: axios.put(routes.publishFormPath(id),
-     {authenticityToken}, {headers: { 'Accept': 'application/json'}})
+     {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 
