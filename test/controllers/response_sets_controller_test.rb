@@ -3,6 +3,8 @@ require 'test_helper'
 class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+  DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
   setup do
     @response_set  = response_sets(:one)
     @response_set2 = response_sets(:two)
@@ -10,6 +12,67 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     @resp2 = responses(:two)
     @current_user = users(:admin)
     sign_in @current_user
+  end
+
+  test 'new rs should be draft' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal DRAFT, ResponseSet.last.status
+  end
+
+  test 'revised rs should be draft' do
+    assert true
+  end
+
+  test 'should be able to publish a draft rs' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal DRAFT, ResponseSet.last.status
+    put publish_response_set_path(ResponseSet.last, format: :json)
+    assert_response :success
+    assert_equal PUBLISHED, ResponseSet.last.status
+  end
+
+  test 'should be able to delete a draft rs' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal ResponseSet.last.status, 'draft'
+    last_id = ResponseSet.last.id
+    assert_difference('ResponseSet.count', -1) do
+      delete response_set_url(ResponseSet.last), headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    end
+    assert_response :success
+    assert_not_equal last_id, ResponseSet.last
+  end
+
+  test 'should not be able to delete a published rs' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    put publish_response_set_path(ResponseSet.last, format: :json)
+    delete response_set_url(ResponseSet.last), headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response 422
+  end
+
+  test 'should be able to update a draft rs' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal DRAFT, ResponseSet.last.status
+
+    put response_set_url(ResponseSet.last, format: :json), params: { response_set: { description: 'new description' } }
+
+    assert_equal 'new description', ResponseSet.last.description
+  end
+
+  test 'should not be able to update a published rs' do
+    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal DRAFT, ResponseSet.last.status
+    put publish_response_set_path(ResponseSet.last, format: :json)
+    assert_equal PUBLISHED, ResponseSet.last.status
+
+    patch response_set_url(ResponseSet.last, format: :json), params: { response_set: { description: 'secret description' } }
+    assert_response :unprocessable_entity
+    assert_nil ResponseSet.find_by(description: 'secret description')
   end
 
   test 'should get index' do
@@ -38,16 +101,5 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   test 'should show response_set' do
     get response_set_url(@response_set), xhr: true, params: nil
     assert_response :success
-  end
-
-  test 'should destroy response_set' do
-    assert_enqueued_jobs 0
-    assert_difference('ResponseSet.count', -1) do
-      patch response_url(@resp),  params: { response: { response_set_id: @response_set2.id, value: 'one' } }
-      patch response_url(@resp2), params: { response: { response_set_id: @response_set2.id, value: 'two' } }
-      delete response_set_url(@response_set)
-    end
-    assert_enqueued_jobs 1
-    assert_redirected_to response_sets_url
   end
 end

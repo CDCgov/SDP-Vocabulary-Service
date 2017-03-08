@@ -36,7 +36,7 @@ class ResponseSet < ApplicationRecord
   end
 
   def publish
-    update(status: 'published')
+    update(status: 'published') if status == 'draft'
   end
 
   # Builds a new ResponseSet object with the same version_independent_id. Increments

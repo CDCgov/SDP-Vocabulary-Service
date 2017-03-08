@@ -29,12 +29,10 @@ class ResponseSetsController < ApplicationController
     @response_set.created_by = current_user
     @response_set.updated_by = current_user
 
-    respond_to do |format|
-      if @response_set.save
-        format.json { render :show, status: :created, location: @response_set }
-      else
-        format.json { render json: @response_set.errors, status: :unprocessable_entity }
-      end
+    if @response_set.save
+      render :show, status: :created, location: @response_set
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
     end
   end
 
@@ -42,6 +40,23 @@ class ResponseSetsController < ApplicationController
   def publish
     if @response_set.status == 'draft'
       @response_set.publish
+      render :show, statis: :published, location: @response_set
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /response_sets/1
+  # PATCH/PUT /response_sets/1.json
+  def update
+    if @response_set.status == 'draft'
+      @response_set.updated_by = current_user
+
+      if @response_set.update(response_set_params)
+        render :show, status: :ok, location: @response_set
+      else
+        render json: @response_set.errors, status: :unprocessable_entity
+      end
     else
       render json: @response_set.errors, status: :unprocessable_entity
     end
@@ -50,10 +65,11 @@ class ResponseSetsController < ApplicationController
   # DELETE /response_sets/1
   # DELETE /response_sets/1.json
   def destroy
-    @response_set.destroy
-    respond_to do |format|
-      format.html { redirect_to response_sets_url, notice: 'Response set was successfully destroyed.' }
-      format.json { head :no_content }
+    if @response_set.status == 'draft'
+      @response_set.destroy
+      render json: @response_set
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
     end
   end
 
