@@ -1,81 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import { Draggable, Droppable } from './Draggable';
 import Errors from './Errors';
-import ResponseSetWidget from './ResponseSetWidget';
-import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
-import allRoutes from '../prop-types/route_props';
-import _ from 'lodash';
 import ModalDialog from './ModalDialog';
-
-let setData = function(){
-  return {"json/responseSet": JSON.stringify(this.props.responseSet)};
-};
-
-let DraggableResponseSet = Draggable(ResponseSetWidget, setData);
-
-let onDrop = (evt, self) => {
-  let rs = JSON.parse(evt.dataTransfer.getData("json/responseSet"));
-  let { selectedResponseSets } = self.state;
-  if(!selectedResponseSets.find((r) => {
-    return r.id == rs.id;
-  })) {
-    selectedResponseSets.push(rs);
-    self.props.handleResponseSetsChange(selectedResponseSets);
-    self.setState({selectedResponseSets});
-  }
-};
-
-
-class DropTarget extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {selectedResponseSets: this.props.selectedResponseSets};
-  }
-
-  render() {
-    let {routes, isValidDrop } = this.props;
-
-    let removeResponseSet = (id) => {
-      let selectedResponseSets = this.state.selectedResponseSets.filter((rs) => rs.id != id);
-      this.props.handleResponseSetsChange(selectedResponseSets);
-      this.setState({selectedResponseSets});
-    };
-
-    return <div style={{minHeight: '40px', backgroundColor:isValidDrop?'green':'grey'}}>
-      {this.state.selectedResponseSets.map((rs, i) => {
-        return (
-        <div key={i}>
-        <i className='pull-right fa fa-close' onClick={() => removeResponseSet(rs.id)}/>
-        <DraggableResponseSet  responseSet={rs} routes={routes}/>
-        </div>);
-      })}
-      <select readOnly={true} value={this.state.selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
-        {this.state.selectedResponseSets.map((rs) => {
-          return <option key={rs.id} value={rs.id}>a</option>;
-        })}
-      </select>
-    </div>;
-  }
-}
-
-
-DropTarget.propTypes = {
-  handleResponseSetsChange: PropTypes.func.isRequired,
-  selectedResponseSets: PropTypes.array,
-  routes: PropTypes.object,
-  isValidDrop: PropTypes.bool
-};
-
-let DroppableTarget = Droppable(DropTarget, onDrop);
+import ResponseSetDragWidget from './ResponseSetDragWidget';
+import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
+import _ from 'lodash';
 
 class QuestionForm extends Component{
 
   constructor(props) {
     super(props);
-
     switch(this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(this.props.question);
@@ -94,13 +30,19 @@ class QuestionForm extends Component{
   }
 
   componentDidMount() {
-    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+    if(this.props.route && this.props.router){
+      this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+    }
+    this.existingOnBeforeUnload = window.onbeforeunload;
     window.onbeforeunload = this.windowWillUnload.bind(this);
   }
 
   componentWillUnmount() {
     this.unsavedState = false;
-    this.unbindHook();
+    window.onbeforeunload = this.existingOnBeforeUnload;
+    if(this.unbindHook){
+      this.unbindHook();
+    }
   }
 
   routerWillLeave(nextLocation) {
@@ -169,14 +111,14 @@ class QuestionForm extends Component{
   }
 
   render(){
-    const {question, questionTypes, responseSets, responseTypes, routes} = this.props;
+    const {question, questionTypes, responseSets, responseTypes} = this.props;
     const state = this.state;
     if(!question || !questionTypes || !responseSets || !responseTypes){
       return (<div>Loading....</div>);
     }
 
     return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
+      <form id="question-edit-form" onSubmit={(e) => this.handleSubmit(e)}>
       <ModalDialog  show={this.state.showModal}
                     title="Warning"
                     subTitle="Unsaved Changes"
@@ -192,7 +134,7 @@ class QuestionForm extends Component{
                     }}
                     secondaryButtonAction={()=> this.handleModalResponse(true)} />
         <Errors errors={this.state.errors} />
-        <div className="row"><br/>
+        <div className="row">
           <div>
             <div className="panel panel-default">
               <div className="panel-heading">
@@ -229,42 +171,30 @@ class QuestionForm extends Component{
                       })}
                     </select>
                 </div>
-                <div className="col-md-8 question-form-group">
+                <div className="col-md-4 question-form-group harmonized-group">
                   <label className="input-label" htmlFor="harmonized">Harmonized: </label>
-                  <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggelHarmonized()} />
+                  <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggleHarmonized()} />
                 </div>
 
 
               </div>
 
               <div className="row ">
-                  <div className="col-md-12 ">
-                      <label className="input-label" htmlFor="concept_id">Concepts</label>
-                      <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
-                               initialItems={this.state.conceptsAttributes}
-                               parentName={'question'}
-                               childName={'concept'} />
-                  </div>
+                <div className="col-md-12 ">
+                    <label className="input-label" htmlFor="concept_id">Concepts</label>
+                    <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
+                             initialItems={this.state.conceptsAttributes}
+                             parentName={'question'}
+                             childName={'concept'} />
+                </div>
               </div>
 
-              <div className="row ">
-                  <div className="col-md-6 question-form-group">
-                    <label htmlFor="linked_response_sets">Response Sets</label>
-                      <div name="linked_response_sets">
-                        {responseSets && _.values(responseSets).map((rs, i) => {
-                          return <DraggableResponseSet key={i} responseSet={rs} routes={routes}/>;
-                        })}
-                      </div>
-                  </div>
-                  <div className="col-md-6 drop-target selected_response_sets">
-                    <label htmlFor="selected_response_sets">Selected Response Sets</label>
-                    <DroppableTarget handleResponseSetsChange={this.handleResponseSetsChange} selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} routes={routes}/>
-                  </div>
-              </div>
+              <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange} responseSets={responseSets}
+                selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} />
 
               <div className="panel-footer">
                 <div className="actions form-group">
-                  <button type="submit" name="commit" className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
+                  <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
                   {this.publishButton()}
                   {this.deleteButton()}
                   {this.cancelButton()}
@@ -358,7 +288,7 @@ class QuestionForm extends Component{
     };
   }
 
-  toggelHarmonized() {
+  toggleHarmonized() {
     this.setState({harmonized: !this.state.harmonized});
   }
 
@@ -369,6 +299,9 @@ class QuestionForm extends Component{
 }
 
 function filterConcepts(concepts) {
+  if(!concepts){
+    return [];
+  }
   return concepts.filter((nc)=>{
     return (nc.value!=='' ||  nc.codeSystem !== '' || nc.displayName !=='');
   }).map((nc) => {
@@ -377,19 +310,18 @@ function filterConcepts(concepts) {
 }
 
 QuestionForm.propTypes = {
+  id: PropTypes.string,
+  route:  PropTypes.object,
+  router: PropTypes.object,
+  action: PropTypes.string,
   question: questionProps,
-  questionSubmitter: PropTypes.func.isRequired,
-  draftSubmitter: PropTypes.func.isRequired,
-  publishSubmitter: PropTypes.func.isRequired,
-  deleteSubmitter: PropTypes.func.isRequired,
   responseSets: responseSetsProps,
-  routes: allRoutes,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
-  route:  PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
-  action: PropTypes.string,
-  id: PropTypes.string
+  draftSubmitter: PropTypes.func.isRequired,
+  deleteSubmitter: PropTypes.func.isRequired,
+  publishSubmitter: PropTypes.func.isRequired,
+  questionSubmitter: PropTypes.func.isRequired,
 };
 
 export default QuestionForm;
