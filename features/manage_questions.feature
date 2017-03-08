@@ -42,7 +42,7 @@ Feature: Manage Questions
     Then I should see "Is This a Comment?"
 
   Scenario: Revise Question
-    Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
+    Given I have a published Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
     And I have a Response Set with the name "Gender Partial"
     And I have a Response Type with the name "Response Set"
     And I am logged in as test_author@gmail.com

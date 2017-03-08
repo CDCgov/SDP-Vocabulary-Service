@@ -20,3 +20,45 @@ Given(/^I have a published Question with the content "([^"]*)" and the type "([^
   cq = Question.create!(content: content, question_type_id: qt314.id, version: 1, created_by: user)
   cq.publish
 end
+
+Given(/^I have a published Form with the name "([^"]*)" and the description "([^"]*)"$/) do |name, description|
+  user = get_user 'test_author@gmail.com'
+  form = Form.create!(name: name, description: description, created_by: user)
+  form.publish
+end
+
+Given(/^I have a published Form with the name "([^"]*)"$/) do |name|
+  user = get_user 'test_author@gmail.com'
+  form = Form.create!(name: name, created_by: user)
+  form.publish
+end
+
+Given(/^I have a published Response Set with the name "([^"]*)" and the description "([^"]*)" and\
+ the response "([^"]*)"$/) do |set_name, desc, response|
+  user = get_user 'test_author@gmail.com'
+  rs = ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user,\
+                      responses_attributes: [{ value: '', display_name: response, code_system: '' }])
+  rs.publish
+end
+
+Given(/^I have a published Response Set with the name "([^"]*)" and the description "([^"]*)" and \
+with the Responses (.+)$/) do |set_name, desc, response_values|
+  user = get_user 'test_author@gmail.com'
+  set = ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user)
+  response_values.split(', ').each do |value|
+    Response.create!(value: value, response_set_id: set['id'])
+  end
+  set.publish
+end
+
+Given(/^I have a published Response Set with the name "([^"]*)" and the description "([^"]*)"$/) do |set_name, desc|
+  user = get_user 'test_author@gmail.com'
+  rs = ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user)
+  rs.publish
+end
+
+Given(/^I have a published Response Set with the name "([^"]*)"$/) do |set_name|
+  user = get_user 'test_author@gmail.com'
+  rs = ResponseSet.create!(name: set_name, version: 1, created_by: user)
+  rs.publish
+end
