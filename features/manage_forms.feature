@@ -29,7 +29,8 @@ Feature: Manage Forms
     Then I should see "Form description"
     When I click on the "Publish" link
     Then I should not see "Publish"
-    And I should not see "Revise"
+    And I should see "Revise"
+    And I should not see "Edit"
 
   Scenario: Edit a Draft Form
     Given I have a Form with the name "Test Form" and the description "Form description"
