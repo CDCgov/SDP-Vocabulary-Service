@@ -21,11 +21,11 @@ import Privacy from './containers/Privacy';
 import App from './containers/App';
 
 import configureStore from './store/configure_store';
-
+import {logPageViewed} from './utilities/AdobeAnalytics';
 const store = configureStore();
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={hashHistory}>
+    <Router history={hashHistory} onUpdate={logPageViewed}>
       <Route path='/' component={App}>
         <IndexRoute component={DashboardContainer} />
         <Route path='/mystuff' component={MyStuffContainer} />
