@@ -9,11 +9,7 @@ class FormsController < ApplicationController
   end
 
   def my_forms
-    @forms = if params[:search]
-               Form.where(created_by_id: current_user.id).search(params[:search]).latest_versions
-             else
-               Form.where(created_by_id: current_user.id).latest_versions
-             end
+    @forms = params[:search] ? Form.owned_by(current_user.id).search(params[:search]).latest_versions : Form.owned_by(current_user.id).latest_versions
     render action: :index, collection: @forms
   end
 
@@ -33,11 +29,6 @@ class FormsController < ApplicationController
     @form = Form.find(params[:id])
   end
 
-  def assign_author
-    @form.created_by = current_user
-    # @form.updated_by = current_user
-  end
-
   # POST /forms
   # POST /forms.json
   def create
@@ -50,7 +41,7 @@ class FormsController < ApplicationController
       end
       @form.version = @form.most_recent + 1
     end
-    assign_author
+    @form.created_by = current_user
     @form.form_questions = create_form_questions
     if @form.save
       render :show, status: :created, location: @form
@@ -76,12 +67,10 @@ class FormsController < ApplicationController
         # Otherwise, we have killed all FormQuestions, without replacing them.
         update_successful = @form.update(form_params)
       end
-      respond_to do |format|
-        if update_successful
-          format.json { render :show, status: :ok, location: @question }
-        else
-          format.json { render json: @form.errors, status: :unprocessable_entity }
-        end
+      if update_successful
+        render :show, status: :ok, location: @form
+      else
+        render json: @form.errors, status: :unprocessable_entity
       end
     end
   end
@@ -92,6 +81,7 @@ class FormsController < ApplicationController
     @form.questions.destroy_all
     @form.destroy
     respond_to do |format|
+      #render :index, status: :ok && return
       format.html { redirect_to forms_url, notice: 'Form was successfully destroyed.' }
       format.json { head :no_content }
     end
