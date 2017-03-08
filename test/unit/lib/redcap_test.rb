@@ -27,7 +27,6 @@ class Redcap < ActiveSupport::TestCase
     forms.each_pair do |_k, v|
       v.save
     end
-
     assert_equal rscount + RESPONSE_SET_COUNT, ResponseSet.count
     assert_equal qcount  + QUESTION_COUNT, Question.count
     assert_equal formcount + FORM_COUNT, Form.count
