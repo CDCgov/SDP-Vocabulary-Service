@@ -116,9 +116,9 @@ export default class QuestionDetails extends Component {
               <strong>Question Type: </strong>
               {question.questionType.name}
             </div>}
-            {question.responsetype && <div className="box-content">
-              <strong>Primary Response Type: </strong>
-              {question.responsetype.name}
+            {question.responseType && <div className="box-content">
+              <strong>Response Type: </strong>
+              {question.responseType.name}
             </div>}
           </div>
             <div className="basic-c-box panel-default">
