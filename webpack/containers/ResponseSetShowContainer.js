@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchResponseSet } from '../actions/response_set_actions';
+import { fetchResponseSet, publishResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
@@ -30,7 +30,8 @@ class ResponseSetShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <ResponseSetDetails responseSet={this.props.responseSet} currentUser={this.props.currentUser} questions={this.props.questions}/>
+            <ResponseSetDetails responseSet={this.props.responseSet} currentUser={this.props.currentUser}
+                                publishResponseSet={this.props.publishResponseSet} questions={this.props.questions} />
             <div className="col-md-12 showpage-comments-title">Comments:</div>
             <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
           </div>
@@ -51,7 +52,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchResponseSet}, dispatch);
+  return bindActionCreators({fetchResponseSet, publishResponseSet}, dispatch);
 }
 
 ResponseSetShowContainer.propTypes = {
@@ -59,6 +60,7 @@ ResponseSetShowContainer.propTypes = {
   currentUser: currentUserProps,
   questions: PropTypes.arrayOf(questionProps),
   fetchResponseSet: PropTypes.func,
+  publishResponseSet: PropTypes.func,
   params: PropTypes.object
 };
 

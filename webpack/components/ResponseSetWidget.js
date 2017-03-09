@@ -27,16 +27,15 @@ export default class ResponseSetWidget extends Component {
                     <span className="fa fa-ellipsis-h"></span>
                   </a>
                   <ul className="dropdown-menu dropdown-menu-right" >
-                    <li>
-                      <Link to={`/responseSets/${this.props.responseSet.id}/revise`}>
-                        Revise
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={`/responseSets/${this.props.responseSet.id}/extend`}>
-                        Extend
-                      </Link>
-                    </li>
+                    {this.props.responseSet.status && this.props.responseSet.status === 'published' && <li>
+                      <Link to={`/responseSets/${this.props.responseSet.id}/revise`}>Revise</Link>
+                    </li>}
+                    {this.props.responseSet.status && this.props.responseSet.status === 'published' && <li>
+                      <Link to={`/responseSets/${this.props.responseSet.id}/extend`}>Extend</Link>
+                    </li>}
+                    {this.props.responseSet.status && this.props.responseSet.status === 'draft' && <li>
+                      <Link to={`/responseSets/${this.props.responseSet.id}/edit`}>Edit</Link>
+                    </li>}
                     <li>
                       <Link to={`/responseSets/${this.props.responseSet.id}`}>
                         Details

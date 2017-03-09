@@ -8,7 +8,7 @@ Feature: My Stuff
     Then I should see "What is your gender?"
     When I click on the menu link for the Question with the content "What is your gender?"
     Then I should see the option to Details the Question with the content "What is your gender?"
-    And I should see the option to Revise the Question with the content "What is your gender?"
+    And I should see the option to Edit the Question with the content "What is your gender?"
 
   Scenario: My Stuff Response Sets View
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
@@ -16,8 +16,7 @@ Feature: My Stuff
     When I go to My Stuff
     When I click on the menu link for the Response Set with the name "Gender Full"
     Then I should see the option to Details the Response Set with the name "Gender Full"
-    And I should see the option to Revise the Response Set with the name "Gender Full"
-    And I should see the option to Extend the Response Set with the name "Gender Full"
+    And I should see the option to Edit the Response Set with the name "Gender Full"
     And I should see the option to Delete the Response Set with the name "Gender Full"
 
   Scenario: My Stuff Forms View
