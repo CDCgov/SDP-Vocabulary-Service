@@ -67,6 +67,14 @@ Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |a
     find_link(action)
   end
 end
+
+Then(/^I should not see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
+  object_id = attribute_to_id(object_type, attribute, attribute_value)
+  within(:xpath, create_path(object_type, object_id)) do
+    page.has_no_link?(action)
+  end
+end
+
 Then(/^I should see the "([^"]*)" link$/) do |value|
   find('a', text: value)
 end

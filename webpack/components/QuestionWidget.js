@@ -23,9 +23,12 @@ class QuestionWidget extends Component {
     if(this.props.currentUser && this.props.currentUser.id){
       return (
         <ul className="dropdown-menu dropdown-menu-right">
-          <li>
+          {this.props.question.status && this.props.question.status === 'published' && <li>
             <Link to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
-          </li>
+          </li>}
+          {this.props.question.status && this.props.question.status === 'draft' && <li>
+            <Link to={`/questions/${this.props.question.id}/edit`}>Edit</Link>
+          </li>}
           <li>
             <Link to={`/questions/${this.props.question.id}`}>Details</Link>
           </li>
