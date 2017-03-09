@@ -1,5 +1,3 @@
-# rubocop:disable Metrics/ClassLength
-
 module SDP
   module Importers
     class Spreadsheet
@@ -43,6 +41,7 @@ module SDP
         @section_start = Regexp.new(@config[:section_start_regex])
         @section_end = Regexp.new(@config[:section_end_regex])
         @vads_oid = Regexp.new(@config[:phin_vads_oid_regex])
+        @local_response_sets = {}
       end
 
       def save!
@@ -122,16 +121,20 @@ module SDP
       end
 
       def response_set_for_local(element)
+        @local_response_sets[element[:value_set_tab_name]] || create_response_set_for_local(element)
+      end
+
+      def create_response_set_for_local(element)
         rs = ResponseSet.new(
           created_by: @user, status: 'draft',
-          name: element[:value_set_tab_name] || element[:name],
+          name: element[:value_set_tab_name],
           coded: true, source: 'local'
         )
         rs.save!
         element[:value_set].each do |code|
           rs.responses.create(code_system: code[:code_system_oid], display_name: code[:name], value: code[:code])
         end
-        rs
+        @local_response_sets[element[:value_set_tab_name]] = rs
       end
 
       def parse_value_set(sheet, name)
