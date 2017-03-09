@@ -19,7 +19,6 @@ const QuestionItem = ({question, responseSets, index, handleResponseSetChange=()
             })}
             <option aria-label=' '></option>
           </select>
-
         </div>
       </div>
     </div>

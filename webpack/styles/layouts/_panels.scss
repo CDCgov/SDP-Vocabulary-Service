@@ -27,6 +27,12 @@
   min-height: 90vh;
 }
 
+.fixed-height-list{
+  max-height: 400px;
+  min-height: 400px;
+  overflow-y: auto;
+}
+
 .my-stuff {
   .panel-body {
     max-height: 320px;

@@ -35,10 +35,3 @@ end
 When(/^I check the (.*) box$/) do |box|
   check(box)
 end
-
-When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
-  drag = find('a', text: option)
-  target = '.' + target.downcase.tr(' ', '_')
-  drop = find(target)
-  drag.drag_to(drop)
-end
