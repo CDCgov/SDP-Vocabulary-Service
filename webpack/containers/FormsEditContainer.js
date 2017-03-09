@@ -64,33 +64,32 @@ class FormsEditContainer extends Component {
     }
     return (
       <div className="container basic-bg form-edit-container">
-      <QuestionModalContainer showModal={this.state.showQuestionModal}
-                              closeQuestionModal={()=>this.setState({showQuestionModal: false})}
-                              route={this.props.route}
-                              router={this.props.router}
-                              saveQuestionSuccess={this.saveQuestionSuccess}/>
+        <QuestionModalContainer showModal={this.state.showQuestionModal}
+                                closeQuestionModal={()=>this.setState({showQuestionModal: false})}
+                                route={this.props.route}
+                                router={this.props.router}
+                                saveQuestionSuccess={this.saveQuestionSuccess} />
         <div className="row">
           <h2>{_.capitalize(this.props.params.action)} Form </h2>
           <div className="col-md-6">
             <div className="row add-question">
               <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
             </div>
-          <QuestionSearchContainer
-            allQs={this.props.questions}
-            allRs={this.props.responseSets}
-            form={this.props.form} />
+            <QuestionSearchContainer allQs={this.props.questions}
+                                     allRs={this.props.responseSets}
+                                     form ={this.props.form}
+                                     reverseSort={true} />
           </div>
           <FormEdit form={this.props.form}
-            responseSets={this.props.responseSets}
-            reorderQuestion={this.props.reorderQuestion}
-            removeQuestion={this.props.removeQuestion}
-            action={this.props.params.action || 'new'}
-            formSubmitter={this.state.selectedFormSaver}
-            route={this.props.route}
-            router={this.props.router}
-            questions={this.props.questions}
-            ref='form'
-            />
+                    responseSets={this.props.responseSets}
+                    reorderQuestion={this.props.reorderQuestion}
+                    removeQuestion={this.props.removeQuestion}
+                    action={this.props.params.action || 'new'}
+                    formSubmitter={this.state.selectedFormSaver}
+                    route={this.props.route}
+                    router={this.props.router}
+                    questions={this.props.questions}
+                    ref='form' />
         </div>
       </div>
     );

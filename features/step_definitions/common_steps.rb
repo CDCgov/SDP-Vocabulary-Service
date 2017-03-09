@@ -88,6 +88,17 @@ Then(/^debugger$/) do
   assert false
 end
 
+When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
+  drag = find('a', text: option)
+  target = '.' + target.downcase.tr(' ', '_')
+  drop = find(target)
+  drag.drag_to(drop)
+end
+
+Given(/^I wait for (\d+) seconds?$/) do |n|
+  sleep(n.to_i)
+end
+
 def create_path(object_type, object_id)
   if object_type == 'Question'
     '//div[@id="question_id_' + object_id + '"]'

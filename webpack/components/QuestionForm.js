@@ -161,7 +161,7 @@ class QuestionForm extends Component{
               <div className="row ">
                 <div className="col-md-8 question-form-group">
                   <label className="input-label" htmlFor="description">Description</label>
-                  <textarea className="input-format" placeholder="Question description" type="text" name="description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
+                  <textarea className="input-format" placeholder="Question description" type="text" name="question_description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
                 </div>
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
