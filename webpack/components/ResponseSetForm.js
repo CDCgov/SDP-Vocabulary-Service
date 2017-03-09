@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import Errors from './Errors';
+import _ from 'lodash';
 import { responseSetProps } from '../prop-types/response_set_props';
 import ModalDialog from './ModalDialog';
 
@@ -18,6 +19,9 @@ export default class ResponseSetForm extends Component {
         break;
       case 'new':
         this.state = this.stateForNew();
+        break;
+      case 'edit':
+        this.state = this.stateForEdit(this.props.responseSet);
         break;
     }
   }
@@ -93,6 +97,21 @@ export default class ResponseSetForm extends Component {
       version, versionIndependentId, parentId, showModal};
   }
 
+  stateForEdit(responseSet) {
+    const id = responseSet.id;
+    const name = responseSet.name || '';
+    const oid  = responseSet.oid  || '';
+    const coded = responseSet.coded || false;
+    const description = responseSet.description || '';
+    const responsesAttributes = filterResponses(responseSet.responses);
+    const version = responseSet.version;
+    const parentId  = responseSet.parent ? responseSet.parent.id : null;
+    const versionIndependentId = responseSet.versionIndependentId;
+    const showModal = false;
+    return {id, name, oid, description, coded, responsesAttributes,
+      version, parentId, versionIndependentId, showModal};
+  }
+
   cancelButton() {
     if (this.props.responseSet && this.props.responseSet.id) {
       return(<Link className="btn btn-default" to={`/responseSets/${this.props.responseSet.id}`}>Cancel</Link>);
@@ -158,7 +177,7 @@ export default class ResponseSetForm extends Component {
                 </div>
                 <div className="panel-footer">
 
-                    <input className=" btn btn-default " type="submit" value={`${this.actionWord()} Response Set`}/>
+                    <input className="btn btn-default " type="submit" name="Save Response Set" value="Save" />
                 {this.cancelButton()}
             </div>
           </div>
@@ -168,13 +187,14 @@ export default class ResponseSetForm extends Component {
   }
 
   actionWord() {
-    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend'};
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit Draft of'};
     return wordMap[this.props.action];
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.responseSetSubmitter(this.state, (successResponse) => {
+    let responseSet = Object.assign({}, this.state);
+    this.props.responseSetSubmitter(responseSet, (successResponse) => {
       this.unsavedState = false;
       this.props.router.push(`/responseSets/${successResponse.data.id}`);
     }, (failureResponse) => {

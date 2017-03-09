@@ -64,6 +64,7 @@ class ResponseSetsController < ApplicationController
   def update
     if @response_set.status == 'draft'
       @response_set.updated_by = current_user
+      update_responses(params)
 
       if @response_set.update(response_set_params)
         render :show, status: :ok, location: @response_set
@@ -73,6 +74,12 @@ class ResponseSetsController < ApplicationController
     else
       render json: @response_set.errors, status: :unprocessable_entity
     end
+  end
+
+  def update_responses(_params)
+    @responses = Response.where(response_set_id: @response_set.id)
+    @response_set.responses.destroy_all
+    @response_set.responses << @responses
   end
 
   # DELETE /response_sets/1
