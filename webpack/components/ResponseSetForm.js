@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import Errors from './Errors';
-import _ from 'lodash';
 import { responseSetProps } from '../prop-types/response_set_props';
 import ModalDialog from './ModalDialog';
 
