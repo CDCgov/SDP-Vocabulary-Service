@@ -48,10 +48,6 @@ Feature: Manage Questions
     And I have a Response Type with the name "Response Set"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    When I click on the menu link for the Question with the content "What is your gender?"
-    And I click on the option to Details the Question with the content "What is your gender?"
-    And I click on the "Publish" button
-    And I go to the list of Questions
     And I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Revise the Question with the content "What is your gender?"
     And I fill in the "Question" field with "What is your favorite color?"

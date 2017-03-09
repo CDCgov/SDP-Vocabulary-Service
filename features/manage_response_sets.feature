@@ -66,10 +66,6 @@ Feature: Manage Response Sets
     Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
-    When I click on the menu link for the Response Set with the name "Gender Full"
-    And I click on the option to Details the Response Set with the name "Gender Full"
-    And I click on the "Publish" button
-    And I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Revise the Response Set with the name "Gender Full"
     And I fill in the "Name" field with "Gender Partial"
@@ -88,10 +84,6 @@ Feature: Manage Response Sets
     Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Male"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
-    When I click on the menu link for the Response Set with the name "Gender Full"
-    And I click on the option to Details the Response Set with the name "Gender Full"
-    And I click on the "Publish" button
-    And I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Revise the Response Set with the name "Gender Full"
     And I click on the link to remove the Response "Male"
