@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { questionProps } from "../prop-types/question_props";
-import allRoutes from '../prop-types/route_props';
 import QuestionWidget from './QuestionWidget';
 
 class FormQuestionList extends Component {
@@ -8,7 +7,7 @@ class FormQuestionList extends Component {
     return (
       <div className="question-group">
         {this.props.questions.map((q, i) => {
-          return <QuestionWidget key={i} question={q} routes={this.props.routes} />;
+          return <QuestionWidget key={i} question={q} />;
         })}
       </div>
     );
@@ -16,8 +15,7 @@ class FormQuestionList extends Component {
 }
 
 FormQuestionList.propTypes = {
-  questions: PropTypes.arrayOf(questionProps),
-  routes: allRoutes
+  questions: PropTypes.arrayOf(questionProps)
 };
 
 export default FormQuestionList;

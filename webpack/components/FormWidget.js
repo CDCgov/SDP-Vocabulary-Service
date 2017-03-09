@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import allRoutes from '../prop-types/route_props';
-import {formProps} from '../prop-types/form_props';
+import { formProps } from '../prop-types/form_props';
 
 export default class FormWidget extends Component {
   render() {
@@ -44,6 +43,5 @@ export default class FormWidget extends Component {
 }
 
 FormWidget.propTypes = {
-  form: formProps,
-  routes: allRoutes
+  form: formProps
 };
