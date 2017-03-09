@@ -117,7 +117,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
       delete form_url(@form)
     end
     assert_enqueued_jobs 3
-    assert_redirected_to forms_url
+    assert_response 204
   end
 
   test 'should respond to json format' do
