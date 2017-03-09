@@ -8,7 +8,8 @@ Feature: Manage Questions
     Then I should see "What is your gender?"
     When I click on the menu link for the Question with the content "What is your gender?"
     Then I should see the option to Details the Question with the content "What is your gender?"
-    And I should see the option to Revise the Question with the content "What is your gender?"
+    And I should see the option to Edit the Question with the content "What is your gender?"
+    And I should not see the option to Edit the Question with the content "What is your gender?"
 
   Scenario: Show Question in Detail
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
@@ -48,6 +49,10 @@ Feature: Manage Questions
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    And I click on the "Publish" button
+    And I go to the list of Questions
+    And I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Revise the Question with the content "What is your gender?"
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a revised description"
