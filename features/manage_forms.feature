@@ -119,7 +119,7 @@ Feature: Manage Forms
     And I fill in the "search" field with "color"
     And I click on the button to add the Question "What is your favorite color?"
     And I click on the "Save" button
-    Then I should not see "Test Form"
+    Then I should see "Test Form"
     And I should see "What is your gender?"
     And I should see "What is your favorite color?"
 
