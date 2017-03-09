@@ -32,7 +32,7 @@ Feature: Manage Response Sets
     And I should see "No Responses Selected"
 
   Scenario: Revise Response Set
-    Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
+    Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
@@ -50,7 +50,7 @@ Feature: Manage Response Sets
     And I should not see "Original Response"
 
   Scenario: Revise Response Set Removing Response
-    Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Male"
+    Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Male"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"

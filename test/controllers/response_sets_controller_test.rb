@@ -3,8 +3,10 @@ require 'test_helper'
 class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+
   DRAFT = 'draft'.freeze
   PUBLISHED = 'published'.freeze
+
   setup do
     @response_set  = response_sets(:one)
     @response_set2 = response_sets(:two)
@@ -86,6 +88,39 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     JSON.parse(response.body).each do |f|
       assert f['created_by_id'] == @current_user.id
     end
+  end
+
+  test 'revisions should increment version without needing a param' do
+    rs_json = { response_set: { version_independent_id: 'RS-1337', description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    ResponseSet.last.publish
+    v1 = ResponseSet.last
+    rs_json = { response_set: { version_independent_id: 'RS-1337', description: 'Revision', name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :success
+    v2 = ResponseSet.last
+    assert_equal v1.version_independent_id, v2.version_independent_id
+    assert_equal v1.version + 1, v2.version
+    assert_equal 'Revision', v2.description
+  end
+
+  test 'cannot revise something you do not own' do
+    rs_json = { response_set: { version_independent_id: 'RS-1337', description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    ResponseSet.last.publish
+    sign_in users(:not_admin)
+    rs_json = { response_set: { version_independent_id: 'RS-1337', description: 'Revision', name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :unauthorized
+  end
+
+  test 'cannot revise a draft' do
+    rs_json = { response_set: { version_independent_id: 'RS-1337', description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal DRAFT, ResponseSet.last.status
+    rs_json = { response_set: { version_independent_id: 'RS-1337', description: 'Revision', name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
+    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :unprocessable_entity
   end
 
   test 'should create response_set' do

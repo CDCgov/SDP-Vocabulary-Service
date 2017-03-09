@@ -36,19 +36,21 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     link_response_sets(params)
-    assign_author
 
-    respond_to do |format|
-      if @question.save
-        q_action = 'created'
-        q_action = 'revised' if @question.version > 1
-        format.html { redirect_to @question, notice: "Question was successfully #{q_action}." }
-        format.json { render :show, status: :created, location: @question }
-      else
-        @question_types = QuestionType.all
-        format.html { render :new }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
+    if @question.all_versions.count >= 1
+      if @question.all_versions.last.created_by != current_user
+        render(json: @question.errors, status: :unauthorized) && return
+      elsif @question.all_versions.last.status == 'draft'
+        render(json: @question.errors, status: :unprocessable_entity) && return
       end
+      @question.version = @question.most_recent + 1
+    end
+    assign_author
+    if @question.save
+      render :show, status: :created, location: @question
+    else
+      # @question_types = QuestionType.all
+      render json: @question.errors, status: :unprocessable_entity
     end
   end
 
@@ -62,10 +64,7 @@ class QuestionsController < ApplicationController
   def publish
     if @question.status == 'draft'
       @question.publish
-      respond_to do |format|
-        format.html { redirect_to @question, notice: 'Draft question published' }
-        format.json { render :show, statis: :published, location: @question }
-      end
+      render :show, statis: :published, location: @question
     else
       render json: @question.errors, status: :unprocessable_entity
     end
@@ -81,15 +80,11 @@ class QuestionsController < ApplicationController
       update_concepts(params)
       @question.updated_by = current_user
 
-      respond_to do |format|
-        if @question.update(question_params)
-          format.html { redirect_to @question, notice: 'Question was successfully updated.' }
-          format.json { render :show, status: :ok, location: @question }
-        else
-          @question_types = QuestionType.all
-          format.html { render :edit }
-          format.json { render json: @question.errors, status: :unprocessable_entity }
-        end
+      if @question.update(question_params)
+        render :show, status: :ok, location: @question
+      else
+        @question_types = QuestionType.all
+        render json: @question.errors, status: :unprocessable_entity
       end
     end
   end
@@ -116,7 +111,7 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id, :version, :version_independent_id,
+    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id, :version_independent_id,
                                      :description, :status, :harmonized, concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

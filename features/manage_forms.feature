@@ -49,9 +49,9 @@ Feature: Manage Forms
     And I should see "Edit"
 
   Scenario: Revise Form
-    Given I have a Form with the name "Test Form" and the description "Form description"
-    And I have a Question with the content "What is your gender?" and the type "MC"
-    And I have a Response Set with the name "Gender Partial"
+    Given I have a published Form with the name "Test Form" and the description "Form description"
+    And I have a published Question with the content "What is your gender?" and the type "MC"
+    And I have a published Response Set with the name "Gender Partial"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the menu link for the Form with the name "Test Form"

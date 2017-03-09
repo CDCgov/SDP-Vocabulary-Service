@@ -30,6 +30,10 @@ class Form < ApplicationRecord
     where('name ILIKE ?', "%#{search}%")
   end
 
+  def self.owned_by(owner_id)
+    where(created_by: owner_id)
+  end
+
   def publish
     update(status: 'published')
   end

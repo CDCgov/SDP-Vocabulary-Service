@@ -3,6 +3,10 @@ require 'test_helper'
 class FormsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+
+  DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
+
   setup do
     @form = forms(:one)
     @current_user = users(:admin)
@@ -12,6 +16,39 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'should get index' do
     get forms_url, xhr: true, params: nil
     assert_response :success
+  end
+
+  test 'revisions should increment version without needing a param' do
+    form_json = { form: { name: @form.name, version_independent_id: 'F-1337' } }.to_json
+    post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    Form.last.publish
+    v1 = Form.last
+    form_json = { form: { name: 'A revised name', version_independent_id: 'F-1337' } }.to_json
+    post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :success
+    v2 = Form.last
+    assert_equal v1.version_independent_id, v2.version_independent_id
+    assert_equal v1.version + 1, v2.version
+    assert_equal 'A revised name', v2.name
+  end
+
+  test 'cannot revise something you do not own' do
+    form_json = { form: { name: @form.name, version_independent_id: 'F-1337' } }.to_json
+    post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    Form.last.publish
+    sign_in users(:not_admin)
+    form_json = { form: { name: 'A Failed revision', version_independent_id: 'F-1337' } }.to_json
+    post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :unauthorized
+  end
+
+  test 'cannot revise a draft' do
+    form_json = { form: { name: @form.name, version_independent_id: 'F-1337' } }.to_json
+    post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_equal DRAFT, Form.last.status
+    form_json = { form: { name: 'A Failed revision', version_independent_id: 'F-1337' } }.to_json
+    post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :unprocessable_entity
   end
 
   test 'should get my forms' do
@@ -80,7 +117,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
       delete form_url(@form)
     end
     assert_enqueued_jobs 3
-    assert_redirected_to forms_url
+    assert_response 204
   end
 
   test 'should respond to json format' do
