@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ModuleLength
 module SDP
   module Elasticsearch
     def self.with_client
@@ -5,19 +6,21 @@ module SDP
       yield client if client.ping
     end
 
-    def self.query_with_type(client, type, query_string)
+    def self.query_with_type(client, type, query_string, current_user_id)
       client.search index: 'vocabulary', type: type, body: {
         query: {
-          dis_max: {
-            queries: [
-              { match: { name: query_string } },
-              { match: { description: query_string } }
+          bool: {
+            filter: { dis_max: { queries: [
+              { term: { 'createdBy.id': current_user_id } },
+              { match: { status: 'published' } }
+            ] } },
+            should: [
+              { match: { name: query_string } }, { match: { description: query_string } }
             ]
           }
         },
         highlight: {
-          pre_tags: ['<strong>'],
-          post_tags: ['</strong>'],
+          pre_tags: ['<strong>'], post_tags: ['</strong>'],
           fields: {
             name: {}, description: {}
           }
@@ -25,19 +28,22 @@ module SDP
       }
     end
 
-    def self.query_without_type(client, query_string)
+    def self.query_without_type(client, query_string, current_user_id)
       client.search index: 'vocabulary', body: {
         query: {
-          dis_max: {
-            queries: [
+          bool: {
+            filter: { dis_max: { queries: [
+              { term: { 'createdBy.id': current_user_id } },
+              { match: { status: 'published' } }
+            ] } },
+            should: [
               { match: { name: query_string } },
               { match: { description: query_string } }
             ]
           }
         },
         highlight: {
-          pre_tags: ['<strong>'],
-          post_tags: ['</strong>'],
+          pre_tags: ['<strong>'], post_tags: ['</strong>'],
           fields: {
             name: {}, description: {}
           }
@@ -45,14 +51,48 @@ module SDP
       }
     end
 
-    def self.search_on_string(client, type, query_string)
+    def self.search_on_string(client, type, query_string, current_user_id)
       if type
-        query_with_type(client, type, query_string)
+        query_with_type(client, type, query_string, current_user_id)
       elsif query_string
-        query_without_type(client, query_string)
+        query_without_type(client, query_string, current_user_id)
       else
         client.search index: 'vocabulary'
       end
+    end
+
+    def self.search_on_type(client, type, current_user_id)
+      client.search index: 'vocabulary', type: type, body: {
+        query: {
+          bool: {
+            filter: {
+              dis_max: {
+                queries: [
+                  { term: { 'createdBy.id': current_user_id } },
+                  { match: { status: 'published' } }
+                ]
+              }
+            }
+          }
+        }
+      }
+    end
+
+    def self.search_all(client, current_user_id)
+      client.search index: 'vocabulary', body: {
+        query: {
+          bool: {
+            filter: {
+              dis_max: {
+                queries: [
+                  { term: { 'createdBy.id': current_user_id } },
+                  { match: { status: 'published' } }
+                ]
+              }
+            }
+          }
+        }
+      }
     end
 
     def self.ensure_index
@@ -96,3 +136,4 @@ module SDP
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength
