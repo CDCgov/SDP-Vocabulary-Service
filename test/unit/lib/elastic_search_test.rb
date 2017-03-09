@@ -10,6 +10,33 @@ class ElasticSearchTest < ActiveSupport::TestCase
     assert_equal '/vocabulary', req.path
   end
 
+  def test_search_on_string
+    SDP::Elasticsearch.with_client do |client|
+      SDP::Elasticsearch.search_on_string(client, 'form', 'Hello', '1')
+      req = FakeWeb.last_request
+      assert_equal 'GET', req.method
+      assert_equal '/vocabulary/form/_search', req.path
+    end
+  end
+
+  def test_search_on_type
+    SDP::Elasticsearch.with_client do |client|
+      SDP::Elasticsearch.search_on_type(client, 'form', '1')
+      req = FakeWeb.last_request
+      assert_equal 'GET', req.method
+      assert_equal '/vocabulary/form/_search', req.path
+    end
+  end
+
+  def test_search_all
+    SDP::Elasticsearch.with_client do |client|
+      SDP::Elasticsearch.search_all(client, '1')
+      req = FakeWeb.last_request
+      assert_equal 'GET', req.method
+      assert_equal '/vocabulary/_search', req.path
+    end
+  end
+
   def test_delete_all
     SDP::Elasticsearch.delete_all('form', [1, 2, 3, 4])
     req = FakeWeb.last_request
