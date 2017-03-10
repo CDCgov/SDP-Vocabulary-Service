@@ -15,33 +15,30 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
   return (
     <div id="added-questions" aria-label="Added">
     <div className="question-group">
-      <div className="row">
-          <div>
-            <div className="col-md-5"><b>Content</b></div>
-            <div className="col-md-6"><b>Response Sets</b></div>
-          </div>
-      </div>
-      <br/>
       {form.formQuestions.map((q, i) =>
         <div className="row" key={i}>
-          <QuestionItem question={questionsLookup[q.questionId]} responseSets={responseSets} index={i}
-                        removeQuestion={removeQuestion}
-                        reorderQuestion={reorderQuestion}
-                        handleResponseSetChange={handleResponseSetChange}
-                        responseSetId={q.responseSetId}
-                        />
-          <div className="col-md-3">
-            <div className="btn btn-small btn-default move-up"
-                 onClick={() => reorderQuestion(form, i, 1)}>
-              <i title="Move Up" className="fa fa fa-arrow-up"></i>
-            </div>
-            <div className="btn btn-small btn-default move-down"
-                 onClick={() => reorderQuestion(form, i, -1)}>
-              <i className="fa fa fa-arrow-down" title="Move Down"></i>
-            </div>
-            <div className="btn btn-small btn-default"
-                 onClick={() => removeQuestion(form, i)}>
-              <i className="fa fa fa-trash" title="Remove"></i>
+          <div className="col-md-9">
+            <QuestionItem question={questionsLookup[q.questionId]} responseSets={responseSets} index={i}
+                          removeQuestion={removeQuestion}
+                          reorderQuestion={reorderQuestion}
+                          handleResponseSetChange={handleResponseSetChange}
+                          responseSetId={q.responseSetId}
+                          />
+          </div>
+          <div className="form-group">
+            <div className="col-md-3">
+              <div className="btn btn-small btn-default move-up"
+                   onClick={() => reorderQuestion(form, i, 1)}>
+                <i title="Move Up" className="fa fa fa-arrow-up"></i>
+              </div>
+              <div className="btn btn-small btn-default move-down"
+                   onClick={() => reorderQuestion(form, i, -1)}>
+                <i className="fa fa fa-arrow-down" title="Move Down"></i>
+              </div>
+              <div className="btn btn-small btn-default"
+                   onClick={() => removeQuestion(form, i)}>
+                <i className="fa fa fa-trash" title="Remove"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -190,7 +187,7 @@ class FormEdit extends Component {
 
   render() {
     return (
-      <div className="col-md-6">
+      <div className="col-md-8">
       <div className="" id='form-div'>
       <ModalDialog  show={this.state.showModal}
         title="Warning"
@@ -222,17 +219,21 @@ class FormEdit extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <div className="form-group">
-              <label htmlFor="name">Name:</label>
-              <input className="form-control" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+            <div className="row">
+              <div className="form-group col-md-12">
+                <label htmlFor="name" hidden>Name</label>
+                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="description">Description:</label>
-              <input className="form-control" type="text" value={this.state.description || ''} name="description" id="description" onChange={this.handleChange('description')}/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="controlNumber">OMB Approval:</label>
-              <input className="form-control" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+            <div className="row">
+              <div className="form-group col-md-8">
+                <label htmlFor="description">Description</label>
+                <input className="input-format" type="text" value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
+              </div>
+              <div className="form-group col-md-4">
+                <label htmlFor="controlNumber">OMB Approval</label>
+                <input className="input-format" type="text" value={this.state.controlNumber} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+              </div>
             </div>
           </div>
         </div>
