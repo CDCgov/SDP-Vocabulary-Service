@@ -85,24 +85,10 @@ Feature: Manage Forms
     And I click on the "Save" button
     And I should see "What is your gender?"
 
-  Scenario: Create New Form from List
-    Given I have a Response Set with the name "Gender Full"
-    And I have a Question with the content "What is your gender?" and the type "MC"
-    And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
-    And I click on the "New Form" link
-    And I fill in the "name" field with "Test Form"
-    And I fill in the "controlNumber" field with "1234-1234"
-    And I fill in the "description" field with "Form description"
-    And I fill in the "search" field with "What"
-    And I click on the button to add the Question "What is your gender?"
-    Then I select the "Gender Full" option in the "responseSet" list
-    And I click on the "Save" button
-    Then I should see "Test Form"
-    And I should see "What is your gender?"
-
   Scenario: Create New Form from List and Create a Question using New Question Modal
     Given I have a Response Set with the name "Gender Full"
+    Given I have a Response Type with the name "Choice"
+    Given I have a Response Type with the name "Free Text"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
@@ -110,14 +96,15 @@ Feature: Manage Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
+    And I click on the button to add the Question "What is your gender?"
+    Then I select the "Gender Full" option in the "responseSet" list
     And I click on the "Add New Question" button
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "question_description" field with "This is a description"
+    And I should see "No Response Sets selected"
+    Then I select the "Free Text" option in the "responseTypeId" list
+    And I should not see "No Response Sets selected"
     And I click on the "Add Question" button
-    And I click on the button to add the Question "What is your gender?"
-    Then I select the "Gender Full" option in the "responseSet" list
-    And I fill in the "search" field with "color"
-    And I click on the button to add the Question "What is your favorite color?"
     And I click on the "Save" button
     Then I should see "Test Form"
     And I should see "What is your gender?"
