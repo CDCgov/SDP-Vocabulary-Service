@@ -31,7 +31,7 @@ export default class QuestionResults extends Component {
 }
 
 QuestionResults.propTypes = {
+  form: formProps,
   questions: React.PropTypes.arrayOf(questionProps).isRequired,
-  addQuestion: React.PropTypes.func.isRequired,
-  form: formProps
+  addQuestion: React.PropTypes.func.isRequired
 };

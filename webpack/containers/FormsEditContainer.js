@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
-import { removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions } from '../actions/questions_actions';
+import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
 import { fetchResponseSets }   from '../actions/response_set_actions';
 import QuestionModalContainer  from './QuestionModalContainer';
@@ -54,6 +54,7 @@ class FormsEditContainer extends Component {
   saveQuestionSuccess(successResponse){
     this.setState({showQuestionModal: false});
     this.props.fetchQuestion(successResponse.data.id);
+    this.props.addQuestion(this.props.form, successResponse.data);
   }
 
   render() {
@@ -64,10 +65,10 @@ class FormsEditContainer extends Component {
     }
     return (
       <div className="container basic-bg form-edit-container">
-        <QuestionModalContainer showModal={this.state.showQuestionModal}
-                                closeQuestionModal={()=>this.setState({showQuestionModal: false})}
-                                route={this.props.route}
+        <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
+                                showModal={this.state.showQuestionModal}
+                                closeQuestionModal ={()=>this.setState({showQuestionModal: false})}
                                 saveQuestionSuccess={this.saveQuestionSuccess} />
         <div className="row">
           <h2>{_.capitalize(this.props.params.action)} Form </h2>
@@ -75,21 +76,21 @@ class FormsEditContainer extends Component {
             <div className="row add-question">
               <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
             </div>
-            <QuestionSearchContainer allQs={this.props.questions}
+            <QuestionSearchContainer form ={this.props.form}
+                                     allQs={this.props.questions}
                                      allRs={this.props.responseSets}
-                                     form ={this.props.form}
                                      reverseSort={true} />
           </div>
-          <FormEdit form={this.props.form}
-                    responseSets={this.props.responseSets}
-                    reorderQuestion={this.props.reorderQuestion}
-                    removeQuestion={this.props.removeQuestion}
+          <FormEdit ref ='form'
+                    form={this.props.form}
                     action={this.props.params.action || 'new'}
-                    formSubmitter={this.state.selectedFormSaver}
-                    route={this.props.route}
+                    route ={this.props.route}
                     router={this.props.router}
                     questions={this.props.questions}
-                    ref='form' />
+                    responseSets ={this.props.responseSets}
+                    formSubmitter={this.state.selectedFormSaver}
+                    removeQuestion ={this.props.removeQuestion}
+                    reorderQuestion={this.props.reorderQuestion} />
         </div>
       </div>
     );
@@ -97,7 +98,7 @@ class FormsEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchResponseSets, fetchQuestions, fetchQuestion,
+  return bindActionCreators({fetchResponseSets, addQuestion, fetchQuestions, fetchQuestion,
     newForm, fetchForm, removeQuestion, reorderQuestion,
     saveForm, saveDraftForm}, dispatch);
 }
@@ -105,27 +106,28 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state, ownProps) {
   return {
     form: state.forms[ownProps.params.formId||0],
-    responseSets: _.values(state.responseSets),
-    questions: _.values(state.questions)
+    questions: _.values(state.questions),
+    responseSets: _.values(state.responseSets)
   };
 }
 
 FormsEditContainer.propTypes = {
-  form: formProps,
-  newForm: PropTypes.func,
-  saveForm: PropTypes.func,
-  fetchForm: PropTypes.func,
-  fetchQuestion:  PropTypes.func,
-  fetchQuestions: PropTypes.func,
-  removeQuestion: PropTypes.func,
-  reorderQuestion: PropTypes.func,
-  fetchResponseSets: PropTypes.func,
+  form:  formProps,
+  route: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
   questions: PropTypes.arrayOf(questionProps),
   responseSets: PropTypes.arrayOf(responseSetProps),
+  newForm:  PropTypes.func,
+  saveForm: PropTypes.func,
+  fetchForm: PropTypes.func,
+  addQuestion: PropTypes.func,
   saveDraftForm: PropTypes.func,
-  route:  PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired
+  fetchQuestion: PropTypes.func,
+  fetchQuestions: PropTypes.func,
+  removeQuestion: PropTypes.func,
+  reorderQuestion: PropTypes.func,
+  fetchResponseSets: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);

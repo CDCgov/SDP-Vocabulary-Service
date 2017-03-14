@@ -165,7 +165,7 @@ class QuestionForm extends Component{
                 </div>
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
-                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleChange('responseTypeId')} >
+                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleResponseTypeChange()} >
                       {_.values(responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id}>{rt.name} - {rt.description}</option>);
                       })}
@@ -280,6 +280,16 @@ class QuestionForm extends Component{
     this.unsavedState = true;
   }
 
+  handleResponseTypeChange() {
+    return (event) => {
+      this.setState({responseTypeId: event.target.value});
+      this.unsavedState = true;
+      if(this.props.handleResponseTypeChange){
+        this.props.handleResponseTypeChange(this.props.responseTypes[event.target.value]);
+      }
+    };
+  }
+
   handleChange(field) {
     return (event) => {
       let newState = {};
@@ -323,6 +333,7 @@ QuestionForm.propTypes = {
   deleteSubmitter: PropTypes.func.isRequired,
   publishSubmitter: PropTypes.func.isRequired,
   questionSubmitter: PropTypes.func.isRequired,
+  handleResponseTypeChange: PropTypes.func
 };
 
 export default QuestionForm;
