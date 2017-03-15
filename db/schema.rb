@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307205339) do
+ActiveRecord::Schema.define(version: 20170315151032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,14 +61,16 @@ ActiveRecord::Schema.define(version: 20170307205339) do
   create_table "forms", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by_id"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.string   "version_independent_id"
-    t.integer  "version",                          default: 1
-    t.string   "control_number",         limit: 9
+    t.integer  "version",                           default: 1
+    t.string   "control_number",          limit: 9
     t.string   "oid"
     t.text     "description"
-    t.string   "status",                           default: "draft"
+    t.string   "status",                            default: "draft"
+    t.integer  "surveillance_program_id"
+    t.integer  "surveillance_system_id"
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -162,6 +164,22 @@ ActiveRecord::Schema.define(version: 20170307205339) do
     t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
+  create_table "surveillance_programs", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "acronym"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "surveillance_systems", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "acronym"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
@@ -180,6 +198,8 @@ ActiveRecord::Schema.define(version: 20170307205339) do
     t.boolean  "admin",                  default: false
     t.string   "first_name"
     t.string   "last_name"
+    t.integer  "last_program_id"
+    t.integer  "last_system_id"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
@@ -192,6 +212,8 @@ ActiveRecord::Schema.define(version: 20170307205339) do
 
   add_foreign_key "authentications", "users"
   add_foreign_key "concepts", "questions"
+  add_foreign_key "forms", "surveillance_programs"
+  add_foreign_key "forms", "surveillance_systems"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
@@ -200,4 +222,6 @@ ActiveRecord::Schema.define(version: 20170307205339) do
   add_foreign_key "response_sets", "users", column: "created_by_id"
   add_foreign_key "response_sets", "users", column: "updated_by_id"
   add_foreign_key "responses", "response_sets"
+  add_foreign_key "users", "surveillance_programs", column: "last_program_id"
+  add_foreign_key "users", "surveillance_systems", column: "last_system_id"
 end

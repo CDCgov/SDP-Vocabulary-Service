@@ -1,0 +1,2 @@
+class SurveillanceProgramsController < ApplicationController
+end
