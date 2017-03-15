@@ -3,14 +3,12 @@ module SDP
     def self.search(type, query_string, current_user_id = nil, limit = 20, page = 1)
       types = type ? [type_to_class(type)] : [Form, Question, ResponseSet]
       results = {}
-      types.map do |type|
-        query = type.search(query_string, current_user_id)
+      types.map do |search_type|
+        query = search_type.search(query_string, current_user_id)
         count = query.count()
-        results[type] = { total: count, hits: query.limit(limit).offset(limit * (page - 1)).to_a }
+        results[search_type] = { total: count, hits: query.limit(limit).offset(limit * (page - 1)).to_a }
       end
-      res = render_results(results)
-      puts res.to_s
-      res
+      render_results(results)
     end
 
     def self.type_to_class(type)
@@ -22,7 +20,7 @@ module SDP
         Question
       when 'ResponseSet'
         ResponseSet
-        end
+      end
     end
 
     def self.render_results(results)
@@ -45,7 +43,7 @@ module SDP
         end
       end
 
-      return Jbuilder.new do |json|
+      Jbuilder.new do |json|
         json.took 1
         json.timed_out  false
         json._shards do |shard|
@@ -58,7 +56,6 @@ module SDP
           hit.hits json_results
         end
       end
-      
     end
   end
 end
