@@ -9,7 +9,7 @@ class CodedSetTableEditContainer extends Component {
   constructor(props) {
     super(props);
     var items = props.initialItems.length < 1 ? [{value: '', codeSystem: '', displayName: ''}] : props.initialItems;
-    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem:'', selectedConcepts:[]};
+    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem:'', selectedConcepts:[], searchTerm:''};
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.hideCodeSearch = this.hideCodeSearch.bind(this);
   }
@@ -65,17 +65,20 @@ class CodedSetTableEditContainer extends Component {
     this.setState({selectedConcepts: []});
   }
 
-  searchConcepts(system, search='', version=1){
-    this.setState({selectedSystem: system});
-    this.props.fetchConcepts(system, search, version);
+  searchConcepts(system){
+    if(system=='None'){
+      this.setState({selectedSystem: ''});
+      this.props.fetchConcepts('', this.state.searchTerm, 1);
+    } else {
+      this.setState({selectedSystem: system});
+      this.props.fetchConcepts(system, this.state.searchTerm, 1);
+    }
   }
 
   handleSearchChange(e){
     var value = e.target.value;
-    this.setState({selectedConcepts: []});
-    if(this.state.selectedSystem){
-      this.props.fetchConcepts(this.state.selectedSystem, value, 1);
-    }
+    this.setState({selectedConcepts: [], searchTerm: value});
+    this.props.fetchConcepts(this.state.selectedSystem, value, 1);
   }
 
   selectConcept(e,i){
@@ -110,16 +113,17 @@ class CodedSetTableEditContainer extends Component {
               <DropdownButton
                 componentClass={InputGroup.Button}
                 id="system-select-dropdown"
-                title="Code System" onSelect={(key, e)=> this.searchConcepts(e.target.text)} >
+                title={this.state.selectedSystem ? this.state.selectedSystem : 'Code System'} onSelect={(key, e)=> this.searchConcepts(e.target.text)} >
+                <MenuItem key={0} value={''}>None</MenuItem>
                 {_.values(this.props.conceptSystems).map((s,i) => {
                   return <MenuItem key={i} value={s.name}>{s.name}</MenuItem>;
                 })}
-            </DropdownButton>
-          <FormControl type="text" onChange={(e)=>this.handleSearchChange(e)} placeholder="Search Codes"/>
-           <FormControl.Feedback>
-            <Glyphicon glyph="search"/>
-          </FormControl.Feedback>
-          </InputGroup>
+              </DropdownButton>
+            <FormControl type="text" onChange={(e)=>this.handleSearchChange(e)} placeholder="Search Codes"/>
+             <FormControl.Feedback>
+              <Glyphicon glyph="search"/>
+            </FormControl.Feedback>
+            </InputGroup>
           </FormGroup>
             <table className="table table-striped scroll-table-header">
               <thead>
@@ -161,14 +165,14 @@ class CodedSetTableEditContainer extends Component {
       {this.conceptModal()}
         <thead>
           <tr>
-            <th><a  title="Search Codes" href="#" onClick={(e)=>{
+            <th><a title="Search Codes" href="#" onClick={(e)=>{
               e.preventDefault();
               this.showCodeSearch();
             }}><i className="fa fa-search fa-2x"></i></a></th>
             <th>{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
             <th>Code System</th>
             <th>Display Name</th>
-            <th > <a  title="Add Row" href="#" onClick={(e) => {
+            <th > <a title="Add Row" href="#" onClick={(e) => {
               e.preventDefault();
               this.addItemRow();
             }}><i className="fa fa-plus fa-2x"></i></a>
@@ -228,12 +232,12 @@ CodedSetTableEditContainer.propTypes = {
     codeSystem:  PropTypes.string,
     displayName: PropTypes.string
   })),
+  concepts:  PropTypes.object,
+  childName: PropTypes.string,
   parentName:  PropTypes.string,
-  childName:   PropTypes.string,
   itemWatcher: PropTypes.func,
+  fetchConcepts:  PropTypes.func,
   conceptSystems: PropTypes.object,
-  concepts: PropTypes.object,
-  fetchConcepts: PropTypes.func,
   fetchConceptSystems: PropTypes.func
 };
 
