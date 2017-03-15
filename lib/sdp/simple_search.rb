@@ -1,0 +1,64 @@
+module SDP
+  module SimpleSearch
+    def self.search(type, query_string, current_user_id = nil, limit = 20, page = 1)
+      types = type ? [type_to_class(type)] : [Form, Question, ResponseSet]
+      results = {}
+      types.map do |type|
+        query = type.search(query_string, current_user_id)
+        count = query.count()
+        results[type] = { total: count, hits: query.limit(limit).offset(limit * (page - 1)).to_a }
+      end
+      res = render_results(results)
+      puts res.to_s
+      res
+    end
+
+    def self.type_to_class(type)
+      return nil if type.nil? || type.blank?
+      case type.camelize
+      when 'Form'
+        Form
+      when 'Question'
+        Question
+      when 'ResponseSet'
+        ResponseSet
+        end
+    end
+
+    def self.render_results(results)
+      json_results = []
+      total = 0
+      mapping = { Form => ESFormSerializer,
+                  Question => ESQuestionSerializer,
+                  ResponseSet => ESResponseSetSerializer }
+      types = [Question, ResponseSet, Form]
+      types.each do |type|
+        type_results = results[type]
+
+        next unless type_results
+        total += type_results[:total]
+        type_results[:hits].each do |tr|
+          serializer = mapping[type]
+          res_json = serializer.new(tr).as_json
+          res_json['_type'] = type.to_s.underscore
+          json_results << res_json
+        end
+      end
+
+      return Jbuilder.new do |json|
+        json.took 1
+        json.timed_out  false
+        json._shards do |shard|
+          shard.total 1
+          shard.successful 1
+          shard.failed 0
+        end
+        json.hits do |hit|
+          hit.total total
+          hit.hits json_results
+        end
+      end
+      
+    end
+  end
+end

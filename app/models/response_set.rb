@@ -31,8 +31,16 @@ class ResponseSet < ApplicationRecord
     DeleteFromIndexJob.perform_later('response_set', id)
   end
 
-  def self.search(search)
-    where('name ILIKE ?', "%#{search}%")
+  def self.search(search = nil, current_user_id = nil)
+    if current_user_id
+      sql = "(status = 'published' or created_by_id = ?) "
+      sql += 'and name ILIKE ?' if search
+      where(sql, current_user_id, search)
+    elsif search
+      where('name ILIKE ?', "%#{search}%")
+    else
+      where('status =  ?', 'published')
+    end
   end
 
   def publish

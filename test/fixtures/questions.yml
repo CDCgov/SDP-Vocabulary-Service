@@ -3,6 +3,7 @@ one:
   content: What is your gender?
   created_by: admin
   question_type: one
+  status: published
   version: 1
   version_independent_id: Q-1
 

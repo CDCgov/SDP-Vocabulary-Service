@@ -28,8 +28,16 @@ class Question < ApplicationRecord
     DeleteFromIndexJob.perform_later('question', id)
   end
 
-  def self.search(search)
-    where('content ILIKE ?', "%#{search}%")
+  def self.search(search = nil, current_user_id = nil)
+    if current_user_id
+      sql = "(status = 'published' or created_by_id = ?) "
+      sql += 'and content ILIKE ?' if search
+      where(sql, current_user_id, search)
+    elsif search
+      where('content ILIKE ?', "%#{search}%")
+    else
+      where('status =  ?', 'published ')
+    end
   end
 
   def publish
