@@ -9,7 +9,7 @@ class ResponseSetsController < ApplicationController
 
   def my_response_sets
     @response_sets = if params[:search]
-                       ResponseSet.where("created_by_id=? and name ILIKE ?", current_user.id, "%#{search}%").latest_versions
+                       ResponseSet.where('created_by_id=? and name ILIKE ?', current_user.id, "%#{search}%").latest_versions
                      else
                        ResponseSet.where(created_by_id: current_user.id).latest_versions
                      end
