@@ -6,6 +6,15 @@ class QuestionsController < ApplicationController
     @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
   end
 
+  def my_questions
+    @questions = if params[:search]
+                   Question.where(created_by_id: current_user.id).search(params[:search]).latest_versions
+                 else
+                   Question.where(created_by_id: current_user.id).latest_versions
+                 end
+    render action: :index, collection: @questions
+  end
+
   # GET /questions/1
   # GET /questions/1.json
   def show
@@ -27,19 +36,21 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     link_response_sets(params)
-    assign_author
 
-    respond_to do |format|
-      if @question.save
-        q_action = 'created'
-        q_action = 'revised' if @question.version > 1
-        format.html { redirect_to @question, notice: "Question was successfully #{q_action}." }
-        format.json { render :show, status: :created, location: @question }
-      else
-        @question_types = QuestionType.all
-        format.html { render :new }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
+    if @question.all_versions.count >= 1
+      if @question.all_versions.last.created_by != current_user
+        render(json: @question.errors, status: :unauthorized) && return
+      elsif @question.all_versions.last.status == 'draft'
+        render(json: @question.errors, status: :unprocessable_entity) && return
       end
+      @question.version = @question.most_recent + 1
+    end
+    assign_author
+    if @question.save
+      render :show, status: :created, location: @question
+    else
+      # @question_types = QuestionType.all
+      render json: @question.errors, status: :unprocessable_entity
     end
   end
 
@@ -49,36 +60,58 @@ class QuestionsController < ApplicationController
     @question.response_sets << @response_sets
   end
 
+  # PATCH/PUT /questions/1/publish
+  def publish
+    if @question.status == 'draft'
+      @question.publish
+      render :show, statis: :published, location: @question
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
-    update_response_sets(params)
-    @question.updated_by = current_user
+    if @question.status == 'published'
+      render json: @question.errors, status: :unprocessable_entity
+    else
+      update_response_sets(params)
+      update_concepts(params)
+      @question.updated_by = current_user
 
-    respond_to do |format|
       if @question.update(question_params)
-        format.html { redirect_to @question, notice: 'Question was successfully updated.' }
-        format.json { render :show, status: :ok, location: @question }
+        render :show, status: :ok, location: @question
       else
         @question_types = QuestionType.all
-        format.html { render :edit }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
+        render json: @question.errors, status: :unprocessable_entity
       end
     end
+  end
+
+  def update_concepts(_params)
+    @concepts = Concept.where(question_id: @question.id)
+    @question.concepts.destroy_all
+    @question.concepts << @concepts
   end
 
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
-    @question.destroy
-    render json: @question
+    if @question.status == 'draft'
+      @question.concepts.destroy_all
+      @question.destroy
+      render json: @question
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
   end
 
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :response_set_id, :response_type_id, :question_type_id, :version, :version_independent_id,
+    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id, :version_independent_id,
                                      :description, :status, :harmonized, concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

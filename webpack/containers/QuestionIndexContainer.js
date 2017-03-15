@@ -31,12 +31,14 @@ class QuestionIndexContainer extends Component {
 
   render() {
     return (
-      <div className='row basic-bg'>
-        <p id="notice">{this.props.notice}</p>
-        <div className='col-md-12'>
-          <QuestionListSearch search={this.search} />
-          <QuestionList questions={this.props.questions} routes={Routes} />
-          {this.newQuestionButton()}
+      <div className='container'>
+        <div className='row basic-bg'>
+          <p id="notice">{this.props.notice}</p>
+          <div className='col-md-12'>
+            <QuestionListSearch search={this.search} />
+            <QuestionList questions={this.props.questions} routes={Routes} />
+            {this.newQuestionButton()}
+          </div>
         </div>
       </div>
     );

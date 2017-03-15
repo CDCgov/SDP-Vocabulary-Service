@@ -1,6 +1,8 @@
 import {
   FETCH_FORM_FULFILLED,
   FETCH_FORMS_FULFILLED,
+  PUBLISH_FORM_FULFILLED,
+  SAVE_DRAFT_FORM_FULFILLED,
   ADD_QUESTION,
   REMOVE_QUESTION,
   REORDER_QUESTION,
@@ -13,7 +15,9 @@ export default function forms(state = {}, action) {
   let form , index, newState, newForm, direction, question;
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
-      return _.keyBy(action.payload.data, 'id');
+      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
+    case PUBLISH_FORM_FULFILLED:
+    case SAVE_DRAFT_FORM_FULFILLED:
     case FETCH_FORM_FULFILLED:
       const formClone = Object.assign({}, state);
       formClone[action.payload.data.id] = action.payload.data;

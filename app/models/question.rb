@@ -12,6 +12,7 @@ class Question < ApplicationRecord
   belongs_to :question_type
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
+  belongs_to :parent, class_name: 'Question'
 
   validates :content, presence: true
   accepts_nested_attributes_for :concepts, allow_destroy: true
@@ -31,12 +32,16 @@ class Question < ApplicationRecord
     where('content ILIKE ?', "%#{search}%")
   end
 
+  def publish
+    update(status: 'published') if status == 'draft'
+  end
+
   def build_new_revision
     new_revision = Question.new(content: content, description: description, status: status,
                                 version_independent_id: version_independent_id,
                                 version: version + 1, question_response_sets: question_response_sets,
                                 response_sets: response_sets, form_questions: form_questions, forms: forms,
-                                question_type: question_type, oid: oid,
+                                question_type: question_type, oid: oid, parent_id: parent_id,
                                 response_type: response_type)
     concepts.each do |c|
       new_revision.concepts << c.dup

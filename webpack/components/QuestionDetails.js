@@ -5,8 +5,7 @@ import ResponseSetList from "./ResponseSetList";
 import CodedSetTable from "../components/CodedSetTable";
 import moment from 'moment';
 import _ from 'lodash';
-import Routes from "../routes";
-import { hashHistory } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 import currentUserProps from "../prop-types/current_user_props";
 
 export default class QuestionDetails extends Component {
@@ -60,12 +59,32 @@ export default class QuestionDetails extends Component {
     }
   }
 
+  reviseQuestionButton(){
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
+      if(this.props.question.status && this.props.question.status == 'draft'){
+        return( <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/edit`}>Edit</Link> );
+      } else {
+        return( <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link> );
+      }
+    }
+  }
+
+  extendQuestionButton() {
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
+      if(this.props.question.status && this.props.question.status == 'published'){
+        return( <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link> );
+      }
+    }
+  }
+
   mainContent(question, responseSets) {
     return (
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
           <div className="action_bar no-print">
-            <a className="btn btn-default" href={`/landing#/questions/${question.id}/revise`}>Revise</a>
+            {this.reviseQuestionButton()}
+            {this.extendQuestionButton()}
+            {this.props.publishButton}
           </div>
         }
         <div className="maincontent-details">
@@ -87,13 +106,19 @@ export default class QuestionDetails extends Component {
               <strong>Harmonized: </strong>
               {question.harmonized ? 'Yes' : 'No'}
             </div>
+            { question.parent &&
+              <div className="box-content">
+                <strong>Extended from: </strong>
+                <Link to={`/questions/${question.parent.id}`}>{ question.parent.name }</Link>
+              </div>
+            }
             {question.questionType && <div className="box-content">
               <strong>Question Type: </strong>
               {question.questionType.name}
             </div>}
-            {question.responsetype && <div className="box-content">
-              <strong>Primary Response Type: </strong>
-              {question.responsetype.name}
+            {question.responseType && <div className="box-content">
+              <strong>Response Type: </strong>
+              {question.responseType.name}
             </div>}
           </div>
             <div className="basic-c-box panel-default">
@@ -112,7 +137,7 @@ export default class QuestionDetails extends Component {
                 <h3 className="panel-title">Linked Response Sets</h3>
               </div>
               <div className="box-content">
-                <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} routes={Routes} />
+                <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} />
               </div>
             </div>
           }
@@ -138,5 +163,6 @@ export default class QuestionDetails extends Component {
 QuestionDetails.propTypes = {
   question:  questionProps,
   currentUser:   currentUserProps,
+  publishButton: PropTypes.object,
   responseSets: PropTypes.array
 };

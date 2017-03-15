@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import Routes from "../routes";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, saveQuestion } from '../actions/questions_actions';
+import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../actions/questions_actions';
+
 import QuestionForm from '../components/QuestionForm';
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps }  from '../prop-types/response_set_props';
@@ -28,13 +29,15 @@ class QuestionEditContainer extends Component {
       );
     }
     let action = this.props.params.action;
+    let id = this.props.params.qId;
     if (action === undefined) {
       action = 'new';
     }
     return (
       <div className="container">
-        <QuestionForm question={this.props.question} questionSubmitter={this.props.saveQuestion} action={action}
-                      questionTypes={this.props.questionTypes} responseSets={this.props.responseSets}
+        <QuestionForm question={this.props.question} questionSubmitter={this.props.saveQuestion}
+                      draftSubmitter={this.props.saveDraftQuestion} publishSubmitter={this.props.publishQuestion} action={action} id={id}
+                      deleteSubmitter={this.props.deleteQuestion} questionTypes={this.props.questionTypes} responseSets={this.props.responseSets}
                       responseTypes={this.props.responseTypes} routes={Routes}
                       router={this.props.router} route={this.props.route} />
       </div>
@@ -56,19 +59,22 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, saveQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets}, dispatch);
+  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
   question: questionProps,
-  fetchQuestion: PropTypes.func.isRequired,
+  responseSets:  responseSetsProps,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
-  responseSets: responseSetsProps,
-  saveQuestion: PropTypes.func.isRequired,
-  fetchQuestionTypes: PropTypes.func.isRequired,
-  fetchResponseTypes: PropTypes.func.isRequired,
-  fetchResponseSets:  PropTypes.func.isRequired,
+  saveQuestion:  PropTypes.func,
+  fetchQuestion: PropTypes.func,
+  deleteQuestion:  PropTypes.func,
+  publishQuestion: PropTypes.func,
+  saveDraftQuestion:  PropTypes.func,
+  fetchResponseSets:  PropTypes.func,
+  fetchQuestionTypes: PropTypes.func,
+  fetchResponseTypes: PropTypes.func,
   params: PropTypes.object.isRequired,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired

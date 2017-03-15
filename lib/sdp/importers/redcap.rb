@@ -31,8 +31,8 @@ module SDP
           forms[f['OID']] = form
           f.xpath('./odm:ItemGroupRef').each do |igr|
             ig_questions = item_groups[igr['ItemGroupOID']]
-            ig_questions.each do |q|
-              form.form_questions << FormQuestion.new(question: q, response_set: q.response_sets[0])
+            ig_questions.each_with_index do |q, i|
+              form.form_questions << FormQuestion.new(question: q, response_set: q.response_sets[0], position: i)
             end
           end
         end

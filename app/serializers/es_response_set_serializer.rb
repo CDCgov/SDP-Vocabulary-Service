@@ -41,10 +41,6 @@ class ESResponseSetSerializer < ActiveModel::Serializer
   def category
   end
 
-  def status
-    'draft'
-  end
-
   def updated_by
     UserSerializer.new(object.updated_by).as_json if object.updated_by
   end

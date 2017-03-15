@@ -1,5 +1,6 @@
 inherit_from: .rubocop_todo.yml
 AllCops:
+  TargetRubyVersion: 2.2
   Exclude:
     - 'bin/**/*'
     - 'lib/tasks/cucumber.rake'
@@ -25,11 +26,14 @@ Metrics/BlockLength:
     - 'lib/tasks/admin.rake'
     - 'config/initializers/devise.rb'
     - 'test/**/*'
+    - 'db/migrate/*'
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
   Max: 20
+  Exclude:
+    - 'db/migrate/*'
 Metrics/ClassLength:
-  Max: 100
+  Max: 200
   Exclude:
     - 'test/**/*'
 Metrics/AbcSize:
@@ -49,7 +53,7 @@ Metrics/PerceivedComplexity:
 Style/GuardClause:
   Enabled: false
 Style/ClassVars:
-  Exclude: 
+  Exclude:
     - 'config/initializers/elastic_search.rb'
 #Style/HashSyntax:
 #  UseHashRocketsWithSymbolValues: true

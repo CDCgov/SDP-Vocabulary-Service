@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { questionProps }  from "../prop-types/question_props";
 import { deleteQuestion } from "../actions/questions_actions";
 import currentUserProps from "../prop-types/current_user_props";
-import allRoutes from '../prop-types/route_props';
 
 class QuestionWidget extends Component {
   constructor(props){
@@ -22,10 +21,13 @@ class QuestionWidget extends Component {
   dropdownMenu(){
     if(this.props.currentUser && this.props.currentUser.id){
       return (
-        <ul className="dropdown-menu">
-          <li>
+        <ul className="dropdown-menu dropdown-menu-right">
+          {this.props.question.status && this.props.question.status === 'published' && <li>
             <Link to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
-          </li>
+          </li>}
+          {this.props.question.status && this.props.question.status === 'draft' && <li>
+            <Link to={`/questions/${this.props.question.id}/edit`}>Edit</Link>
+          </li>}
           <li>
             <Link to={`/questions/${this.props.question.id}`}>Details</Link>
           </li>
@@ -33,7 +35,7 @@ class QuestionWidget extends Component {
       );
     }else{
       return (
-        <ul className="dropdown-menu">
+        <ul className="dropdown-menu dropdown-menu-right">
           <li>
             <Link to={`/questions/${this.props.question.id}`}>Details</Link>
           </li>
@@ -48,7 +50,7 @@ class QuestionWidget extends Component {
         <div className="panel panel-default">
           <div className="question-container">
             <ul className="list-inline">
-              <li><a href={`/landing#/questions/${this.props.question.id}`}>{this.props.question.content}</a></li>
+              <li><Link to={`/questions/${this.props.question.id}`}>{this.props.question.content}</Link></li>
               <li className="pull-right">
                 <a>
                   <span className="fa fa-signal"></span>
@@ -94,8 +96,7 @@ function mapDispatchToProps(dispatch) {
 QuestionWidget.propTypes = {
   question: questionProps,
   currentUser: currentUserProps,
-  deleteQuestion: PropTypes.func,
-  routes: allRoutes
+  deleteQuestion: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionWidget);

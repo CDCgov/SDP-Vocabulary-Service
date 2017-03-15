@@ -26,6 +26,7 @@ class QuestionSearchContainer extends Component {
       });
     }
   }
+
   questionFilter(term) {
     var questionsFiltered = [];
 
@@ -48,8 +49,10 @@ class QuestionSearchContainer extends Component {
     return (
             <div>
                 <SearchBar onSearchTermChange={term => this.questionFilter(term)} />
-                <QuestionResults questions={this.state.questions} responseSets={_.values(this.state.responseSets)}
-                                 addQuestion={this.props.addQuestion} form={this.props.form}/>
+                <QuestionResults questions={this.props.reverseSort ? this.state.questions.reverse() : this.state.questions}
+                                 responseSets={_.values(this.state.responseSets)}
+                                 addQuestion={this.props.addQuestion}
+                                 form={this.props.form} />
             </div>
     );
   }
@@ -63,7 +66,8 @@ QuestionSearchContainer.propTypes = {
   allQs: React.PropTypes.array,
   allRs: React.PropTypes.array,
   addQuestion: React.PropTypes.func.isRequired,
-  form: React.PropTypes.object
+  form: React.PropTypes.object,
+  reverseSort: React.PropTypes.bool
 };
 
 export default connect(null, mapDispatchToProps)(QuestionSearchContainer);

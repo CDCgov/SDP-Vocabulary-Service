@@ -1,7 +1,5 @@
-import { expect, renderComponent, createComponent } from '../test_helper';
-import TestUtils from 'react-addons-test-utils';
+import { expect, renderComponent } from '../test_helper';
 import ResponseSetForm from '../../../webpack/components/ResponseSetForm';
-import routes from '../mock_routes';
 import MockRouter from '../mock_router';
 
 describe('ResponseSetForm', () => {
@@ -10,11 +8,10 @@ describe('ResponseSetForm', () => {
   beforeEach(() => {
     router = new MockRouter();
     props  = {
-      responseSet: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1", 
-                    responses:[{value: 'val', codeSystem: 'codesystem', displayName: 'displayname'}]},
+      responseSet: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1",
+        responses:[{value: 'val', codeSystem: 'codesystem', displayName: 'displayname'}]},
       router: router,
       action: 'revise',
-      routes: routes,
     };
     component = renderComponent(ResponseSetForm, props);
     inputNode = component.find("input[id='content']")[0]

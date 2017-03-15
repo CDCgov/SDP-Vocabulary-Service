@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  form_id: one
-  question_id: one
-  response_set_id: one
+  form: one
+  question: one
+  response_set: one
+  position: 1
 
 two:
-  form_id: one
-  question_id: one
-  response_set_id: one
+  form: one
+  question: one
+  response_set: one
+  position: 2

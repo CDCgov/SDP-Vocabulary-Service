@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion } from '../actions/questions_actions';
+import { fetchQuestion, publishQuestion } from '../actions/questions_actions';
 import { questionProps } from "../prop-types/question_props";
 import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
@@ -20,6 +20,23 @@ class QuestionShowContainer extends Component {
     }
   }
 
+  publishQuestionButton(){
+    if(this.props.currentUser && this.props.currentUser.id && this.props.question ){
+      let q = this.props.question;
+      if(q.status == 'draft'){
+        return( <button className="btn btn-primary" onClick={() => this.handlePublish(q) }>Publish</button> );
+      } else if(q.status == 'published'){
+        //return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/deprecate`}>Deprecate</a> );
+      }
+    }
+  }
+
+  handlePublish(q){
+    publishQuestion(q.id, (response) => {
+      this.props.fetchQuestion(response.data.id);
+    });
+  }
+
   render() {
     if(!this.props.question){
       return null;
@@ -28,7 +45,8 @@ class QuestionShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <QuestionDetails question={this.props.question} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
+            <QuestionDetails question={this.props.question} publishButton={this.publishQuestionButton()} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
+
             <div className="col-md-12 showpage-comments-title">Comments:</div>
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>

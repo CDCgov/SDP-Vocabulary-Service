@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForms } from '../actions/form_actions';
 import { formsProps } from '../prop-types/form_props';
+import { Link } from 'react-router';
 
 class FormsIndexContainer extends Component {
   constructor(props){
@@ -28,12 +29,14 @@ class FormsIndexContainer extends Component {
       );
     }
     return (
-      <div className='row basic-bg'>
-      <div className='col-md-9'>
-        <FormListSearch search={this.search} />
-        <FormList forms={this.props.forms} routes={Routes} />
-        <a className='btn btn-default' href={"#/forms/new"}>New Form</a>
-      </div>
+      <div className='container'>
+        <div className='row basic-bg'>
+          <div className='col-md-9'>
+            <FormListSearch search={this.search} />
+            <FormList forms={this.props.forms} routes={Routes} />
+            <Link className='btn btn-default' to={"/forms/new"}>New Form</Link>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,6 +1,5 @@
 .dashboard {
   margin-bottom: 20px;
-  margin-top: 70px;
 }
 
 .dashboard-details {
@@ -28,10 +27,42 @@
   min-height: 90vh;
 }
 
-.mystuff-bg {
-  margin-bottom: 20px;
-  margin-top: 130px;
-  border-top: 3px solid $cdc-green;
-  background-color: white;
-  min-height: 90vh;
+.fixed-height-list{
+  max-height: 400px;
+  min-height: 400px;
+  overflow-y: auto;
 }
+
+.my-stuff {
+  .panel-body {
+    max-height: 320px;
+    min-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .response-set-container{
+      min-height: initial;
+    }
+    .response-set-details{
+      overflow: visible;
+      min-height: initial;
+    }
+    .question-set-details{
+      overflow: visible;
+      min-height: initial;
+    }
+    .form-container{
+      max-height: initial;
+      min-height: initial;
+      overflow: initial;
+    }
+    .question-container{
+      max-height: initial;
+      min-height: initial;
+      overflow: initial;
+      li:first-child{
+        width:94%;
+      }
+    }
+  }
+}
+

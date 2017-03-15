@@ -7,14 +7,14 @@ import MockRouter from '../mock_router';
 
 describe('QuestionEditContainer ', () => {
   it('will show question edit page', () => {
-    const props = {params:{}, 
-    questions: {1: {id:1, contents:'test', questionTypeId:1, responseTypeId:1, responseSets:[1]}},
-    questionTypes:{1: {id: 1, name: 'Test'}},
-    responseSets: {1: {id: 1, name: 'Test'}},
-    responseTypes:{1: {id: 1, name: 'Test'}},
-    route: {id: 1, name: 'test'},
-    router: new MockRouter()
-  }
+    const props = {params:{},
+      questions: {1: {id:1, contents:'test', questionTypeId:1, responseTypeId:1, responseSets:[1]}},
+      questionTypes:{1: {id: 1, name: 'Test'}},
+      responseSets: {1: {id: 1, name: 'Test'}},
+      responseTypes:{1: {id: 1, name: 'Test'}},
+      route: {id: 1, name: 'test'},
+      router: new MockRouter()
+    };
     const component = renderComponent(QuestionEditContainer, props);
     expect(component.find("div[class='container']").length).to.exist;
     expect(component.find("input[name='content']").length).to.exist;

@@ -1,6 +1,5 @@
 import { expect, renderComponent } from '../test_helper';
 import QuestionList from '../../../webpack/components/QuestionList';
-import routes from '../mock_routes';
 
 describe('QuestionList', () => {
   let component;
@@ -9,7 +8,7 @@ describe('QuestionList', () => {
     const questions = {1: {id: 1, content: "Is this a question?", questionType: ""},
                        2: {id: 2, content: "Whats your name", questionType: ""},
                        3: {id: 3, content: "What is a question?", questionType: ""}};
-    component = renderComponent(QuestionList, {questions, routes});
+    component = renderComponent(QuestionList, {questions});
   });
 
   it('should create list of questions', () => {

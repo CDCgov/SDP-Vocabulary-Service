@@ -24,7 +24,7 @@ node('ruby') {
           def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
           return (r == "true")
         }
-        env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.portalIP}"'
+        env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.clusterIP}"'
         env.podName = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.name}"'
         env.namespace = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.namespace}"'
         openshiftExec namespace: "${namespace}", pod: "${podName}", container: 'postgresql', command: [ "/bin/sh", "-i", "-c", "psql -h 127.0.0.1 -q -c 'ALTER ROLE railstest WITH SUPERUSER'" ]
@@ -32,22 +32,21 @@ node('ruby') {
     }
 
     stage('Create Schema') {
-      withEnv(['OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}', 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', 'OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}', 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
+      withEnv(["OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
         sh 'bundle exec rake db:create'
         sh 'bundle exec rake db:schema:load'
       }
     }
 
     stage('Run Tests') {
-      withEnv(['NO_PROXY=localhost,127.0.0.1', 'OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}', 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', 'OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}', 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
+      withEnv(['NO_PROXY=localhost,127.0.0.1', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
         sh 'bundle exec rake'
-        sh 'bundle exec cucumber'
       }
     }
   }
   finally {
     stage('Destroy Test DB') {
-      sh 'oc delete pods,dc,rc,services -l testdb=${svcname}'
+      sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
     }
   }
 }

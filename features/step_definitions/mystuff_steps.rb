@@ -1,3 +1,3 @@
-When(/^I go to my stuff$/) do
-  visit '/mystuff'
+When(/^I go to My Stuff$/) do
+  visit 'landing#/mystuff'
 end

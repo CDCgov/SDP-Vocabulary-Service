@@ -7,8 +7,9 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
     Then I should see the option to Details the Response Set with the name "Gender Full"
-    And I should see the option to Revise the Response Set with the name "Gender Full"
-    And I should see the option to Extend the Response Set with the name "Gender Full"
+    And I should not see the option to Revise the Response Set with the name "Gender Full"
+    And I should not see the option to Extend the Response Set with the name "Gender Full"
+    And I should see the option to Edit the Response Set with the name "Gender Full"
     And I should see the option to Delete the Response Set with the name "Gender Full"
 
   Scenario: Show Response Set in Detail
@@ -31,18 +32,48 @@ Feature: Manage Response Sets
     And I should see "Response set description"
     And I should see "No Responses Selected"
 
-  Scenario: Revise Response Set
+  Scenario: Edit a Draft Response Set
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
+    And I click on the option to Details the Response Set with the name "Gender Full"
+    Then I should see "Edit"
+    When I click on the "Edit" button
+    And I fill in the "Name" field with "Gender Partial"
+    And I fill in the "Description" field with "M / F"
+    And I click on the "Save" button
+    Then I should see "Gender Partial"
+    And I should see "M / F"
+    And I should see "Publish"
+
+  Scenario: Publish a Draft Response Set
+    Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    When I click on the menu link for the Response Set with the name "Gender Full"
+    And I click on the option to Details the Response Set with the name "Gender Full"
+    Then I should see "Edit"
+    And I should see "Publish"
+    And I should not see "Revise"
+    And I should not see "Extend"
+    When I click on the "Publish" button
+    Then I should see "Extend"
+    And I should see "Revise"
+    And I should not see "Edit"
+
+  Scenario: Revise Response Set
+    Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Revise the Response Set with the name "Gender Full"
     And I fill in the "Name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Response 2"
     And I click on the "remove_0" link
-    And I click on the "Revise Response Set" button
+    And I click on the "Save" button
     Then I should see "Version: 2"
     And I should see "Gender Partial"
     And I should see "M / F"
@@ -50,13 +81,13 @@ Feature: Manage Response Sets
     And I should not see "Original Response"
 
   Scenario: Revise Response Set Removing Response
-    Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Male"
+    Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Male"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
-    When I click on the menu link for the Response Set with the name "Gender Full"
+    And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Revise the Response Set with the name "Gender Full"
     And I click on the link to remove the Response "Male"
-    And I click on the "Revise Response Set" button
+    And I click on the "Save" button
     Then I should see "Version: 2"
     And I should see "Gender Full"
     And I should not see "Male"
@@ -66,13 +97,17 @@ Feature: Manage Response Sets
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
+    And I click on the option to Details the Response Set with the name "Gender Full"
+    And I click on the "Publish" button
+    And I go to the list of Response Sets
+    And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Extend the Response Set with the name "Gender Full"
     And I fill in the "Name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F / O"
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Response 2"
     And I click on the "remove_0" link
-    And I click on the "Extend Response Set" button
+    And I click on the "Save" button
     Then I should see "Version: 1"
     And I should see "Extended from: Gender Full"
     And I should see "Gender Partial"
@@ -98,7 +133,7 @@ Feature: Manage Response Sets
     And I fill in the "displayName_1" field with "Test Name 2"
     And I fill in the "displayName_2" field with "Test Name 3"
     And I click on the "remove_2" link
-    And I click on the "Create Response Set" button
+    And I click on the "Save" button
     Then I should see "Version: 1"
     And I should see "Gender Partial"
     And I should see "Test Response 1"
@@ -140,39 +175,17 @@ Feature: Manage Response Sets
     And I click on the "Continue Without Saving" button
     And I should not see "Gender Partial"
 
-  Scenario: Response Set Delete
-    Given I have a Response Set with the name "Gender Full"
-    And I am logged in as test_author@gmail.com
-    When I go to the list of Response Sets
-    When I click on the menu link for the Response Set with the name "Gender Full"
-    And I click on the option to Delete the Response Set with the name "Gender Full"
-    Then I should see "Response set was successfully destroyed."
-    And I should not see "Gender Full"
-
-  Scenario: Search for a Response Set
-    Given I have a Response Set with the name "Gender1"
-    And I have a Response Set with the name "gender lowercase"
-    And I have a Response Set with the name "Temp Partial"
-    And I have a Response Set with the name "Other Partial"
-    And I have a Response Set with the name "True / False"
-    When I go to the list of Response Sets
-    And I fill in the "search" field with "Gender"
-    And I click on the "Go!" button
-    Then I should see "Gender1"
-    And I should see "gender lowercase"
-    And I should not see "Temp"
-    And I should not see "True"
-    And I should not see "Other"
-
-  Scenario: Filter for Response Sets on Dashboard
-    Given I have a Question with the content "Why?" and the type "MC"
-    And I have a Question with the content "What?" and the type "MC"
-    And I have a Response Set with the name "Reasons why"
-    When I go to the dashboard
-    And I click on the "search-group-btn" button
-    And I click on the response_sets search filter
-    And I fill in the "search" field with "why"
-    And I click on the "search-btn" button
-    Then I should not see "Why?"
-    And I should see "Reasons"
-    And I should not see "What?"
+#  Scenario: Search for a Response Set on the Response Set Index Page
+#    Given I have a Response Set with the name "Gender1"
+#    And I have a Response Set with the name "gender lowercase"
+#    And I have a Response Set with the name "Temp Partial"
+#    And I have a Response Set with the name "Other Partial"
+#    And I have a Response Set with the name "True / False"
+#    When I go to the list of Response Sets
+#    And I fill in the "search" field with "Gender"
+#    And I click on the "Go!" button
+#    Then I should see "Gender1"
+#    And I should see "gender lowercase"
+#    And I should not see "Temp"
+#    And I should not see "True"
+#    And I should not see "Other"

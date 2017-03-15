@@ -12,7 +12,6 @@ describe('concepts reducer', () => {
     const action = {type: FETCH_CONCEPTS_FULFILLED, payload: conceptData};
     const startState = {};
     const nextState = concepts(startState, action);
-    console.log(nextState)
     expect(Object.keys(nextState).length).to.equal(1);
   });
 });

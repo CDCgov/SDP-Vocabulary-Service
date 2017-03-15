@@ -73,6 +73,10 @@ module Versionable
                AND #{table_name}.version = tn.version")
     end
 
+    def last_published
+      latest_versions.where("status = 'published'")
+    end
+
     def by_id_and_version(id, version = nil)
       if version
         find_by(version_independent_id: id, version: version)

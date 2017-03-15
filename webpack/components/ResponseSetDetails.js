@@ -25,7 +25,7 @@ export default class ResponseSetDetails extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title">Response Set Details</li>
+            <li className="showpage_title">Response Set Details {responseSet.status === 'draft' && <text>[DRAFT]</text>}</li>
           </ul>
         </div>
         {this.historyBar(responseSet)}
@@ -48,13 +48,47 @@ export default class ResponseSetDetails extends Component {
     );
   }
 
+  isRevisable(responseSet) {
+    return responseSet.mostRecent === responseSet.version &&
+      responseSet.status === 'published' &&
+      responseSet.createdBy.id === this.props.currentUser.id;
+  }
+
+  isPublishable(responseSet) {
+    return this.isEditable(responseSet);
+  }
+
+  isEditable(responseSet) {
+    return responseSet.mostRecent === responseSet.version &&
+      responseSet.status === 'draft' &&
+      responseSet.createdBy.id === this.props.currentUser.id;
+  }
+
+  isExtendable(responseSet) {
+    return responseSet.status === 'published';
+  }
+
   mainContent(responseSet) {
     return (
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
-            {responseSet.mostRecent == responseSet.version && <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/revise`}>Revise</a>}
-            <a className="btn btn-default" href={`/landing#/responseSets/${responseSet.id}/extend`}>Extend</a>
+            {this.isRevisable(responseSet) &&
+              <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>
+            }
+            {this.isEditable(responseSet) &&
+              <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/edit`}>Edit</Link>
+            }
+            {this.isExtendable(responseSet) &&
+              <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
+            }
+            {this.isPublishable(responseSet) &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.publishResponseSet(responseSet.id);
+                return false;
+              }}>Publish</a>
+            }
           </div>
         }
         <div className="maincontent-details">
@@ -110,5 +144,6 @@ export default class ResponseSetDetails extends Component {
 ResponseSetDetails.propTypes = {
   responseSet: responseSetProps,
   currentUser: currentUserProps,
+  publishResponseSet: PropTypes.func,
   questions: PropTypes.arrayOf(questionProps)
 };

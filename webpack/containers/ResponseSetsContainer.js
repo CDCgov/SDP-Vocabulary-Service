@@ -30,11 +30,13 @@ class ResponseSetsContainer extends Component {
       );
     }
     return (
-      <div className='row basic-bg'>
-        <div className='col-md-12'>
-          <ResponseSetListSearch search={this.search} />
-          <ResponseSetList responseSets={this.props.responseSets} routes={Routes} />
-          <Link className='btn btn-default' to='/responseSets/new'>New Response Set</Link>
+      <div className='container'>
+        <div className='row basic-bg'>
+          <div className='col-md-12'>
+            <ResponseSetListSearch search={this.search} />
+            <ResponseSetList responseSets={this.props.responseSets} routes={Routes} />
+            <Link className='btn btn-default' to='/responseSets/new'>New Response Set</Link>
+          </div>
         </div>
       </div>
     );

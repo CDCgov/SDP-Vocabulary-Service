@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { questionsProps } from "../prop-types/question_props";
 import { responseSetsProps } from "../prop-types/response_set_props";
 import QuestionList from './QuestionList';
@@ -79,8 +79,8 @@ export default class SearchWidget extends Component {
     return (
       <div className="search-widget">
         <SearchWidgetBar onSearchTermChange={(term, category) => this.refreshSearch(term, category)} />
-        <ResponseSetList responseSets={this.state.responseSets} routes={this.props.routes} />
-        <QuestionList questions={this.state.questions} routes={this.props.routes} />
+        <ResponseSetList responseSets={this.state.responseSets} />
+        <QuestionList questions={this.state.questions} />
       </div>
     );
   }
@@ -89,5 +89,4 @@ export default class SearchWidget extends Component {
 SearchWidget.propTypes = {
   responseSets: responseSetsProps,
   questions: questionsProps,
-  routes: PropTypes.object.isRequired
 };

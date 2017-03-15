@@ -1,16 +1,22 @@
 class ResponseSet < ApplicationRecord
   include Versionable, OidGenerator
+  SOURCE_OPTIONS = %w(local PHIN_VADS).freeze
   acts_as_commentable
 
-  has_many :question_response_sets
+  has_many :question_response_sets, dependent: :destroy
   has_many :questions, through: :question_response_sets
-  has_many :responses, dependent: :nullify
-  has_many :form_questions
+  has_many :responses, dependent: :destroy
+  has_many :form_questions, dependent: :nullify
   has_many :forms, through: :form_questions
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :parent, class_name: 'ResponseSet'
+
+  validates :status, presence: true
+  validates :name, presence: true
+  validates :created_by, presence: true
+  validates :source, presence: true, inclusion: { in: SOURCE_OPTIONS }
 
   accepts_nested_attributes_for :responses, allow_destroy: true
 
@@ -29,12 +35,17 @@ class ResponseSet < ApplicationRecord
     where('name ILIKE ?', "%#{search}%")
   end
 
+  def publish
+    update(status: 'published') if status == 'draft'
+  end
+
   # Builds a new ResponseSet object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
     new_revision = ResponseSet.new(version_independent_id: version_independent_id,
                                    version: version + 1, description: description,
-                                   status: status, name: name, coded: coded, oid: oid)
+                                   status: status, name: name, coded: coded,
+                                   parent_id: parent_id, oid: oid)
     responses.each do |r|
       new_revision.responses << r.dup
     end

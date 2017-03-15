@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import Errors from './Errors';
 import { responseSetProps } from '../prop-types/response_set_props';
@@ -17,6 +18,9 @@ export default class ResponseSetForm extends Component {
         break;
       case 'new':
         this.state = this.stateForNew();
+        break;
+      case 'edit':
+        this.state = this.stateForEdit(this.props.responseSet);
         break;
     }
   }
@@ -63,10 +67,11 @@ export default class ResponseSetForm extends Component {
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = responseSet.version + 1;
+    const parentId  = responseSet.parent ? responseSet.parent.id : null;
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
     return {name, oid, description, coded, responsesAttributes,
-      version, versionIndependentId, showModal};
+      version, parentId, versionIndependentId, showModal};
   }
 
   stateForNew() {
@@ -91,12 +96,29 @@ export default class ResponseSetForm extends Component {
       version, versionIndependentId, parentId, showModal};
   }
 
-  render() {
-    let titleText  = "New Response Set";
-    if (this.props.responseSet.versionIndependentId) {
-      titleText  = "Revise Response Set";
-    }
+  stateForEdit(responseSet) {
+    const id = responseSet.id;
+    const name = responseSet.name || '';
+    const oid  = responseSet.oid  || '';
+    const coded = responseSet.coded || false;
+    const description = responseSet.description || '';
+    const responsesAttributes = filterResponses(responseSet.responses);
+    const version = responseSet.version;
+    const parentId  = responseSet.parent ? responseSet.parent.id : null;
+    const versionIndependentId = responseSet.versionIndependentId;
+    const showModal = false;
+    return {id, name, oid, description, coded, responsesAttributes,
+      version, parentId, versionIndependentId, showModal};
+  }
 
+  cancelButton() {
+    if (this.props.responseSet && this.props.responseSet.id) {
+      return(<Link className="btn btn-default" to={`/responseSets/${this.props.responseSet.id}`}>Cancel</Link>);
+    }
+    return(<Link className="btn btn-default" to='/responseSets/'>Cancel</Link>);
+  }
+
+  render() {
     return (
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <ModalDialog  show={this.state.showModal}
@@ -117,7 +139,7 @@ export default class ResponseSetForm extends Component {
         <div>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">{titleText}</h3>
+              <h3 className="panel-title">{`${this.actionWord()} Response Set`}</h3>
             </div>
             <div className="panel-body">
                 <div className="row">
@@ -154,8 +176,8 @@ export default class ResponseSetForm extends Component {
                 </div>
                 <div className="panel-footer">
 
-                    <input className=" btn btn-default " type="submit" value={`${this.actionWord()} Response Set`}/>
-
+                    <input className="btn btn-default " type="submit" name="Save Response Set" value="Save" />
+                {this.cancelButton()}
             </div>
           </div>
         </div>
@@ -164,13 +186,14 @@ export default class ResponseSetForm extends Component {
   }
 
   actionWord() {
-    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend'};
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit Draft of'};
     return wordMap[this.props.action];
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.responseSetSubmitter(this.state, (successResponse) => {
+    let responseSet = Object.assign({}, this.state);
+    this.props.responseSetSubmitter(responseSet, (successResponse) => {
       this.unsavedState = false;
       this.props.router.push(`/responseSets/${successResponse.data.id}`);
     }, (failureResponse) => {

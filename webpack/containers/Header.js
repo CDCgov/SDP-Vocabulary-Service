@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
@@ -8,7 +9,7 @@ import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
 let LoginMenu = ({logInOpener, signUpOpener, currentUser={email:null}}) => {
-  let loggedIn = currentUser ? true : false;
+  let loggedIn = ! _.isEmpty(currentUser);
   if(!loggedIn) {
     return (
       <ul className="nav navbar-nav navbar-right">
@@ -38,7 +39,7 @@ LoginMenu.propTypes = {
 };
 
 let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
-  let loggedIn = currentUser ? true : false;
+  let loggedIn = ! _.isEmpty(currentUser);
   if(loggedIn) {
     let {email} = currentUser;
     return(
@@ -47,7 +48,7 @@ let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
           <li className="dropdown">
             <a href="#" id="account-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="#"> My Stuff</a></li>
+              <li><Link to='/mystuff'>My Stuff</Link></li>
               <li><a href="#" onClick={() => {
                 settingsOpener();
                 return false;
@@ -83,7 +84,6 @@ let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount
           <a href="#" className="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
           <ul className="cdc-nav-dropdown">
             <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
-            <li className="nav-dropdown-item"><Link to="/question_types/new">Question Types</Link></li>
             <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
             <li className="nav-dropdown-item"><Link to="/forms/new">Forms</Link></li>
           </ul>
@@ -116,7 +116,7 @@ class Header extends Component {
 
   render() {
     return (
-      <nav className="cdc-utlt-nav navbar-fixed-top">
+      <nav className="cdc-utlt-nav">
         <div className="container">
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
