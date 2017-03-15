@@ -29,14 +29,14 @@ class Question < ApplicationRecord
   end
 
   def self.search(search = nil, current_user_id = nil)
-    if current_user_id
-      sql = "(status = 'published' or created_by_id = ?) "
-      sql += 'and content ILIKE ?' if search
-      where(sql, current_user_id, search)
+    if current_user_id && search
+      where("(status='published' OR created_by_id= ?) AND (content ILIKE ?)", current_user_id, "%#{search}%")
+    elsif current_user_id
+      where("(status= 'published' OR created_by_id = ?)", current_user_id)
     elsif search
-      where('content ILIKE ?', "%#{search}%")
+      where('status= ? and content ILIKE ?', 'published', "%#{search}%")
     else
-      where('status =  ?', 'published ')
+      where('status=  ?', 'published')
     end
   end
 

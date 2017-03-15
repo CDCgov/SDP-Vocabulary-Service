@@ -28,3 +28,23 @@ draft:
   version: 1
   status: draft
   version_independent_id: F-4
+
+search_1:
+  name: Search form 1
+  created_by: admin
+  version: 1
+  status: published
+  version_independent_id: F-5
+
+search_2:
+  name: Search form 2
+  created_by: admin
+  version: 1
+  version_independent_id: F-5
+
+search_3:
+  name: search form 3
+  created_by: not_admin
+  version: 1
+  status: draft
+  version_independent_id: F-6
