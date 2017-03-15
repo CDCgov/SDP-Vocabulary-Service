@@ -86,7 +86,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     get my_response_sets_url, xhr: true, params: nil
     assert_response :success
     JSON.parse(response.body).each do |f|
-      assert f['created_by_id'] == @current_user.id
+      assert f['created_by']['id'] == @current_user.id
     end
   end
 

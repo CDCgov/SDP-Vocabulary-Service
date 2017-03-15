@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
 
   def my_questions
     @questions = if params[:search]
-                   Question.where("created_by_id=? and content ILIKE ?", current_user.id, "%#{search}%").latest_versions
+                   Question.where('created_by_id=? and content ILIKE ?', current_user.id, "%#{search}%").latest_versions
                  else
                    Question.where(created_by_id: current_user.id).latest_versions
                  end
