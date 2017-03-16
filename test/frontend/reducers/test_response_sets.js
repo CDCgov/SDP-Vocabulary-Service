@@ -1,6 +1,5 @@
 import { expect } from '../test_helper';
 import  responseSets  from '../../../webpack/reducers/response_sets_reducer';
-import _ from 'lodash';
 import {
   SAVE_RESPONSE_SET_FULFILLED,
   FETCH_RESPONSE_SET_FULFILLED,
