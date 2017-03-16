@@ -6,6 +6,12 @@ module SDP
           SurveillanceProgram.create!(row.to_hash)
         end
       end
+
+      def self.import_systems(system_csv_file)
+        CSV.foreach(system_csv_file, headers: :first_row) do |row|
+          SurveillanceSystem.create!(row.to_hash)
+        end
+      end
     end
   end
 end
