@@ -1,7 +1,7 @@
 .search-group {
   @extend .input-group;
   margin-top: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   margin-left: 20px;
   margin-right: 20px;
 }
@@ -66,16 +66,16 @@
   border-top-left-radius: 0px;
   font-weight: bold;
   border-left: 1px solid $cdc-blue;
-  border-top: 1px solid $cdc-blue;    
-  border-bottom: 1px solid $cdc-blue; 
-  border-right: 0px;    
+  border-top: 1px solid $cdc-blue;
+  border-bottom: 1px solid $cdc-blue;
+  border-right: 0px;
   background-color: white;
   padding: 6px 12px 7px 12px;
   .search-caret {
     @extend .caret;
     margin-left: 10px;
   }
-} 
+}
 
 .search-input {
   @extend .form-control;
@@ -91,11 +91,11 @@
   padding: 6px 12px 7px 12px;
   &:hover {
     background-color: $hover-blue;
-    border: 1px solid $cdc-blue;  
+    border: 1px solid $cdc-blue;
   }
   .search-btn-icon {
     color: $dark-gray;
-  } 
+  }
 }
 
 .search-btn-default {

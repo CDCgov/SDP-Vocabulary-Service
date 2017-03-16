@@ -16,7 +16,6 @@ class DashboardSearch extends Component {
   onFormSubmit(event){
     event.preventDefault();
     this.props.search(this.state.searchTerms);
-    this.setState({searchTerms: ''});
   }
 
   render() {
