@@ -18,6 +18,8 @@ module Users
       Question.destroy_all
       Form.destroy_all
       ResponseSet.destroy_all
+      SurveyForm.destroy_all
+      Survey.destroy_all
       User.destroy_all
 
       get '/users/auth/openid_connect/callback'

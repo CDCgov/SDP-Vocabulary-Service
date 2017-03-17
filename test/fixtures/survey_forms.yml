@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  survey: one
+  form: one
+  position: 1
+
+two:
+  survey: one
+  form: two
+  position: 2
