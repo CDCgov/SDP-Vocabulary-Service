@@ -7,5 +7,7 @@ class CreateSurveillanceSystems < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+
+    add_index :surveillance_systems, :name, unique: true
   end
 end

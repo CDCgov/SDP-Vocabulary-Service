@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(version: 20170315151032) do
     t.string   "acronym"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["name"], name: "index_surveillance_programs_on_name", unique: true, using: :btree
   end
 
   create_table "surveillance_systems", force: :cascade do |t|
@@ -178,6 +179,7 @@ ActiveRecord::Schema.define(version: 20170315151032) do
     t.string   "acronym"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["name"], name: "index_surveillance_systems_on_name", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|
