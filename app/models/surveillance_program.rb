@@ -1,0 +1,2 @@
+class SurveillanceProgram < ApplicationRecord
+end

@@ -667,6 +667,18 @@ Based on Rails routes of Vocabulary::Application
 // root => /
   // function(options)
   root_path: Utils.route([], {}, [7,"/",false]),
+// surveillance_program => /surveillance_programs/:id(.:format)
+  // function(id, options)
+  surveillance_program_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveillance_programs",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// surveillance_programs => /surveillance_programs(.:format)
+  // function(options)
+  surveillance_programs_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveillance_programs",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// surveillance_system => /surveillance_systems/:id(.:format)
+  // function(id, options)
+  surveillance_system_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveillance_systems",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// surveillance_systems => /surveillance_systems(.:format)
+  // function(options)
+  surveillance_systems_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveillance_systems",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // usage_api_question => /api/questions/:id/usage(.:format)
   // function(id, options)
   usage_api_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
