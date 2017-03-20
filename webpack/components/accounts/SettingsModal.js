@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
+import _ from 'lodash';
+
 import Errors from '../Errors.js';
+
 import currentUserProps from '../../prop-types/current_user_props';
+import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 
 export default class SettingsModal extends Component {
   constructor(props) {
@@ -9,7 +14,9 @@ export default class SettingsModal extends Component {
     this.state = {email: this.props.currentUser.email,
       id: this.props.currentUser.id,
       firstName: this.props.currentUser.firstName || '',
-      lastName: this.props.currentUser.lastName || '', errors: {}};
+      lastName: this.props.currentUser.lastName || '',
+      lastProgramId: this.props.currentUser.lastProgramId || 1,
+      lastSystemId: this.props.currentUser.lastSystemId || 1, errors: {}};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -17,7 +24,9 @@ export default class SettingsModal extends Component {
       this.setState({email: nextProps.currentUser.email,
         id: nextProps.currentUser.id,
         firstName: nextProps.currentUser.firstName || '',
-        lastName: nextProps.currentUser.lastName || ''});
+        lastName: nextProps.currentUser.lastName || '',
+        lastProgramId: this.props.currentUser.lastProgramId || 1,
+        lastSystemId: this.props.currentUser.lastSystemId || 1});
     }
   }
 
@@ -49,6 +58,22 @@ export default class SettingsModal extends Component {
               <input className="form-control input-lg" type="text" name="lastName" id="lastName"
                      value={this.state.lastName} onChange={this.handleChange('lastName')}/>
             </div>
+            <div className="field">
+              <label className="control-label" htmlFor="lastProgramId">Surveillance Program</label>
+                <select className="form-control" name="lastProgramId" id="lastProgramId" defaultValue={this.state.lastProgramId} onChange={this.handleChange('lastProgramId')} >
+                {this.props.surveillancePrograms && _.values(this.props.surveillancePrograms).map((sp) => {
+                  return <option key={sp.id} value={sp.id}>{sp.name}</option>;
+                })}
+                </select>
+            </div>
+            <div className="field">
+              <label className="control-label" htmlFor="lastSystemId">Surveillance System</label>
+                <select className="form-control" name="lastSystemId" id="lastSystemId" defaultValue={this.state.lastSystemId} onChange={this.handleChange('lastSystemId')} >
+                {this.props.surveillanceSystems && _.values(this.props.surveillanceSystems).map((ss) => {
+                  return <option key={ss.id} value={ss.id}>{ss.name}</option>;
+                })}
+                </select>
+            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -78,5 +103,7 @@ SettingsModal.propTypes = {
   currentUser: currentUserProps,
   update: PropTypes.func.isRequired,
   closer: PropTypes.func.isRequired,
-  show: PropTypes.bool.isRequired
+  show: PropTypes.bool.isRequired,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };

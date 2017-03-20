@@ -1,12 +1,19 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+
 import Header from './Header';
 import LogInModal from '../components/accounts/LogInModal';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SettingsModal from '../components/accounts/SettingsModal';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import { fetchCurrentUser, logIn, signUp, updateUser } from '../actions/current_user_actions';
+
 import currentUserProps from '../prop-types/current_user_props';
+import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
+
+import { fetchCurrentUser, logIn, signUp, updateUser } from '../actions/current_user_actions';
+import { fetchSurveillanceSystems } from '../actions/surveillance_system_actions';
+import { fetchSurveillancePrograms } from '../actions/surveillance_program_actions';
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +23,8 @@ class App extends Component {
 
   componentWillMount() {
     this.props.fetchCurrentUser();
+    this.props.fetchSurveillancePrograms();
+    this.props.fetchSurveillanceSystems();
   }
 
   openLogInModal() {
@@ -63,11 +72,16 @@ class App extends Component {
           </div>
         </footer>
         <LogInModal logIn={this.props.logIn} show={this.state.logInOpen} closer={() => this.closeLogInModal()}/>
-        <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen} closer={() => this.closeSignUpModal()}/>
+        <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen}
+          closer={() => this.closeSignUpModal()}
+          surveillanceSystems={this.props.surveillanceSystems}
+          surveillancePrograms={this.props.surveillancePrograms} />
         <SettingsModal update={this.props.updateUser}
           show={this.state.settingsOpen}
           closer={() => this.closeSettingsModal()}
-          currentUser={this.props.currentUser}/>
+          currentUser={this.props.currentUser}
+          surveillanceSystems={this.props.surveillanceSystems}
+          surveillancePrograms={this.props.surveillancePrograms} />
       </div>
     );
   }
@@ -79,11 +93,20 @@ App.propTypes = {
   logIn: PropTypes.func,
   signUp: PropTypes.func,
   updateUser: PropTypes.func,
-  children: PropTypes.object
+  fetchSurveillanceSystems: PropTypes.func,
+  fetchSurveillancePrograms: PropTypes.func,
+  children: PropTypes.object,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };
 
 function mapStateToProps(state) {
-  return {currentUser: state.currentUser};
+  return {
+    currentUser: state.currentUser,
+    surveillanceSystems: state.surveillanceSystems,
+    surveillancePrograms: state.surveillancePrograms
+  };
 }
 
-export default connect(mapStateToProps, {fetchCurrentUser, logIn, signUp, updateUser})(App);
+export default connect(mapStateToProps, {fetchCurrentUser, logIn, signUp, updateUser,
+  fetchSurveillanceSystems, fetchSurveillancePrograms})(App);

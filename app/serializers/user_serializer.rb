@@ -6,4 +6,6 @@ class UserSerializer < ActiveModel::Serializer
   attribute :full_name, key: :name
   attribute :first_name
   attribute :last_name
+  attribute :last_program_id
+  attribute :last_system_id
 end

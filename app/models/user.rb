@@ -8,8 +8,8 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, case_sensitive: false
   has_many :authentications
 
-  has_one :last_system, class_name: SurveillanceSystem
-  has_one :last_program, class_name: SurveillanceProgram
+  belongs_to :last_system, class_name: SurveillanceSystem
+  belongs_to :last_program, class_name: SurveillanceProgram
 
   def apply_omniauth(omniauth)
     self.email = omniauth['info']['email'] if email.blank? && omniauth['info']
