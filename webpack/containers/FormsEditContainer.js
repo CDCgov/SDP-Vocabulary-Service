@@ -85,15 +85,16 @@ class FormsEditContainer extends Component {
                                          form ={this.props.form}
                                          reverseSort={true} />
               </div>
-              <FormEdit form={this.props.form}
-                    responseSets={this.props.responseSets}
-                    reorderQuestion={this.props.reorderQuestion}
-                    removeQuestion={this.props.removeQuestion}
+              <FormEdit ref ='form'
+                    form={this.props.form}
                     action={this.props.params.action || 'new'}
                     route ={this.props.route}
                     router={this.props.router}
                     questions={this.props.questions}
-                    ref='form' />
+                    responseSets ={this.props.responseSets}
+                    formSubmitter={this.state.selectedFormSaver}
+                    removeQuestion ={this.props.removeQuestion}
+                    reorderQuestion={this.props.reorderQuestion} />
             </div>
           </div>
         </div>

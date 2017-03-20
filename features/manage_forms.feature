@@ -59,7 +59,7 @@ Feature: Manage Forms
     And I fill in the "name" field with "Gender Form"
     And I fill in the "description" field with "Revised Description"
     And I fill in the "search" field with "What"
-    And I click on the button to add the Question "What is your gender?"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
     Then I select the "Gender Partial" option in the "responseSet" list
     And I click on the "Save" button
     Then I should see "Name: Gender Form"
@@ -78,8 +78,8 @@ Feature: Manage Forms
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Revise the Form with the name "Test Form"
     And I fill in the "search" field with "What"
-    And I click on the button to add the Question "What is your gender?"
-    And I click on the button to add the Question "What is your name?"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
+    And I click on the "Add to Form" drop-down option for "What is your name?"
     And I move the Question "What is your name?" up
     And I move the Question "What is your name?" down
     And I click on the "Save" button
@@ -96,7 +96,7 @@ Feature: Manage Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
-    And I click on the button to add the Question "What is your gender?"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
     Then I select the "Gender Full" option in the "responseSet" list
     And I click on the "Add New Question" button
     And I fill in the "Question" field with "What is your favorite color?"
@@ -119,7 +119,7 @@ Feature: Manage Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "search" field with "What"
-    And I click on the button to add the Question "What is your gender?"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
     When I go to the list of Forms
     And I click on the "Save & Leave" button
     Then I should see "Test Form"
@@ -151,7 +151,7 @@ Feature: Manage Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234"
     And I fill in the "search" field with "What"
-    And I click on the button to add the Question "What is your gender?"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
     Then I select the "Gender Full" option in the "responseSet" list
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"
@@ -166,7 +166,7 @@ Feature: Manage Forms
     And I click on the "New Form" link
     And I fill in the "name" field with "Test Form"
     And I fill in the "search" field with "What"
-    And I click on the button to add the Question "What is your gender?"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
     And I select the "Gender Partial" option in the "responseSet" list
     And I click on the "Save" button
 
@@ -180,7 +180,7 @@ Feature: Manage Forms
     And I click on the "New Form" link
     And I fill in the "name" field with "Test Form"
     And I fill in the "search" field with "What"
-    And I click on the button to add the Question "What is your gender?"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
     And I select the "Gender Partial" option in the "responseSet" list
     And I click on the "Save" button
     Then I should see the "Export to Redcap" link
