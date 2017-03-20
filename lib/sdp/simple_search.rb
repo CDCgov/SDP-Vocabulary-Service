@@ -1,7 +1,8 @@
 module SDP
   module SimpleSearch
     def self.search(type, query_string, current_user_id = nil, limit = 20, page = 1)
-      types = type ? [type_to_class(type)] : [Form, Question, ResponseSet]
+      types = [type.camelize.constantize] if type
+      types ||= [Form, Question, ResponseSet]
       results = {}
       types.map do |search_type|
         query = search_type.search(query_string, current_user_id)
@@ -9,18 +10,6 @@ module SDP
         results[search_type] = { total: count, hits: query.limit(limit).offset(limit * (page - 1)).to_a }
       end
       render_results(results)
-    end
-
-    def self.type_to_class(type)
-      return nil if type.nil? || type.blank?
-      case type.camelize
-      when 'Form'
-        Form
-      when 'Question'
-        Question
-      when 'ResponseSet'
-        ResponseSet
-      end
     end
 
     def self.render_results(results)

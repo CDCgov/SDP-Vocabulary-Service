@@ -21,7 +21,7 @@ class SimpleSearchTest < ActiveSupport::TestCase
     end
   end
 
-  test 'can filter questions by user ' do
+  test 'can filter searches by user ' do
     %w(question form response_set).each do |type|
       admin_results = SDP::SimpleSearch.search(type, 'Search', @admin.id)
       admin_json = JSON.parse(admin_results.target!)
