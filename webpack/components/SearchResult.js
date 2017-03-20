@@ -28,27 +28,40 @@ export default class SearchResult extends Component {
     }
   }
 
-  questionDropdownMenu(question, resultType){
-    if(this.props.currentUser && this.props.currentUser.id){
-      return (
-        <ul className="dropdown-menu">
-          <li>
-            <Link to={`/${resultType}s/${question.id}/revise`}>Revise</Link>
-          </li>
-          <li>
-            <Link to={`/${resultType}s/${question.id}`}>Details</Link>
-          </li>
-        </ul>
-      );
-    }else{
-      return (
-        <ul className="dropdown-menu">
-          <li>
-            <Link to={`/${resultType}s/${question.id}`}>Details</Link>
-          </li>
-        </ul>
-      );
-    }
+  isRevisable(source) {
+    // Needs concept of source.mostRecent === source.version
+    // Currently no way to do this in ES schema
+    return source.status === 'published' &&
+      source.createdBy.id === this.props.currentUser.id;
+  }
+
+  isEditable(source) {
+    // Needs concept of source.mostRecent === source.version
+    return source.status === 'draft' &&
+      source.createdBy.id === this.props.currentUser.id;
+  }
+
+  isExtendable(source) {
+    return source.status === 'published';
+  }
+
+  resultDropdownMenu(result, resultType){
+    return (
+      <ul className="dropdown-menu dropdown-menu-right">
+        {this.isRevisable(result) && <li>
+          <Link to={`/${resultType}s/${result.id}/revise`}>Revise</Link>
+        </li>}
+        {this.isEditable(result) && <li>
+          <Link to={`/${resultType}s/${result.id}/edit`}>Edit</Link>
+        </li>}
+        {this.isExtendable(result) && <li>
+          <Link to={`/${resultType}s/${result.id}/extend`}>Extend</Link>
+        </li>}
+        <li>
+          <Link to={`/${resultType}s/${result.id}`}>Details</Link>
+        </li>
+      </ul>
+    );
   }
 
   questionResult(result, highlight) {
@@ -64,7 +77,7 @@ export default class SearchResult extends Component {
               <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.questionDropdownMenu(result, 'question')}
+              {this.resultDropdownMenu(result, 'question')}
             </div>
           </div>
         </div>
@@ -103,7 +116,7 @@ export default class SearchResult extends Component {
               <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.questionDropdownMenu(result, 'responseSet')}
+              {this.resultDropdownMenu(result, 'responseSet')}
             </div>
           </div>
         </div>
@@ -142,7 +155,7 @@ export default class SearchResult extends Component {
               <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.questionDropdownMenu(result, 'form')}
+              {this.resultDropdownMenu(result, 'form')}
             </div>
           </div>
         </div>
