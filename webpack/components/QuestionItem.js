@@ -8,7 +8,6 @@ const QuestionItem = ({question, responseSets, index, handleResponseSetChange=()
   }
   return (
     <div className='question-item'>
-      <div id={`question_id_${question.id}`}>
         <div className="col-md-9"><QuestionWidget question={question} /></div>
         <div className="col-md-3" >
           <div className="form-group">
@@ -23,7 +22,6 @@ const QuestionItem = ({question, responseSets, index, handleResponseSetChange=()
             </select>
           </div>
         </div>
-      </div>
     </div>
   );
 };

@@ -96,6 +96,7 @@ Feature: Manage Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
+    And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
     Then I select the "Gender Full" option in the "responseSet" list
     And I click on the "Add New Question" button

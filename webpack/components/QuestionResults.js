@@ -8,7 +8,7 @@ export default class QuestionResults extends Component {
     return (
       <div className="question-group">
         <div>
-        {this.props.questions.map((question, i) => {
+        {!(this.props.questions === undefined)  && this.props.questions.map((question, i) => {
           return (
             <div className="row" key={i}>
               <div data-question-id={question.id}>
@@ -77,7 +77,7 @@ export default class QuestionResults extends Component {
         </div>
         <div className="search-result-stats">
           <hr/>
-          {question.responseSets.length > 0 &&
+          {question.responseSets && question.responseSets.length > 0 &&
             <div>
               Linked Response Sets: |{question.responseSets.map((rs) => {
                 return(

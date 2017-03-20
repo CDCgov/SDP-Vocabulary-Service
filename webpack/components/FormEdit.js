@@ -228,11 +228,11 @@ class FormEdit extends Component {
             <div className="row">
               <div className="form-group col-md-8">
                 <label htmlFor="description">Description</label>
-                <input className="input-format" type="text" value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
+                <input className="input-format" type="text" value={this.state.description || ''} name="description" id="description" onChange={this.handleChange('description')}/>
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
-                <input className="input-format" type="text" value={this.state.controlNumber} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+                <input className="input-format" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
               </div>
             </div>
           </div>
