@@ -1,3 +1,5 @@
+require_relative '../../test/elastic_helpers'
+
 # Given clauses
 Given(/^I am logged in as (.+)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
@@ -11,6 +13,7 @@ Given(/^I am on the "(.+)" page$/) do |url|
 end
 
 When(/^I go to the dashboard$/) do
+  Elastictest.fake_all_search_results
   visit '/'
 end
 
