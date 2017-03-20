@@ -199,6 +199,7 @@ class CodedSetTableEditContainer extends Component {
         </thead>
         <tbody>
           {this.state.items.map((r, i) => {
+		      if(!r){return ;}
             return (
               <tr key={i}>
                 <td>

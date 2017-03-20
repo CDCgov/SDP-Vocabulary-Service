@@ -14,3 +14,6 @@ module Vocabulary
     end
   end
 end
+
+require 'sdp/elastic_search'
+SDP::Elasticsearch.sync

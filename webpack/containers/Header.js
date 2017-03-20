@@ -61,7 +61,7 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
               </li>
             </ul>
           </li>
-          <li><a href="#"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help</a></li>
+          <li><a href="#"><Link to='/Help'><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help</Link></a></li>
         </ul>
       </div>
     );
