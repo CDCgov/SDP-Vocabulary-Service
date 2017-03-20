@@ -24,15 +24,15 @@ end
 
 When(/^I move the Question "([^"]*)" (up|down)$/) do |question_content, direction|
   object_id = attribute_to_id('Question', 'content', question_content)
-  
+
   old_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
-  
+
   page.find("#question_id_#{object_id}").find(:xpath, '../../../..').find(".move-#{direction}").click
-  
+
   new_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
-  
+
   offset = direction.eql?('up') ? -1 : 1
-  
+
   assert(old_index != new_index)
   assert(old_index + offset == new_index)
 end
