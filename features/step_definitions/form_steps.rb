@@ -32,7 +32,7 @@ When(/^I move the Question "([^"]*)" (up|down)$/) do |question_content, directio
   assert(old_index + offset == new_index)
 end
 
-When(/^I click on the "([^"]*)" drop\-down option for "([^"]*)"$/) do |arg1, arg2|
+When(/^I click on the "([^"]*)" drop\-down option for "([^"]*)"$/) do |_arg1, arg2|
   oid = attribute_to_id('Question', 'content', arg2)
   menu = '//a[@id="question_' + oid + '_menu"]/following-sibling::ul'
   add_link = '#add_question_' + oid + '_to_form'
