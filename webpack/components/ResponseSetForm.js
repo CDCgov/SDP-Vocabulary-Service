@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
-import Errors from './Errors';
 import { responseSetProps } from '../prop-types/response_set_props';
+import Errors from './Errors';
 import ModalDialog from './ModalDialog';
+import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 
 export default class ResponseSetForm extends Component {
   constructor(props) {
@@ -26,13 +26,17 @@ export default class ResponseSetForm extends Component {
   }
 
   componentDidMount() {
-    this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
-    window.onbeforeunload = this.windowWillUnload.bind(this);
+    if(this.props.router && this.props.route){
+      this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
+      window.onbeforeunload = this.windowWillUnload.bind(this);
+    }
   }
 
   componentWillUnmount() {
     this.unsavedState = false;
-    this.unbindHook();
+    if(this.unbindHook){
+      this.unbindHook();
+    }
   }
 
   routerWillLeave(nextLocation) {
@@ -120,7 +124,7 @@ export default class ResponseSetForm extends Component {
 
   render() {
     return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
+      <form id="response-set-edit-form" onSubmit={(e) => this.handleSubmit(e)}>
         <ModalDialog  show={this.state.showModal}
                 title="Warning"
                 subTitle="Unsaved Changes"
@@ -144,8 +148,8 @@ export default class ResponseSetForm extends Component {
             <div className="panel-body">
                 <div className="row">
                   <div className="col-md-8 question-form-group">
-                    <label className="input-label" htmlFor="name">Name</label>
-                    <input className="input-format" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+                    <label className="input-label" htmlFor="response_set_name">Name</label>
+                    <input className="input-format" type="text" value={this.state.name} name="response_set_name" id="name" onChange={this.handleChange('name')}/>
                   </div>
 
                   <div className="col-md-4 question-form-group">
@@ -175,10 +179,9 @@ export default class ResponseSetForm extends Component {
                                    childName={'response'} />
                 </div>
                 <div className="panel-footer">
-
-                    <input className="btn btn-default " type="submit" name="Save Response Set" value="Save" />
-                {this.cancelButton()}
-            </div>
+                  <input className="btn btn-default" id='submit-response-set-form' type="submit" name="Save Response Set" value="Save" />
+                  {this.cancelButton()}
+                </div>
           </div>
         </div>
       </form>

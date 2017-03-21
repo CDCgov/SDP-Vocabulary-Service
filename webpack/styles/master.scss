@@ -30,7 +30,8 @@
 @import "widgets/recentitems";
 @import "widgets/modal";
 @import "widgets/question_modal";
-@import "layouts/response_set";
+@import "widgets/response_set_modal";
+
 
 //LAYOUTS//
 @import "layouts/body";
@@ -42,6 +43,7 @@
 @import "layouts/contentbox";
 @import "layouts/maincontentarea";
 @import "layouts/form_edit";
+@import "layouts/response_set";
 
 //NAVIGATION//
 @import "navigation/nav";

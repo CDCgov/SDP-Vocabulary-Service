@@ -64,15 +64,13 @@ class ResponseSetDragWidget extends Component{
     return (
       <div className="row response-set-row">
           <div className="col-md-6 question-form-group">
-            <label htmlFor="linked_response_sets">Response Sets</label>
               <div className="fixed-height-list" name="linked_response_sets">
                 {this.props.responseSets && _.values(this.props.responseSets).map((rs, i) => {
                   return <DraggableResponseSet key={i} responseSet={rs}/>;
                 })}
               </div>
           </div>
-          <div className="col-md-6 drop-target selected_response_sets">
-            <label htmlFor="selected_response_sets">Selected Response Sets</label>
+          <div className="col-md-6 drop-target selected_response_sets" name="selected_response_sets">
             <DroppableTarget handleResponseSetsChange={this.props.handleResponseSetsChange} selectedResponseSets={this.props.selectedResponseSets} />
           </div>
       </div>

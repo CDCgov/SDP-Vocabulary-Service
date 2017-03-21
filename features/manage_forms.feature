@@ -111,6 +111,24 @@ Feature: Manage Forms
     And I should see "What is your gender?"
     And I should see "What is your favorite color?"
 
+  Scenario: Create New Form from List and Create a Response Set using New Response Set Modal
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Forms
+    And I click on the "New Form" link
+    And I fill in the "name" field with "Test Form"
+    And I fill in the "controlNumber" field with "1234-1234"
+    And I fill in the "description" field with "Form description"
+    And I click on the button to add the Question "What is your gender?"
+    Then I click on the "Add New Response Set" button
+    Then I fill in the "response_set_name" field with "New Response Set"
+    And I click on the "Add Response Set" button
+    Then I select the "New Response Set" option in the "responseSet" list
+    And I click on the "Save" button
+    Then I should see "Test Form"
+    And I should see "What is your gender?"
+
   Scenario: Create New Form from List with warning modal
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"

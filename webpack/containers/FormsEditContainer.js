@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
 import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
+import ResponseSetModal from '../components/ResponseSetModal';
 import { fetchResponseSets }   from '../actions/response_set_actions';
 import QuestionModalContainer  from './QuestionModalContainer';
 import QuestionSearchContainer from './QuestionSearchContainer';
@@ -29,8 +30,8 @@ class FormsEditContainer extends Component {
       this.props.params.action = 'new';
     }
     this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false};
-    this.closeQuestionModal  = this.closeQuestionModal.bind(this);
-    this.saveQuestionSuccess = this.saveQuestionSuccess.bind(this);
+    this.closeQuestionModal = this.closeQuestionModal.bind(this);
+    this.handleSaveQuestionSuccess = this.handleSaveQuestionSuccess.bind(this);
   }
 
   componentWillMount() {
@@ -51,7 +52,7 @@ class FormsEditContainer extends Component {
     this.setState({showQuestionModal: false});
   }
 
-  saveQuestionSuccess(successResponse){
+  handleSaveQuestionSuccess(successResponse){
     this.setState({showQuestionModal: false});
     this.props.fetchQuestion(successResponse.data.id);
     this.props.addQuestion(this.props.form, successResponse.data);
@@ -64,19 +65,22 @@ class FormsEditContainer extends Component {
       );
     }
     return (
-      <div className="container">
+      <div className="form-edit-container">
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
                                 closeQuestionModal ={()=>this.setState({showQuestionModal: false})}
-                                saveQuestionSuccess={this.saveQuestionSuccess} />
+                                handleSaveQuestionSuccess={this.handleSaveQuestionSuccess} />
+        <ResponseSetModal show={this.state.showResponseSetModal}
+                          closeModal={() => this.setState({showResponseSetModal: false})}
+                          saveResponseSetSuccess={() => this.setState({showResponseSetModal: false})} />
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
               <h3 className="panel-title">{_.capitalize(this.props.params.action)} Form </h3>
             </div>
             <div className="panel-body">
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className="row add-question">
                   <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
                 </div>
@@ -85,7 +89,7 @@ class FormsEditContainer extends Component {
                                          form ={this.props.form}
                                          reverseSort={true} />
               </div>
-              <FormEdit ref ='form'
+              <FormEdit ref='form'
                     form={this.props.form}
                     action={this.props.params.action || 'new'}
                     route ={this.props.route}
@@ -94,7 +98,8 @@ class FormsEditContainer extends Component {
                     responseSets ={this.props.responseSets}
                     formSubmitter={this.state.selectedFormSaver}
                     removeQuestion ={this.props.removeQuestion}
-                    reorderQuestion={this.props.reorderQuestion} />
+                    reorderQuestion={this.props.reorderQuestion}
+                    showResponseSetModal={() => this.setState({showResponseSetModal: true})} />
             </div>
           </div>
         </div>

@@ -7,5 +7,14 @@
   }
   .add-question{
     padding: 15px;
+    button{
+      margin-right:10px;
+    }
+  }
+
+  .response-set-header{
+    button {
+      float: right;
+    }
   }
 }

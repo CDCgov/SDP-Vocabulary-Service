@@ -5,20 +5,31 @@ import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import QuestionItem from './QuestionItem';
 import Errors from './Errors';
+import {Button} from 'react-bootstrap';
 import _ from 'lodash';
 import ModalDialog from './ModalDialog';
 
-let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions}) => {
+let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions, showResponseSetModal}) => {
   let questionsLookup = _.keyBy(questions, 'id');
   form.formQuestions = form.formQuestions || [];
   form.version = form.version || 1;
   return (
     <div id="added-questions" aria-label="Added">
     <div className="question-group">
+      <div className="row">
+          <div className="response-set-header">
+            <div className="col-md-5"><b>Content</b></div>
+            <div className="col-md-6"><b>Response Sets</b></div>
+            <Button onClick={()=>showResponseSetModal()} bsStyle="primary">Add New Response Set</Button>
+          </div>
+      </div>
+      <br/>
       {form.formQuestions.map((q, i) =>
         <div className="row" key={i}>
           <div className="col-md-9">
-            <QuestionItem question={questionsLookup[q.questionId]} responseSets={responseSets} index={i}
+            <QuestionItem index={i}
+                          question={questionsLookup[q.questionId]}
+                          responseSets={responseSets}
                           removeQuestion={removeQuestion}
                           reorderQuestion={reorderQuestion}
                           handleResponseSetChange={handleResponseSetChange}
@@ -54,8 +65,8 @@ AddedQuestions.propTypes = {
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion: PropTypes.func.isRequired,
   handleResponseSetChange: PropTypes.func.isRequired,
+  showResponseSetModal: PropTypes.func,
   responseSets: PropTypes.arrayOf(responseSetProps)
-
 };
 
 
@@ -69,8 +80,8 @@ class FormEdit extends Component {
     const description = form.description || '';
     const formQuestions = form.formQuestions;
     const controlNumber = form.controlNumber;
-    const showModal = false;
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showModal};
+    const showWarningModal = false;
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal};
   }
 
   stateForEdit(form) {
@@ -81,8 +92,8 @@ class FormEdit extends Component {
     const description = form.description || '';
     const formQuestions = form.formQuestions;
     const controlNumber = form.controlNumber;
-    const showModal = false;
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showModal};
+    const showWarningModal = false;
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal};
   }
 
   constructor(props) {
@@ -114,13 +125,13 @@ class FormEdit extends Component {
   }
 
   routerWillLeave(nextLocation) {
-    this.setState({ showModal: this.unsavedState });
+    this.setState({ showWarningModal: this.unsavedState });
     this.nextLocation = nextLocation;
     return !this.unsavedState;
   }
 
   handleModalResponse(leavePage){
-    this.setState({ showModal: false });
+    this.setState({ showWarningModal: false });
     if(leavePage){
       this.unsavedState = false;
       this.props.router.push(this.nextLocation.pathname);
@@ -189,25 +200,24 @@ class FormEdit extends Component {
     return (
       <div className="col-md-8">
       <div className="" id='form-div'>
-      <ModalDialog  show={this.state.showModal}
-        title="Warning"
-        subTitle="Unsaved Changes"
-        warning={true}
-        message="You are about to leave a page with unsaved changes. How would you like to proceed?"
-        secondaryButtonMessage="Continue Without Saving"
-        primaryButtonMessage="Save & Leave"
-        cancelButtonMessage="Cancel"
-        primaryButtonAction={()=> this.handleModalResponse(false)}
-        cancelButtonAction ={()=> {
-          this.props.router.push(this.props.route.path);
-          this.setState({ showModal: false });
-        }}
-        secondaryButtonAction={()=> this.handleModalResponse(true)} />
+      <ModalDialog show={this.state.showWarningModal}
+                   title="Warning"
+                   subTitle="Unsaved Changes"
+                   warning={true}
+                   message="You are about to leave a page with unsaved changes. How would you like to proceed?"
+                   secondaryButtonMessage="Continue Without Saving"
+                   primaryButtonMessage="Save & Leave"
+                   cancelButtonMessage="Cancel"
+                   primaryButtonAction={()=> this.handleModalResponse(false)}
+                   cancelButtonAction ={()=> {
+                     this.props.router.push(this.props.route.path);
+                     this.setState({ showWarningModal: false });
+                   }}
+                   secondaryButtonAction={()=> this.handleModalResponse(true)} />
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <Errors errors={this.state.errors} />
           <div className="form-inline">
             <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span></button>
-
             <input className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
             <button className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
@@ -238,11 +248,12 @@ class FormEdit extends Component {
           </div>
         </div>
         <AddedQuestions form={this.state}
-          questions={this.props.questions}
-          responseSets={this.props.responseSets}
-          reorderQuestion={this.props.reorderQuestion}
-          removeQuestion={this.props.removeQuestion}
-          handleResponseSetChange={this.handleResponseSetChange(this)} />
+                        questions={this.props.questions}
+                        responseSets={this.props.responseSets}
+                        reorderQuestion={this.props.reorderQuestion}
+                        removeQuestion ={this.props.removeQuestion}
+                        showResponseSetModal={this.props.showResponseSetModal.bind(this)}
+                        handleResponseSetChange={this.handleResponseSetChange.bind(this)} />
       </form>
       </div>
       </div>
@@ -259,7 +270,8 @@ FormEdit.propTypes = {
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   responseSets: PropTypes.arrayOf(responseSetProps),
-  questions: PropTypes.arrayOf(questionProps).isRequired
+  questions: PropTypes.arrayOf(questionProps).isRequired,
+  showResponseSetModal: PropTypes.func
 };
 
 export default FormEdit;

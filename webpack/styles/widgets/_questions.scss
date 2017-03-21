@@ -4,6 +4,21 @@
   margin-bottom: 20px;
 }
 
+.response-set-label {
+  text-align: left;
+  vertical-align: middle;
+  margin-bottom: 0px;
+  label{
+    padding-top: 7px;
+  }
+  a{
+    float:right;
+  }
+}
+
+.selected_response_sets {
+  margin-top: 20px;
+}
 .question-group {
   @extend .panel-group;
   margin-top: 20px;
