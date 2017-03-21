@@ -115,7 +115,7 @@ export default class ResponseSetForm extends Component {
     if (this.props.responseSet && this.props.responseSet.id) {
       return(<Link className="btn btn-default" to={`/responseSets/${this.props.responseSet.id}`}>Cancel</Link>);
     }
-    return(<Link className="btn btn-default" to='/responseSets/'>Cancel</Link>);
+    return(<Link className="btn btn-default" to='/'>Cancel</Link>);
   }
 
   render() {

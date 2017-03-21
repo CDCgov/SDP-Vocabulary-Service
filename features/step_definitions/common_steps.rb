@@ -1,3 +1,5 @@
+require_relative '../../test/elastic_helpers'
+
 # Given clauses
 Given(/^I am logged in as (.+)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
@@ -11,6 +13,7 @@ Given(/^I am on the "(.+)" page$/) do |url|
 end
 
 When(/^I go to the dashboard$/) do
+  Elastictest.fake_all_search_results
   visit '/'
 end
 
@@ -38,6 +41,11 @@ end
 When(/^I click on the "([^"]*)" (button|link)$/) do |button_name, _button_or_link|
   # drop buttonorlink on floor because I don't care which it is
   click_on(button_name)
+end
+
+When(/^I click on the create "([^"]*)" dropdown item$/) do |object_type|
+  page.find('#create-menu').click
+  page.find('.nav-dropdown-item', text: object_type).click
 end
 
 When(/^I select the "([^"]*)" option in the "([^"]*)" list$/) do |option, list|

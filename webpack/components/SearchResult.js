@@ -28,32 +28,45 @@ export default class SearchResult extends Component {
     }
   }
 
-  questionDropdownMenu(question, resultType){
-    if(this.props.currentUser && this.props.currentUser.id){
-      return (
-        <ul className="dropdown-menu">
-          <li>
-            <Link to={`/${resultType}s/${question.id}/revise`}>Revise</Link>
-          </li>
-          <li>
-            <Link to={`/${resultType}s/${question.id}`}>Details</Link>
-          </li>
-        </ul>
-      );
-    }else{
-      return (
-        <ul className="dropdown-menu">
-          <li>
-            <Link to={`/${resultType}s/${question.id}`}>Details</Link>
-          </li>
-        </ul>
-      );
-    }
+  isRevisable(source) {
+    // Needs concept of source.mostRecent === source.version
+    // Currently no way to do this in ES schema
+    return source.status === 'published' &&
+      source.createdBy.id === this.props.currentUser.id;
+  }
+
+  isEditable(source) {
+    // Needs concept of source.mostRecent === source.version
+    return source.status === 'draft' &&
+      source.createdBy.id === this.props.currentUser.id;
+  }
+
+  isExtendable(source) {
+    return source.status === 'published';
+  }
+
+  resultDropdownMenu(result, resultType){
+    return (
+      <ul className="dropdown-menu dropdown-menu-right">
+        {this.isRevisable(result) && <li>
+          <Link to={`/${resultType}s/${result.id}/revise`}>Revise</Link>
+        </li>}
+        {this.isEditable(result) && <li>
+          <Link to={`/${resultType}s/${result.id}/edit`}>Edit</Link>
+        </li>}
+        {this.isExtendable(result) && <li>
+          <Link to={`/${resultType}s/${result.id}/extend`}>Extend</Link>
+        </li>}
+        <li>
+          <Link to={`/${resultType}s/${result.id}`}>Details</Link>
+        </li>
+      </ul>
+    );
   }
 
   questionResult(result, highlight) {
     return (
-      <div className="search-result">
+      <div className="search-result" id={`question_id_${result.id}`}>
         <div className="search-result-name">
           <text className="search-result-type">Question: </text>
           <Link to={`/questions/${result.id}`}>
@@ -64,7 +77,7 @@ export default class SearchResult extends Component {
               <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.questionDropdownMenu(result, 'question')}
+              {this.resultDropdownMenu(result, 'question')}
             </div>
           </div>
         </div>
@@ -92,7 +105,7 @@ export default class SearchResult extends Component {
 
   responseSetResult(result, highlight) {
     return (
-      <div className="search-result">
+      <div className="search-result" id={`response_set_id_${result.id}`}>
         <div className="search-result-name">
           <text className="search-result-type">Response Set: </text>
           <Link to={`/responseSets/${result.id}`}>
@@ -100,10 +113,10 @@ export default class SearchResult extends Component {
           </Link>
           <div className="pull-right response-set-menu">
             <div className="dropdown">
-              <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+              <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.questionDropdownMenu(result, 'responseSet')}
+              {this.resultDropdownMenu(result, 'responseSet')}
             </div>
           </div>
         </div>
@@ -131,7 +144,7 @@ export default class SearchResult extends Component {
 
   formResult(result, highlight) {
     return (
-      <div className="search-result">
+      <div className="search-result" id={`form_id_${result.id}`}>
         <div className="search-result-name">
           <text className="search-result-type">Form: </text>
           <Link to={`/forms/${result.id}`}>
@@ -139,10 +152,10 @@ export default class SearchResult extends Component {
           </Link>
           <div className="pull-right form-menu">
             <div className="dropdown">
-              <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+              <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.questionDropdownMenu(result, 'form')}
+              {this.resultDropdownMenu(result, 'form')}
             </div>
           </div>
         </div>

@@ -87,7 +87,7 @@ Feature: Manage Questions
     And I have a Response Type with the name "Integer"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the "New Question" link
+    And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
@@ -124,7 +124,7 @@ Feature: Manage Questions
     And I have a Response Type with the name "Integer"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the "New Question" link
+    And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite animal?"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
     And I select the "Multiple Choice" option in the "Category" list
@@ -133,8 +133,9 @@ Feature: Manage Questions
     And I fill in the "value_0" field with "Test Concept 1"
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link
-    When I go to the list of Questions
+    When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
+    When I go to the list of Questions
     And I should see "What is your favorite animal?"
 
   Scenario: Abandon New Question with Warning Modal
@@ -143,14 +144,15 @@ Feature: Manage Questions
     And I have a Response Type with the name "Integer"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the "New Question" link
+    And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite animal?"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
     And I select the "Multiple Choice" option in the "Category" list
     And I select the "Integer" option in the "Primary Response Type" list
     And I fill in the "value_0" field with "Test Concept 1"
-    When I go to the list of Questions
+    When I click on the "CDC Vocabulary Service" link
     And I click on the "Continue Without Saving" button
+    When I go to the list of Questions
     And I should not see "What is your favorite animal?"
 
   Scenario: Reject Blank Question
@@ -159,24 +161,9 @@ Feature: Manage Questions
     And I have a Response Type with the name "Integer"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the "New Question" link
+    And I click on the create "Questions" dropdown item
     And I click on the "Create Question" button
     And I should see "content - can't be blank"
-
-#  Scenario: Search for a Question on the Question Index Page
-#    Given I have a Question with the content "Cat?" and the type "MC"
-#    And I have a Question with the content "Hat?" and the type "MC"
-#    And I have a Question with the content "Fat?" and the type "MC"
-#    And I have a Question with the content "Cancer?" and the type "MC"
-#    And I have a Question with the content "Broken Legs?" and the type "MC"
-#    When I go to the list of Questions
-#    And I fill in the "search" field with "at"
-#    And I click on the "Go!" button
-#    Then I should see "Cat?"
-#    And I should see "Hat?"
-#    And I should see "Fat?"
-#    And I should not see "Cancer?"
-#    And I should not see "Broken Legs?"
 
   Scenario: Search for a Question on Dashboard
     Given I have a Question with the content "Why?" and the type "MC"
@@ -187,4 +174,3 @@ Feature: Manage Questions
     And I click on the "search-btn" button
     Then I should see "Why"
     And I should see "Reasons"
-    And I should not see "What?"

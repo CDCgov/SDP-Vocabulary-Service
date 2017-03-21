@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
@@ -12,10 +11,16 @@ class DashboardContainer extends Component {
   constructor(props){
     super(props);
     this.search = this.search.bind(this);
+    this.selectType = this.selectType.bind(this);
+    this.state = {
+      searchType: '',
+      searchTerms: ''
+    };
   }
 
   componentWillMount() {
     this.props.fetchStats();
+    this.search('');
   }
 
   render() {
@@ -24,13 +29,12 @@ class DashboardContainer extends Component {
         <div className="row dashboard">
           <div className="col-md-8">
             <div className="dashboard-details">
+              <DashboardSearch search={this.search} />
               <div className="row">
                 <div className="col-md-12">
-                  {this.analyticsGroup()}
+                  {this.analyticsGroup(this.state.searchType)}
                 </div>
               </div>
-
-              <DashboardSearch search={this.search} />
               <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
             </div>
           </div>
@@ -45,39 +49,63 @@ class DashboardContainer extends Component {
     );
   }
 
-  search(searchTerms){
-    if(searchTerms == ''){
+  search(searchTerms) {
+    let searchType = null;
+    if(this.state.searchType === '') {
+      searchType = null;
+    } else {
+      searchType = this.state.searchType;
+    }
+    if(searchTerms === ''){
       searchTerms = null;
     }
-    this.props.fetchSearchResults(searchTerms, null);
+    this.setState({searchTerms: searchTerms});
+    this.props.fetchSearchResults(searchTerms, searchType);
   }
 
-  analyticsGroup() {
+  selectType(searchType) {
+    let searchTerms = null;
+    if(this.state.searchTerms === '') {
+      searchTerms = null;
+    } else {
+      searchTerms = this.state.searchTerms;
+    }
+    if(this.state.searchType === searchType) {
+      this.setState({searchType: ''});
+      searchType = null;
+    } else {
+      this.setState({searchType: searchType});
+    }
+    this.props.fetchSearchResults(searchTerms, searchType);
+  }
+
+  analyticsGroup(searchType) {
     return (
     <div className="analytics-group">
       <ul className="analytics-list-group">
-        <li className="analytics-list-item">
-          <Link to="/questions">
+        <li id="questions-analytics-item" className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
+          <div>
             <i className="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.questionCount}</p>
             <h2 className="item-title">Questions</h2>
-          </Link>
+          </div>
         </li>
-        <li className="analytics-list-item">
-          <Link to="/responseSets">
+        <li id="response-sets-analytics-item" className={"analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
+          <div>
             <i className="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.responseSetCount}</p>
             <h2 className="item-title">Response Sets</h2>
-          </Link>
+          </div>
           </li>
-        <li className="analytics-list-item">
-          <Link to="/forms">
+        <li id="forms-analytics-item" className={"analytics-list-item btn" + (searchType === 'form' ? " analytics-active-item" : "")} onClick={() => this.selectType('form')}>
+          <div>
             <i className="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.formCount}</p>
             <h2 className="item-title">Forms</h2>
-          </Link>
+          </div>
           </li>
       </ul>
+      {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Filter</a>}
     </div>);
   }
 
