@@ -29,7 +29,7 @@ class FormsEditContainer extends Component {
       this.props.params.formId = 0;
       this.props.params.action = 'new';
     }
-    this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false};
+    this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false, showResponseSetModal: false};
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.handleSaveQuestionSuccess = this.handleSaveQuestionSuccess.bind(this);
   }
@@ -72,6 +72,7 @@ class FormsEditContainer extends Component {
                                 closeQuestionModal ={()=>this.setState({showQuestionModal: false})}
                                 handleSaveQuestionSuccess={this.handleSaveQuestionSuccess} />
         <ResponseSetModal show={this.state.showResponseSetModal}
+                          router={this.props.router}
                           closeModal={() => this.setState({showResponseSetModal: false})}
                           saveResponseSetSuccess={() => this.setState({showResponseSetModal: false})} />
         <div className="row">
@@ -80,7 +81,7 @@ class FormsEditContainer extends Component {
               <h3 className="panel-title">{_.capitalize(this.props.params.action)} Form </h3>
             </div>
             <div className="panel-body">
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <div className="row add-question">
                   <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
                 </div>

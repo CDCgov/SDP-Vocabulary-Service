@@ -51,7 +51,7 @@ function mapDispatchToProps(dispatch) {
 
 ResponseSetModal.propTypes = {
   show: PropTypes.bool.isRequired,
-  router: PropTypes.object.isRequired,
+  router: PropTypes.object,
   closeModal: PropTypes.func.isRequired,
   saveResponseSet: PropTypes.func,
   saveResponseSetSuccess: PropTypes.func.isRequired

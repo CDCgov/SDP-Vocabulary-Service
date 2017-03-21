@@ -10,7 +10,7 @@ export default class QuestionResults extends Component {
         <div>
         {!(this.props.questions === undefined)  && this.props.questions.map((question, i) => {
           return (
-            <div className="row" key={i}>
+            <div className="row question-result" key={i}>
               <div data-question-id={question.id}>
                 {this.questionResult(question)}
               </div>
@@ -64,7 +64,7 @@ export default class QuestionResults extends Component {
               <a id={`question_${question.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu dropdown-menu-right">
                 {this.reviseOrEditLink(question)}
                 {this.detailsLink(question)}
                 {this.addToFormLink(question)}

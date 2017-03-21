@@ -14,6 +14,7 @@ describe('FormEdit', () => {
       removeQuestion: ()=>{},
       action: 'new',
       formSubmitter:  ()=>{},
+      showResponseSetModal:  ()=>{},
       router: router,
       questions: {1: {id: 1, content: "Is this a question?", questionType: "", responseSets: [1], concepts: [{code:"Code 1",display:" Display Name 1",system:"Test system 1"}]}}
     };

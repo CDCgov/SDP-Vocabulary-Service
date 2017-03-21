@@ -15,15 +15,16 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
   form.version = form.version || 1;
   return (
     <div id="added-questions" aria-label="Added">
-    <div className="question-group">
       <div className="row">
-          <div className="response-set-header">
-            <div className="col-md-5"><b>Content</b></div>
-            <div className="col-md-6"><b>Response Sets</b></div>
+        <div className="response-set-header">
+          <div className="col-md-5 response-set-label"><span><b>Content</b></span></div>
+          <div className="col-md-7 response-set-label">
+            <span className="right"><b>Response Sets</b></span>
             <Button onClick={()=>showResponseSetModal()} bsStyle="primary">Add New Response Set</Button>
           </div>
+        </div>
       </div>
-      <br/>
+    <div className="question-group">
       {form.formQuestions.map((q, i) =>
         <div className="row" key={i}>
           <div className="col-md-9">
@@ -271,7 +272,7 @@ FormEdit.propTypes = {
   router: PropTypes.object.isRequired,
   responseSets: PropTypes.arrayOf(responseSetProps),
   questions: PropTypes.arrayOf(questionProps).isRequired,
-  showResponseSetModal: PropTypes.func
+  showResponseSetModal: PropTypes.func.isRequired
 };
 
 export default FormEdit;

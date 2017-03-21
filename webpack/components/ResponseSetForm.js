@@ -228,9 +228,9 @@ function filterResponses(responses) {
 }
 
 ResponseSetForm.propTypes = {
-  responseSet: responseSetProps.isRequired,
+  responseSet: responseSetProps,
   responseSetSubmitter: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
-  route:  PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired
+  route:  PropTypes.object,
+  router: PropTypes.object
 };

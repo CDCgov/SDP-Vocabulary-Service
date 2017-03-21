@@ -120,7 +120,8 @@ Feature: Manage Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
-    And I click on the button to add the Question "What is your gender?"
+    And I fill in the "search" field with "What"
+    And I click on the "Add to Form" drop-down option for "What is your gender?"
     Then I click on the "Add New Response Set" button
     Then I fill in the "response_set_name" field with "New Response Set"
     And I click on the "Add Response Set" button
