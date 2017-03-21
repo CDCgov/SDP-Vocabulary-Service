@@ -89,14 +89,13 @@ Feature: Manage Questions
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
-    Then I click on the "add-new-response-set" button
+    Then I click on the "Add New Response Set" button
     Then I fill in the "response_set_name" field with "New Response Set"
     And I click on the "Add Response Set" button
     Then I should see "New Response Set"
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
     And I should see "New Response Set"
-    And I should see "Gender Full"
 
   Scenario: Create New Question from List with Warning Modal
     Given I have a Response Set with the name "Gender Full"

@@ -195,7 +195,7 @@ class QuestionForm extends Component{
                   </div>
                   <div className="col-md-6 response-set-label">
                     <label htmlFor="selected_response_sets">Selected Response Sets</label>
-                    <a className="btn btn-primary add-new-response-set" id='add-new-response-set' onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</a>
+                    <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
                   </div>
                 </div>
                 <ResponseSetDragWidget responseSets={responseSets}
