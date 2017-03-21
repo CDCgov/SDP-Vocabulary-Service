@@ -8,8 +8,8 @@ class Form < ApplicationRecord
   has_many :survey_forms
   has_many :surveys, through: :survey_forms
 
-  has_one :surveillance_system
-  has_one :surveillance_program
+  belongs_to :surveillance_system
+  belongs_to :surveillance_program
 
   belongs_to :created_by, class_name: 'User'
 
