@@ -20,10 +20,11 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create survey' do
     assert_difference('Survey.count') do
-      post surveys_url, params: { survey: {name: 'Test' }}
+      post surveys_url params: { survey: { linked_forms: [forms(:one).id], name: 'Test' } }
     end
 
     assert_response :success
+    assert_equal 1, Survey.last.forms.length
   end
 
   test 'should show response' do
@@ -31,16 +32,6 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # test 'should get edit' do
-  #   get edit_response_url(@resp)
-  #   assert_response :success
-  # end
-  #
-  # test 'should update response' do
-  #   patch response_url(@resp), params: { response: { response_set_id: @response_set.id, value: 'one' } }
-  #   assert_redirected_to response_url(@resp)
-  # end
-  #
   test 'should destroy response' do
     assert_difference('Survey.count', -1) do
       delete survey_url(@survey)

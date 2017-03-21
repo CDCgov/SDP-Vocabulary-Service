@@ -1,5 +1,5 @@
 class SurveysController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:create]
   def index
     @surveys = Survey.latest_versions
     @users = User.all
@@ -9,14 +9,14 @@ class SurveysController < ApplicationController
   end
 
   def new
-    @form = Form.new
+    @survey = Survey.new
     load_supporting_resources_for_editing
   end
 
   def create
     @survey = Survey.new(form_params)
     @survey.created_by = current_user
-    @survey_forms = create_survey_forms
+    @survey.survey_forms = create_survey_forms
     if @survey.save
       render :show, status: :created, location: @survey
     else
@@ -42,7 +42,7 @@ class SurveysController < ApplicationController
   end
 
   def form_params
-    params.require(:survey).permit(:name, :control_number, :version_independent_id)
+    params.require(:survey).permit(:name, :control_number, :version_independent_id, :created_by_id)
   end
 
   def create_survey_forms
