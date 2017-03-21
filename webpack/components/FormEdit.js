@@ -182,7 +182,7 @@ class FormEdit extends Component {
     if(this.props.form && this.props.form.id) {
       return(<Link className="btn btn-default pull-right" to={`/forms/${this.props.form.id}`}>Cancel</Link>);
     }
-    return(<Link className="btn btn-default pull-right" to='/forms/'>Cancel</Link>);
+    return(<Link className="btn btn-default pull-right" to='/'>Cancel</Link>);
   }
 
   render() {

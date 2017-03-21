@@ -1,13 +1,13 @@
 Feature: Manage Forms
   As an author
   I want to create and manage Forms
-  Scenario: Form List View
-    Given I have a Form with the name "Test Form"
+  Scenario: Form List Details
+    Given I have a published Form with the name "Test Form"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     Then I should see "Test Form"
     When I click on the menu link for the Form with the name "Test Form"
-    And I should see the option to View the Form with the name "Test Form"
+    And I should see the option to Details the Form with the name "Test Form"
     And I should see the option to Revise the Form with the name "Test Form"
 
   Scenario: Show Form in Detail
@@ -15,7 +15,7 @@ Feature: Manage Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the menu link for the Form with the name "Test Form"
-    And I click on the option to View the Form with the name "Test Form"
+    And I click on the option to Details the Form with the name "Test Form"
     Then I should see "Test Form"
     Then I should see "Form description"
 
@@ -24,7 +24,7 @@ Feature: Manage Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the menu link for the Form with the name "Test Form"
-    And I click on the option to View the Form with the name "Test Form"
+    And I click on the option to Details the Form with the name "Test Form"
     Then I should see "Test Form"
     Then I should see "Form description"
     When I click on the "Publish" link
@@ -37,7 +37,7 @@ Feature: Manage Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the menu link for the Form with the name "Test Form"
-    And I click on the option to View the Form with the name "Test Form"
+    And I click on the option to Details the Form with the name "Test Form"
     Then I should see "Test Form"
     Then I should see "Form description"
     When I click on the "Edit" link
@@ -69,7 +69,7 @@ Feature: Manage Forms
     And I should see "Edit"
 
   Scenario: Reorder Questions
-    Given I have a Form with the name "Test Form"
+    Given I have a published Form with the name "Test Form"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I have a Question with the content "What is your name?" and the type "MC"
     And I have a Response Set with the name "Gender Partial"
@@ -92,7 +92,7 @@ Feature: Manage Forms
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the "New Form" link
+    And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
@@ -116,31 +116,27 @@ Feature: Manage Forms
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the "New Form" link
+    And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
-    When I go to the list of Forms
+    When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
+    When I go to the list of Forms
     Then I should see "Test Form"
-#    And I fill in the "search" field with "Test"
-#    And I click on the "Go!" button
-#    Then I should see "Test Form"
-#    And I fill in the "search" field with "Missing"
-#    And I click on the "Go!" button
-#    Then I should not see "Test Form"
 
   Scenario: Abandon New Form from List with warning modal
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the "New Form" link
+    And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
-    When I go to the list of Forms
+    When I click on the "CDC Vocabulary Service" link
     And I click on the "Continue Without Saving" button
+    When I go to the list of Forms
     Then I should not see "Test Form"
 
   Scenario: An invalid control number should not allow save
@@ -148,7 +144,7 @@ Feature: Manage Forms
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the "New Form" link
+    And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234"
     And I fill in the "search" field with "What"
@@ -164,7 +160,7 @@ Feature: Manage Forms
     And I have a Response Set with the name "Gender Partial" and the description "Gender example" and with the Responses Male, Female
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the "New Form" link
+    And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
@@ -178,7 +174,7 @@ Feature: Manage Forms
     And I have a Response Set with the name "Gender Partial" and the description "Gender example" and with the Responses Male, Female
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the "New Form" link
+    And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"

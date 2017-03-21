@@ -81,7 +81,7 @@ let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount
       <ul className="cdc-nav cdc-utlt-navbar-nav">
         <li className="active"><a href="#" className="cdc-navbar-item"><i className="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
         <li className="dropdown">
-          <a href="#" className="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
+          <a href="#" id = "create-menu" className="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
           <ul className="cdc-nav-dropdown">
             <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
             <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>

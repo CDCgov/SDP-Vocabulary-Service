@@ -6,7 +6,7 @@ Feature: Draft, Publish, and Revise Questions
     And I have a Question Type with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the "New Question" link
+    And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list

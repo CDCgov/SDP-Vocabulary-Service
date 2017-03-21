@@ -214,7 +214,7 @@ class QuestionForm extends Component{
     if (this.props.question && this.props.question.id) {
       return(<Link className="btn btn-default" to={`/questions/${this.props.question.id}`}>Cancel</Link>);
     }
-    return(<Link className="btn btn-default" to='/questions/'>Cancel</Link>);
+    return(<Link className="btn btn-default" to='/'>Cancel</Link>);
   }
 
   publishButton() {

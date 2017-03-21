@@ -43,6 +43,11 @@ When(/^I click on the "([^"]*)" (button|link)$/) do |button_name, _button_or_lin
   click_on(button_name)
 end
 
+When(/^I click on the create "([^"]*)" dropdown item$/) do |object_type|
+  page.find('#create-menu').click
+  page.find('.nav-dropdown-item', text: object_type).click
+end
+
 When(/^I select the "([^"]*)" option in the "([^"]*)" list$/) do |option, list|
   select(option, from: list)
 end
