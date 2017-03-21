@@ -1,3 +1,5 @@
+require_relative '../../test/elastic_helpers'
+
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"\
  and the concept "([^"]*)"$/) do |content, description, type, concept|
   user  = get_user('test_author@gmail.com')
@@ -23,7 +25,9 @@ Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
 end
 
 When(/^I go to the list of Questions$/) do
-  visit 'landing#/questions'
+  Elastictest.fake_question_search_results
+  visit '/'
+  page.find('li[id="questions-analytics-item"]').click
 end
 
 # When clauses

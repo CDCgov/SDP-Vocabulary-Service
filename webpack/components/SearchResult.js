@@ -66,7 +66,7 @@ export default class SearchResult extends Component {
 
   questionResult(result, highlight) {
     return (
-      <div className="search-result">
+      <div className="search-result" id={`question_id_${result.id}`}>
         <div className="search-result-name">
           <text className="search-result-type">Question: </text>
           <Link to={`/questions/${result.id}`}>
@@ -105,7 +105,7 @@ export default class SearchResult extends Component {
 
   responseSetResult(result, highlight) {
     return (
-      <div className="search-result">
+      <div className="search-result" id={`response_set_id_${result.id}`}>
         <div className="search-result-name">
           <text className="search-result-type">Response Set: </text>
           <Link to={`/responseSets/${result.id}`}>
@@ -113,7 +113,7 @@ export default class SearchResult extends Component {
           </Link>
           <div className="pull-right response-set-menu">
             <div className="dropdown">
-              <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+              <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
               {this.resultDropdownMenu(result, 'responseSet')}
@@ -144,7 +144,7 @@ export default class SearchResult extends Component {
 
   formResult(result, highlight) {
     return (
-      <div className="search-result">
+      <div className="search-result" id={`form_id_${result.id}`}>
         <div className="search-result-name">
           <text className="search-result-type">Form: </text>
           <Link to={`/forms/${result.id}`}>
@@ -152,7 +152,7 @@ export default class SearchResult extends Component {
           </Link>
           <div className="pull-right form-menu">
             <div className="dropdown">
-              <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+              <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
               {this.resultDropdownMenu(result, 'form')}

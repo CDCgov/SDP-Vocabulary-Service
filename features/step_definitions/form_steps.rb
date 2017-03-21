@@ -1,3 +1,5 @@
+require_relative '../../test/elastic_helpers'
+
 Given(/^I have a Form with the name "([^"]*)" and the description "([^"]*)"$/) do |name, description|
   user = get_user 'test_author@gmail.com'
   Form.create!(name: name, description: description, created_by: user)
@@ -9,7 +11,9 @@ Given(/^I have a Form with the name "([^"]*)"$/) do |name|
 end
 
 When(/^I go to the list of Forms$/) do
-  visit 'landing#/forms'
+  Elastictest.fake_form_search_results
+  visit '/'
+  page.find('li[id="forms-analytics-item"]').click
 end
 
 When(/^I click on the button to add the Question "([^"]*)"$/) do |question_content|

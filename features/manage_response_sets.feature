@@ -10,7 +10,6 @@ Feature: Manage Response Sets
     And I should not see the option to Revise the Response Set with the name "Gender Full"
     And I should not see the option to Extend the Response Set with the name "Gender Full"
     And I should see the option to Edit the Response Set with the name "Gender Full"
-    And I should see the option to Delete the Response Set with the name "Gender Full"
 
   Scenario: Show Response Set in Detail
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"

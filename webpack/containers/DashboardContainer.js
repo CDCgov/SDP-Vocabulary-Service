@@ -83,21 +83,21 @@ class DashboardContainer extends Component {
     return (
     <div className="analytics-group">
       <ul className="analytics-list-group">
-        <li className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
+        <li id="questions-analytics-item" className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
           <div>
             <i className="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.questionCount}</p>
             <h2 className="item-title">Questions</h2>
           </div>
         </li>
-        <li className={"analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
+        <li id="response-sets-analytics-item" className={"analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
           <div>
             <i className="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.responseSetCount}</p>
             <h2 className="item-title">Response Sets</h2>
           </div>
           </li>
-        <li className={"analytics-list-item btn" + (searchType === 'form' ? " analytics-active-item" : "")} onClick={() => this.selectType('form')}>
+        <li id="forms-analytics-item" className={"analytics-list-item btn" + (searchType === 'form' ? " analytics-active-item" : "")} onClick={() => this.selectType('form')}>
           <div>
             <i className="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.formCount}</p>

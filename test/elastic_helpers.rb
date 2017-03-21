@@ -50,7 +50,7 @@ module Elastictest
       fake_body += ESQuestionSerializer.new(question).to_json
       fake_body += index != questions.size - 1 ? '},' : ''
     end
-    fake_body += '}]}}'
+    fake_body += questions.any? ? '}]}}' : ']}}'
 
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
@@ -67,7 +67,7 @@ module Elastictest
       fake_body += ESResponseSetSerializer.new(response_set).to_json
       fake_body += index != response_sets.size - 1 ? '},' : ''
     end
-    fake_body += '}]}}'
+    fake_body += response_sets.any? ? '}]}}' : ']}}'
 
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
@@ -84,7 +84,7 @@ module Elastictest
       fake_body += ESFormSerializer.new(form).to_json
       fake_body += index != forms.size - 1 ? '},' : ''
     end
-    fake_body += '}]}}'
+    fake_body += forms.any? ? '}]}}' : ']}}'
 
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end

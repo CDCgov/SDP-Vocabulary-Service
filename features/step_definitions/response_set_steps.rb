@@ -1,3 +1,5 @@
+require_relative '../../test/elastic_helpers'
+
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and\
  the response "([^"]*)"$/) do |set_name, desc, response|
   user = get_user 'test_author@gmail.com'
@@ -20,7 +22,9 @@ Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]
 end
 
 When(/^I go to the list of Response Sets$/) do
-  visit 'landing#/responseSets'
+  Elastictest.fake_rs_search_results
+  visit '/'
+  page.find('li[id="response-sets-analytics-item"]').click
 end
 
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
