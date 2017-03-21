@@ -51,7 +51,10 @@ var config = {
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/[name].[ext]' },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=8192' },
       { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] }
-    ]
+    ],
+    options: {
+	    sourceMap: true
+    }
   },
 
   resolve: {

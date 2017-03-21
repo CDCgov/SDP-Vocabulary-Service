@@ -24,6 +24,11 @@ ActiveRecord::Schema.define(version: 20170327202207) do
     t.index ["user_id"], name: "index_authentications_on_user_id", using: :btree
   end
 
+  create_table "codes", id: false, force: :cascade do |t|
+    t.text "code"
+    t.text "description"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.string   "title",            limit: 50, default: ""
     t.integer  "parent_id"
