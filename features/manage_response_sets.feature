@@ -118,7 +118,7 @@ Feature: Manage Response Sets
     Given I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     And I click on the create "Response Sets" dropdown item
-    And I fill in the "Name" field with "Gender Partial"
+    And I fill in the "response_set_name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I click on the "Add Row" link
@@ -149,7 +149,7 @@ Feature: Manage Response Sets
     Given I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     And I click on the create "Response Sets" dropdown item
-    And I fill in the "Name" field with "Gender Partial"
+    And I fill in the "response_set_name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Response 1"
@@ -165,7 +165,7 @@ Feature: Manage Response Sets
     Given I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     And I click on the create "Response Sets" dropdown item
-    And I fill in the "Name" field with "Gender Partial"
+    And I fill in the "response_set_name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Response 1"
