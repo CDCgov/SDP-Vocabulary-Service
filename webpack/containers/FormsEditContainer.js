@@ -64,24 +64,28 @@ class FormsEditContainer extends Component {
       );
     }
     return (
-      <div className="container basic-bg form-edit-container">
+      <div className="container">
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
                                 closeQuestionModal ={()=>this.setState({showQuestionModal: false})}
                                 saveQuestionSuccess={this.saveQuestionSuccess} />
         <div className="row">
-          <h2>{_.capitalize(this.props.params.action)} Form </h2>
-          <div className="col-md-6">
-            <div className="row add-question">
-              <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">{_.capitalize(this.props.params.action)} Form </h3>
             </div>
-            <QuestionSearchContainer form ={this.props.form}
-                                     allQs={this.props.questions}
-                                     allRs={this.props.responseSets}
-                                     reverseSort={true} />
-          </div>
-          <FormEdit ref ='form'
+            <div className="panel-body">
+              <div className="col-md-4">
+                <div className="row add-question">
+                  <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
+                </div>
+                <QuestionSearchContainer allQs={this.props.questions}
+                                         allRs={this.props.responseSets}
+                                         form ={this.props.form}
+                                         reverseSort={true} />
+              </div>
+              <FormEdit ref ='form'
                     form={this.props.form}
                     action={this.props.params.action || 'new'}
                     route ={this.props.route}
@@ -91,6 +95,8 @@ class FormsEditContainer extends Component {
                     formSubmitter={this.state.selectedFormSaver}
                     removeQuestion ={this.props.removeQuestion}
                     reorderQuestion={this.props.reorderQuestion} />
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { questionProps } from "../prop-types/question_props";
+import QuestionWidget from './QuestionWidget';
 
 const QuestionItem = ({question, responseSets, index, handleResponseSetChange=() => {}, responseSetId}) => {
   if (!question || !responseSets) {
@@ -7,20 +8,20 @@ const QuestionItem = ({question, responseSets, index, handleResponseSetChange=()
   }
   return (
     <div className='question-item'>
-      <div>
-        <div className="col-md-5" id={`question_id_${question.id}`} >{question.content}</div>
+        <div className="col-md-9"><QuestionWidget question={question} /></div>
         <div className="col-md-3" >
-          <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={question.id}/>
-          <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={index} value={responseSetId} onChange={handleResponseSetChange(index)}>
-            {responseSets.map((r) => {
-              return (
-                <option value={r.id} key={r.id}>{r.name} </option>
-              );
-            })}
-            <option aria-label=' '></option>
-          </select>
+          <div className="form-group">
+            <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={question.id}/>
+            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={index} value={responseSetId} onChange={handleResponseSetChange(index)}>
+              {responseSets.map((r) => {
+                return (
+                  <option value={r.id} key={r.id}>{r.name} </option>
+                );
+              })}
+              <option aria-label=' '></option>
+            </select>
+          </div>
         </div>
-      </div>
     </div>
   );
 };
