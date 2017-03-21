@@ -46,7 +46,7 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   test 'last_published' do
-    q = questions(:one)
+    q = questions(:two)
     assert_difference('Question.last_published.count') do
       assert q.publish
     end
