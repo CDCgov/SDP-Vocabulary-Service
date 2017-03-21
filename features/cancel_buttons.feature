@@ -43,7 +43,7 @@ Feature: Cancel buttons
   Scenario: Cancel out of creating a new question
     Given I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the "New Question" button
+    And I click on the create "Questions" dropdown item
     And I click on the "Cancel" button
     Then I should see "Recent Items"
     And I should see "Search Results"
@@ -102,7 +102,7 @@ Feature: Cancel buttons
   Scenario: Cancel out of creating a new question with modal warning
     Given I am logged in as test_author@gmail.com
     When I go to the list of Questions
-    And I click on the "New Question" button
+    And I click on the create "Questions" dropdown item
     And I fill in the "Description" field with "New description"
     And I click on the "Cancel" button
     Then I should see "Warning"
