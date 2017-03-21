@@ -33,11 +33,7 @@ class FormsController < ApplicationController
   # POST /forms.json
   def create
     @form = Form.new(form_params)
-    if can_form_be_created?(@form)
-      @form.version = @form.most_recent + 1
-    else
-      return
-    end
+    return unless can_form_be_created?(@form)
     @form.created_by = current_user
     @form.surveillance_system = current_user.last_system
     @form.surveillance_program = current_user.last_program
@@ -116,6 +112,7 @@ class FormsController < ApplicationController
         render(json: form.errors, status: :unprocessable_entity)
         return false
       end
+      form.version = form.most_recent + 1
     end
     true
   end

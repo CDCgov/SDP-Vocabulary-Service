@@ -63,7 +63,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 0
 
     assert_difference('Form.count') do
-      form_json = { form: { name: @form.name, created_by_id: @form.created_by_id } }.to_json
+      form_json = { form: { name: 'Create test form', created_by_id: @form.created_by_id } }.to_json
       post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     end
     assert_enqueued_jobs 1
