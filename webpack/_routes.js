@@ -580,6 +580,9 @@ Based on Rails routes of Vocabulary::Application
 // new_response_set => /response_sets/new(.:format)
   // function(options)
   new_response_set_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// new_survey => /surveys/new(.:format)
+  // function(options)
+  new_survey_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // new_user_password => /users/password/new(.:format)
   // function(options)
   new_user_password_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"password",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -679,6 +682,12 @@ Based on Rails routes of Vocabulary::Application
 // surveillance_systems => /surveillance_systems(.:format)
   // function(options)
   surveillance_systems_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveillance_systems",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// survey => /surveys/:id(.:format)
+  // function(id, options)
+  survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// surveys => /surveys(.:format)
+  // function(options)
+  surveys_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // usage_api_question => /api/questions/:id/usage(.:format)
   // function(id, options)
   usage_api_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
