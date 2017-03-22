@@ -33,14 +33,16 @@ class SimpleSearchTest < ActiveSupport::TestCase
       assert_equal 2, admin_json['hits']['hits'].length
       admin_json['hits']['hits'].each do |hit|
         assert_equal type, hit['_type']
-        assert hit['createdBy']['id'] == @admin.id || hit['status'] == 'published'
+        source = hit['_source']
+        assert source['createdBy']['id'] == @admin.id || source['status'] == 'published'
       end
 
       assert_equal 2, user_json['hits']['total']
       assert_equal 2, user_json['hits']['hits'].length
       user_json['hits']['hits'].each do |hit|
         assert_equal type, hit['_type']
-        assert hit['createdBy']['id'] == @user.id || hit['status'] == 'published'
+        source = hit['_source']
+        assert source['createdBy']['id'] == @user.id || source['status'] == 'published'
       end
     end
   end
@@ -74,7 +76,8 @@ class SimpleSearchTest < ActiveSupport::TestCase
     hit_types = { 'form' => 0, 'question' => 0, 'response_set' => 0, 'survey' => 0 }
     json['hits']['hits'].each do |hit|
       hit_types[hit['_type']] += 1
-      assert hit['createdBy']['id'] == @admin.id || hit['status'] == 'published'
+      source = hit['_source']
+      assert source['createdBy']['id'] == @admin.id || source['status'] == 'published'
     end
     assert_equal 2, hit_types['form']
     assert_equal 2, hit_types['question']

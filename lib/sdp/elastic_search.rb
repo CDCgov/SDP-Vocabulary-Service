@@ -7,6 +7,23 @@ module SDP
       yield client if client.ping
     end
 
+    def self.ping
+      Vocabulary::Elasticsearch.client.ping
+    end
+
+    def self.search(type, query_string, current_user_id = nil, _limit = 20, _page = 1)
+      with_client do |client|
+        results = if query_string
+                    SDP::Elasticsearch.search_on_string(client, type, query_string, current_user_id)
+                  elsif type
+                    SDP::Elasticsearch.search_on_type(client, type, current_user_id)
+                  else
+                    SDP::Elasticsearch.search_all(client, current_user_id)
+                  end
+        return results
+      end
+    end
+
     def self.query_with_type(client, type, query_string, current_user_id)
       client.search index: 'vocabulary', type: type, body: {
         query: {
@@ -123,22 +140,48 @@ module SDP
     end
 
     def self.sync
+      sync_forms
+      sync_questions
+      sync_response_sets
+      sync_surveys
+    end
+
+    def self.sync_forms
       ensure_index
       with_client do |_client|
-        form_ids = Form.ids
-        question_ids = Question.ids
-        rs_ids = ResponseSet.ids
-        delete_all('form', form_ids)
-        delete_all('question', question_ids)
-        delete_all('response_set', rs_ids)
+        delete_all('form', Form.ids)
         Form.all.each do |form|
           UpdateIndexJob.perform_later('form', ESFormSerializer.new(form).as_json)
         end
+      end
+    end
+
+    def self.sync_questions
+      ensure_index
+      with_client do |_client|
+        delete_all('question', Question.ids)
         Question.all.each do |question|
           UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question).as_json)
         end
+      end
+    end
+
+    def self.sync_response_sets
+      ensure_index
+      with_client do |_client|
+        delete_all('response_set', ResponseSet.ids)
         ResponseSet.all.each do |response_set|
           UpdateIndexJob.perform_later('response_set', ESResponseSetSerializer.new(response_set).as_json)
+        end
+      end
+    end
+
+    def self.sync_surveys
+      ensure_index
+      with_client do |_client|
+        delete_all('survey', Survey.ids)
+        Survey.all.each do |_survey|
+          UpdateIndexJob.perform_later('response_set', ESSurveySetSerializer.new(response_set).as_json)
         end
       end
     end
