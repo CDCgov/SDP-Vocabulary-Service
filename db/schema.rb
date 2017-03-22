@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322151732) do
+ActiveRecord::Schema.define(version: 20170322153410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 20170322151732) do
     t.integer  "version",                          default: 1
     t.string   "control_number",         limit: 9
     t.string   "status",                           default: "draft"
+    t.string   "description"
     t.index ["created_by_id"], name: "index_surveys_on_created_by_id", using: :btree
   end
 
