@@ -1,5 +1,3 @@
-require_relative '../../test/elastic_helpers'
-
 # Given clauses
 Given(/^I am logged in as (.+)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)

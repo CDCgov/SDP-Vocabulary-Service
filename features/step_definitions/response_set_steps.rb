@@ -1,5 +1,3 @@
-require_relative '../../test/elastic_helpers'
-
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and\
  the response "([^"]*)"$/) do |set_name, desc, response|
   user = get_user 'test_author@gmail.com'

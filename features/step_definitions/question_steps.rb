@@ -1,5 +1,3 @@
-require_relative '../../test/elastic_helpers'
-
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"\
  and the concept "([^"]*)"$/) do |content, description, type, concept|
   user  = get_user('test_author@gmail.com')

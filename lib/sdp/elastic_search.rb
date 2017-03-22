@@ -1,4 +1,5 @@
 # rubocop:disable Metrics/ModuleLength
+# rubocop:disable Metrics/MethodLength
 module SDP
   module Elasticsearch
     def self.with_client
@@ -15,7 +16,15 @@ module SDP
               { match: { status: 'published' } }
             ] } },
             should: [
-              { match: { name: query_string } }, { match: { description: query_string } }
+              { match: { name: { query: query_string, boost: 9 } } },
+              { match: { description: { query: query_string, boost: 8 } } },
+              { match: { 'codes.code': { query: query_string, boost: 7 } } },
+              { match: { 'codes.codeSystem': { query: query_string, boost: 7 } } },
+              { match: { 'codes.displayName': { query: query_string, boost: 7 } } },
+              { match: { category: { query: query_string } } },
+              { match: { 'createdBy.email': { query: query_string } } },
+              { match: { 'createdBy.name': { query: query_string } } },
+              { match: { status: { query: query_string } } }
             ]
           }
         },
@@ -37,8 +46,15 @@ module SDP
               { match: { status: 'published' } }
             ] } },
             should: [
-              { match: { name: query_string } },
-              { match: { description: query_string } }
+              { match: { name: { query: query_string, boost: 9 } } },
+              { match: { description: { query: query_string, boost: 8 } } },
+              { match: { 'codes.code': { query: query_string, boost: 7 } } },
+              { match: { 'codes.codeSystem': { query: query_string, boost: 7 } } },
+              { match: { 'codes.displayName': { query: query_string, boost: 7 } } },
+              { match: { category: { query: query_string } } },
+              { match: { 'createdBy.email': { query: query_string } } },
+              { match: { 'createdBy.name': { query: query_string } } },
+              { match: { status: { query: query_string } } }
             ]
           }
         },
@@ -137,3 +153,4 @@ module SDP
   end
 end
 # rubocop:enable Metrics/ModuleLength
+# rubocop:enable Metrics/MethodLength
