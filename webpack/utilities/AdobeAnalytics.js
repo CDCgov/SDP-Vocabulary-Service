@@ -3,7 +3,8 @@ exports.logPageViewed = function() {
   if (typeof s === "undefined") {
     return;
   }
-  
+
+  s.channel = "SDP-Vocabulary"
 
   let s3 = s_gi("cdcgovvistorid");
   let sKey, override = {
