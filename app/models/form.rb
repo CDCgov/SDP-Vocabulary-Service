@@ -5,6 +5,8 @@ class Form < ApplicationRecord
   has_many :form_questions
   has_many :questions, through: :form_questions
   has_many :response_sets, through: :form_questions
+  has_many :survey_forms
+  has_many :surveys, through: :survey_forms
 
   has_one :surveillance_system
   has_one :surveillance_program

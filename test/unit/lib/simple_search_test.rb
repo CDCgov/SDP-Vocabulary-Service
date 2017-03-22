@@ -8,7 +8,7 @@ class SimpleSearchTest < ActiveSupport::TestCase
   end
 
   test 'can scope search by type ' do
-    %w(question form response_set).each do |type|
+    %w(question form response_set survey).each do |type|
       results = SDP::SimpleSearch.search(type, 'Search')
       json = JSON.parse(results.target!)
       # there is only 1 search related fixture for each type that is published
@@ -22,7 +22,7 @@ class SimpleSearchTest < ActiveSupport::TestCase
   end
 
   test 'can filter searches by user ' do
-    %w(question form response_set).each do |type|
+    %w(question form response_set survey).each do |type|
       admin_results = SDP::SimpleSearch.search(type, 'Search', @admin.id)
       admin_json = JSON.parse(admin_results.target!)
       user_results = SDP::SimpleSearch.search(type, 'Search', @user.id)
@@ -50,15 +50,16 @@ class SimpleSearchTest < ActiveSupport::TestCase
     json = JSON.parse(results.target!)
     # there is only 1 search related fixture for each type that is published
     # with the text  "Search" in the search fields so this should be 3
-    assert_equal 3, json['hits']['total']
-    assert_equal 3, json['hits']['hits'].length
-    hit_types = { 'form' => 0, 'question' => 0, 'response_set' => 0 }
+    assert_equal 4, json['hits']['total']
+    assert_equal 4, json['hits']['hits'].length
+    hit_types = { 'form' => 0, 'question' => 0, 'response_set' => 0, 'survey' => 0 }
     json['hits']['hits'].each do |hit|
       hit_types[hit['_type']] += 1
     end
     assert_equal 1, hit_types['form']
     assert_equal 1, hit_types['question']
     assert_equal 1, hit_types['response_set']
+    assert_equal 1, hit_types['survey']
   end
 
   test 'can search all types filtered by user ' do
