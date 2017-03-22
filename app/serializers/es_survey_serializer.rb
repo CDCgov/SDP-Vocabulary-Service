@@ -1,6 +1,6 @@
 include ActiveModel::Serialization
 
-class ESFormSerializer < ActiveModel::Serializer
+class ESSurveySerializer < ActiveModel::Serializer
   attribute :id
   attribute :name
   attribute :version_independent_id
@@ -14,7 +14,7 @@ class ESFormSerializer < ActiveModel::Serializer
   attribute :updated_by, key: :updatedBy
   attribute :created_by, key: :createdBy
   attribute :questions
-  attribute :surveys
+  attribute :forms
   attribute(:codes) { codes }
 
   def codes
@@ -30,7 +30,11 @@ class ESFormSerializer < ActiveModel::Serializer
   end
 
   def questions
-    object.form_questions.collect do |fq|
+    form_questions = []
+    object.survey_forms.each do |sf|
+      form_questions.concat sf.form.form_questions.to_a
+    end
+    form_questions.collect do |fq|
       { id: fq.question_id,
         name: fq.question.content,
         codes: (fq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
@@ -39,10 +43,9 @@ class ESFormSerializer < ActiveModel::Serializer
     end
   end
 
-  def surveys
-    object.survey_forms.collect do |fq|
-      { id: fq.survey_id,
-        name: fq.survey.name }
+  def forms
+    object.survey_forms.collect do |sf|
+      { id: sf.form_id }
     end
   end
 

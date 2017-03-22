@@ -2,7 +2,7 @@ module SDP
   module SimpleSearch
     def self.search(type, query_string, current_user_id = nil, limit = 20, page = 1)
       types = [type.camelize.constantize] if type
-      types ||= [Form, Question, ResponseSet]
+      types ||= [Form, Question, ResponseSet, Survey]
       results = {}
       types.map do |search_type|
         query = search_type.search(query_string, current_user_id)
@@ -17,8 +17,9 @@ module SDP
       total = 0
       mapping = { Form => ESFormSerializer,
                   Question => ESQuestionSerializer,
-                  ResponseSet => ESResponseSetSerializer }
-      types = [Question, ResponseSet, Form]
+                  ResponseSet => ESResponseSetSerializer,
+                  Survey => ESSurveySerializer }
+      types = [Question, ResponseSet, Form, Survey]
       types.each do |type|
         type_results = results[type]
 

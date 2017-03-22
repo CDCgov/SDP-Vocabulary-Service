@@ -13,6 +13,29 @@ class Survey < ApplicationRecord
 
   accepts_nested_attributes_for :forms, allow_destroy: true
 
+  after_commit :index, on: [:create, :update]
+  after_commit :delete_index, on: :destroy
+
+  def index
+    UpdateIndexJob.perform_later('survey', ESSurveySerializer.new(self).as_json)
+  end
+
+  def delete_index
+    DeleteFromIndexJob.perform_later('survey', id)
+  end
+
+  def self.search(search = nil, current_user_id = nil)
+    if current_user_id && search
+      where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")
+    elsif current_user_id
+      where("(status= 'published' OR created_by_id = ?)", current_user_id)
+    elsif search
+      where('status= ? and name ILIKE ?', 'published', "%#{search}%")
+    else
+      where('status=  ?', 'published')
+    end
+  end
+
   def build_new_revision
     new_revision = Survey.new(version_independent_id: version_independent_id,
                               name: name,
