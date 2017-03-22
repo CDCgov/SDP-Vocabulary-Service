@@ -36,7 +36,7 @@ class SurveyShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <SurveyShow/>
+            <SurveyShow survey={this.props.survey} forms={this.props.forms}/>
             <div className="col-md-12 showpage-comments-title">Comments:</div>
           </div>
         </div>
@@ -49,12 +49,10 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
   props.survey = state.surveys[ownProps.params.surveyId];
-  // if (props.survey) {
-  //   props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
-  //   // TODO Figure out a way to make this less ugly
-  //   let questionIds = [].concat(...props.forms.map((f) => [].concat(...f.questions.map((q) => q.id))))
-  //   props.questions = questionIds.map((qId) => state.questions[qId]);
-  // }
+  if (props.survey) {
+    props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
+    props.forms = props.forms.filter((f) => f !== undefined)
+  }
   return props;
 }
 
