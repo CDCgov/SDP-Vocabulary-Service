@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchSurvey } from '../../actions/survey_actions';
 import { fetchForms } from '../../actions/form_actions';
 import { fetchQuestions } from '../../actions/questions_actions';
-// import SurveyShow from '../components/SurveyShow';
+import SurveyShow from '../../components/surveys/Show';
 // import { surveyProps } from '../prop-types/survey_props';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -36,6 +36,7 @@ class SurveyShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
+            <SurveyShow/>
             <div className="col-md-12 showpage-comments-title">Comments:</div>
           </div>
         </div>
@@ -48,12 +49,12 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
   props.survey = state.surveys[ownProps.params.surveyId];
-  if (props.survey) {
-    props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
-    // TODO Figure out a way to make this less ugly
-    let questionIds = [].concat(...props.forms.map((f) => [].concat(...f.questions.map((q) => q.id))))
-    props.questions = questionIds.map((qId) => state.questions[qId]);
-  }
+  // if (props.survey) {
+  //   props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
+  //   // TODO Figure out a way to make this less ugly
+  //   let questionIds = [].concat(...props.forms.map((f) => [].concat(...f.questions.map((q) => q.id))))
+  //   props.questions = questionIds.map((qId) => state.questions[qId]);
+  // }
   return props;
 }
 
@@ -65,6 +66,8 @@ SurveyShowContainer.propTypes = {
   // survey: surveyProps,
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
+  fetchQuestions: PropTypes.func,
+  fetchForms: PropTypes.func,
   params: PropTypes.object
 };
 
