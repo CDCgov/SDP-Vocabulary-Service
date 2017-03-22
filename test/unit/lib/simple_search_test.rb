@@ -69,9 +69,9 @@ class SimpleSearchTest < ActiveSupport::TestCase
     # with the text  "Search" in the search fields
     # there is also 1 draft owned by the admin user in each so these totals will
     # be 6
-    assert_equal 6, json['hits']['total']
-    assert_equal 6, json['hits']['hits'].length
-    hit_types = { 'form' => 0, 'question' => 0, 'response_set' => 0 }
+    assert_equal 8, json['hits']['total']
+    assert_equal 8, json['hits']['hits'].length
+    hit_types = { 'form' => 0, 'question' => 0, 'response_set' => 0, 'survey' => 0 }
     json['hits']['hits'].each do |hit|
       hit_types[hit['_type']] += 1
       assert hit['createdBy']['id'] == @admin.id || hit['status'] == 'published'
@@ -79,5 +79,6 @@ class SimpleSearchTest < ActiveSupport::TestCase
     assert_equal 2, hit_types['form']
     assert_equal 2, hit_types['question']
     assert_equal 2, hit_types['response_set']
+    assert_equal 2, hit_types['survey']
   end
 end

@@ -32,7 +32,7 @@ class ESSurveySerializer < ActiveModel::Serializer
   def questions
     form_questions = []
     object.survey_forms.each do |sf|
-      form_questions << sf.form.form_questions
+      form_questions.concat sf.form.form_questions.to_a
     end
     form_questions.collect do |fq|
       { id: fq.question_id,

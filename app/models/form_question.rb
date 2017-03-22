@@ -4,7 +4,7 @@ class FormQuestion < ApplicationRecord
   belongs_to :response_set
   # validates_uniqueness_of :position, :scope => :form
 
-  after_commit :reindex, on: [:create, :update, :delete, :destroy]
+  after_commit :reindex, on: [:create, :update, :destroy]
 
   def reindex
     UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question).as_json)
