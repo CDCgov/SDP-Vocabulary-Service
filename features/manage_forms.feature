@@ -116,7 +116,7 @@ Feature: Manage Forms
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
-    And I click on the "New Form" link
+    And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
