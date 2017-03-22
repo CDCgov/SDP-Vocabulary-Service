@@ -12,6 +12,7 @@ import FormShowContainer from './containers/FormShowContainer';
 import QuestionShowContainer from './containers/QuestionShowContainer';
 import ResponseSetEditContainer from './containers/ResponseSetEditContainer';
 import QuestionEditContainer from './containers/QuestionEditContainer';
+import SurveyEditContainer from './containers/SurveyEditContainer';
 import FormsEditContainer from './containers/FormsEditContainer';
 import MyStuffContainer from './containers/MyStuffContainer';
 import SurveyShowContainer from './containers/surveys/ShowContainer';
@@ -34,10 +35,12 @@ ReactDOM.render(
           <Route path='/responseSets/new' component={ResponseSetEditContainer} />
           <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
           <Route path='/responseSets/:rsId/:action' component={ResponseSetEditContainer} />
-          <Route path='/questions/new' component={QuestionEditContainer} />
+          <Route path='/questions/new'  component={QuestionEditContainer} />
           <Route path='/questions/:qId' component={QuestionShowContainer} />
           <Route path='/questions/:qId/:action' component={QuestionEditContainer} />
+          <Route path='/surveys/new'  component={SurveyEditContainer} />
           <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
+          <Route path='/surveys/:surveyId/:action' component={SurveyEditContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));

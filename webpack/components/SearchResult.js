@@ -38,13 +38,13 @@ export default class SearchResult extends Component {
     // Needs concept of source.mostRecent === source.version
     // Currently no way to do this in ES schema
     return source.status === 'published' &&
-      source.createdBy.id === this.props.currentUser.id;
+      (source.createdById || source.createdBy.id) === this.props.currentUser.id;
   }
 
   isEditable(source) {
     // Needs concept of source.mostRecent === source.version
     return source.status === 'draft' &&
-      source.createdBy.id === this.props.currentUser.id;
+      (source.createdById || source.createdBy.id) === this.props.currentUser.id;
   }
 
   isExtendable(source) {

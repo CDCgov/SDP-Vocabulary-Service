@@ -48,7 +48,7 @@ class QuestionSearchContainer extends Component {
   render() {
     return (
             <div>
-                <SearchBar onSearchTermChange={term => this.questionFilter(term)} />
+                <SearchBar modelName='question' onSearchTermChange={term => this.questionFilter(term)} />
                 <QuestionResults questions={this.props.reverseSort ? this.state.questions.reverse() : this.state.questions}
                                  responseSets={_.values(this.state.responseSets)}
                                  addQuestion={this.props.addQuestion}

@@ -86,6 +86,7 @@ let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount
             <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
             <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
             <li className="nav-dropdown-item"><Link to="/forms/new">Forms</Link></li>
+            <li className="nav-dropdown-item"><Link to="/surveys/new">Surveys</Link></li>
           </ul>
         </li>
         <li className="dropdown">
