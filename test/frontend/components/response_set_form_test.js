@@ -11,6 +11,7 @@ describe('ResponseSetForm', () => {
       responseSet: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1",
         responses:[{value: 'val', codeSystem: 'codesystem', displayName: 'displayname'}]},
       router: router,
+      route: 'route',
       action: 'revise',
     };
     component = renderComponent(ResponseSetForm, props);

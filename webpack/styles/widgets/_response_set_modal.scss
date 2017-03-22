@@ -1,4 +1,4 @@
-.modal-question{
+.modal-response-set{
   width: 60%;
 
   #error_explanation{
@@ -12,14 +12,14 @@
     font-size:16px;
   }
 
-  .modal-header-question{
+  .modal-header-response-set{
     padding-top: 5px;
     padding-bottom: 5px;
     .close {
       margin-top: 0px;
     }
   }
-  .modal-body-question{
+  .modal-body-response-set{
     padding-top:0px;
     padding-bottom: 0px;
 
@@ -50,31 +50,3 @@
   }
 }
 
-.modal-body-response-set{
-  .response-set-group .response-set-container li:first-child {
-      width: unset;
-  }
-}
-.selected_response_sets{
-    .response-set-group:first-child{
-      margin-top: 5px;
-    }
-
-    label{
-      padding-left: 15px;
-      margin-bottom: 0px;
-    }
-    a{
-      padding-left: 10px;
-    }
-    .panel-body{
-      padding-top: 0px;
-      padding-left: 0px;
-      padding-right: 0px;
-    }
-    .panel-default{
-    max-height: 200px;
-    min-height: 30px;
-    overflow-y: auto;
-    }
-  }

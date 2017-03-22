@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import Errors from './Errors';
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
+import Errors from './Errors';
 import ModalDialog from './ModalDialog';
+import ResponseSetModal from './ResponseSetModal';
 import ResponseSetDragWidget from './ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 import _ from 'lodash';
@@ -26,6 +27,7 @@ class QuestionForm extends Component{
         this.state = this.stateForRevise(this.props.question);
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
+    this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
     this.unsavedState = false;
   }
 
@@ -46,13 +48,13 @@ class QuestionForm extends Component{
   }
 
   routerWillLeave(nextLocation) {
-    this.setState({ showModal: this.unsavedState });
+    this.setState({ showWarningModal: this.unsavedState });
     this.nextLocation = nextLocation;
     return !this.unsavedState;
   }
 
   handleModalResponse(leavePage){
-    this.setState({ showModal: false });
+    this.setState({ showWarningModal: false });
     if(leavePage){
       this.unsavedState = false;
       this.props.router.push(this.nextLocation.pathname);
@@ -93,9 +95,11 @@ class QuestionForm extends Component{
       responseTypeId: null,
       conceptsAttributes: [],
       linkedResponseSets: [],
-      showModal: false
+      showWarningModal: false,
+      showResponseSetModal: false
     };
   }
+
   //not working because of map => questionType
   stateForExtend(question) {
     var extendState = {};
@@ -116,10 +120,9 @@ class QuestionForm extends Component{
     if(!question || !questionTypes || !responseSets || !responseTypes){
       return (<div>Loading....</div>);
     }
-
     return (
       <form id="question-edit-form" onSubmit={(e) => this.handleSubmit(e)}>
-      <ModalDialog  show={this.state.showModal}
+      <ModalDialog  show ={this.state.showWarningModal}
                     title="Warning"
                     subTitle="Unsaved Changes"
                     warning={true}
@@ -130,9 +133,12 @@ class QuestionForm extends Component{
                     primaryButtonAction={()=> this.handleModalResponse(false)}
                     cancelButtonAction ={()=> {
                       this.props.router.push(this.props.route.path);
-                      this.setState({ showModal: false });
+                      this.setState({ showWarningModal: false });
                     }}
                     secondaryButtonAction={()=> this.handleModalResponse(true)} />
+        <ResponseSetModal show={this.state.showResponseSetModal}
+                          closeModal={() => this.setState({showResponseSetModal: false})}
+                          saveResponseSetSuccess={this.handleResponseSetSuccess} />
         <Errors errors={this.state.errors} />
         <div className="row">
           <div>
@@ -141,13 +147,12 @@ class QuestionForm extends Component{
                 <h3 className="panel-title">{`${this.actionWord()} Question`}</h3>
               </div>
               <div className="panel-body">
-              <div className="row">
-                  <div className="col-md-8 question-form-group">
+                <div className="row">
+                    <div className="col-md-8 question-form-group">
                       <label className="input-label" htmlFor="content">Question</label>
                       <input className="input-format" placeholder="Question text" type="text" name="content" id="content" defaultValue={state.content} onChange={this.handleChange('content')} />
-                  </div>
-
-                  <div className="col-md-4 question-form-group">
+                    </div>
+                    <div className="col-md-4 question-form-group">
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
                       <select className="input-format" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
@@ -155,59 +160,66 @@ class QuestionForm extends Component{
                           return <option key={qt.id} value={qt.id}>{qt.name}</option>;
                         })}
                       </select>
-                  </div>
-              </div>
-
-              <div className="row ">
-                <div className="col-md-8 question-form-group">
-                  <label className="input-label" htmlFor="description">Description</label>
-                  <textarea className="input-format" placeholder="Question description" type="text" name="question_description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
+                    </div>
                 </div>
-                <div className="col-md-4 question-form-group">
-                  <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
+                <div className="row ">
+                  <div className="col-md-8 question-form-group">
+                    <label className="input-label" htmlFor="description">Description</label>
+                    <textarea className="input-format" placeholder="Question description" type="text" name="question_description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
+                  </div>
+                  <div className="col-md-4 question-form-group">
+                    <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleResponseTypeChange()} >
                       {_.values(responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id}>{rt.name} - {rt.description}</option>);
                       })}
                     </select>
+                  </div>
+                  <div className="col-md-4 question-form-group harmonized-group">
+                    <label className="input-label" htmlFor="harmonized">Harmonized: </label>
+                    <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggleHarmonized()} />
+                  </div>
                 </div>
-                <div className="col-md-4 question-form-group harmonized-group">
-                  <label className="input-label" htmlFor="harmonized">Harmonized: </label>
-                  <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggleHarmonized()} />
-                </div>
-
-
-              </div>
-
-              <div className="row ">
-                <div className="col-md-12 ">
+                <div className="row ">
+                  <div className="col-md-12 ">
                     <label className="input-label" htmlFor="concept_id">Concepts</label>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
                              childName={'concept'} />
+                  </div>
                 </div>
-              </div>
-
-              <ResponseSetDragWidget responseSets={responseSets}
-                                     handleResponseSetsChange={this.handleResponseSetsChange}
-                                     selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} />
-
-              <div className="panel-footer">
-                <div className="actions form-group">
-                  <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
-                  {this.publishButton()}
-                  {this.deleteButton()}
-                  {this.cancelButton()}
+                <div className="row response-set-row">
+                  <div className="col-md-6 response-set-label">
+                    <label htmlFor="linked_response_sets">Response Sets</label>
+                  </div>
+                  <div className="col-md-6 response-set-label">
+                    <label htmlFor="selected_response_sets">Selected Response Sets</label>
+                    <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
+                  </div>
                 </div>
-              </div>
-
+                <ResponseSetDragWidget responseSets={responseSets}
+                                       handleResponseSetsChange={this.handleResponseSetsChange}
+                                       selectedResponseSets={this.state.linkedResponseSets && this.state.linkedResponseSets.map((r) => this.props.responseSets[r] ).filter((r) => r !== undefined)} />
+                <div className="panel-footer">
+                  <div className="actions form-group">
+                    <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
+                    {this.publishButton()}
+                    {this.deleteButton()}
+                    {this.cancelButton()}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </form>
     );
+  }
+
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit Draft of'};
+    return wordMap[this.props.action];
   }
 
   cancelButton() {
@@ -250,9 +262,11 @@ class QuestionForm extends Component{
     });
   }
 
-  actionWord() {
-    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit Draft of'};
-    return wordMap[this.props.action];
+  handleResponseSetSuccess(successResponse){
+    this.handleResponseSetsChange(this.state.linkedResponseSets.map((r) => {
+      return {id: r};
+    }).concat([successResponse.data]));
+    this.setState({showResponseSetModal: false});
   }
 
   handleSubmit(event) {
@@ -326,7 +340,7 @@ QuestionForm.propTypes = {
   router: PropTypes.object,
   action: PropTypes.string,
   question: questionProps,
-  responseSets: responseSetsProps,
+  responseSets:  responseSetsProps,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
   draftSubmitter: PropTypes.func.isRequired,

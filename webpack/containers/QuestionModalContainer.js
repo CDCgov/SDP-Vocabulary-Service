@@ -46,10 +46,10 @@ class QuestionModalContainer extends Component {
   }
 
   saveNewQuestion(newQuestion){
-    newQuestion.linkedResponseSets = _.values(this.state.linkedResponseSets).map((r)=> r.id);
+    newQuestion.linkedResponseSets = _.values(this.state.linkedResponseSets).map((r) => r.id);
     this.props.saveQuestion(newQuestion, (successResponse) => {
-      this.setState({showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
-      this.props.saveQuestionSuccess(successResponse);
+      this.setState({showResponseSetWidget: false, linkedResponseSets: {}, errors: null});
+      this.props.handleSaveQuestionSuccess(successResponse);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
     });
@@ -64,12 +64,20 @@ class QuestionModalContainer extends Component {
     return (
       <div className={this.state.showResponseSetWidget ? '' : 'hidden'}>
         <Modal.Body bsStyle='response-set'>
+          <div className="row response-set-row">
+            <div className="col-md-6 response-set-label">
+              <label htmlFor="linked_response_sets">Response Sets</label>
+            </div>
+            <div className="col-md-6 response-set-label">
+              <label htmlFor="selected_response_sets">Selected Response Sets</label>
+            </div>
+          </div>
           <ResponseSetDragWidget responseSets={this.props.responseSets}
                                  selectedResponseSets={_.values(this.state.linkedResponseSets)}
                                  handleResponseSetsChange={this.handleResponseSetsChange} />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={()=>this.setState({showResponseSetWidget:false})} bsStyle="primary">Done</Button>
+          <Button onClick={() => this.setState({showResponseSetWidget:false})} bsStyle="primary">Done</Button>
         </Modal.Footer>
       </div>
     );
@@ -79,14 +87,14 @@ class QuestionModalContainer extends Component {
     if(this.state.showResponseSets){
       return (
         <Modal.Footer>
-        <Button onClick={()=> $('#submit-question-form').click()}>Add Question</Button>
-        <Button onClick={()=> this.setState({showResponseSetWidget:true})} bsStyle="primary">Response Sets</Button>
+          <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
+          <Button onClick={() => this.setState({showResponseSetWidget:true})} bsStyle="primary">Response Sets</Button>
         </Modal.Footer>
       );
     } else {
       return (
         <Modal.Footer>
-        <Button onClick={()=> $('#submit-question-form').click()}>Add Question</Button>
+          <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
         </Modal.Footer>
       );
     }
@@ -96,12 +104,12 @@ class QuestionModalContainer extends Component {
     var responseSetsDiv = (<div></div>);
     var footer = (
       <Modal.Footer>
-      <Button onClick={()=> $('#submit-question-form').click()}>Add Question</Button>
+        <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
       </Modal.Footer>
     );
     if(this.state.showResponseSets){
       responseSetsDiv = (
-        <div className="row selected-response-sets">
+        <div className="row selected_response_sets">
           <label className="input-label" htmlFor="response-set-list">Response Sets</label>
           <div className="col-md-12">
               <div className="panel panel-default">
@@ -114,8 +122,8 @@ class QuestionModalContainer extends Component {
       );
       footer = (
         <Modal.Footer>
-        <Button onClick={()=> $('#submit-question-form').click()}>Add Question</Button>
-        <Button onClick={()=> this.setState({showResponseSetWidget:true})} bsStyle="primary">Response Sets</Button>
+          <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
+          <Button onClick={() => this.setState({showResponseSetWidget:true})} bsStyle="primary">Response Sets</Button>
         </Modal.Footer>
       );
     }
@@ -178,7 +186,7 @@ QuestionModalContainer.propTypes = {
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   closeQuestionModal: PropTypes.func.isRequired,
-  saveQuestionSuccess: PropTypes.func.isRequired
+  handleSaveQuestionSuccess: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionModalContainer);

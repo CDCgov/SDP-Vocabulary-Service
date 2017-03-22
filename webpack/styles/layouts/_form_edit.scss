@@ -1,11 +1,42 @@
 .form-edit-container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 1170px;
   .question-group{
     min-height: 500px;
     max-height: 500px;
+    padding-right: 8px;
     overflow-y: auto;
     overflow-x: hidden;
   }
   .add-question{
     padding: 15px;
+    button{
+      margin-right:10px;
+    }
+  }
+
+  .question-result{
+    margin: 0px;
+  }
+
+  .response-set-header{
+    button {
+      float: right;
+    }
+  }
+  .response-set-label{
+    text-align: left;
+    vertical-align: middle;
+    margin-bottom: 0px;
+    span{
+      padding-left: 10px;
+    }
+    span.right{
+      padding-left: 80px;
+      padding-right: 5px;
+    }
   }
 }

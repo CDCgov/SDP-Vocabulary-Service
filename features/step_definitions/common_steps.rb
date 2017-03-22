@@ -17,7 +17,7 @@ When(/^I go to the dashboard$/) do
   visit '/'
 end
 
-When(/^I wait (\d+) second\(s\)$/) do |seconds|
+Then(/^I wait (\d+) seconds$/) do |seconds|
   sleep seconds.to_i
 end
 
@@ -101,6 +101,10 @@ When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
   target = '.' + target.downcase.tr(' ', '_')
   drop = find(target)
   drag.drag_to(drop)
+end
+
+Then(/^I take a screenshot named (.*)$/) do |name|
+  page.save_screenshot('/tmp/' + name + '.png')
 end
 
 def create_path(object_type, object_id)

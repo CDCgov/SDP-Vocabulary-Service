@@ -81,42 +81,21 @@ Feature: Manage Questions
     And I should see "This is an extended description"
     And I should not see "This is a question"
 
-  Scenario: Create New Question from List
+  Scenario: Create New Question from List and Create a Response Set using New Response Set Modal
     Given I have a Response Set with the name "Gender Full"
-    And I have a Question Type with the name "Multiple Choice"
-    And I have a Response Type with the name "Integer"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
-    And I select the "Multiple Choice" option in the "Category" list
-    And I select the "Integer" option in the "Primary Response Type" list
-    And I click on the "Add Row" link
-    And I click on the "Add Row" link
-    And I fill in the "value_0" field with "Test Concept 1"
-    And I fill in the "value_1" field with "Test Concept 2"
-    And I fill in the "value_2" field with "Test Concept 3"
-    And I fill in the "codeSystem_0" field with "Test System 1"
-    And I fill in the "codeSystem_1" field with "Test System 2"
-    And I fill in the "codeSystem_2" field with "Test System 3"
-    And I fill in the "displayName_0" field with "Test Name 1"
-    And I fill in the "displayName_1" field with "Test Name 2"
-    And I fill in the "displayName_2" field with "Test Name 3"
-    And I click on the "remove_2" link
+    Then I click on the "Add New Response Set" button
+    Then I fill in the "response_set_name" field with "New Response Set"
+    And I click on the "Add Response Set" button
+    Then I should see "New Response Set"
     And I click on the "Create Question" button
     And I should see "What is your favorite color?"
-    And I should see "This is a description"
-    And I should see "Test Concept 1"
-    And I should see "Test Concept 2"
-    And I should not see "Test Concept 3"
-    And I should see "Test System 1"
-    And I should see "Test System 2"
-    And I should not see "Test System 3"
-    And I should see "Test Name 1"
-    And I should see "Test Name 2"
-    And I should not see "Test Name 3"
+    And I should see "New Response Set"
 
   Scenario: Create New Question from List with Warning Modal
     Given I have a Response Set with the name "Gender Full"
