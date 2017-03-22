@@ -5,7 +5,9 @@ const currentUserProps = PropTypes.shape({
   admin:     PropTypes.bool,
   email:     PropTypes.string,
   firstName: PropTypes.string,
-  lastName:  PropTypes.string
+  lastName:  PropTypes.string,
+  lastProgramId: PropTypes.number,
+  lastSystemId: PropTypes.number
 });
 
 export default currentUserProps;

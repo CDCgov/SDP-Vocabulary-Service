@@ -1,12 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
+import _ from 'lodash';
+
 import Errors from '../Errors.js';
+
+import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 
 export default class SignUpModal extends Component {
   constructor(props) {
     super(props);
     this.state = {email: '', firstName: '', lastName: '', password: '',
-      passwordConfirmation: '', errors: {}};
+      passwordConfirmation: '', lastProgramId: 1, lastSystemId: 1, errors: {}};
   }
 
   render() {
@@ -54,6 +59,22 @@ export default class SignUpModal extends Component {
                 <p className="help-block">Please confirm password</p>
               </div>
             </div>
+            <div className="field">
+              <label className="control-label" htmlFor="lastProgramId">Surveillance Program</label>
+                <select className="form-control" name="lastProgramId" id="lastProgramId" defaultValue={this.state.lastProgramId} onChange={this.handleChange('lastProgramId')} >
+                {this.props.surveillancePrograms && _.values(this.props.surveillancePrograms).map((sp) => {
+                  return <option key={sp.id} value={sp.id}>{sp.name}</option>;
+                })}
+                </select>
+            </div>
+            <div className="field">
+              <label className="control-label" htmlFor="lastSystemId">Surveillance System</label>
+                <select className="form-control" name="lastSystemId" id="lastSystemId" defaultValue={this.state.lastSystemId} onChange={this.handleChange('lastSystemId')} >
+                {this.props.surveillanceSystems && _.values(this.props.surveillanceSystems).map((ss) => {
+                  return <option key={ss.id} value={ss.id}>{ss.name}</option>;
+                })}
+                </select>
+            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -82,5 +103,7 @@ export default class SignUpModal extends Component {
 SignUpModal.propTypes = {
   signUp: PropTypes.func.isRequired,
   closer: PropTypes.func.isRequired,
-  show: PropTypes.bool.isRequired
+  show: PropTypes.bool.isRequired,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };

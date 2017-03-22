@@ -7,14 +7,21 @@ Feature: Session Management
     Then I should see "Sign Up"
 
   Scenario: Create an account
-    Given I am on the "/" page
+    Given I have a Surveillance System with the name "National Violent Death Reporting System"
+    And I have a Surveillance System with the name "National Vital Statistics System"
+    And I have a Surveillance Program with the name "FoodNet"
+    And I have a Surveillance Program with the name "Influenza"
+    And I am on the "/" page
     When I click on the "Register" link
     And I fill in the "email" field with "test_author@gmail.com"
     And I fill in the "password" field with "password"
     And I fill in the "passwordConfirmation" field with "password"
+    And I select the "National Vital Statistics System" option in the "Surveillance System" list
+    And I select the "Influenza" option in the "Surveillance Program" list
     And I click on the "Sign Up" button
     Then I should see "test_author@gmail.com"
     And a user "test_author@gmail.com" should exist
+    And a user "test_author@gmail.com" should have a last Surveillance Program named "Influenza"
 
   Scenario: Login to an existing account
     Given I am on the "/" page
