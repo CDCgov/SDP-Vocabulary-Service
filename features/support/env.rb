@@ -10,7 +10,9 @@ require 'capybara/cucumber'
 require 'capybara/accessible'
 
 require 'axe/cucumber/step_definitions'
+
 require_relative '../../test/elastic_helpers'
+FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: '{}', content_type: 'application/json')
 
 FakeWeb.register_uri(:any, %r{http://concept-manager\..*\.xip\.io}, body: '{}')
 
