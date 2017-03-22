@@ -148,7 +148,7 @@ export default class ResponseSetForm extends Component {
             <div className="panel-body">
                 <div className="row">
                   <div className="col-md-8 question-form-group">
-                    <label className="input-label" htmlFor="response_set_name">Name</label>
+                    <label className="input-label" htmlFor="name">Name</label>
                     <input className="input-format" type="text" value={this.state.name} name="response_set_name" id="name" onChange={this.handleChange('name')}/>
                   </div>
 
