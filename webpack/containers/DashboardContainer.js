@@ -99,9 +99,16 @@ class DashboardContainer extends Component {
           </li>
         <li id="forms-analytics-item" className={"analytics-list-item btn" + (searchType === 'form' ? " analytics-active-item" : "")} onClick={() => this.selectType('form')}>
           <div>
-            <i className="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
+            <i className="fa fa-list-alt fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.formCount}</p>
             <h2 className="item-title">Forms</h2>
+          </div>
+          </li>
+        <li id="surveys-analytics-item" className={"analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
+          <div>
+            <i className="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
+            <p className="item-value">{this.props.surveyCount}</p>
+            <h2 className="item-title">Surveys</h2>
           </div>
           </li>
       </ul>
@@ -116,18 +123,20 @@ class DashboardContainer extends Component {
         <div className="recent-items-body">
           <ul className="list-group">
             <li className="recent-item-list">
-              <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.responseSetCount} Response Sets</div>
-            </li>
-
-            <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-question-circle recent-items-icon" aria-hidden="true"></i></div>
               <div className="recent-items-value">{this.props.questionCount} Questions</div>
             </li>
-
+            <li className="recent-item-list">
+              <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
+              <div className="recent-items-value">{this.props.responseSetCount} Response Sets</div>
+            </li>
+            <li className="recent-item-list">
+              <div className="recent-items-icon"><i className="fa fa-list-alt recent-items-icon" aria-hidden="true"></i></div>
+              <div className="recent-items-value">{this.props.formCount} Forms</div>
+            </li>
             <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.formCount} Forms</div>
+              <div className="recent-items-value">{this.props.surveyCount} Surveys</div>
             </li>
           </ul>
         </div>
@@ -141,6 +150,7 @@ function mapStateToProps(state) {
     formCount: state.stats.formCount,
     questionCount: state.stats.questionCount,
     responseSetCount: state.stats.responseSetCount,
+    surveyCount: state.stats.surveyCount,
     searchResults: state.searchResults,
     currentUser: state.currentUser
   };
@@ -154,6 +164,7 @@ DashboardContainer.propTypes = {
   formCount: PropTypes.number,
   questionCount: PropTypes.number,
   responseSetCount: PropTypes.number,
+  surveyCount: PropTypes.number,
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   currentUser: currentUserProps,

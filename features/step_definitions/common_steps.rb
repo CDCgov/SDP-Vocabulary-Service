@@ -117,6 +117,8 @@ def create_path(object_type, object_id)
     '//div[@id="response_set_id_' + object_id + '"]'
   elsif object_type == 'Form'
     '//div[@id="form_id_' + object_id + '"]'
+  elsif object_type == 'Survey'
+    '//div[@id="survey_id_' + object_id + '"]'
   else
     '//tr[td="id_' + object_id + '"]'
   end
@@ -135,6 +137,8 @@ def attribute_to_id(object_type, attribute, attribute_value)
     obj = QuestionType.find_by(attribute => attribute_value)
   elsif object_type == 'Form'
     obj = Form.find_by(attribute => attribute_value)
+  elsif object_type == 'Survey'
+    obj = Survey.find_by(attribute => attribute_value)
   end
   obj.id.to_s
 end

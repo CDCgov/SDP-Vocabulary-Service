@@ -3,6 +3,7 @@ import { PropTypes } from 'react';
 const surveyProps = PropTypes.shape({
   id:      PropTypes.number,
   name:    PropTypes.string,
+  description: PropTypes.string,
   userId:  PropTypes.string
 });
 

@@ -30,6 +30,14 @@ class SurveyShow extends Component{
         <div className="maincontent-details">
           <h3 className="maincontent-item-name"><strong>Name:</strong> {survey.name} </h3>
           <p className="maincontent-item-info">Version: {survey.version} - Author: {survey.userId} </p>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Description</h3>
+            </div>
+            <div className="box-content">
+              {survey.description}
+            </div>
+          </div>
           {forms.map((f,i ) =>
             <div  key={i} className="basic-c-box panel-default survey-form">
               <div className="panel-heading">
