@@ -23,10 +23,3 @@ four:
   version: 1
   version_independent_id: 'S-3'
   control_number: '1234-5678'
-five:
-  name: Search Survey 3
-  created_by: not_admin
-  version: 1
-  version_independent_id: 'S-4'
-  control_number: '1234-5678'
-  status: 'published'

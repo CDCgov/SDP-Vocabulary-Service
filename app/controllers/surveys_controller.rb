@@ -26,7 +26,7 @@ class SurveysController < ApplicationController
 
   def update
     if @survey.status == 'published'
-      render json: {status: ' Published surveys cannot be updated.'}, status: :unprocessable_entity
+      render json: { status: ' Published surveys cannot be updated.' }, status: :unprocessable_entity
     else
       update_successful = nil
       @survey.transaction do
@@ -38,7 +38,6 @@ class SurveysController < ApplicationController
       if update_successful
         render :show, status: :ok, location: @survey
       else
-        binding.pry
         render json: @survey.errors, status: :unprocessable_entity
       end
     end
