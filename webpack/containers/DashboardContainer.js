@@ -146,7 +146,6 @@ class DashboardContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state.stats.surveyCount);
   return {
     formCount: state.stats.formCount,
     questionCount: state.stats.questionCount,
