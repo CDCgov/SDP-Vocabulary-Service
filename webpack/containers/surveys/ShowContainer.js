@@ -6,7 +6,8 @@ import { fetchForms } from '../../actions/form_actions';
 import { fetchQuestions } from '../../actions/questions_actions';
 import SurveyShow from '../../components/surveys/Show';
 import { surveyProps } from '../../prop-types/survey_props';
-import CommentList from '../../containers/CommentList';
+import { formProps } from '../../prop-types/form_props';
+// import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
 
 class SurveyShowContainer extends Component {
@@ -51,7 +52,7 @@ function mapStateToProps(state, ownProps) {
   props.survey = state.surveys[ownProps.params.surveyId];
   if (props.survey) {
     props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
-    props.forms = props.forms.filter((f) => f !== undefined)
+    props.forms = props.forms.filter((f) => f !== undefined);
   }
   return props;
 }
@@ -62,6 +63,7 @@ function mapDispatchToProps(dispatch) {
 
 SurveyShowContainer.propTypes = {
   survey: surveyProps,
+  forms: PropTypes.arrayOf(formProps),
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
   fetchQuestions: PropTypes.func,

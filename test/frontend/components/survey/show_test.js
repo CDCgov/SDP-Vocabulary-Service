@@ -18,6 +18,7 @@ describe('SurveyShow', () => {
   });
 
   it('should create a list of forms', () => {
+    // Drop out of JQuery and just use draw javascript selectors
     expect(component[0].querySelectorAll('.survey-form').length).to.equal(3);
   });
 

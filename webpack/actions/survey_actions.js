@@ -3,7 +3,6 @@ import routes from '../routes';
 import {
   FETCH_SURVEY
 } from './types';
-import { getCSRFToken } from './index';
 
 
 export function fetchSurvey(id) {

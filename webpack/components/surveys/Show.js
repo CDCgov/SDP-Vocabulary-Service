@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { hashHistory, Link } from 'react-router';
+import { hashHistory} from 'react-router';
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
@@ -75,6 +75,6 @@ class SurveyShow extends Component{
 SurveyShow.propTypes = {
   survey: surveyProps,
   forms: PropTypes.arrayOf(formProps)
-}
+};
 
 export default SurveyShow;
