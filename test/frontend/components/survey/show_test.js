@@ -22,4 +22,9 @@ describe('SurveyShow', () => {
     expect(component[0].querySelectorAll('.survey-form').length).to.equal(3);
   });
 
+  it('should render an empty list of forms', () => {
+    let emptyComponent = renderComponent(SurveyShow, {name: 'test'}, []);
+    expect(emptyComponent[0].querySelectorAll('.survey-form').length).to.equal(0);
+  });
+
 });
