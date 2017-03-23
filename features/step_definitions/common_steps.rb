@@ -16,6 +16,10 @@ When(/^I go to the dashboard$/) do
   visit '/'
 end
 
+When(/^I expect an alert$/) do
+  page.driver.browser.switch_to.alert.accept
+end
+
 Then(/^I wait (\d+) seconds$/) do |seconds|
   sleep seconds.to_i
 end

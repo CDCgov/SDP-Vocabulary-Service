@@ -105,7 +105,7 @@ export default class SearchResult extends Component {
 
   selectResultButton(result, handleSelectSearchResult) {
     return (
-      <a title="Select Search Result" href="#" onClick={(e) => {
+      <a title="Select Search Result" href="#" id={`select-${result.name}`} onClick={(e) => {
         e.preventDefault();
         handleSelectSearchResult(result);
       }}><i className="fa fa-plus-square fa-2x"></i></a>

@@ -8,6 +8,13 @@ Given(/^I have a Form with the name "([^"]*)"$/) do |name|
   Form.create!(name: name, created_by: user)
 end
 
+When(/^I use the response set search modal to select "([^"]*)"$/) do |name|
+  Elastictest.fake_rs_search_results
+  page.find('a', text: 'Search All').click
+  sleep 1
+  page.find('a', id: "select-#{name}").click
+end
+
 When(/^I go to the list of Forms$/) do
   Elastictest.fake_form_search_results
   visit '/'
