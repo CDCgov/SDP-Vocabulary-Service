@@ -88,5 +88,22 @@ module Elastictest
 
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
+
+  def self.fake_survey_search_results
+    # Craft Response
+    surveys = Survey.all
+    fake_body = <<-EOS
+    {"took":1,"timed_out":false,"_shards":{"total":#{surveys.size},"successful":5,"failed":0},
+    "hits":{"total":2,"max_score":2.7132807,"hits":[
+    EOS
+    surveys.each_with_index do |survey, index|
+      fake_body += "{\"_index\":\"vocabulary\",\"_type\":\"survey\",\"_id\":\"#{survey.id}\",\"_score\":2.1132807,\"_source\":"
+      fake_body += ESSurveySerializer.new(survey).to_json
+      fake_body += index != surveys.size - 1 ? '},' : ''
+    end
+    fake_body += surveys.any? ? '}]}}' : ']}}'
+
+    FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
+  end
 end
 # rubocop:enable Metrics/MethodLength
