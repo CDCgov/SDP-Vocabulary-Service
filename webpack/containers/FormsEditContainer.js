@@ -35,8 +35,8 @@ class FormsEditContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchResponseSets();
     this.props.fetchQuestions();
+    this.props.fetchResponseSets();
   }
 
   componentDidUpdate(prevProps) {

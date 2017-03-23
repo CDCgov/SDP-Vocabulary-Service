@@ -77,17 +77,6 @@ export default class QuestionResults extends Component {
         </div>
         <div className="search-result-stats">
           <hr/>
-          {question.responseSets && question.responseSets.length > 0 &&
-            <div>
-              Linked Response Sets: |{question.responseSets.map((rs) => {
-                return(
-                  <text key={`response-set-${rs.id}`}>
-                    <Link to={`/responseSets/${rs.id}`}> {rs.name}</Link> |
-                  </text>
-                );
-              })}
-            </div>
-          }
         </div>
         <hr/>
       </div>
