@@ -8,7 +8,7 @@ export default class SearchResultList extends Component {
       <div className="search-result-list">
         {this.props.searchResults.hits &&
           <row className="search-result-heading">
-            <div>Search Results ({this.props.searchResults.hits.hits.length})</div>
+            <div>Search Results ({this.props.searchResults.hits && this.props.searchResults.hits.total && this.props.searchResults.hits.total})</div>
             <hr/>
           </row>
         }

@@ -136,7 +136,7 @@ class DashboardContainer extends Component {
             </li>
             <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.surveyCount} Suveys</div>
+              <div className="recent-items-value">{this.props.surveyCount} Surveys</div>
             </li>
           </ul>
         </div>
@@ -146,11 +146,12 @@ class DashboardContainer extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state.stats.surveyCount);
   return {
     formCount: state.stats.formCount,
     questionCount: state.stats.questionCount,
     responseSetCount: state.stats.responseSetCount,
-    surveyCount: state.stats.surveryCount,
+    surveyCount: state.stats.surveyCount,
     searchResults: state.searchResults,
     currentUser: state.currentUser
   };

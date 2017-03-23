@@ -11,6 +11,6 @@ class LandingController < ApplicationController
     render json: { response_set_count: response_set_count,
                    question_count: question_count,
                    form_count: form_count,
-                   suvey_count: survey_count }
+                   survey_count: survey_count }
   end
 end

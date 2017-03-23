@@ -25,6 +25,12 @@ export default class SearchResult extends Component {
             {this.formResult(this.props.result.Source, this.props.result.highlight)}
           </div>
         );
+      case 'survey':
+        return (
+          <div>
+            {this.surveyResult(this.props.result.Source, this.props.result.highlight)}
+          </div>
+        );
     }
   }
 
@@ -169,6 +175,34 @@ export default class SearchResult extends Component {
                 <span className="fa fa-ellipsis-h"></span>
               </a>
               {this.resultDropdownMenu(result, 'form')}
+            </div>
+          </div>
+        </div>
+        <div className="search-result-description">
+          {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
+        </div>
+        <div className="search-result-stats">
+          <hr/>
+        </div>
+        <hr/>
+      </div>
+    );
+  }
+
+  surveyResult(result, highlight) {
+    return (
+      <div className="search-result" id={`survey_id_${result.id}`}>
+        <div className="search-result-name">
+          <text className="search-result-type">Survey: </text>
+          <Link to={`/surveys/${result.id}`}>
+            {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
+          </Link>
+          <div className="pull-right survey-menu">
+            <div className="dropdown">
+              <a id={`survey_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                <span className="fa fa-ellipsis-h"></span>
+              </a>
+              {this.resultDropdownMenu(result, 'survey')}
             </div>
           </div>
         </div>
