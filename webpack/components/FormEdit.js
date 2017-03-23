@@ -21,7 +21,7 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
       questionsLookup[q.questionId].responseSets.map((rsId) => linkedResponseSets.push(rsLookup[rsId]));
     }
     return linkedResponseSets;
-  }
+  };
 
   return (
     <div id="added-questions" aria-label="Added">

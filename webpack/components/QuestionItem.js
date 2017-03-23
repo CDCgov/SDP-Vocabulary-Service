@@ -7,7 +7,7 @@ import { fetchSearchResults } from '../actions/search_results_actions';
 import QuestionWidget from './QuestionWidget';
 import DashboardSearch from './DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
-import { Modal, Glyphicon, Checkbox, Button, ControlLabel, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 
 class QuestionItem extends Component {
   constructor(props) {
@@ -94,7 +94,7 @@ class QuestionItem extends Component {
       </div>
     );
   }
-};
+}
 
 function mapStateToProps(state) {
   return {

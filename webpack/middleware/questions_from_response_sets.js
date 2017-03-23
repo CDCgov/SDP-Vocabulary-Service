@@ -1,10 +1,10 @@
 import {
   FETCH_RESPONSE_SETS_FULFILLED,
-  FETCH_RESPONSE_SET_FULFILLED,
-  FETCH_QUESTIONS_FULFILLED
+  FETCH_RESPONSE_SET_FULFILLED
 } from '../actions/types';
 
 const questionsFromResponseSets = store => next => action => {
+  if(store == null) return;
   switch (action.type) {
     case FETCH_RESPONSE_SETS_FULFILLED:
       const responseSets = action.payload.data;
