@@ -3,6 +3,7 @@ import routes from '../routes';
 import {
   ADD_FORM,
   REMOVE_FORM,
+  REORDER_FORM,
   FETCH_FORMS,
   FETCH_FORM,
   SAVE_FORM,
@@ -29,6 +30,13 @@ export function removeForm(survey, form) {
   return {
     type: REMOVE_FORM,
     payload: {survey, form}
+  };
+}
+
+export function reorderForm(survey, index, direction) {
+  return {
+    type: REORDER_FORM,
+    payload: {survey, index, direction}
   };
 }
 

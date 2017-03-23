@@ -71,6 +71,7 @@ export const SAVE_DRAFT_FORM_FULFILLED = 'SAVE_DRAFT_FORM_FULFILLED';
 export const CREATE_FORM = 'CREATE_FORM';
 export const ADD_FORM = 'ADD_FORM';
 export const REMOVE_FORM = 'REMOVE_FORM';
+export const REORDER_FORM = 'REORDER_FORM';
 
 // Question Types
 export const FETCH_QUESTION_TYPE = 'FETCH_QUESTION_TYPE';

@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForms } from '../actions/form_actions';
-import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey, removeForm, reorderForm } from '../actions/survey_actions';
+import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
+import { removeForm, reorderForm } from '../actions/form_actions';
 import { formsProps } from '../prop-types/form_props';
 import { surveyProps } from '../prop-types/survey_props';
 import SurveyEdit from '../components/SurveyEdit';
@@ -29,7 +30,7 @@ class SurveyEditContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchSurvey();
+    this.props.fetchForms();
   }
 
   componentDidUpdate(prevProps) {
@@ -65,8 +66,8 @@ class SurveyEditContainer extends Component {
                           route ={this.props.route}
                           router={this.props.router}
                           forms ={this.props.forms}
-                          removeForm ={this.props.removeForm}
-                          reorderForm={this.props.reorderForm}
+                          removeForm ={this.props.removeForm.bind(this)}
+                          reorderForm={this.props.reorderForm.bind(this)}
                           surveySubmitter={this.state.selectedSurveySaver} />
             </div>
           </div>
