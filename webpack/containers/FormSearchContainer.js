@@ -30,7 +30,7 @@ class FormSearchContainer extends Component {
       formsFiltered = this.props.allForms;
     } else {
       this.props.allForms.map((q) => {
-        if (q.content.toLowerCase().includes(term.toLowerCase())){
+        if (q.name.toLowerCase().includes(term.toLowerCase())){
           formsFiltered.push(q);
         }
       });

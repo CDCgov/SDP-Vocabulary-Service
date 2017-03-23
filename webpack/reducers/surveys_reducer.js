@@ -40,7 +40,7 @@ export default function surveys(state = {}, action) {
       newSurvey = Object.assign({}, survey);
       newSurvey.surveyForms.splice(index, 1);
       newState = Object.assign({}, state);
-      newState[survey.id] = newSurvey;
+      newState[survey.id || 0] = newSurvey;
       return newState;
     case REORDER_FORM:
       survey = action.payload.survey;
