@@ -37,7 +37,7 @@ ReactDOM.render(
           <Route path='/questions/new' component={QuestionEditContainer} />
           <Route path='/questions/:qId' component={QuestionShowContainer} />
           <Route path='/questions/:qId/:action' component={QuestionEditContainer} />
-        <Route path='/survey/:surveyId' component={SurveyShowContainer} />
+          <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));
