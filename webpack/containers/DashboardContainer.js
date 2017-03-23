@@ -104,10 +104,10 @@ class DashboardContainer extends Component {
             <h2 className="item-title">Forms</h2>
           </div>
           </li>
-        <li id="forms-analytics-item" className={"analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
+        <li id="surveys-analytics-item" className={"analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
           <div>
             <i className="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
-            <p className="item-value">{this.props.formCount}</p>
+            <p className="item-value">{this.props.surveyCount}</p>
             <h2 className="item-title">Surveys</h2>
           </div>
           </li>
@@ -136,7 +136,7 @@ class DashboardContainer extends Component {
             </li>
             <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.formCount} Suveys</div>
+              <div className="recent-items-value">{this.props.surveyCount} Suveys</div>
             </li>
           </ul>
         </div>
@@ -150,6 +150,7 @@ function mapStateToProps(state) {
     formCount: state.stats.formCount,
     questionCount: state.stats.questionCount,
     responseSetCount: state.stats.responseSetCount,
+    surveyCount: state.stats.surveryCount,
     searchResults: state.searchResults,
     currentUser: state.currentUser
   };
@@ -163,6 +164,7 @@ DashboardContainer.propTypes = {
   formCount: PropTypes.number,
   questionCount: PropTypes.number,
   responseSetCount: PropTypes.number,
+  surveyCount: PropTypes.number,
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   currentUser: currentUserProps,
