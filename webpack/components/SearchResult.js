@@ -82,6 +82,7 @@ export default class SearchResult extends Component {
 
   questionResult(result, highlight) {
     return (
+	    
 	<div className="question-group">    
       <div className="search-result" id={`question_id_${result.id}`}>
         <div className="search-result-name">
@@ -116,10 +117,87 @@ export default class SearchResult extends Component {
           }
         </div>
         <hr/>
+               
       </div>
-    </div>  
-  
       
+      <div classname="new-question-group">
+        <div classname="new-question">
+            <div classname="new-question-container">
+                <ul classname="new-question-content">
+                    <li classname="new-question-content-item">
+                        <div classname="new-question-details">
+                            <div classname="result">
+                                <ul classname="list-inline">
+                                    <li>icon</li>
+
+                                    <li>Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
+                                </ul>
+                            </div>
+
+                            <div classname="result-description">
+                                In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
+                            </div>
+
+                            <div classname="response-analytics">
+                                <ul classname="list-inline">
+                                    <li classname="response-analytics-item">
+                                        <span classname="item-value">30</span>
+
+                                        <p classname="item-description">programs</p>
+                                    </li>
+
+                                    <li classname="response-analytics-item">
+                                        <span classname="item-value">10</span>
+
+                                        <p classname="item-description">systems</p>
+                                    </li>
+
+                                    <li classname="response-analytics-item">
+                                        <p classname="item-description">published</p>
+                                    </li>
+
+                                    <li classname="response-timestamp pull-right">april 7</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div classname="response-set-details">
+                            <ul classname="list-inline response-set-items">
+                                <li classname="reponse-number panel-toggle" data-toggle="collapse" href="#collapse1">34451</li>
+
+                                <li classname="pull-right question-menu">
+                                    <div classname="dropdown">
+                                        <a classname="dropdown-toggle" type="" data-toggle="dropdown" role="navigation"><span classname="sr-only">Question Menu</span></a>
+
+                                        <ul classname="dropdown-menu dropdown-menu-right">
+                                            <li><a href="#">Edit</a></li>
+
+                                            <li><a href="#">View</a></li>
+
+                                            <li><a href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div classname="panel-collapse panel-details collapse" id="collapse1">
+                <div classname="panel-body">
+                    Response Sets
+                </div>
+            </div>
+        </div>
+    </div>
+
+      
+	</div>  
+  
+     
+     
+   
       
       
     );

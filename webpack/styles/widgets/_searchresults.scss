@@ -1,29 +1,29 @@
 
-.question-group {
+.new-question-group {
 	@extend .panel-group;
 	margin-top: 20px;
 	text-align: left;
 	margin-bottom: 20px;
-	.question {
+	.new-question {
 		@extend .panel; 
 		border-radius: 0px;
 		border: 1px solid $light-gray;
 		border-top: 0px;
 		}
-	.question-container {
+	.new-question-container {
 			@extend .panel-body;
 			border-bottom: 1px solid $light-gray;
 			border-radius: 0px;
 			padding: 0px;
 		}
-	.question-content {
+	.new-question-content {
 		@extend .list-group;
 		display: table;
 		width: 100%;
 		margin: 0px;
 		border-radius: 0px;
 	}	
-	.question-content-item {
+	.new-question-content-item {
 		@extend .list-group-item;
 		display: table-cell;
 		border: 0px;
@@ -36,7 +36,7 @@
 			padding: 0px;
 			width: 40px;
 		}
-	.question-details {
+	.new-question-details {
 		padding-left: 8px;
 		padding-right: 8px;
 		border-left: 5px solid $cdc-blue;
