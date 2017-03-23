@@ -33,13 +33,15 @@ class SurveysController < ApplicationController
         @survey.survey_forms.destroy_all
         @survey.survey_forms = create_survey_forms
 
-        update_successful = survey.update(form_params)
+        update_successful = @survey.update(form_params)
       end
       if update_successful
         render :show, status: :ok, location: @survey
       else
+        binding.pry
         render json: @survey.errors, status: :unprocessable_entity
       end
+    end
   end
 
   def destroy
