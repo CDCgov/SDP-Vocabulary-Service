@@ -92,13 +92,9 @@ Feature: Manage Response Sets
     And I should not see "Male"
 
   Scenario: Extend Response Set
-    Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
+    Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
-    When I click on the menu link for the Response Set with the name "Gender Full"
-    And I click on the option to Details the Response Set with the name "Gender Full"
-    And I click on the "Publish" button
-    And I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Extend the Response Set with the name "Gender Full"
     And I fill in the "response_set_name" field with "Gender Partial"
