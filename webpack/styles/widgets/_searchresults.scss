@@ -1,0 +1,131 @@
+
+.question-group {
+	@extend .panel-group;
+	margin-top: 20px;
+	text-align: left;
+	margin-bottom: 20px;
+	.question {
+		@extend .panel; 
+		border-radius: 0px;
+		border: 1px solid $light-gray;
+		border-top: 0px;
+		}
+	.question-container {
+			@extend .panel-body;
+			border-bottom: 1px solid $light-gray;
+			border-radius: 0px;
+			padding: 0px;
+		}
+	.question-content {
+		@extend .list-group;
+		display: table;
+		width: 100%;
+		margin: 0px;
+		border-radius: 0px;
+	}	
+	.question-content-item {
+		@extend .list-group-item;
+		display: table-cell;
+		border: 0px;
+		padding: 0px;
+		&:first-child{
+			border-radius: 0px;
+		}
+		&:last-child {
+			border-radius: 0px;
+			padding: 0px;
+			width: 40px;
+		}
+	.question-details {
+		padding-left: 8px;
+		padding-right: 8px;
+		border-left: 5px solid $cdc-blue;
+		}	
+	}
+	.result {
+		color: $cdc-blue;
+		font-size: 16px;
+	}	
+	.result-type-icon {
+		width: 30px;
+		float: left;
+		width: 80px;
+	}
+	.result-nav {
+		text-align: center;
+		border: 1px solid $light-gray;
+		border-right: 0px;
+		border-bottom: 0px;
+		color: $medium-gray;
+	}
+	.response-analytics {
+		margin-top: 8px;
+		padding-bottom: 8px;
+	}
+	.response-analytics-item {
+		text-align: center;
+		width: 75px;
+		border-right: 1px solid $light-gray;
+		.item-description {
+			margin-bottom: 0px;
+			color: $medium-gray;
+			font-size: 11px;
+			text-transform: uppercase;
+		}
+		.item-value {
+			font-size: 16px;
+			color: $cdc-blue;
+			font-weight: bold;
+		}
+		.item-status-published {
+			color: $status-green;
+			padding-bottom: 5px;
+		}
+	}
+	.result-description {
+		margin-top: 4px;
+	}
+	.response-timestamp {
+		text-transform: uppercase;
+		font-size: 11px;
+		color: $medium-gray;
+	}	
+	.response-set-details {
+			@extend .panel-body;
+			padding: 0px;
+			background-color: white;
+			border-top: 1px dashed $light-gray;
+			.list-inline {
+				margin-left: 0px;
+			}
+			.response-set-items {
+				margin-bottom: 0px;
+				border-left: 5px solid $cdc-orange;
+			}
+			a {
+				color: $cdc-blue;
+			}
+			span {
+				padding: 4px 6px 0px 4px;
+			}
+		.reponse-number {
+			height: 25px;
+			width: 80px;
+			padding: 4px 10px 0px 10px;
+			border-bottom-left-radius: 0px;
+			font-size: 12px;
+			span {
+				padding: 0px 10px 0px 0px;
+			}
+		}
+	}		
+}
+
+
+
+
+
+
+
+
+

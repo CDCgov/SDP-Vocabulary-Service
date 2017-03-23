@@ -75,8 +75,14 @@ export default class SearchResult extends Component {
     );
   }
 
+
+
+
+
+
   questionResult(result, highlight) {
     return (
+	<div className="question-group">    
       <div className="search-result" id={`question_id_${result.id}`}>
         <div className="search-result-name">
           <text className="search-result-type">Question: </text>
@@ -111,6 +117,11 @@ export default class SearchResult extends Component {
         </div>
         <hr/>
       </div>
+    </div>  
+  
+      
+      
+      
     );
   }
 
