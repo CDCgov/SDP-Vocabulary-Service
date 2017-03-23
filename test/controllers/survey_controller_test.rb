@@ -40,4 +40,17 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     end
     assert_enqueued_jobs 3
   end
+
+  test 'should publish a survey' do
+    assert_equal 'draft', @survey.status
+    @survey.publish
+    put survey_url(@survey), params: { survey: { linked_forms: [forms(:one).id], name: @survey.name, status: @survey.status, control_number: '9876-5432' } }
+    assert_response :success
+  end
+
+  test 'should not publish a published survey' do
+    @survey = surveys(:two)
+    put survey_url(@survey), params: { survey: { linked_forms: [forms(:one).id], name: @survey.name, status: @survey.status, control_number: '9876-5432' } }
+    assert_response :unprocessable_entity
+  end
 end
