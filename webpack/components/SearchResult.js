@@ -16,7 +16,7 @@ export default class SearchResult extends Component {
       case 'response_set':
         return (
           <div>
-            {this.responseSetResult(this.props.result.Source, this.props.result.highlight)}
+            {this.responseSetResult(this.props.result.Source, this.props.result.highlight, this.props.handleSelectSearchResult)}
           </div>
         );
       case 'form':
@@ -103,7 +103,16 @@ export default class SearchResult extends Component {
     );
   }
 
-  responseSetResult(result, highlight) {
+  selectResultButton(result, handleSelectSearchResult) {
+    return (
+      <a title="Select Search Result" href="#" id={`select-${result.name}`} onClick={(e) => {
+        e.preventDefault();
+        handleSelectSearchResult(result);
+      }}><i className="fa fa-plus-square fa-2x"></i></a>
+    );
+  }
+
+  responseSetResult(result, highlight, handleSelectSearchResult) {
     return (
       <div className="search-result" id={`response_set_id_${result.id}`}>
         <div className="search-result-name">
@@ -112,12 +121,16 @@ export default class SearchResult extends Component {
             {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
           </Link>
           <div className="pull-right response-set-menu">
-            <div className="dropdown">
-              <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
-                <span className="fa fa-ellipsis-h"></span>
-              </a>
-              {this.resultDropdownMenu(result, 'responseSet')}
-            </div>
+            {handleSelectSearchResult ? (
+              this.selectResultButton(result, handleSelectSearchResult)
+            ) : (
+              <div className="dropdown">
+                <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                  <span className="fa fa-ellipsis-h"></span>
+                </a>
+                {this.resultDropdownMenu(result, 'responseSet')}
+              </div>
+            )}
           </div>
         </div>
         <div className="search-result-description">
@@ -174,5 +187,6 @@ export default class SearchResult extends Component {
 SearchResult.propTypes = {
   type: PropTypes.string,
   currentUser: currentUserProps,
-  result: PropTypes.object.isRequired
+  result: PropTypes.object.isRequired,
+  handleSelectSearchResult: PropTypes.func
 };

@@ -21,6 +21,7 @@ class FormsQuestionList extends Component {
             <div className="row" key={i}>
               <QuestionItem question={q} responseSets={this.props.responseSets} index={i}
                             removeQuestion={this.props.removeQuestion}
+                            handleResponseSetChange={() => {}}
                             reorderQuestion={this.props.reorderQuestion}/>
             </div>
           );

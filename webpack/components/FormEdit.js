@@ -11,26 +11,36 @@ import ModalDialog from './ModalDialog';
 
 let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions, showResponseSetModal}) => {
   let questionsLookup = _.keyBy(questions, 'id');
+  let rsLookup = _.keyBy(responseSets, 'id');
   form.formQuestions = form.formQuestions || [];
   form.version = form.version || 1;
+
+  let linkedResponseSets = (q, questionsLookup, rsLookup) => {
+    let linkedResponseSets = [];
+    if(questionsLookup[q.questionId] && questionsLookup[q.questionId].responseSets && questionsLookup[q.questionId].responseSets.length > 0) {
+      questionsLookup[q.questionId].responseSets.map((rsId) => linkedResponseSets.push(rsLookup[rsId]));
+    }
+    return linkedResponseSets;
+  };
+
   return (
     <div id="added-questions" aria-label="Added">
       <div className="row">
         <div className="response-set-header">
-          <div className="col-md-5 response-set-label"><span><b>Content</b></span></div>
+          <div className="col-md-5 response-set-label"><span><b>Questions</b></span></div>
           <div className="col-md-7 response-set-label">
             <span className="right"><b>Response Sets</b></span>
             <Button onClick={()=>showResponseSetModal()} bsStyle="primary">Add New Response Set</Button>
           </div>
         </div>
       </div>
-    <div className="question-group">
+    <div className="added-question-group">
       {form.formQuestions.map((q, i) =>
         <div className="row" key={i}>
           <div className="col-md-9">
             <QuestionItem index={i}
                           question={questionsLookup[q.questionId]}
-                          responseSets={responseSets}
+                          responseSets={linkedResponseSets(q, questionsLookup, rsLookup)}
                           removeQuestion={removeQuestion}
                           reorderQuestion={reorderQuestion}
                           handleResponseSetChange={handleResponseSetChange}
@@ -239,11 +249,11 @@ class FormEdit extends Component {
             <div className="row">
               <div className="form-group col-md-8">
                 <label htmlFor="description">Description</label>
-                <input className="input-format" type="text" value={this.state.description || ''} name="description" id="description" onChange={this.handleChange('description')}/>
+                <input className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="description" id="description" onChange={this.handleChange('description')}/>
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
-                <input className="input-format" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+                <input className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
               </div>
             </div>
           </div>

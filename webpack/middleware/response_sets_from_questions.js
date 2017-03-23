@@ -9,10 +9,10 @@ const responseSetsFromQuestions = store => next => action => {
   switch (action.type) {
     case FETCH_QUESTIONS_FULFILLED:
       const questions = action.payload.data;
-      questions.forEach((q) => {
+      questions.forEach((q, i) => {
         if(q.responseSets){
           store.dispatch({type: FETCH_RESPONSE_SETS_FULFILLED, payload: {data: q.responseSets}});
-          q.responseSets = q.responseSets.map((rs) => rs.id);
+          action.payload.data[i].responseSets = q.responseSets.map((rs) => rs.id);
         }
       });
       break;

@@ -53,14 +53,14 @@ Feature: Manage Forms
     And I have a published Question with the content "What is your gender?" and the type "MC"
     And I have a published Response Set with the name "Gender Partial"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
+    When I go to the dashboard
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Revise the Form with the name "Test Form"
     And I fill in the "name" field with "Gender Form"
     And I fill in the "description" field with "Revised Description"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
-    Then I select the "Gender Partial" option in the "responseSet" list
+    And I use the response set search modal to select "Gender Partial"
     And I click on the "Save" button
     Then I should see "Name: Gender Form"
     Then I should see "Revised Description"
@@ -91,14 +91,14 @@ Feature: Manage Forms
     Given I have a Response Type with the name "Free Text"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
+    When I go to the dashboard
     And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
-    Then I select the "Gender Full" option in the "responseSet" list
+    And I use the response set search modal to select "Gender Full"
     And I click on the "Add New Question" button
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "question_description" field with "This is a description"
@@ -115,7 +115,7 @@ Feature: Manage Forms
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
+    When I go to the dashboard
     And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
@@ -125,7 +125,7 @@ Feature: Manage Forms
     Then I click on the "Add New Response Set" button
     Then I fill in the "response_set_name" field with "New Response Set"
     And I click on the "Add Response Set" button
-    Then I select the "New Response Set" option in the "responseSet" list
+    And I use the response set search modal to select "New Response Set"
     And I click on the "Save" button
     Then I should see "Test Form"
     And I should see "What is your gender?"
@@ -134,7 +134,7 @@ Feature: Manage Forms
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
+    When I go to the dashboard
     And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
@@ -142,7 +142,8 @@ Feature: Manage Forms
     And I click on the "Add to Form" drop-down option for "What is your gender?"
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
-    When I go to the list of Forms
+    And I wait 1 seconds
+    And I go to the dashboard
     Then I should see "Test Form"
 
   Scenario: Abandon New Form from List with warning modal
@@ -162,13 +163,13 @@ Feature: Manage Forms
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
+    When I go to the dashboard
     And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
-    Then I select the "Gender Full" option in the "responseSet" list
+    And I use the response set search modal to select "Gender Full"
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"
     And I should see "controlNumber - must be a valid OMB Control Number"
@@ -178,12 +179,12 @@ Feature: Manage Forms
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I have a Response Set with the name "Gender Partial" and the description "Gender example" and with the Responses Male, Female
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
+    When I go to the dashboard
     And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
-    And I select the "Gender Partial" option in the "responseSet" list
+    And I use the response set search modal to select "Gender Partial"
     And I click on the "Save" button
 
 
@@ -192,11 +193,11 @@ Feature: Manage Forms
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I have a Response Set with the name "Gender Partial" and the description "Gender example" and with the Responses Male, Female
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
+    When I go to the dashboard
     And I click on the create "Forms" dropdown item
     And I fill in the "name" field with "Test Form"
     And I fill in the "search" field with "What"
     And I click on the "Add to Form" drop-down option for "What is your gender?"
-    And I select the "Gender Partial" option in the "responseSet" list
+    And I use the response set search modal to select "Gender Partial"
     And I click on the "Save" button
     Then I should see the "Export to Redcap" link
