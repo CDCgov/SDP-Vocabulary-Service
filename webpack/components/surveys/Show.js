@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { hashHistory, Link } from 'react-router';
 
+import { surveyProps } from '../../prop-types/survey_props';
+import { formProps } from '../../prop-types/form_props';
 import VersionInfo from '../VersionInfo';
 
 
@@ -36,7 +38,7 @@ class SurveyShow extends Component{
               <div className="box-content">
                 <ul>
                   {f.questions.map((q,i) =>
-                    <li>{q.content}</li>
+                    <li key={i}>{q.content}</li>
                   )}
                 </ul>
               </div>
@@ -68,6 +70,11 @@ class SurveyShow extends Component{
       </div>
     );
   }
+}
+
+SurveyShow.propTypes = {
+  survey: surveyProps,
+  forms: PropTypes.arrayOf(formProps)
 }
 
 export default SurveyShow;

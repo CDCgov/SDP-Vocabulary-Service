@@ -5,7 +5,7 @@ import { fetchSurvey } from '../../actions/survey_actions';
 import { fetchForms } from '../../actions/form_actions';
 import { fetchQuestions } from '../../actions/questions_actions';
 import SurveyShow from '../../components/surveys/Show';
-// import { surveyProps } from '../prop-types/survey_props';
+import { surveyProps } from '../../prop-types/survey_props';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
 
@@ -61,7 +61,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 SurveyShowContainer.propTypes = {
-  // survey: surveyProps,
+  survey: surveyProps,
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
   fetchQuestions: PropTypes.func,
