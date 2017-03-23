@@ -41,18 +41,21 @@
 		border-left: 5px solid $cdc-blue;
 		}	
 	}
-	
 	.result-type-wrapper {
   	display: table;
   	width: 100%;
 	}
 	.result {
 		color: $cdc-blue;
-		font-size: 16px;
+		font-size: 18px;
 	}	
 	.result-type-icon {
     display: table-cell;
     width: 10%;
+    text-align: center;
+    color: $light-gray;
+    vertical-align: top;
+    padding-top: 6px;
 	}
 	.result-nav {
 		text-align: center;

@@ -128,7 +128,7 @@ export default class SearchResult extends Component {
                         <div className="new-question-details">
                             <div className="result">
                                 <ul className="list-inline result-type-wrapper">
-                                    <li className="result-type-icon">icon</li>
+                                    <li className="result-type-icon"><span className="fa fa-question-circle  fa-2x" aria-hidden="true"></span></li>
                                     <li>Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
                                 </ul>
                             </div>
