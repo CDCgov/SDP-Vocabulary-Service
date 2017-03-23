@@ -149,7 +149,7 @@ export default class SearchResult extends Component {
                                         <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
                                         <p className="item-description">published</p>
                                     </li>
-                                    <li className="response-timestamp pull-right">april 7</li>
+                                    <li className="response-timestamp pull-right"><p>april 7</p><p>version 12</p></li>
                                 </ul>
                             </div>
                         </div>
