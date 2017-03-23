@@ -63,7 +63,16 @@
 		border-right: 0px;
 		border-bottom: 0px;
 		color: $medium-gray;
+	
 	}
+  .result-nav-item {
+    margin-bottom: 16px;
+    border-bottom: 1px solid $light-gray;
+    padding-bottom: 16px;
+    	&:last-child {
+  		  border-bottom: 0px;
+		}
+  }
 	.response-analytics {
 		margin-top: 8px;
 		padding-bottom: 8px;

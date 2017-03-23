@@ -160,9 +160,9 @@ export default class SearchResult extends Component {
                         </div>
                     </li>
                     <li className="new-question-content-item result-nav">
-      						  	<div><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-      						  	<div><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
-      						  	<div><i className="fa fa-plus-circle fa-lg" aria-hidden="true"></i></div>
+      						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
+      						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+      						  	<div className="result-nav-item"><i className="fa fa-plus-circle fa-lg" aria-hidden="true"></i></div>
       						  </li>
                 </ul>
             </div>
