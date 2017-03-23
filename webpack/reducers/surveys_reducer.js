@@ -11,7 +11,7 @@ import {
 import _ from 'lodash';
 
 export default function surveys(state = {}, action) {
-  let survey , index, newState, newSurvey, direction, question;
+  let survey , index, newState, newSurvey, direction, form;
   switch (action.type) {
     case FETCH_SURVEYS_FULFILLED:
       return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
@@ -26,9 +26,9 @@ export default function surveys(state = {}, action) {
       newState[0] = {surveyForms: [], forms: [], version: 1, id: 0};
       return newState;
     case ADD_FORM:
-      question = action.payload.question;
+      form = action.payload.form;
       survey = action.payload.survey;
-      let newSurveyForm = Object.assign({}, {questionId: question.id, surveyId: survey.id});
+      let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id});
       newSurvey = Object.assign({}, survey);
       newSurvey.surveyForms.push(newSurveyForm);
       newState = Object.assign({}, state);

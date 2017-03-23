@@ -42,22 +42,17 @@ class FormSearchContainer extends Component {
     return formsFiltered;
   }
 
-  // searchResultList(forms){
-  //   <SearchResult forms ={forms}
-  //                 survey={this.props.survey}
-  //                 addForm={this.props.addForm} />
-  // }
-
   render() {
     return (
-            <div>
-              <SearchBar modelName='Form' onSearchTermChange={term => this.onSearchTermChange(term)} />
-              {this.state.forms && this.state.forms.map((f) => {
-                return (
-                  <SearchResult key={f.id} type='form' result={{Source: f}} currentUser={this.props.currentUser} />
-                );
-              })}
-            </div>
+      <div>
+        <SearchBar modelName='Form' onSearchTermChange={term => this.onSearchTermChange(term)} />
+        {this.state.forms && this.state.forms.map((f) => {
+          return (
+            <SearchResult key={f.id} type='form' result={{Source: f}} currentUser={this.props.currentUser} extraActionName='Add to Survey'
+            extraAction={() => this.props.addForm(this.props.survey, f)}/>
+          );
+        })}
+      </div>
     );
   }
 }

@@ -3,26 +3,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForms } from '../actions/form_actions';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey, removeForm, reorderForm } from '../actions/survey_actions';
-import { formProps } from '../prop-types/form_props';
+import { formsProps } from '../prop-types/form_props';
 import { surveyProps } from '../prop-types/survey_props';
-import SurveyForm from '../components/SurveyForm';
+import SurveyEdit from '../components/SurveyEdit';
 import currentUserProps from "../prop-types/current_user_props";
 import FormSearchContainer from './FormSearchContainer';
 
 import _ from 'lodash';
 
-class SurveyFormContainer extends Component {
+class SurveyEditContainer extends Component {
   constructor(props) {
     super(props);
     let selectedSurveySaver = this.props.saveSurvey;
     if (this.props.params.surveyId) {
-      fetchSurvey(this.props.params.surveyId);
+      this.props.fetchSurvey(this.props.params.surveyId);
       if (this.props.params.action === 'edit') {
-        // When we add drafts, change this to this.props.saveDraftSurvey
-        selectedSurveySaver = this.props.saveSurvey;
+        selectedSurveySaver = this.props.saveDraftSurvey;
       }
     } else {
-      newSurvey();
+      this.props.newSurvey();
       this.props.params.surveyId = 0;
       this.props.params.action = 'new';
     }
@@ -30,7 +29,7 @@ class SurveyFormContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchForms();
+    this.props.fetchSurvey();
   }
 
   componentDidUpdate(prevProps) {
@@ -58,10 +57,10 @@ class SurveyFormContainer extends Component {
             <div className="panel-body">
               <div className="col-md-4">
                 <FormSearchContainer survey  ={this.props.survey}
-                                     allForms={this.props.forms}
+                                     allForms={_.values(this.props.forms)}
                                      currentUser={this.props.currentUser} />
               </div>
-              <SurveyForm ref='survey' survey={this.props.survey}
+              <SurveyEdit ref='survey' survey={this.props.survey}
                           action={this.props.params.action || 'new'}
                           route ={this.props.route}
                           router={this.props.router}
@@ -79,20 +78,20 @@ class SurveyFormContainer extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({newSurvey, fetchForms, removeForm, reorderForm,
-    saveSurvey, saveDraftSurvey}, dispatch);
+    saveSurvey, saveDraftSurvey, fetchSurvey}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {
   return {
     survey: state.surveys[ownProps.params.surveyId||0],
-    forms: _.values(state.forms),
+    forms: state.forms,
     currentUser: state.currentUser
   };
 }
 
-SurveyFormContainer.propTypes = {
+SurveyEditContainer.propTypes = {
   survey: surveyProps,
-  forms:  PropTypes.arrayOf(formProps),
+  forms:  formsProps,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
@@ -106,4 +105,4 @@ SurveyFormContainer.propTypes = {
   saveDraftSurvey: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyFormContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyEditContainer);

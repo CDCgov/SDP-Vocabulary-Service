@@ -22,7 +22,7 @@ export default class SearchResult extends Component {
       case 'form':
         return (
           <div>
-            {this.formResult(this.props.result.Source, this.props.result.highlight)}
+            {this.formResult(this.props.result.Source, this.props.result.highlight, this.props.extraActionName, this.props.extraAction)}
           </div>
         );
       case 'survey':
@@ -51,7 +51,7 @@ export default class SearchResult extends Component {
     return source.status === 'published';
   }
 
-  resultDropdownMenu(result, resultType){
+  resultDropdownMenu(result, resultType, extraActionName, extraAction){
     return (
       <ul className="dropdown-menu dropdown-menu-right">
         {this.isRevisable(result) && <li>
@@ -66,6 +66,11 @@ export default class SearchResult extends Component {
         <li>
           <Link to={`/${resultType}s/${result.id}`}>Details</Link>
         </li>
+        {extraActionName && extraAction &&       <li>
+      <a id={`action_for_${result.id}`} onClick={() => extraAction()}>
+        {extraActionName}
+      </a>
+      </li>}
       </ul>
     );
   }
@@ -161,7 +166,7 @@ export default class SearchResult extends Component {
     );
   }
 
-  formResult(result, highlight) {
+  formResult(result, highlight, actionName, action) {
     return (
       <div className="search-result" id={`form_id_${result.id}`}>
         <div className="search-result-name">
@@ -174,7 +179,7 @@ export default class SearchResult extends Component {
               <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                 <span className="fa fa-ellipsis-h"></span>
               </a>
-              {this.resultDropdownMenu(result, 'form')}
+              {this.resultDropdownMenu(result, 'form', actionName, action)}
             </div>
           </div>
         </div>
@@ -223,4 +228,6 @@ SearchResult.propTypes = {
   currentUser: currentUserProps,
   result: PropTypes.object.isRequired,
   handleSelectSearchResult: PropTypes.func
+  extraActionName: PropTypes.string,
+  extraAction: PropTypes.func
 };

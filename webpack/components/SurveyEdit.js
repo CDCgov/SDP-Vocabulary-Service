@@ -1,70 +1,36 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { surveyProps } from '../prop-types/survey_props';
-import { formProps } from '../prop-types/form_props';
-import SearchResult from './SearchResult';
+import { formsProps } from '../prop-types/form_props';
+import SurveyFormList from './SurveyFormList';
 import Errors from './Errors';
 import ModalDialog from './ModalDialog';
-import _ from 'lodash';
 
-let AddedForms = ({survey, reorderForm, removeForm, forms}) => {
-  let formsLookup = _.keyBy(forms, 'id');
-  survey.surveyForms = survey.surveyForms || [];
-  survey.version = survey.version || 1;
-  return (
-    <div id="added-forms" aria-label="Added">
-    <div className="form-group">
-      {survey.surveyForms.map((q, i) =>
-        <div className="row" key={i}>
-          <div className="col-md-9">
-            <SearchResult form={formsLookup[q.formId]} index={i}
-                          removeForm={removeForm}
-                          reorderForm={reorderForm}
-                          />
-          </div>
-          <div className="survey-group">
-            <div className="col-md-3">
-              <div className="btn btn-small btn-default move-up"
-                   onClick={() => reorderForm(survey, i, 1)}>
-                <i title="Move Up" className="fa fa fa-arrow-up"></i>
-              </div>
-              <div className="btn btn-small btn-default move-down"
-                   onClick={() => reorderForm(survey, i, -1)}>
-                <i className="fa fa fa-arrow-down" title="Move Down"></i>
-              </div>
-              <div className="btn btn-small btn-default"
-                   onClick={() => removeForm(survey, i)}>
-                <i className="fa fa fa-trash" title="Remove"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-    </div>
-  );
-};
+class SurveyEdit extends Component {
 
-AddedForms.propTypes = {
-  survey: surveyProps,
-  forms: PropTypes.arrayOf(formProps),
-  reorderForm: PropTypes.func.isRequired,
-  removeForm: PropTypes.func.isRequired
-};
-
-
-class SurveyForm extends Component {
+  stateForNew() {
+    return {
+      id: null,
+      name: '',
+      version: 1,
+      showModal: false,
+      description: '',
+      surveyForms: [],
+      controlNumber: null,
+      versionIndependentId: null
+    };
+  }
 
   stateForEdit(survey) {
-    const id = survey.id;
-    const name = survey.name || '';
-    const version = survey.version;
-    const showModal = false;
-    const description = survey.description || '';
-    const surveyForms = survey.surveyForms;
-    const controlNumber = survey.controlNumber;
-    const versionIndependentId = survey.versionIndependentId;
-    return {surveyForms, name, id, version, versionIndependentId, controlNumber, description, showModal};
+    var newState = this.stateForNew();
+    newState.id = survey.id;
+    newState.name = survey.name || '';
+    newState.version = survey.version;
+    newState.description = survey.description || '';
+    newState.surveyForms = survey.surveyForms || [];
+    newState.controlNumber = survey.controlNumber;
+    newState.versionIndependentId = survey.versionIndependentId;
+    return newState;
   }
 
   stateForRevise(survey) {
@@ -75,9 +41,6 @@ class SurveyForm extends Component {
 
   constructor(props) {
     super(props);
-    // This switch is currently effectively a no-op but I retained the structure
-    // from ResponseSetForm to make it easier to adapt in the future and be
-    // consistent.
     switch (this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(props.survey);
@@ -86,7 +49,7 @@ class SurveyForm extends Component {
         this.state = this.stateForEdit(props.survey);
         break;
       default:
-        this.state = this.stateForRevise({});
+        this.state = this.stateForNew();
     }
     this.unsavedState = false;
   }
@@ -160,6 +123,9 @@ class SurveyForm extends Component {
   }
 
   render() {
+    if(!this.props.forms){
+      return ('Loading');
+    }
     return (
       <div className="col-md-8">
       <div className="" id='survey-div'>
@@ -177,7 +143,7 @@ class SurveyForm extends Component {
                       this.setState({ showModal: false });
                     }}
                     secondaryButtonAction={() => this.handleModalResponse(true)} />
-      <survey onSubmit={(e) => this.handleSubmit(e)}>
+      <form onSubmit={(e) => this.handleSubmit(e)}>
         <Errors errors={this.state.errors} />
           <div className="survey-inline">
             <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span></button>
@@ -209,20 +175,20 @@ class SurveyForm extends Component {
             </div>
           </div>
         </div>
-        <AddedForms survey={this.state}
-                    forms ={this.props.forms}
-                    reorderForm={this.props.reorderForm}
-                    removeForm ={this.props.removeForm} />
-      </survey>
+        <SurveyFormList survey={this.state}
+                        forms ={this.state.surveyForms.map((f) => this.props.forms[f.formId])}
+                        reorderForm={this.props.reorderForm}
+                        removeForm ={this.props.removeForm} />
+      </form>
       </div>
       </div>
     );
   }
 }
 
-SurveyForm.propTypes = {
+SurveyEdit.propTypes = {
   survey: surveyProps,
-  forms:  PropTypes.arrayOf(formProps).isRequired,
+  forms:  formsProps.isRequired,
   action: PropTypes.string.isRequired,
   surveySubmitter: PropTypes.func.isRequired,
   removeForm:  PropTypes.func.isRequired,
@@ -231,4 +197,4 @@ SurveyForm.propTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default SurveyForm;
+export default SurveyEdit;
