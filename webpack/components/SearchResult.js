@@ -127,35 +127,28 @@ export default class SearchResult extends Component {
                     <li className="new-question-content-item">
                         <div className="new-question-details">
                             <div className="result">
-                                <ul className="list-inline">
-                                    <li>icon</li>
+                                <ul className="list-inline result-type-wrapper">
+                                    <li className="result-type-icon">icon</li>
                                     <li>Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
                                 </ul>
                             </div>
-
                             <div className="result-description">
                                 In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
                             </div>
-
                             <div className="response-analytics">
                                 <ul className="list-inline">
                                     <li className="response-analytics-item">
                                         <span className="item-value">30</span>
-
                                         <p className="item-description">programs</p>
                                     </li>
-
                                     <li className="response-analytics-item">
                                         <span className="item-value">10</span>
-
                                         <p className="item-description">systems</p>
                                     </li>
-
                                     <li className="response-analytics-item">
-                                        <span class="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
+                                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
                                         <p className="item-description">published</p>
                                     </li>
-
                                     <li className="response-timestamp pull-right">april 7</li>
                                 </ul>
                             </div>
