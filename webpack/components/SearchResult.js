@@ -120,85 +120,67 @@ export default class SearchResult extends Component {
                
       </div>
       
-      <div classname="new-question-group">
-        <div classname="new-question">
-            <div classname="new-question-container">
-                <ul classname="new-question-content">
-                    <li classname="new-question-content-item">
-                        <div classname="new-question-details">
-                            <div classname="result">
-                                <ul classname="list-inline">
+      <div className="new-question-group">
+        <div className="new-question">
+            <div className="new-question-container">
+                <ul className="new-question-content">
+                    <li className="new-question-content-item">
+                        <div className="new-question-details">
+                            <div className="result">
+                                <ul className="list-inline">
                                     <li>icon</li>
-
                                     <li>Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
                                 </ul>
                             </div>
 
-                            <div classname="result-description">
+                            <div className="result-description">
                                 In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
                             </div>
 
-                            <div classname="response-analytics">
-                                <ul classname="list-inline">
-                                    <li classname="response-analytics-item">
-                                        <span classname="item-value">30</span>
+                            <div className="response-analytics">
+                                <ul className="list-inline">
+                                    <li className="response-analytics-item">
+                                        <span className="item-value">30</span>
 
-                                        <p classname="item-description">programs</p>
+                                        <p className="item-description">programs</p>
                                     </li>
 
-                                    <li classname="response-analytics-item">
-                                        <span classname="item-value">10</span>
+                                    <li className="response-analytics-item">
+                                        <span className="item-value">10</span>
 
-                                        <p classname="item-description">systems</p>
+                                        <p className="item-description">systems</p>
                                     </li>
 
-                                    <li classname="response-analytics-item">
-                                        <p classname="item-description">published</p>
+                                    <li className="response-analytics-item">
+                                        <span class="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
+                                        <p className="item-description">published</p>
                                     </li>
 
-                                    <li classname="response-timestamp pull-right">april 7</li>
+                                    <li className="response-timestamp pull-right">april 7</li>
                                 </ul>
                             </div>
                         </div>
-
-                        <div classname="response-set-details">
-                            <ul classname="list-inline response-set-items">
-                                <li classname="reponse-number panel-toggle" data-toggle="collapse" href="#collapse1">34451</li>
-
-                                <li classname="pull-right question-menu">
-                                    <div classname="dropdown">
-                                        <a classname="dropdown-toggle" type="" data-toggle="dropdown" role="navigation"><span classname="sr-only">Question Menu</span></a>
-
-                                        <ul classname="dropdown-menu dropdown-menu-right">
-                                            <li><a href="#">Edit</a></li>
-
-                                            <li><a href="#">View</a></li>
-
-                                            <li><a href="#">Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
+                        <div className="response-set-details">
+                            <ul className="list-inline response-set-items">
+                                <li className="reponse-number">Response Sets</li>
                             </ul>
                         </div>
                     </li>
+                    <li className="new-question-content-item result-nav">
+      						  	<div><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
+      						  	<div><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+      						  	<div><i className="fa fa-plus-circle fa-lg" aria-hidden="true"></i></div>
+      						  </li>
                 </ul>
             </div>
 
-            <div classname="panel-collapse panel-details collapse" id="collapse1">
-                <div classname="panel-body">
-                    Response Sets
-                </div>
-            </div>
         </div>
     </div>
 
       
 	</div>  
   
-     
-     
-   
-      
+
       
     );
   }
