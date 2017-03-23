@@ -24,6 +24,10 @@ class Survey < ApplicationRecord
     DeleteFromIndexJob.perform_later('survey', id)
   end
 
+  def publish
+    update(status: 'published')
+  end
+
   def self.search(search = nil, current_user_id = nil)
     if current_user_id && search
       where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")

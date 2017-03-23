@@ -24,6 +24,24 @@ class SurveysController < ApplicationController
     end
   end
 
+  def update
+    if @survey.status == 'published'
+      render json: {status: ' Published surveys cannot be updated.'}, status: :unprocessable_entity
+    else
+      update_successful = nil
+      @survey.transaction do
+        @survey.survey_forms.destroy_all
+        @survey.survey_forms = create_survey_forms
+
+        update_successful = survey.update(form_params)
+      end
+      if update_successful
+        render :show, status: :ok, location: @survey
+      else
+        render json: @survey.errors, status: :unprocessable_entity
+      end
+  end
+
   def destroy
     @survey.survey_forms.destroy_all
     @survey.destroy
