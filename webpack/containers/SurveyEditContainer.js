@@ -1,15 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchForms } from '../actions/form_actions';
+import { fetchQuestions } from '../actions/questions_actions';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
-import { removeForm, reorderForm } from '../actions/form_actions';
-import { formsProps } from '../prop-types/form_props';
+import { fetchForms, removeForm, reorderForm } from '../actions/form_actions';
+import { formsProps }  from '../prop-types/form_props';
+import { questionsProps }  from '../prop-types/question_props';
 import { surveyProps } from '../prop-types/survey_props';
 import SurveyEdit from '../components/SurveyEdit';
 import currentUserProps from "../prop-types/current_user_props";
 import FormSearchContainer from './FormSearchContainer';
-
 import _ from 'lodash';
 
 class SurveyEditContainer extends Component {
@@ -49,7 +49,7 @@ class SurveyEditContainer extends Component {
       );
     }
     return (
-      <div className="container">
+      <div className="container survey-edit-container">
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
@@ -66,8 +66,9 @@ class SurveyEditContainer extends Component {
                           route ={this.props.route}
                           router={this.props.router}
                           forms ={this.props.forms}
-                          removeForm ={this.props.removeForm.bind(this)}
-                          reorderForm={this.props.reorderForm.bind(this)}
+                          questions  ={this.props.questions}
+                          removeForm ={this.props.removeForm}
+                          reorderForm={this.props.reorderForm}
                           surveySubmitter={this.state.selectedSurveySaver} />
             </div>
           </div>
@@ -79,13 +80,14 @@ class SurveyEditContainer extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({newSurvey, fetchForms, removeForm, reorderForm,
-    saveSurvey, saveDraftSurvey, fetchSurvey}, dispatch);
+    saveSurvey, saveDraftSurvey, fetchSurvey, fetchQuestions}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {
   return {
     survey: state.surveys[ownProps.params.surveyId||0],
-    forms: state.forms,
+    forms:  state.forms,
+    questions: state.questions,
     currentUser: state.currentUser
   };
 }
@@ -93,6 +95,7 @@ function mapStateToProps(state, ownProps) {
 SurveyEditContainer.propTypes = {
   survey: surveyProps,
   forms:  formsProps,
+  questions: questionsProps,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,

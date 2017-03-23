@@ -227,7 +227,7 @@ SearchResult.propTypes = {
   type: PropTypes.string,
   currentUser: currentUserProps,
   result: PropTypes.object.isRequired,
-  handleSelectSearchResult: PropTypes.func
+  handleSelectSearchResult: PropTypes.func,
   extraActionName: PropTypes.string,
   extraAction: PropTypes.func
 };

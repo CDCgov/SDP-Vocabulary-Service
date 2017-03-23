@@ -18,10 +18,26 @@
     }
   }
 
+  .form-group-controls{
+    float: right;
+  }
+  
   .form-result{
     margin: 0px;
   }
-
+  .form-container {
+    @extend .panel-body;
+    border-bottom: 1px solid $light-gray;
+    font-weight: bold;
+    border-radius: 0px;
+    font-size: 14px;
+    color: $cdc-blue;
+    padding: 6px 8px 6px 10px;
+    li:first-child {
+      width: 95%;
+      float: left;    
+    }
+  }
   .response-set-header{
     button {
       float: right;
@@ -40,3 +56,4 @@
     }
   }
 }
+

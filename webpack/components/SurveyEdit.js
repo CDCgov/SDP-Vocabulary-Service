@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { surveyProps } from '../prop-types/survey_props';
 import { formsProps } from '../prop-types/form_props';
+import { questionsProps } from "../prop-types/question_props";
 import SurveyFormList from './SurveyFormList';
 import Errors from './Errors';
 import ModalDialog from './ModalDialog';
@@ -176,7 +177,8 @@ class SurveyEdit extends Component {
           </div>
         </div>
         <SurveyFormList survey={this.state}
-                        forms ={this.state.surveyForms.map((f) => this.props.forms[f.formId])}
+                        forms ={this.props.forms}
+                        questions  ={this.props.questions}
                         reorderForm={this.props.reorderForm}
                         removeForm ={this.props.removeForm} />
       </form>
@@ -189,6 +191,7 @@ class SurveyEdit extends Component {
 SurveyEdit.propTypes = {
   survey: surveyProps,
   forms:  formsProps.isRequired,
+  questions:  questionsProps.isRequired,
   action: PropTypes.string.isRequired,
   surveySubmitter: PropTypes.func.isRequired,
   removeForm:  PropTypes.func.isRequired,

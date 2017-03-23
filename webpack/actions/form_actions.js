@@ -26,10 +26,10 @@ export function addForm(survey, form) {
   };
 }
 
-export function removeForm(survey, form) {
+export function removeForm(survey, index) {
   return {
     type: REMOVE_FORM,
-    payload: {survey, form}
+    payload: {survey, index}
   };
 }
 
