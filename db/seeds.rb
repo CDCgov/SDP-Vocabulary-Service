@@ -46,3 +46,9 @@ QuestionType.find_or_create_by name: 'Clinical outcome'
 QuestionType.find_or_create_by name: 'Laboratory information'
 QuestionType.find_or_create_by name: 'Epidemiologic information'
 QuestionType.find_or_create_by name: 'Epidemiologic exposure history (places visited, persons, household contacts, etc.)'
+
+SurveillanceProgram.find_or_create_by name: 'Flu'
+SurveillanceProgram.find_or_create_by name: 'Salmonella'
+
+SurveillanceSystem.find_or_create_by name: 'NREVSS'
+SurveillanceSystem.find_or_create_by name: 'NSSP'
