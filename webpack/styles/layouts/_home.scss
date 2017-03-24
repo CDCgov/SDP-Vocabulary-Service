@@ -29,13 +29,25 @@
   margin-left: auto;
 }
 
-/* Padding for spacing */
-.inner {
-  padding: 30px;
+.cover-heading {
+  border-bottom: 1px solid #2F74B2;
+  padding-bottom: 18px;
 }
 
+/* Padding for spacing */
+.inner {
+  padding: 60px;
+}
 
+.lead {
+  margin-bottom: 50px;
+  margin-top: 20px;
+  font-size: 18px;
+}
 
+.tagline {
+  font-weight: bold;
+}
 
 /*
  * Cover
@@ -43,13 +55,14 @@
 
 .cover {
   padding: 0 20px;
-}
-.cover .btn-lg {
-  padding: 10px 20px;
-  font-weight: bold;
-}
+  margin-bottom: 50px;
+   .btn-lg {
+    padding: 20px 50px;
+    font-weight: bold;
+    font-size: 24px
+  }
 
-
+}
 /*
  * Footer
  */
@@ -86,6 +99,6 @@
 @media (min-width: 992px) {
   .mastfoot,
   .cover-container {
-	  width: 750px;
+	  width: 800px;
   }
 }
