@@ -155,7 +155,7 @@ export default class SearchResult extends Component {
                         </div>
                         <div className="response-set-details">
                             <ul className="list-inline response-set-items">
-                                <li className="reponse-number">Response Sets</li>
+                                <li className="reponse-number">Response Set</li>
                             </ul>
                         </div>
                     </li>
