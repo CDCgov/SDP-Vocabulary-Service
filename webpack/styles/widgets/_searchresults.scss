@@ -1,3 +1,7 @@
+
+
+
+
 .u-result-group {
 	@extend .panel-group;
 	margin-top: 20px;
@@ -39,8 +43,16 @@
 		padding-left: 8px;
 		padding-right: 8px;
 		border-left: 5px solid $cdc-blue;
-		}	
+   }	
 	}
+  .result-name {
+    font-size: 18px;
+    color: $cdc-blue;
+    margin-bottom: 5px;
+    .result-type {
+      color: $dark-gray;
+    }
+  }
 	.result-type-wrapper {
   	display: table;
   	width: 100%;
@@ -135,7 +147,6 @@
 		}
 	}		
 }
-
 
 
 
