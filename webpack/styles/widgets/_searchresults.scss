@@ -1,28 +1,28 @@
-.new-question-group {
+.u-result-group {
 	@extend .panel-group;
 	margin-top: 20px;
 	text-align: left;
 	margin-bottom: 20px;
-	.new-question {
+	.u-result {
 		@extend .panel; 
 		border-radius: 0px;
 		border: 1px solid $light-gray;
 		border-top: 0px;
 		}
-	.new-question-container {
+	.u-result-container {
 			@extend .panel-body;
 			border-bottom: 1px solid $light-gray;
 			border-radius: 0px;
 			padding: 0px;
 		}
-	.new-question-content {
+	.u-result-content {
 		@extend .list-group;
 		display: table;
 		width: 100%;
 		margin: 0px;
 		border-radius: 0px;
 	}	
-	.new-question-content-item {
+	.u-result-content-item {
 		@extend .list-group-item;
 		display: table-cell;
 		border: 0px;
@@ -35,7 +35,7 @@
 			padding: 0px;
 			width: 40px;
 		}
-	.new-question-details {
+	.u-result-details {
 		padding-left: 8px;
 		padding-right: 8px;
 		border-left: 5px solid $cdc-blue;
@@ -73,11 +73,11 @@
   		  border-bottom: 0px;
 		}
   }
-	.response-analytics {
+	.result-analytics {
 		margin-top: 8px;
 		padding-bottom: 8px;
 	}
-	.response-analytics-item {
+	.result-analytics-item {
 		text-align: center;
 		width: 75px;
 		border-right: 1px solid $light-gray;
@@ -100,13 +100,13 @@
 	.result-description {
 		margin-top: 4px;
 	}
-	.response-timestamp {
+	.result-timestamp {
 		text-transform: uppercase;
 		font-size: 11px;
 		color: $medium-gray;
 		text-align: right;
 	}	
-	.response-set-details {
+	.result-linked-details {
 			@extend .panel-body;
 			padding: 0px;
 			background-color: white;
@@ -114,7 +114,7 @@
 			.list-inline {
 				margin-left: 0px;
 			}
-			.response-set-items {
+			.result-linked-item {
 				margin-bottom: 0px;
 				border-left: 5px solid $cdc-orange;
 			}
@@ -124,7 +124,7 @@
 			span {
 				padding: 4px 6px 0px 4px;
 			}
-		.reponse-number {
+		.result-linked-number {
 			height: 36px;
 			padding: 8px 10px 0px 10px;
 			border-bottom-left-radius: 0px;

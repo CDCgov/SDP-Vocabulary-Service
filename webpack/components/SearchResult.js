@@ -120,12 +120,12 @@ export default class SearchResult extends Component {
                
       </div>
       
-      <div className="new-question-group">
-        <div className="new-question">
-            <div className="new-question-container">
-                <ul className="new-question-content">
-                    <li className="new-question-content-item">
-                        <div className="new-question-details">
+      <div className="u-result-group">
+        <div className="u-result">
+            <div className="u-result-container">
+                <ul className="u-result-content">
+                    <li className="u-result-content-item">
+                        <div className="u-result-details">
                             <div className="result">
                                 <ul className="list-inline result-type-wrapper">
                                     <li className="result-type-icon"><span className="fa fa-question-circle  fa-2x" aria-hidden="true"></span></li>
@@ -135,31 +135,31 @@ export default class SearchResult extends Component {
                             <div className="result-description">
                                 In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
                             </div>
-                            <div className="response-analytics">
+                            <div className="result-analytics">
                                 <ul className="list-inline">
-                                    <li className="response-analytics-item">
+                                    <li className="result-analytics-item">
                                         <span className="item-value">30</span>
                                         <p className="item-description">programs</p>
                                     </li>
-                                    <li className="response-analytics-item">
+                                    <li className="result-analytics-item">
                                         <span className="item-value">10</span>
                                         <p className="item-description">systems</p>
                                     </li>
-                                    <li className="response-analytics-item">
+                                    <li className="result-analytics-item">
                                         <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
                                         <p className="item-description">published</p>
                                     </li>
-                                    <li className="response-timestamp pull-right"><p>april 7</p><p>version 12</p></li>
+                                    <li className="result-timestamp pull-right"><p>april 7</p><p>version 12</p></li>
                                 </ul>
                             </div>
                         </div>
-                        <div className="response-set-details">
-                            <ul className="list-inline response-set-items">
-                                <li className="reponse-number">Response Set</li>
+                        <div className="result-linked-details">
+                            <ul className="list-inline result-linked-item ">
+                                <li className="result-linked-number">Response Set</li>
                             </ul>
                         </div>
                     </li>
-                    <li className="new-question-content-item result-nav">
+                    <li className="u-result-content-item result-nav">
       						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
       						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
       						  	<div className="result-nav-item"><i className="fa fa-plus-circle fa-lg" aria-hidden="true"></i></div>
