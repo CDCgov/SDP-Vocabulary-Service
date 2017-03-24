@@ -11,6 +11,7 @@ class Home extends Component {
 
       
           <div className="inner cover">
+
             <h1 className="cover-heading">CDC Vocabulary Service</h1>
             
             <h3 className="tagline">Author Questions, Response Sets, and Forms</h3>
