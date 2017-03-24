@@ -15,7 +15,7 @@ class Help extends Component {
 				
 		<div className="container">
 			<div className="row">
-            
+            <div className="col-md-9">
             <ul className="nav nav-tabs" role="tablist">
               <li className="nav-item">
                 <a className="nav-link active" data-toggle="tab" href="#faq" role="tab">FAQs</a>
@@ -30,8 +30,24 @@ class Help extends Component {
             
             <div className="tab-content">
               <div className="tab-pane active" id="faq" role="tabpanel">
-                <h1>FAQs</h1>
-                <p>content</p>
+                <h1 className="help-section-title">FAQs</h1>
+                
+                <div className="help-section">
+                  <h2 className="help-section-question">Sed semper quis est et eleifend?</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et neque eu lacus tincidunt egestas. In varius nibh et sodales sollicitudin. Donec fringilla velit lorem, eu efficitur est egestas in. Aliquam at leo quis mauris fringilla euismod. Phasellus sed elit dolor. Praesent ac accumsan augue. Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit no.</p>
+              </div>
+              
+              <div className="help-section">
+                  <h2 className="help-section-question">Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit?</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et neque eu lacus tincidunt egestas. In varius nibh et sodales sollicitudin. Donec fringilla velit lorem, eu efficitur est egestas in. Aliquam at leo quis mauris fringilla euismod. Phasellus sed elit dolor. Praesent ac accumsan augue. Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit no.</p>
+              </div>
+
+              
+              <div className="help-section">
+                  <h2 className="help-section-question">onec fringilla velit lorem, eu efficitur est egestas in?</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et neque eu lacus tincidunt egestas. In varius nibh et sodales sollicitudin. Donec fringilla velit lorem, eu efficitur est egestas in. Aliquam at leo quis mauris fringilla euismod. Phasellus sed elit dolor. Praesent ac accumsan augue. Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit no.</p>
+              </div>
+
               
               </div>
               <div className="tab-pane" id="glossary" role="tabpanel">
@@ -45,7 +61,7 @@ class Help extends Component {
             </div>
 				
 				</div>
-							
+					</div>		
 			</div>
 	
 	
