@@ -112,6 +112,11 @@
 	}
 	.result-description {
 		margin-top: 4px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
 	}
 	.result-timestamp {
 		text-transform: uppercase;

@@ -133,8 +133,7 @@ export default class SearchResult extends Component {
                                 </ul>
                             </div>
                             <div className="result-description">
-                                In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
-                            </div>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis vehicula sapien. Nunc in pretium mauris. Donec tristique suscipit lorem, ac vulputate enim. Etiam maximus massa ut magna interdum tincidunt. Quisque eu faucibus dui. Sed eu rhoncus risus. Nulla viverra orci vel nunc viverra, non tincidunt velit porta. Suspendisse vel pellentesque metus. Quisque sem nibh, ultrices vitae mattis sit amet, finibus nec dui. Suspendisse id interdum nisl. Proin suscipit magna faucibus, pharetra est eget, tincidunt nulla. Nullam tempus finibus laoreet.                            </div>
                             <div className="result-analytics">
                                 <ul className="list-inline">
                                     <li className="result-analytics-item">
