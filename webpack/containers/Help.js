@@ -15,7 +15,6 @@ class Help extends Component {
 				
 		<div className="container">
 			<div className="row">
-				<div className="col-md-12">
             
             <ul className="nav nav-tabs" role="tablist">
               <li className="nav-item">
@@ -48,7 +47,6 @@ class Help extends Component {
 				</div>
 							
 			</div>
-		</div>		
 	
 	
 		  	
