@@ -43,7 +43,8 @@
 		padding-left: 8px;
 		padding-right: 8px;
 		border-left: 5px solid $cdc-blue;
-   }	
+		
+    }	
 	}
   .result-name {
     font-size: 18px;
@@ -148,6 +149,29 @@
 	}		
 }
 
+	//** MODIFIERS **//
+
+  .result__survey {
+        
+        
+      }
+      
+  .result__forms {
+      
+      
+      }
+      
+  .result__question {
+        border-left: 5px solid $cdc-blue;
+        background-color: red;
+      
+       
+      }
+      
+  .result__responseset {
+        
+        
+      }
 
 
 

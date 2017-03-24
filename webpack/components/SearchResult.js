@@ -128,7 +128,7 @@ export default class SearchResult extends Component {
                         <div className="u-result-details">
                             <div className="result">
                                 <ul className="list-inline result-type-wrapper">
-                                    <li className="result-type-icon"><span className="fa fa-question-circle  fa-2x" aria-hidden="true"></span></li>
+                                    <li className="result-type-icon"><span className="fa fa-question-circle fa-2x" aria-hidden="true"></span></li>
                                     <li className="result-name">Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
                                 </ul>
                             </div>
@@ -230,10 +230,10 @@ export default class SearchResult extends Component {
             <div className="u-result-container">
                 <ul className="u-result-content">
                     <li className="u-result-content-item">
-                        <div className="u-result-details result__question">
+                        <div className="u-result-details result__responseset">
                             <div className="result">
                                 <ul className="list-inline result-type-wrapper">
-                                    <li className="result-type-icon"><span className="fa fa-question-circle  fa-2x" aria-hidden="true"></span></li>
+                                    <li className="result-type-icon"><span className="fa fa-list fa-2x" aria-hidden="true"></span></li>
                                     <li className="result-name">Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
                                 </ul>
                             </div>
@@ -301,7 +301,57 @@ export default class SearchResult extends Component {
         <div className="search-result-stats">
           <hr/>
         </div>
-        <hr/>
+        <div className="u-result-group">
+        <div className="u-result">
+            <div className="u-result-container">
+                <ul className="u-result-content">
+                    <li className="u-result-content-item">
+                        <div className="u-result-details result__form">
+                            <div className="result">
+                                <ul className="list-inline result-type-wrapper">
+                                    <li className="result-type-icon"><span className="fa fa-clipboard fa-2x" aria-hidden="true"></span></li>
+                                    <li className="result-name">Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
+                                </ul>
+                            </div>
+                            <div className="result-description">
+                                In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
+                            </div>
+                            <div className="result-analytics">
+                                <ul className="list-inline">
+                                    <li className="result-analytics-item">
+                                        <span className="item-value">30</span>
+                                        <p className="item-description">programs</p>
+                                    </li>
+                                    <li className="result-analytics-item">
+                                        <span className="item-value">10</span>
+                                        <p className="item-description">systems</p>
+                                    </li>
+                                    <li className="result-analytics-item">
+                                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
+                                        <p className="item-description">published</p>
+                                    </li>
+                                    <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | form</p></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="result-linked-details">
+                            <ul className="list-inline result-linked-item ">
+                                <li className="result-linked-number">Response Set</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li className="u-result-content-item result-nav">
+      						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
+      						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+      						  	<div className="result-nav-item"><i className="fa fa-plus-circle fa-lg" aria-hidden="true"></i></div>
+      						  </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+
       </div>
     );
   }
