@@ -67,7 +67,7 @@ export default class SearchResult extends Component {
           <Link to={`/${resultType}s/${result.id}`}>Details</Link>
         </li>
         {extraActionName && extraAction &&       <li>
-      <a id={`action_for_${result.id}`} onClick={() => extraAction()}>
+      <a className="menu-action" id={`action_for_${result.id}`} onClick={() => extraAction()}>
         {extraActionName}
       </a>
       </li>}

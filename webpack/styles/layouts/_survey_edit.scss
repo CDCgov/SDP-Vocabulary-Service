@@ -4,6 +4,17 @@
     padding-left: 15px;
     padding-right: 15px;
     width: 1170px;
+
+  .search-bar{
+    margin-bottom: 10px;
+  }
+
+  .survey-group{
+    margin-top: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
   .form-group{
     min-height: 500px;
     max-height: 500px;
@@ -25,6 +36,7 @@
   .form-result{
     margin: 0px;
   }
+
   .form-container {
     @extend .panel-body;
     border-bottom: 1px solid $light-gray;

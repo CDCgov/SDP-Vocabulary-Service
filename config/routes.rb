@@ -27,7 +27,10 @@ Rails.application.routes.draw do
     get :redcap, on: :member
     put :publish, on: :member
   end
-  resources :surveys, except: [:edit], defaults: { format: :json }
+  resources :surveys, except: [:edit], defaults: { format: :json } do
+    get :revise, on: :member
+    put :publish, on: :member
+  end
   resources :question_response_sets
   resources :responses
   resources :concepts

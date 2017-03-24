@@ -44,7 +44,7 @@ class FormSearchContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form-group">
         <SearchBar modelName='Form' onSearchTermChange={term => this.onSearchTermChange(term)} />
         {this.state.forms && this.state.forms.map((f) => {
           return (
