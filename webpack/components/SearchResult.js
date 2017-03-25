@@ -155,10 +155,6 @@ questionResult(result, highlight) {
 
         </div>
     </div>
-
-  
-
-      
     );
   }
 
@@ -174,42 +170,6 @@ questionResult(result, highlight) {
   responseSetResult(result, highlight, handleSelectSearchResult) {
     return (
       <div className="search-result" id={`response_set_id_${result.id}`}>
-        <div className="search-result-name">
-          <text className="search-result-type">Response Set: </text>
-          <Link to={`/responseSets/${result.id}`}>
-            {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
-          </Link>
-          <div className="pull-right response-set-menu">
-            {handleSelectSearchResult ? (
-              this.selectResultButton(result, handleSelectSearchResult)
-            ) : (
-              <div className="dropdown">
-                <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
-                  <span className="fa fa-ellipsis-h"></span>
-                </a>
-                {this.resultDropdownMenu(result, 'responseSet')}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="search-result-description">
-          {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
-        </div>
-        <div className="search-result-stats">
-          <hr/>
-          {result.questions.length > 0 &&
-            <div>
-              Linked Questions: |{result.questions.map((q) => {
-                return(
-                  <text key={`question-${q.id}`}>
-                    <Link to={`/questions/${q.id}`}> {q.name}</Link> |
-                  </text>
-                );
-              })}
-            </div>
-          }
-        </div>
-    
         <div className="u-result-group">
         <div className="u-result">
             <div className="u-result-container">
@@ -219,11 +179,15 @@ questionResult(result, highlight) {
                             <div className="result">
                                 <ul className="list-inline result-type-wrapper">
                                     <li className="result-type-icon"><span className="fa fa-list fa-2x" aria-hidden="true"></span></li>
-                                    <li className="result-name">Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
+                                    <li className="result-name">
+                                      <Link to={`/responseSets/${result.id}`}>
+                                        {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
+                                      </Link>
+                                    </li>
                                 </ul>
                             </div>
                             <div className="result-description">
-                                In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
+                                {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
                             </div>
                             <div className="result-analytics">
                                 <ul className="list-inline">
@@ -245,14 +209,37 @@ questionResult(result, highlight) {
                         </div>
                         <div className="result-linked-details">
                             <ul className="list-inline result-linked-item ">
-                                <li className="result-linked-number">Response Set</li>
+                                <li className="result-linked-number">
+                                    {result.questions.length > 0 &&
+                                    <div>
+                                      Linked Questions: |{result.questions.map((q) => {
+                                        return(
+                                          <text key={`question-${q.id}`}>
+                                            <Link to={`/questions/${q.id}`}> {q.name}</Link> |
+                                          </text>
+                                        );
+                                      })}
+                                    </div>
+                                  }
+                                </li>
                             </ul>
                         </div>
                     </li>
                     <li className="u-result-content-item result-nav">
       						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
       						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
-      						  	<div className="result-nav-item"><i className="fa fa-plus-circle fa-lg" aria-hidden="true"></i></div>
+      						  	<div className="result-nav-item">
+                          {handleSelectSearchResult ? (
+                            this.selectResultButton(result, handleSelectSearchResult)
+                          ) : (
+                            <div className="dropdown">
+                              <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                                <span className="fa fa-ellipsis-h"></span>
+                              </a>
+                              {this.resultDropdownMenu(result, 'responseSet')}
+                            </div>
+                          )}
+                        </div>
       						  </li>
                 </ul>
             </div>
