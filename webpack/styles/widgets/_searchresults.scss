@@ -2,7 +2,6 @@
 
 .u-result-group {
 	@extend .panel-group;
-	margin-top: 20px;
 	text-align: left;
 	margin-bottom: 20px;
 	.u-result {
@@ -25,7 +24,7 @@
 		border-radius: 0px;
 	}	
 	.u-result-content-item {
-		@extend .list-group-item;
+		@extend .list-group-item;		
 		display: table-cell;
 		border: 0px;
 		padding: 0px;
@@ -41,7 +40,6 @@
 		padding-left: 8px;
 		padding-right: 8px;
 		border-left: 5px solid $cdc-blue;
-		
     }	
 	}
   .result-name {
@@ -69,19 +67,36 @@
     padding-top: 6px;
 	}
 	.result-nav {
-		text-align: center;
 		border: 1px solid $light-gray;
 		border-right: 0px;
 		border-bottom: 0px;
 		color: $medium-gray;
+		vertical-align: middle;
+		position: relative;
 	
 	}
   .result-nav-item {
-    margin-bottom: 16px;
-    border-bottom: 1px solid $light-gray;
+    //* border-bottom: 1px solid $light-gray; *//
+    //* border-top: 1px solid $light-gray; *//
+    padding-bottom: 12px;
+    padding-top: 10px;
+    position: relative;
+    text-align: center;
+    	 &:first-child {
+  		  position: absolute;
+  		  top: 0; 
+        border-bottom: 0px;
+        padding-left: 10px;
+		  }
+    	
     	&:last-child {
   		  border-bottom: 0px;
+  		  position: absolute;
+  		  border-top: 0px;
+  		  bottom: 0;
+  		  width: 40px;  	
 		}
+		 
   }
 	.result-analytics {
 		margin-top: 8px;
