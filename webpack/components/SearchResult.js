@@ -121,7 +121,7 @@ questionResult(result, highlight) {
                             </div>
                         </div>
                         <div className="result-linked-details">
-                            <ul className="list-inline result-linked-item ">
+                            <ul className="list-inline result-linked-item associated__responseset">
                                 <li className="result-linked-number">
                                      {result.responseSets.length > 0 &&
                                       <div>
@@ -208,7 +208,7 @@ questionResult(result, highlight) {
                             </div>
                         </div>
                         <div className="result-linked-details">
-                            <ul className="list-inline result-linked-item ">
+                            <ul className="list-inline result-linked-item associated__question">
                                 <li className="result-linked-number">
                                     {result.questions.length > 0 &&
                                     <div>
@@ -290,7 +290,7 @@ questionResult(result, highlight) {
                             </div>
                         </div>
                         <div className="result-linked-details">
-                            <ul className="list-inline result-linked-item ">
+                            <ul className="list-inline result-linked-item associated__question">
                                 <li className="result-linked-number">
                                  {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
                                 </li>
