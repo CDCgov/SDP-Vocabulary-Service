@@ -82,7 +82,7 @@ export default class SearchResult extends Component {
 
 questionResult(result, highlight) {
     return (
-	    
+
       <div className="u-result-group">
         <div className="u-result" id={`question_id_${result.id}`}>
             <div className="u-result-container">
@@ -203,7 +203,7 @@ questionResult(result, highlight) {
                                         <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
                                         <p className="item-description">published</p>
                                     </li>
-                                    <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | form</p></li>
+                                    <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | response set</p></li>
                                 </ul>
                             </div>
                         </div>
@@ -252,29 +252,8 @@ questionResult(result, highlight) {
 
   formResult(result, highlight, actionName, action) {
     return (
-      <div className="search-result" id={`form_id_${result.id}`}>
-        <div className="search-result-name">
-          <text className="search-result-type">Form: </text>
-          <Link to={`/forms/${result.id}`}>
-            {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
-          </Link>
-          <div className="pull-right form-menu">
-            <div className="dropdown">
-              <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
-                <span className="fa fa-ellipsis-h"></span>
-              </a>
-              {this.resultDropdownMenu(result, 'form', actionName, action)}
-            </div>
-          </div>
-        </div>
-        <div className="search-result-description">
-          {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
-        </div>
-        <div className="search-result-stats">
-          <hr/>
-        </div>
-        <div className="u-result-group">
-        <div className="u-result">
+      <div className="u-result-group">
+        <div className="u-result" id={`form_id_${result.id}`}>
             <div className="u-result-container">
                 <ul className="u-result-content">
                     <li className="u-result-content-item">
@@ -282,7 +261,11 @@ questionResult(result, highlight) {
                             <div className="result">
                                 <ul className="list-inline result-type-wrapper">
                                     <li className="result-type-icon"><span className="fa fa-clipboard fa-2x" aria-hidden="true"></span></li>
-                                    <li className="result-name">Lorem ipsum dolor sit amet, consecteturm eu dictum. Donec leo massa, sodales in enim non, fermentum dignissim purus?</li>
+                                    <li className="result-name">
+                                      <Link to={`/forms/${result.id}`}>
+                                        {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
+                                      </Link>
+                                    </li>
                                 </ul>
                             </div>
                             <div className="result-description">
@@ -308,22 +291,27 @@ questionResult(result, highlight) {
                         </div>
                         <div className="result-linked-details">
                             <ul className="list-inline result-linked-item ">
-                                <li className="result-linked-number">Response Set</li>
+                                <li className="result-linked-number">
+                                 {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
+                                </li>
                             </ul>
                         </div>
                     </li>
                     <li className="u-result-content-item result-nav">
       						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
       						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
-      						  	<div className="result-nav-item"><i className="fa fa-plus-circle fa-lg" aria-hidden="true"></i></div>
+      						  	<div className="result-nav-item">
+                          <div className="dropdown">
+                            <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                              <span className="fa fa-ellipsis-h"></span>
+                            </a>
+                            {this.resultDropdownMenu(result, 'form')}
+                        </div>
+      						  	</div>
       						  </li>
                 </ul>
             </div>
-
         </div>
-    </div>
-
-
       </div>
     );
   }
@@ -351,7 +339,15 @@ questionResult(result, highlight) {
         <div className="search-result-stats">
           <hr/>
         </div>
-        <hr/>
+
+
+
+
+
+
+
+
+
       </div>
     );
   }
