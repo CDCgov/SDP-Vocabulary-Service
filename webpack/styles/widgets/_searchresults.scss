@@ -4,6 +4,7 @@
 	@extend .panel-group;
 	text-align: left;
 	margin-bottom: 20px;
+	
 	.u-result {
 		@extend .panel; 
 		border-radius: 0px;
@@ -27,7 +28,7 @@
 		@extend .list-group-item;		
 		display: table-cell;
 		border: 0px;
-		padding: 0px;
+		padding: 0px; 
 		&:first-child{
 			border-radius: 0px;
 		}
@@ -39,8 +40,15 @@
 	.u-result-details {
 		padding-left: 8px;
 		padding-right: 8px;
-		border-left: 5px solid $cdc-blue;
-    }	
+		border-left: 5px solid $cdc-blue;  
+    }
+   .result__question {
+        border-left: 5px solid blue;
+        background-color: red;
+      
+       
+      } 
+    
 	}
   .result-name {
     font-size: 18px;
@@ -179,10 +187,8 @@
       }
       
   .result__question {
-        border-left: 5px solid $cdc-blue;
+        border-left: 5px solid blue;
         background-color: red;
-      
-       
       }
       
   .result__responseset {

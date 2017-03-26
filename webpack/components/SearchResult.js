@@ -88,7 +88,7 @@ questionResult(result, highlight) {
             <div className="u-result-container">
                 <ul className="u-result-content">
                     <li className="u-result-content-item">
-                        <div className="u-result-details">
+                        <div className="u-result-details result__question">
                             <div className="result">
                                 <ul className="list-inline result-type-wrapper">
                                     <li className="result-type-icon"><span className="fa fa-tasks fa-2x" aria-hidden="true"></span></li>
