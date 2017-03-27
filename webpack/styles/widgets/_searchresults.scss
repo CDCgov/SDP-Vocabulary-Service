@@ -45,16 +45,13 @@
   	//** MODIFIERS **//
 
   .result__survey {
-      border-left: 5px solid blue;      
-        
+      border-left: 5px solid $survey-id;      
       }
   .result__form {
       border-left: 5px solid $form-id;      
-
       }
   .result__responseset {
       border-left: 5px solid $responseset-id;      
-        
       } 
   .result__question {
         border-left: 5px solid $cdc-blue;      
@@ -172,6 +169,9 @@
 			}
 			.associated__question {
   		   border-left: 5px solid $cdc-blue;
+			}
+		  .associated__form {
+  		   border-left: 5px solid $form-id;
 			}
 			
 			a {
