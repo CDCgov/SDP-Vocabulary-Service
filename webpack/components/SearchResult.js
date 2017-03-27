@@ -75,86 +75,79 @@ export default class SearchResult extends Component {
     );
   }
 
-
-
-
-
-
-questionResult(result, highlight) {
+  questionResult(result, highlight) {
     return (
-
       <div className="u-result-group">
         <div className="u-result" id={`question_id_${result.id}`}>
-            <div className="u-result-container">
-                <ul className="u-result-content">
-                    <li className="u-result-content-item">
-                        <div className="u-result-details result__question">
-                            <div className="result">
-                                <ul className="list-inline result-type-wrapper">
-                                    <li className="result-type-icon"><span className="fa fa-tasks fa-2x" aria-hidden="true"></span></li>
-                                    <li className="result-name">
-                                      <Link to={`/questions/${result.id}`}>
-                                        {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
-                                      </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="result-description">
-                              {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
-                            </div>
-                            <div className="result-analytics">
-                                <ul className="list-inline">
-                                    <li className="result-analytics-item">
-                                        <span className="item-value">30</span>
-                                        <p className="item-description">programs</p>
-                                    </li>
-                                    <li className="result-analytics-item">
-                                        <span className="item-value">10</span>
-                                        <p className="item-description">systems</p>
-                                    </li>
-                                    <li className="result-analytics-item">
-                                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-                                        <p className="item-description">published</p>
-                                    </li>
-                                    <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | question</p></li>
-                                </ul>
-                            </div>
+          <div className="u-result-container">
+            <ul className="u-result-content">
+              <li className="u-result-content-item">
+                <div className="u-result-details result__question">
+                  <div className="result">
+                    <ul className="list-inline result-type-wrapper">
+                      <li className="result-type-icon"><span className="fa fa-tasks fa-2x" aria-hidden="true"></span></li>
+                      <li className="result-name">
+                        <Link to={`/questions/${result.id}`}>
+                          {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="result-description">
+                    {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
+                  </div>
+                  <div className="result-analytics">
+                    <ul className="list-inline">
+                      <li className="result-analytics-item">
+                        <span className="item-value">30</span>
+                        <p className="item-description">programs</p>
+                      </li>
+                      <li className="result-analytics-item">
+                        <span className="item-value">10</span>
+                        <p className="item-description">systems</p>
+                      </li>
+                      <li className="result-analytics-item">
+                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
+                        <p className="item-description">published</p>
+                      </li>
+                      <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | question</p></li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="result-linked-details">
+                  <ul className="list-inline result-linked-item associated__responseset">
+                    <li className="result-linked-number">
+                      {result.responseSets.length > 0 &&
+                        <div>
+                          Linked Response Sets: |{result.responseSets.map((rs, i) => {
+                            return(
+                              <text key={`response-set-${rs.id}-${i}`}>
+                                <Link to={`/responseSets/${rs.id}`}> {rs.name}</Link> |
+                              </text>
+                            );
+                          })}
                         </div>
-                        <div className="result-linked-details">
-                            <ul className="list-inline result-linked-item associated__responseset">
-                                <li className="result-linked-number">
-                                     {result.responseSets.length > 0 &&
-                                      <div>
-                                        Linked Response Sets: |{result.responseSets.map((rs) => {
-                                          return(
-                                            <text key={`response-set-${rs.id}`}>
-                                              <Link to={`/responseSets/${rs.id}`}> {rs.name}</Link> |
-                                            </text>
-                                          );
-                                        })}
-                                      </div>
-                                    }
-                                </li>
-                            </ul>
-                        </div>
+                      }
                     </li>
-                    <li className="u-result-content-item result-nav">
-      						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-      						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
-      						  	  <div className="result-nav-item">
-                          <div className="dropdown">
-                            <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
-                              <span className="fa fa-ellipsis-h"></span>
-                            </a>
-                            {this.resultDropdownMenu(result, 'question')}
-                          </div>
-                        </div>
-      						  </li>
-                </ul>
-            </div>
-
+                  </ul>
+                </div>
+              </li>
+              <li className="u-result-content-item result-nav">
+                <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
+                <div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+                <div className="result-nav-item">
+                  <div className="dropdown">
+                    <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                      <span className="fa fa-ellipsis-h"></span>
+                    </a>
+                    {this.resultDropdownMenu(result, 'question')}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-    </div>
+      </div>
     );
   }
 
@@ -171,82 +164,81 @@ questionResult(result, highlight) {
     return (
       <div className="search-result" id={`response_set_id_${result.id}`}>
         <div className="u-result-group">
-        <div className="u-result">
+          <div className="u-result">
             <div className="u-result-container">
-                <ul className="u-result-content">
-                    <li className="u-result-content-item">
-                        <div className="u-result-details result__responseset">
-                            <div className="result">
-                                <ul className="list-inline result-type-wrapper">
-                                    <li className="result-type-icon"><span className="fa fa-list fa-2x" aria-hidden="true"></span></li>
-                                    <li className="result-name">
-                                      <Link to={`/responseSets/${result.id}`}>
-                                        {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
-                                      </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="result-description">
-                                {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
-                            </div>
-                            <div className="result-analytics">
-                                <ul className="list-inline">
-                                    <li className="result-analytics-item">
-                                        <span className="item-value">30</span>
-                                        <p className="item-description">programs</p>
-                                    </li>
-                                    <li className="result-analytics-item">
-                                        <span className="item-value">10</span>
-                                        <p className="item-description">systems</p>
-                                    </li>
-                                    <li className="result-analytics-item">
-                                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-                                        <p className="item-description">published</p>
-                                    </li>
-                                    <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | response set</p></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="result-linked-details">
-                            <ul className="list-inline result-linked-item associated__question">
-                                <li className="result-linked-number">
-                                    {result.questions.length > 0 &&
-                                    <div>
-                                      Linked Questions: |{result.questions.map((q) => {
-                                        return(
-                                          <text key={`question-${q.id}`}>
-                                            <Link to={`/questions/${q.id}`}> {q.name}</Link> |
-                                          </text>
-                                        );
-                                      })}
-                                    </div>
-                                  }
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li className="u-result-content-item result-nav">
-      						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-      						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
-      						  	<div className="result-nav-item">
-                          {handleSelectSearchResult ? (
-                            this.selectResultButton(result, handleSelectSearchResult)
-                          ) : (
-                            <div className="dropdown">
-                              <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
-                                <span className="fa fa-ellipsis-h"></span>
-                              </a>
-                              {this.resultDropdownMenu(result, 'responseSet')}
-                            </div>
-                          )}
-                        </div>
-      						  </li>
-                </ul>
+              <ul className="u-result-content">
+                <li className="u-result-content-item">
+                  <div className="u-result-details result__responseset">
+                    <div className="result">
+                      <ul className="list-inline result-type-wrapper">
+                        <li className="result-type-icon"><span className="fa fa-list fa-2x" aria-hidden="true"></span></li>
+                        <li className="result-name">
+                          <Link to={`/responseSets/${result.id}`}>
+                            {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="result-description">
+                      {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
+                    </div>
+                    <div className="result-analytics">
+                      <ul className="list-inline">
+                        <li className="result-analytics-item">
+                          <span className="item-value">30</span>
+                          <p className="item-description">programs</p>
+                        </li>
+                        <li className="result-analytics-item">
+                          <span className="item-value">10</span>
+                          <p className="item-description">systems</p>
+                        </li>
+                        <li className="result-analytics-item">
+                          <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
+                          <p className="item-description">published</p>
+                        </li>
+                        <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | response set</p></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="result-linked-details">
+                    <ul className="list-inline result-linked-item associated__question">
+                      <li className="result-linked-number">
+                        {result.questions.length > 0 &&
+                          <div>
+                            Linked Questions: |{result.questions.map((q, i) => {
+                              return(
+                                <text key={`question-${q.id}-${i}`}>
+                                  <Link to={`/questions/${q.id}`}> {q.name}</Link> |
+                                </text>
+                              );
+                            })}
+                          </div>
+                        }
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li className="u-result-content-item result-nav">
+                  <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
+                  <div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+                  <div className="result-nav-item">
+                    {handleSelectSearchResult ? (
+                      this.selectResultButton(result, handleSelectSearchResult)
+                    ) : (
+                      <div className="dropdown">
+                        <a id={`response_set_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                          <span className="fa fa-ellipsis-h"></span>
+                        </a>
+                        {this.resultDropdownMenu(result, 'responseSet')}
+                      </div>
+                    )}
+                  </div>
+                </li>
+              </ul>
             </div>
-
+          </div>
         </div>
-    </div>
-  </div>
+      </div>
     );
   }
 
@@ -254,63 +246,69 @@ questionResult(result, highlight) {
     return (
       <div className="u-result-group">
         <div className="u-result" id={`form_id_${result.id}`}>
-            <div className="u-result-container">
-                <ul className="u-result-content">
-                    <li className="u-result-content-item">
-                        <div className="u-result-details result__form">
-                            <div className="result">
-                                <ul className="list-inline result-type-wrapper">
-                                    <li className="result-type-icon"><span className="fa fa-clipboard fa-2x" aria-hidden="true"></span></li>
-                                    <li className="result-name">
-                                      <Link to={`/forms/${result.id}`}>
-                                        {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
-                                      </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="result-description">
-                                In ultricies consequat eros sit amet hendrerit. Pellentesque ornare nisi non sem facilisis vestibulum.
-                            </div>
-                            <div className="result-analytics">
-                                <ul className="list-inline">
-                                    <li className="result-analytics-item">
-                                        <span className="item-value">30</span>
-                                        <p className="item-description">programs</p>
-                                    </li>
-                                    <li className="result-analytics-item">
-                                        <span className="item-value">10</span>
-                                        <p className="item-description">systems</p>
-                                    </li>
-                                    <li className="result-analytics-item">
-                                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-                                        <p className="item-description">published</p>
-                                    </li>
-                                    <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | form</p></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="result-linked-details">
-                            <ul className="list-inline result-linked-item associated__question">
-                                <li className="result-linked-number">
-                                 {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
-                                </li>
-                            </ul>
-                        </div>
+          <div className="u-result-container">
+            <ul className="u-result-content">
+              <li className="u-result-content-item">
+                <div className="u-result-details result__form">
+                  <div className="result">
+                    <ul className="list-inline result-type-wrapper">
+                      <li className="result-type-icon"><span className="fa fa-clipboard fa-2x" aria-hidden="true"></span></li>
+                      <li className="result-name">
+                        <Link to={`/forms/${result.id}`}>
+                          {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="result-description">
+                    {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
+                  </div>
+                  <div className="result-analytics">
+                    <ul className="list-inline">
+                      <li className="result-analytics-item">
+                        <span className="item-value">30</span>
+                        <p className="item-description">programs</p>
+                      </li>
+                      <li className="result-analytics-item">
+                        <span className="item-value">10</span>
+                        <p className="item-description">systems</p>
+                      </li>
+                      <li className="result-analytics-item">
+                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
+                        <p className="item-description">published</p>
+                      </li>
+                      <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | form</p></li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="result-linked-details">
+                  <ul className="list-inline result-linked-item associated__question">
+                    <li className="result-linked-number">
+                      {result.questions && result.questions > 0 && result.questions.map((q, i) => {
+                        return(
+                          <text key={`question-${q.id}-${i}`}>
+                            <Link to={`/questions/${q.id}`}> {q.name}</Link> |
+                          </text>
+                        );
+                      })}
                     </li>
-                    <li className="u-result-content-item result-nav">
-      						  	<div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-      						  	<div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
-      						  	<div className="result-nav-item">
-                          <div className="dropdown">
-                            <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
-                              <span className="fa fa-ellipsis-h"></span>
-                            </a>
-                            {this.resultDropdownMenu(result, 'form')}
-                        </div>
-      						  	</div>
-      						  </li>
-                </ul>
-            </div>
+                  </ul>
+                </div>
+              </li>
+              <li className="u-result-content-item result-nav">
+                <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
+                <div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+                <div className="result-nav-item">
+                  <div className="dropdown">
+                    <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                      <span className="fa fa-ellipsis-h"></span>
+                    </a>
+                    {this.resultDropdownMenu(result, 'form')}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     );
@@ -339,15 +337,6 @@ questionResult(result, highlight) {
         <div className="search-result-stats">
           <hr/>
         </div>
-
-
-
-
-
-
-
-
-
       </div>
     );
   }
