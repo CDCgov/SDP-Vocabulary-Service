@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import moment from 'moment';
 import currentUserProps from "../prop-types/current_user_props";
 
 export default class SearchResult extends Component {
@@ -51,7 +52,7 @@ export default class SearchResult extends Component {
     return source.status === 'published';
   }
 
-  resultDropdownMenu(result, resultType, extraActionName, extraAction){
+  resultDropdownMenu(result, resultType, extraActionName, extraAction) {
     return (
       <ul className="dropdown-menu dropdown-menu-right">
         {this.isRevisable(result) && <li>
@@ -72,6 +73,42 @@ export default class SearchResult extends Component {
       </a>
       </li>}
       </ul>
+    );
+  }
+
+  resultStatus(status) {
+    if(status === 'published') {
+      return(
+        <li className="result-analytics-item">
+          <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
+          <p className="item-description">published</p>
+        </li>
+      );
+    } else if (status === 'draft') {
+      return(
+        <li className="result-analytics-item">
+          <span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span>
+          <p className="item-description">draft</p>
+        </li>
+      );
+    }
+  }
+
+  programsInfo(result) {
+    return (
+      <li className="result-analytics-item">
+        <span className="item-value">{result.programsCount}</span>
+        <p className="item-description">programs</p>
+      </li>
+    );
+  }
+
+  systemsInfo(result) {
+    return (
+      <li className="result-analytics-item">
+        <span className="item-value">{result.systemsCount}</span>
+        <p className="item-description">systems</p>
+      </li>
     );
   }
 
@@ -98,19 +135,10 @@ export default class SearchResult extends Component {
                   </div>
                   <div className="result-analytics">
                     <ul className="list-inline">
-                      <li className="result-analytics-item">
-                        <span className="item-value">30</span>
-                        <p className="item-description">programs</p>
-                      </li>
-                      <li className="result-analytics-item">
-                        <span className="item-value">10</span>
-                        <p className="item-description">systems</p>
-                      </li>
-                      <li className="result-analytics-item">
-                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-                        <p className="item-description">published</p>
-                      </li>
-                      <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | question</p></li>
+                      {result.programsCount && this.programsInfo(result)}
+                      {result.systemsCount && this.systemsInfo(result)}
+                      {result.status && this.resultStatus(result.status)}
+                      <li className="result-timestamp pull-right"><p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p><p>version {result.version && result.version} | question</p></li>
                     </ul>
                   </div>
                 </div>
@@ -134,7 +162,7 @@ export default class SearchResult extends Component {
               </li>
               <li className="u-result-content-item result-nav">
                 <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-                <div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+                <div className="result-nav-item"><Link to={`/questions/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i></Link></div>
                 <div className="result-nav-item">
                   <div className="dropdown">
                     <a id={`question_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
@@ -184,19 +212,10 @@ export default class SearchResult extends Component {
                     </div>
                     <div className="result-analytics">
                       <ul className="list-inline">
-                        <li className="result-analytics-item">
-                          <span className="item-value">30</span>
-                          <p className="item-description">programs</p>
-                        </li>
-                        <li className="result-analytics-item">
-                          <span className="item-value">10</span>
-                          <p className="item-description">systems</p>
-                        </li>
-                        <li className="result-analytics-item">
-                          <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-                          <p className="item-description">published</p>
-                        </li>
-                        <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | response set</p></li>
+                        {result.programsCount && this.programsInfo(result)}
+                        {result.systemsCount && this.systemsInfo(result)}
+                        {result.status && this.resultStatus(result.status)}
+                        <li className="result-timestamp pull-right"><p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p><p>version {result.version && result.version} | response set</p></li>
                       </ul>
                     </div>
                   </div>
@@ -220,7 +239,7 @@ export default class SearchResult extends Component {
                 </li>
                 <li className="u-result-content-item result-nav">
                   <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-                  <div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+                  <div className="result-nav-item"><Link to={`/responseSets/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i></Link></div>
                   <div className="result-nav-item">
                     {handleSelectSearchResult ? (
                       this.selectResultButton(result, handleSelectSearchResult)
@@ -265,19 +284,10 @@ export default class SearchResult extends Component {
                   </div>
                   <div className="result-analytics">
                     <ul className="list-inline">
-                      <li className="result-analytics-item">
-                        <span className="item-value">30</span>
-                        <p className="item-description">programs</p>
-                      </li>
-                      <li className="result-analytics-item">
-                        <span className="item-value">10</span>
-                        <p className="item-description">systems</p>
-                      </li>
-                      <li className="result-analytics-item">
-                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-                        <p className="item-description">published</p>
-                      </li>
-                      <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | form</p></li>
+                      {result.programsCount && this.programsInfo(result)}
+                      {result.systemsCount && this.systemsInfo(result)}
+                      {result.status && this.resultStatus(result.status)}
+                      <li className="result-timestamp pull-right"><p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p><p>version {result.version && result.version} | form</p></li>
                     </ul>
                   </div>
                 </div>
@@ -297,7 +307,7 @@ export default class SearchResult extends Component {
               </li>
               <li className="u-result-content-item result-nav">
                 <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-                <div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+                <div className="result-nav-item"><Link to={`/forms/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i></Link></div>
                 <div className="result-nav-item">
                   <div className="dropdown">
                     <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
