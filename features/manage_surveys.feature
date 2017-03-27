@@ -96,6 +96,7 @@ Feature: Manage Surveys
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
     And I wait 1 seconds
+    And I go to the dashboard
     Then I should see "Test Survey"
 
 
@@ -111,6 +112,7 @@ Feature: Manage Surveys
    When I click on the "CDC Vocabulary Service" link
    And I click on the "Continue Without Saving" button
    And I wait 1 seconds
+   And I go to the dashboard
    Then I should not see "Test Survey"
 
   Scenario: An invalid control number should not allow save

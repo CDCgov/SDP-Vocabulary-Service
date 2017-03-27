@@ -15,7 +15,7 @@ class SurveyFormList extends Component {
             return (
             <div  key={i} className="basic-c-box panel-default survey-form" id={`form_id_${f.id}`}>
               <div className="panel-heading">
-                <h3 className="panel-title">{f.name} {f.id}</h3>
+                <h3 className="panel-title">{f.name}</h3>
                 <div className='form-group-controls'>
                   <div className="btn btn-small btn-default move-up"
                        onClick={() => this.props.reorderForm(survey, i, 1)}>
