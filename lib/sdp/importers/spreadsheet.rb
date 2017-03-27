@@ -45,16 +45,14 @@ module SDP
       end
 
       def save!
-        f = Form.new
-        f.name = @file
-        f.created_by = @user
-        f.save!
-        sections do |_name, elements|
+        s = Survey.new(name: @file, created_by: @user)
+        s.save!
+        sections do |name, elements|
+          f = Form.new(name: name, created_by: @user)
+          f.save!
+          s.survey_forms.create(form: f)
           elements.each do |element|
-            q = Question.new(
-              content: element[:name], description: element[:description],
-              created_by: @user, response_type: response_type(element[:data_type])
-            )
+            q = question_for(element)
             q.save!
             rs = nil
             if element[:value_set_oid]
@@ -105,6 +103,13 @@ module SDP
 
       def response_type(type)
         ResponseType.find_by(name: @config[:response_types][type])
+      end
+
+      def question_for(element)
+        Question.new(
+          content: element[:name], description: element[:description],
+          created_by: @user, response_type: response_type(element[:data_type])
+        )
       end
 
       def response_set_for_vads(element)
