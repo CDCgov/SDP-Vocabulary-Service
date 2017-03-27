@@ -284,7 +284,7 @@ export default class SearchResult extends Component {
                 <div className="result-linked-details">
                   <ul className="list-inline result-linked-item associated__question">
                     <li className="result-linked-number">
-                      {result.questions && result.questions > 0 && result.questions.map((q, i) => {
+                      {result.questions && result.questions.length > 0 && result.questions.map((q, i) => {
                         return(
                           <text key={`question-${q.id}-${i}`}>
                             <Link to={`/questions/${q.id}`}> {q.name}</Link> |
