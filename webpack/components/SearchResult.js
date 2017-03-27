@@ -347,19 +347,10 @@ export default class SearchResult extends Component {
                   </div>
                   <div className="result-analytics">
                     <ul className="list-inline">
-                      <li className="result-analytics-item">
-                        <span className="item-value">30</span>
-                        <p className="item-description">programs</p>
-                      </li>
-                      <li className="result-analytics-item">
-                        <span className="item-value">10</span>
-                        <p className="item-description">systems</p>
-                      </li>
-                      <li className="result-analytics-item">
-                        <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-                        <p className="item-description">published</p>
-                      </li>
-                      <li className="result-timestamp pull-right"><p>april 7</p><p>version 12 | survey</p></li>
+                      {result.programsCount && this.programsInfo(result)}
+                      {result.systemsCount && this.systemsInfo(result)}
+                      {result.status && this.resultStatus(result.status)}
+                      <li className="result-timestamp pull-right"><p>{ result.createdAt && moment(result.createdAt,'').format('MMMM Do, YYYY') }</p><p>version {result.version && result.version} | survey</p></li>
                     </ul>
                   </div>
                 </div>
@@ -379,7 +370,7 @@ export default class SearchResult extends Component {
               </li>
               <li className="u-result-content-item result-nav">
                 <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
-                <div className="result-nav-item"><i className="fa fa-eye fa-lg" aria-hidden="true"></i></div>
+                <div className="result-nav-item"><Link to={`/surveys/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i></Link></div>
                 <div className="result-nav-item">
                   <div className="dropdown">
                     <a id={`survey_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
