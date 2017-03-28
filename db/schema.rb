@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322153410) do
+ActiveRecord::Schema.define(version: 20170327202207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,16 +61,14 @@ ActiveRecord::Schema.define(version: 20170322153410) do
   create_table "forms", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by_id"
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "version_independent_id"
-    t.integer  "version",                           default: 1
-    t.string   "control_number",          limit: 9
+    t.integer  "version",                          default: 1
+    t.string   "control_number",         limit: 9
     t.string   "oid"
     t.text     "description"
-    t.string   "status",                            default: "draft"
-    t.integer  "surveillance_program_id"
-    t.integer  "surveillance_system_id"
+    t.string   "status",                           default: "draft"
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -190,14 +188,16 @@ ActiveRecord::Schema.define(version: 20170322153410) do
 
   create_table "surveys", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.integer  "created_by_id"
     t.string   "version_independent_id"
-    t.integer  "version",                          default: 1
-    t.string   "control_number",         limit: 9
-    t.string   "status",                           default: "draft"
+    t.integer  "version",                           default: 1
+    t.string   "control_number",          limit: 9
+    t.string   "status",                            default: "draft"
     t.string   "description"
+    t.integer  "surveillance_program_id"
+    t.integer  "surveillance_system_id"
     t.index ["created_by_id"], name: "index_surveys_on_created_by_id", using: :btree
   end
 
@@ -233,8 +233,6 @@ ActiveRecord::Schema.define(version: 20170322153410) do
 
   add_foreign_key "authentications", "users"
   add_foreign_key "concepts", "questions"
-  add_foreign_key "forms", "surveillance_programs"
-  add_foreign_key "forms", "surveillance_systems"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
@@ -243,6 +241,8 @@ ActiveRecord::Schema.define(version: 20170322153410) do
   add_foreign_key "response_sets", "users", column: "created_by_id"
   add_foreign_key "response_sets", "users", column: "updated_by_id"
   add_foreign_key "responses", "response_sets"
+  add_foreign_key "surveys", "surveillance_programs"
+  add_foreign_key "surveys", "surveillance_systems"
   add_foreign_key "surveys", "users", column: "created_by_id"
   add_foreign_key "users", "surveillance_programs", column: "last_program_id"
   add_foreign_key "users", "surveillance_systems", column: "last_system_id"

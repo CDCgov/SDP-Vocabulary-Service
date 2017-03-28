@@ -17,6 +17,8 @@ class SurveysController < ApplicationController
     @survey = Survey.new(form_params)
     return unless can_survey_be_created?(@survey)
     @survey.created_by = current_user
+    @survey.surveillance_system = current_user.last_system
+    @survey.surveillance_program = current_user.last_program
     @survey.survey_forms = create_survey_forms
     if @survey.save
       render :show, status: :created, location: @survey
@@ -31,6 +33,8 @@ class SurveysController < ApplicationController
     else
       update_successful = nil
       @survey.transaction do
+        @survey.surveillance_system = current_user.last_system
+        @survey.surveillance_program = current_user.last_program
         @survey.survey_forms.destroy_all
         @survey.survey_forms = create_survey_forms
 
@@ -47,7 +51,7 @@ class SurveysController < ApplicationController
   def destroy
     @survey.survey_forms.destroy_all
     @survey.destroy
-    render json: @survey, status: :ok && return
+    render json: @survey, status: :ok
   end
 
   # PATCH/PUT /surveys/1/publish

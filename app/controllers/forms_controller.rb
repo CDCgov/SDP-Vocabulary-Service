@@ -35,8 +35,6 @@ class FormsController < ApplicationController
     @form = Form.new(form_params)
     return unless can_form_be_created?(@form)
     @form.created_by = current_user
-    @form.surveillance_system = current_user.last_system
-    @form.surveillance_program = current_user.last_program
     @form.form_questions = create_form_questions
     if @form.save
       render :show, status: :created, location: @form
@@ -60,8 +58,6 @@ class FormsController < ApplicationController
         # That means, if the form fails to update, this block will return false,
         # which will cause the transaction to rollback.
         # Otherwise, we have killed all FormQuestions, without replacing them.
-        @form.surveillance_system = current_user.last_system
-        @form.surveillance_program = current_user.last_program
         update_successful = @form.update(form_params)
       end
       if update_successful
