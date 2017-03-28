@@ -4,15 +4,31 @@
       "number_of_shards": 1,
       "analysis": {
         "analyzer": {
+          "sdp": {
+            "type": "custom",
+            "tokenizer": "sdp",
+            "filter": ["lowercase", "asciifolding", "stop"]
+          },
           "trigram": {
             "type": "custom",
-            "tokenizer": "standard",
+            "tokenizer": "sdp",
             "filter": ["standard", "shingle"]
           },
           "reverse": {
             "type": "custom",
-            "tokenizer": "standard",
+            "tokenizer": "sdp",
             "filter": ["standard", "reverse"]
+          }
+        },
+        "tokenizer": {
+          "sdp": {
+            "type": "edge_ngram",
+            "min_gram": 3,
+            "max_gram": 10,
+            "token_chars": [
+              "letter",
+              "digit"
+            ]
           }
         },
         "filter": {
@@ -48,29 +64,11 @@
         },
         "name": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "description": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "createdAt": {
           "type": "date"
@@ -164,29 +162,11 @@
         },
         "name": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "description": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "createdAt": {
           "type": "date"
@@ -266,29 +246,11 @@
         },
         "name": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "description": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "createdAt": {
           "type": "date"
@@ -368,29 +330,11 @@
         },
         "name": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "description": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "createdAt": {
           "type": "date"
