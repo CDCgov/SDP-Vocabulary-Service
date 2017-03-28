@@ -74,8 +74,8 @@ ContentMenu.propTypes = {
 };
 
 
-let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount}) => {
-  let loggedIn = currentUser ? true : false;
+let SignedInMenu = ({currentUser={}, notifications, notificationCount}) => {
+  let loggedIn = currentUser.email ? true : false;
   if(loggedIn) {
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">
