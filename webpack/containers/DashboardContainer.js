@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
 import { fetchSearchResults } from '../actions/search_results_actions';
@@ -41,7 +42,7 @@ class DashboardContainer extends Component {
 
           <div className="col-md-4">
             <div className="dashboard-activity">
-              {this.recentItems()}
+              {this.authorStats()}
             </div>
           </div>
         </div>
@@ -116,27 +117,27 @@ class DashboardContainer extends Component {
     </div>);
   }
 
-  recentItems() {
+  authorStats() {
     return (
       <div className="recent-items-panel">
-        <div className="recent-items-heading">Recent Items</div>
+        <div className="recent-items-heading">My Stuff</div>
         <div className="recent-items-body">
           <ul className="list-group">
             <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-question-circle recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.questionCount} Questions</div>
+              <Link to="/mystuff" className="recent-items-value">{this.props.myQuestionCount} Questions</Link>
             </li>
             <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.responseSetCount} Response Sets</div>
+              <Link to="/mystuff" className="recent-items-value">{this.props.myResponseSetCount} Response Sets</Link>
             </li>
             <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-list-alt recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.formCount} Forms</div>
+              <Link to="/mystuff" className="recent-items-value">{this.props.myFormCount} Forms</Link>
             </li>
             <li className="recent-item-list">
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
-              <div className="recent-items-value">{this.props.surveyCount} Surveys</div>
+              <Link to="/mystuff" className="recent-items-value">{this.props.mySurveyCount} Surveys</Link>
             </li>
           </ul>
         </div>
@@ -151,6 +152,10 @@ function mapStateToProps(state) {
     questionCount: state.stats.questionCount,
     responseSetCount: state.stats.responseSetCount,
     surveyCount: state.stats.surveyCount,
+    myFormCount: state.stats.myFormCount,
+    myQuestionCount: state.stats.myQuestionCount,
+    myResponseSetCount: state.stats.myResponseSetCount,
+    mySurveyCount: state.stats.mySurveyCount,
     searchResults: state.searchResults,
     currentUser: state.currentUser
   };
@@ -165,6 +170,10 @@ DashboardContainer.propTypes = {
   questionCount: PropTypes.number,
   responseSetCount: PropTypes.number,
   surveyCount: PropTypes.number,
+  myFormCount: PropTypes.number,
+  myQuestionCount: PropTypes.number,
+  myResponseSetCount: PropTypes.number,
+  mySurveyCount: PropTypes.number,
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   currentUser: currentUserProps,
