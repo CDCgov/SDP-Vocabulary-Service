@@ -5,7 +5,7 @@ import responseSetsFromQuestions from '../../../webpack/middleware/response_sets
 
 import {
   FETCH_QUESTIONS_FULFILLED,
-  FETCH_RESPONSE_SETS_FULFILLED
+  FETCH_RESPONSE_SET_FULFILLED
 } from '../../../webpack/actions/types';
 
 describe('responseSetsFromQuestions middleware', () => {
@@ -27,12 +27,13 @@ describe('responseSetsFromQuestions middleware', () => {
     };
   });
 
-  it('will dispatch actions for questions in response sets', () => {
+  it('will dispatch actions for response sets in questions', () => {
     responseSetsFromQuestions(store)(next)(action);
-    let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_RESPONSE_SETS_FULFILLED);
+    let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_RESPONSE_SET_FULFILLED);
     expect(dispatchedAction).to.exist;
-    expect(dispatchedAction.payload.data[0].name).to.equal('Response Set 1');
+    expect(dispatchedAction.payload.data.name).to.equal('Response Set 1');
   });
+
   it('will transform the question payload', () => {
     responseSetsFromQuestions(store)(next)(action);
     const qs = action.payload.data[0];
