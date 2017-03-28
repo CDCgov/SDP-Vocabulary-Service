@@ -55,6 +55,7 @@ class App extends Component {
     return (
       <div>
         <Header currentUser={this.props.currentUser}
+                location={this.props.location}
                 logInOpener={() => this.openLogInModal()}
                 signUpOpener={() => this.openSignUpModal()}
                 settingsOpener={() => this.openSettingsModal()}/>
@@ -91,6 +92,7 @@ App.propTypes = {
   currentUser: currentUserProps,
   fetchCurrentUser: PropTypes.func,
   logIn: PropTypes.func,
+  location: PropTypes.object,
   signUp: PropTypes.func,
   updateUser: PropTypes.func,
   fetchSurveillanceSystems: PropTypes.func,
