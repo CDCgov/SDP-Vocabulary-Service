@@ -60,3 +60,7 @@ Feature: Session Management
   Scenario: Users who are not logged in should not see create links
     Given I am on the "/" page
     Then I should not see a "Create" link
+
+  Scenario: Users should not be able to access restricted pages
+    Given I am on the "/#/mystuff" page
+    Then I should see "You are not authorized to see this content, please login."
