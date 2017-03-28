@@ -72,6 +72,10 @@ Then(/^I should see "([^"]*)"$/) do |value|
   page.assert_text(value, minimum: 1)
 end
 
+Then(/^I should not see a "([^"]*)" link$/) do |value|
+  assert page.has_no_link?(value)
+end
+
 Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
   object_id = attribute_to_id(object_type, attribute, attribute_value)
   within(:xpath, create_path(object_type, object_id)) do
