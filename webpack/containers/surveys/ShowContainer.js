@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSurvey } from '../../actions/survey_actions';
+import { fetchSurvey, publishSurvey } from '../../actions/survey_actions';
 import { fetchForms } from '../../actions/form_actions';
 import { fetchQuestions } from '../../actions/questions_actions';
 import SurveyShow from '../../components/surveys/Show';
@@ -37,7 +37,7 @@ class SurveyShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <SurveyShow survey={this.props.survey} forms={this.props.forms}/>
+            <SurveyShow currentUser={this.props.currentUser} publishSurvey={this.props.publishSurvey} survey={this.props.survey} forms={this.props.forms}/>
             <div className="col-md-12 showpage-comments-title">Comments:</div>
           </div>
         </div>
@@ -58,7 +58,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchSurvey, fetchForms, fetchQuestions}, dispatch);
+  return bindActionCreators({publishSurvey, fetchSurvey, fetchForms, fetchQuestions}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -66,6 +66,7 @@ SurveyShowContainer.propTypes = {
   forms: PropTypes.arrayOf(formProps),
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
+  publishSurvey: PropTypes.func,
   fetchQuestions: PropTypes.func,
   fetchForms: PropTypes.func,
   params: PropTypes.object

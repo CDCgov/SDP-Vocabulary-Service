@@ -43,7 +43,7 @@ class Survey < ApplicationRecord
   def build_new_revision
     new_revision = Survey.new(version_independent_id: version_independent_id,
                               name: name,
-                              version: version + 1,
+                              version: version + 1, status: status,
                               created_by: created_by, control_number: control_number)
 
     new_revision

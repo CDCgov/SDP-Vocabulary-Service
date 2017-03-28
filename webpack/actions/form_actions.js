@@ -1,6 +1,9 @@
 import axios from 'axios';
 import routes from '../routes';
 import {
+  ADD_FORM,
+  REMOVE_FORM,
+  REORDER_FORM,
   FETCH_FORMS,
   FETCH_FORM,
   SAVE_FORM,
@@ -13,6 +16,27 @@ import { getCSRFToken } from './index';
 export function newForm() {
   return {
     type: CREATE_FORM
+  };
+}
+
+export function addForm(survey, form) {
+  return {
+    type: ADD_FORM,
+    payload: {survey, form}
+  };
+}
+
+export function removeForm(survey, index) {
+  return {
+    type: REMOVE_FORM,
+    payload: {survey, index}
+  };
+}
+
+export function reorderForm(survey, index, direction) {
+  return {
+    type: REORDER_FORM,
+    payload: {survey, index, direction}
   };
 }
 

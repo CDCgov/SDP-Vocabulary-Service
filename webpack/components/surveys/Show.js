@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { hashHistory} from 'react-router';
-
+import { hashHistory, Link} from 'react-router';
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
+import currentUserProps from '../../prop-types/current_user_props';
 import VersionInfo from '../VersionInfo';
 
 
@@ -25,6 +25,19 @@ class SurveyShow extends Component{
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
+                  {this.isPublishable(survey) &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.publishSurvey(survey.id);
+                return false;
+              }}>Publish</a>
+          }
+          {this.isRevisable(survey) &&
+              <Link className="btn btn-default" to={`surveys/${survey.id}/revise`}>Revise</Link>
+          }
+          {this.isEditable(survey) &&
+              <Link className="btn btn-default" to={`surveys/${survey.id}/edit`}>Edit</Link>
+          }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
         </div>
         <div className="maincontent-details">
@@ -77,11 +90,31 @@ class SurveyShow extends Component{
       </div>
     );
   }
+
+  isRevisable(survey) {
+    return this.props.currentUser && this.props.currentUser.id &&
+      survey.mostRecent === survey.version &&
+      survey.status === 'published' &&
+      survey.createdById === this.props.currentUser.id;
+  }
+
+  isPublishable(survey) {
+    return this.isEditable(survey);
+  }
+
+  isEditable(survey) {
+    return this.props.currentUser && this.props.currentUser.id &&
+      survey.mostRecent === survey.version &&
+      survey.status === 'draft' &&
+      survey.createdById === this.props.currentUser.id;
+  }
 }
 
 SurveyShow.propTypes = {
   survey: surveyProps,
-  forms: PropTypes.arrayOf(formProps)
+  forms: PropTypes.arrayOf(formProps),
+  currentUser: currentUserProps,
+  publishSurvey: PropTypes.func
 };
 
 export default SurveyShow;

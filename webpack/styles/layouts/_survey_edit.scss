@@ -1,0 +1,71 @@
+.survey-edit-container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 1170px;
+
+  .search-bar{
+    margin-bottom: 10px;
+  }
+
+  .survey-group{
+    margin-top: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .form-group{
+    min-height: 500px;
+    max-height: 500px;
+    padding-right: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .add-form{
+    padding: 15px;
+    button{
+      margin-right:10px;
+    }
+  }
+
+  .form-group-controls{
+    float: right;
+  }
+  
+  .form-result{
+    margin: 0px;
+  }
+
+  .form-container {
+    @extend .panel-body;
+    border-bottom: 1px solid $light-gray;
+    font-weight: bold;
+    border-radius: 0px;
+    font-size: 14px;
+    color: $cdc-blue;
+    padding: 6px 8px 6px 10px;
+    li:first-child {
+      width: 95%;
+      float: left;    
+    }
+  }
+  .response-set-header{
+    button {
+      float: right;
+    }
+  }
+  .response-set-label{
+    text-align: left;
+    vertical-align: middle;
+    margin-bottom: 0px;
+    span{
+      padding-left: 10px;
+    }
+    span.right{
+      padding-left: 80px;
+      padding-right: 5px;
+    }
+  }
+}
+

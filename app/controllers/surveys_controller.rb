@@ -15,6 +15,7 @@ class SurveysController < ApplicationController
 
   def create
     @survey = Survey.new(form_params)
+    return unless can_survey_be_created?(@survey)
     @survey.created_by = current_user
     @survey.survey_forms = create_survey_forms
     if @survey.save
@@ -49,7 +50,31 @@ class SurveysController < ApplicationController
     render json: @survey, status: :ok && return
   end
 
+  # PATCH/PUT /surveys/1/publish
+  def publish
+    if @survey.status == 'draft'
+      @survey.publish
+      render :show
+    else
+      render json: @survey.errors, status: :unprocessable_entity
+    end
+  end
+
   private
+
+  def can_survey_be_created?(survey)
+    if survey.all_versions.count >= 1
+      if survey.all_versions.last.created_by != current_user
+        render(json: survey.errors, status: :unauthorized)
+        return false
+      elsif survey.all_versions.last.status == 'draft'
+        render(json: survey.errors, status: :unprocessable_entity)
+        return false
+      end
+      survey.version = survey.most_recent + 1
+    end
+    true
+  end
 
   def load_supporting_resources_for_editing
     @forms = params[:search] ? Form.search(params[:search]) : Form.all
@@ -61,7 +86,8 @@ class SurveysController < ApplicationController
   end
 
   def form_params
-    params.require(:survey).permit(:name, :control_number, :version_independent_id, :created_by_id)
+    params.require(:survey).permit(:name, :description, :status,
+                                   :control_number, :version_independent_id, :created_by_id)
   end
 
   def create_survey_forms
