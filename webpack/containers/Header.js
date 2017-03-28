@@ -8,7 +8,7 @@ import NotificationDropdown from '../components/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
-let LoginMenu = ({logInOpener, signUpOpener, currentUser={email:null}}) => {
+let LoginMenu = ({logInOpener, signUpOpener, currentUser}) => {
   let loggedIn = ! _.isEmpty(currentUser);
   if(!loggedIn) {
     return (
@@ -38,7 +38,7 @@ LoginMenu.propTypes = {
   signUpOpener: PropTypes.func.isRequired
 };
 
-let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
+let ContentMenu = ({settingsOpener, currentUser}) => {
   let loggedIn = ! _.isEmpty(currentUser);
   if(loggedIn) {
     let {email} = currentUser;
@@ -74,8 +74,8 @@ ContentMenu.propTypes = {
 };
 
 
-let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount}) => {
-  let loggedIn = currentUser ? true : false;
+let SignedInMenu = ({currentUser, notifications, notificationCount}) => {
+  let loggedIn = ! _.isEmpty(currentUser);
   if(loggedIn) {
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">

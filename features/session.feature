@@ -43,3 +43,7 @@ Feature: Session Management
     Given I am on the "/" page
     When I click on the "Login" link
     Then I should see the "Sign in with OpenID Connect" link
+
+  Scenario: Users who are not logged in should not see create links
+    Given I am on the "/" page
+    Then I should not see a "Create" link
