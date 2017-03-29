@@ -28,7 +28,7 @@ class FormShow extends Component {
     );
   }
 
-  historyBar(form) {
+  historyBar(form){
     return (
       <div className="col-md-3 nopadding no-print">
         <div className="showpage_sidenav_subtitle">
@@ -40,6 +40,16 @@ class FormShow extends Component {
         <VersionInfo versionable={form} versionableType='form' />
       </div>
     );
+  }
+
+  handleDelete(e) {
+    e.preventDefault();
+    //confirm('Are you sure you want to delete this Form?');
+    this.props.deleteForm(this.props.form.id, (response) => {
+      if (response.status == 200) {
+        this.props.router.push('/');
+      }
+    });
   }
 
   mainContent(form) {
@@ -54,10 +64,23 @@ class FormShow extends Component {
               }}>Publish</a>
           }
           {this.isRevisable(form) &&
-              <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
+            <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
           }
           {this.isEditable(form) &&
-              <Link className="btn btn-default" to={`forms/${form.id}/edit`}>Edit</Link>
+            <Link className="btn btn-default" to={`forms/${form.id}/edit`}>Edit</Link>
+          }
+          {this.isEditable(form) &&
+            <a className="btn btn-default" id='form-delete-button' href="#" onClick={(e) => {
+              e.preventDefault();
+              //confirm('Are you sure you want to delete this Form?');
+              this.props.deleteForm(this.props.form.id, (response) => {
+                if (response.status == 200) {
+                  this.props.router.push('/');
+                }else{
+                  this.props.router.push('/forms/edit');
+                }
+              });   
+            }}>Delete</a>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           {this.props.currentUser && this.props.currentUser.id &&
@@ -101,9 +124,11 @@ class FormShow extends Component {
 }
 
 FormShow.propTypes = {
-  currentUser: currentUserProps,
   form: formProps,
-  publishForm: PropTypes.func
+  router: PropTypes.object,
+  currentUser: currentUserProps,
+  publishForm: PropTypes.func,
+  deleteForm:  PropTypes.func
 };
 
 export default FormShow;

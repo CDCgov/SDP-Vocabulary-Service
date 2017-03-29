@@ -68,6 +68,15 @@ export default class ResponseSetDetails extends Component {
     return responseSet.status === 'published';
   }
 
+  handleDelete(e) {
+    e.preventDefault();
+    this.props.deleteResponseSet(this.props.responseSet.id, (response) => {
+      if (response.status == 200) {
+        this.props.router.push('/');
+      }
+    });
+  }
+
   mainContent(responseSet) {
     return (
       <div className="col-md-9 nopadding maincontent">
@@ -78,6 +87,9 @@ export default class ResponseSetDetails extends Component {
             }
             {this.isEditable(responseSet) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/edit`}>Edit</Link>
+            }
+            {this.isEditable(responseSet) &&
+              <a className="btn btn-default" href="#" onClick={(e) => this.handleDelete(e)}>Delete</a>
             }
             {this.isExtendable(responseSet) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
@@ -143,7 +155,9 @@ export default class ResponseSetDetails extends Component {
 
 ResponseSetDetails.propTypes = {
   responseSet: responseSetProps,
+  router: PropTypes.obj,
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
+  deleteResponseSet:  PropTypes.func,
   questions: PropTypes.arrayOf(questionProps)
 };

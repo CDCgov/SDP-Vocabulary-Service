@@ -71,12 +71,14 @@ class FormsController < ApplicationController
   # DELETE /forms/1
   # DELETE /forms/1.json
   def destroy
-    # if @form.status == 'draft'
-    @form.questions.destroy_all
-    @form.destroy
-    render json: @form, status: :ok && return
-    # end
-    # render json: @form.errors, status: :unprocessable_entity
+    if @form.status == 'draft'
+      @form.questions.destroy_all
+      @form.surveys.destroy_all
+      @form.destroy
+      render json: @form
+    else
+      render json: @form.errors, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /forms/1/publish
