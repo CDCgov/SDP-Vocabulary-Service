@@ -426,6 +426,9 @@ definitions:
       programUri:
         type: string
         title: Relative URI of the program
+      programDescription:
+        type: string
+        title: Human readable description of the program
       # TODO additional metadata
       forms:
         type: array
