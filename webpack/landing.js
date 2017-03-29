@@ -18,6 +18,7 @@ import MyStuffContainer from './containers/MyStuffContainer';
 import SurveyShowContainer from './containers/surveys/ShowContainer';
 import Privacy from './containers/Privacy';
 import App from './containers/App';
+import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
 
 import configureStore from './store/configure_store';
 import {logPageViewed} from './utilities/AdobeAnalytics';
@@ -27,20 +28,22 @@ ReactDOM.render(
     <Router history={hashHistory} onUpdate={logPageViewed}>
       <Route path='/' component={App}>
         <IndexRoute component={DashboardContainer} />
-        <Route path='/mystuff' component={MyStuffContainer} />
-        <Route path='/privacy' component={Privacy}/>
+        <Route component={AuthenticatedRoutes}>
+          <Route path='/mystuff' component={MyStuffContainer} />
           <Route path='/forms/new' component={FormsEditContainer} />
-          <Route path='/forms/:formId' component={FormShowContainer} />
           <Route path='/forms/:formId/:action' component={FormsEditContainer} />
           <Route path='/responseSets/new' component={ResponseSetEditContainer} />
-          <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
           <Route path='/responseSets/:rsId/:action' component={ResponseSetEditContainer} />
           <Route path='/questions/new'  component={QuestionEditContainer} />
-          <Route path='/questions/:qId' component={QuestionShowContainer} />
           <Route path='/questions/:qId/:action' component={QuestionEditContainer} />
           <Route path='/surveys/new'  component={SurveyEditContainer} />
-          <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
           <Route path='/surveys/:surveyId/:action' component={SurveyEditContainer} />
+        </Route>
+        <Route path='/privacy' component={Privacy}/>
+        <Route path='/forms/:formId' component={FormShowContainer} />
+        <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
+        <Route path='/questions/:qId' component={QuestionShowContainer} />
+        <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));
