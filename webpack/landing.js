@@ -40,10 +40,10 @@ ReactDOM.render(
           <Route path='/surveys/:surveyId/:action' component={SurveyEditContainer} />
         </Route>
         <Route path='/privacy' component={Privacy}/>
-          <Route path='/forms/:formId' component={FormShowContainer} />
-          <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
-          <Route path='/questions/:qId' component={QuestionShowContainer} />
-          <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
+        <Route path='/forms/:formId' component={FormShowContainer} />
+        <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
+        <Route path='/questions/:qId' component={QuestionShowContainer} />
+        <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));
