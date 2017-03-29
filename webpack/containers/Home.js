@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 class Home extends Component {
 
   render() {
-    return (
-      
-          <div className="container">
+    return ( 
+    <div className="container home-body">
 
       <div className="masthead">
         <nav>
@@ -29,7 +28,6 @@ class Home extends Component {
       <div className="row">
         <div className="col-lg-4">
           <h2>What is a Vocabulary Service</h2>
-          <p className="text-danger">As of v9.1.2, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.</p>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
           <p><a className="btn btn-primary" href="#" role="button">View details »</a></p>
         </div>
@@ -44,13 +42,10 @@ class Home extends Component {
           <p><a className="btn btn-primary" href="#" role="button">View details »</a></p>
         </div>
       </div>
-
       <footer className="footer">
         <p>© 2016 Company, Inc.</p>
       </footer>
-
-    </div> 
-
+</div>
       
     );
   }
