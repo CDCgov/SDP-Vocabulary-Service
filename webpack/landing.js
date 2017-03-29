@@ -32,6 +32,7 @@ ReactDOM.render(
           <Route path='/mystuff' component={MyStuffContainer} />
           <Route path='/forms/new' component={FormsEditContainer} />
           <Route path='/forms/:formId/:action' component={FormsEditContainer} />
+          <Route path='/responseSets/new' component={ResponseSetEditContainer} />
           <Route path='/responseSets/:rsId/:action' component={ResponseSetEditContainer} />
           <Route path='/questions/new'  component={QuestionEditContainer} />
           <Route path='/questions/:qId/:action' component={QuestionEditContainer} />
@@ -40,7 +41,6 @@ ReactDOM.render(
         </Route>
         <Route path='/privacy' component={Privacy}/>
           <Route path='/forms/:formId' component={FormShowContainer} />
-          <Route path='/responseSets/new' component={ResponseSetEditContainer} />
           <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
           <Route path='/questions/:qId' component={QuestionShowContainer} />
           <Route path='/surveys/:surveyId' component={SurveyShowContainer} />

@@ -64,3 +64,11 @@ Feature: Session Management
   Scenario: Users should not be able to access restricted pages
     Given I am on the "/#/mystuff" page
     Then I should see "You are not authorized to see this content, please login."
+    Given I am on the "/#/responseSets/new" page
+    Then I should see "You are not authorized to see this content, please login."
+    Given I am on the "/#/questions/new" page
+    Then I should see "You are not authorized to see this content, please login."
+    Given I am on the "/#/forms/new" page
+    Then I should see "You are not authorized to see this content, please login."
+    Given I am on the "/#/surveys/new" page
+    Then I should see "You are not authorized to see this content, please login."
