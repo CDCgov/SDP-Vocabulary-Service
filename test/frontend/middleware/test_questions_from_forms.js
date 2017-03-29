@@ -5,7 +5,7 @@ import questionsFromForms from '../../../webpack/middleware/questions_from_forms
 
 import {
   FETCH_FORMS_FULFILLED,
-  FETCH_QUESTIONS_FULFILLED
+  FETCH_QUESTION_FULFILLED
 } from '../../../webpack/actions/types';
 
 describe('questionsFromForms middleware', () => {
@@ -17,7 +17,7 @@ describe('questionsFromForms middleware', () => {
   const twoForms = [
                     {id: 1, name: "Red Form",  userId: "testAuthor@gmail.com", questions: twoQuestions},
                     {id: 3, name: "Blue Form", userId: "testAuthor@gmail.com", questions: twoQuestions}
-                   ];
+  ];
 
   const next = () => {
     1 + 1; //do nothing
@@ -27,15 +27,15 @@ describe('questionsFromForms middleware', () => {
     store = new MockStore();
     action = {
       type: FETCH_FORMS_FULFILLED,
-      payload: {data: twoForms} 
+      payload: {data: twoForms}
     };
   });
 
   it('will dispatch actions for questions in forms', () => {
     questionsFromForms(store)(next)(action);
-    let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_QUESTIONS_FULFILLED);
+    let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_QUESTION_FULFILLED);
     expect(dispatchedAction).to.exist;
-    expect(dispatchedAction.payload.data[0].content).to.equal('M?');
+    expect(dispatchedAction.payload.data.content).to.equal('M?');
   });
 
   it('will transform the form payload', () => {
