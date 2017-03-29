@@ -39,6 +39,19 @@ Feature: Session Management
     And I click on the "Settings" link
     Then I should see "Account Details"
 
+  Scenario: Edit an existing account without programs
+    Given I am logged in as test_author@gmail.com
+    And I am on the "/" page
+    When I click on the "account-dropdown" link
+    And I click on the "Settings" link
+    Then I should see "Account Details"
+    And I should see "No surveillance programs loaded in the database"
+    And I fill in the "firstName" field with "Brett"
+    And I fill in the "lastName" field with "Bretterson"
+    And I click on the "Update" button
+    Then I should see "test_author@gmail.com"
+    And I should not see "Account Details"
+
   Scenario: Login via OpenID Connect
     Given I am on the "/" page
     When I click on the "Login" link
