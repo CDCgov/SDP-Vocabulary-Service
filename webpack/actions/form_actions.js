@@ -9,7 +9,8 @@ import {
   SAVE_FORM,
   SAVE_DRAFT_FORM,
   CREATE_FORM,
-  PUBLISH_FORM
+  PUBLISH_FORM,
+  DELETE_FORM
 } from './types';
 import { getCSRFToken } from './index';
 
@@ -37,6 +38,30 @@ export function reorderForm(survey, index, direction) {
   return {
     type: REORDER_FORM,
     payload: {survey, index, direction}
+  };
+}
+
+export function deleteForm(id, callback=null) {
+  const authenticityToken = getCSRFToken();
+  let data = new FormData();
+  data.set('authenticity_token', authenticityToken);
+  data.set('_method', 'delete');
+  const delPromise = axios.request({
+    url: routes.formPath(id),
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-Key-Inflection': 'camel',
+      'Accept': 'application/json'
+    }
+  });
+  if (callback) {
+    delPromise.then(callback);
+  }
+  return {
+    type: DELETE_FORM,
+    payload: delPromise
   };
 }
 

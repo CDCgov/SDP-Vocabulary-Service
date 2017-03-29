@@ -49,9 +49,13 @@ class SurveysController < ApplicationController
   end
 
   def destroy
-    @survey.survey_forms.destroy_all
-    @survey.destroy
-    render json: @survey, status: :ok
+    if @survey.status == 'draft'
+      @survey.forms.destroy_all
+      @survey.destroy
+      render json: @survey
+    else
+      render json: @survey.errors, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /surveys/1/publish
