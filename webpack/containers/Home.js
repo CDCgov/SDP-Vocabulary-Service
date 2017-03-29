@@ -4,7 +4,10 @@ class Home extends Component {
   render() {
     return ( 
     <div className="container home-body">
-
+    <div>
+    xxx    
+    
+    </div>
       <div className="masthead">
         <nav>
           <ul className="nav nav-justified">
@@ -47,6 +50,7 @@ class Home extends Component {
       </footer>
 </div>
       
+     
     );
   }
 }
