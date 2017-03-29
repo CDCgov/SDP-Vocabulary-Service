@@ -11,7 +11,7 @@ module SDP
       Vocabulary::Elasticsearch.client.ping
     end
 
-    def self.search(type, query_string, query_size = 10, page = 1, current_user_id = nil)
+    def self.search(type, query_string, page, query_size = 10, current_user_id = nil)
       with_client do |client|
         results = if query_string
                     SDP::Elasticsearch.search_on_string(client, type, query_string, current_user_id)
@@ -113,7 +113,7 @@ module SDP
 
     def self.search_all(client, query_size, page, current_user_id)
       # The first result is index 0 so page 2 should be from: 10
-      from_index = (page - 1) * query_size
+      from_index = (page.to_i - 1) * query_size
       client.search index: 'vocabulary', body: {
         size: query_size,
         from: from_index,

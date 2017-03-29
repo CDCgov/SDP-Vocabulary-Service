@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
-import { fetchSearchResults } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
 import currentUserProps from '../prop-types/current_user_props';
@@ -13,9 +13,11 @@ class DashboardContainer extends Component {
     super(props);
     this.search = this.search.bind(this);
     this.selectType = this.selectType.bind(this);
+    this.loadMore = this.loadMore.bind(this);
     this.state = {
       searchType: '',
-      searchTerms: ''
+      searchTerms: '',
+      page: 2
     };
   }
 
@@ -37,6 +39,7 @@ class DashboardContainer extends Component {
                 </div>
               </div>
               <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
+              <div className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
             </div>
           </div>
 
@@ -48,6 +51,27 @@ class DashboardContainer extends Component {
         </div>
       </div>
     );
+  }
+
+  loadMore() {
+    let searchType = null;
+    let searchTerms = null;
+    let page = null;
+    let tempState = this.state.page + 1;
+    if(this.state.searchType === '') {
+      searchType = null;
+    } else {
+      searchType = this.state.searchType;
+    }
+    if(this.state.searchTerms === '') {
+      searchTerms = null;
+    } else {
+      searchTerms = this.state.searchTerms;
+    }
+    console.log(this.state.page);
+    this.setState({page: tempState});
+    console.log(this.state.page);
+    this.props.fetchMoreSearchResults(searchTerms, searchType, this.state.page);
   }
 
   search(searchTerms) {
@@ -162,7 +186,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, fetchSearchResults}, dispatch);
+  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -176,6 +200,7 @@ DashboardContainer.propTypes = {
   mySurveyCount: PropTypes.number,
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
+  fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object
 };
