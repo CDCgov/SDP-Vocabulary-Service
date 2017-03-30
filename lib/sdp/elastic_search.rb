@@ -192,8 +192,8 @@ module SDP
       ensure_index
       with_client do |_client|
         delete_all('survey', Survey.ids)
-        Survey.all.each do |_survey|
-          UpdateIndexJob.perform_later('response_set', ESSurveySetSerializer.new(response_set).as_json)
+        Survey.all.each do |survey|
+          UpdateIndexJob.perform_later('response_set', ESSurveySerializer.new(survey).as_json)
         end
       end
     end

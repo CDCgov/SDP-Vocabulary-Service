@@ -57,4 +57,18 @@ class Question < ApplicationRecord
 
     new_revision
   end
+
+  # Get the programs that the form is associated with by the surveys that the
+  # form is contained in
+  def surveillance_programs
+    SurveillanceProgram.joins(surveys: :survey_forms)
+                       .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                       .where('form_questions.question_id = ?', id)
+  end
+
+  def surveillance_systems
+    SurveillanceSystem.joins(surveys: :survey_forms)
+                      .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                      .where('form_questions.question_id = ?', id)
+  end
 end
