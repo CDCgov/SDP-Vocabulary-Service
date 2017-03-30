@@ -66,6 +66,9 @@ Rails.application.routes.draw do
     resources :programs, only: [:index, :show] do
       get :usage, on: :member
     end
+    resources :systems, only: [:index, :show] do
+      get :usage, on: :member
+    end
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

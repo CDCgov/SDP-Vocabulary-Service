@@ -6,5 +6,4 @@ class ProgramSerializer < ActiveModel::Serializer
   def program_uri
     Rails.application.routes.url_helpers.api_program_url(object, only_path: true)
   end
-  # has_many :forms, serializer: FormSerializer
 end
