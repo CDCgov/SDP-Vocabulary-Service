@@ -72,3 +72,12 @@ Feature: Session Management
     Then I should see "You are not authorized to see this content, please login."
     Given I am on the "/#/surveys/new" page
     Then I should see "You are not authorized to see this content, please login."
+
+  Scenario: Sessions that expire result in redirection
+    Given I have a Question with the content "What is your gender?" and the type "MC"
+    And I am logged in as test_author@gmail.com
+    When I go to My Stuff
+    Then I should see "What is your gender?"
+    Then my session expires
+    And I am on the "/#/mystuff" page
+    Then I should see "You are not authorized to see this content, please login."
