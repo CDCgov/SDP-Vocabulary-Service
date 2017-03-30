@@ -5,6 +5,7 @@ import Routes from '../routes';
 import VersionInfo from './VersionInfo';
 import { hashHistory, Link } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
+import { isEditable, isRevisable, isPublishable } from '../utilities/componentHelpers';
 
 class FormShow extends Component {
   render() {
@@ -42,44 +43,34 @@ class FormShow extends Component {
     );
   }
 
-  handleDelete(e) {
-    e.preventDefault();
-    //confirm('Are you sure you want to delete this Form?');
-    this.props.deleteForm(this.props.form.id, (response) => {
-      if (response.status == 200) {
-        this.props.router.push('/');
-      }
-    });
-  }
-
   mainContent(form) {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
-          {this.isPublishable(form) &&
+          {isPublishable(form, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.publishForm(form.id);
                 return false;
               }}>Publish</a>
           }
-          {this.isRevisable(form) &&
+          {isRevisable(form, this.props.currentUser) &&
             <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
           }
-          {this.isEditable(form) &&
+          {isEditable(form, this.props.currentUser) &&
             <Link className="btn btn-default" to={`forms/${form.id}/edit`}>Edit</Link>
           }
-          {this.isEditable(form) &&
-            <a className="btn btn-default" id='form-delete-button' href="#" onClick={(e) => {
+          {isEditable(form, this.props.currentUser) &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              //confirm('Are you sure you want to delete this Form?');
-              this.props.deleteForm(this.props.form.id, (response) => {
-                if (response.status == 200) {
-                  this.props.router.push('/');
-                }else{
-                  this.props.router.push('/forms/edit');
-                }
-              });   
+              if(confirm('Are you sure you want to delete this Form?')){
+                this.props.deleteForm(form.id, (response) => {
+                  if (response.status == 200) {
+                    this.props.router.push('/');
+                  }
+                });
+              }
+              return false;
             }}>Delete</a>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
@@ -103,24 +94,6 @@ class FormShow extends Component {
       </div>
     );
   }
-
-  isRevisable(form) {
-    return this.props.currentUser && this.props.currentUser.id &&
-      form.mostRecent === form.version &&
-      form.status === 'published' &&
-      form.createdById === this.props.currentUser.id;
-  }
-
-  isPublishable(form) {
-    return this.isEditable(form);
-  }
-
-  isEditable(form) {
-    return this.props.currentUser && this.props.currentUser.id &&
-      form.mostRecent === form.version &&
-      form.status === 'draft' &&
-      form.createdById === this.props.currentUser.id;
-  }
 }
 
 FormShow.propTypes = {
@@ -128,7 +101,7 @@ FormShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishForm: PropTypes.func,
-  deleteForm:  PropTypes.func
+  deleteForm:  PropTypes.func.isRequired
 };
 
 export default FormShow;

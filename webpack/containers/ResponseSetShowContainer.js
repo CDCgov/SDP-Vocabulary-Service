@@ -30,10 +30,12 @@ class ResponseSetShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <ResponseSetDetails responseSet={this.props.responseSet} currentUser={this.props.currentUser}
-                                publishResponseSet={this.props.publishResponseSet} questions={this.props.questions}
-                                deleteResponseSet={this.props.deleteResponseSet} 
-                                router={this.props.router}/>
+            <ResponseSetDetails responseSet={this.props.responseSet}
+                                currentUser={this.props.currentUser}
+                                publishResponseSet={this.props.publishResponseSet}
+                                questions={this.props.questions}
+                                deleteResponseSet={this.props.deleteResponseSet}
+                                router={this.props.router} />
             <div className="col-md-12 showpage-comments-title">Comments:</div>
             <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
           </div>

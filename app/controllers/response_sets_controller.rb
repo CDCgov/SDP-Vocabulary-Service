@@ -86,6 +86,7 @@ class ResponseSetsController < ApplicationController
   # DELETE /response_sets/1.json
   def destroy
     if @response_set.status == 'draft'
+      @response_set.questions.destroy_all
       @response_set.destroy
       render json: @response_set
     else

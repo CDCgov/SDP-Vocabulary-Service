@@ -28,6 +28,18 @@ AfterStep do
   sleep(ENV['PAUSE'].to_i || 0)
 end
 
+# Print console.log messages if you are trying to figure out JS issues
+if ENV['JS_DEBUG']
+  class DriverJSError < StandardError; end
+  AfterStep do
+    errors = page.driver.console_messages
+    if errors.present?
+      message = errors.map { |m| m[:message] unless m[:message].include?('%c') }.select(&:present?).join("\n")
+      puts message
+    end
+  end
+end
+
 Capybara.default_driver = :chrome
 Capybara.javascript_driver = :chrome
 
