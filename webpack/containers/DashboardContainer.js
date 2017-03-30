@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
-import { fetchSearchResults } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
 import currentUserProps from '../prop-types/current_user_props';
@@ -13,9 +13,11 @@ class DashboardContainer extends Component {
     super(props);
     this.search = this.search.bind(this);
     this.selectType = this.selectType.bind(this);
+    this.loadMore = this.loadMore.bind(this);
     this.state = {
       searchType: '',
-      searchTerms: ''
+      searchTerms: '',
+      page: 1
     };
   }
 
@@ -25,6 +27,7 @@ class DashboardContainer extends Component {
   }
 
   render() {
+    const searchResults = this.props.searchResults;
     return (
       <div className="container">
         <div className="row dashboard">
@@ -36,10 +39,14 @@ class DashboardContainer extends Component {
                   {this.analyticsGroup(this.state.searchType)}
                 </div>
               </div>
-              <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
+              <div className="load-more-search">
+                <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
+                {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+                  <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+                }
+              </div>
             </div>
           </div>
-
           <div className="col-md-4">
             <div className="dashboard-activity">
               {this.authorStats()}
@@ -48,6 +55,20 @@ class DashboardContainer extends Component {
         </div>
       </div>
     );
+  }
+
+  loadMore() {
+    let searchType = this.state.searchType;
+    let searchTerms = this.state.searchTerms;
+    let tempState = this.state.page + 1;
+    if(this.state.searchType === '') {
+      searchType = null;
+    }
+    if(this.state.searchTerms === '') {
+      searchTerms = null;
+    }
+    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState);
+    this.setState({page: tempState});
   }
 
   search(searchTerms) {
@@ -72,10 +93,10 @@ class DashboardContainer extends Component {
       searchTerms = this.state.searchTerms;
     }
     if(this.state.searchType === searchType) {
-      this.setState({searchType: ''});
+      this.setState({searchType: '', page: 1});
       searchType = null;
     } else {
-      this.setState({searchType: searchType});
+      this.setState({searchType: searchType, page: 1});
     }
     this.props.fetchSearchResults(searchTerms, searchType);
   }
@@ -162,7 +183,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, fetchSearchResults}, dispatch);
+  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -176,6 +197,7 @@ DashboardContainer.propTypes = {
   mySurveyCount: PropTypes.number,
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
+  fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object
 };

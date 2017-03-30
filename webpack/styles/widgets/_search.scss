@@ -16,6 +16,12 @@
   padding-bottom: 20px;
 }
 
+.load-more-search {
+  max-height: 130vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .search-group-btn {
   @extend .input-group-btn;
 }

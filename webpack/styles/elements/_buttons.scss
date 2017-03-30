@@ -7,17 +7,17 @@
   border: 0px;
   .icon {
     margin-right: 10px;
-  } 
+  }
 }
 
 .button-action {
   @extend .btn-primary;
-  background-color: $cdc-blue;  
+  background-color: $cdc-blue;
 }
 
 .button-submit {
   @extend .btn-success;
-  background-color: $cdc-green; 
+  background-color: $cdc-green;
 }
 
 .button-disabled {
