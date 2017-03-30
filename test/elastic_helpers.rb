@@ -12,7 +12,7 @@ module Elastictest
 
     fake_body = <<-EOS
     {"took":1,"timed_out":false,"_shards":{"total":#{questions.size + response_sets.size + forms.size},"successful":5,"failed":0},
-    "hits":{"total":2,"max_score":2.7132807,"hits":[
+    "hits":{"total":#{questions.size + response_sets.size + forms.size},"max_score":2.7132807,"hits":[
     EOS
 
     fake_body += fake_results('question', questions)
@@ -48,7 +48,7 @@ module Elastictest
     questions = Question.all
     fake_body = <<-EOS
     {"took":1,"timed_out":false,"_shards":{"total":#{questions.size},"successful":5,"failed":0},
-    "hits":{"total":2,"max_score":2.7132807,"hits":[
+    "hits":{"total":#{questions.size},"max_score":2.7132807,"hits":[
     EOS
     fake_body += fake_results('question', questions)
     fake_body += ']}}'
@@ -59,7 +59,7 @@ module Elastictest
     response_sets = ResponseSet.all
     fake_body = <<-EOS
     {"took":1,"timed_out":false,"_shards":{"total":#{response_sets.size},"successful":5,"failed":0},
-    "hits":{"total":2,"max_score":2.7132807,"hits":[
+    "hits":{"total":#{response_sets.size},"max_score":2.7132807,"hits":[
     EOS
     fake_body += fake_results('response_set', response_sets)
     fake_body += ']}}'
@@ -70,7 +70,7 @@ module Elastictest
     forms = Form.all
     fake_body = <<-EOS
     {"took":1,"timed_out":false,"_shards":{"total":#{forms.size},"successful":5,"failed":0},
-    "hits":{"total":2,"max_score":2.7132807,"hits":[
+    "hits":{"total":#{forms.size},"max_score":2.7132807,"hits":[
     EOS
     fake_body += fake_results('form', forms)
     fake_body += ']}}'
@@ -82,7 +82,7 @@ module Elastictest
     surveys = Survey.all
     fake_body = <<-EOS
     {"took":1,"timed_out":false,"_shards":{"total":#{surveys.size},"successful":5,"failed":0},
-    "hits":{"total":2,"max_score":2.7132807,"hits":[
+    "hits":{"total":#{surveys.size},"max_score":2.7132807,"hits":[
     EOS
     fake_body += fake_results('survey', surveys)
     fake_body += ']}}'

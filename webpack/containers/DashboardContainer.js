@@ -27,6 +27,7 @@ class DashboardContainer extends Component {
   }
 
   render() {
+    const searchResults = this.props.searchResults;
     return (
       <div className="container">
         <div className="row dashboard">
@@ -40,7 +41,9 @@ class DashboardContainer extends Component {
               </div>
               <div className="load-more-search">
                 <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
-                <div className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+                {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+                  <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+                }
               </div>
             </div>
           </div>
@@ -90,10 +93,10 @@ class DashboardContainer extends Component {
       searchTerms = this.state.searchTerms;
     }
     if(this.state.searchType === searchType) {
-      this.setState({searchType: ''});
+      this.setState({searchType: '', page: 1});
       searchType = null;
     } else {
-      this.setState({searchType: searchType});
+      this.setState({searchType: searchType, page: 1});
     }
     this.props.fetchSearchResults(searchTerms, searchType);
   }
