@@ -16,8 +16,6 @@ export function fetchSearchResults(searchTerms=null, type=null) {
 }
 
 export function fetchMoreSearchResults(searchTerms=null, type=null, page) {
-  console.log("from action");
-  console.log(page)
   return {
     type: FETCH_MORE_SEARCH_RESULTS,
     payload: axios.get(routes.elasticsearchPath(), {

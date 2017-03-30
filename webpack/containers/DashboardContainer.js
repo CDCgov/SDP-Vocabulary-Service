@@ -17,7 +17,7 @@ class DashboardContainer extends Component {
     this.state = {
       searchType: '',
       searchTerms: '',
-      page: 2
+      page: 1
     };
   }
 
@@ -42,7 +42,6 @@ class DashboardContainer extends Component {
               <div className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
             </div>
           </div>
-
           <div className="col-md-4">
             <div className="dashboard-activity">
               {this.authorStats()}
@@ -54,24 +53,17 @@ class DashboardContainer extends Component {
   }
 
   loadMore() {
-    let searchType = null;
-    let searchTerms = null;
-    let page = null;
+    let searchType = this.state.searchType;
+    let searchTerms = this.state.searchTerms;
     let tempState = this.state.page + 1;
     if(this.state.searchType === '') {
       searchType = null;
-    } else {
-      searchType = this.state.searchType;
     }
     if(this.state.searchTerms === '') {
       searchTerms = null;
-    } else {
-      searchTerms = this.state.searchTerms;
     }
-    console.log(this.state.page);
+    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState);
     this.setState({page: tempState});
-    console.log(this.state.page);
-    this.props.fetchMoreSearchResults(searchTerms, searchType, this.state.page);
   }
 
   search(searchTerms) {

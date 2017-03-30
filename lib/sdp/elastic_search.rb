@@ -1,5 +1,6 @@
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/ParameterLists
 module SDP
   module Elasticsearch
     def self.with_client
@@ -14,9 +15,9 @@ module SDP
     def self.search(type, query_string, page, query_size = 10, current_user_id = nil)
       with_client do |client|
         results = if query_string
-                    SDP::Elasticsearch.search_on_string(client, type, query_string, current_user_id)
+                    SDP::Elasticsearch.search_on_string(client, query_size, page, type, query_string, current_user_id)
                   elsif type
-                    SDP::Elasticsearch.search_on_type(client, type, current_user_id)
+                    SDP::Elasticsearch.search_on_type(client, query_size, page, type, current_user_id)
                   else
                     SDP::Elasticsearch.search_all(client, query_size, page, current_user_id)
                   end
@@ -24,8 +25,11 @@ module SDP
       end
     end
 
-    def self.query_with_type(client, type, query_string, current_user_id)
+    def self.query_with_type(client, query_size, page, type, query_string, current_user_id)
+      from_index = (page - 1) * query_size
       client.search index: 'vocabulary', type: type, body: {
+        size: query_size,
+        from: from_index,
         query: {
           bool: {
             filter: { dis_max: { queries: [
@@ -54,8 +58,11 @@ module SDP
       }
     end
 
-    def self.query_without_type(client, query_string, current_user_id)
+    def self.query_without_type(client, query_size, page, query_string, current_user_id)
+      from_index = (page - 1) * query_size
       client.search index: 'vocabulary', body: {
+        size: query_size,
+        from: from_index,
         query: {
           bool: {
             filter: { dis_max: { queries: [
@@ -84,18 +91,19 @@ module SDP
       }
     end
 
-    def self.search_on_string(client, type, query_string, current_user_id)
+    def self.search_on_string(client, query_size, page, type, query_string, current_user_id)
       if type
-        query_with_type(client, type, query_string, current_user_id)
-      elsif query_string
-        query_without_type(client, query_string, current_user_id)
+        query_with_type(client, query_size, page, type, query_string, current_user_id)
       else
-        client.search index: 'vocabulary'
+        query_without_type(client, query_size, page, query_string, current_user_id)
       end
     end
 
-    def self.search_on_type(client, type, current_user_id)
+    def self.search_on_type(client, query_size, page, type, current_user_id)
+      from_index = (page - 1) * query_size
       client.search index: 'vocabulary', type: type, body: {
+        size: query_size,
+        from: from_index,
         query: {
           bool: {
             filter: {
@@ -113,7 +121,7 @@ module SDP
 
     def self.search_all(client, query_size, page, current_user_id)
       # The first result is index 0 so page 2 should be from: 10
-      from_index = (page.to_i - 1) * query_size
+      from_index = (page - 1) * query_size
       client.search index: 'vocabulary', body: {
         size: query_size,
         from: from_index,
@@ -201,3 +209,4 @@ module SDP
 end
 # rubocop:enable Metrics/ModuleLength
 # rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/ParameterLists
