@@ -38,8 +38,10 @@ class DashboardContainer extends Component {
                   {this.analyticsGroup(this.state.searchType)}
                 </div>
               </div>
-              <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
-              <div className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+              <div className="load-more-search">
+                <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
+                <div className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+              </div>
             </div>
           </div>
           <div className="col-md-4">
