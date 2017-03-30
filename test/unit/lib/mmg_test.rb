@@ -2,11 +2,11 @@ require 'test_helper'
 require 'sdp/importers/spreadsheet'
 
 class MMGTest < ActiveSupport::TestCase
-  FORM_COUNT = 1
+  SURVEY_COUNT = 1
+  FORM_COUNT = 2
   QUESTION_COUNT = 3
   RESPONSE_SET_COUNT = 2
   RESPONSE_COUNT = 6
-  SECTION_COUNT = 0
 
   test 'parse_mmg' do
     u = users(:admin)
@@ -19,6 +19,7 @@ class MMGTest < ActiveSupport::TestCase
     rcount = Response.count
     qcount = Question.count
     formcount = Form.count
+    surveycount = Survey.count
 
     importer.save!
 
@@ -26,5 +27,6 @@ class MMGTest < ActiveSupport::TestCase
     assert_equal rscount + RESPONSE_SET_COUNT, ResponseSet.count
     assert_equal qcount  + QUESTION_COUNT, Question.count
     assert_equal formcount + FORM_COUNT, Form.count
+    assert_equal surveycount + SURVEY_COUNT, Survey.count
   end
 end
