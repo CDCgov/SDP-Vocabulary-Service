@@ -9,6 +9,7 @@ import { hashHistory } from 'react-router';
 import QuestionList  from './QuestionList';
 import CodedSetTable from "../components/CodedSetTable";
 import currentUserProps from "../prop-types/current_user_props";
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 import _ from 'lodash';
 
 export default class ResponseSetDetails extends Component {
@@ -48,59 +49,40 @@ export default class ResponseSetDetails extends Component {
     );
   }
 
-  isRevisable(responseSet) {
-    return responseSet.mostRecent === responseSet.version &&
-      responseSet.status === 'published' &&
-      responseSet.createdBy.id === this.props.currentUser.id;
-  }
-
-  isPublishable(responseSet) {
-    return this.isEditable(responseSet);
-  }
-
-  isEditable(responseSet) {
-    return responseSet.mostRecent === responseSet.version &&
-      responseSet.status === 'draft' &&
-      responseSet.createdBy.id === this.props.currentUser.id;
-  }
-
-  isExtendable(responseSet) {
-    return responseSet.status === 'published';
-  }
-
-  handleDelete(e) {
-    e.preventDefault();
-    this.props.deleteResponseSet(this.props.responseSet.id, (response) => {
-      if (response.status == 200) {
-        this.props.router.push('/');
-      }
-    });
-  }
-
   mainContent(responseSet) {
     return (
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
-            {this.isRevisable(responseSet) &&
+            {isRevisable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>
             }
-            {this.isEditable(responseSet) &&
+            {isEditable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/edit`}>Edit</Link>
             }
-            {this.isEditable(responseSet) &&
-              <a className="btn btn-default" href="#" onClick={(e) => this.handleDelete(e)}>Delete</a>
-            }
-            {this.isExtendable(responseSet) &&
+            {isExtendable(responseSet) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
             }
-            {this.isPublishable(responseSet) &&
+            {isPublishable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.publishResponseSet(responseSet.id);
                 return false;
               }}>Publish</a>
             }
+            {isEditable(responseSet, this.props.currentUser) &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              if(confirm('Are you sure you want to delete this Response Set?')){
+                this.props.deleteResponseSet(responseSet.id, (response) => {
+                  if (response.status == 200) {
+                    this.props.router.push('/');
+                  }
+                });
+              }
+              return false;
+            }}>Delete</a>
+          }
           </div>
         }
         <div className="maincontent-details">

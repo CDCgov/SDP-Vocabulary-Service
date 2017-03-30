@@ -7,6 +7,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { hashHistory, Link } from 'react-router';
 import currentUserProps from "../prop-types/current_user_props";
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 
 export default class QuestionDetails extends Component {
   render() {
@@ -82,9 +83,31 @@ export default class QuestionDetails extends Component {
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
           <div className="action_bar no-print">
-            {this.reviseQuestionButton()}
-            {this.extendQuestionButton()}
-            {this.props.publishButton}
+            {isRevisable(question, this.props.currentUser) &&
+              <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
+            }
+            {isEditable(question, this.props.currentUser) &&
+              <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/edit`}>Edit</Link>
+            }
+            {isExtendable(question) &&
+              <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
+            }
+            {isPublishable(question, this.props.currentUser) &&
+              <button className="btn btn-primary" onClick={() => this.props.handlePublish(question) }>Publish</button>
+            }
+            {isEditable(question, this.props.currentUser) &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                if(confirm('Are you sure you want to delete this Question?')){
+                  this.props.deleteQuestion(question.id, (response) => {
+                    if (response.status == 200) {
+                      this.props.router.push('/');
+                    }
+                  });
+                }
+                return false;
+              }}>Delete</a>
+            }
           </div>
         }
         <div className="maincontent-details">
@@ -163,6 +186,8 @@ export default class QuestionDetails extends Component {
 QuestionDetails.propTypes = {
   question:  questionProps,
   currentUser:   currentUserProps,
-  publishButton: PropTypes.object,
-  responseSets: PropTypes.array
+  router: PropTypes.object,
+  responseSets: PropTypes.array,
+  handlePublish:  PropTypes.func,
+  deleteQuestion: PropTypes.func
 };

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import routes from '../routes';
+import { deleteObject } from './action_helpers';
+import { getCSRFToken } from './index';
 import {
   ADD_FORM,
   REMOVE_FORM,
@@ -12,7 +14,6 @@ import {
   PUBLISH_FORM,
   DELETE_FORM
 } from './types';
-import { getCSRFToken } from './index';
 
 export function newForm() {
   return {
@@ -42,26 +43,9 @@ export function reorderForm(survey, index, direction) {
 }
 
 export function deleteForm(id, callback=null) {
-  const authenticityToken = getCSRFToken();
-  let data = new FormData();
-  data.set('authenticity_token', authenticityToken);
-  data.set('_method', 'delete');
-  const delPromise = axios.request({
-    url: routes.formPath(id),
-    method: 'post',
-    data,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'X-Key-Inflection': 'camel',
-      'Accept': 'application/json'
-    }
-  });
-  if (callback) {
-    delPromise.then(callback);
-  }
   return {
     type: DELETE_FORM,
-    payload: delPromise
+    payload: deleteObject(routes.formPath(id), callback)
   };
 }
 

@@ -1,18 +1,28 @@
 import axios from 'axios';
 import routes from '../routes';
+import { deleteObject } from './action_helpers';
+import { getCSRFToken } from './index';
 import {
   FETCH_SURVEYS,
   FETCH_SURVEY,
   SAVE_SURVEY,
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,
-  PUBLISH_SURVEY
+  PUBLISH_SURVEY,
+  DELETE_SURVEY
 } from './types';
-import { getCSRFToken } from './index';
+
 
 export function newSurvey() {
   return {
     type: CREATE_SURVEY
+  };
+}
+
+export function deleteSurvey(id, callback=null) {
+  return {
+    type: DELETE_SURVEY,
+    payload: deleteObject(routes.surveyPath(id), callback)
   };
 }
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSurvey, publishSurvey } from '../../actions/survey_actions';
+import { fetchSurvey, publishSurvey, deleteSurvey } from '../../actions/survey_actions';
 import { fetchForms } from '../../actions/form_actions';
 import { fetchQuestions } from '../../actions/questions_actions';
 import SurveyShow from '../../components/surveys/Show';
@@ -17,8 +17,6 @@ class SurveyShowContainer extends Component {
     this.props.fetchForms();
     this.props.fetchQuestions();
     this.props.fetchSurvey(this.props.params.surveyId);
-
-
   }
 
   componentDidUpdate(prevProps) {
@@ -37,7 +35,12 @@ class SurveyShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <SurveyShow currentUser={this.props.currentUser} publishSurvey={this.props.publishSurvey} survey={this.props.survey} forms={this.props.forms}/>
+            <SurveyShow currentUser={this.props.currentUser}
+                        publishSurvey={this.props.publishSurvey}
+                        router={this.props.router}
+                        survey={this.props.survey}
+                        forms ={this.props.forms}
+                        deleteSurvey={this.props.deleteSurvey} />
             <div className="col-md-12 showpage-comments-title">Comments:</div>
           </div>
         </div>
@@ -58,7 +61,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({publishSurvey, fetchSurvey, fetchForms, fetchQuestions}, dispatch);
+  return bindActionCreators({publishSurvey, fetchSurvey, deleteSurvey, fetchForms, fetchQuestions}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -67,9 +70,11 @@ SurveyShowContainer.propTypes = {
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
   publishSurvey: PropTypes.func,
+  deleteSurvey: PropTypes.func,
   fetchQuestions: PropTypes.func,
   fetchForms: PropTypes.func,
-  params: PropTypes.object
+  params: PropTypes.object,
+  router: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyShowContainer);

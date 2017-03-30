@@ -205,7 +205,6 @@ class QuestionForm extends Component{
                   <div className="actions form-group">
                     <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
                     {this.publishButton()}
-                    {this.deleteButton()}
                     {this.cancelButton()}
                   </div>
                 </div>
@@ -237,27 +236,10 @@ class QuestionForm extends Component{
     }
   }
 
-  deleteButton() {
-    if (this.props.action === 'edit') {
-      return (
-        <button name="delete" className="btn btn-default" data-disable-with='Delete' onClick={(e) => this.handleDelete(e)}>Delete</button>
-      );
-    }
-  }
-
   handlePublish() {
     this.props.publishSubmitter(this.props.id, (response) => {
       if (response.status == 200) {
         this.props.router.push(`/questions/${response.data.id}`);
-      }
-    });
-  }
-
-  handleDelete(e) {
-    e.preventDefault();
-    this.props.deleteSubmitter(this.props.id, (response) => {
-      if (response.status == 200) {
-        this.props.router.push(`/questions`);
       }
     });
   }
@@ -344,7 +326,6 @@ QuestionForm.propTypes = {
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
   draftSubmitter: PropTypes.func.isRequired,
-  deleteSubmitter: PropTypes.func.isRequired,
   publishSubmitter: PropTypes.func.isRequired,
   questionSubmitter: PropTypes.func.isRequired,
   handleResponseTypeChange: PropTypes.func

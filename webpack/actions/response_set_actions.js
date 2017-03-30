@@ -1,5 +1,7 @@
 import axios from 'axios';
 import routes from '../routes';
+import { deleteObject } from './action_helpers';
+import { getCSRFToken } from './index';
 import {
   FETCH_RESPONSE_SETS,
   FETCH_RESPONSE_SET,
@@ -9,29 +11,10 @@ import {
   DELETE_RESPONSE_SET
 } from './types';
 
-import { getCSRFToken } from './index';
-
 export function deleteResponseSet(id, callback=null) {
-  const authenticityToken = getCSRFToken();
-  let data = new FormData();
-  data.set('authenticity_token', authenticityToken);
-  data.set('_method', 'delete');
-  const delPromise = axios.request({
-    url: routes.responseSetPath(id),
-    method: 'post',
-    data,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'X-Key-Inflection': 'camel',
-      'Accept': 'application/json'
-    }
-  });
-  if (callback) {
-    delPromise.then(callback);
-  }
   return {
     type: DELETE_RESPONSE_SET,
-    payload: delPromise
+    payload: deleteObject(routes.responseSetPath(id), callback)
   };
 }
 

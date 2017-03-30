@@ -1,11 +1,11 @@
 Given(/^I have a Form with the name "([^"]*)" and the description "([^"]*)"$/) do |name, description|
   user = get_user 'test_author@gmail.com'
-  Form.create!(name: name, description: description, created_by: user)
+  Form.create!(name: name, description: description, created_by: user, status: 'draft')
 end
 
 Given(/^I have a Form with the name "([^"]*)"$/) do |name|
   user = get_user 'test_author@gmail.com'
-  Form.create!(name: name, created_by: user)
+  Form.create!(name: name, created_by: user, status: 'draft')
 end
 
 When(/^I use the response set search modal to select "([^"]*)"$/) do |name|

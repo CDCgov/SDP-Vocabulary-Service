@@ -106,12 +106,28 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     # TODO: deprecation
   end
 
-  test 'should destroy  a draft question' do
+  test 'should destroy a draft question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
     assert_equal Question.last.status, 'draft'
     last_id = Question.last.id
     assert_difference('Question.count', -1) do
       delete question_url(Question.last, format: :json)
+    end
+    assert_response :success
+    assert_not_equal last_id, Question.last
+  end
+
+  test 'should destroy a draft question and questionForms' do
+    post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
+    assert_equal Question.last.status, 'draft'
+    last_id = Question.last.id
+    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @question.created_by_id, linked_questions: [last_id], linked_response_sets: [nil] } }
+    assert_difference('Question.count', -1) do
+      assert_difference('FormQuestion.count', -1) do
+        assert_difference('Form.count', 0) do
+          delete question_url(Question.last, format: :json)
+        end
+      end
     end
     assert_response :success
     assert_not_equal last_id, Question.last
