@@ -120,7 +120,7 @@ class SurveyEdit extends Component {
     if(this.props.survey && this.props.survey.id) {
       return(<Link className="btn btn-default pull-right" to={`/surveys/${this.props.survey.id}`}>Cancel</Link>);
     }
-    return(<Link className="btn btn-default pull-right" to='/surveys/'>Cancel</Link>);
+    return(<Link className="btn btn-default pull-right" to='/'>Cancel</Link>);
   }
 
   render() {
