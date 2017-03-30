@@ -7,7 +7,7 @@ import VersionInfo from '../VersionInfo';
 import { isEditable, isRevisable, isPublishable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component{
-  historyBar(survey) {
+  historyBar() {
     return (
       <div className="col-md-3 nopadding no-print">
         <div className="showpage_sidenav_subtitle">
@@ -16,27 +16,27 @@ class SurveyShow extends Component{
             <li className="subtitle">History</li>
           </ul>
         </div>
-        <VersionInfo versionable={survey} versionableType='survey' />
+        <VersionInfo versionable={this.props.survey} versionableType='survey' />
       </div>
     );
   }
 
-  mainContent(survey, forms) {
+  mainContent() {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
-          {isPublishable(survey, this.props.currentUser) &&
+                  {this.isPublishable(this.props.survey) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                this.props.publishSurvey(survey.id);
+                this.props.publishSurvey(this.props.survey.id);
                 return false;
               }}>Publish</a>
           }
-          {isRevisable(survey, this.props.currentUser) &&
-              <Link className="btn btn-default" to={`surveys/${survey.id}/revise`}>Revise</Link>
+          {this.isRevisable(this.props.survey) &&
+              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/revise`}>Revise</Link>
           }
-          {isEditable(survey, this.props.currentUser) &&
-              <Link className="btn btn-default" to={`surveys/${survey.id}/edit`}>Edit</Link>
+          {this.isEditable(this.props.survey) &&
+              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/edit`}>Edit</Link>
           }
           {isEditable(survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
@@ -54,17 +54,19 @@ class SurveyShow extends Component{
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
         </div>
         <div className="maincontent-details">
-          <h3 className="maincontent-item-name"><strong>Name:</strong> {survey.name} </h3>
-          <p className="maincontent-item-info">Version: {survey.version} - Author: {survey.userId} </p>
+          <h3 className="maincontent-item-name"><strong>Name:</strong> {this.props.survey.name} </h3>
+          <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
+          {this.surveillanceProgram()}
+          {this.surveillanceSystem()}
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
               <h3 className="panel-title">Description</h3>
             </div>
             <div className="box-content">
-              {survey.description}
+              {this.props.survey.description}
             </div>
           </div>
-          {forms.map((f,i ) =>
+          {this.props.forms.map((f,i ) =>
             <div  key={i} className="basic-c-box panel-default survey-form">
               <div className="panel-heading">
                 <h3 className="panel-title">{f.name}</h3>
@@ -83,6 +85,22 @@ class SurveyShow extends Component{
     );
   }
 
+  surveillanceSystem() {
+    if (this.props.survey.surveillanceSystem) {
+      return <p className="maincontent-item-info">Surveillance System: {this.props.survey.surveillanceSystem.name}</p>;
+    } else {
+      return "";
+    }
+  }
+
+  surveillanceProgram() {
+    if (this.props.survey.surveillanceProgram) {
+      return <p className="maincontent-item-info">Surveillance Program: {this.props.survey.surveillanceProgram.name}</p>;
+    } else {
+      return "";
+    }
+  }
+
   render() {
     let {survey, forms} = this.props;
     if(!survey || !forms){
@@ -98,8 +116,8 @@ class SurveyShow extends Component{
             <li className="showpage_title">Survey Details</li>
           </ul>
         </div>
-        {this.historyBar(survey)}
-        {this.mainContent(survey, forms)}
+        {this.historyBar()}
+        {this.mainContent()}
       </div>
     );
   }

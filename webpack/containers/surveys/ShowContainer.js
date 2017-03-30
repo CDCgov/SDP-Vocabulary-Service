@@ -56,6 +56,12 @@ function mapStateToProps(state, ownProps) {
   if (props.survey) {
     props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
     props.forms = props.forms.filter((f) => f !== undefined);
+    if (props.survey.surveillanceSystemId) {
+      props.survey.surveillanceSystem = state.surveillanceSystems[props.survey.surveillanceSystemId];
+    }
+    if (props.survey.surveillanceProgramId) {
+      props.survey.surveillanceProgram = state.surveillancePrograms[props.survey.surveillanceProgramId];
+    }
   }
   return props;
 }
