@@ -14,7 +14,10 @@ export default class SearchResultList extends Component {
         }
         {this.props.searchResults.hits && this.props.searchResults.hits.hits.map((sr, i) => {
           return(
-            <SearchResult key={`${sr.Source.versionIndependentId}-${sr.Source.updatedAt}-${i}`} type={sr.Type} result={sr} currentUser={this.props.currentUser} handleSelectSearchResult={this.props.handleSelectSearchResult} />
+            <SearchResult key={`${sr.Source.versionIndependentId}-${sr.Source.updatedAt}-${i}`}
+                          type={sr.Type} result={sr} currentUser={this.props.currentUser}
+                          handleSelectSearchResult={this.props.handleSelectSearchResult}
+                          extraAction={this.props.extraAction} extraActionName={this.props.extraActionName}/>
           );
         })}
       </div>
@@ -25,5 +28,7 @@ export default class SearchResultList extends Component {
 SearchResultList.propTypes = {
   searchResults: PropTypes.object.isRequired,
   currentUser: currentUserProps,
-  handleSelectSearchResult: PropTypes.func
+  handleSelectSearchResult: PropTypes.func,
+  extraActionName: PropTypes.string,
+  extraAction: PropTypes.func
 };
