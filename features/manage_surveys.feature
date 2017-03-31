@@ -63,8 +63,10 @@ Feature: Manage Surveys
    And I should not see "Edit"
 
   Scenario: Edit a draft Survey
-    Given I have a Survey with the name "Test Survey" and the description "Survey description"
-    And I am logged in as test_author@gmail.com
+    Given I have a Surveillance System with the name "National Violent Death Reporting System"
+    And I have a Surveillance Program with the name "FoodNet"
+    And I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I am working the program "FoodNet" and system "National Violent Death Reporting System" logged in as test_author@gmail.com
     When I go to the list of Surveys
     And I click on the menu link for the Survey with the name "Test Survey"
     And I click on the option to Details the Survey with the name "Test Survey"
@@ -77,6 +79,7 @@ Feature: Manage Surveys
     Then I should see "Survey description"
     And I should see "Publish"
     And I should see "Edit"
+    And I should see "Surveillance System: National Violent Death Reporting System"
 
   Scenario: Reorder forms on a Survey
     Given I have a published Survey with the name "Test Survey"

@@ -26,6 +26,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 2 # one for the survey one for the form update
     assert_response :success
     assert_equal 1, Survey.last.forms.length
+    assert_equal 'GSP', Survey.last.surveillance_program.acronym
   end
 
   test 'should show survey' do
