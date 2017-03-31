@@ -15,6 +15,8 @@ class ESSurveySerializer < ActiveModel::Serializer
   attribute :created_by, key: :createdBy
   attribute :questions
   attribute :forms
+  attribute :surveillance_program
+  attribute :surveillance_system
   attribute(:codes) { codes }
 
   def codes
@@ -62,5 +64,15 @@ class ESSurveySerializer < ActiveModel::Serializer
 
   def created_by
     UserSerializer.new(object.created_by).as_json if object.created_by
+  end
+
+  def surveillance_system
+    { id: object.surveillance_system.id,
+      name: object.surveillance_system.name } if object.surveillance_system
+  end
+
+  def surveillance_program
+    { id: object.surveillance_program.id,
+      name: object.surveillance_program.name } if object.surveillance_program
   end
 end
