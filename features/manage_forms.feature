@@ -26,6 +26,7 @@ Feature: Manage Forms
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Details the Form with the name "Test Form"
     When I click on the "Delete" link
+    When I confirm my action
     Then I go to the dashboard
     When I go to the list of Forms
     Then I should not see "Test Form"
