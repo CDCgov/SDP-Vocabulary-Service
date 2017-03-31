@@ -73,4 +73,16 @@ class ResponseSet < ApplicationRecord
     extended_set.responses = responses.collect(&:dup)
     extended_set
   end
+
+  def surveillance_programs
+    SurveillanceProgram.joins(surveys: :survey_forms)
+                       .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                       .where('form_questions.response_set_id = ?', id)
+  end
+
+  def surveillance_systems
+    SurveillanceSystem.joins(surveys: :survey_forms)
+                      .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                      .where('form_questions.response_set_id = ?', id)
+  end
 end

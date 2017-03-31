@@ -16,6 +16,8 @@ class ESFormSerializer < ActiveModel::Serializer
   attribute :questions
   attribute :surveys
   attribute(:codes) { codes }
+  attribute :surveillance_programs
+  attribute :surveillance_systems
 
   def codes
     [] # object.concepts.collect { |c| CodeSerializer.new(c).as_json }
@@ -59,5 +61,13 @@ class ESFormSerializer < ActiveModel::Serializer
 
   def created_by
     UserSerializer.new(object.created_by).as_json if object.created_by
+  end
+
+  def surveillance_programs
+    object.surveillance_programs.collect { |sp| { id: sp.id, name: sp.name } }
+  end
+
+  def surveillance_systems
+    object.surveillance_systems.collect { |ss| { id: ss.id, name: ss.name } }
   end
 end
