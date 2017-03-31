@@ -1,14 +1,22 @@
 import axios from 'axios';
 import routes from '../routes';
+import { deleteObject } from './action_helpers';
+import { getCSRFToken } from './index';
 import {
   FETCH_RESPONSE_SETS,
   FETCH_RESPONSE_SET,
   SAVE_RESPONSE_SET,
   SAVE_DRAFT_RESPONSE_SET,
-  PUBLISH_RESPONSE_SET
+  PUBLISH_RESPONSE_SET,
+  DELETE_RESPONSE_SET
 } from './types';
 
-import { getCSRFToken } from './index';
+export function deleteResponseSet(id, callback=null) {
+  return {
+    type: DELETE_RESPONSE_SET,
+    payload: deleteObject(routes.responseSetPath(id), callback)
+  };
+}
 
 export function fetchMyResponseSets(searchTerms) {
   return {

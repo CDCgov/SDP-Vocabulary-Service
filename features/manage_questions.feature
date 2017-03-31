@@ -114,6 +114,7 @@ Feature: Manage Questions
     And I click on the "remove_0" link
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
+    Then I go to the dashboard
     When I go to the list of Questions
     And I should see "What is your favorite animal?"
 
@@ -153,3 +154,15 @@ Feature: Manage Questions
     And I click on the "search-btn" button
     Then I should see "Why"
     And I should see "Reasons"
+
+   Scenario: Delete a Question
+    Given I have a Question with the content "Test Question" and the description "Question description"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the menu link for the Question with the content "Test Question"
+    And I click on the option to Details the Question with the content "Test Question"
+    When I click on the "Delete" link
+    When I confirm my action
+    Then I go to the dashboard
+    When I go to the list of Questions
+    Then I should not see "Test Question"

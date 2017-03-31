@@ -2,6 +2,7 @@ import {
   FETCH_FORM_FULFILLED,
   FETCH_FORMS_FULFILLED,
   PUBLISH_FORM_FULFILLED,
+  DELETE_FORM_FULFILLED,
   SAVE_DRAFT_FORM_FULFILLED,
   ADD_QUESTION,
   REMOVE_QUESTION,
@@ -52,6 +53,10 @@ export default function forms(state = {}, action) {
       newState = Object.assign({}, state);
       newState[form.id||0] = newForm;
       return newState;
+    case DELETE_FORM_FULFILLED:
+      return _.omitBy(state,(v, k)=>{
+        return action.payload.data.id==k;
+      });
     default:
       return state;
   }

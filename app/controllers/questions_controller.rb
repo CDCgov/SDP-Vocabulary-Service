@@ -100,6 +100,8 @@ class QuestionsController < ApplicationController
   def destroy
     if @question.status == 'draft'
       @question.concepts.destroy_all
+      @question.forms.destroy_all
+      @question.response_sets.destroy_all
       @question.destroy
       render json: @question
     else

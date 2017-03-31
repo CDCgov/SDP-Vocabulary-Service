@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchResponseSet, publishResponseSet } from '../actions/response_set_actions';
+import { fetchResponseSet, publishResponseSet, deleteResponseSet } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
@@ -30,8 +30,12 @@ class ResponseSetShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <ResponseSetDetails responseSet={this.props.responseSet} currentUser={this.props.currentUser}
-                                publishResponseSet={this.props.publishResponseSet} questions={this.props.questions} />
+            <ResponseSetDetails responseSet={this.props.responseSet}
+                                currentUser={this.props.currentUser}
+                                publishResponseSet={this.props.publishResponseSet}
+                                questions={this.props.questions}
+                                deleteResponseSet={this.props.deleteResponseSet}
+                                router={this.props.router} />
             <div className="col-md-12 showpage-comments-title">Comments:</div>
             <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
           </div>
@@ -52,7 +56,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchResponseSet, publishResponseSet}, dispatch);
+  return bindActionCreators({fetchResponseSet, publishResponseSet, deleteResponseSet}, dispatch);
 }
 
 ResponseSetShowContainer.propTypes = {
@@ -61,7 +65,9 @@ ResponseSetShowContainer.propTypes = {
   questions: PropTypes.arrayOf(questionProps),
   fetchResponseSet: PropTypes.func,
   publishResponseSet: PropTypes.func,
-  params: PropTypes.object
+  deleteResponseSet:  PropTypes.func,
+  params: PropTypes.object,
+  router: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResponseSetShowContainer);

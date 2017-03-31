@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchForm, publishForm } from '../actions/form_actions';
+import { fetchForm, publishForm, deleteForm } from '../actions/form_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
 import CommentList from '../containers/CommentList';
@@ -28,8 +28,11 @@ class FormShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <FormShow currentUser={this.props.currentUser} form={this.props.form}
-                      publishForm={this.props.publishForm} />
+            <FormShow form={this.props.form}
+                      router={this.props.router}
+                      currentUser={this.props.currentUser}
+                      publishForm={this.props.publishForm}
+                      deleteForm ={this.props.deleteForm} />
             <div className="col-md-12 showpage-comments-title">Comments:</div>
             <CommentList commentableType='Form' commentableId={this.props.form.id} />
           </div>
@@ -50,15 +53,17 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchForm, publishForm}, dispatch);
+  return bindActionCreators({fetchForm, publishForm, deleteForm}, dispatch);
 }
 
 FormShowContainer.propTypes = {
   form: formProps,
+  params: PropTypes.object,
+  router: PropTypes.object.isRequired,
   currentUser: currentUserProps,
-  fetchForm: PropTypes.func,
-  publishForm: PropTypes.func,
-  params: PropTypes.object
+  fetchForm:  PropTypes.func,
+  deleteForm: PropTypes.func,
+  publishForm: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormShowContainer);

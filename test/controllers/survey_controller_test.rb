@@ -33,12 +33,18 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should destroy survey' do
+  test 'should destroy survey and surveyforms' do
     assert_enqueued_jobs 0
+    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @survey.created_by_id, linked_questions: [nil], linked_response_sets: [nil] } }
+    post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_forms: [Form.last.id] } }
     assert_difference('Survey.count', -1) do
-      delete survey_url(@survey)
+      assert_difference('SurveyForm.count', -1) do
+        assert_difference('Form.count', 0) do
+          delete survey_url(Survey.last)
+        end
+      end
     end
-    assert_enqueued_jobs 3
+    assert_enqueued_jobs 5
   end
 
   test 'should publish a survey' do

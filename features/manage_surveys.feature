@@ -37,6 +37,18 @@ Feature: Manage Surveys
    And I should see "Publish"
    And I should see "Edit"
 
+ Scenario: Delete a draft Survey
+  Given I have a Survey with the name "Test Survey" and the description "Survey description"
+  And I am logged in as test_author@gmail.com
+  When I go to the list of Surveys
+  And I click on the menu link for the Survey with the name "Test Survey"
+  And I click on the option to Details the Survey with the name "Test Survey"
+  When I click on the "Delete" link
+  When I confirm my action
+  Then I go to the dashboard
+  When I go to the list of Surveys
+  Then I should not see "Test Survey"
+
  Scenario: Publish a draft Survey
    Given I have a Survey with the name "Test Survey" and the description "Survey description"
    And I am logged in as test_author@gmail.com

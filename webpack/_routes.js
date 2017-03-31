@@ -694,6 +694,9 @@ Based on Rails routes of Vocabulary::Application
 // surveys => /surveys(.:format)
   // function(options)
   surveys_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// usage_api_form => /api/forms/:id/usage(.:format)
+  // function(id, options)
+  usage_api_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
 // usage_api_question => /api/questions/:id/usage(.:format)
   // function(id, options)
   usage_api_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),

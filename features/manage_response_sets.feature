@@ -46,6 +46,18 @@ Feature: Manage Response Sets
     And I should see "M / F"
     And I should see "Publish"
 
+   Scenario: Delete a draft Response Set
+    Given I have a Response Set with the name "Test Response Set" and the description "Response Set description"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the menu link for the Response Set with the name "Test Response Set"
+    And I click on the option to Details the Response Set with the name "Test Response Set"
+    When I click on the "Delete" link
+    When I confirm my action
+    Then I go to the dashboard
+    When I go to the list of Response Sets
+    Then I should not see "Test Response Set"
+
   Scenario: Publish a Draft Response Set
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
     And I am logged in as test_author@gmail.com
@@ -153,6 +165,7 @@ Feature: Manage Response Sets
     And I click on the "remove_0" link
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
+    When I go to the dashboard
     And I go to the list of Response Sets
     And I should see "Gender Partial"
     And I should see "M / F"
