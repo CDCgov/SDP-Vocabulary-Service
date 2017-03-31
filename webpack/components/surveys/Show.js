@@ -25,24 +25,24 @@ class SurveyShow extends Component{
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
-                  {this.isPublishable(this.props.survey) &&
+          {isPublishable(this.props.survey, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.publishSurvey(this.props.survey.id);
                 return false;
               }}>Publish</a>
           }
-          {this.isRevisable(this.props.survey) &&
+          {isRevisable(this.props.survey, this.props.currentUser) &&
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/revise`}>Revise</Link>
           }
-          {this.isEditable(this.props.survey) &&
+          {isEditable(this.props.survey, this.props.currentUser) &&
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/edit`}>Edit</Link>
           }
-          {isEditable(survey, this.props.currentUser) &&
+          {isEditable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
               if(confirm('Are you sure you want to delete this Survey?')){
-                this.props.deleteSurvey(survey.id, (response) => {
+                this.props.deleteSurvey(this.props.survey.id, (response) => {
                   if (response.status == 200) {
                     this.props.router.push('/');
                   }
