@@ -6,6 +6,17 @@ Given(/^I am logged in as (.+)$/) do |user_name|
   login_as(user, scope: :user)
 end
 
+Given(/^I am working the program "(.+)" and system "(.+)" logged in as (.+)$/) do |program_name, system_name, user_name|
+  user = User.create_with(password: 'password').find_or_create_by(email: user_name)
+  Ability.new(user)
+  login_as(user, scope: :user)
+  last_program = SurveillanceProgram.where(name: program_name).first
+  last_system = SurveillanceSystem.where(name: system_name).first
+  user.last_program = last_program
+  user.last_system = last_system
+  user.save!
+end
+
 # TODO: This should really use url helpers so you could say 'sign in' instead of '/users/sign_in'
 Given(/^I am on the "(.+)" page$/) do |url|
   visit url
