@@ -13,3 +13,7 @@ Then(/^a user "(.+)" should have a last Surveillance Program named "(.+)"$/) do 
   assert_not_nil user
   assert_equal sp_name, user.last_program.name
 end
+
+Then(/^my session expires$/) do
+  logout
+end
