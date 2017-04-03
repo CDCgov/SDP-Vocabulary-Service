@@ -203,8 +203,7 @@ class QuestionForm extends Component{
                                        selectedResponseSets={this.state.linkedResponseSets && this.state.linkedResponseSets.map((r) => this.props.responseSets[r] ).filter((r) => r !== undefined)} />
                 <div className="panel-footer">
                   <div className="actions form-group">
-                    <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with={`${this.actionWord()} Question`}>{`${this.actionWord()} Question`}</button>
-                    {this.publishButton()}
+                    <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with="Save">Save</button>
                     {this.cancelButton()}
                   </div>
                 </div>
@@ -226,22 +225,6 @@ class QuestionForm extends Component{
       return(<Link className="btn btn-default" to={`/questions/${this.props.question.id}`}>Cancel</Link>);
     }
     return(<Link className="btn btn-default" to='/'>Cancel</Link>);
-  }
-
-  publishButton() {
-    if (this.props.action === 'edit') {
-      return (
-        <button name="publish" className="btn btn-default" data-disable-with='Publish' onClick={() => this.handlePublish()}>Publish</button>
-      );
-    }
-  }
-
-  handlePublish() {
-    this.props.publishSubmitter(this.props.id, (response) => {
-      if (response.status == 200) {
-        this.props.router.push(`/questions/${response.data.id}`);
-      }
-    });
   }
 
   handleResponseSetSuccess(successResponse){
@@ -326,7 +309,6 @@ QuestionForm.propTypes = {
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
   draftSubmitter: PropTypes.func.isRequired,
-  publishSubmitter: PropTypes.func.isRequired,
   questionSubmitter: PropTypes.func.isRequired,
   handleResponseTypeChange: PropTypes.func
 };
