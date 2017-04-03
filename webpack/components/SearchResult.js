@@ -292,10 +292,8 @@ export default class SearchResult extends Component {
                   </div>
                 </div>
                 <div className="result-linked-details">
-                  <ul className="list-inline result-linked-item associated__question">
-                    <li class="reponse-number panel-toggle" data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-th-list"></span>response sets area</li>
-                    <li className="result-linked-number">xxx
-                     </li>
+                  <ul className="list-inline result-linked-number result-linked-item associated__question">
+                    <li><a class="panel-toggle" data-toggle="collapse" href="#collapse1"><i className="fa fa-bars" aria-hidden="true"></i>Questions: 3</a></li>
                   </ul>
                 </div>
               </li>
@@ -313,13 +311,15 @@ export default class SearchResult extends Component {
               </li>
             </ul>
           </div>
-           <div class="panel-collapse panel-details collapse" id="collapse1">
-				        <div class="panel-body">
+           <div className="panel-collapse panel-details collapse" id="collapse1">
+				        <div className="panel-body">
 				        {result.questions && result.questions.length > 0 && result.questions.map((q, i) => {
                         return(
-                          <text key={`question-${q.id}-${i}`}>
-                            <Link to={`/questions/${q.id}`}> {q.name}</Link> |
-                          </text>
+                          <div className="result-details-content">
+                            <text key={`question-${q.id}-${i}`}>
+                              <Link to={`/questions/${q.id}`}> {q.name}</Link> 
+                            </text>
+                          </div>
                         );
                       })}
 

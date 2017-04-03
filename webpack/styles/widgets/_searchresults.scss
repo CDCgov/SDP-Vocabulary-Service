@@ -182,18 +182,22 @@
 			}
 		.result-linked-number {
 			height: 36px;
-			padding: 8px 10px 0px 10px;
+			padding: 8px 6px 0px 10px;
 			border-bottom-left-radius: 0px;
 			font-size: 14px;
-			span {
+			i {
 				padding: 0px 10px 0px 0px;
 			}
 		}
 	}		
 }
 
-
-
+.result-details-content {
+  		margin-top: 8px;
+  		margin-bottom: 4px;
+  		padding-left: 20px;
+  		padding-right: 12px;
+		}
 
 
 
