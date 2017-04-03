@@ -28,6 +28,10 @@ export default function surveys(state = {}, action) {
     case ADD_FORM:
       form = action.payload.form;
       survey = action.payload.survey;
+      survey.id = survey.id || 0;
+      if(state[survey.id] && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
+        return state;
+      }
       let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id});
       newSurvey = Object.assign({}, survey);
       newSurvey.surveyForms.push(newSurveyForm);
@@ -35,12 +39,13 @@ export default function surveys(state = {}, action) {
       newState[survey.id] = newSurvey;
       return newState;
     case REMOVE_FORM:
+      index  = action.payload.index;
       survey = action.payload.survey;
-      index = action.payload.index;
+      survey.id = survey.id || 0;
       newSurvey = Object.assign({}, survey);
       newSurvey.surveyForms.splice(index, 1);
       newState = Object.assign({}, state);
-      newState[survey.id || 0] = newSurvey;
+      newState[survey.id] = newSurvey;
       return newState;
     case REORDER_FORM:
       survey = action.payload.survey;

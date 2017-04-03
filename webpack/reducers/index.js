@@ -3,7 +3,6 @@ import {
 } from 'redux';
 
 import {
-  FETCH_CONCEPT_SYSTEMS_FULFILLED,
   FETCH_QUESTION_TYPE_FULFILLED,
   FETCH_QUESTION_TYPES_FULFILLED,
   FETCH_RESPONSE_TYPES_FULFILLED,
@@ -24,14 +23,14 @@ import currentUser from './current_user_reducer';
 import notifications from './notifications';
 import searchResults from './search_results_reducer';
 import concepts from './concepts_reducer';
+import conceptSystems from './concept_systems_reducer';
 import surveys from './surveys_reducer';
 
-const conceptSystems = byIdReducer(FETCH_CONCEPT_SYSTEMS_FULFILLED);
 const questionTypes = byIdWithIndividualReducer(FETCH_QUESTION_TYPES_FULFILLED,
   FETCH_QUESTION_TYPE_FULFILLED);
 const responseTypes = byIdWithIndividualReducer(FETCH_RESPONSE_TYPES_FULFILLED,
   FETCH_RESPONSE_TYPE_FULFILLED);
-const surveillanceSystems = byIdReducer(FETCH_SURVEILLANCE_SYSTEMS_FULFILLED);
+const surveillanceSystems  = byIdReducer(FETCH_SURVEILLANCE_SYSTEMS_FULFILLED);
 const surveillancePrograms = byIdReducer(FETCH_SURVEILLANCE_PROGRAMS_FULFILLED);
 
 const rootReducer = combineReducers({

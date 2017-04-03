@@ -12,7 +12,7 @@ import { surveillanceProgramsProps } from '../../prop-types/surveillance_program
 export default class ProfileEditor extends Component {
   render() {
     return (
-      <Modal show={this.props.show}>
+      <Modal show={this.props.show} onHide={this.props.closer}>
         <Modal.Header closeButton>
           <Modal.Title>{this.title()}</Modal.Title>
         </Modal.Header>
