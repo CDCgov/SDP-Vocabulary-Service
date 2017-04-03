@@ -222,12 +222,12 @@ export default class SearchResult extends Component {
                   <div className="result-linked-details">
                     <ul className="list-inline result-linked-item associated__question">
                       <li className="result-linked-number">
-                        {result.questions.length > 0 &&
+                        {result.codes.length > 0 &&
                           <div>
-                            Linked Questions: |{result.questions.map((q, i) => {
+                            Responses: {result.codes.map((c, i) => {
                               return(
-                                <text key={`question-${q.id}-${i}`}>
-                                  <Link to={`/questions/${q.id}`}> {q.name}</Link> |
+                                <text key={`code-${c.id}-${i}`}>
+                                  {`${i+1}. ${c.displayName ? c.displayName : c.code} `}
                                 </text>
                               );
                             })}
