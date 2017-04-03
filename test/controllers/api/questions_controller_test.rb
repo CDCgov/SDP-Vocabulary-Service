@@ -3,6 +3,7 @@ require 'test_helper'
 class QuestionsControllerTest < ActionDispatch::IntegrationTest
   include ActiveModelSerializers::Test::Schema
   include ActiveModelSerializers::Test::Serializer
+  include Devise::Test::IntegrationHelpers
 
   setup do
     @question = questions(:one)
