@@ -220,20 +220,8 @@ export default class SearchResult extends Component {
                     </div>
                   </div>
                   <div className="result-linked-details">
-                    <ul className="list-inline result-linked-item associated__question">
-                      <li className="result-linked-number">
-                        {result.codes.length > 0 &&
-                          <div>
-                            Responses: {result.codes.map((c, i) => {
-                              return(
-                                <text key={`code-${c.id}-${i}`}>
-                                  {`${i+1}. ${c.displayName ? c.displayName : c.code} `}
-                                </text>
-                              );
-                            })}
-                          </div>
-                        }
-                      </li>
+                    <ul className="list-inline result-linked-number result-linked-item associated__question">
+                      <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i>Responses: {result.codes && result.codes.length}</a></li>
                     </ul>
                   </div>
                 </li>
@@ -254,6 +242,19 @@ export default class SearchResult extends Component {
                   </div>
                 </li>
               </ul>
+            </div>
+            <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
+              <div className="panel-body">
+                {result.codes && result.codes.length > 0 &&
+                  result.codes.map((c, i) => {
+                    return(
+                      <div key={`response-${c.id}-${i}`} className="result-details-content">
+                        {`${i+1}. ${c.displayName ? c.displayName : c.code}`}
+                      </div>
+                    );
+                  })
+                }
+              </div>
             </div>
           </div>
         </div>
@@ -311,20 +312,21 @@ export default class SearchResult extends Component {
               </li>
             </ul>
           </div>
-           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-form`}>
-				        <div className="panel-body">
-				        {result.questions && result.questions.length > 0 && result.questions.map((q, i) => {
-                        return(
-                          <div key={`question-${q.id}-${i}`} className="result-details-content">
-                            <text>
-                              <Link to={`/questions/${q.id}`}> {q.name}</Link>
-                            </text>
-                          </div>
-                        );
-                      })}
-
-				        </div>
-				  </div>
+          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-form`}>
+            <div className="panel-body">
+              {result.questions && result.questions.length > 0 &&
+                result.questions.map((q, i) => {
+                  return(
+                    <div key={`question-${q.id}-${i}`} className="result-details-content">
+                      <text>
+                        <Link to={`/questions/${q.id}`}> {q.name}</Link>
+                      </text>
+                    </div>
+                  );
+                })
+              }
+            </div>
+          </div>
         </div>
       </div>
     );
