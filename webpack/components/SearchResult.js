@@ -293,15 +293,9 @@ export default class SearchResult extends Component {
                 </div>
                 <div className="result-linked-details">
                   <ul className="list-inline result-linked-item associated__question">
-                    <li className="result-linked-number">
-                      {result.questions && result.questions.length > 0 && result.questions.map((q, i) => {
-                        return(
-                          <text key={`question-${q.id}-${i}`}>
-                            <Link to={`/questions/${q.id}`}> {q.name}</Link> |
-                          </text>
-                        );
-                      })}
-                    </li>
+                    <li class="reponse-number panel-toggle" data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-th-list"></span>response sets area</li>
+                    <li className="result-linked-number">xxx
+                     </li>
                   </ul>
                 </div>
               </li>
@@ -319,6 +313,18 @@ export default class SearchResult extends Component {
               </li>
             </ul>
           </div>
+           <div class="panel-collapse panel-details collapse" id="collapse1">
+				        <div class="panel-body">
+				        {result.questions && result.questions.length > 0 && result.questions.map((q, i) => {
+                        return(
+                          <text key={`question-${q.id}-${i}`}>
+                            <Link to={`/questions/${q.id}`}> {q.name}</Link> |
+                          </text>
+                        );
+                      })}
+
+				        </div>
+				  </div>
         </div>
       </div>
     );
