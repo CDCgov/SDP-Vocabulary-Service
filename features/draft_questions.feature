@@ -19,6 +19,8 @@ Feature: Draft, Publish, and Revise Questions
 
   Scenario: Edit a draft Question
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
+    And I have a Response Type with the name "Integer", description "a number" and code "integer"
+    And I have a Response Type with the name "Choice", description "a choice" and code "choice"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
@@ -27,11 +29,15 @@ Feature: Draft, Publish, and Revise Questions
     And I should see "Description: This is a question"
     And I should see "Edit"
     When I click on the "Edit" button
+    Then I should not see "Other Allowed"
     And I fill in the "Description" field with "This is NOT a good description"
+    And I select the "Choice - a choice" option in the "Response Type" list
+    Then I should see "Other Allowed"
     And I click on the "Save" button
     Then I should see "What is your gender?"
     And I should see "Description: This is NOT a good description"
     And I should see "Version: 1"
+    And I should see "Other Allowed: false"
     And I should not see "Version: 2"
     And I should see "Edit"
     And I should see "Publish"

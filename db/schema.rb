@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170327202207) do
+ActiveRecord::Schema.define(version: 20170403180740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20170327202207) do
     t.string   "status",                 default: "draft"
     t.boolean  "harmonized"
     t.integer  "parent_id"
+    t.boolean  "other_allowed"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
     t.index ["response_type_id"], name: "index_questions_on_response_type_id", using: :btree

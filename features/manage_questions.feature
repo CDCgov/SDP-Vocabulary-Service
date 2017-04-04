@@ -54,7 +54,7 @@ Feature: Manage Questions
     And I fill in the "Description" field with "This is a revised description"
     And I check the harmonized box
     And I drag the "Gender Partial" option to the "Selected Response Sets" list
-    And I select the "Response Set" option in the "Primary Response Type" list
+    And I select the "Response Set" option in the "Response Type" list
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link
@@ -107,7 +107,7 @@ Feature: Manage Questions
     And I fill in the "Question" field with "What is your favorite animal?"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
     And I select the "Multiple Choice" option in the "Category" list
-    And I select the "Integer" option in the "Primary Response Type" list
+    And I select the "Integer" option in the "Response Type" list
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Concept 1"
     And I fill in the "value_1" field with "Test Concept 2"
@@ -128,7 +128,7 @@ Feature: Manage Questions
     And I fill in the "Question" field with "What is your favorite animal?"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
     And I select the "Multiple Choice" option in the "Category" list
-    And I select the "Integer" option in the "Primary Response Type" list
+    And I select the "Integer" option in the "Response Type" list
     And I fill in the "value_0" field with "Test Concept 1"
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Continue Without Saving" button

@@ -106,4 +106,15 @@ class QuestionTest < ActiveSupport::TestCase
     assert q7.save
     assert_equal q1.oid, q7.oid
   end
+
+  test 'only choice response type allows other' do
+    blank_rs_question = Question.new(content: 'test', other_allowed: true)
+    refute blank_rs_question.valid?
+
+    wrong_rs_question = Question.new(content: 'test', other_allowed: true, response_type: ResponseType.new(code: 'date'))
+    refute wrong_rs_question.valid?
+
+    valid_other_question = Question.new(content: 'test', other_allowed: true, response_type: ResponseType.new(code: 'choice'))
+    assert valid_other_question.valid?
+  end
 end
