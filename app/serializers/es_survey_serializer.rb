@@ -47,7 +47,7 @@ class ESSurveySerializer < ActiveModel::Serializer
 
   def forms
     object.survey_forms.collect do |sf|
-      { id: sf.form_id }
+      { id: sf.form_id, name: sf.form.name }
     end
   end
 

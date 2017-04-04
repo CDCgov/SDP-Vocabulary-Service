@@ -1,0 +1,193 @@
+.u-result-group {
+  @extend .panel-group;
+  text-align: left;
+  margin-bottom: 20px;
+  .u-result {
+    @extend .panel;
+    border-radius: 0px;
+    border: 1px solid $light-gray;
+    border-top: 0px;
+  }
+  .u-result-container {
+    @extend .panel-body;
+    border-bottom: 1px solid $light-gray;
+    border-radius: 0px;
+    padding: 0px;
+  }
+  .u-result-content {
+    @extend .list-group;
+    display: table;
+    width: 100%;
+    margin: 0px;
+    border-radius: 0px;
+  }
+  .u-result-content-item {
+    @extend .list-group-item;
+    display: table-cell;
+    border: 0px;
+    padding: 0px;
+    &:first-child{
+      border-radius: 0px;
+    }
+    &:last-child {
+      border-radius: 0px;
+      padding: 0px;
+      width: 40px;
+    }
+    .u-result-details {
+      padding-left: 8px;
+      padding-right: 8px;
+      border-left: 5px solid $cdc-blue;
+    }
+
+    //** MODIFIERS **//
+    .result__survey {
+      border-left: 5px solid $survey-id;
+    }
+    .result__form {
+      border-left: 5px solid $form-id;
+    }
+    .result__response_set {
+      border-left: 5px solid $responseset-id;
+    }
+    .result__question {
+      border-left: 5px solid $cdc-blue;
+    }
+  }
+  .result-name {
+    font-size: 18px;
+    color: $cdc-blue;
+    margin-bottom: 5px;
+    .result-type {
+      color: $dark-gray;
+    }
+  }
+  .result-type-wrapper {
+    display: table;
+    width: 100%;
+  }
+  .result {
+    color: $cdc-blue;
+    font-size: 18px;
+  }
+  .result-type-icon {
+    display: table-cell;
+    width: 10%;
+    text-align: center;
+    color: $light-gray;
+    vertical-align: top;
+    padding-top: 6px;
+  }
+  .result-nav {
+    border: 1px solid $light-gray;
+    border-right: 0px;
+    border-bottom: 0px;
+    color: $medium-gray;
+    vertical-align: middle;
+    position: relative;
+  }
+  .result-nav-item {
+    //* border-bottom: 1px solid $light-gray; *//
+    //* border-top: 1px solid $light-gray; *//
+    padding-bottom: 12px;
+    padding-top: 10px;
+    position: relative;
+    text-align: center;
+     &:first-child {
+      position: absolute;
+      top: 0;
+      border-bottom: 0px;
+      padding-left: 10px;
+    }
+    &:last-child {
+      border-bottom: 0px;
+      position: absolute;
+      border-top: 0px;
+      bottom: 0;
+      width: 40px;
+    }
+  }
+  .result-analytics {
+    margin-top: 8px;
+    padding-bottom: 8px;
+  }
+  .result-analytics-item {
+    text-align: center;
+    width: 75px;
+    border-right: 1px solid $light-gray;
+    .item-description {
+      margin-bottom: 0px;
+      color: $medium-gray;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .item-value {
+      font-size: 18px;
+      color: $cdc-blue;
+      font-weight: bold;
+    }
+    .item-status-published {
+      color: $status-green;
+      padding-bottom: 5px;
+    }
+  }
+  .result-description {
+    margin-top: 4px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+  }
+  .result-timestamp {
+    text-transform: uppercase;
+    font-size: 11px;
+    color: $medium-gray;
+    text-align: right;
+  }
+  .result-linked-details {
+    @extend .panel-body;
+    padding: 0px;
+    background-color: white;
+    border-top: 1px dashed $light-gray;
+    .list-inline {
+      margin-left: 0px;
+    }
+    .result-linked-item {
+      margin-bottom: 0px;
+      border-left: 5px solid $cdc-orange;
+    }
+    .associated__responseset {
+      border-left: 5px solid $responseset-id;
+    }
+    .associated__question {
+      border-left: 5px solid $cdc-blue;
+    }
+    .associated__form {
+      border-left: 5px solid $form-id;
+    }
+
+    a {
+      color: $cdc-blue;
+    }
+    span {
+      padding: 4px 6px 0px 4px;
+    }
+    .result-linked-number {
+      height: 36px;
+      padding: 8px 6px 0px 10px;
+      border-bottom-left-radius: 0px;
+      font-size: 14px;
+      i {
+        padding: 0px 10px 0px 0px;
+      }
+    }
+  }
+}
+
+.result-details-content {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding-left: 20px;
+  padding-right: 12px;
+}

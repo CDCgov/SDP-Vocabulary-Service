@@ -19,8 +19,8 @@ describe('SearchResult', () => {
   });
 
   it('should create multiple search results', () => {
-    expect(qComponent.find("div[class='search-result-description']")).to.contain('test question');
-    expect(rsComponent.find("div[class='search-result-description']")).to.contain('RS');
-    expect(fComponent.find("div[class='search-result-description']")).to.contain('Form');
+    expect(qComponent.find("div[class='result-description']")).to.contain('test question');
+    expect(rsComponent.find("div[class='result-description']")).to.contain('RS');
+    expect(fComponent.find("div[class='result-description']")).to.contain('Form');
   });
 });

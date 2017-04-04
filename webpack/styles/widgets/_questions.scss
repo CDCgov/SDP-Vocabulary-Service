@@ -25,10 +25,6 @@
   text-align: left;
   margin-bottom: 20px;
 
-  .panel-body {
-    padding: 10px;
-  }
-
   .question-container {
     @extend .panel-body;
     border-bottom: 1px solid $light-gray;
@@ -66,10 +62,7 @@
       padding: 4px 6px 0px 4px;
     }
     .reponse-number {
-      background-color: $cdc-blue;
-      color: white;
       height: 25px;
-      width: 80px;
       padding: 4px 10px 0px 10px;
       border-bottom-left-radius: 0px;
       font-size: 12px;

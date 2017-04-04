@@ -193,7 +193,7 @@ module SDP
       with_client do |_client|
         delete_all('survey', Survey.ids)
         Survey.all.each do |survey|
-          UpdateIndexJob.perform_later('response_set', ESSurveySerializer.new(survey).as_json)
+          UpdateIndexJob.perform_later('survey', ESSurveySerializer.new(survey).as_json)
         end
       end
     end

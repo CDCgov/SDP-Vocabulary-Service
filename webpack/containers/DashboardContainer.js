@@ -107,7 +107,7 @@ class DashboardContainer extends Component {
       <ul className="analytics-list-group">
         <li id="questions-analytics-item" className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
           <div>
-            <i className="fa fa-question-circle fa-3x item-icon" aria-hidden="true"></i>
+            <i className="fa fa-tasks fa-3x item-icon" aria-hidden="true"></i>
             <p className="item-value">{this.props.questionCount}</p>
             <h2 className="item-title">Questions</h2>
           </div>

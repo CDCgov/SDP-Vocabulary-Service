@@ -36,7 +36,7 @@ class ResponseSetShowContainer extends Component {
                                 questions={this.props.questions}
                                 deleteResponseSet={this.props.deleteResponseSet}
                                 router={this.props.router} />
-            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
           </div>
         </div>
