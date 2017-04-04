@@ -307,7 +307,7 @@ export default class SearchResult extends Component {
                     <a id={`form_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
                       <span className="fa fa-ellipsis-h"></span>
                     </a>
-                    {this.resultDropdownMenu(result, 'form')}
+                    {this.resultDropdownMenu(result, 'form', actionName, action)}
                   </div>
                 </div>
               </li>

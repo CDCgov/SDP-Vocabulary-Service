@@ -41,7 +41,7 @@ class SurveyShowContainer extends Component {
                         survey={this.props.survey}
                         forms ={this.props.forms}
                         deleteSurvey={this.props.deleteSurvey} />
-            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
           </div>
         </div>
       </div>

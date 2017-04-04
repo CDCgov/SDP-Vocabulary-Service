@@ -33,7 +33,7 @@ class FormShowContainer extends Component {
                       currentUser={this.props.currentUser}
                       publishForm={this.props.publishForm}
                       deleteForm ={this.props.deleteForm} />
-            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Form' commentableId={this.props.form.id} />
           </div>
         </div>

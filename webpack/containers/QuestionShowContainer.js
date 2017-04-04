@@ -40,7 +40,7 @@ class QuestionShowContainer extends Component {
                              currentUser={this.props.currentUser}
                              handlePublish={this.handlePublish.bind(this)}
                              deleteQuestion={this.props.deleteQuestion} />
-            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>
         </div>
