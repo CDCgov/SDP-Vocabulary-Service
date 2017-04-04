@@ -42,8 +42,8 @@ function mapStateToProps(state) {
 }
 
 FormsQuestionList.propTypes = {
-  questions: React.PropTypes.object.isRequired,
-  responseSets: React.PropTypes.array.isRequired,
+  questions: React.PropTypes.object,//.isRequired,
+  responseSets: React.PropTypes.object, //array.isRequired,
   removeQuestion: React.PropTypes.func.isRequired,
   reorderQuestion: React.PropTypes.func.isRequired
 };

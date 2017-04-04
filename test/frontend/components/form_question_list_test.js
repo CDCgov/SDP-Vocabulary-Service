@@ -5,9 +5,9 @@ describe('FormQuestionList', () => {
   let component;
 
   beforeEach(() => {
-    const questions = [1: {id: 1, content: "Is this a question?", questionType: ""},
-                       2: {id: 2, content: "Whats your name", questionType: ""},
-                       3: {id: 3, content: "What is a question?", questionType: ""}];
+    const questions = [{1: {id: 1, content: "Is this a question?", questionType: ""}},
+                       {2: {id: 2, content: "Whats your name", questionType: ""}},
+                       {3: {id: 3, content: "What is a question?", questionType: ""}}];
     component = renderComponent(FormQuestionList, {questions});
   });
 

@@ -72,12 +72,12 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
 
 AddedQuestions.propTypes = {
   form: formProps,
-  questions: PropTypes.arrayOf(questionProps),
+  questions: PropTypes.objectOf(questionProps),
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion: PropTypes.func.isRequired,
   handleResponseSetChange: PropTypes.func.isRequired,
   showResponseSetModal: PropTypes.func,
-  responseSets: PropTypes.arrayOf(responseSetProps)
+  responseSets: PropTypes.objectOf(responseSetProps)
 };
 
 
@@ -283,8 +283,8 @@ FormEdit.propTypes = {
   removeQuestion:  PropTypes.func.isRequired,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
-  responseSets: PropTypes.arrayOf(responseSetProps),
-  questions: PropTypes.arrayOf(questionProps).isRequired,
+  responseSets: PropTypes.objectOf(responseSetProps),
+  questions: PropTypes.objectOf(questionProps).isRequired,
   showResponseSetModal: PropTypes.func.isRequired
 };
 
