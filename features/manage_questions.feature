@@ -58,7 +58,7 @@ Feature: Manage Questions
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link
-    And I click on the "Revise Question" button
+    And I click on the "Save" button
     And I should see "What is your favorite color?"
     And I should see "This is a revised description"
     And I should see "Harmonized: Yes"
@@ -74,7 +74,7 @@ Feature: Manage Questions
     And I click on the "Publish" button
     And I click on the "Extend" button
     And I fill in the "Description" field with "This is an extended description"
-    And I click on the "Extend Question" button
+    And I click on the "Save" button
     Then I should see "Version: 1"
     And I should see "Extended from: What is your gender?"
     And I should see "New Concept"
@@ -93,7 +93,7 @@ Feature: Manage Questions
     Then I fill in the "response_set_name" field with "New Response Set"
     And I click on the "Add Response Set" button
     Then I should see "New Response Set"
-    And I click on the "Create Question" button
+    And I click on the "Save" button
     And I should see "What is your favorite color?"
     And I should see "New Response Set"
 
@@ -142,7 +142,7 @@ Feature: Manage Questions
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     And I click on the create "Questions" dropdown item
-    And I click on the "Create Question" button
+    And I click on the "Save" button
     And I should see "content - can't be blank"
 
   Scenario: Search for a Question on Dashboard

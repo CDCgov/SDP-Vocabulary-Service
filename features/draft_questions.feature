@@ -11,7 +11,7 @@ Feature: Draft, Publish, and Revise Questions
     And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
     And I select the "Multiple Choice" option in the "Category" list
-    And I click on the "Create Question" button
+    And I click on the "Save" button
     Then I should see "What is your favorite color?"
     And I should see "This is a description"
     And I should see "Edit"
@@ -28,7 +28,7 @@ Feature: Draft, Publish, and Revise Questions
     And I should see "Edit"
     When I click on the "Edit" button
     And I fill in the "Description" field with "This is NOT a good description"
-    And I click on the "Edit" button
+    And I click on the "Save" button
     Then I should see "What is your gender?"
     And I should see "Description: This is NOT a good description"
     And I should see "Version: 1"
@@ -62,13 +62,12 @@ Feature: Draft, Publish, and Revise Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    And I click on the "Edit" button
     And I click on the "Publish" button
     Then I should see "What is your gender?"
     And I should see "Revise"
     When I click on the "Revise" button
     And I fill in the "Description" field with "This is a description"
-    And I click on the "Revise" button
+    And I click on the "Save" button
     Then I should see "What is your gender?"
     And I should see "Description: This is a description"
     And I should see "Version: 2"
