@@ -3,6 +3,7 @@ require 'test_helper'
 class FormsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+  include ActiveModelSerializers::Test::Schema
 
   DRAFT = 'draft'.freeze
   PUBLISHED = 'published'.freeze
