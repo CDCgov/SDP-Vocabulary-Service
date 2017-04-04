@@ -106,7 +106,8 @@ function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
     surveillanceSystems: state.surveillanceSystems,
-    surveillancePrograms: state.surveillancePrograms
+    surveillancePrograms: state.surveillancePrograms,
+    errors: state.errors
   };
 }
 

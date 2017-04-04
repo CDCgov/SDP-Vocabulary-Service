@@ -3,6 +3,6 @@ class ApplicationController < ActionController::Base
   include CanCan::ControllerAdditions
 
   rescue_from CanCan::AccessDenied do
-    render status: 401, plain: 'AccessDenied'
+    render status: 403, plain: 'AccessDenied'
   end
 end
