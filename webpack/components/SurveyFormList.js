@@ -14,7 +14,7 @@ class SurveyFormList extends Component {
             var f = this.props.forms[form.formId];
             if(!f) {
               return (
-                <div>Loading...</div>
+                <div key={i}>Loading...</div>
               );
             } else {
               return (

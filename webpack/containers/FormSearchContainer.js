@@ -5,12 +5,9 @@ import { addForm } from '../actions/form_actions';
 import { formProps } from '../prop-types/form_props';
 import { surveyProps } from '../prop-types/survey_props';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
-import SearchBar from '../components/SearchBar';
 import SearchResult from '../components/SearchResult';
-import SearchResultList from '../components/SearchResultList';
 import DashboardSearch from '../components/DashboardSearch';
 import currentUserProps from "../prop-types/current_user_props";
-//import _ from 'lodash';
 
 class FormSearchContainer extends Component {
   constructor(props) {
@@ -33,24 +30,6 @@ class FormSearchContainer extends Component {
     if(nextProps.allForms != this.props.allForms) {
       this.setState({forms: nextProps.allForms});
     }
-  }
-
-  onSearchTermChange(term) {
-    var formsFiltered = [];
-    if (term == '') {
-      formsFiltered = this.props.allForms;
-    } else {
-      this.props.allForms.map((q) => {
-        if (q.name.toLowerCase().includes(term.toLowerCase())){
-          formsFiltered.push(q);
-        }
-      });
-    }
-    this.setState({
-      forms: formsFiltered,
-      term: term
-    });
-    return formsFiltered;
   }
 
   search(searchTerms) {
@@ -79,7 +58,7 @@ class FormSearchContainer extends Component {
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((f, i) => {
             return (
-              <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`} type='form'
+              <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`} type={f.Type}
               result={f} currentUser={this.props.currentUser} extraActionName='Add to Survey'
               extraAction={() => this.props.addForm(this.props.survey, f.Source)}/>
             );
@@ -88,7 +67,6 @@ class FormSearchContainer extends Component {
             <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
           }
         </div>
-        <SearchBar modelName='Form' onSearchTermChange={term => this.onSearchTermChange(term)} />
       </div>
     );
   }
