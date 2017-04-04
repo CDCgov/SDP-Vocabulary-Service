@@ -101,6 +101,35 @@ class CodedSetTableEditContainer extends Component {
     this.hideCodeSearch();
   }
 
+  resultsTable(){
+    if(this.props.concepts.error || this.props.conceptSystems.error){
+      return (
+        <div className='table-scrolling-div'>
+          <br/>
+          {this.props.concepts.error || this.props.conceptSystems.error}
+        </div>
+      );
+    } else {
+      return (
+        <div className='table-scrolling-div'>
+          <table className="table table-striped scroll-table-body">
+            <tbody>
+              {_.values(this.props.concepts[this.state.selectedSystem]).map((c, i) => {
+                return (
+                  <tr key={i}>
+                    <td><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
+                    <td>{c.display}</td>
+                    <td>{c.code}</td>
+                    <td>{c.system}</td>
+                  </tr>);
+              })}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+  }
+
   conceptModal(){
     return (
       <Modal show={this.state.showConceptModal} onHide={this.hideCodeSearch} >
@@ -135,21 +164,7 @@ class CodedSetTableEditContainer extends Component {
               </tr>
             </thead>
           </table>
-          <div className='table-scrolling-div'>
-            <table className="table table-striped scroll-table-body">
-              <tbody>
-                {_.values(this.props.concepts[this.state.selectedSystem]).map((c, i) => {
-                  return (
-                    <tr key={i}>
-                      <td><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
-                      <td>{c.display}</td>
-                      <td>{c.code}</td>
-                      <td>{c.system}</td>
-                    </tr>);
-                })}
-              </tbody>
-            </table>
-          </div>
+          {this.resultsTable()}
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => this.hideCodeSearch()} bsStyle="primary">Cancel</Button>
