@@ -125,7 +125,7 @@ class SurveyShow extends Component{
 
 SurveyShow.propTypes = {
   survey: surveyProps,
-  forms:  PropTypes.arrayOf(formProps),
+  forms:  PropTypes.objectOf(formProps),
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,
