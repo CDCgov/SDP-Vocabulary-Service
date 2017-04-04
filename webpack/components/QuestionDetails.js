@@ -145,7 +145,7 @@ export default class QuestionDetails extends Component {
             </div>}
             {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
               <strong>Other Allowed: </strong>
-              {question.otherAllowed.toString()}
+              {question.otherAllowed ? 'Yes' : 'No' }
             </div>}
           </div>
             <div className="basic-c-box panel-default">

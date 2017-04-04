@@ -37,7 +37,7 @@ Feature: Draft, Publish, and Revise Questions
     Then I should see "What is your gender?"
     And I should see "Description: This is NOT a good description"
     And I should see "Version: 1"
-    And I should see "Other Allowed: false"
+    And I should see "Other Allowed: No"
     And I should not see "Version: 2"
     And I should see "Edit"
     And I should see "Publish"
