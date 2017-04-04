@@ -111,7 +111,7 @@ export default class SearchResult extends Component {
             <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>
           </ul>
         );
-      case 'responseSet':
+      case 'response_set':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question">
             <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i>Responses: {result.codes && result.codes.length}</a></li>
@@ -150,7 +150,7 @@ export default class SearchResult extends Component {
             </div>
           </div>
         );
-      case 'responseSet':
+      case 'response_set':
         return (
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
             <div className="panel-body">
