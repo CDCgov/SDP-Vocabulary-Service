@@ -1,7 +1,7 @@
 class SurveysController < ApplicationController
   load_and_authorize_resource except: [:create]
   def index
-    @surveys = Survey.latest_versions
+    @surveys = Survey.all
     @users = User.all
   end
 
