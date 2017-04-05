@@ -129,6 +129,15 @@ export default class ResponseSetDetails extends Component {
               </div>
             </div>
           }
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Usage</h3>
+            </div>
+            <div className="box-content">
+              <strong>Surveillance Programs: </strong>
+              {responseSet.surveillancePrograms ? responseSet.surveillancePrograms.length : 'Loading' }
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -137,7 +146,7 @@ export default class ResponseSetDetails extends Component {
 
 ResponseSetDetails.propTypes = {
   responseSet: responseSetProps,
-  router: PropTypes.obj,
+  router: PropTypes.object,
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,

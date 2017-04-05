@@ -3,12 +3,14 @@ import _ from 'lodash';
 import {
   FETCH_RESPONSE_SETS_FULFILLED,
   FETCH_RESPONSE_SET_FULFILLED,
+  FETCH_RESPONSE_SET_USAGE_FULFILLED,
   SAVE_RESPONSE_SET_FULFILLED,
   SAVE_DRAFT_RESPONSE_SET_FULFILLED,
   PUBLISH_RESPONSE_SET_FULFILLED
 } from '../actions/types';
 
 export default function responseSets(state = {}, action) {
+  let responseSetClone;
   switch (action.type) {
     case FETCH_RESPONSE_SETS_FULFILLED:
       return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
@@ -16,8 +18,15 @@ export default function responseSets(state = {}, action) {
     case SAVE_DRAFT_RESPONSE_SET_FULFILLED:
     case PUBLISH_RESPONSE_SET_FULFILLED:
     case SAVE_RESPONSE_SET_FULFILLED:
-      const responseSetClone = Object.assign({}, state);
+      responseSetClone = Object.assign({}, state);
       responseSetClone[action.payload.data.id] = action.payload.data;
+      return responseSetClone;
+    case FETCH_RESPONSE_SET_USAGE_FULFILLED:
+      responseSetClone = Object.assign({}, state);
+      if (responseSetClone[action.payload.data.id]) {
+        responseSetClone[action.payload.data.id].surveillancePrograms = action.payload.data.surveillancePrograms;
+        responseSetClone[action.payload.data.id].surveillanceSystems = action.payload.data.surveillanceSystems;
+      }
       return responseSetClone;
     default:
       return state;

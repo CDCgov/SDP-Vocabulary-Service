@@ -5,6 +5,7 @@ import { getCSRFToken } from './index';
 import {
   FETCH_RESPONSE_SETS,
   FETCH_RESPONSE_SET,
+  FETCH_RESPONSE_SET_USAGE,
   SAVE_RESPONSE_SET,
   SAVE_DRAFT_RESPONSE_SET,
   PUBLISH_RESPONSE_SET,
@@ -42,6 +43,15 @@ export function fetchResponseSet(id) {
   return {
     type: FETCH_RESPONSE_SET,
     payload: axios.get(routes.responseSetPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    })
+  };
+}
+
+export function fetchResponseSetUsage(id) {
+  return {
+    type: FETCH_RESPONSE_SET_USAGE,
+    payload: axios.get(routes.usageResponseSetPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };
