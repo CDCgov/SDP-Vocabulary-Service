@@ -182,11 +182,11 @@ class QuestionForm extends Component{
                 </div>
                 <div className="row ">
                   <div className="col-md-12 ">
-                    <label className="input-label" htmlFor="concept_id">Concepts</label>
+                    <label className="input-label" htmlFor="concept_id">Tags</label>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
-                             childName={'concept'} />
+                             childName={'tag'} />
                   </div>
                 </div>
                 <div className="row response-set-row">

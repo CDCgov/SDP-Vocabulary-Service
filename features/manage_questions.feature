@@ -29,7 +29,7 @@ Feature: Manage Questions
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Name: What is your gender?"
     Then I should see "Description: This is a question"
-    Then I should see "No Concepts Selected"
+    Then I should see "No Tags Selected"
 
   Scenario: Comment on a Question in Detail
     Given I have a Question with the content "What is your gender?" and the type "MC"
