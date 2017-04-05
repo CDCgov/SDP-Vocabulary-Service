@@ -2,16 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Draggable, Droppable } from './Draggable';
-import ResponseSetWidget from './ResponseSetWidget';
 import SearchResult from './SearchResult';
 import DashboardSearch from '../components/DashboardSearch';
 import currentUserProps from '../prop-types/current_user_props';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import { responseSetsProps } from '../prop-types/response_set_props';
-import _ from 'lodash';
 
 let setData = function(){
-  return {"json/responseSet": JSON.stringify(this.props.responseSet)};
+  return {"json/responseSet": JSON.stringify(this.props.result.Source)};
 };
 
 let DraggableResponseSet = Draggable(SearchResult, setData);
@@ -104,7 +102,8 @@ class ResponseSetDragWidget extends Component {
           <div className="fixed-height-list" name="linked_response_sets">
             {searchResults.hits && searchResults.hits.hits.map((rs, i) => {
               return <DraggableResponseSet key={i} type={rs.Type} result={rs}
-                      currentUser={this.props.currentUser} />;
+                      currentUser={this.props.currentUser}
+                      handleSelectSearchResult={() => this.props.handleResponseSetsChange(this.props.selectedResponseSets.concat([rs.Source]))} />;
             })}
           </div>
         </div>
