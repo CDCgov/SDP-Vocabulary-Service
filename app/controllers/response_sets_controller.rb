@@ -22,6 +22,18 @@ class ResponseSetsController < ApplicationController
     @response_set = ResponseSet.includes(:responses, :questions, :parent).find(params[:id])
   end
 
+  def usage
+    @response_set = ResponseSet.find(params[:id])
+    if @response_set.status != 'published'
+      render(json: { error: 'Only published Response Sets provide usage information' }, status: :bad_request)
+    else
+      response = { id: @response_set.id }
+      response[:surveillance_programs] = @response_set.surveillance_programs.map(&:name)
+      response[:surveillance_systems] = @response_set.surveillance_systems.map(&:name)
+      render json: response
+    end
+  end
+
   def assign_author
     @response_set.created_by = current_user
     @response_set.updated_by = current_user

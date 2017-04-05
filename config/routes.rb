@@ -45,6 +45,7 @@ Rails.application.routes.draw do
 
   resources :response_sets, except: [:edit] do
     get :revise, on: :member
+    get :usage, on: :member
     put :publish, on: :member
   end
 
