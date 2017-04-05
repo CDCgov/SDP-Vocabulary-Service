@@ -46,7 +46,7 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
   props.form = state.forms[ownProps.params.formId];
-  if (props.form) {
+  if (props.form && props.form.questions) {
     props.questions = props.form.questions.map((qId) => state.questions[qId]);
   }
   return props;

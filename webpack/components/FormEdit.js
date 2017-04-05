@@ -1,99 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import {formProps} from '../prop-types/form_props';
-import { responseSetProps } from '../prop-types/response_set_props';
-import { questionProps } from '../prop-types/question_props';
+import { formProps } from '../prop-types/form_props';
+import { responseSetsProps } from '../prop-types/response_set_props';
+import { questionsProps } from '../prop-types/question_props';
+import { Button } from 'react-bootstrap';
 import QuestionItem from './QuestionItem';
+import ModalDialog  from './ModalDialog';
 import Errors from './Errors';
-import {Button} from 'react-bootstrap';
 import _ from 'lodash';
-import ModalDialog from './ModalDialog';
-
-let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, handleResponseSetChange, questions, showResponseSetModal}) => {
-  let questionsLookup = _.keyBy(questions, 'id');
-  let rsLookup = _.keyBy(responseSets, 'id');
-  form.formQuestions = form.formQuestions || [];
-  form.version = form.version || 1;
-
-  let linkedResponseSets = (q, questionsLookup, rsLookup) => {
-    let linkedResponseSets = [];
-    if(questionsLookup[q.questionId] && questionsLookup[q.questionId].responseSets && questionsLookup[q.questionId].responseSets.length > 0) {
-      questionsLookup[q.questionId].responseSets.map((rsId) => linkedResponseSets.push(rsLookup[rsId]));
-    }
-    return linkedResponseSets;
-  };
-
-  return (
-    <div id="added-questions" aria-label="Added">
-      <div className="row">
-        <div className="response-set-header">
-          <div className="col-md-5 response-set-label"><span><b>Questions</b></span></div>
-          <div className="col-md-7 response-set-label">
-            <span className="right"><b>Response Sets</b></span>
-            <Button onClick={()=>showResponseSetModal()} bsStyle="primary">Add New Response Set</Button>
-          </div>
-        </div>
-      </div>
-    <div className="added-question-group">
-      {form.formQuestions.map((q, i) =>
-        <div className="row" key={i}>
-          <div className="col-md-9">
-            <QuestionItem index={i}
-                          question={questionsLookup[q.questionId]}
-                          responseSets={linkedResponseSets(q, questionsLookup, rsLookup)}
-                          removeQuestion={removeQuestion}
-                          reorderQuestion={reorderQuestion}
-                          isEditPage={true}
-                          handleResponseSetChange={handleResponseSetChange}
-                          responseSetId={q.responseSetId}
-                          />
-          </div>
-          <div className="form-group">
-            <div className="col-md-3">
-              <div className="btn btn-small btn-default move-up"
-                   onClick={() => reorderQuestion(form, i, 1)}>
-                <i title="Move Up" className="fa fa fa-arrow-up"></i>
-              </div>
-              <div className="btn btn-small btn-default move-down"
-                   onClick={() => reorderQuestion(form, i, -1)}>
-                <i className="fa fa fa-arrow-down" title="Move Down"></i>
-              </div>
-              <div className="btn btn-small btn-default"
-                   onClick={() => removeQuestion(form, i)}>
-                <i className="fa fa fa-trash" title="Remove"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-    </div>
-  );
-};
-
-AddedQuestions.propTypes = {
-  form: formProps,
-  questions: PropTypes.objectOf(questionProps),
-  reorderQuestion: PropTypes.func.isRequired,
-  removeQuestion: PropTypes.func.isRequired,
-  handleResponseSetChange: PropTypes.func.isRequired,
-  showResponseSetModal: PropTypes.func,
-  responseSets: PropTypes.objectOf(responseSetProps)
-};
-
 
 class FormEdit extends Component {
 
   stateForRevise(form) {
-    const id = form.id;
-    const versionIndependentId = form.versionIndependentId;
-    const version = form.version + 1;
-    const name = form.name || '';
-    const description = form.description || '';
-    const formQuestions = form.formQuestions;
-    const controlNumber = form.controlNumber;
-    const showWarningModal = false;
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal};
+    var state = this.stateForEdit(form);
+    state.version = state.version + 1;
+    return state;
   }
 
   stateForEdit(form) {
@@ -102,7 +23,7 @@ class FormEdit extends Component {
     const version = form.version;
     const name = form.name || '';
     const description = form.description || '';
-    const formQuestions = form.formQuestions;
+    const formQuestions = form.formQuestions || [];
     const controlNumber = form.controlNumber;
     const showWarningModal = false;
     return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal};
@@ -124,6 +45,7 @@ class FormEdit extends Component {
         this.state = this.stateForRevise({});
     }
     this.unsavedState = false;
+    this.addedResponseSets = _.compact(this.state.formQuestions.map((fq) => fq.responseSetId));
   }
 
   componentDidMount() {
@@ -165,20 +87,11 @@ class FormEdit extends Component {
     return (this.unsavedState || null);
   }
 
-  handleResponseSetChange(container) {
-    // This function looks weird, we are passing the container all the way down so we can modify it from within subcomponents
-    return () => {
-      return (event) => {
-        let index = parseInt(event.target.getAttribute("data-question"));
-        let newState = Object.assign({}, container.state);
-        const responseSetId = parseInt(event.target.value);
-        if (! isNaN(responseSetId)) {
-          newState.formQuestions[index].responseSetId = responseSetId;
-          container.setState(newState);
-          this.unsavedState = true;
-        }
-      };
-    };
+  handleResponseSetChange(questionIndex, responseSetId) {
+    let newState = Object.assign({}, this.state);
+    newState.formQuestions[questionIndex].responseSetId = responseSetId;
+    this.setState(newState);
+    this.unsavedState = true;
   }
 
   handleChange(field) {
@@ -211,11 +124,87 @@ class FormEdit extends Component {
     return(<Link className="btn btn-default pull-right" to='/'>Cancel</Link>);
   }
 
+  addLinkedResponseSet(questionIndex, responseSet){
+    if(this.state.formQuestions[questionIndex].responseSetId == responseSet.id){
+      return;
+    }
+    this.addedResponseSets = _.union(this.addedResponseSets, [responseSet.id]);
+    var newState = Object.assign({}, this.state);
+    newState.formQuestions[questionIndex].responseSetId = responseSet.id;
+    this.setState(newState);
+  }
+
+  linkedResponseSets(qId) {
+    var linkedResponseSets = [];
+    if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
+      linkedResponseSets = this.props.questions[qId].responseSets || [];
+    }
+    linkedResponseSets = _.union(linkedResponseSets, this.addedResponseSets, this.state.formQuestions.map((fq) => fq.responseSetId));
+    return _.compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
+  }
+
+  addedQuestions() {
+    var form = this.state;
+    return (
+      <div id="added-questions" aria-label="Added">
+        <div className="row">
+          <div className="response-set-header">
+            <div className="col-md-5 response-set-label"><span><b>Questions</b></span></div>
+            <div className="col-md-7 response-set-label">
+              <span className="right"><b>Response Sets</b></span>
+              <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
+            </div>
+          </div>
+        </div>
+        <div className="added-question-group">
+          {form.formQuestions.map((q, i) =>
+            <div className="row" key={i}>
+              <div className="col-md-9">
+                <QuestionItem index={i}
+                              question={this.props.questions[q.questionId]}
+                              responseSets={this.linkedResponseSets(q.questionId)}
+                              selectedResponseSet={q.responseSetId}
+                              removeQuestion ={this.props.removeQuestion}
+                              reorderQuestion={this.props.reorderQuestion}
+                              handleResponseSetChange ={(responseSet) => this.handleResponseSetChange(i, responseSet)}
+                              handleSelectSearchResult={(responseSet) => {
+                                this.addLinkedResponseSet(i, responseSet);
+                                this.handleResponseSetChange(i, responseSet.id);
+                              }} />
+              </div>
+              <div className="form-group">
+                <div className="col-md-3">
+                  <div className="btn btn-small btn-default move-up"
+                       onClick={() => this.props.reorderQuestion(form, i, 1)}>
+                    <i title="Move Up" className="fa fa fa-arrow-up"></i>
+                  </div>
+                  <div className="btn btn-small btn-default move-down"
+                       onClick={() => this.props.reorderQuestion(form, i, -1)}>
+                    <i className="fa fa fa-arrow-down" title="Move Down"></i>
+                  </div>
+                  <div className="btn btn-small btn-default"
+                       onClick={() => this.props.removeQuestion(form, i)}>
+                    <i className="fa fa fa-trash" title="Remove"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   render() {
+    if(!this.props.questions || !this.props.responseSets){
+      return (
+        <div>Loading...</div>
+      );
+    }
     return (
       <div className="col-md-8">
       <div className="" id='form-div'>
-      <ModalDialog show={this.state.showWarningModal}
+      <ModalDialog show ={this.state.showWarningModal}
                    title="Warning"
                    subTitle="Unsaved Changes"
                    warning={true}
@@ -233,7 +222,7 @@ class FormEdit extends Component {
         <Errors errors={this.state.errors} />
           <div className="form-inline">
             <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span></button>
-            <input className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
+            <input  className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
             <button className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>
@@ -262,13 +251,7 @@ class FormEdit extends Component {
             </div>
           </div>
         </div>
-        <AddedQuestions form={this.state}
-                        questions={this.props.questions}
-                        responseSets={this.props.responseSets}
-                        reorderQuestion={this.props.reorderQuestion}
-                        removeQuestion ={this.props.removeQuestion}
-                        showResponseSetModal={this.props.showResponseSetModal.bind(this)}
-                        handleResponseSetChange={this.handleResponseSetChange(this)} />
+        {this.addedQuestions()}
       </form>
       </div>
       </div>
@@ -284,8 +267,8 @@ FormEdit.propTypes = {
   removeQuestion:  PropTypes.func.isRequired,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
-  responseSets: PropTypes.objectOf(responseSetProps),
-  questions: PropTypes.objectOf(questionProps).isRequired,
+  responseSets: responseSetsProps,
+  questions: questionsProps.isRequired,
   showResponseSetModal: PropTypes.func.isRequired
 };
 

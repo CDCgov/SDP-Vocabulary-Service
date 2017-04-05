@@ -4,6 +4,11 @@ import QuestionWidget from './QuestionWidget';
 
 class FormQuestionList extends Component {
   render() {
+    if(!this.props.questions){
+      return (
+        <div>Loading...</div>
+      );
+    }
     return (
       <div className="question-group">
         {this.props.questions.map((q, i) => {

@@ -30,14 +30,14 @@ export default function forms(state = {}, action) {
     case ADD_QUESTION:
       question = action.payload.question;
       form = action.payload.form;
-      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id});
+      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: question.responseSets && question.responseSets[0]});
       newForm = Object.assign({}, form);
       newForm.formQuestions.push(newFormQuestion);
       newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     case REMOVE_QUESTION:
-      form = action.payload.form;
+      form  = action.payload.form;
       index = action.payload.index;
       newForm = Object.assign({}, form);
       newForm.formQuestions.splice(index, 1);

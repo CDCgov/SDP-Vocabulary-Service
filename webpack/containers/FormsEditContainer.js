@@ -9,8 +9,8 @@ import { fetchResponseSets }   from '../actions/response_set_actions';
 import QuestionModalContainer  from './QuestionModalContainer';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
-import { questionProps } from '../prop-types/question_props';
-import { responseSetProps } from '../prop-types/response_set_props';
+import { questionsProps } from '../prop-types/question_props';
+import { responseSetsProps } from '../prop-types/response_set_props';
 import {Button} from 'react-bootstrap';
 import _ from 'lodash';
 
@@ -85,19 +85,19 @@ class FormsEditContainer extends Component {
                 <div className="row add-question">
                   <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer form ={this.props.form} />
+                <QuestionSearchContainer form={this.props.form} />
               </div>
-              <FormEdit ref='form'
-                    form={this.props.form}
-                    action={this.props.params.action || 'new'}
-                    route ={this.props.route}
-                    router={this.props.router}
-                    questions={this.props.questions}
-                    responseSets ={this.props.responseSets}
-                    formSubmitter={this.state.selectedFormSaver}
-                    removeQuestion ={this.props.removeQuestion}
-                    reorderQuestion={this.props.reorderQuestion}
-                    showResponseSetModal={() => this.setState({showResponseSetModal: true})} />
+              <FormEdit ref ='form'
+                        form={this.props.form}
+                        route ={this.props.route}
+                        router={this.props.router}
+                        action={this.props.params.action || 'new'}
+                        questions={this.props.questions}
+                        responseSets ={this.props.responseSets}
+                        formSubmitter={this.state.selectedFormSaver}
+                        removeQuestion ={this.props.removeQuestion}
+                        reorderQuestion={this.props.reorderQuestion}
+                        showResponseSetModal={() => this.setState({showResponseSetModal: true})} />
             </div>
           </div>
         </div>
@@ -115,8 +115,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state, ownProps) {
   return {
     form: state.forms[ownProps.params.formId||0],
-    questions: _.values(state.questions),
-    responseSets: _.values(state.responseSets)
+    questions: state.questions,
+    responseSets: state.responseSets
   };
 }
 
@@ -125,8 +125,8 @@ FormsEditContainer.propTypes = {
   route: PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
-  questions: PropTypes.arrayOf(questionProps),
-  responseSets: PropTypes.arrayOf(responseSetProps),
+  questions: questionsProps,
+  responseSets: responseSetsProps,
   newForm:  PropTypes.func,
   saveForm: PropTypes.func,
   fetchForm: PropTypes.func,
