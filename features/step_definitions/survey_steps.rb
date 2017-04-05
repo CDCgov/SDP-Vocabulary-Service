@@ -26,6 +26,10 @@ When(/^I go to the list of Surveys$/) do
   page.find('li[id="surveys-analytics-item"]').click
 end
 
+When(/^I use the form search to select "([^"]*)"$/) do |name|
+  page.find('a', id: "select-#{name}").click
+end
+
 When(/^I click on the menu link for the Survey with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Survey', attribute, attribute_value)
   page.find("#survey_#{object_id}_menu").click

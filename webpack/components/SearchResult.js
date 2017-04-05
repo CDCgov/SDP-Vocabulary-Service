@@ -49,11 +49,11 @@ export default class SearchResult extends Component {
         <li>
           <Link to={`/${type}s/${result.id}`}>Details</Link>
         </li>
-        {extraActionName && extraAction &&       <li>
-      <a className="menu-action" id={`action_for_${result.id}`} onClick={() => extraAction()}>
-        {extraActionName}
-      </a>
-      </li>}
+        {extraActionName && extraAction && <li>
+          <a className="menu-action" id={`action_for_${result.id}`} onClick={() => extraAction()}>
+            {extraActionName}
+          </a>
+        </li>}
       </ul>
     );
   }

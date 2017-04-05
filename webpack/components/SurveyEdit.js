@@ -171,7 +171,7 @@ class SurveyEdit extends Component {
               </div>
               <div className="survey-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
-                <input className="input-format" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+                <input className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
               </div>
             </div>
           </div>
