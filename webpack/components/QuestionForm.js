@@ -175,6 +175,7 @@ class QuestionForm extends Component{
                   <div className="col-md-4 question-form-group">
                     <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleResponseTypeChange()} >
+                      <option value=""></option>
                       {_.values(responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id}>{rt.name} - {rt.description}</option>);
                       })}
