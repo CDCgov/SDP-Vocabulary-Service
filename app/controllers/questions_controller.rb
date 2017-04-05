@@ -79,7 +79,6 @@ class QuestionsController < ApplicationController
       update_response_sets(params)
       update_concepts(params)
       @question.updated_by = current_user
-
       if @question.update(question_params)
         render :show, status: :ok, location: @question
       else
@@ -113,7 +112,8 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id, :version_independent_id,
-                                     :description, :status, :harmonized, concepts_attributes: [:id, :value, :display_name, :code_system])
+    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id,
+                                     :version_independent_id, :description, :status, :harmonized, :other_allowed,
+                                     concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

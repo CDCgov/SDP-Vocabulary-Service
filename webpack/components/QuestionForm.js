@@ -81,6 +81,8 @@ class QuestionForm extends Component{
       reviseState.version += 1;
     }
     reviseState.parentId  = question.parent ? question.parent.id : null;
+    reviseState.responseTypeId = question.responseTypeId;
+    reviseState.otherAllowed = question.otherAllowed;
     return reviseState;
   }
 
@@ -96,7 +98,8 @@ class QuestionForm extends Component{
       conceptsAttributes: [],
       linkedResponseSets: [],
       showWarningModal: false,
-      showResponseSetModal: false
+      showResponseSetModal: false,
+      otherAllowed: false
     };
   }
 
@@ -111,6 +114,8 @@ class QuestionForm extends Component{
     extendState.oid = '';
     extendState.harmonized = false;
     extendState.versionIndependentId = null;
+    extendState.otherAllowed = question.otherAllowed;
+    extendState.responseTypeId = question.responseTypeId;
     return extendState;
   }
 
@@ -168,8 +173,9 @@ class QuestionForm extends Component{
                     <textarea className="input-format" placeholder="Question description" type="text" name="question_description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
                   </div>
                   <div className="col-md-4 question-form-group">
-                    <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
+                    <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleResponseTypeChange()} >
+                      <option value=""></option>
                       {_.values(responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id}>{rt.name} - {rt.description}</option>);
                       })}
@@ -180,6 +186,7 @@ class QuestionForm extends Component{
                     <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggleHarmonized()} />
                   </div>
                 </div>
+                {this.otherAllowedBox()}
                 <div className="row ">
                   <div className="col-md-12 ">
                     <label className="input-label" htmlFor="concept_id">Tags</label>
@@ -262,6 +269,9 @@ class QuestionForm extends Component{
   handleResponseTypeChange() {
     return (event) => {
       this.setState({responseTypeId: event.target.value});
+      if (this.props.responseTypes[event.target.value].code !== 'choice') {
+        this.setState({otherAllowed: false});
+      }
       this.unsavedState = true;
       if(this.props.handleResponseTypeChange){
         this.props.handleResponseTypeChange(this.props.responseTypes[event.target.value]);
@@ -280,6 +290,26 @@ class QuestionForm extends Component{
 
   toggleHarmonized() {
     this.setState({harmonized: !this.state.harmonized});
+  }
+
+  toggleOtherAllowed() {
+    this.setState({otherAllowed: !this.state.otherAllowed});
+  }
+
+  otherAllowedBox() {
+    if (this.state.responseTypeId && this.props.responseTypes[this.state.responseTypeId].code === 'choice') {
+      return (
+        <div className="row">
+          <div className="col-md-8" />
+          <div className="col-md-4 question-form-group">
+            <label className="input-label" htmlFor="otherAllowed">Other Allowed: </label>
+            <input className="form-ckeck-input" type="checkbox" name="otherAllowed" id="otherAllowed" checked={this.state.otherAllowed} onChange={() => this.toggleOtherAllowed()} />
+          </div>
+        </div>
+      );
+    } else {
+      return '';
+    }
   }
 
   handleResponseSetsChange(newResponseSets){

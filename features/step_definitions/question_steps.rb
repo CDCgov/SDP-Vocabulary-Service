@@ -27,6 +27,10 @@ Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
   ResponseType.create!(name: name)
 end
 
+Given(/^I have a Response Type with the name "([^"]*)", description "([^"]*)" and code "([^"]*)"$/) do |name, description, code|
+  ResponseType.create!(name: name, description: description, code: code)
+end
+
 When(/^I go to the list of Questions$/) do
   Elastictest.fake_question_search_results
   visit '/'
