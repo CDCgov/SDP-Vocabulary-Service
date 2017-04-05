@@ -5,7 +5,7 @@ Feature: Draft, Publish, and Revise Questions
     Given I have a Response Set with the name "Gender Full"
     And I have a Question Type with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Questions
+    When I go to the dashboard
     And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
