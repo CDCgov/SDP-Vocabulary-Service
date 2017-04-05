@@ -146,11 +146,11 @@ export default class QuestionDetails extends Component {
           </div>
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">Concepts</h3>
+                <h3 className="panel-title">Tags</h3>
               </div>
               <div className="box-content">
                 <div id="concepts-table">
-                  <CodedSetTable items={question.concepts} itemName={'Concept'} />
+                  <CodedSetTable items={question.concepts} itemName={'Tag'} />
                 </div>
               </div>
             </div>
