@@ -8,9 +8,6 @@ import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_re
 import SearchResult from '../components/SearchResult';
 import DashboardSearch from '../components/DashboardSearch';
 import currentUserProps from "../prop-types/current_user_props";
-import QuestionResults from '../components/QuestionResults';
-import SearchBar from '../components/SearchBar';
-import _ from 'lodash';
 
 class QuestionSearchContainer extends Component {
   constructor(props) {
@@ -18,9 +15,6 @@ class QuestionSearchContainer extends Component {
     this.search = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.state = {
-      questions: props.allQs,
-      responseSets: props.allRs,
-      allQs: props.allQs,
       searchTerms: '',
       page: 1
     };
@@ -28,32 +22,6 @@ class QuestionSearchContainer extends Component {
 
   componentWillMount() {
     this.search('');
-  }
-
-  componentWillUpdate(prevProps) {
-    if(prevProps.allQs != this.props.allQs) {
-      this.setState({
-        questions: this.props.allQs
-      });
-    }
-  }
-
-  questionFilter(term) {
-    var questionsFiltered = [];
-
-    if (term == '') {
-      questionsFiltered = this.props.allQs;
-    } else {
-      this.props.allQs.map((q) => {
-        if (q.content.toLowerCase().includes(term.toLowerCase())){
-          questionsFiltered.push(q);
-        }
-      });
-    }
-
-    this.setState({
-      questions: questionsFiltered
-    });
   }
 
   search(searchTerms) {
@@ -75,14 +43,22 @@ class QuestionSearchContainer extends Component {
   }
 
   render() {
+    const searchResults = this.props.searchResults;
     return (
       <div>
         <DashboardSearch search={this.search} />
-        <SearchBar modelName='question' onSearchTermChange={term => this.questionFilter(term)} />
-        <QuestionResults questions={this.props.reverseSort ? this.state.questions.reverse() : this.state.questions}
-                         responseSets={_.values(this.state.responseSets)}
-                         addQuestion={this.props.addQuestion}
-                         form={this.props.form} />
+        <div className="load-more-search">
+          {searchResults.hits && searchResults.hits.hits.map((q, i) => {
+            return (
+              <SearchResult key={`${q.Source.versionIndependentId}-${q.Source.updatedAt}-${i}`}
+              type={q.Type} result={q} currentUser={this.props.currentUser}
+              handleSelectSearchResult={() => this.props.addQuestion(this.props.form, q.Source)}/>
+            );
+          })}
+          {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+            <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+          }
+        </div>
       </div>
     );
   }
@@ -100,11 +76,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 QuestionSearchContainer.propTypes = {
-  allQs: React.PropTypes.array,
-  allRs: React.PropTypes.array,
-  addQuestion: React.PropTypes.func.isRequired,
-  form: React.PropTypes.object,
-  reverseSort: React.PropTypes.bool,
+  addQuestion: PropTypes.func.isRequired,
+  form: PropTypes.object,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
