@@ -23,7 +23,7 @@ let Draggable = (ComposedComponent, setData=function(){}, dragStop=function(){})
     let { dragging = false } = this.state;
     let dragProps = {draggable: true, onDragStart:_dragStart, onDragEnd:_dragStop};
     return (
-        <div  {...dragProps}>
+        <div className="draggable" {...dragProps}>
           <ComposedComponent isDragging={dragging} {...this.props}/>
         </div>
     );

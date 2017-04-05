@@ -114,7 +114,7 @@ export default class SearchResult extends Component {
       case 'response_set':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i>Responses: {result.codes && result.codes.length}</a></li>
+            {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i>Responses: {result.codes && result.codes.length}</a></li>}
           </ul>
         );
       case 'form':
