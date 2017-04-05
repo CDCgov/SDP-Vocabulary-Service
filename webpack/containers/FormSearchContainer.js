@@ -58,9 +58,9 @@ class FormSearchContainer extends Component {
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((f, i) => {
             return (
-              <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`} type={f.Type}
-              result={f} currentUser={this.props.currentUser} extraActionName='Add to Survey'
-              extraAction={() => this.props.addForm(this.props.survey, f.Source)}/>
+              <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`}
+              type={f.Type} result={f} currentUser={this.props.currentUser}
+              handleSelectSearchResult={() => this.props.addForm(this.props.survey, f.Source)}/>
             );
           })}
           {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&

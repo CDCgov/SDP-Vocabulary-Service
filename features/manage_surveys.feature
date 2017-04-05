@@ -23,14 +23,14 @@ Feature: Manage Surveys
    Given I have a published Survey with the name "Test Survey" and the description "Survey description"
    Given I have a published Form with the name "Test Gender Form" and the description "Form description"
    And I am logged in as test_author@gmail.com
-   When I go to the list of Surveys
+   When I go to the dashboard
    And I click on the menu link for the Survey with the name "Test Survey"
    And I click on the option to Revise the Survey with the name "Test Survey"
    And I fill in the "name" field with "Gender Survey"
    And I fill in the "description" field with "Revised Description"
    And I fill in the "search" field with "Gender"
    And I click on the "search-btn" button
-   And I click on the "Add to Survey" drop-down option for the form "Test Gender Form"
+   And I use the form search to select "Test Gender Form"
    And I click on the "Save" button
    Then I should see "Name: Gender Survey"
    Then I should see "Revised Description"
@@ -92,8 +92,8 @@ Feature: Manage Surveys
     And I click on the option to Revise the Survey with the name "Test Survey"
     And I fill in the "search" field with "Form"
     And I click on the "search-btn" button
-    And I click on the "Add to Survey" drop-down option for the form "Gender Form"
-    And I click on the "Add to Survey" drop-down option for the form "Demographics Form"
+    And I use the form search to select "Gender Form"
+    And I use the form search to select "Demographics Form"
     And I wait 3 seconds
     And I move the Form "Gender Form" down
     And I move the Form "Gender Form" up
@@ -111,7 +111,7 @@ Feature: Manage Surveys
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "search" field with "Gender"
     And I click on the "search-btn" button
-    And I click on the "Add to Survey" drop-down option for the form "Gender Form"
+    And I use the form search to select "Gender Form"
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
     And I wait 1 seconds
@@ -128,7 +128,7 @@ Feature: Manage Surveys
    And I fill in the "controlNumber" field with "1234-1234"
    And I fill in the "search" field with "Gender"
    And I click on the "search-btn" button
-   And I click on the "Add to Survey" drop-down option for the form "Gender Form"
+   And I use the form search to select "Gender Form"
    When I click on the "CDC Vocabulary Service" link
    And I click on the "Continue Without Saving" button
    And I wait 1 seconds
