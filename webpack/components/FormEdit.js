@@ -87,8 +87,7 @@ class FormEdit extends Component {
     return (this.unsavedState || null);
   }
 
-  handleResponseSetChange(questionIndex, event) {
-    var responseSetId = parseInt(event.target.value);
+  handleResponseSetChange(questionIndex, responseSetId) {
     if(isNaN(responseSetId)){
       responseSetId = '';
     }
@@ -170,7 +169,7 @@ class FormEdit extends Component {
                               selectedResponseSet={q.responseSetId}
                               removeQuestion ={this.props.removeQuestion}
                               reorderQuestion={this.props.reorderQuestion}
-                              handleResponseSetChange ={(responseSet) => this.handleResponseSetChange(i, responseSet)}
+                              handleResponseSetChange ={(event) => this.handleResponseSetChange(i, parseInt(event.target.value))}
                               handleSelectSearchResult={(responseSet) => {
                                 this.addLinkedResponseSet(i, responseSet);
                                 this.handleResponseSetChange(i, responseSet.id);
