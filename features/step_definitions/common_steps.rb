@@ -130,7 +130,7 @@ Then(/^debugger$/) do
 end
 
 When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
-  drag = find('a', text: option)
+  drag = find('li', class: 'result-name', text: option)
   target = '.' + target.downcase.tr(' ', '_')
   drop = find(target)
   drag.drag_to(drop)
