@@ -13,8 +13,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   test 'api should get index' do
     get api_questions_url
     res = JSON.parse response.body
-    assert_not_equal Question.count, res.count
-    assert_equal Question.latest_versions.count, res.count
+    assert_equal Question.count, res.count
     assert_response :success
     assert_response_schema('questions/show.json')
   end

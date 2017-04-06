@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "programId" : {"type" : "number"},
+    "programName" : {"type" : "string"},
+    "programUri" : {"type" : "string"},
+    "programDescription" : {"type" : "string"}
+  }
+}

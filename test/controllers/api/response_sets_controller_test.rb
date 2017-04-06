@@ -14,8 +14,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     get api_valueSets_url
     assert_response :success
     res = JSON.parse response.body
-    assert_not_equal ResponseSet.count, res.count
-    assert_equal ResponseSet.latest_versions.count, res.count
+    assert_equal ResponseSet.count, res.count
     assert_response_schema('result_sets/show.json')
   end
 

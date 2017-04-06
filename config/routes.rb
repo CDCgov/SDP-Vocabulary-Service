@@ -57,10 +57,17 @@ Rails.application.routes.draw do
     resources :questions, only: [:index, :show] do
       get :usage, on: :member
     end
-    resources :forms, only: [:show] do
+    resources :forms, only: [:index, :show] do
       get :usage, on: :member
     end
+    resources :surveys, only: [:index, :show]
     resources :valueSets, only: [:index, :show], controller: 'response_sets' do
+      get :usage, on: :member
+    end
+    resources :programs, only: [:index, :show] do
+      get :usage, on: :member
+    end
+    resources :systems, only: [:index, :show] do
       get :usage, on: :member
     end
   end

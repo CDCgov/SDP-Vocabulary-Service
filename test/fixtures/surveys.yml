@@ -4,8 +4,8 @@ one:
   version: 1
   version_independent_id: 'S-1'
   control_number: '1234-5678'
-  surveillance_system: nids
   surveillance_program: generic
+  surveillance_system: nids
 two:
   name: Search Survey 1
   created_by: admin
