@@ -108,7 +108,7 @@ export default class SearchResult extends Component {
       case 'question':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__responseset">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>
+            {result.responseSets && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>}
           </ul>
         );
       case 'response_set':
@@ -205,6 +205,7 @@ export default class SearchResult extends Component {
 
   baseResult(type, result, highlight, handleSelectSearchResult, actionName, action) {
     const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form': 'fa-clipboard', 'survey': 'fa-clipboard'};
+    const name = result.content ? result.content : result.name;
     return (
       <div className="u-result-group">
         <div className="u-result" id={`${type}_id_${result.id}`}>
@@ -217,7 +218,7 @@ export default class SearchResult extends Component {
                       <li className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></li>
                       <li className="result-name">
                         <Link to={`/${type.replace('_s','S')}s/${result.id}`}>
-                          {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : result.name}
+                          {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : name}
                         </Link>
                       </li>
                     </ul>

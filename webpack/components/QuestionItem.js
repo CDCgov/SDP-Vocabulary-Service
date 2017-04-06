@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { questionProps } from "../prop-types/question_props";
 import currentUserProps from '../prop-types/current_user_props';
 import { fetchSearchResults } from '../actions/search_results_actions';
-import QuestionWidget from './QuestionWidget';
+import SearchResult from './SearchResult';
 import DashboardSearch from './DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
 import { Modal, Button } from 'react-bootstrap';
@@ -69,7 +69,7 @@ class QuestionItem extends Component {
     return (
       <div className='question-item'>
         {this.searchModal()}
-        <div className="col-md-9"><QuestionWidget question={this.props.question} /></div>
+        <div className="col-md-9"><SearchResult type='question' result={{Source:this.props.question}} currentUser={{id: -1}} /></div>
         <div className="col-md-3" >
           <div className="form-group">
             <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.question.id}/>

@@ -12,7 +12,7 @@ When(/^I use the response set search modal to select "([^"]*)"$/) do |name|
   Elastictest.fake_rs_search_results
   page.find('a', text: 'Search All').click
   sleep 1
-  page.find('a', id: "select-#{name}").click
+  page.all('a', id: "select-#{name}")[1].click
 end
 
 When(/^I go to the list of Forms$/) do
@@ -26,6 +26,10 @@ When(/^I click on the button to add the Question "([^"]*)"$/) do |question_conte
   page.find("#question_#{object_id}_add").click
 end
 
+When(/^I use the question search to select "([^"]*)"$/) do |name|
+  page.find('a', id: "select-#{name}").click
+end
+
 When(/^I click on the menu link for the Form with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Form', attribute, attribute_value)
   page.find("#form_#{object_id}_menu").click
@@ -35,7 +39,8 @@ When(/^I move the Question "([^"]*)" (up|down)$/) do |question_content, directio
   object_id = attribute_to_id('Question', 'content', question_content)
   old_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
 
-  page.find("#question_id_#{object_id}").find(:xpath, '../../../..').find(".move-#{direction}").click
+  page.all(".move-#{direction}")[1].click
+  # page.all("#question_id_#{object_id}")[1].find(:xpath, '../../../..').find(".move-#{direction}").click
 
   new_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
 

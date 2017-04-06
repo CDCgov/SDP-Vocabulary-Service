@@ -85,10 +85,7 @@ class FormsEditContainer extends Component {
                 <div className="row add-question">
                   <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer allQs={this.props.questions}
-                                         allRs={this.props.responseSets}
-                                         form ={this.props.form}
-                                         reverseSort={true} />
+                <QuestionSearchContainer form ={this.props.form} />
               </div>
               <FormEdit ref='form'
                     form={this.props.form}
