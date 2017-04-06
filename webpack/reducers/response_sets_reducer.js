@@ -13,7 +13,8 @@ export default function responseSets(state = {}, action) {
   let responseSetClone;
   switch (action.type) {
     case FETCH_RESPONSE_SETS_FULFILLED:
-      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
+      responseSetClone = Object.assign({}, state);
+      return _.assign(responseSetClone, _.keyBy(action.payload.data, 'id'));
     case FETCH_RESPONSE_SET_FULFILLED:
     case SAVE_DRAFT_RESPONSE_SET_FULFILLED:
     case PUBLISH_RESPONSE_SET_FULFILLED:
