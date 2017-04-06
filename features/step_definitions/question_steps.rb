@@ -46,3 +46,9 @@ end
 When(/^I check the (.*) box$/) do |box|
   check(box)
 end
+
+Then(/^I navigate to a question created by "(.+)"$/) do |owner_email|
+  user = get_user(owner_email)
+  question = Question.create!(status: 'draft', content: 'content', description: 'description', version: 1, created_by: user)
+  visit "#/questions/#{question.id}"
+end

@@ -4,7 +4,7 @@ import {
 } from '../actions/types';
 import { hashHistory } from 'react-router';
 
-const parentFromQuestions = store => next => action => {
+const errorResponses = store => next => action => {
   let {payload} = action;
   if(payload && payload.response) {
     switch (payload.response.status) {
@@ -22,4 +22,4 @@ const parentFromQuestions = store => next => action => {
   next(action);
 };
 
-export default parentFromQuestions;
+export default errorResponses;
