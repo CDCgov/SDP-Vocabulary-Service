@@ -52,7 +52,8 @@ class QuestionSearchContainer extends Component {
             return (
               <SearchResult key={`${q.Source.versionIndependentId}-${q.Source.updatedAt}-${i}`}
               type={q.Type} result={q} currentUser={this.props.currentUser}
-              handleSelectSearchResult={() => this.props.addQuestion(this.props.form, q.Source)}/>
+              handleSelectSearchResult={() => this.props.addQuestion(this.props.form, q.Source)}
+              isEditPage={true}/>
             );
           })}
           {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&

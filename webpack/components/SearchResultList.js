@@ -17,7 +17,9 @@ export default class SearchResultList extends Component {
             <SearchResult key={`${sr.Source.versionIndependentId}-${sr.Source.updatedAt}-${i}`}
                           type={sr.Type} result={sr} currentUser={this.props.currentUser}
                           handleSelectSearchResult={this.props.handleSelectSearchResult}
-                          extraAction={this.props.extraAction} extraActionName={this.props.extraActionName}/>
+                          extraAction={this.props.extraAction} extraActionName={this.props.extraActionName}
+                          isEditPage={this.props.isEditPage}
+                          />
           );
         })}
       </div>
@@ -28,6 +30,7 @@ export default class SearchResultList extends Component {
 SearchResultList.propTypes = {
   searchResults: PropTypes.object.isRequired,
   currentUser: currentUserProps,
+  isEditPage: PropTypes.bool,
   handleSelectSearchResult: PropTypes.func,
   extraActionName: PropTypes.string,
   extraAction: PropTypes.func

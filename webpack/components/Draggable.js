@@ -24,7 +24,7 @@ let Draggable = (ComposedComponent, setData=function(){}, dragStop=function(){})
     let dragProps = {draggable: true, onDragStart:_dragStart, onDragEnd:_dragStop};
     return (
         <div className="draggable" {...dragProps}>
-          <ComposedComponent isDragging={dragging} {...this.props}/>
+          <ComposedComponent isEditPage={true} isDragging={dragging} {...this.props}/>
         </div>
     );
   }
