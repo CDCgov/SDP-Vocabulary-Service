@@ -15,7 +15,7 @@ import _ from 'lodash';
 export default class ResponseSetDetails extends Component {
   render() {
     const {responseSet} = this.props;
-    if(!responseSet){
+    if(responseSet === undefined || responseSet.name === undefined){
       return (
         <div>Loading...</div>
       );
@@ -129,15 +129,46 @@ export default class ResponseSetDetails extends Component {
               </div>
             </div>
           }
+          {responseSet.status === 'published' &&
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Usage</h3>
+            </div>
+            <div className="box-content">
+              <strong>Surveillance Programs: </strong> {this.surveillancePrograms(responseSet)}
+            </div>
+            <div className="box-content">
+              <strong>Surveillance Systems: </strong> {this.surveillanceSystems(responseSet)}
+            </div>
+          </div>
+          }
         </div>
       </div>
     );
+  }
+
+  surveillancePrograms(responseSet) {
+    if (responseSet.surveillancePrograms) {
+      return <span>{responseSet.surveillancePrograms.length}
+       {responseSet.surveillancePrograms.length > 0 ? ` - ${_.join(responseSet.surveillancePrograms)}` : ''}</span>;
+    } else {
+      return 'Loading';
+    }
+  }
+
+  surveillanceSystems(responseSet) {
+    if (responseSet.surveillanceSystems) {
+      return <span>{responseSet.surveillanceSystems.length}
+       {responseSet.surveillanceSystems.length > 0 ? ` - ${_.join(responseSet.surveillanceSystems)}` : ''}</span>;
+    } else {
+      return 'Loading';
+    }
   }
 }
 
 ResponseSetDetails.propTypes = {
   responseSet: responseSetProps,
-  router: PropTypes.obj,
+  router: PropTypes.object,
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,

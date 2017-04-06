@@ -3,6 +3,7 @@ import  responseSets  from '../../../webpack/reducers/response_sets_reducer';
 import {
   SAVE_RESPONSE_SET_FULFILLED,
   FETCH_RESPONSE_SET_FULFILLED,
+  FETCH_RESPONSE_SET_USAGE_FULFILLED,
   FETCH_RESPONSE_SETS_FULFILLED,
 } from '../../../webpack/actions/types';
 
@@ -43,5 +44,13 @@ describe('responseSets reducer', () => {
     const startState = {};
     const nextState = responseSets(startState, action);
     expect(Object.keys(nextState).length).to.equal(1);
+  });
+
+  it('should fetch usage data for a response set', () => {
+    const startState = {1: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"}};
+    const action = {type: FETCH_RESPONSE_SET_USAGE_FULFILLED,
+      payload: {data: {id: 1, surveillanceSystems: ['Test System'], surveillancePrograms: ['Test Program']}}};
+    const nextState = responseSets(startState, action);
+    expect(nextState[1].surveillanceSystems).to.include('Test System');
   });
 });

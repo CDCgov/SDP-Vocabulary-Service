@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchResponseSet, publishResponseSet, deleteResponseSet } from '../actions/response_set_actions';
+import { fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage } from '../actions/response_set_actions';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
@@ -17,11 +17,16 @@ class ResponseSetShowContainer extends Component {
   componentDidUpdate(prevProps) {
     if(prevProps.params.rsId != this.props.params.rsId){
       this.props.fetchResponseSet(this.props.params.rsId);
+    } else {
+      if (this.props.responseSet && this.props.responseSet.status === 'published' &&
+          this.props.responseSet.surveillancePrograms === undefined) {
+        this.props.fetchResponseSetUsage(this.props.params.rsId);
+      }
     }
   }
 
   render() {
-    if(!this.props.responseSet){
+    if(this.props.responseSet === undefined || this.props.responseSet.name === undefined){
       return (
         <div>Loading..</div>
       );
@@ -56,7 +61,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchResponseSet, publishResponseSet, deleteResponseSet}, dispatch);
+  return bindActionCreators({fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage}, dispatch);
 }
 
 ResponseSetShowContainer.propTypes = {
@@ -65,6 +70,7 @@ ResponseSetShowContainer.propTypes = {
   questions: PropTypes.arrayOf(questionProps),
   fetchResponseSet: PropTypes.func,
   publishResponseSet: PropTypes.func,
+  fetchResponseSetUsage: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   params: PropTypes.object,
   router: PropTypes.object.isRequired

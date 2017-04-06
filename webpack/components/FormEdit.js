@@ -170,9 +170,12 @@ class FormEdit extends Component {
       return (event) => {
         let index = parseInt(event.target.getAttribute("data-question"));
         let newState = Object.assign({}, container.state);
-        newState.formQuestions[index].responseSetId = event.target.value;
-        container.setState(newState);
-        this.unsavedState = true;
+        const responseSetId = parseInt(event.target.value);
+        if (! isNaN(responseSetId)) {
+          newState.formQuestions[index].responseSetId = responseSetId;
+          container.setState(newState);
+          this.unsavedState = true;
+        }
       };
     };
   }
@@ -264,7 +267,7 @@ class FormEdit extends Component {
                         reorderQuestion={this.props.reorderQuestion}
                         removeQuestion ={this.props.removeQuestion}
                         showResponseSetModal={this.props.showResponseSetModal.bind(this)}
-                        handleResponseSetChange={this.handleResponseSetChange.bind(this)} />
+                        handleResponseSetChange={this.handleResponseSetChange(this)} />
       </form>
       </div>
       </div>

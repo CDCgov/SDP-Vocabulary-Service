@@ -120,4 +120,16 @@ class ResponseSetTest < ActiveSupport::TestCase
     assert rs7.save
     assert_equal rs1.oid, rs7.oid
   end
+
+  test 'surveillance_systems' do
+    rs = response_sets(:one)
+    ss = rs.surveillance_systems
+    assert_equal 'National Insignificant Digits System', ss.first.name
+  end
+
+  test 'surveillance_programs' do
+    rs = response_sets(:one)
+    sp = rs.surveillance_programs
+    assert_equal 'Generic Surveillance Program', sp.first.name
+  end
 end

@@ -13,6 +13,8 @@ Feature: Manage Response Sets
 
   Scenario: Show Response Set in Detail
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
+    And I have a Surveillance System with the name "National Violent Death Reporting System"
+    And I have a Response Set with the name "Gender Full" linked to Surveillance System "National Violent Death Reporting System"
     And I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
@@ -20,6 +22,8 @@ Feature: Manage Response Sets
     Then I should see "Name: Gender Full"
     And I should see "Response set description"
     And I should see "Original Response"
+    And I should see "Surveillance Programs: 0"
+    And I should see "Surveillance Systems: 1"
 
   Scenario: Show Response Set in Detail No Responses
     Given I have a Response Set with the name "Gender Full" and the description "Response set description"
