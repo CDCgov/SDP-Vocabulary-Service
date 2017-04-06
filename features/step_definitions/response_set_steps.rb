@@ -1,3 +1,18 @@
+Given(/^I have a Response Set with the name "([^"]*)" linked to Surveillance System "([^"]*)"$/) do |set_name, system_name|
+  user = get_user 'test_author@gmail.com'
+  ss = SurveillanceSystem.where(name: system_name).first
+  rs = ResponseSet.where(name: set_name).first
+  rs.update_attribute(:status, 'published')
+  q = Question.new(content: 'test', created_by: user)
+  q.response_sets << rs
+  q.save!
+  f = Form.new(name: 'test', created_by: user)
+  f.form_questions << FormQuestion.new(question: q, response_set: rs, position: 1)
+  f.save!
+  survey = Survey.new(name: 'test', surveillance_system: ss, created_by: user)
+  survey.survey_forms << SurveyForm.new(form: f, position: 1)
+  survey.save!
+end
 
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and\
  the response "([^"]*)"$/) do |set_name, desc, response|

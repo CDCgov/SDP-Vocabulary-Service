@@ -23,7 +23,7 @@ class ResponseSetShowContainer extends Component {
   }
 
   render() {
-    if(!this.props.responseSet){
+    if(this.props.responseSet === undefined || this.props.responseSet.name === undefined){
       return (
         <div>Loading..</div>
       );
