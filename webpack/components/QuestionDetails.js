@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { questionProps } from "../prop-types/question_props";
 import VersionInfo from "./VersionInfo";
 import ResponseSetList from "./ResponseSetList";
-import CodedSetTable from "../components/CodedSetTable";
+import CodedSetTable from "./CodedSetTable";
+import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
 import moment from 'moment';
 import _ from 'lodash';
 import { hashHistory, Link } from 'react-router';
@@ -169,17 +170,7 @@ export default class QuestionDetails extends Component {
             </div>
           }
           {question.status === 'published' &&
-          <div className="basic-c-box panel-default">
-            <div className="panel-heading">
-              <h3 className="panel-title">Usage</h3>
-            </div>
-            <div className="box-content">
-              <strong>Surveillance Programs: </strong> {this.surveillancePrograms(question)}
-            </div>
-            <div className="box-content">
-              <strong>Surveillance Systems: </strong> {this.surveillanceSystems(question)}
-            </div>
-          </div>
+            <ProgramsAndSystems item={question} />
           }
         </div>
       </div>
@@ -198,24 +189,6 @@ export default class QuestionDetails extends Component {
         <VersionInfo versionable={question} versionableType='Question' />
       </div>
     );
-  }
-
-  surveillancePrograms(question) {
-    if (question.surveillancePrograms) {
-      return <span>{question.surveillancePrograms.length}
-       {question.surveillancePrograms.length > 0 ? ` - ${_.join(question.surveillancePrograms)}` : ''}</span>;
-    } else {
-      return 'Loading';
-    }
-  }
-
-  surveillanceSystems(question) {
-    if (question.surveillanceSystems) {
-      return <span>{question.surveillanceSystems.length}
-       {question.surveillanceSystems.length > 0 ? ` - ${_.join(question.surveillanceSystems)}` : ''}</span>;
-    } else {
-      return 'Loading';
-    }
   }
 }
 
