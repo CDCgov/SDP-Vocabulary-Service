@@ -43,6 +43,7 @@ let AddedQuestions = ({form, reorderQuestion, removeQuestion, responseSets, hand
                           responseSets={linkedResponseSets(q, questionsLookup, rsLookup)}
                           removeQuestion={removeQuestion}
                           reorderQuestion={reorderQuestion}
+                          isEditPage={true}
                           handleResponseSetChange={handleResponseSetChange}
                           responseSetId={q.responseSetId}
                           />

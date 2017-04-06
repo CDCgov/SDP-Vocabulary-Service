@@ -12,6 +12,7 @@ export default class SearchResult extends Component {
                             this.props.result.Source,
                             this.props.result.highlight,
                             this.props.handleSelectSearchResult,
+                            this.props.isEditPage,
                             this.props.extraActionName,
                             this.props.extraAction));
   }
@@ -72,6 +73,21 @@ export default class SearchResult extends Component {
           <span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span>
           <p className="item-description">draft</p>
         </li>
+      );
+    }
+  }
+
+  resultName(result, type, isEditPage){
+    const highlight = result.highlight;
+    const name = result.content ? result.content: result.name;
+    const innerHTML = highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : name;
+    if(isEditPage){
+      return innerHTML;
+    }else{
+      return (
+        <Link to={`/${type.replace('_s','S')}s/${result.id}`}>
+          {innerHTML}
+        </Link>
       );
     }
   }
@@ -203,9 +219,8 @@ export default class SearchResult extends Component {
     }
   }
 
-  baseResult(type, result, highlight, handleSelectSearchResult, actionName, action) {
+  baseResult(type, result, highlight, handleSelectSearchResult, isEditPage, actionName, action) {
     const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form': 'fa-clipboard', 'survey': 'fa-clipboard'};
-    const name = result.content ? result.content : result.name;
     return (
       <div className="u-result-group">
         <div className="u-result" id={`${type}_id_${result.id}`}>
@@ -217,9 +232,7 @@ export default class SearchResult extends Component {
                     <ul className="list-inline result-type-wrapper">
                       <li className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></li>
                       <li className="result-name">
-                        <Link to={`/${type.replace('_s','S')}s/${result.id}`}>
-                          {highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : name}
-                        </Link>
+                        {this.resultName(result, type, isEditPage)}
                       </li>
                     </ul>
                   </div>
@@ -240,7 +253,6 @@ export default class SearchResult extends Component {
                 </div>
               </li>
               <li className="u-result-content-item result-nav">
-                <div className="result-nav-item"><i className="fa fa-signal fa-lg" aria-hidden="true"></i></div>
                 <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i></Link></div>
                 <div className="result-nav-item">
                   {handleSelectSearchResult ? (
@@ -269,6 +281,7 @@ SearchResult.propTypes = {
   type: PropTypes.string,
   currentUser: currentUserProps,
   result: PropTypes.object.isRequired,
+  isEditPage: PropTypes.bool,
   handleSelectSearchResult: PropTypes.func,
   extraActionName: PropTypes.string,
   extraAction: PropTypes.func

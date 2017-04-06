@@ -40,7 +40,7 @@ class DashboardContainer extends Component {
                 </div>
               </div>
               <div className="load-more-search">
-                <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} />
+                <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} />
                 {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
                   <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
                 }
