@@ -14,7 +14,7 @@ const errorResponses = store => next => action => {
           type: LOG_OUT
         });
         break;
-      default:
+      case 403:
         hashHistory.push(`/errors/${payload.response.status}`);
     }
 
