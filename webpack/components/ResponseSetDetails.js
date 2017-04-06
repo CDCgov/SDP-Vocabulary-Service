@@ -129,6 +129,7 @@ export default class ResponseSetDetails extends Component {
               </div>
             </div>
           }
+          {responseSet.status === 'published' &&
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
               <h3 className="panel-title">Usage</h3>
@@ -140,6 +141,7 @@ export default class ResponseSetDetails extends Component {
               <strong>Surveillance Systems: </strong> {this.surveillanceSystems(responseSet)}
             </div>
           </div>
+          }
         </div>
       </div>
     );
