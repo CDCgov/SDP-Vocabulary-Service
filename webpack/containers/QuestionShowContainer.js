@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, publishQuestion, deleteQuestion } from '../actions/questions_actions';
+import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } from '../actions/questions_actions';
 import { questionProps } from "../prop-types/question_props";
 import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
@@ -17,6 +17,11 @@ class QuestionShowContainer extends Component {
   componentDidUpdate(prevProps){
     if(prevProps.params.qId !== this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
+    } else {
+      if (this.props.question && this.props.question.status === 'published' &&
+          this.props.question.surveillancePrograms === undefined) {
+        this.props.fetchQuestionUsage(this.props.params.qId);
+      }
     }
   }
 
@@ -60,7 +65,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, fetchQuestionUsage}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -71,6 +76,7 @@ QuestionShowContainer.propTypes = {
   currentUser:   currentUserProps,
   responseSets:  PropTypes.arrayOf(responseSetProps),
   fetchQuestion: PropTypes.func,
+  fetchQuestionUsage: PropTypes.func,
   deleteQuestion: PropTypes.func
 };
 

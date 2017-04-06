@@ -13,7 +13,7 @@ export default class QuestionDetails extends Component {
   render() {
     const {question} = this.props;
     const {responseSets} = this.props;
-    if(!question){
+    if(question === undefined || question.content === undefined){
       return (<div>Loading...</div>);
     }
 
@@ -168,10 +168,24 @@ export default class QuestionDetails extends Component {
               </div>
             </div>
           }
+          {question.status === 'published' &&
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Usage</h3>
+            </div>
+            <div className="box-content">
+              <strong>Surveillance Programs: </strong> {this.surveillancePrograms(question)}
+            </div>
+            <div className="box-content">
+              <strong>Surveillance Systems: </strong> {this.surveillanceSystems(question)}
+            </div>
+          </div>
+          }
         </div>
       </div>
     );
   }
+
   historyBar(question) {
     return (
       <div className="col-md-3 nopadding no-print">
@@ -184,6 +198,24 @@ export default class QuestionDetails extends Component {
         <VersionInfo versionable={question} versionableType='Question' />
       </div>
     );
+  }
+
+  surveillancePrograms(question) {
+    if (question.surveillancePrograms) {
+      return <span>{question.surveillancePrograms.length}
+       {question.surveillancePrograms.length > 0 ? ` - ${_.join(question.surveillancePrograms)}` : ''}</span>;
+    } else {
+      return 'Loading';
+    }
+  }
+
+  surveillanceSystems(question) {
+    if (question.surveillanceSystems) {
+      return <span>{question.surveillanceSystems.length}
+       {question.surveillanceSystems.length > 0 ? ` - ${_.join(question.surveillanceSystems)}` : ''}</span>;
+    } else {
+      return 'Loading';
+    }
   }
 }
 

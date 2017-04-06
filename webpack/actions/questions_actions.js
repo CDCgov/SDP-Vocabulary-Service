@@ -11,6 +11,7 @@ import {
   SAVE_DRAFT_QUESTION,
   PUBLISH_QUESTION,
   FETCH_QUESTION,
+  FETCH_QUESTION_USAGE,
   FETCH_QUESTIONS
 } from './types';
 
@@ -66,6 +67,15 @@ export function fetchQuestion(id) {
   return {
     type: FETCH_QUESTION,
     payload: axios.get(routes.questionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    })
+  };
+}
+
+export function fetchQuestionUsage(id) {
+  return {
+    type: FETCH_QUESTION_USAGE,
+    payload: axios.get(routes.usageQuestionPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };

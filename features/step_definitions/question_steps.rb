@@ -12,6 +12,20 @@ Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*
   Question.create!(content: content, description: description, question_type_id: qt314.id, version: 1, created_by: user)
 end
 
+Given(/^I have a Question with the content "([^"]*)" linked to Surveillance System "([^"]*)"$/) do |question_content, system_name|
+  user = get_user 'test_author@gmail.com'
+  ss = SurveillanceSystem.where(name: system_name).first
+  q = Question.where(content: question_content).first
+  q.update_attribute(:status, 'published')
+  q.save!
+  f = Form.new(name: 'test', created_by: user)
+  f.form_questions << FormQuestion.new(question: q, position: 1)
+  f.save!
+  survey = Survey.new(name: 'test', surveillance_system: ss, created_by: user)
+  survey.survey_forms << SurveyForm.new(form: f, position: 1)
+  survey.save!
+end
+
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)"$/) do |content, description|
   user = get_user('test_author@gmail.com')
   Question.create!(status: 'draft', content: content, description: description, version: 1, created_by: user)
