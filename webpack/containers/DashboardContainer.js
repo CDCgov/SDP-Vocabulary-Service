@@ -145,7 +145,7 @@ class DashboardContainer extends Component {
         <div className="recent-items-body">
           <ul className="list-group">
             <li className="recent-item-list">
-              <div className="recent-items-icon"><i className="fa fa-question-circle recent-items-icon" aria-hidden="true"></i></div>
+              <div className="recent-items-icon"><i className="fa fa-tasks recent-items-icon" aria-hidden="true"></i></div>
               <Link to="/mystuff" className="recent-items-value">{this.props.myQuestionCount} Questions</Link>
             </li>
             <li className="recent-item-list">
