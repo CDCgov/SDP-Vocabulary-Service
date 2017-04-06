@@ -28,7 +28,9 @@ Feature: Edit Forms
     And I fill in the "name" field with "Gender Form"
     And I fill in the "description" field with "Revised Description"
     And I fill in the "search" field with "What"
-    And I click on the "Add to Form" drop-down option for "What is your gender?"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
     And I click on the "Save" button
     Then I should see "Name: Gender Form"
@@ -47,10 +49,11 @@ Feature: Edit Forms
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Revise the Form with the name "Test Form"
     And I fill in the "search" field with "What"
-    And I click on the "Add to Form" drop-down option for "What is your gender?"
-    And I click on the "Add to Form" drop-down option for "What is your name?"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
+    And I use the question search to select "What is your name?"
     And I move the Question "What is your name?" up
-    And I move the Question "What is your name?" down
     And I click on the "Save" button
     And I should see "What is your gender?"
 
@@ -66,7 +69,9 @@ Feature: Edit Forms
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
     And I fill in the "search" field with "What"
-    And I click on the "Add to Form" drop-down option for "What is your gender?"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Full"
     And I click on the "Add New Question" button
     And I fill in the "Question" field with "What is your favorite color?"
@@ -90,7 +95,9 @@ Feature: Edit Forms
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "description" field with "Form description"
     And I fill in the "search" field with "What"
-    And I click on the "Add to Form" drop-down option for "What is your gender?"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
     Then I click on the "Add New Response Set" button
     Then I fill in the "response_set_name" field with "New Response Set"
     And I click on the "Add Response Set" button
@@ -108,7 +115,9 @@ Feature: Edit Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "search" field with "What"
-    And I click on the "Add to Form" drop-down option for "What is your gender?"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
     And I wait 1 seconds
@@ -137,7 +146,9 @@ Feature: Edit Forms
     And I fill in the "name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234"
     And I fill in the "search" field with "What"
-    And I click on the "Add to Form" drop-down option for "What is your gender?"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Full"
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"

@@ -31,6 +31,21 @@ When(/^I expect an alert$/) do
   page.driver.browser.switch_to.alert.accept
 end
 
+When(/^I set search filter to "([^"]*)"$/) do |type|
+  case type
+  when 'question'
+    Elastictest.fake_question_search_results
+  when 'response_set'
+    Elastictest.fake_rs_search_results
+  when 'forms'
+    Elastictest.fake_form_search_results
+  when 'survey'
+    Elastictest.fake_survey_search_results
+  else
+    Elastictest.fake_all_search_results
+  end
+end
+
 Then(/^I wait (\d+) seconds$/) do |seconds|
   sleep seconds.to_i
 end
