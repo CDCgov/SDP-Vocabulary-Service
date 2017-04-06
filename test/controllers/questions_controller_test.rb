@@ -132,4 +132,13 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_equal last_id, Question.last
   end
+
+  test 'should get question usage' do
+    get usage_question_url(@question), xhr: true, params: nil
+    assert_response :success
+    response_json = JSON.parse(@response.body)
+    assert_equal @question.id, response_json['id']
+    assert response_json['surveillance_systems'].include? 'National Insignificant Digits System'
+    assert response_json['surveillance_programs'].include? 'Generic Surveillance Program'
+  end
 end

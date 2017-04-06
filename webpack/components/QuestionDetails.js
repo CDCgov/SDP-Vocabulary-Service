@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { questionProps } from "../prop-types/question_props";
 import VersionInfo from "./VersionInfo";
 import ResponseSetList from "./ResponseSetList";
-import CodedSetTable from "../components/CodedSetTable";
+import CodedSetTable from "./CodedSetTable";
+import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
 import moment from 'moment';
 import _ from 'lodash';
 import { hashHistory, Link } from 'react-router';
@@ -13,7 +14,7 @@ export default class QuestionDetails extends Component {
   render() {
     const {question} = this.props;
     const {responseSets} = this.props;
-    if(!question){
+    if(question === undefined || question.content === undefined){
       return (<div>Loading...</div>);
     }
 
@@ -168,10 +169,14 @@ export default class QuestionDetails extends Component {
               </div>
             </div>
           }
+          {question.status === 'published' &&
+            <ProgramsAndSystems item={question} />
+          }
         </div>
       </div>
     );
   }
+
   historyBar(question) {
     return (
       <div className="col-md-3 nopadding no-print">

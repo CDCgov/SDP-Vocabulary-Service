@@ -14,12 +14,16 @@ Feature: Manage Questions
   Scenario: Show Question in Detail
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
     And I am logged in as test_author@gmail.com
+    And I have a Surveillance System with the name "National Violent Death Reporting System"
+    And I have a Question with the content "What is your gender?" linked to Surveillance System "National Violent Death Reporting System"
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Name: What is your gender?"
     Then I should see "Description: This is a question"
     Then I should see "New Concept Name"
+    And I should see "Surveillance Programs: 0"
+    And I should see "Surveillance Systems: 1"
 
   Scenario: Show Question in Detail No Concepts
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
