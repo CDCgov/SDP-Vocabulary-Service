@@ -87,7 +87,11 @@ class FormEdit extends Component {
     return (this.unsavedState || null);
   }
 
-  handleResponseSetChange(questionIndex, responseSetId) {
+  handleResponseSetChange(questionIndex, event) {
+    var responseSetId = parseInt(event.target.value);
+    if(isNaN(responseSetId)){
+      responseSetId = '';
+    }
     let newState = Object.assign({}, this.state);
     newState.formQuestions[questionIndex].responseSetId = responseSetId;
     this.setState(newState);

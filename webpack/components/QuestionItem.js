@@ -72,7 +72,7 @@ class QuestionItem extends Component {
         <div className="col-md-3">
           <div className="form-group">
             <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.question.id}/>
-            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSet || ''} onChange={(e)=>this.props.handleResponseSetChange(parseInt(e.target.value))}>
+            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSet || ''} onChange={(e)=>this.props.handleResponseSetChange(e)}>
               {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
                 return (
                   <option value={r.id} key={`${r.id}-${i}`}>{r.name} </option>
