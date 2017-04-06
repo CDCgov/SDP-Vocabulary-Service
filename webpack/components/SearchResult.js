@@ -124,7 +124,11 @@ export default class SearchResult extends Component {
       case 'question':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__responseset">
-            {result.responseSets && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>}
+            {result.responseSets && result.responseSets.length === 1 ? (
+              <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Set</a></li>
+            ) : (
+              <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>
+            )}
           </ul>
         );
       case 'response_set':
@@ -158,7 +162,7 @@ export default class SearchResult extends Component {
                 result.responseSets.map((rs, i) => {
                   return(
                     <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link>
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link>}
                     </div>
                   );
                 })

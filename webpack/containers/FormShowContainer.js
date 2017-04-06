@@ -56,11 +56,21 @@ function mapStateToProps(state, ownProps) {
   props.form = state.forms[ownProps.params.formId];
   if (props.form && props.form.formQuestions && props.form.formQuestions.length > 0) {
     props.formQuestions = props.form.formQuestions.map((fq) => state.questions[fq.questionId]);
-    // props.formResponseSets = props.form.formQuestions.map((fq) => {
-    //   let rs = fq.responseSetId ? state.responseSets[fq.responseSetId] : {name: 'No Associated Response Set'};
-    //   return rs;
-    // });
+    props.formResponseSets = props.form.formQuestions.map((fq) => {
+      let rs;
+      if (fq.responseSetId) {
+        if(state.responseSets[fq.responseSetId]) {
+          rs = state.responseSets[fq.responseSetId];
+        } else {
+          rs = {name: 'Loading...'};
+        }
+      } else {
+        rs = {name: 'None'};
+      }
+      return rs;
+    });
   }
+  console.log(props.formResponseSets);
   return props;
 }
 
