@@ -11,6 +11,7 @@ describe('QuestionModalContainer ', () => {
                     closeQuestionModal:()=>{},
                     route: {id: 1, name: 'test'},
                     router:new MockRouter(),
+                    handleSaveQuestionSuccess: ()=>{},
                     saveQuestionSuccess: ()=>{} };
     const component = renderComponent(QuestionModalContainer, props);
     expect(component.find("div[class='modal body modal-body-question']").length).to.exist;
