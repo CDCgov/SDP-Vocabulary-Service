@@ -10,6 +10,14 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin)
   end
 
+  test 'api should get index' do
+    get api_forms_url
+    res = JSON.parse response.body
+    assert_equal Form.latest_versions.count, res.count
+    assert_response :success
+    assert_response_schema('forms/show.json')
+  end
+
   test 'api should show form' do
     get api_form_url(@form.version_independent_id)
     assert_response :success

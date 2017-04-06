@@ -283,6 +283,41 @@ paths:
           schema:
             $ref: '#/definitions/Survey'
 
+  /forms:
+    get:
+      tags:
+      - forms
+      description: |
+        Get a list of forms that match the supplied search criteria.
+      produces:
+      - application/json
+          
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned forms, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned forms to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Form'
+
   /forms/{id}:
     parameters:
       -

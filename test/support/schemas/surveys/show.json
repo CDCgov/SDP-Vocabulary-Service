@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "programId" : {"type" : "number"},
+    "programName" : {"type" : "string"},
+    "programUri" : {"type" : "string"},
+    "systemId" : {"type" : "number"},
+    "systemName" : {"type" : "string"},
+    "systemUri" : {"type" : "string"},
+    "surveyId" : {"type" : "string"},
+    "surveyName" : {"type" : "string"},
+    "surveyUri" : {"type" : "string"},
+    "version" : {"type" : "number"},
+    "forms" : { 
+      "type" : "array",
+      "items": {
+        "type" : "object",
+        "properties": {
+          "formId" : {"type" : "string"},
+          "formName" : {"type" : "string"},
+          "formUri" : {"type" : "string"},
+          "version" : {"type" : "number"},
+          "questions" : { 
+            "type" : "array",
+            "items": {
+              "type" : "object",
+              "properties": {
+                "question": {"type": "object"},
+                "response": {"type": "object"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
