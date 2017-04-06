@@ -170,3 +170,18 @@ Feature: Manage Questions
     Then I go to the dashboard
     When I go to the list of Questions
     Then I should not see "Test Question"
+
+  Scenario: Published Question should be visible when not logged in
+    Given I have a published Question with the content "Why?"
+    When I go to the list of Questions
+    And I click on the menu link for the Question with the content "Why?"
+    And I click on the option to Details the Question with the content "Why?"
+    Then I should see "Why?"
+
+  Scenario: Published Question should be visible when not logged in
+    Given I have a published Question with the content "Why?"
+    And I am logged in as "not_test_user@gmail.com"
+    When I go to the list of Questions
+    And I click on the menu link for the Question with the content "Why?"
+    And I click on the option to Details the Question with the content "Why?"
+    Then I should see "Why?"
