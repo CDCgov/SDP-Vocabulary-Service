@@ -124,6 +124,3 @@ export const CREATE_SURVEY = 'CREATE_SURVEY';
 
 // Current User
 export const LOG_OUT = 'LOG_OUT';
-
-// Errors
-export const HANDLE_ERROR = 'HANDLE_ERROR';

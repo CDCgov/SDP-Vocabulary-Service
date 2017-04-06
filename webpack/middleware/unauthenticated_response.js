@@ -1,6 +1,5 @@
 import {
   LOG_OUT,
-  HANDLE_ERROR
 } from '../actions/types';
 import { hashHistory } from 'react-router';
 
