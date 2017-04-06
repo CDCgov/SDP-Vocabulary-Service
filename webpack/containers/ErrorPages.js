@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 class ErrorPage extends Component {
   // This is the container for error pages
   // It has a default value in case it renders and doesn't have any children
@@ -18,16 +18,20 @@ class ErrorPage extends Component {
   }
 }
 
+ErrorPage.propTypes = {
+  children:PropTypes.array
+};
+
 export default ErrorPage;
 
 // While it would be possible to not use this and just use the default case in the
 // ErrorPage it seemed better to have that as a fall back and have a defined page
 export const GenericError = () => {
   return <p> An error has occurred</p>;
-}
+};
 
 // This is an example of how you can handle specific pages, you'll need to add a route in landing.js
-// Check under the Errors route. 
+// Check under the Errors route.
 export const Forbidden403 = () => {
   return <p>You do not have access to this resource.</p>;
-}
+};
