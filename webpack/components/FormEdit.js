@@ -89,7 +89,7 @@ class FormEdit extends Component {
 
   handleResponseSetChange(questionIndex, responseSetId) {
     if(isNaN(responseSetId)){
-      responseSetId = '';
+      responseSetId = null;
     }
     let newState = Object.assign({}, this.state);
     newState.formQuestions[questionIndex].responseSetId = responseSetId;
@@ -111,7 +111,7 @@ class FormEdit extends Component {
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let form = Object.assign({}, this.state);
     form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
-    form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId);
+    form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId || '');
     this.props.formSubmitter(form, (response) => {
       this.unsavedState = false;
       this.props.router.push(`/forms/${response.data.id}`);

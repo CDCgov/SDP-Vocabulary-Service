@@ -13,7 +13,7 @@ import {
 import _ from 'lodash';
 
 export default function forms(state = {}, action) {
-  let form , index, newState, newForm, direction, question;
+  let form , index, newState, newForm, direction, question, responseSetId;
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
       return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
@@ -30,7 +30,12 @@ export default function forms(state = {}, action) {
     case ADD_QUESTION:
       question = action.payload.question;
       form = action.payload.form;
-      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: question.responseSets && question.responseSets[0]});
+      if(question.responseSets && question.responseSets[0]){
+        responseSetId = question.responseSets[0].id || question.responseSets[0];
+      } else {
+        responseSetId = null;
+      }
+      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: responseSetId});
       newForm = Object.assign({}, form);
       newForm.formQuestions.push(newFormQuestion);
       newState = Object.assign({}, state);
