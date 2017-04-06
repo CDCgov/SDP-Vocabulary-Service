@@ -88,6 +88,18 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def usage
+    @question = Question.find(params[:id])
+    if @question.status != 'published'
+      render(json: { error: 'Only published Questions provide usage information' }, status: :bad_request)
+    else
+      response = { id: @question.id }
+      response[:surveillance_programs] = @question.surveillance_programs.map(&:name)
+      response[:surveillance_systems] = @question.surveillance_systems.map(&:name)
+      render json: response
+    end
+  end
+
   def update_concepts(_params)
     @concepts = Concept.where(question_id: @question.id)
     @question.concepts.destroy_all

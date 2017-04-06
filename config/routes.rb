@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   resources :concepts
   resources :questions, except: [:edit] do
     get :revise, on: :member
+    get :usage, on: :member
     put :publish, on: :member
   end
   resources :comments do
