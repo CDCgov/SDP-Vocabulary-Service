@@ -89,7 +89,9 @@ class FormShow extends Component {
               {form.description}
             </div>
           </div>
-          <FormQuestionList questions={form.questions} routes={Routes} />
+          {this.props.formQuestions && this.props.formQuestions.length > 0 &&
+            <FormQuestionList questions={this.props.formQuestions} responseSets={this.props.formResponseSets} />
+          }
         </div>
       </div>
     );
@@ -98,6 +100,8 @@ class FormShow extends Component {
 
 FormShow.propTypes = {
   form: formProps,
+  formQuestions: PropTypes.array,
+  formResponseSets: PropTypes.array,
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishForm: PropTypes.func,
