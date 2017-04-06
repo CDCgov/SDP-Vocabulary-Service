@@ -106,6 +106,13 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     # TODO: deprecation
   end
 
+  test 'unauthenticated users should see published quetion' do
+    q = questions(:search_1)
+    sign_out @current_user
+    get question_url(q, format: :json)
+    assert_response :success
+  end
+
   test 'should destroy a draft question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
     assert_equal Question.last.status, 'draft'

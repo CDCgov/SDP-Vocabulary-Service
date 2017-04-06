@@ -32,7 +32,7 @@ Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*
 end
 
 Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) do |content, type|
-  user  = get_user('test_author@gmail.com')
+  user = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
   Question.create!(content: content, question_type_id: qt314.id, version: 1, created_by: user)
 end
@@ -49,6 +49,12 @@ When(/^I go to the list of Questions$/) do
   Elastictest.fake_question_search_results
   visit '/'
   page.find('li[id="questions-analytics-item"]').click
+end
+
+Given(/^I have a published Question with the content "([^"]*)"$/) do |content|
+  user = get_user('test_author@gmail.com')
+  q = Question.create!(content: content, version: 1, created_by: user)
+  q.publish
 end
 
 # When clauses

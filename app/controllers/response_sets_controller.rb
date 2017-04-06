@@ -1,5 +1,5 @@
 class ResponseSetsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:usage]
 
   # GET /response_sets
   # GET /response_sets.json
