@@ -19,6 +19,8 @@ import SurveyShowContainer from './containers/surveys/ShowContainer';
 import Privacy from './containers/Privacy';
 import App from './containers/App';
 import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
+import ErrorPage, {GenericError ,Forbidden403} from './containers/ErrorPages';
+
 
 import configureStore from './store/configure_store';
 import {logPageViewed} from './utilities/AdobeAnalytics';
@@ -44,6 +46,10 @@ ReactDOM.render(
         <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
         <Route path='/questions/:qId' component={QuestionShowContainer} />
         <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
+        <Route path='/errors/' component={ErrorPage} >
+          <Route path='403' component={Forbidden403} />
+          <Route path='*' component={GenericError} />
+        </Route>
       </Route>
     </Router>
   </Provider>, document.getElementById("app"));
