@@ -81,3 +81,8 @@ Feature: Session Management
     Then my session expires
     And I am on the "/#/mystuff" page
     Then I should see "You are not authorized to see this content, please login."
+
+  Scenario: Accessing content that belongs to another user causes a forbidden error
+    Given I am logged in as test_author@gmail.com
+    Then I navigate to a question created by "someone@gmail.com"
+    Then I should see "You do not have access to this resource."
