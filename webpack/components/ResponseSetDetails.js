@@ -149,7 +149,8 @@ export default class ResponseSetDetails extends Component {
 
   surveillancePrograms(responseSet) {
     if (responseSet.surveillancePrograms) {
-      return <span>{`${responseSet.surveillancePrograms.length} - ${_.join(responseSet.surveillancePrograms)}`}</span>;
+      return <span>{responseSet.surveillancePrograms.length}
+       {responseSet.surveillancePrograms.length > 0 ? ` - ${_.join(responseSet.surveillancePrograms)}` : ''}</span>;
     } else {
       return 'Loading';
     }
@@ -157,7 +158,8 @@ export default class ResponseSetDetails extends Component {
 
   surveillanceSystems(responseSet) {
     if (responseSet.surveillanceSystems) {
-      return <span>{`${responseSet.surveillanceSystems.length} - ${_.join(responseSet.surveillanceSystems)}`}</span>;
+      return <span>{responseSet.surveillanceSystems.length}
+       {responseSet.surveillanceSystems.length > 0 ? ` - ${_.join(responseSet.surveillanceSystems)}` : ''}</span>;
     } else {
       return 'Loading';
     }
