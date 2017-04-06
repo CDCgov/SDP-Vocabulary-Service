@@ -70,7 +70,6 @@ function mapStateToProps(state, ownProps) {
       return rs;
     });
   }
-  console.log(props.formResponseSets);
   return props;
 }
 

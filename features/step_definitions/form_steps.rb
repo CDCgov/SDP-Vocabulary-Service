@@ -30,6 +30,16 @@ When(/^I use the question search to select "([^"]*)"$/) do |name|
   page.find('a', id: "select-#{name}").click
 end
 
+Then(/^I should see the question "([^"]*)" first$/) do |name|
+  page.first('li', class: 'result-name').has_content?(name)
+end
+
+Then(/^I should see the response set "([^"]*)" second$/) do |name|
+  page.all('a', class: 'panel-toggle')[0].click
+  page.all('a', class: 'panel-toggle')[1].click
+  page.all('div', class: 'result-details-content')[1].has_content?(name)
+end
+
 When(/^I click on the menu link for the Form with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Form', attribute, attribute_value)
   page.find("#form_#{object_id}_menu").click
