@@ -8,7 +8,7 @@ import MockRouter from '../mock_router';
 describe('QuestionEditContainer ', () => {
   it('will show question edit page', () => {
     const props = {params:{},
-      questions: {1: {id:1, contents:'test', questionTypeId:1, responseTypeId:1, responseSets:[1]}},
+      questions: {1: {id:1, content:'test', questionTypeId:1, responseTypeId:1, responseSets:[1]}},
       questionTypes:{1: {id: 1, name: 'Test'}},
       responseSets: {1: {id: 1, name: 'Test'}},
       responseTypes:{1: {id: 1, name: 'Test'}},

@@ -7,11 +7,12 @@ describe('ResponseSetForm', () => {
 
   beforeEach(() => {
     router = new MockRouter();
-    props  = {
-      responseSet: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1",
+    props = {
+      responseSet: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1", parent: {id: 1337},
         responses:[{value: 'val', codeSystem: 'codesystem', displayName: 'displayname'}]},
       router: router,
-      route: 'route',
+      route: {},
+      responseSetSubmitter: ()=>{},
       action: 'revise',
     };
     component = renderComponent(ResponseSetForm, props);

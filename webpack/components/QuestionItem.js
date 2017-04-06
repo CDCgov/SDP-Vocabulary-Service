@@ -109,7 +109,7 @@ function mapDispatchToProps(dispatch) {
 
 QuestionItem.propTypes = {
   question: questionProps,
-  responseSets: PropTypes.array,
+  responseSets: PropTypes.object,
   index: PropTypes.number.isRequired,
   handleResponseSetChange: PropTypes.func,
   fetchSearchResults: PropTypes.func,
