@@ -1,5 +1,6 @@
 import axios from 'axios';
 import routes from '../routes';
+import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
 import {
   ADD_QUESTION,
@@ -10,9 +11,9 @@ import {
   SAVE_DRAFT_QUESTION,
   PUBLISH_QUESTION,
   FETCH_QUESTION,
+  FETCH_QUESTION_USAGE,
   FETCH_QUESTIONS
 } from './types';
-
 
 export function addQuestion(form, question) {
   return {
@@ -29,26 +30,9 @@ export function removeQuestion(form, index) {
 }
 
 export function deleteQuestion(id, callback=null) {
-  const authenticityToken = getCSRFToken();
-  let data = new FormData();
-  data.set('authenticity_token', authenticityToken);
-  data.set('_method', 'delete');
-  const delPromise = axios.request({
-    url: routes.question_path(id),
-    method: 'post',
-    data,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'X-Key-Inflection': 'camel',
-      'Accept': 'application/json'
-    }
-  });
-  if (callback) {
-    delPromise.then(callback);
-  }
   return {
     type: DELETE_QUESTION,
-    payload: delPromise
+    payload: deleteObject(routes.question_path(id), callback)
   };
 }
 
@@ -83,6 +67,15 @@ export function fetchQuestion(id) {
   return {
     type: FETCH_QUESTION,
     payload: axios.get(routes.questionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    })
+  };
+}
+
+export function fetchQuestionUsage(id) {
+  return {
+    type: FETCH_QUESTION_USAGE,
+    payload: axios.get(routes.usageQuestionPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };

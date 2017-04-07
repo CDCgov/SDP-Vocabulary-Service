@@ -86,7 +86,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     get my_response_sets_url, xhr: true, params: nil
     assert_response :success
     JSON.parse(response.body).each do |f|
-      assert f['created_by_id'] == @current_user.id
+      assert f['created_by']['id'] == @current_user.id
     end
   end
 
@@ -136,5 +136,14 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   test 'should show response_set' do
     get response_set_url(@response_set), xhr: true, params: nil
     assert_response :success
+  end
+
+  test 'should get response_set usage' do
+    get usage_response_set_url(@response_set), xhr: true, params: nil
+    assert_response :success
+    response_json = JSON.parse(@response.body)
+    assert_equal @response_set.id, response_json['id']
+    assert response_json['surveillance_systems'].include? 'National Insignificant Digits System'
+    assert response_json['surveillance_programs'].include? 'Generic Surveillance Program'
   end
 end

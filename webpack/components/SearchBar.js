@@ -12,7 +12,7 @@ class SearchBar extends Component {
             <div className="search-bar">
                 <input
                     name="search"
-                    placeholder="Search Questions"
+                    placeholder={`Search ${this.props.modelName}s`}
                     value={this.state.term}
                     onChange={event => this.onInputChange(event.target.value)} />
             </div>
@@ -27,6 +27,7 @@ class SearchBar extends Component {
 
 
 SearchBar.propTypes = {
+  modelName: React.PropTypes.string,
   onSearchTermChange: React.PropTypes.func
 };
 

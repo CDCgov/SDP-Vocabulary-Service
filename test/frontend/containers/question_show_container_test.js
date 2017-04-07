@@ -12,7 +12,7 @@ describe('QuestionShowContainer ', () => {
       router: {}
     };
     const state = {
-      questions: {1: {id:1, concepts: [], createdBy: {email: 'test'}, contents:'test', questionTypeId:1, responseTypeId:1, responseSets:[1]}},
+      questions: {1: {id:1, concepts: [], createdBy: {email: 'test'}, content:'test', questionTypeId:1, responseTypeId:1, responseSets:[1]}},
       responseSets: {1: {id: 1, name: 'Test'}}
     };
     const component = renderComponent(QuestionShowContainer, props, state);

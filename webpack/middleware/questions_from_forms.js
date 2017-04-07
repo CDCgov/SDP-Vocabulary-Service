@@ -1,28 +1,32 @@
 import {
   FETCH_FORM_FULFILLED,
   FETCH_FORMS_FULFILLED,
-  FETCH_QUESTIONS_FULFILLED
+  FETCH_QUESTION_FULFILLED
 } from '../actions/types';
+
+import dispatchIfNotPresent from './store_helper';
 
 const questionsFromForms = store => next => action => {
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
       const forms = action.payload.data;
       forms.forEach((f) => {
-        store.dispatch({
-          type: FETCH_QUESTIONS_FULFILLED,
-          payload: {data: f.questions}
-        });
+        if (f.questions) {
+          f.questions.forEach((q) => {
+            dispatchIfNotPresent(store, 'questions', q, FETCH_QUESTION_FULFILLED);
+          });
+        }
         f.questions = f.questions.map((q) => {
           return ({id: q.id, content: q.content });
         });
       });
       break;
     case FETCH_FORM_FULFILLED:
-      store.dispatch({
-        type: FETCH_QUESTIONS_FULFILLED,
-        payload: {data: action.payload.data.questions}
-      });
+      if (action.payload.data.questions) {
+        action.payload.data.questions.forEach((q) => {
+          dispatchIfNotPresent(store, 'questions', q, FETCH_QUESTION_FULFILLED);
+        });
+      }
       action.payload.data.questions = action.payload.data.questions.map((q) => {
         return ({id: q.id, content: q.content });
       });

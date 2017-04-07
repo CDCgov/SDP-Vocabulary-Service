@@ -9,7 +9,7 @@ export default class LogInModal extends Component {
 
   render() {
     return (
-      <Modal show={this.props.show}>
+      <Modal show={this.props.show} onHide={this.props.closer}>
         <Modal.Header closeButton>
           <Modal.Title>Sign In</Modal.Title>
         </Modal.Header>

@@ -24,10 +24,10 @@ module SDP
           code_system_version: 'Code System Version'
         },
         response_types: {
-          'Date' => 'Date',
-          'Coded' => 'Response Set',
-          'Numeric' => 'Decimal',
-          'Text' => 'Free Text'
+          'Date' => :date,
+          'Coded' => :choice,
+          'Numeric' => :decimal,
+          'Text' => :text
         }
       }.freeze
 
@@ -45,23 +45,22 @@ module SDP
       end
 
       def save!
-        f = Form.new
-        f.name = @file
-        f.created_by = @user
-        f.save!
-        sections do |_name, elements|
+        s = Survey.new(name: @file, created_by: @user)
+        s.save!
+        sections do |name, elements|
+          f = Form.new(name: name, created_by: @user)
+          f.save!
+          s.survey_forms.create(form: f)
           elements.each do |element|
-            q = Question.new(
-              content: element[:name], description: element[:description],
-              created_by: @user, response_type: response_type(element[:data_type])
-            )
-            q.save!
             rs = nil
             if element[:value_set_oid]
               rs = response_set_for_vads(element)
             elsif element[:value_set]
               rs = response_set_for_local(element)
             end
+            q = question_for(element)
+            q.save!
+            q.question_response_sets.create(response_set: rs) if rs
             f.form_questions.create(question: q, response_set: rs)
           end
         end
@@ -104,7 +103,17 @@ module SDP
       private
 
       def response_type(type)
-        ResponseType.find_by(name: @config[:response_types][type])
+        response_type_code = @config[:response_types][type]
+        rt = ResponseType.find_by(code: response_type_code)
+        raise "Unable to find response type #{response_type_code} - did response types change?" unless rt
+        rt
+      end
+
+      def question_for(element)
+        Question.new(
+          content: element[:name], description: element[:description],
+          created_by: @user, response_type: response_type(element[:data_type])
+        )
       end
 
       def response_set_for_vads(element)
@@ -172,10 +181,7 @@ module SDP
       end
 
       def extract_data_element(row)
-        data_element = {}
-        data_element[:name] = normalize(row[:name])
-        data_element[:description] = normalize(row[:description])
-        data_element[:data_type] = normalize(row[:data_type])
+        data_element = { name: normalize(row[:name]), description: normalize(row[:description]), data_type: normalize(row[:data_type]) }
         if @config[:de_coded_type].include? data_element[:data_type]
           if row[:value_set].respond_to? :to_uri
             data_element[:value_set_url] = row[:value_set].to_uri

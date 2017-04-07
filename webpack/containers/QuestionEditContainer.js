@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import Routes from "../routes";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../actions/questions_actions';
-
 import QuestionForm from '../components/QuestionForm';
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps }  from '../prop-types/response_set_props';
@@ -35,11 +33,17 @@ class QuestionEditContainer extends Component {
     }
     return (
       <div className="container">
-        <QuestionForm question={this.props.question} questionSubmitter={this.props.saveQuestion}
-                      draftSubmitter={this.props.saveDraftQuestion} publishSubmitter={this.props.publishQuestion} action={action} id={id}
-                      deleteSubmitter={this.props.deleteQuestion} questionTypes={this.props.questionTypes} responseSets={this.props.responseSets}
-                      responseTypes={this.props.responseTypes} routes={Routes}
-                      router={this.props.router} route={this.props.route} />
+        <QuestionForm id={id}
+                      action={action}
+                      question={this.props.question}
+                      draftSubmitter={this.props.saveDraftQuestion}
+                      questionSubmitter={this.props.saveQuestion}
+                      publishSubmitter ={this.props.publishQuestion}
+                      questionTypes={this.props.questionTypes}
+                      responseSets ={this.props.responseSets}
+                      responseTypes={this.props.responseTypes}
+                      router={this.props.router}
+                      route ={this.props.route} />
       </div>
     );
   }

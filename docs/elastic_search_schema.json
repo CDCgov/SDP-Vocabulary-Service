@@ -4,15 +4,31 @@
       "number_of_shards": 1,
       "analysis": {
         "analyzer": {
+          "sdp": {
+            "type": "custom",
+            "tokenizer": "sdp",
+            "filter": ["lowercase", "asciifolding", "stop"]
+          },
           "trigram": {
             "type": "custom",
-            "tokenizer": "standard",
+            "tokenizer": "sdp",
             "filter": ["standard", "shingle"]
           },
           "reverse": {
             "type": "custom",
-            "tokenizer": "standard",
+            "tokenizer": "sdp",
             "filter": ["standard", "reverse"]
+          }
+        },
+        "tokenizer": {
+          "sdp": {
+            "type": "edge_ngram",
+            "min_gram": 3,
+            "max_gram": 10,
+            "token_chars": [
+              "letter",
+              "digit"
+            ]
           }
         },
         "filter": {
@@ -48,29 +64,11 @@
         },
         "name": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "description": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "createdAt": {
           "type": "date"
@@ -110,7 +108,7 @@
           "type": "string"
         },
         "responseSets": {
-          "type": "nested",
+          "type": "object",
           "properties": {
             "id": {
               "type": "string"
@@ -121,7 +119,7 @@
           }
         },
         "codes": {
-          "type": "nested",
+          "type": "object",
           "properties": {
             "code": {
               "type": "string"
@@ -164,29 +162,11 @@
         },
         "name": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "description": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "createdAt": {
           "type": "date"
@@ -223,7 +203,7 @@
           }
         },
         "questions": {
-          "type": "nested",
+          "type": "object",
           "properties": {
             "name": {
               "type": "string"
@@ -239,6 +219,101 @@
             },
             "codes" :{
               "type" : "object"
+            }
+          }
+        }
+      }
+    },
+    "survey": {
+      "properties": {
+        "suggest": {
+          "type": "completion"
+        },
+        "id": {
+          "type": "string"
+        },
+        "version_independent_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "analyzer": "sdp"
+        },
+        "description": {
+          "type": "string",
+          "analyzer": "sdp"
+        },
+        "createdAt": {
+          "type": "date"
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "updatedBy": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        },
+        "questions": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "responseSet": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "responseSetID": {
+              "type": "string"
+            },
+            "codes" :{
+              "type" : "object"
+            }
+          }
+        },
+        "forms": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
             }
           }
         }
@@ -266,29 +341,11 @@
         },
         "name": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "description": {
           "type": "string",
-          "fields": {
-            "trigram": {
-              "type": "text",
-              "analyzer": "trigram"
-            },
-            "reverse": {
-              "type": "text",
-              "analyzer": "reverse"
-            }
-          }
+          "analyzer": "sdp"
         },
         "createdAt": {
           "type": "date"
@@ -325,7 +382,7 @@
           }
         },
         "codes": {
-          "type": "nested",
+          "type": "object",
           "properties": {
             "code": {
               "type": "string"

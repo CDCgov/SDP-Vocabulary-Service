@@ -1,8 +1,20 @@
+
 # Given clauses
 Given(/^I am logged in as (.+)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
   login_as(user, scope: :user)
+end
+
+Given(/^I am working the program "(.+)" and system "(.+)" logged in as (.+)$/) do |program_name, system_name, user_name|
+  user = User.create_with(password: 'password').find_or_create_by(email: user_name)
+  Ability.new(user)
+  login_as(user, scope: :user)
+  last_program = SurveillanceProgram.where(name: program_name).first
+  last_system = SurveillanceSystem.where(name: system_name).first
+  user.last_program = last_program
+  user.last_system = last_system
+  user.save!
 end
 
 # TODO: This should really use url helpers so you could say 'sign in' instead of '/users/sign_in'
@@ -11,10 +23,30 @@ Given(/^I am on the "(.+)" page$/) do |url|
 end
 
 When(/^I go to the dashboard$/) do
+  Elastictest.fake_all_search_results
   visit '/'
 end
 
-When(/^I wait (\d+) second\(s\)$/) do |seconds|
+When(/^I expect an alert$/) do
+  page.driver.browser.switch_to.alert.accept
+end
+
+When(/^I set search filter to "([^"]*)"$/) do |type|
+  case type
+  when 'question'
+    Elastictest.fake_question_search_results
+  when 'response_set'
+    Elastictest.fake_rs_search_results
+  when 'forms'
+    Elastictest.fake_form_search_results
+  when 'survey'
+    Elastictest.fake_survey_search_results
+  else
+    Elastictest.fake_all_search_results
+  end
+end
+
+Then(/^I wait (\d+) seconds$/) do |seconds|
   sleep seconds.to_i
 end
 
@@ -40,6 +72,11 @@ When(/^I click on the "([^"]*)" (button|link)$/) do |button_name, _button_or_lin
   click_on(button_name)
 end
 
+When(/^I click on the create "([^"]*)" dropdown item$/) do |object_type|
+  page.find('#create-menu').click
+  page.find('.nav-dropdown-item', text: object_type).click
+end
+
 When(/^I select the "([^"]*)" option in the "([^"]*)" list$/) do |option, list|
   select(option, from: list)
 end
@@ -59,6 +96,10 @@ end
 
 Then(/^I should see "([^"]*)"$/) do |value|
   page.assert_text(value, minimum: 1)
+end
+
+Then(/^I should not see a "([^"]*)" link$/) do |value|
+  assert page.has_no_link?(value)
 end
 
 Then(/^I should see the option to (.*) the (.+) with the (.+) "([^"]*)"$/) do |action, object_type, attribute, attribute_value|
@@ -89,14 +130,14 @@ Then(/^debugger$/) do
 end
 
 When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
-  drag = find('a', text: option)
+  drag = find('li', class: 'result-name', text: option)
   target = '.' + target.downcase.tr(' ', '_')
   drop = find(target)
   drag.drag_to(drop)
 end
 
-Given(/^I wait for (\d+) seconds?$/) do |n|
-  sleep(n.to_i)
+Then(/^I take a screenshot named (.*)$/) do |name|
+  page.save_screenshot('/tmp/' + name + '.png')
 end
 
 def create_path(object_type, object_id)
@@ -106,6 +147,8 @@ def create_path(object_type, object_id)
     '//div[@id="response_set_id_' + object_id + '"]'
   elsif object_type == 'Form'
     '//div[@id="form_id_' + object_id + '"]'
+  elsif object_type == 'Survey'
+    '//div[@id="survey_id_' + object_id + '"]'
   else
     '//tr[td="id_' + object_id + '"]'
   end
@@ -124,6 +167,8 @@ def attribute_to_id(object_type, attribute, attribute_value)
     obj = QuestionType.find_by(attribute => attribute_value)
   elsif object_type == 'Form'
     obj = Form.find_by(attribute => attribute_value)
+  elsif object_type == 'Survey'
+    obj = Survey.find_by(attribute => attribute_value)
   end
   obj.id.to_s
 end

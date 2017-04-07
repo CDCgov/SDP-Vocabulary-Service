@@ -19,35 +19,44 @@ class QuestionModalContainer extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {linkedResponseSets:{}, showResponseSetWidget: false, showResponseSets: true};
     this.saveNewQuestion = this.saveNewQuestion.bind(this);
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
-    this.state = {linkedResponseSets:{}, showResponseSetWidget: false};
+    this.handleResponseTypeChange = this.handleResponseTypeChange.bind(this);
   }
 
   componentWillMount() {
+    this.props.fetchResponseSets();
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
-    this.props.fetchResponseSets();
   }
 
   handleResponseSetsChange(newResponseSets){
-    this.setState({linkedResponseSets: _.keyBy(newResponseSets, 'id')});
     this.unsavedState = true;
+    this.setState({linkedResponseSets: _.keyBy(newResponseSets, 'id')});
+  }
+
+  handleResponseTypeChange(newResponseType){
+    if(['Choice', 'Open Choice'].indexOf(newResponseType.name)!==-1){
+      this.setState({showResponseSets: true});
+    } else {
+      this.setState({showResponseSets: false, linkedResponseSets: {}});
+    }
   }
 
   saveNewQuestion(newQuestion){
-    newQuestion.linkedResponseSets = _.values(this.state.linkedResponseSets).map((r)=> r.id);
+    newQuestion.linkedResponseSets = _.values(this.state.linkedResponseSets).map((r) => r.id);
     this.props.saveQuestion(newQuestion, (successResponse) => {
-      this.setState({showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
-      this.props.saveQuestionSuccess(successResponse);
+      this.setState({showResponseSetWidget: false, linkedResponseSets: {}, errors: null});
+      this.props.handleSaveQuestionSuccess(successResponse);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
     });
   }
 
   closeQuestionModal(){
-    this.setState({showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
+    this.setState({showResponseSets: true, showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
     this.props.closeQuestionModal();
   }
 
@@ -55,45 +64,85 @@ class QuestionModalContainer extends Component {
     return (
       <div className={this.state.showResponseSetWidget ? '' : 'hidden'}>
         <Modal.Body bsStyle='response-set'>
-          <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange}
-                                 responseSets={this.props.responseSets}
-                                 selectedResponseSets={_.values(this.state.linkedResponseSets)} />
+          <div className="row response-set-row">
+            <div className="col-md-6 response-set-label">
+              <label htmlFor="linked_response_sets">Response Sets</label>
+            </div>
+            <div className="col-md-6 response-set-label">
+              <label htmlFor="selected_response_sets">Selected Response Sets</label>
+            </div>
+          </div>
+          <ResponseSetDragWidget responseSets={this.props.responseSets}
+                                 selectedResponseSets={_.values(this.state.linkedResponseSets)}
+                                 handleResponseSetsChange={this.handleResponseSetsChange} />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={()=>this.setState({showResponseSetWidget:false})} bsStyle="primary">Done</Button>
+          <Button onClick={() => this.setState({showResponseSetWidget:false})} bsStyle="primary">Done</Button>
         </Modal.Footer>
       </div>
     );
   }
 
+  questionFormFooter(){
+    if(this.state.showResponseSets){
+      return (
+        <Modal.Footer>
+          <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
+          <Button onClick={() => this.setState({showResponseSetWidget:true})} bsStyle="primary">Response Sets</Button>
+        </Modal.Footer>
+      );
+    } else {
+      return (
+        <Modal.Footer>
+          <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
+        </Modal.Footer>
+      );
+    }
+  }
+
   questionFormBody(){
+    var responseSetsDiv = (<div></div>);
+    var footer = (
+      <Modal.Footer>
+        <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
+      </Modal.Footer>
+    );
+    if(this.state.showResponseSets){
+      responseSetsDiv = (
+        <div className="row selected_response_sets">
+          <label className="input-label" htmlFor="response-set-list">Response Sets</label>
+          <div className="col-md-12">
+              <div className="panel panel-default">
+                <div className="panel-body">
+                  {_.keys(this.state.linkedResponseSets).length > 0 ? <ResponseSetList responseSets={this.state.linkedResponseSets} /> : 'No Response Sets selected'}
+                </div>
+              </div>
+          </div>
+        </div>
+      );
+      footer = (
+        <Modal.Footer>
+          <Button onClick={() => $('#submit-question-form').click()}>Add Question</Button>
+          <Button onClick={() => this.setState({showResponseSetWidget:true})} bsStyle="primary">Response Sets</Button>
+        </Modal.Footer>
+      );
+    }
     return (
       <div className={this.state.showResponseSetWidget ? 'hidden' : ''}>
         <Modal.Body bsStyle='question'>
-          <QuestionForm draftSubmitter   ={()=>{}}
-                        deleteSubmitter  ={()=>{}}
+          <QuestionForm action={'new'}
+                        question={{}}
+                        responseSets ={this.props.responseSets}
+                        questionTypes={this.props.questionTypes}
+                        responseTypes={this.props.responseTypes}
+                        draftSubmitter ={()=>{}}
+                        deleteSubmitter={()=>{}}
                         publishSubmitter ={()=>{}}
                         questionSubmitter={this.saveNewQuestion}
-                        question = {{}}
-                        action={'new'}
-                        questionTypes={this.props.questionTypes}
-                        responseSets ={this.props.responseSets}
-                        responseTypes={this.props.responseTypes}/>
-          <div className="row selected-response-sets">
-            <label className="input-label" htmlFor="response-set-list">Response Sets</label>
-            <div className="col-md-12">
-                <div className="panel panel-default">
-                  <div className="panel-body">
-                    {_.keys(this.state.linkedResponseSets).length > 0 ? <ResponseSetList responseSets={this.state.linkedResponseSets} /> : 'No Response Sets selected'}
-                  </div>
-                </div>
-            </div>
-          </div>
+                        handleResponseTypeChange={this.handleResponseTypeChange} />
+          {responseSetsDiv}
         </Modal.Body>
-        <Modal.Footer>
-        <Button onClick={()=> $('#submit-question-form').click()}>Add Question</Button>
-        <Button onClick={()=> this.setState({showResponseSetWidget:true})} bsStyle="primary">Response Sets</Button>
-        </Modal.Footer>
+        {footer}
       </div>
     );
   }
@@ -126,18 +175,18 @@ function mapDispatchToProps(dispatch) {
 }
 
 QuestionModalContainer.propTypes = {
-  responseSets:  responseSetsProps,
-  questionTypes: PropTypes.object,
-  responseTypes: PropTypes.object,
-  closeQuestionModal:  PropTypes.func.isRequired,
-  saveQuestion: PropTypes.func,
-  saveQuestionSuccess: PropTypes.func.isRequired,
-  fetchResponseSets:  PropTypes.func,
-  fetchQuestionTypes: PropTypes.func,
-  fetchResponseTypes: PropTypes.func,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
-  showModal: PropTypes.bool.isRequired
+  showModal: PropTypes.bool.isRequired,
+  responseSets: responseSetsProps,
+  saveQuestion: PropTypes.func,
+  questionTypes: PropTypes.object,
+  responseTypes: PropTypes.object,
+  fetchResponseSets: PropTypes.func,
+  fetchQuestionTypes: PropTypes.func,
+  fetchResponseTypes: PropTypes.func,
+  closeQuestionModal: PropTypes.func.isRequired,
+  handleSaveQuestionSuccess: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionModalContainer);

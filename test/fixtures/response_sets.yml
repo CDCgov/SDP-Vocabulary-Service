@@ -6,6 +6,7 @@ one:
   version: 1
   version_independent_id: RS-1
   created_by_id: admin
+  status: published
 
 two:
   name: Gender Full
@@ -27,3 +28,25 @@ gfv2:
   version: 2
   version_independent_id: RS-2
   created_by_id: admin
+
+search_1:
+  name: Search Response Set 1
+  description: M/F/NA
+  version: 1
+  status: published
+  version_independent_id: RS-10
+  created_by: admin
+
+search_2:
+  name: Search Response Set 2
+  description: M/F/NA
+  version: 1
+  version_independent_id: RS-11
+  created_by: not_admin
+
+search_3:
+  name: Search Response Set 3
+  description: Tweak
+  version: 2
+  version_independent_id: RS-12
+  created_by: admin

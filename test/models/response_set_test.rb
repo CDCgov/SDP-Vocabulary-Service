@@ -47,7 +47,7 @@ class ResponseSetTest < ActiveSupport::TestCase
   end
 
   test 'latest_versions' do
-    assert_equal 3, ResponseSet.latest_versions.count
+    assert_equal 6, ResponseSet.latest_versions.count
   end
 
   test 'build_new_revision' do
@@ -119,5 +119,17 @@ class ResponseSetTest < ActiveSupport::TestCase
     rs7.oid = rs1.oid
     assert rs7.save
     assert_equal rs1.oid, rs7.oid
+  end
+
+  test 'surveillance_systems' do
+    rs = response_sets(:one)
+    ss = rs.surveillance_systems
+    assert_equal 'National Insignificant Digits System', ss.first.name
+  end
+
+  test 'surveillance_programs' do
+    rs = response_sets(:one)
+    sp = rs.surveillance_programs
+    assert_equal 'Generic Surveillance Program', sp.first.name
   end
 end

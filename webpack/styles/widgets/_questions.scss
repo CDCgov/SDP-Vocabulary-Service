@@ -4,15 +4,26 @@
   margin-bottom: 20px;
 }
 
+.response-set-label {
+  text-align: left;
+  vertical-align: middle;
+  margin-bottom: 0px;
+  label{
+    padding-top: 7px;
+  }
+  button{
+    float:right;
+  }
+}
+
+.selected_response_sets {
+  margin-top: 20px;
+}
 .question-group {
   @extend .panel-group;
   margin-top: 20px;
   text-align: left;
   margin-bottom: 20px;
-
-  .panel-body {
-    padding: 10px;
-  }
 
   .question-container {
     @extend .panel-body;
@@ -51,10 +62,7 @@
       padding: 4px 6px 0px 4px;
     }
     .reponse-number {
-      background-color: $cdc-blue;
-      color: white;
       height: 25px;
-      width: 80px;
       padding: 4px 10px 0px 10px;
       border-bottom-left-radius: 0px;
       font-size: 12px;

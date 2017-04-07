@@ -5,6 +5,9 @@ class Form < ApplicationRecord
   has_many :form_questions
   has_many :questions, through: :form_questions
   has_many :response_sets, through: :form_questions
+  has_many :survey_forms
+  has_many :surveys, through: :survey_forms
+
   belongs_to :created_by, class_name: 'User'
 
   validates :created_by, presence: true
@@ -26,8 +29,16 @@ class Form < ApplicationRecord
     DeleteFromIndexJob.perform_later('form', id)
   end
 
-  def self.search(search)
-    where('name ILIKE ?', "%#{search}%")
+  def self.search(search = nil, current_user_id = nil)
+    if current_user_id && search
+      where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")
+    elsif current_user_id
+      where("(status= 'published' OR created_by_id = ?)", current_user_id)
+    elsif search
+      where('status= ? and name ILIKE ?', 'published', "%#{search}%")
+    else
+      where('status=  ?', 'published')
+    end
   end
 
   def self.owned_by(owner_id)
@@ -51,5 +62,15 @@ class Form < ApplicationRecord
 
   def omb_approved?
     control_number.present?
+  end
+
+  # Get the programs that the form is associated with by the surveys that the
+  # form is contained in
+  def surveillance_programs
+    SurveillanceProgram.joins(surveys: :survey_forms).where('survey_forms.form_id = ?', id)
+  end
+
+  def surveillance_systems
+    SurveillanceSystem.joins(surveys: :survey_forms).where('survey_forms.form_id = ?', id)
   end
 end

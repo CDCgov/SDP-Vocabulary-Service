@@ -19,7 +19,7 @@
 .analytics-list-item {
   @extend .list-group-item;
   display: table-cell;
-  width: 30%; 
+  width: 23%;
   color: $cdc-blue;
   border: none;
   border-left: solid 1px $light-gray;
@@ -28,6 +28,14 @@
   &:first-child {
     border-left: none;
   }
+  &:hover {
+    background-color: $analytics-hover-blue;
+    text-decoration: none;
+  }
+}
+
+.analytics-active-item {
+  background-color: $analytics-hover-blue;
 }
 
 .item-icon {

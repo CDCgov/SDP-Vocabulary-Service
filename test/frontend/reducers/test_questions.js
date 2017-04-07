@@ -1,11 +1,9 @@
 import { expect } from '../test_helper';
 import  questions  from '../../../webpack/reducers/questions_reducer';
-import _ from 'lodash';
 import {
-  ADD_QUESTION,
-  REMOVE_QUESTION,
   SAVE_QUESTION_FULFILLED,
   FETCH_QUESTION_FULFILLED,
+  FETCH_QUESTION_USAGE_FULFILLED,
   FETCH_QUESTIONS_FULFILLED,
 } from '../../../webpack/actions/types';
 
@@ -45,5 +43,14 @@ describe('questions reducer', () => {
     const startState = {};
     const nextState = questions(startState, action);
     expect(Object.keys(nextState).length).to.equal(1);
+  });
+
+  it('should fetch usage data for a question', () => {
+    const startState = {1: {id: 1, content: "Is this a question?", questionType: ""}};
+    const action = {type: FETCH_QUESTION_USAGE_FULFILLED,
+      payload: {data: {id: 1, surveillanceSystems: ['Test System'], surveillancePrograms: ['Test Program']}}};
+    const nextState = questions(startState, action);
+    expect(Object.keys(nextState).length).to.equal(1);
+    expect(nextState[1].surveillanceSystems).to.include('Test System');
   });
 });

@@ -9,7 +9,7 @@ class CodedSetTableEditContainer extends Component {
   constructor(props) {
     super(props);
     var items = props.initialItems.length < 1 ? [{value: '', codeSystem: '', displayName: ''}] : props.initialItems;
-    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem:'', selectedConcepts:[]};
+    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.hideCodeSearch = this.hideCodeSearch.bind(this);
   }
@@ -56,26 +56,29 @@ class CodedSetTableEditContainer extends Component {
   }
 
   showCodeSearch(){
-    this.setState({ showConceptModal: true });
+    this.setState({ showConceptModal: true});
   }
 
   hideCodeSearch(){
-    this.setState({showConceptModal: false });
+    this.setState({showConceptModal: false});
     this.setState({selectedSystem: ''});
     this.setState({selectedConcepts: []});
   }
 
-  searchConcepts(system, search='', version=1){
-    this.setState({selectedSystem: system});
-    this.props.fetchConcepts(system, search, version);
+  searchConcepts(system){
+    if(system=='None'){
+      this.setState({selectedSystem: ''});
+      this.props.fetchConcepts('', this.state.searchTerm, 1);
+    } else {
+      this.setState({selectedSystem: system});
+      this.props.fetchConcepts(system, this.state.searchTerm, 1);
+    }
   }
 
   handleSearchChange(e){
     var value = e.target.value;
-    this.setState({selectedConcepts: []});
-    if(this.state.selectedSystem){
-      this.props.fetchConcepts(this.state.selectedSystem, value, 1);
-    }
+    this.setState({selectedConcepts: [], searchTerm: value});
+    this.props.fetchConcepts(this.state.selectedSystem, value, 1);
   }
 
   selectConcept(e,i){
@@ -84,7 +87,7 @@ class CodedSetTableEditContainer extends Component {
     if(e.target.checked){
       newConcepts = _.concat(this.state.selectedConcepts, selectedConcept);
     }else{
-      newConcepts = _.filter(this.state.selectedConcepts, (c)=> {
+      newConcepts = _.filter(this.state.selectedConcepts, (c) => {
         return (c.code !== selectedConcept.code);
       });
     }
@@ -92,10 +95,39 @@ class CodedSetTableEditContainer extends Component {
   }
 
   addSelectedConcepts(){
-    this.addItemRows(this.state.selectedConcepts.map((c)=> {
+    this.addItemRows(this.state.selectedConcepts.map((c) => {
       return {displayName: c.display, codeSystem: c.system, value: c.code};
     }));
     this.hideCodeSearch();
+  }
+
+  resultsTable(){
+    if(this.props.concepts.error || this.props.conceptSystems.error){
+      return (
+        <div className='table-scrolling-div'>
+          <br/>
+          {this.props.concepts.error || this.props.conceptSystems.error}
+        </div>
+      );
+    } else {
+      return (
+        <div className='table-scrolling-div'>
+          <table className="table table-striped scroll-table-body">
+            <tbody>
+              {_.values(this.props.concepts[this.state.selectedSystem]).map((c, i) => {
+                return (
+                  <tr key={i}>
+                    <td><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
+                    <td>{c.display}</td>
+                    <td>{c.code}</td>
+                    <td>{c.system}</td>
+                  </tr>);
+              })}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
   }
 
   conceptModal(){
@@ -110,46 +142,33 @@ class CodedSetTableEditContainer extends Component {
               <DropdownButton
                 componentClass={InputGroup.Button}
                 id="system-select-dropdown"
-                title="Code System" onSelect={(key, e)=> this.searchConcepts(e.target.text)} >
-                {_.values(this.props.conceptSystems).map((s,i) => {
+                title={this.state.selectedSystem ? this.state.selectedSystem : 'Code System'} onSelect={(key, e) => this.searchConcepts(e.target.text)} >
+                <MenuItem key={0} value={''}>None</MenuItem>
+                {_.values(this.props.conceptSystems).map((s, i) => {
                   return <MenuItem key={i} value={s.name}>{s.name}</MenuItem>;
                 })}
-            </DropdownButton>
-          <FormControl type="text" onChange={(e)=>this.handleSearchChange(e)} placeholder="Search Codes"/>
-           <FormControl.Feedback>
-            <Glyphicon glyph="search"/>
-          </FormControl.Feedback>
-          </InputGroup>
+              </DropdownButton>
+              <FormControl type="text" onChange={(e) => this.handleSearchChange(e)} placeholder="Search Codes"/>
+              <FormControl.Feedback>
+                <Glyphicon glyph="search"/>
+              </FormControl.Feedback>
+            </InputGroup>
           </FormGroup>
-            <table className="table table-striped scroll-table-header">
-              <thead>
-                <tr>
+          <table className="table table-striped scroll-table-header">
+            <thead>
+              <tr>
                 <th style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
                 <th style={{width: '50%', padding:' 0px'}}>Display Name</th>
                 <th style={{width: '10%', padding:' 0px'}}>Code</th>
                 <th style={{width: '30%', padding:' 0px'}}>Code System</th>
-                </tr>
-              </thead>
-            </table>
-            <div className='table-scrolling-div'>
-            <table className="table table-striped scroll-table-body">
-            <tbody>
-              {_.values(this.props.concepts[this.state.selectedSystem]).map((c,i) => {
-                return (
-                  <tr key={i}>
-                  <td><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e)=>this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
-                   <td>{c.display}</td>
-                   <td>{c.code}</td>
-                   <td>{c.system}</td>
-                  </tr>);
-              })}
-            </tbody>
-            </table>
-            </div>
+              </tr>
+            </thead>
+          </table>
+          {this.resultsTable()}
         </Modal.Body>
         <Modal.Footer>
-        <Button onClick={()=>this.hideCodeSearch()} bsStyle="primary">Cancel</Button>
-        <Button onClick={()=>this.addSelectedConcepts()} bsStyle="primary">Add</Button>
+          <Button onClick={() => this.hideCodeSearch()} bsStyle="primary">Cancel</Button>
+          <Button onClick={() => this.addSelectedConcepts()} bsStyle="primary">Add</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -157,32 +176,33 @@ class CodedSetTableEditContainer extends Component {
 
   render() {
     return (
-      <table className="set-table ">
-      {this.conceptModal()}
+      <table className="set-table">
+        {this.conceptModal()}
         <thead>
           <tr>
-            <th><a  title="Search Codes" href="#" onClick={(e)=>{
-              e.preventDefault();
-              this.showCodeSearch();
-            }}><i className="fa fa-search fa-2x"></i></a></th>
+            <th>
+              <a title="Search Codes" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.showCodeSearch();
+              }}><i className="fa fa-search fa-2x"></i></a>
+            </th>
             <th>{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
             <th>Code System</th>
             <th>Display Name</th>
-            <th > <a  title="Add Row" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.addItemRow();
-            }}><i className="fa fa-plus fa-2x"></i></a>
+            <th>
+              <a title="Add Row" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.addItemRow();
+              }}><i className="fa fa-plus fa-2x"></i></a>
             </th>
           </tr>
         </thead>
         <tbody>
-
           {this.state.items.map((r, i) => {
-
             return (
               <tr key={i}>
-              <td>
-              </td>
+                <td>
+                </td>
                 <td>
                   <label className="hidden" htmlFor={`value_${i}`}>Value</label>
                   <input className="input-format" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
@@ -196,7 +216,7 @@ class CodedSetTableEditContainer extends Component {
                   <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                 </td>
                 <td>
-                <label className="hidden" htmlFor={`remove_${i}`}>Remove</label>
+                  <label className="hidden" htmlFor={`remove_${i}`}>Remove</label>
                   <a href="#" title="Remove" id={`remove_${i}`} onClick={(e) => {
                     e.preventDefault();
                     this.removeItemRow(i);
@@ -212,10 +232,7 @@ class CodedSetTableEditContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const props = {};
-  props.conceptSystems = state.conceptSystems;
-  props.concepts = state.concepts;
-  return props;
+  return {concepts: state.concepts, conceptSystems: state.conceptSystems};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -228,12 +245,12 @@ CodedSetTableEditContainer.propTypes = {
     codeSystem:  PropTypes.string,
     displayName: PropTypes.string
   })),
+  concepts:  PropTypes.object,
+  childName: PropTypes.string,
   parentName:  PropTypes.string,
-  childName:   PropTypes.string,
   itemWatcher: PropTypes.func,
+  fetchConcepts:  PropTypes.func,
   conceptSystems: PropTypes.object,
-  concepts: PropTypes.object,
-  fetchConcepts: PropTypes.func,
   fetchConceptSystems: PropTypes.func
 };
 

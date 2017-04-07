@@ -1,56 +1,54 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Draggable, Droppable } from './Draggable';
-import ResponseSetWidget from './ResponseSetWidget';
+import SearchResult from './SearchResult';
+import NestedSearchBar from '../components/NestedSearchBar';
+import currentUserProps from '../prop-types/current_user_props';
+import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import { responseSetsProps } from '../prop-types/response_set_props';
-import _ from 'lodash';
 
 let setData = function(){
-  return {"json/responseSet": JSON.stringify(this.props.responseSet)};
+  return {"json/responseSet": JSON.stringify(this.props.result.Source)};
 };
 
-let DraggableResponseSet = Draggable(ResponseSetWidget, setData);
+let DraggableResponseSet = Draggable(SearchResult, setData);
 
 let onDrop = (evt, self) => {
   let rs = JSON.parse(evt.dataTransfer.getData("json/responseSet"));
-  let { selectedResponseSets } = self.state;
-  if(!selectedResponseSets.find((r) => {
+  if(!self.props.selectedResponseSets.find((r) => {
     return r.id == rs.id;
   })) {
-    selectedResponseSets.push(rs);
-    self.props.handleResponseSetsChange(selectedResponseSets);
-    self.setState({selectedResponseSets});
+    self.props.handleResponseSetsChange(self.props.selectedResponseSets.concat([rs]));
   }
 };
 
 class DropTarget extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {selectedResponseSets: this.props.selectedResponseSets || []};
-  }
 
   render() {
     let isValidDrop = this.props.isValidDrop;
+    let selectedResponseSets = this.props.selectedResponseSets || [];
 
     let removeResponseSet = (id) => {
-      let selectedResponseSets = this.state.selectedResponseSets.filter((rs) => rs.id != id);
-      this.props.handleResponseSetsChange(selectedResponseSets);
-      this.setState({selectedResponseSets});
+      this.props.handleResponseSetsChange(this.props.selectedResponseSets.filter((rs) => rs.id != id));
     };
 
-    return <div style={{minHeight: '40px', backgroundColor:isValidDrop?'green':'grey'}}>
-      {this.state.selectedResponseSets.map((rs, i) => {
-        return (
-        <div key={i}>
-        <i className='pull-right fa fa-close' onClick={() => removeResponseSet(rs.id)}/>
-        <DraggableResponseSet responseSet={rs}/>
-        </div>);
-      })}
-      <select readOnly={true} value={this.state.selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
-        {this.state.selectedResponseSets.map((rs) => {
-          return <option key={rs.id} value={rs.id}>a</option>;
+    return (
+      <div style={{minHeight: '440px', backgroundColor:isValidDrop?'green':'grey'}}>
+        {selectedResponseSets.map((rs, i) => {
+          return (
+          <div key={i}>
+          <i className='pull-right fa fa-close' onClick={() => removeResponseSet(rs.id)}/>
+          <DraggableResponseSet type='response_set' result={{Source: rs}} currentUser={{id: -1}} />
+          </div>);
         })}
-      </select>
-    </div>;
+        <select readOnly={true} value={selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
+          {selectedResponseSets.map((rs) => {
+            return <option key={rs.id} value={rs.id}>a</option>;
+          })}
+        </select>
+      </div>
+    );
   }
 }
 
@@ -62,34 +60,83 @@ DropTarget.propTypes = {
 
 let DroppableTarget = Droppable(DropTarget, onDrop);
 
-class ResponseSetDragWidget extends Component{
-  render(){
-    if(!this.props.responseSets){
-      return (<div>Loading....</div>);
+class ResponseSetDragWidget extends Component {
+  constructor(props){
+    super(props);
+    this.search = this.search.bind(this);
+    this.loadMore = this.loadMore.bind(this);
+    this.state = {
+      searchTerms: '',
+      page: 1
+    };
+  }
+
+  componentWillMount() {
+    this.search('');
+  }
+
+  search(searchTerms) {
+    if(searchTerms === ''){
+      searchTerms = null;
     }
+    this.setState({searchTerms: searchTerms});
+    this.props.fetchSearchResults(searchTerms, 'response_set');
+  }
+
+  loadMore() {
+    let searchTerms = this.state.searchTerms;
+    let tempState = this.state.page + 1;
+    if(this.state.searchTerms === '') {
+      searchTerms = null;
+    }
+    this.props.fetchMoreSearchResults(searchTerms, 'response_set', tempState);
+    this.setState({page: tempState});
+  }
+
+  render(){
+    const searchResults = this.props.searchResults;
     return (
       <div className="row response-set-row">
-          <div className="col-md-6 question-form-group">
-            <label htmlFor="linked_response_sets">Response Sets</label>
-              <div className="fixed-height-list" name="linked_response_sets">
-                {this.props.responseSets && _.values(this.props.responseSets).map((rs, i) => {
-                  return <DraggableResponseSet key={i} responseSet={rs}/>;
-                })}
-              </div>
+        <div className="col-md-6 question-form-group">
+          <NestedSearchBar onSearchTermChange={this.search} modelName="Response Set" /><br/>
+          <div className="fixed-height-list" name="linked_response_sets">
+            {searchResults.hits && searchResults.hits.hits.map((rs, i) => {
+              return <DraggableResponseSet key={i} type={rs.Type} result={rs}
+                      currentUser={this.props.currentUser}
+                      handleSelectSearchResult={() => this.props.handleResponseSetsChange(this.props.selectedResponseSets.concat([rs.Source]))} />;
+            })}
+            {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+              <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+            }
           </div>
-          <div className="col-md-6 drop-target selected_response_sets">
-            <label htmlFor="selected_response_sets">Selected Response Sets</label>
-            <DroppableTarget handleResponseSetsChange={this.props.handleResponseSetsChange} selectedResponseSets={this.props.selectedResponseSets} />
-          </div>
+        </div>
+        <div className="col-md-6 drop-target selected_response_sets" name="selected_response_sets">
+          <DroppableTarget handleResponseSetsChange={this.props.handleResponseSetsChange} selectedResponseSets={this.props.selectedResponseSets} />
+        </div>
       </div>
     );
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    searchResults: state.searchResults,
+    currentUser: state.currentUser
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({fetchSearchResults, fetchMoreSearchResults}, dispatch);
+}
+
 ResponseSetDragWidget.propTypes = {
   responseSets: responseSetsProps.isRequired,
   selectedResponseSets: PropTypes.array,
+  fetchSearchResults: PropTypes.func,
+  fetchMoreSearchResults: PropTypes.func,
+  currentUser: currentUserProps,
+  searchResults: PropTypes.object,
   handleResponseSetsChange: PropTypes.func.isRequired
 };
 
-export default ResponseSetDragWidget;
+export default connect(mapStateToProps, mapDispatchToProps)(ResponseSetDragWidget);

@@ -4,7 +4,7 @@ class FormsController < ApplicationController
   # GET /forms
   # GET /forms.json
   def index
-    @forms = params[:search] ? Form.search(params[:search]).latest_versions : Form.latest_versions
+    @forms = params[:search] ? Form.search(params[:search]).all : Form.all
     @users = User.all
   end
 
@@ -33,14 +33,7 @@ class FormsController < ApplicationController
   # POST /forms.json
   def create
     @form = Form.new(form_params)
-    if @form.all_versions.count >= 1
-      if @form.all_versions.last.created_by != current_user
-        render(json: @form.errors, status: :unauthorized) && return
-      elsif @form.all_versions.last.status == 'draft'
-        render(json: @form.errors, status: :unprocessable_entity) && return
-      end
-      @form.version = @form.most_recent + 1
-    end
+    return unless can_form_be_created?(@form)
     @form.created_by = current_user
     @form.form_questions = create_form_questions
     if @form.save
@@ -78,12 +71,14 @@ class FormsController < ApplicationController
   # DELETE /forms/1
   # DELETE /forms/1.json
   def destroy
-    # if @form.status == 'draft'
-    @form.questions.destroy_all
-    @form.destroy
-    render json: @form, status: :ok && return
-    # end
-    # render json: @form.errors, status: :unprocessable_entity
+    if @form.status == 'draft'
+      @form.questions.destroy_all
+      @form.surveys.destroy_all
+      @form.destroy
+      render json: @form
+    else
+      render json: @form.errors, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /forms/1/publish
@@ -106,6 +101,20 @@ class FormsController < ApplicationController
 
   private
 
+  def can_form_be_created?(form)
+    if form.all_versions.count >= 1
+      if form.all_versions.last.created_by != current_user
+        render(json: form.errors, status: :unauthorized)
+        return false
+      elsif form.all_versions.last.status == 'draft'
+        render(json: form.errors, status: :unprocessable_entity)
+        return false
+      end
+      form.version = form.most_recent + 1
+    end
+    true
+  end
+
   def load_supporting_resources_for_editing
     @questions = params[:search] ? Question.search(params[:search]) : Question.all
     @response_sets = ResponseSet.latest_versions
@@ -122,6 +131,7 @@ class FormsController < ApplicationController
     form_questions = []
     if question_ids
       question_ids.zip(response_set_ids).each do |qid, rsid|
+        rsid = nil if rsid == ''
         form_questions << FormQuestion.new(question_id: qid, response_set_id: rsid)
       end
     end

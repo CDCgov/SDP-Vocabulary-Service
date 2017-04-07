@@ -1,14 +1,14 @@
 class QuestionsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:usage]
 
   # GET /questions.json
   def index
-    @questions = params[:search] ? Question.search(params[:search]).latest_versions : Question.latest_versions
+    @questions = params[:search] ? Question.search(params[:search]).all : Question.all
   end
 
   def my_questions
     @questions = if params[:search]
-                   Question.where(created_by_id: current_user.id).search(params[:search]).latest_versions
+                   Question.where('created_by_id=? and content ILIKE ?', current_user.id, "%#{search}%").latest_versions
                  else
                    Question.where(created_by_id: current_user.id).latest_versions
                  end
@@ -79,13 +79,24 @@ class QuestionsController < ApplicationController
       update_response_sets(params)
       update_concepts(params)
       @question.updated_by = current_user
-
       if @question.update(question_params)
         render :show, status: :ok, location: @question
       else
         @question_types = QuestionType.all
         render json: @question.errors, status: :unprocessable_entity
       end
+    end
+  end
+
+  def usage
+    @question = Question.find(params[:id])
+    if @question.status != 'published'
+      render(json: { error: 'Only published Questions provide usage information' }, status: :bad_request)
+    else
+      response = { id: @question.id }
+      response[:surveillance_programs] = @question.surveillance_programs.map(&:name).uniq
+      response[:surveillance_systems] = @question.surveillance_systems.map(&:name).uniq
+      render json: response
     end
   end
 
@@ -100,6 +111,8 @@ class QuestionsController < ApplicationController
   def destroy
     if @question.status == 'draft'
       @question.concepts.destroy_all
+      @question.forms.destroy_all
+      @question.response_sets.destroy_all
       @question.destroy
       render json: @question
     else
@@ -111,7 +124,8 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id, :version_independent_id,
-                                     :description, :status, :harmonized, concepts_attributes: [:id, :value, :display_name, :code_system])
+    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id,
+                                     :version_independent_id, :description, :status, :harmonized, :other_allowed,
+                                     concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

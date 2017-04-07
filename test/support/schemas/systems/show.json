@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "systemId" : {"type" : "number"},
+    "systemName" : {"type" : "string"},
+    "systemUri" : {"type" : "string"},
+    "systemDescription" : {"type" : "string"}
+  }
+}

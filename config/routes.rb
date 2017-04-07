@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :surveillance_systems, only: [:index, :show]
+  resources :surveillance_programs, only: [:index, :show]
   get 'response_types', to: 'response_types#index', as: :response_types
   get 'elasticsearch', to: 'elasticsearch#index', as: :elasticsearch
 
@@ -25,11 +27,16 @@ Rails.application.routes.draw do
     get :redcap, on: :member
     put :publish, on: :member
   end
+  resources :surveys, except: [:edit], defaults: { format: :json } do
+    get :revise, on: :member
+    put :publish, on: :member
+  end
   resources :question_response_sets
   resources :responses
   resources :concepts
   resources :questions, except: [:edit] do
     get :revise, on: :member
+    get :usage, on: :member
     put :publish, on: :member
   end
   resources :comments do
@@ -39,6 +46,7 @@ Rails.application.routes.draw do
 
   resources :response_sets, except: [:edit] do
     get :revise, on: :member
+    get :usage, on: :member
     put :publish, on: :member
   end
 
@@ -49,8 +57,17 @@ Rails.application.routes.draw do
     resources :questions, only: [:index, :show] do
       get :usage, on: :member
     end
-    resources :forms, only: [:show]
+    resources :forms, only: [:index, :show] do
+      get :usage, on: :member
+    end
+    resources :surveys, only: [:index, :show]
     resources :valueSets, only: [:index, :show], controller: 'response_sets' do
+      get :usage, on: :member
+    end
+    resources :programs, only: [:index, :show] do
+      get :usage, on: :member
+    end
+    resources :systems, only: [:index, :show] do
       get :usage, on: :member
     end
   end

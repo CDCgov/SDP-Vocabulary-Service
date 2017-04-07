@@ -5,14 +5,15 @@ describe('FormQuestionList', () => {
   let component;
 
   beforeEach(() => {
-    const questions = [1: {id: 1, content: "Is this a question?", questionType: ""},
-                       2: {id: 2, content: "Whats your name", questionType: ""},
-                       3: {id: 3, content: "What is a question?", questionType: ""}];
-    component = renderComponent(FormQuestionList, {questions});
+    const questions = [{id: 1, content: "Is this a question?", questionType: ""},
+                       {id: 2, content: "Whats your name", questionType: ""},
+                       {id: 3, content: "What is a question?", questionType: ""}];
+    const responseSets = [{name: 'None'},{name: 'None'},{name: 'None'}];
+    component = renderComponent(FormQuestionList, {questions, responseSets});
   });
 
   it('should create list of questions', () => {
-    expect(component.find("div[class='question-group']").length).to.equal(3);
+    expect(component.find("div[class='u-result-group']").length).to.equal(3);
   });
 
 });

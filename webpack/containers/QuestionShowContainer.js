@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, publishQuestion } from '../actions/questions_actions';
+import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } from '../actions/questions_actions';
 import { questionProps } from "../prop-types/question_props";
 import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
@@ -17,16 +17,10 @@ class QuestionShowContainer extends Component {
   componentDidUpdate(prevProps){
     if(prevProps.params.qId !== this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
-    }
-  }
-
-  publishQuestionButton(){
-    if(this.props.currentUser && this.props.currentUser.id && this.props.question ){
-      let q = this.props.question;
-      if(q.status == 'draft'){
-        return( <button className="btn btn-primary" onClick={() => this.handlePublish(q) }>Publish</button> );
-      } else if(q.status == 'published'){
-        //return( <a className="btn btn-primary" href={`/landing#/questions/${this.props.question.id}/deprecate`}>Deprecate</a> );
+    } else {
+      if (this.props.question && this.props.question.status === 'published' &&
+          this.props.question.surveillancePrograms === undefined) {
+        this.props.fetchQuestionUsage(this.props.params.qId);
       }
     }
   }
@@ -45,9 +39,13 @@ class QuestionShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <QuestionDetails question={this.props.question} publishButton={this.publishQuestionButton()} responseSets={this.props.responseSets} currentUser={this.props.currentUser}/>
-
-            <div className="col-md-12 showpage-comments-title">Comments:</div>
+            <QuestionDetails question={this.props.question}
+                             responseSets={this.props.responseSets}
+                             router={this.props.router}
+                             currentUser={this.props.currentUser}
+                             handlePublish={this.handlePublish.bind(this)}
+                             deleteQuestion={this.props.deleteQuestion} />
+            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>
         </div>
@@ -67,16 +65,19 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, fetchQuestionUsage}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
 QuestionShowContainer.propTypes = {
   question: questionProps,
   params:   PropTypes.object,
+  router:   PropTypes.object,
   currentUser:   currentUserProps,
   responseSets:  PropTypes.arrayOf(responseSetProps),
-  fetchQuestion: PropTypes.func
+  fetchQuestion: PropTypes.func,
+  fetchQuestionUsage: PropTypes.func,
+  deleteQuestion: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionShowContainer);

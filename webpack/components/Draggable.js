@@ -23,8 +23,8 @@ let Draggable = (ComposedComponent, setData=function(){}, dragStop=function(){})
     let { dragging = false } = this.state;
     let dragProps = {draggable: true, onDragStart:_dragStart, onDragEnd:_dragStop};
     return (
-        <div  {...dragProps}>
-          <ComposedComponent isDragging={dragging} {...this.props}/>
+        <div className="draggable" {...dragProps}>
+          <ComposedComponent isEditPage={true} isDragging={dragging} {...this.props}/>
         </div>
     );
   }

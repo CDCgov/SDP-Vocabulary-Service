@@ -162,8 +162,7 @@ paths:
       tags:
       - programs
       description: |
-        Get information about a program including the questions and associated
-        responses used by that program.
+        Get information about a program.
       produces:
       - application/json
       responses:
@@ -171,6 +170,153 @@ paths:
           description: Successful response
           schema:
             $ref: '#/definitions/Program'
+  
+  /systems:
+    get:
+      tags:
+      - systems
+      description: |
+        Get a list of systems that match the supplied search criteria.
+      produces:
+      - application/json
+          
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned systems, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned systems to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/System'
+
+  /systems/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of System
+        required: true
+        type: string
+    get:
+      tags:
+      - systems
+      description: |
+        Get information about a System.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/System'
+
+  /surveys:
+    get:
+      tags:
+      - surveys
+      description: |
+        Get a list of surveys that match the supplied search criteria.
+      produces:
+      - application/json
+          
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned surveys, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned surveys to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Survey'
+      
+  /surveys/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of Survey
+        required: true
+        type: string
+    get:
+      tags:
+      - surveys
+      description: |
+        Get information about a Survey including its contained forms.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Survey'
+
+  /forms:
+    get:
+      tags:
+      - forms
+      description: |
+        Get a list of forms that match the supplied search criteria.
+      produces:
+      - application/json
+          
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned forms, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned forms to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Form'
 
   /forms/{id}:
     parameters:
@@ -426,6 +572,70 @@ definitions:
       programUri:
         type: string
         title: Relative URI of the program
+      programDescription:
+        type: string
+        title: Human readable description of the program
+      # TODO additional metadata
+      forms:
+        type: array
+        description:
+          Array of forms used by this program.
+        items:
+          $ref: '#/definitions/Form'
+
+  System:
+    type: object
+    description:
+      Details about a system.
+    properties:
+      systemId:
+        type: string
+        title: System identifier
+      systemName:
+        type: string
+        title: Human readable name of the system
+      systemUri:
+        type: string
+        title: Relative URI of the system
+      systemDescription:
+        type: string
+        title: Human readable description of the system
+
+  Survey:
+    type: object
+    description:
+      Details about a survey.
+    properties:
+      programId:
+        type: string
+        title: Program identifier
+      programName:
+        type: string
+        title: Human readable name of the program attributed to the survey
+      programUri:
+        type: string
+        title: Relative URI of the program attributed to the survey
+      systemId:
+        type: string
+        title: System identifier
+      systemName:
+        type: string
+        title: Human readable name of the system attributed to the survey
+      systemUri:
+        type: string
+        title: Relative URI of the system attributed to the survey
+      surveyId:
+        type: string
+        title: Survey identifier
+      surveyName:
+        type: string
+        title: Human readable name of the survey
+      surveyUri:
+        type: string
+        title: Relative URI of the survey
+      surveyDescription:
+        type: string
+        title: Human readable description of the survey
       # TODO additional metadata
       forms:
         type: array
@@ -439,15 +649,6 @@ definitions:
     description:
       Details about a form.
     properties:
-      programId:
-        type: string
-        title: Program identifier
-      programName:
-        type: string
-        title: Human readable name of the program
-      programUri:
-        type: string
-        title: Relative URI of the program
       formId:
         type: string
         title: Form identifier

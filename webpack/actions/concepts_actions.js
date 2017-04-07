@@ -17,17 +17,18 @@ export function fetchConceptSystems() {
 }
 
 export function fetchConcepts(system, searchTerm, version) {
+  var params  = {search:  searchTerm};
+  if (system && system !== ''){
+    params.version = version;
+    params.system  = system;
+  }
   return {
     type: FETCH_CONCEPTS,
     payload: axios.get(routes.conceptServiceSearchPath(), {
       headers: {
         'Accept': 'application/json'
       },
-      params: {
-        system:  system,
-        version: version,
-        search:  searchTerm
-      }
+      params: params
     })
   };
 }

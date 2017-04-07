@@ -10,31 +10,10 @@ require 'capybara/cucumber'
 require 'capybara/accessible'
 
 require 'axe/cucumber/step_definitions'
-require 'fakeweb'
 
-fake_body = <<-EOS
-{"took":1,"timed_out":false,"_shards":{"total":5,"successful":5,"failed":0},
-"hits":{"total":2,"max_score":2.7132807,"hits":
-  [{"_index":"vocabulary","_type":"question","_id":"8","_score":2.7132807,"_source":
-    {"id":8,"name":"Why?","version_independent_id":"Q-8","version":1,"status":"draft",
-      "category":"MC","description":"","updatedAt":"2017-02-22T19:54:37.001Z",
-      "createdAt":"2017-02-22T19:54:37.001Z","suggest":"Why?",
-      "updatedBy":{"id":1,"email":"test_author@gmail.com","name":"Drew",
-        "first_name":"Drew","last_name":""},"createdBy":{"id":1,
-          "email":"test_author@gmail.com","name":"Drew","first_name":"Drew",
-          "last_name":""},"responseSets":[],"codes":[],"forms":[]}},
-  {"_index":"vocabulary","_type":"question","_id":"9","_score":2.1132807,"_source":
-    {"id":9,"name":"Reasons why?","version_independent_id":"Q-9","version":1,"status":"draft",
-      "category":"MC","description":"","updatedAt":"2017-02-22T19:54:37.001Z",
-      "createdAt":"2017-02-22T19:54:37.001Z","suggest":"Why?",
-      "updatedBy":{"id":1,"email":"test_author@gmail.com","name":"Drew",
-        "first_name":"Drew","last_name":""},"createdBy":{"id":1,
-          "email":"test_author@gmail.com","name":"Drew","first_name":"Drew",
-          "last_name":""},"responseSets":[],"codes":[],"forms":[]}}
-  ]
-}}
-EOS
-FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
+require_relative '../../test/elastic_helpers'
+FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: '{}', content_type: 'application/json')
+
 FakeWeb.register_uri(:any, %r{http://concept-manager\..*\.xip\.io}, body: '{}')
 
 Capybara.register_driver :chrome do |app|
@@ -47,6 +26,18 @@ end
 
 AfterStep do
   sleep(ENV['PAUSE'].to_i || 0)
+end
+
+# Print console.log messages if you are trying to figure out JS issues
+if ENV['JS_DEBUG']
+  class DriverJSError < StandardError; end
+  AfterStep do
+    errors = page.driver.console_messages
+    if errors.present?
+      message = errors.map { |m| m[:message] unless m[:message].include?('%c') }.select(&:present?).join("\n")
+      puts message
+    end
+  end
 end
 
 Capybara.default_driver = :chrome

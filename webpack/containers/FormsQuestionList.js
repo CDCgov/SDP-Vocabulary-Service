@@ -21,6 +21,7 @@ class FormsQuestionList extends Component {
             <div className="row" key={i}>
               <QuestionItem question={q} responseSets={this.props.responseSets} index={i}
                             removeQuestion={this.props.removeQuestion}
+                            handleResponseSetChange={() => {}}
                             reorderQuestion={this.props.reorderQuestion}/>
             </div>
           );
@@ -41,8 +42,8 @@ function mapStateToProps(state) {
 }
 
 FormsQuestionList.propTypes = {
-  questions: React.PropTypes.object.isRequired,
-  responseSets: React.PropTypes.array.isRequired,
+  questions: React.PropTypes.object,//.isRequired,
+  responseSets: React.PropTypes.object, //array.isRequired,
   removeQuestion: React.PropTypes.func.isRequired,
   reorderQuestion: React.PropTypes.func.isRequired
 };

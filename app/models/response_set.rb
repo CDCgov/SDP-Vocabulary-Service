@@ -31,8 +31,16 @@ class ResponseSet < ApplicationRecord
     DeleteFromIndexJob.perform_later('response_set', id)
   end
 
-  def self.search(search)
-    where('name ILIKE ?', "%#{search}%")
+  def self.search(search = nil, current_user_id = nil)
+    if current_user_id && search
+      where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")
+    elsif current_user_id
+      where("(status= 'published' OR created_by_id = ?)", current_user_id)
+    elsif search
+      where('status= ? and name ILIKE ?', 'published', "%#{search}%")
+    else
+      where('status=  ?', 'published')
+    end
   end
 
   def publish
@@ -64,5 +72,17 @@ class ResponseSet < ApplicationRecord
     extended_set.version_independent_id = nil
     extended_set.responses = responses.collect(&:dup)
     extended_set
+  end
+
+  def surveillance_programs
+    SurveillanceProgram.joins(surveys: :survey_forms)
+                       .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                       .where('form_questions.response_set_id = ?', id)
+  end
+
+  def surveillance_systems
+    SurveillanceSystem.joins(surveys: :survey_forms)
+                      .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                      .where('form_questions.response_set_id = ?', id)
   end
 end

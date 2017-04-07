@@ -12,8 +12,27 @@ Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*
   Question.create!(content: content, description: description, question_type_id: qt314.id, version: 1, created_by: user)
 end
 
+Given(/^I have a Question with the content "([^"]*)" linked to Surveillance System "([^"]*)"$/) do |question_content, system_name|
+  user = get_user 'test_author@gmail.com'
+  ss = SurveillanceSystem.where(name: system_name).first
+  q = Question.where(content: question_content).first
+  q.update_attribute(:status, 'published')
+  q.save!
+  f = Form.new(name: 'test', created_by: user)
+  f.form_questions << FormQuestion.new(question: q, position: 1)
+  f.save!
+  survey = Survey.new(name: 'test', surveillance_system: ss, created_by: user)
+  survey.survey_forms << SurveyForm.new(form: f, position: 1)
+  survey.save!
+end
+
+Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)"$/) do |content, description|
+  user = get_user('test_author@gmail.com')
+  Question.create!(status: 'draft', content: content, description: description, version: 1, created_by: user)
+end
+
 Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) do |content, type|
-  user  = get_user('test_author@gmail.com')
+  user = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
   Question.create!(content: content, question_type_id: qt314.id, version: 1, created_by: user)
 end
@@ -22,8 +41,20 @@ Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
   ResponseType.create!(name: name)
 end
 
+Given(/^I have a Response Type with the name "([^"]*)", description "([^"]*)" and code "([^"]*)"$/) do |name, description, code|
+  ResponseType.create!(name: name, description: description, code: code)
+end
+
 When(/^I go to the list of Questions$/) do
-  visit 'landing#/questions'
+  Elastictest.fake_question_search_results
+  visit '/'
+  page.find('li[id="questions-analytics-item"]').click
+end
+
+Given(/^I have a published Question with the content "([^"]*)"$/) do |content|
+  user = get_user('test_author@gmail.com')
+  q = Question.create!(content: content, version: 1, created_by: user)
+  q.publish
 end
 
 # When clauses
@@ -34,4 +65,10 @@ end
 
 When(/^I check the (.*) box$/) do |box|
   check(box)
+end
+
+Then(/^I navigate to a question created by "(.+)"$/) do |owner_email|
+  user = get_user(owner_email)
+  question = Question.create!(status: 'draft', content: 'content', description: 'description', version: 1, created_by: user)
+  visit "#/questions/#{question.id}"
 end

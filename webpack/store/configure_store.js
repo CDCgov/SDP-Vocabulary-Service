@@ -9,6 +9,7 @@ import parentFromResponseSets from '../middleware/parent_from_response_sets';
 import parentFromQuestions from '../middleware/parent_from_questions';
 import responseTypesFromQuestions from '../middleware/response_types_from_questions';
 import questionTypesFromQuestions from '../middleware/question_types_from_questions';
+import unauthenticatedResponse from '../middleware/unauthenticated_response';
 
 import rootReducer from '../reducers';
 
@@ -16,6 +17,7 @@ export default function configureStore(initialState) {
   let middleware = applyMiddleware(
     promiseMiddleware(),
     createLogger(),
+    unauthenticatedResponse,
     questionsFromResponseSets,
     questionsFromForms,
     responseSetsFromQuestions,

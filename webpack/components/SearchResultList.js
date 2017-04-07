@@ -8,13 +8,18 @@ export default class SearchResultList extends Component {
       <div className="search-result-list">
         {this.props.searchResults.hits &&
           <row className="search-result-heading">
-            <div>Search Results ({this.props.searchResults.hits.hits.length})</div>
+            <div>Search Results ({this.props.searchResults.hits && this.props.searchResults.hits.total && this.props.searchResults.hits.total})</div>
             <hr/>
           </row>
         }
-        {this.props.searchResults.hits && this.props.searchResults.hits.hits.map((sr) => {
+        {this.props.searchResults.hits && this.props.searchResults.hits.hits.map((sr, i) => {
           return(
-            <SearchResult key={sr.Source.versionIndependentId + '-' + sr.Source.updatedAt} type={sr.Type} result={sr} currentUser={this.props.currentUser} />
+            <SearchResult key={`${sr.Source.versionIndependentId}-${sr.Source.updatedAt}-${i}`}
+                          type={sr.Type} result={sr} currentUser={this.props.currentUser}
+                          handleSelectSearchResult={this.props.handleSelectSearchResult}
+                          extraAction={this.props.extraAction} extraActionName={this.props.extraActionName}
+                          isEditPage={this.props.isEditPage}
+                          />
           );
         })}
       </div>
@@ -24,5 +29,9 @@ export default class SearchResultList extends Component {
 
 SearchResultList.propTypes = {
   searchResults: PropTypes.object.isRequired,
-  currentUser: currentUserProps
+  currentUser: currentUserProps,
+  isEditPage: PropTypes.bool,
+  handleSelectSearchResult: PropTypes.func,
+  extraActionName: PropTypes.string,
+  extraAction: PropTypes.func
 };

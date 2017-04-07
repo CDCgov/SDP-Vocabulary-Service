@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307205339) do
+ActiveRecord::Schema.define(version: 20170403180740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20170307205339) do
     t.string   "status",                 default: "draft"
     t.boolean  "harmonized"
     t.integer  "parent_id"
+    t.boolean  "other_allowed"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
     t.index ["response_type_id"], name: "index_questions_on_response_type_id", using: :btree
@@ -162,6 +163,45 @@ ActiveRecord::Schema.define(version: 20170307205339) do
     t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
+  create_table "surveillance_programs", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "acronym"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["name"], name: "index_surveillance_programs_on_name", unique: true, using: :btree
+  end
+
+  create_table "surveillance_systems", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "acronym"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["name"], name: "index_surveillance_systems_on_name", unique: true, using: :btree
+  end
+
+  create_table "survey_forms", force: :cascade do |t|
+    t.integer "survey_id"
+    t.integer "form_id"
+    t.integer "position"
+  end
+
+  create_table "surveys", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
+    t.integer  "created_by_id"
+    t.string   "version_independent_id"
+    t.integer  "version",                           default: 1
+    t.string   "control_number",          limit: 9
+    t.string   "status",                            default: "draft"
+    t.string   "description"
+    t.integer  "surveillance_program_id"
+    t.integer  "surveillance_system_id"
+    t.index ["created_by_id"], name: "index_surveys_on_created_by_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
@@ -180,6 +220,8 @@ ActiveRecord::Schema.define(version: 20170307205339) do
     t.boolean  "admin",                  default: false
     t.string   "first_name"
     t.string   "last_name"
+    t.integer  "last_program_id"
+    t.integer  "last_system_id"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
@@ -200,4 +242,9 @@ ActiveRecord::Schema.define(version: 20170307205339) do
   add_foreign_key "response_sets", "users", column: "created_by_id"
   add_foreign_key "response_sets", "users", column: "updated_by_id"
   add_foreign_key "responses", "response_sets"
+  add_foreign_key "surveys", "surveillance_programs"
+  add_foreign_key "surveys", "surveillance_systems"
+  add_foreign_key "surveys", "users", column: "created_by_id"
+  add_foreign_key "users", "surveillance_programs", column: "last_program_id"
+  add_foreign_key "users", "surveillance_systems", column: "last_system_id"
 end

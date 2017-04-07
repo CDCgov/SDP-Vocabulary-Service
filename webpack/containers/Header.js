@@ -8,7 +8,7 @@ import NotificationDropdown from '../components/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
-let LoginMenu = ({logInOpener, signUpOpener, currentUser={email:null}}) => {
+let LoginMenu = ({logInOpener, signUpOpener, currentUser}) => {
   let loggedIn = ! _.isEmpty(currentUser);
   if(!loggedIn) {
     return (
@@ -38,7 +38,7 @@ LoginMenu.propTypes = {
   signUpOpener: PropTypes.func.isRequired
 };
 
-let ContentMenu = ({settingsOpener, currentUser={email:false}}) => {
+let ContentMenu = ({settingsOpener, currentUser}) => {
   let loggedIn = ! _.isEmpty(currentUser);
   if(loggedIn) {
     let {email} = currentUser;
@@ -74,20 +74,23 @@ ContentMenu.propTypes = {
 };
 
 
-let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount}) => {
-  let loggedIn = currentUser ? true : false;
+let SignedInMenu = ({currentUser, location, notifications, notificationCount}) => {
+  let loggedIn = ! _.isEmpty(currentUser);
   if(loggedIn) {
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">
         <li className="active"><a href="#" className="cdc-navbar-item"><i className="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
-        <li className="dropdown">
-          <a href="#" className="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
-          <ul className="cdc-nav-dropdown">
-            <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
-            <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
-            <li className="nav-dropdown-item"><Link to="/forms/new">Forms</Link></li>
-          </ul>
-        </li>
+        {!location.pathname.includes("revise") && !location.pathname.includes("edit") && !location.pathname.includes("extend") &&
+          <li className="dropdown">
+            <a href="#" id = "create-menu" className="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
+            <ul className="cdc-nav-dropdown">
+              <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
+              <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
+              <li className="nav-dropdown-item"><Link to="/forms/new">Forms</Link></li>
+              <li className="nav-dropdown-item"><Link to="/surveys/new">Surveys</Link></li>
+            </ul>
+          </li>
+        }
         <li className="dropdown">
           <NotificationDropdown notifications={notifications} notificationCount={notificationCount} />
           { notificationCount > 0 ? (
@@ -105,6 +108,7 @@ let SignedInMenu = ({currentUser={email:false}, notifications, notificationCount
 };
 SignedInMenu.propTypes = {
   currentUser: currentUserProps,
+  location: PropTypes.object,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number
 };
@@ -127,7 +131,7 @@ class Header extends Component {
             </button>
             <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
           </div>
-          <SignedInMenu currentUser={this.props.currentUser} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
+          <SignedInMenu currentUser={this.props.currentUser} location={this.props.location} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
           <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
           <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
         </div>
@@ -151,6 +155,7 @@ function mapDispatchToProps(dispatch) {
 
 Header.propTypes = {
   currentUser: currentUserProps,
+  location: PropTypes.object,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,
   fetchNotifications: PropTypes.func,

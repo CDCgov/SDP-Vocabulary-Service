@@ -1,14 +1,23 @@
 import axios from 'axios';
 import routes from '../routes';
+import { deleteObject } from './action_helpers';
+import { getCSRFToken } from './index';
 import {
   FETCH_RESPONSE_SETS,
   FETCH_RESPONSE_SET,
+  FETCH_RESPONSE_SET_USAGE,
   SAVE_RESPONSE_SET,
   SAVE_DRAFT_RESPONSE_SET,
-  PUBLISH_RESPONSE_SET
+  PUBLISH_RESPONSE_SET,
+  DELETE_RESPONSE_SET
 } from './types';
 
-import { getCSRFToken } from './index';
+export function deleteResponseSet(id, callback=null) {
+  return {
+    type: DELETE_RESPONSE_SET,
+    payload: deleteObject(routes.responseSetPath(id), callback)
+  };
+}
 
 export function fetchMyResponseSets(searchTerms) {
   return {
@@ -34,6 +43,15 @@ export function fetchResponseSet(id) {
   return {
     type: FETCH_RESPONSE_SET,
     payload: axios.get(routes.responseSetPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    })
+  };
+}
+
+export function fetchResponseSetUsage(id) {
+  return {
+    type: FETCH_RESPONSE_SET_USAGE,
+    payload: axios.get(routes.usageResponseSetPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };

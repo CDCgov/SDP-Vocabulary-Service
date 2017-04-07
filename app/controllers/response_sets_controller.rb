@@ -1,15 +1,15 @@
 class ResponseSetsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:usage]
 
   # GET /response_sets
   # GET /response_sets.json
   def index
-    @response_sets = params[:search] ? ResponseSet.search(params[:search]).latest_versions : ResponseSet.latest_versions
+    @response_sets = params[:search] ? ResponseSet.search(params[:search]).all : ResponseSet.all
   end
 
   def my_response_sets
     @response_sets = if params[:search]
-                       ResponseSet.where(created_by_id: current_user.id).search(params[:search]).latest_versions
+                       ResponseSet.where('created_by_id=? and name ILIKE ?', current_user.id, "%#{search}%").latest_versions
                      else
                        ResponseSet.where(created_by_id: current_user.id).latest_versions
                      end
@@ -20,6 +20,18 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets/1.json
   def show
     @response_set = ResponseSet.includes(:responses, :questions, :parent).find(params[:id])
+  end
+
+  def usage
+    @response_set = ResponseSet.find(params[:id])
+    if @response_set.status != 'published'
+      render(json: { error: 'Only published Response Sets provide usage information' }, status: :bad_request)
+    else
+      response = { id: @response_set.id }
+      response[:surveillance_programs] = @response_set.surveillance_programs.map(&:name).uniq
+      response[:surveillance_systems] = @response_set.surveillance_systems.map(&:name).uniq
+      render json: response
+    end
   end
 
   def assign_author
@@ -86,6 +98,7 @@ class ResponseSetsController < ApplicationController
   # DELETE /response_sets/1.json
   def destroy
     if @response_set.status == 'draft'
+      @response_set.questions.destroy_all
       @response_set.destroy
       render json: @response_set
     else

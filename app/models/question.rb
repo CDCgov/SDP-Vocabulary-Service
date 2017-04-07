@@ -15,6 +15,7 @@ class Question < ApplicationRecord
   belongs_to :parent, class_name: 'Question'
 
   validates :content, presence: true
+  validate :other_allowed_on_when_choice
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
   after_commit :index, on: [:create, :update]
@@ -28,8 +29,16 @@ class Question < ApplicationRecord
     DeleteFromIndexJob.perform_later('question', id)
   end
 
-  def self.search(search)
-    where('content ILIKE ?', "%#{search}%")
+  def self.search(search = nil, current_user_id = nil)
+    if current_user_id && search
+      where("(status='published' OR created_by_id= ?) AND (content ILIKE ?)", current_user_id, "%#{search}%")
+    elsif current_user_id
+      where("(status= 'published' OR created_by_id = ?)", current_user_id)
+    elsif search
+      where('status= ? and content ILIKE ?', 'published', "%#{search}%")
+    else
+      where('status=  ?', 'published')
+    end
   end
 
   def publish
@@ -48,5 +57,25 @@ class Question < ApplicationRecord
     end
 
     new_revision
+  end
+
+  # Get the programs that the form is associated with by the surveys that the
+  # form is contained in
+  def surveillance_programs
+    SurveillanceProgram.joins(surveys: :survey_forms)
+                       .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                       .where('form_questions.question_id = ?', id)
+  end
+
+  def surveillance_systems
+    SurveillanceSystem.joins(surveys: :survey_forms)
+                      .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
+                      .where('form_questions.question_id = ?', id)
+  end
+
+  def other_allowed_on_when_choice
+    if other_allowed && (response_type.blank? || response_type.code != 'choice')
+      errors.add(:other_allowed, "can't be true unless the response type is choice")
+    end
   end
 end

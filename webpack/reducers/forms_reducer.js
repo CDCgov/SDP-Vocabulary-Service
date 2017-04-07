@@ -2,6 +2,7 @@ import {
   FETCH_FORM_FULFILLED,
   FETCH_FORMS_FULFILLED,
   PUBLISH_FORM_FULFILLED,
+  DELETE_FORM_FULFILLED,
   SAVE_DRAFT_FORM_FULFILLED,
   ADD_QUESTION,
   REMOVE_QUESTION,
@@ -12,7 +13,7 @@ import {
 import _ from 'lodash';
 
 export default function forms(state = {}, action) {
-  let form , index, newState, newForm, direction, question;
+  let form , index, newState, newForm, direction, question, responseSetId;
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
       return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
@@ -29,14 +30,19 @@ export default function forms(state = {}, action) {
     case ADD_QUESTION:
       question = action.payload.question;
       form = action.payload.form;
-      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id});
+      if(question.responseSets && question.responseSets[0]){
+        responseSetId = question.responseSets[0].id || question.responseSets[0];
+      } else {
+        responseSetId = null;
+      }
+      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: responseSetId});
       newForm = Object.assign({}, form);
       newForm.formQuestions.push(newFormQuestion);
       newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     case REMOVE_QUESTION:
-      form = action.payload.form;
+      form  = action.payload.form;
       index = action.payload.index;
       newForm = Object.assign({}, form);
       newForm.formQuestions.splice(index, 1);
@@ -52,6 +58,10 @@ export default function forms(state = {}, action) {
       newState = Object.assign({}, state);
       newState[form.id||0] = newForm;
       return newState;
+    case DELETE_FORM_FULFILLED:
+      return _.omitBy(state,(v, k)=>{
+        return action.payload.data.id==k;
+      });
     default:
       return state;
   }

@@ -1,0 +1,27 @@
+one:
+  name: MySurvey
+  created_by: admin
+  version: 1
+  version_independent_id: 'S-1'
+  control_number: '1234-5678'
+  surveillance_program: generic
+  surveillance_system: nids
+two:
+  name: Search Survey 1
+  created_by: admin
+  version: 1
+  status: published
+  version_independent_id: 'S-2'
+  control_number: '1234-5678'
+three:
+  name: Search Survey 2
+  created_by: admin
+  version: 1
+  version_independent_id: 'S-3'
+  control_number: '1234-5678'
+four:
+  name: Search Survey 3
+  created_by: not_admin
+  version: 1
+  version_independent_id: 'S-3'
+  control_number: '1234-5678'

@@ -3,6 +3,7 @@ require 'test_helper'
 class FormsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+  include ActiveModelSerializers::Test::Schema
 
   DRAFT = 'draft'.freeze
   PUBLISHED = 'published'.freeze
@@ -63,7 +64,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 0
 
     assert_difference('Form.count') do
-      form_json = { form: { name: @form.name, created_by_id: @form.created_by_id } }.to_json
+      form_json = { form: { name: 'Create test form', created_by_id: @form.created_by_id } }.to_json
       post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     end
     assert_enqueued_jobs 1
@@ -111,13 +112,19 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should destroy form' do
-    assert_enqueued_jobs 0
-    assert_difference('Form.count', -1) do
-      delete form_url(@form)
+  test 'should destroy a draft form and formQuestions' do
+    post questions_url(format: :json), params: { question: { status: 'draft', content: 'TBD content' } }
+    last_id = Form.last.id
+    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @form.created_by_id, linked_questions: [Question.last.id], linked_response_sets: [nil] } }
+    assert_difference('Question.count', 0) do
+      assert_difference('FormQuestion.count', -1) do
+        assert_difference('Form.count', -1) do
+          delete form_url(Form.last, format: :json)
+        end
+      end
     end
-    assert_enqueued_jobs 3
-    assert_response 204
+    assert_response :success
+    assert_not_equal last_id, Form.last
   end
 
   test 'should respond to json format' do

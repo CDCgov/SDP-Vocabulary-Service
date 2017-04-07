@@ -75,7 +75,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should be unable to update a draft question owned by someone else' do
     patch question_url(@question5, format: :json), params: { question: { content: 'new content' } }
-    assert_response :unauthorized
+    assert_response :forbidden
   end
 
   test 'should be unable to update a published question' do
@@ -106,7 +106,14 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     # TODO: deprecation
   end
 
-  test 'should destroy  a draft question' do
+  test 'unauthenticated users should see published quetion' do
+    q = questions(:search_1)
+    sign_out @current_user
+    get question_url(q, format: :json)
+    assert_response :success
+  end
+
+  test 'should destroy a draft question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
     assert_equal Question.last.status, 'draft'
     last_id = Question.last.id
@@ -115,5 +122,30 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :success
     assert_not_equal last_id, Question.last
+  end
+
+  test 'should destroy a draft question and questionForms' do
+    post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
+    assert_equal Question.last.status, 'draft'
+    last_id = Question.last.id
+    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @question.created_by_id, linked_questions: [last_id], linked_response_sets: [nil] } }
+    assert_difference('Question.count', -1) do
+      assert_difference('FormQuestion.count', -1) do
+        assert_difference('Form.count', 0) do
+          delete question_url(Question.last, format: :json)
+        end
+      end
+    end
+    assert_response :success
+    assert_not_equal last_id, Question.last
+  end
+
+  test 'should get question usage' do
+    get usage_question_url(@question), xhr: true, params: nil
+    assert_response :success
+    response_json = JSON.parse(@response.body)
+    assert_equal @question.id, response_json['id']
+    assert response_json['surveillance_systems'].include? 'National Insignificant Digits System'
+    assert response_json['surveillance_programs'].include? 'Generic Surveillance Program'
   end
 end

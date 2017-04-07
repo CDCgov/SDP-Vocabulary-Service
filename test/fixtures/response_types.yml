@@ -11,3 +11,9 @@ one:
 two:
   name: "Integer"
 # column: value
+three:
+  name: "Date"
+  code: "date"
+four:
+  name: "Choice"
+  code: "choice"
