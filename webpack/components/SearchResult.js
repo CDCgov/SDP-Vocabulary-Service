@@ -77,8 +77,7 @@ export default class SearchResult extends Component {
     }
   }
 
-  resultName(result, type, isEditPage){
-    const highlight = result.highlight;
+  resultName(result, highlight, type, isEditPage) {
     const name = result.content ? result.content: result.name;
     const innerHTML = highlight && highlight.name ? <text dangerouslySetInnerHTML={{__html: highlight.name[0]}} /> : name;
     if(isEditPage){
@@ -236,7 +235,7 @@ export default class SearchResult extends Component {
                     <ul className="list-inline result-type-wrapper">
                       <li className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></li>
                       <li className="result-name">
-                        {this.resultName(result, type, isEditPage)}
+                        {this.resultName(result, highlight, type, isEditPage)}
                       </li>
                     </ul>
                   </div>
