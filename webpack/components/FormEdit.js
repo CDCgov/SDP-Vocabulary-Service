@@ -45,6 +45,7 @@ class FormEdit extends Component {
         this.state = this.stateForRevise({});
     }
     this.unsavedState = false;
+    this.lastQuestionCount = this.state.formQuestions.length;
     this.addedResponseSets = _.compact(this.state.formQuestions.map((fq) => fq.responseSetId));
   }
 
@@ -56,6 +57,13 @@ class FormEdit extends Component {
   componentWillUnmount() {
     this.unsavedState = false;
     this.unbindHook();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.lastQuestionCount !== prevState.formQuestions.length) {
+      this.unsavedState = true;
+      this.lastQuestionCount = prevState.formQuestions.length;
+    }
   }
 
   routerWillLeave(nextLocation) {
