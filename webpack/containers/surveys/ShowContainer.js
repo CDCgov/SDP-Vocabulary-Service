@@ -7,7 +7,7 @@ import { fetchQuestions } from '../../actions/questions_actions';
 import SurveyShow from '../../components/surveys/Show';
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
-// import CommentList from '../../containers/CommentList';
+import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
 
 class SurveyShowContainer extends Component {
@@ -42,6 +42,7 @@ class SurveyShowContainer extends Component {
                         forms ={this.props.forms}
                         deleteSurvey={this.props.deleteSurvey} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
+            <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
           </div>
         </div>
       </div>

@@ -131,6 +131,7 @@ class FormsController < ApplicationController
     form_questions = []
     if question_ids
       question_ids.zip(response_set_ids).each do |qid, rsid|
+        rsid = nil if rsid == ''
         form_questions << FormQuestion.new(question_id: qid, response_set_id: rsid)
       end
     end

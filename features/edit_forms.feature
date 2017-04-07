@@ -52,10 +52,15 @@ Feature: Edit Forms
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
+    And I use the response set search modal to select "Gender Partial"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
     And I use the question search to select "What is your name?"
     And I move the Question "What is your name?" up
     And I click on the "Save" button
     And I should see "What is your gender?"
+    And I should see the question "What is your name?" first
+    And I should see the response set "Gender Partial" second
 
   Scenario: Create New Form from List and Create a Question using New Question Modal
     Given I have a Response Set with the name "Gender Full"

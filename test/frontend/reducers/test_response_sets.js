@@ -28,6 +28,16 @@ describe('responseSets reducer', () => {
     expect(Object.keys(nextState).length).to.equal(3);
   });
 
+  it('should fetch response sets, even if some already exist', () => {
+    const responseSetData = {data: [{id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"},
+                                 {id: 2, name: "People", description: "A list of people", oid: "2.16.840.1.113883.3.1502.3.2"},
+                                 {id: 3, name: "Things", description: "A list of things", oid: "2.16.840.1.113883.3.1502.3.3"}]};
+    const action = {type: FETCH_RESPONSE_SETS_FULFILLED, payload: responseSetData};
+    const startState = {1: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"}};
+    const nextState = responseSets(startState, action);
+    expect(Object.keys(nextState).length).to.equal(3);
+  });
+
   it('should not overwrite response sets already in store', () => {
     const responseSetData = {data: [{id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"},
                                  {id: 3, name: "Things", description: "A list of things", oid: "2.16.840.1.113883.3.1502.3.3"}]};

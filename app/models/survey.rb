@@ -1,5 +1,7 @@
 class Survey < ApplicationRecord
   include Versionable
+  acts_as_commentable
+
   has_many :survey_forms
   belongs_to :created_by, class_name: 'User'
 

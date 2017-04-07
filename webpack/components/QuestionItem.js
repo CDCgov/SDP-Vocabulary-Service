@@ -14,8 +14,6 @@ class QuestionItem extends Component {
     super(props);
     this.state = {
       showSearchModal: false,
-      selectedSearchResult: false,
-      selectedResponseSet: {},
       searchTerms: ''
     };
     this.showResponseSetSearch = this.showResponseSetSearch.bind(this);
@@ -33,7 +31,8 @@ class QuestionItem extends Component {
   }
 
   handleSelectSearchResult(rs) {
-    this.setState({ selectedSearchResult: true, selectedResponseSet: rs, showSearchModal: false });
+    this.props.handleSelectSearchResult(rs);
+    this.setState({ showSearchModal: false });
   }
 
   search(searchTerms) {
@@ -56,7 +55,7 @@ class QuestionItem extends Component {
           <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} handleSelectSearchResult={this.handleSelectSearchResult} />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.hideResponseSetSearch()} bsStyle="primary">Cancel</Button>
+          <Button onClick={this.hideResponseSetSearch} bsStyle="primary">Cancel</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -64,7 +63,7 @@ class QuestionItem extends Component {
 
   render() {
     if (!this.props.question) {
-      return (<div>"Loading..."</div>);
+      return (<div>Loading...</div>);
     }
     return (
       <div className='question-item'>
@@ -73,15 +72,12 @@ class QuestionItem extends Component {
         <div className="col-md-3">
           <div className="form-group">
             <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.question.id}/>
-            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.responseSetId} onChange={this.props.handleResponseSetChange(this.props.index)}>
+            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSet || ''} onChange={(e)=>this.props.handleResponseSetChange(e)}>
               {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
                 return (
                   <option value={r.id} key={`${r.id}-${i}`}>{r.name} </option>
                 );
               })}
-              {this.state.selectedSearchResult &&
-                <option value={this.state.selectedResponseSet.id} selected>{this.state.selectedResponseSet.name}</option>
-              }
               <option aria-label=' '></option>
             </select>
             <a title="Search Response Sets" href="#" onClick={(e) => {
@@ -109,9 +105,11 @@ function mapDispatchToProps(dispatch) {
 
 QuestionItem.propTypes = {
   question: questionProps,
-  responseSets: PropTypes.object,
+  responseSets: PropTypes.array,
+  selectedResponseSet: PropTypes.number,
   index: PropTypes.number.isRequired,
   handleResponseSetChange: PropTypes.func,
+  handleSelectSearchResult: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   responseSetId: PropTypes.number,
   searchResults: PropTypes.object,
