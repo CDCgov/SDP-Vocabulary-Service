@@ -111,6 +111,19 @@ Feature: Edit Forms
     Then I should see "Test Form"
     And I should see "What is your gender?"
 
+  Scenario: Show warning modal after adding question
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I am logged in as test_author@gmail.com
+    When I go to the dashboard
+    And I click on the create "Forms" dropdown item
+    And I fill in the "search" field with "What"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
+    When I click on the "CDC Vocabulary Service" link
+    Then I should see "Unsaved Changes"
+
   Scenario: Create New Form from List with warning modal
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"
