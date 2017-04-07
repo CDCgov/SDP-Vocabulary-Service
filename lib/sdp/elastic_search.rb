@@ -36,7 +36,7 @@ module SDP
               { term: { 'createdBy.id': current_user_id } },
               { match: { status: 'published' } }
             ] } },
-            should: [
+            must: { dis_max: { queries: [
               { match: { name: { query: query_string, boost: 9 } } },
               { match: { description: { query: query_string, boost: 8 } } },
               { match: { 'codes.code': { query: query_string, boost: 7 } } },
@@ -46,7 +46,7 @@ module SDP
               { match: { 'createdBy.email': { query: query_string } } },
               { match: { 'createdBy.name': { query: query_string } } },
               { match: { status: { query: query_string } } }
-            ]
+            ] } }
           }
         },
         highlight: {
@@ -69,7 +69,7 @@ module SDP
               { term: { 'createdBy.id': current_user_id } },
               { match: { status: 'published' } }
             ] } },
-            should: [
+            must: { dis_max: { queries: [
               { match: { name: { query: query_string, boost: 9 } } },
               { match: { description: { query: query_string, boost: 8 } } },
               { match: { 'codes.code': { query: query_string, boost: 7 } } },
@@ -79,7 +79,7 @@ module SDP
               { match: { 'createdBy.email': { query: query_string } } },
               { match: { 'createdBy.name': { query: query_string } } },
               { match: { status: { query: query_string } } }
-            ]
+            ] } }
           }
         },
         highlight: {
