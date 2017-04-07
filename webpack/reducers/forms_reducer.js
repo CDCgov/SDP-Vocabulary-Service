@@ -44,6 +44,7 @@ export default function forms(state = {}, action) {
     case REMOVE_QUESTION:
       form  = action.payload.form;
       index = action.payload.index;
+      form.id = form.id || 0;
       newForm = Object.assign({}, form);
       newForm.formQuestions.splice(index, 1);
       newState = Object.assign({}, state);
