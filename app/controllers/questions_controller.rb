@@ -94,8 +94,8 @@ class QuestionsController < ApplicationController
       render(json: { error: 'Only published Questions provide usage information' }, status: :bad_request)
     else
       response = { id: @question.id }
-      response[:surveillance_programs] = @question.surveillance_programs.map(&:name).uniq
-      response[:surveillance_systems] = @question.surveillance_systems.map(&:name).uniq
+      response[:surveillance_programs] = @question.surveillance_programs.map(&:name)
+      response[:surveillance_systems] = @question.surveillance_systems.map(&:name)
       render json: response
     end
   end

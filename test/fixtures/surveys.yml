@@ -13,6 +13,8 @@ two:
   status: published
   version_independent_id: 'S-2'
   control_number: '1234-5678'
+  surveillance_program: generic
+  surveillance_system: nsms
 three:
   name: Search Survey 2
   created_by: admin

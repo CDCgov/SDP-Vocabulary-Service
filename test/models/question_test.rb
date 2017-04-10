@@ -107,6 +107,21 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal q1.oid, q7.oid
   end
 
+  test 'surveillance_systems' do
+    q = questions(:one)
+    ss = q.surveillance_systems
+    assert_equal 2, ss.length
+    assert_includes ss.map(&:name), 'National Insignificant Digits System'
+    assert_includes ss.map(&:name), 'National Spork Monitoring System'
+  end
+
+  test 'surveillance_programs' do
+    q = questions(:one)
+    sp = q.surveillance_programs
+    assert_equal 1, sp.length
+    assert_includes sp.map(&:name), 'Generic Surveillance Program'
+  end
+
   test 'only choice response type allows other' do
     blank_rs_question = Question.new(content: 'test', other_allowed: true)
     refute blank_rs_question.valid?

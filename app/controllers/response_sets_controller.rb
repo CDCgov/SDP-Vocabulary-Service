@@ -28,8 +28,8 @@ class ResponseSetsController < ApplicationController
       render(json: { error: 'Only published Response Sets provide usage information' }, status: :bad_request)
     else
       response = { id: @response_set.id }
-      response[:surveillance_programs] = @response_set.surveillance_programs.map(&:name).uniq
-      response[:surveillance_systems] = @response_set.surveillance_systems.map(&:name).uniq
+      response[:surveillance_programs] = @response_set.surveillance_programs.map(&:name)
+      response[:surveillance_systems] = @response_set.surveillance_systems.map(&:name)
       render json: response
     end
   end

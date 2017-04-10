@@ -63,11 +63,7 @@ class ESFormSerializer < ActiveModel::Serializer
     UserSerializer.new(object.created_by).as_json if object.created_by
   end
 
-  def surveillance_programs
-    object.surveillance_programs.collect { |sp| { id: sp.id, name: sp.name } }
-  end
+  delegate :surveillance_programs, to: :object
 
-  def surveillance_systems
-    object.surveillance_systems.collect { |ss| { id: ss.id, name: ss.name } }
-  end
+  delegate :surveillance_systems, to: :object
 end

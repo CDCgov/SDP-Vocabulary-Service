@@ -124,12 +124,15 @@ class ResponseSetTest < ActiveSupport::TestCase
   test 'surveillance_systems' do
     rs = response_sets(:one)
     ss = rs.surveillance_systems
-    assert_equal 'National Insignificant Digits System', ss.first.name
+    assert_equal 2, ss.length
+    assert_includes ss.map(&:name), 'National Insignificant Digits System'
+    assert_includes ss.map(&:name), 'National Spork Monitoring System'
   end
 
   test 'surveillance_programs' do
     rs = response_sets(:one)
     sp = rs.surveillance_programs
-    assert_equal 'Generic Surveillance Program', sp.first.name
+    assert_equal 1, sp.length
+    assert_includes sp.map(&:name), 'Generic Surveillance Program'
   end
 end

@@ -76,13 +76,13 @@ class ResponseSet < ApplicationRecord
 
   def surveillance_programs
     SurveillanceProgram.joins(surveys: :survey_forms)
-                       .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
-                       .where('form_questions.response_set_id = ?', id)
+                       .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
+                       .where('form_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def surveillance_systems
     SurveillanceSystem.joins(surveys: :survey_forms)
-                      .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
-                      .where('form_questions.response_set_id = ?', id)
+                      .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
+                      .where('form_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 end
