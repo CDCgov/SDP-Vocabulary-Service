@@ -94,7 +94,7 @@ export default class SearchResult extends Component {
   programsInfo(result) {
     return (
       <li className="result-analytics-item">
-        <span className="item-value">{result.programsCount}</span>
+        <span className="item-value">{result.surveillancePrograms.length}</span>
         <p className="item-description">programs</p>
       </li>
     );
@@ -103,7 +103,7 @@ export default class SearchResult extends Component {
   systemsInfo(result) {
     return (
       <li className="result-analytics-item">
-        <span className="item-value">{result.systemsCount}</span>
+        <span className="item-value">{result.surveillanceSystems.length}</span>
         <p className="item-description">systems</p>
       </li>
     );
@@ -244,8 +244,8 @@ export default class SearchResult extends Component {
                   </div>
                   <div className="result-analytics">
                     <ul className="list-inline">
-                      {result.programsCount && this.programsInfo(result)}
-                      {result.systemsCount && this.systemsInfo(result)}
+                      {result.surveillancePrograms && this.programsInfo(result)}
+                      {result.surveillanceSystems && this.systemsInfo(result)}
                       {result.status && this.resultStatus(result.status)}
                       <li className="result-timestamp pull-right"><p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p><p>version {result.version && result.version} | {type}</p></li>
                     </ul>

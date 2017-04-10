@@ -67,10 +67,12 @@ class Form < ApplicationRecord
   # Get the programs that the form is associated with by the surveys that the
   # form is contained in
   def surveillance_programs
-    SurveillanceProgram.joins(surveys: :survey_forms).where('survey_forms.form_id = ?', id)
+    SurveillanceProgram.joins(surveys: :survey_forms)
+                       .where('survey_forms.form_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def surveillance_systems
-    SurveillanceSystem.joins(surveys: :survey_forms).where('survey_forms.form_id = ?', id)
+    SurveillanceSystem.joins(surveys: :survey_forms)
+                      .where('survey_forms.form_id = ?', id).select(:id, :name).distinct.to_a
   end
 end

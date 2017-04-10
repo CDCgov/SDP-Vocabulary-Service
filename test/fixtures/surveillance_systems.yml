@@ -2,3 +2,8 @@ nids:
   name: National Insignificant Digits System
   description: Meaningless digits
   acronym: NIDS
+
+nsms:
+  name: National Spork Monitoring System
+  description: Those things can be dangerous
+  acronym: NSMS
