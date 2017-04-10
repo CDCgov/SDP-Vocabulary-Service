@@ -41,6 +41,15 @@ describe('surveys reducer', () => {
     expect(nextState["1"].surveyForms[0].formId).to.equal(form.id);
   });
 
+  it('should not add the same form twice', () => {
+    const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveyForms:[]}
+    const form = {id: 1, content: "Is this a form?", formType: ""};
+    const action = {type: ADD_FORM, payload: {survey, form} };
+    const nextState  = surveys({}, action);
+    const finalState = surveys(nextState, action);
+    expect(finalState["1"].surveyForms.length).to.equal(1);
+  });
+
   it('should remove a form', () => {
     const form = {id: 1, name: "Is this a form?"};
     const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveyForms:[form]};
