@@ -43,8 +43,13 @@ export default class LogInModal extends Component {
     );
   }
 
+  logInSuccess() {
+    this.props.closer();
+    window.location.reload();
+  }
+
   attemptLogIn() {
-    const successHandler = () => this.props.closer();
+    const successHandler = () => this.logInSuccess();
     const failureHandler = () => this.setState({invalidCredentials: true});
     this.props.logIn(this.state, successHandler, failureHandler);
   }

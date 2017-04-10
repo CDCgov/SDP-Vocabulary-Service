@@ -61,6 +61,21 @@ Feature: Session Management
     Given I am on the "/" page
     Then I should not see a "Create" link
 
+  Scenario: On login page should update and users should see their My Stuff content
+    Given I am on the "/" page
+    And a user "test_author@gmail.com" exists
+    And I have a Question with the content "What?" and the description "A simple question"
+    And I have a Question with the content "Who?" and the description "Another simple question"
+    # This step should be "should not see my stuff" once landing page is merged / test are written
+    Then I should see "0 Questions"
+    And I should not see "2 Questions"
+    When I click on the "Login" link
+    And I fill in the "email" field with "test_author@gmail.com"
+    And I fill in the "password" field with "password"
+    And I click on the "Log In" button
+    Then I should see "test_author@gmail.com"
+    And I should see "2 Questions"
+
   Scenario: Users should not be able to access restricted pages
     Given I am on the "/#/mystuff" page
     Then I should see "You are not authorized to see this content, please login."
