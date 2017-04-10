@@ -35,5 +35,5 @@ class SurveySerializer < ActiveModel::Serializer
   def survey_uri
     Rails.application.routes.url_helpers.api_survey_url(object.version_independent_id, version: object.version, only_path: true)
   end
-  has_many :forms, key: :questions, serializer: FormSerializer
+  has_many :forms, serializer: FormSerializer
 end
