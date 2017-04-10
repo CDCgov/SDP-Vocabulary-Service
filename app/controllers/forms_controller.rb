@@ -130,9 +130,11 @@ class FormsController < ApplicationController
     response_set_ids = params[:form][:linked_response_sets]
     form_questions = []
     if question_ids
+      position = 0
       question_ids.zip(response_set_ids).each do |qid, rsid|
         rsid = nil if rsid == ''
-        form_questions << FormQuestion.new(question_id: qid, response_set_id: rsid)
+        form_questions << FormQuestion.new(question_id: qid, response_set_id: rsid, position: position)
+        position += 1
       end
     end
     form_questions
