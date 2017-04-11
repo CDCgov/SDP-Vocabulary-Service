@@ -12,7 +12,7 @@ class FormQuestionList extends Component {
     return (
       <div className="question-group">
         {this.props.questions.map((q, i) => {
-          let source = q;
+          let source = Object.assign({}, q);
           source.responseSets = [this.props.responseSets[i]];
           return <SearchResult key={i} type='question' result={{Source: source}} currentUser={{id: -1}} />;
         })}
