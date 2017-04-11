@@ -19,4 +19,24 @@ class SurveyTest < ActiveSupport::TestCase
     s.control_number = '1234'
     assert_not s.valid?
   end
+
+  test 'Publish also publishes forms, questions, and response sets' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test publish', created_by: user)
+    assert rs.save
+    q = Question.new(content: 'Test publish', created_by: user)
+    q.response_sets = [rs]
+    assert q.save
+    f = Form.new(name: 'Test publish', created_by: user)
+    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id)]
+    assert f.save
+    s = Survey.new(name: 'Test publish', created_by: user)
+    s.survey_forms = [SurveyForm.new(form_id: f.id)]
+    assert s.save
+    s.publish
+    assert s.status == 'published'
+    assert s.forms.first.status == 'published'
+    assert s.forms.first.questions.first.status == 'published'
+    assert s.forms.first.questions.first.response_sets.first.status == 'published'
+  end
 end

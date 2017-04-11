@@ -1,5 +1,5 @@
 class Form < ApplicationRecord
-  include OidGenerator, Versionable
+  include OidGenerator, Versionable, Searchable
   acts_as_commentable
 
   has_many :form_questions
@@ -29,24 +29,13 @@ class Form < ApplicationRecord
     DeleteFromIndexJob.perform_later('form', id)
   end
 
-  def self.search(search = nil, current_user_id = nil)
-    if current_user_id && search
-      where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")
-    elsif current_user_id
-      where("(status= 'published' OR created_by_id = ?)", current_user_id)
-    elsif search
-      where('status= ? and name ILIKE ?', 'published', "%#{search}%")
-    else
-      where('status=  ?', 'published')
-    end
-  end
-
   def self.owned_by(owner_id)
     where(created_by: owner_id)
   end
 
   def publish
-    update(status: 'published')
+    update(status: 'published') if status == 'draft'
+    questions.each(&:publish)
   end
 
   # Builds a new Form object with the same version_independent_id. Increments

@@ -73,4 +73,20 @@ class FormTest < ActiveSupport::TestCase
     assert revision.save
     assert_equal f.control_number, revision.control_number
   end
+
+  test 'Publish also publishes questions and response sets' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test publish', created_by: user)
+    assert rs.save
+    q = Question.new(content: 'Test publish', created_by: user)
+    q.response_sets = [rs]
+    assert q.save
+    f = Form.new(name: 'Test publish', created_by: user)
+    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id)]
+    assert f.save
+    f.publish
+    assert f.status == 'published'
+    assert f.questions.first.status == 'published'
+    assert f.questions.first.response_sets.first.status == 'published'
+  end
 end

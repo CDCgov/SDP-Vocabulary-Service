@@ -1,5 +1,5 @@
 class Survey < ApplicationRecord
-  include Versionable
+  include Versionable, Searchable
   acts_as_commentable
 
   has_many :survey_forms
@@ -30,19 +30,8 @@ class Survey < ApplicationRecord
   end
 
   def publish
-    update(status: 'published')
-  end
-
-  def self.search(search = nil, current_user_id = nil)
-    if current_user_id && search
-      where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")
-    elsif current_user_id
-      where("(status= 'published' OR created_by_id = ?)", current_user_id)
-    elsif search
-      where('status= ? and name ILIKE ?', 'published', "%#{search}%")
-    else
-      where('status=  ?', 'published')
-    end
+    update(status: 'published') if status == 'draft'
+    forms.each(&:publish)
   end
 
   def build_new_revision

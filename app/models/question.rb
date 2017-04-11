@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  include Versionable, OidGenerator
+  include Versionable, OidGenerator, Searchable
   acts_as_commentable
 
   has_many :question_response_sets
@@ -29,20 +29,9 @@ class Question < ApplicationRecord
     DeleteFromIndexJob.perform_later('question', id)
   end
 
-  def self.search(search = nil, current_user_id = nil)
-    if current_user_id && search
-      where("(status='published' OR created_by_id= ?) AND (content ILIKE ?)", current_user_id, "%#{search}%")
-    elsif current_user_id
-      where("(status= 'published' OR created_by_id = ?)", current_user_id)
-    elsif search
-      where('status= ? and content ILIKE ?', 'published', "%#{search}%")
-    else
-      where('status=  ?', 'published')
-    end
-  end
-
   def publish
     update(status: 'published') if status == 'draft'
+    response_sets.each(&:publish)
   end
 
   def build_new_revision

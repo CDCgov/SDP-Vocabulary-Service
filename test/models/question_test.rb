@@ -132,4 +132,16 @@ class QuestionTest < ActiveSupport::TestCase
     valid_other_question = Question.new(content: 'test', other_allowed: true, response_type: ResponseType.new(code: 'choice'))
     assert valid_other_question.valid?
   end
+
+  test 'Publish also publishes response sets' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test publish', created_by: user)
+    assert rs.save
+    q = Question.new(content: 'Test publish', created_by: user)
+    q.response_sets = [rs]
+    assert q.save
+    q.publish
+    assert q.status == 'published'
+    assert q.response_sets.first.status == 'published'
+  end
 end
