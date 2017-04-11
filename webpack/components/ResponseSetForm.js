@@ -70,7 +70,7 @@ export default class ResponseSetForm extends Component {
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = responseSet.version + 1;
-    const parentId  = responseSet.parent ? responseSet.parent.id : null;
+    const parentId  = responseSet.parent ? responseSet.parent.id : ''; // Cannot use null, must use undefined or blank string
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
     return {name, oid, description, responsesAttributes,
@@ -105,7 +105,7 @@ export default class ResponseSetForm extends Component {
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = responseSet.version;
-    const parentId  = responseSet.parent ? responseSet.parent.id : null;
+    const parentId  = responseSet.parent ? responseSet.parent.id : ''; // null not allowed here
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
     return {id, name, oid, description, responsesAttributes,
