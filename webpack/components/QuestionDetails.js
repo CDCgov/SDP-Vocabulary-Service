@@ -126,10 +126,6 @@ export default class QuestionDetails extends Component {
               <strong>Created: </strong>
               { moment(question.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
             </div>
-            <div className="box-content">
-              <strong>Harmonized: </strong>
-              {question.harmonized ? 'Yes' : 'No'}
-            </div>
             { question.parent &&
               <div className="box-content">
                 <strong>Extended from: </strong>
