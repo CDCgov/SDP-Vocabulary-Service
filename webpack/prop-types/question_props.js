@@ -3,8 +3,7 @@ import { PropTypes } from 'react';
 const questionProps = PropTypes.shape({
   id: PropTypes.number,
   content: PropTypes.string,
-  otherAllowed: PropTypes.boolean,
-  harmonized: PropTypes.boolean
+  otherAllowed: PropTypes.boolean
 });
 
 const questionsProps = PropTypes.objectOf(questionProps);

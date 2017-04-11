@@ -93,7 +93,6 @@ class QuestionForm extends Component{
       questionTypeId: null,
       versionIndependentId: null,
       version: 1,
-      harmonized: false,
       responseTypeId: null,
       conceptsAttributes: [],
       linkedResponseSets: [],
@@ -112,7 +111,6 @@ class QuestionForm extends Component{
     extendState.version = 1;
     extendState.parentId  = question.id;
     extendState.oid = '';
-    extendState.harmonized = false;
     extendState.versionIndependentId = null;
     extendState.otherAllowed = question.otherAllowed;
     extendState.responseTypeId = question.responseTypeId;
@@ -180,10 +178,6 @@ class QuestionForm extends Component{
                         return (<option key={rt.id} value={rt.id}>{rt.name} - {rt.description}</option>);
                       })}
                     </select>
-                  </div>
-                  <div className="col-md-4 question-form-group harmonized-group">
-                    <label className="input-label" htmlFor="harmonized">Harmonized: </label>
-                    <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggleHarmonized()} />
                   </div>
                 </div>
                 {this.otherAllowedBox()}
@@ -286,10 +280,6 @@ class QuestionForm extends Component{
       this.setState(newState);
       this.unsavedState = true;
     };
-  }
-
-  toggleHarmonized() {
-    this.setState({harmonized: !this.state.harmonized});
   }
 
   toggleOtherAllowed() {
