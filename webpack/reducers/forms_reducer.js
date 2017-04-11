@@ -30,6 +30,10 @@ export default function forms(state = {}, action) {
     case ADD_QUESTION:
       question = action.payload.question;
       form = action.payload.form;
+      form.id = form.id || 0;
+      if(state[form.id] && state[form.id].formQuestions.findIndex( (s) => s.questionId == question.id) > -1){
+        return state;
+      }
       if(question.responseSets && question.responseSets[0]){
         responseSetId = question.responseSets[0].id || question.responseSets[0];
       } else {

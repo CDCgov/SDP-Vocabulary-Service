@@ -41,6 +41,15 @@ describe('forms reducer', () => {
     expect(nextState["1"].formQuestions[0].questionId).to.equal(question.id);
   });
 
+  it('should not add a question twice', () => {
+    const form = {id: 1, name: "Red Form",  userId: "testAuthor@gmail.com", formQuestions:[]}
+    const question = {id: 1, content: "Is this a question?", questionType: ""};
+    const action = {type: ADD_QUESTION, payload: {question, form} };
+    const nextState  = forms({}, action);
+    const finalState = forms(nextState, action);
+    expect(finalState["1"].formQuestions.length).to.equal(1);
+  });
+
   it('should remove a question', () => {
     const question = {id: 1, content: "Is this a question?", questionType: ""};
     const form = {id: 1, name: "Red Form",  userId: "testAuthor@gmail.com", formQuestions:[question]};
