@@ -113,7 +113,7 @@ class SurveyShow extends Component{
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title">Survey Details</li>
+            <li className="showpage_title">Survey Details {survey.status === 'draft' && <text>[DRAFT]</text>}</li>
           </ul>
         </div>
         {this.historyBar()}
