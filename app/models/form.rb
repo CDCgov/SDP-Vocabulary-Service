@@ -35,7 +35,10 @@ class Form < ApplicationRecord
 
   def publish
     update(status: 'published') if status == 'draft'
-    questions.each(&:publish)
+    form_questions.each do |fq|
+      fq.question.publish
+      fq.response_set.publish
+    end
   end
 
   # Builds a new Form object with the same version_independent_id. Increments
