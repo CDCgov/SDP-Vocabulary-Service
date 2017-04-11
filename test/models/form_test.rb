@@ -85,14 +85,17 @@ class FormTest < ActiveSupport::TestCase
     assert q.save
     q2 = Question.new(content: 'Test publish 2', created_by: user)
     assert q2.save
+    q3 = Question.new(content: 'Test publish 3', created_by: user)
+    assert q3.save
     f = Form.new(name: 'Test publish', created_by: user)
-    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id), FormQuestion.new(question_id: q2.id, response_set_id: rs2.id)]
+    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id), FormQuestion.new(question_id: q2.id, response_set_id: rs2.id), FormQuestion.new(question_id: q3.id)]
     assert f.save
     f.publish
     assert f.status == 'published'
     assert f.questions[0].status == 'published'
     assert f.questions[1].status == 'published'
-    assert f.questions[0].response_sets.first.status == 'published'
+    assert f.questions[2].status == 'published'
+    assert f.form_questions[0].response_set.status == 'published'
     assert f.form_questions[1].response_set.status == 'published'
   end
 end

@@ -37,7 +37,7 @@ class Form < ApplicationRecord
     update(status: 'published') if status == 'draft'
     form_questions.each do |fq|
       fq.question.publish
-      fq.response_set.publish
+      fq.response_set.publish if fq.response_set
     end
   end
 
