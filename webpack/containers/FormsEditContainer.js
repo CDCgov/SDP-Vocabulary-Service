@@ -81,7 +81,7 @@ class FormsEditContainer extends Component {
               <h3 className="panel-title">{_.capitalize(this.props.params.action)} Form </h3>
             </div>
             <div className="panel-body">
-              <div className="col-md-4">
+              <div className="col-md-5">
                 <div className="row add-question">
                   <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
                 </div>

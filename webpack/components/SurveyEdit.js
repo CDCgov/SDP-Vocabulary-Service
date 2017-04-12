@@ -136,7 +136,7 @@ class SurveyEdit extends Component {
       return ('Loading');
     }
     return (
-      <div className="col-md-8">
+      <div className="col-md-7">
       <div className="" id='survey-div'>
       <ModalDialog  show ={this.state.showModal}
                     title="Warning"

@@ -56,7 +56,7 @@ class SurveyEditContainer extends Component {
               <h3 className="panel-title">{_.capitalize(this.props.params.action)} Survey </h3>
             </div>
             <div className="panel-body">
-              <div className="col-md-4">
+              <div className="col-md-5">
                 <FormSearchContainer survey  ={this.props.survey}
                                      allForms={_.values(this.props.forms)}
                                      currentUser={this.props.currentUser} />
