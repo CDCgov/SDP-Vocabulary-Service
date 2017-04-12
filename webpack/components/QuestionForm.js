@@ -80,7 +80,7 @@ class QuestionForm extends Component{
     if (this.props.action === 'revise') {
       reviseState.version += 1;
     }
-    reviseState.parentId  = question.parent ? question.parent.id : null;
+    reviseState.parentId  = question.parent ? question.parent.id : ''; // null is not allowed as a value
     reviseState.responseTypeId = question.responseTypeId;
     reviseState.otherAllowed = question.otherAllowed;
     return reviseState;
@@ -139,7 +139,7 @@ class QuestionForm extends Component{
                       this.setState({ showWarningModal: false });
                     }}
                     secondaryButtonAction={()=> this.handleModalResponse(true)} />
-        <ResponseSetModal show={this.state.showResponseSetModal}
+        <ResponseSetModal show={this.state.showResponseSetModal || false}
                           closeModal={() => this.setState({showResponseSetModal: false})}
                           saveResponseSetSuccess={this.handleResponseSetSuccess} />
         <Errors errors={this.state.errors} />
