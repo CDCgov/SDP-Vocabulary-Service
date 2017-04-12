@@ -48,14 +48,14 @@ class QuestionTest < ActiveSupport::TestCase
   test 'last_published' do
     q = questions(:two)
     assert_difference('Question.last_published.count') do
-      assert q.publish
+      assert q.publish(users(:admin))
     end
   end
 
   test 'Question status should change to published when published' do
     qs = questions(:gfv2)
     assert_equal 'draft', qs.status
-    qs.publish
+    qs.publish(users(:admin))
     assert_equal 'published', qs.status
   end
 
@@ -140,8 +140,9 @@ class QuestionTest < ActiveSupport::TestCase
     q = Question.new(content: 'Test publish', created_by: user)
     q.response_sets = [rs]
     assert q.save
-    q.publish
-    assert q.status == 'published'
-    assert q.response_sets.first.status == 'published'
+    q.publish(user)
+    assert_equal user, q.published_by
+    assert_equal 'published', q.status
+    assert_equal 'published', q.response_sets.first.status
   end
 end

@@ -11,6 +11,8 @@ class ResponseSet < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
+  belongs_to :published_by, class_name: 'User'
+
   belongs_to :parent, class_name: 'ResponseSet'
 
   validates :status, presence: true
@@ -31,8 +33,12 @@ class ResponseSet < ApplicationRecord
     DeleteFromIndexJob.perform_later('response_set', id)
   end
 
-  def publish
-    update(status: 'published') if status == 'draft'
+  def publish(publisher)
+    if status == 'draft'
+      self.status = 'published'
+      self.published_by = publisher
+      save!
+    end
   end
 
   # Builds a new ResponseSet object with the same version_independent_id. Increments

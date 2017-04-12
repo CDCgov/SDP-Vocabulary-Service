@@ -84,7 +84,7 @@ class FormsController < ApplicationController
   # PATCH/PUT /forms/1/publish
   def publish
     if @form.status == 'draft'
-      @form.publish
+      @form.publish(current_user)
       render :show
     else
       render json: @form.errors, status: :unprocessable_entity

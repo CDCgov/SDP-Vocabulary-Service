@@ -93,7 +93,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   test 'revisions should increment version without needing a param' do
     rs_json = { response_set: { version_independent_id: 'RS-1337', description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    ResponseSet.last.publish
+    ResponseSet.last.publish(@current_user)
     v1 = ResponseSet.last
     rs_json = { response_set: { version_independent_id: 'RS-1337', description: 'Revision', name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
@@ -107,7 +107,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   test 'cannot revise something you do not own' do
     rs_json = { response_set: { version_independent_id: 'RS-1337', description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    ResponseSet.last.publish
+    ResponseSet.last.publish(@current_user)
     sign_in users(:not_admin)
     rs_json = { response_set: { version_independent_id: 'RS-1337', description: 'Revision', name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }

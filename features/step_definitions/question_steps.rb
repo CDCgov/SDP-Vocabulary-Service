@@ -54,7 +54,7 @@ end
 Given(/^I have a published Question with the content "([^"]*)"$/) do |content|
   user = get_user('test_author@gmail.com')
   q = Question.create!(content: content, version: 1, created_by: user)
-  q.publish
+  q.publish(user)
 end
 
 # When clauses

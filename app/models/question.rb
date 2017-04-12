@@ -12,6 +12,7 @@ class Question < ApplicationRecord
   belongs_to :question_type
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
+  belongs_to :published_by, class_name: 'User'
   belongs_to :parent, class_name: 'Question'
 
   validates :content, presence: true
@@ -29,9 +30,13 @@ class Question < ApplicationRecord
     DeleteFromIndexJob.perform_later('question', id)
   end
 
-  def publish
-    update(status: 'published') if status == 'draft'
-    response_sets.each(&:publish)
+  def publish(publisher)
+    if status == 'draft'
+      self.status = 'published'
+      self.published_by = publisher
+      save!
+    end
+    response_sets.each { |rs| rs.publish(publisher) }
   end
 
   def build_new_revision
