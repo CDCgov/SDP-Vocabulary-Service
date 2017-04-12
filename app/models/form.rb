@@ -10,7 +10,6 @@ class Form < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
-  belongs_to :published_by, class_name: 'User'
 
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\d{4}-\d{4}/,
