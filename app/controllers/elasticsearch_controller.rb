@@ -8,8 +8,8 @@ class ElasticsearchController < ApplicationController
     query_string = params[:search] ? params[:search] : nil
     query_size = params[:size] ? params[:size].to_i : 10
     page = params[:page] ? params[:page].to_i : 1
-    current_user_id = current_user ? current_user.id : -1
-    publisher_search = current_user ? current_user.has_role?(:publisher) : false
+    current_user_id  = current_user ? current_user.id : -1
+    publisher_search = current_user ? current_user.publisher? : false
     results = if SDP::Elasticsearch.ping
                 SDP::Elasticsearch.search(type, query_string, page, query_size, current_user_id, publisher_search)
               else
