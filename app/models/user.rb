@@ -26,4 +26,8 @@ class User < ApplicationRecord
     fn = "#{first_name} #{last_name}"
     fn.strip.blank? ? email : fn
   end
+
+  def publisher?
+    has_role?(:publisher)
+  end
 end
