@@ -9,6 +9,7 @@ class Form < ApplicationRecord
   has_many :surveys, through: :survey_forms
 
   belongs_to :created_by, class_name: 'User'
+  belongs_to :published_by, class_name: 'User'
 
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\d{4}-\d{4}/,
@@ -33,11 +34,15 @@ class Form < ApplicationRecord
     where(created_by: owner_id)
   end
 
-  def publish
-    update(status: 'published') if status == 'draft'
+  def publish(publisher)
+    if status == 'draft'
+      self.status = 'published'
+      self.published_by = publisher
+      save!
+    end
     form_questions.each do |fq|
-      fq.question.publish
-      fq.response_set.publish if fq.response_set
+      fq.question.publish(publisher)
+      fq.response_set.publish(publisher) if fq.response_set
     end
   end
 

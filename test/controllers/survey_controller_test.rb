@@ -50,14 +50,15 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
 
   test 'should publish a survey' do
     assert_equal 'draft', @survey.status
-    @survey.publish
-    put survey_url(@survey), params: { survey: { linked_forms: [forms(:one).id], name: @survey.name, status: @survey.status, control_number: '9876-5432' } }
+    put publish_survey_url(@survey)
     assert_response :success
+    @survey.reload
+    assert_equal 'published', @survey.status
   end
 
   test 'should not publish a published survey' do
     @survey = surveys(:two)
-    put survey_url(@survey), params: { survey: { linked_forms: [forms(:one).id], name: @survey.name, status: @survey.status, control_number: '9876-5432' } }
+    put publish_survey_url(@survey)
     assert_response :unprocessable_entity
   end
 end

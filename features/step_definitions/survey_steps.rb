@@ -6,13 +6,13 @@ end
 Given(/^I have a published Survey with the name "([^"]*)" and the description "([^"]*)"$/) do |name, description|
   user = get_user 'test_author@gmail.com'
   survey = Survey.create!(name: name, description: description, created_by: user)
-  survey.publish
+  survey.publish(user)
 end
 
 Given(/^I have a published Survey with the name "([^"]*)"$/) do |name|
   user = get_user 'test_author@gmail.com'
   survey = Survey.create!(name: name, created_by: user)
-  survey.publish
+  survey.publish(user)
 end
 
 Given(/^I have a Survey with the name "([^"]*)"$/) do |name|

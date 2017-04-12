@@ -22,7 +22,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'revisions should increment version without needing a param' do
     form_json = { form: { name: @form.name, version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    Form.last.publish
+    Form.last.publish(@current_user)
     v1 = Form.last
     form_json = { form: { name: 'A revised name', version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
@@ -36,7 +36,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'cannot revise something you do not own' do
     form_json = { form: { name: @form.name, version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    Form.last.publish
+    Form.last.publish(@current_user)
     sign_in users(:not_admin)
     form_json = { form: { name: 'A Failed revision', version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }

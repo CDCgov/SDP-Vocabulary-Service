@@ -61,7 +61,7 @@ class SurveysController < ApplicationController
   # PATCH/PUT /surveys/1/publish
   def publish
     if @survey.status == 'draft'
-      @survey.publish
+      @survey.publish(current_user)
       render :show
     else
       render json: @survey.errors, status: :unprocessable_entity

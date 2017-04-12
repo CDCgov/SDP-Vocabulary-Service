@@ -64,7 +64,7 @@ class ResponseSetsController < ApplicationController
   # PATCH/PUT /response_sets/1/publish
   def publish
     if @response_set.status == 'draft'
-      @response_set.publish
+      @response_set.publish(current_user)
       render :show, statis: :published, location: @response_set
     else
       render json: @response_set.errors, status: :unprocessable_entity

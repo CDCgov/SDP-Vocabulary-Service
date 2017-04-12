@@ -29,7 +29,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'revisions should increment version without needing a param' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', question_type_id: @question.question_type.id } }
-    Question.last.publish
+    Question.last.publish(@current_user)
     v1 = Question.last
     post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', question_type_id: @question.question_type.id } }
     assert_response :success
@@ -41,7 +41,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'cannot revise something you do not own' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', question_type_id: @question.question_type.id } }
-    Question.last.publish
+    Question.last.publish(@current_user)
     sign_in users(:not_admin)
     post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', question_type_id: @question.question_type.id } }
     assert_response :unauthorized

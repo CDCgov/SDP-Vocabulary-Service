@@ -33,10 +33,11 @@ class SurveyTest < ActiveSupport::TestCase
     s = Survey.new(name: 'Test publish', created_by: user)
     s.survey_forms = [SurveyForm.new(form_id: f.id)]
     assert s.save
-    s.publish
-    assert s.status == 'published'
-    assert s.forms.first.status == 'published'
-    assert s.forms.first.questions.first.status == 'published'
-    assert s.forms.first.questions.first.response_sets.first.status == 'published'
+    s.publish(user)
+    assert_equal user, s.published_by
+    assert_equal 'published', s.status
+    assert_equal 'published', s.forms.first.status
+    assert_equal 'published', s.forms.first.questions.first.status
+    assert_equal 'published', s.forms.first.questions.first.response_sets.first.status
   end
 end

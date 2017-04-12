@@ -4,6 +4,7 @@ class Survey < ApplicationRecord
 
   has_many :survey_forms
   belongs_to :created_by, class_name: 'User'
+  belongs_to :published_by, class_name: 'User'
 
   has_many :forms, through: :survey_forms
 
@@ -29,9 +30,13 @@ class Survey < ApplicationRecord
     DeleteFromIndexJob.perform_later('survey', id)
   end
 
-  def publish
-    update(status: 'published') if status == 'draft'
-    forms.each(&:publish)
+  def publish(publisher)
+    if status == 'draft'
+      self.status = 'published'
+      self.published_by = publisher
+      save!
+    end
+    forms.each { |f| f.publish(publisher) }
   end
 
   def build_new_revision

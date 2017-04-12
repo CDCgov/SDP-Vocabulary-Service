@@ -63,7 +63,7 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1/publish
   def publish
     if @question.status == 'draft'
-      @question.publish
+      @question.publish(current_user)
       render :show, statis: :published, location: @question
     else
       render json: @question.errors, status: :unprocessable_entity
