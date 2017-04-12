@@ -11,30 +11,24 @@ class ElasticSearchTest < ActiveSupport::TestCase
   end
 
   def test_search_on_string
-    SDP::Elasticsearch.with_client do |client|
-      SDP::Elasticsearch.search_on_string(client, 10, 1, 'form', 'Hello', '1')
-      req = FakeWeb.last_request
-      assert_equal 'GET', req.method
-      assert_equal '/vocabulary/form/_search', req.path
-    end
+    SDP::Elasticsearch.search(nil, 'Hello', 1)
+    req = FakeWeb.last_request
+    assert_equal 'GET', req.method
+    assert_equal '/vocabulary/_search', req.path
   end
 
   def test_search_on_type
-    SDP::Elasticsearch.with_client do |client|
-      SDP::Elasticsearch.search_on_type(client, 10, 1, 'form', '1')
-      req = FakeWeb.last_request
-      assert_equal 'GET', req.method
-      assert_equal '/vocabulary/form/_search', req.path
-    end
+    SDP::Elasticsearch.search('form', 'Hello', 1)
+    req = FakeWeb.last_request
+    assert_equal 'GET', req.method
+    assert_equal '/vocabulary/form/_search', req.path
   end
 
   def test_search_all
-    SDP::Elasticsearch.with_client do |client|
-      SDP::Elasticsearch.search_all(client, 10, 1, '1')
-      req = FakeWeb.last_request
-      assert_equal 'GET', req.method
-      assert_equal '/vocabulary/_search', req.path
-    end
+    SDP::Elasticsearch.search(nil, nil, 1, 10, -1, true)
+    req = FakeWeb.last_request
+    assert_equal 'GET', req.method
+    assert_equal '/vocabulary/_search', req.path
   end
 
   def test_delete_all

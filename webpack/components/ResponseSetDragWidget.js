@@ -105,7 +105,7 @@ class ResponseSetDragWidget extends Component {
                       currentUser={this.props.currentUser}
                       handleSelectSearchResult={() => this.props.handleResponseSetsChange(this.props.selectedResponseSets.concat([rs.Source]))} />;
             })}
-            {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+            {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
               <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
             }
           </div>
