@@ -88,6 +88,12 @@ class FormShow extends Component {
             <div className="box-content">
               {form.description}
             </div>
+            { form.status === 'published' && form.publishedBy && form.publishedBy.email &&
+            <div className="box-content">
+              <strong>Published By: </strong>
+              {form.publishedBy.email}
+            </div>
+            }
           </div>
           {this.props.formQuestions && this.props.formQuestions.length > 0 &&
             <FormQuestionList questions={this.props.formQuestions} responseSets={this.props.formResponseSets} />

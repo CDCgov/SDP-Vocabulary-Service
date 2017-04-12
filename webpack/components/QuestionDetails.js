@@ -132,6 +132,12 @@ export default class QuestionDetails extends Component {
                 <Link to={`/questions/${question.parent.id}`}>{ question.parent.name }</Link>
               </div>
             }
+            { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
+            <div className="box-content">
+              <strong>Published By: </strong>
+              {question.publishedBy.email}
+            </div>
+            }
             {question.questionType && <div className="box-content">
               <strong>Question Type: </strong>
               {question.questionType.name}

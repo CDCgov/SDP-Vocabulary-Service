@@ -65,6 +65,12 @@ class SurveyShow extends Component{
             <div className="box-content">
               {this.props.survey.description}
             </div>
+            { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
+            <div className="box-content">
+              <strong>Published By: </strong>
+              {this.props.survey.publishedBy.email}
+            </div>
+            }
           </div>
           {this.props.forms.map((f,i ) =>
             <div  key={i} className="basic-c-box panel-default survey-form">

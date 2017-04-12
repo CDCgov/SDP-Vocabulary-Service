@@ -58,9 +58,10 @@ Feature: Draft, Publish, and Revise Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "What is your gender?"
+    And I should see "Published By: test_author@gmail.com"
     And I should see "Revise"
     And I should not see "Edit"
-    And I should not see "Publish"
+    And I should not see a "Publish" link
 
   Scenario: Revise a published question
     Given I have a Question with the content "What is your gender?" and the type "MC"

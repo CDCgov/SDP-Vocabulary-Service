@@ -75,7 +75,9 @@ Feature: Manage Response Sets
     When I click on the "Publish" button
     Then I should see "Extend"
     And I should see "Revise"
+    And I should see "Published By: test_author@gmail.com"
     And I should not see "Edit"
+    And I should not see a "Publish" link
 
   Scenario: Revise Response Set
     Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"

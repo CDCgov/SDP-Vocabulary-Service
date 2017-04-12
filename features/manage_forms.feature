@@ -40,6 +40,7 @@ Feature: Manage Forms
     Then I should see "Test Form"
     Then I should see "Form description"
     When I click on the "Publish" link
-    Then I should not see "Publish"
     And I should see "Revise"
+    And I should see "Published By: test_author@gmail.com"
     And I should not see "Edit"
+    And I should not see a "Publish" link

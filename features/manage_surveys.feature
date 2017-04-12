@@ -59,9 +59,10 @@ Feature: Manage Surveys
    Then I should see "Test Survey"
    Then I should see "Survey description"
    When I click on the "Publish" link
-   Then I should not see "Publish"
    And I should see "Revise"
+   And I should see "Published By: test_author@gmail.com"
    And I should not see "Edit"
+   And I should not see a "Publish" link
 
   Scenario: Edit a draft Survey
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
