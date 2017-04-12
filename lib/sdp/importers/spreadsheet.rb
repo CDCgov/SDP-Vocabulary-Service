@@ -122,7 +122,7 @@ module SDP
           rs = ResponseSet.new(
             created_by: @user, status: 'draft',
             name: element[:value_set_tab_name] || element[:name],
-            coded: false, source: 'PHIN_VADS', oid: element[:value_set_oid]
+            source: 'PHIN_VADS', oid: element[:value_set_oid]
           )
           rs.save!
         end
@@ -137,7 +137,7 @@ module SDP
         rs = ResponseSet.new(
           created_by: @user, status: 'draft',
           name: element[:value_set_tab_name],
-          coded: true, source: 'local'
+          source: 'local'
         )
         rs.save!
         element[:value_set].each do |code|

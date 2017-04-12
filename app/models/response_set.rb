@@ -40,7 +40,7 @@ class ResponseSet < ApplicationRecord
   def build_new_revision
     new_revision = ResponseSet.new(version_independent_id: version_independent_id,
                                    version: version + 1, description: description,
-                                   status: status, name: name, coded: coded,
+                                   status: status, name: name,
                                    parent_id: parent_id, oid: oid)
     responses.each do |r|
       new_revision.responses << r.dup
@@ -54,7 +54,6 @@ class ResponseSet < ApplicationRecord
     extended_set.name = name
     extended_set.description = description
     extended_set.status = status
-    extended_set.coded  = coded
     extended_set.parent = self
     extended_set.version = 1
     extended_set.version_independent_id = nil
