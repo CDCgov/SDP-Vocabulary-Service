@@ -24,6 +24,10 @@ Capybara.register_driver :chrome do |app|
   Capybara::Accessible.setup(driver, adaptor)
 end
 
+Before do
+  load File.dirname(__FILE__) + '/../../db/seeds.rb'
+end
+
 AfterStep do
   sleep(ENV['PAUSE'].to_i || 0)
 end

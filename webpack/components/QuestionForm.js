@@ -173,7 +173,7 @@ class QuestionForm extends Component{
                   </div>
 
                 <div className="col-md-4 question-form-group">
-                  <label className="input-label" htmlFor="responseTypeId">Primary Response Type</label>
+                  <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
                       {this.sortedResponseTypes().map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
@@ -192,7 +192,7 @@ class QuestionForm extends Component{
                              childName={'tag'} />
                   </div>
                 </div>
-<<<<<<< HEAD
+                { this.isChoiceType() ?
                 <div className="row response-set-row">
                   <div className="col-md-6 response-set-label">
                     <label htmlFor="linked_response_sets">Response Sets</label>
@@ -202,11 +202,12 @@ class QuestionForm extends Component{
                     <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
                   </div>
                 </div>
-                  { this.isChoiceType() ?
+                : ''}
+                { this.isChoiceType() ?
                   <ResponseSetDragWidget responseSets={responseSets}
                                          handleResponseSetsChange={this.handleResponseSetsChange}
                                          selectedResponseSets={question.responseSets && question.responseSets.map((id) => this.props.responseSets[id])} />
-                    : ''}
+                : ''}
                 <div className="panel-footer">
                   <div className="actions form-group">
                     <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with="Save">Save</button>
@@ -228,12 +229,12 @@ class QuestionForm extends Component{
 
 
   isChoiceType(){
-
-    let rt = _.values(this.props.responseTypes).find((a) =>{ return a.id == this.state.responseTypeId});
+    let rt = _.values(this.props.responseTypes).find((a) => {
+      return a.id == this.state.responseTypeId;
+    });
     if(rt && (rt.code == "choice" || rt.code == "open-choice")){
       return true;
     }
-
   }
 
   sortedResponseTypes(){

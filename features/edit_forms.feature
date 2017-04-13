@@ -64,8 +64,6 @@ Feature: Edit Forms
 
   Scenario: Create New Form from List and Create a Question using New Question Modal
     Given I have a Response Set with the name "Gender Full"
-    Given I have a Response Type with the name "Choice"
-    Given I have a Response Type with the name "Free Text"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
@@ -80,9 +78,10 @@ Feature: Edit Forms
     And I use the response set search modal to select "Gender Full"
     And I click on the "Add New Question" button
     And I fill in the "Question" field with "What is your favorite color?"
+    And I select the "Open Choice" option in the "Response Type" list
     And I fill in the "question_description" field with "This is a description"
     And I should see "No Response Sets selected"
-    Then I select the "Free Text" option in the "responseTypeId" list
+    Then I select the "Text" option in the "Response Type" list
     And I should not see "No Response Sets selected"
     And I click on the "Add Question" button
     And I click on the "Save" button

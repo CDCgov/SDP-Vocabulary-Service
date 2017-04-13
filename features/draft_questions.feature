@@ -7,6 +7,7 @@ Feature: Draft, Publish, and Revise Questions
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Questions" dropdown item
+    And I select the "Open Choice" option in the "Response Type" list
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
     And I drag the "Gender Full" option to the "Selected Response Sets" list
@@ -19,8 +20,6 @@ Feature: Draft, Publish, and Revise Questions
 
   Scenario: Edit a draft Question
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
-    And I have a Response Type with the name "Integer", description "a number" and code "integer"
-    And I have a Response Type with the name "Choice", description "a choice" and code "choice"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
@@ -31,7 +30,7 @@ Feature: Draft, Publish, and Revise Questions
     When I click on the "Edit" button
     Then I should not see "Other Allowed"
     And I fill in the "Description" field with "This is NOT a good description"
-    And I select the "Choice - a choice" option in the "Response Type" list
+    And I select the "Choice - Answer is a Coding drawn from a list of options." option in the "Response Type" list
     Then I should see "Other Allowed"
     And I click on the "Save" button
     Then I should see "What is your gender?"
