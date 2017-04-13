@@ -23,7 +23,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Survey.count') do
       post surveys_url params: { survey: { linked_forms: [forms(:one).id], name: 'Test' } }
     end
-    assert_enqueued_jobs 2 # one for the survey one for the form update
+    assert_enqueued_jobs 5 # 1 for the survey, 1 for the form update, 2 for questions, 1 for response set
     assert_response :success
     assert_equal 1, Survey.last.forms.length
     assert_equal 'GSP', Survey.last.surveillance_program.acronym
