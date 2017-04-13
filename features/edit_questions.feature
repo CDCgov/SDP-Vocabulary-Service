@@ -1,4 +1,4 @@
-Feature: Edit Forms
+Feature: Edit Questions
   As an author
   I want to edit Questions
   Scenario: Revise Question
