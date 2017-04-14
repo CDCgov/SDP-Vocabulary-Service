@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { questionProps } from "../prop-types/question_props";
+import { responseSetProps } from "../prop-types/response_set_props";
 import currentUserProps from '../prop-types/current_user_props';
 import { fetchSearchResults } from '../actions/search_results_actions';
 import SearchResult from './SearchResult';
@@ -105,7 +106,7 @@ function mapDispatchToProps(dispatch) {
 
 QuestionItem.propTypes = {
   question: questionProps,
-  responseSets: PropTypes.array,
+  responseSets: PropTypes.arrayOf(responseSetProps),
   selectedResponseSet: PropTypes.number,
   index: PropTypes.number.isRequired,
   handleResponseSetChange: PropTypes.func,
