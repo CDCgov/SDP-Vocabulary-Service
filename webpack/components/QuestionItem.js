@@ -14,8 +14,9 @@ class QuestionItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showSearchModal: false,
-      searchTerms: ''
+      programVar: this.props.question.programVar,
+      searchTerms: '',
+      showSearchModal: false
     };
     this.showResponseSetSearch = this.showResponseSetSearch.bind(this);
     this.hideResponseSetSearch = this.hideResponseSetSearch.bind(this);
@@ -69,11 +70,11 @@ class QuestionItem extends Component {
     return (
       <div className='question-item'>
         {this.searchModal()}
-        <div className="col-md-9"><SearchResult type='question' result={{Source:this.props.question}} currentUser={{id: -1}} isEditPage={true} /></div>
-        <div className="col-md-3">
-          <div className="form-group">
+        <div className="col-md-9"><SearchResult type='form_question' result={{Source:this.props.question}} currentUser={{id: -1}} isEditPage={true} /></div>
+        <div className="col-md-3 response-set-control">
+          <div className="form-question-group">
             <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.question.id}/>
-            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSet || ''} onChange={(e)=>this.props.handleResponseSetChange(e)}>
+            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSet || ''} onChange={this.props.handleResponseSetChange}>
               {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
                 return (
                   <option value={r.id} key={`${r.id}-${i}`}>{r.name} </option>
@@ -86,6 +87,8 @@ class QuestionItem extends Component {
               this.showResponseSetSearch();
               this.props.fetchSearchResults('', 'response_set');
             }}><i className="fa fa-search fa-2x"></i>Search All</a>
+              <label htmlFor="program-var" hidden>Program Variable</label>
+              <input className="input-format" placeholder="Program Defined Variable" type="text" value={this.props.programVar || ''}  name="program-var" id="program-var" onChange={this.props.handleProgramVarChange}/>
           </div>
         </div>
       </div>
@@ -110,9 +113,11 @@ QuestionItem.propTypes = {
   selectedResponseSet: PropTypes.number,
   index: PropTypes.number.isRequired,
   handleResponseSetChange: PropTypes.func,
+  handleProgramVarChange:  PropTypes.func,
   handleSelectSearchResult: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   responseSetId: PropTypes.number,
+  programVar: PropTypes.string,
   searchResults: PropTypes.object,
   currentUser: currentUserProps
 };

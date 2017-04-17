@@ -10,6 +10,8 @@ export function isPublishable(object, currentUser) {
 }
 
 export function isEditable(object, currentUser) {
+  console.log(object)
+  console.log(currentUser)
   return currentUser && currentUser.id &&
     object.mostRecent === object.version &&
     object.status === 'draft' &&

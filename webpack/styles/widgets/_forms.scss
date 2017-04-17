@@ -4,6 +4,11 @@
   text-align: left;
   margin-bottom: 20px;
 }
+.form-question-group {
+  @extend .panel-group;
+  text-align: left;
+  margin-bottom: 20px;
+}
 .form {
   @extend .panel;
   width: 180px;

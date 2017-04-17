@@ -79,8 +79,7 @@ class FormEdit extends Component {
       this.props.router.push(this.nextLocation.pathname);
     }else{
       let form = Object.assign({}, this.state);
-      form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
-      form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId);
+      form.linkedQuestions = this.state.formQuestions;
       this.props.formSubmitter(form, (response) => {
         // TODO: Handle when the saving form fails.
         this.unsavedState = false;
@@ -105,6 +104,13 @@ class FormEdit extends Component {
     this.unsavedState = true;
   }
 
+  handleProgramVarChange(questionIndex, programVar) {
+    let newState = Object.assign({}, this.state);
+    newState.formQuestions[questionIndex].programVar = programVar;
+    this.setState(newState);
+    this.unsavedState = true;
+  }
+
   handleChange(field) {
     return (event) => {
       let newState = {};
@@ -118,8 +124,7 @@ class FormEdit extends Component {
     event.preventDefault();
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let form = Object.assign({}, this.state);
-    form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
-    form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId || '');
+    form.linkedQuestions = this.state.formQuestions;
     this.props.formSubmitter(form, (response) => {
       this.unsavedState = false;
       this.props.router.push(`/forms/${response.data.id}`);
@@ -175,15 +180,17 @@ class FormEdit extends Component {
                               question={this.props.questions[q.questionId]}
                               responseSets={this.linkedResponseSets(q.questionId)}
                               selectedResponseSet={q.responseSetId}
+                              programVar={q.programVar}
                               removeQuestion ={this.props.removeQuestion}
                               reorderQuestion={this.props.reorderQuestion}
                               handleResponseSetChange ={(event) => this.handleResponseSetChange(i, parseInt(event.target.value))}
+                              handleProgramVarChange  ={(event) => this.handleProgramVarChange(i, event.target.value)}
                               handleSelectSearchResult={(responseSet) => {
                                 this.addLinkedResponseSet(i, responseSet);
                                 this.handleResponseSetChange(i, responseSet.id);
                               }} />
               </div>
-              <div className="form-group">
+              <div className="form-question-group">
                 <div className="col-md-3">
                   <div className="btn btn-small btn-default move-up"
                        onClick={() => this.props.reorderQuestion(form, i, 1)}>

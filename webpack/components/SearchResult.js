@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import currentUserProps from "../prop-types/current_user_props";
 
-// Note, acceptable type strings are: response_set, question, form, survey
+// Note, acceptable type strings are: response_set, question, form_question, form, survey
 export default class SearchResult extends Component {
   render() {
     return (this.baseResult(this.props.type,
@@ -169,6 +169,8 @@ export default class SearchResult extends Component {
             </div>
           </div>
         );
+      case 'form_question':
+        return ('');
       case 'response_set':
         return (
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
@@ -247,7 +249,11 @@ export default class SearchResult extends Component {
                       {result.surveillancePrograms && this.programsInfo(result)}
                       {result.surveillanceSystems && this.systemsInfo(result)}
                       {result.status && this.resultStatus(result.status)}
-                      <li className="result-timestamp pull-right"><p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p><p>version {result.version && result.version} | {type}</p></li>
+                      <li className="result-timestamp pull-right">
+                      <p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p>
+                      <p>version {result.version && result.version} | {type}</p>
+                      <p>{result.programVar && `Program Defined Variable: ${result.programVar}`}</p>
+                      </li>
                     </ul>
                   </div>
                 </div>

@@ -11,6 +11,7 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
+
   .add-question{
     padding: 15px;
     button{
@@ -27,6 +28,7 @@
       float: right;
     }
   }
+
   .response-set-label{
     text-align: left;
     vertical-align: middle;
@@ -35,8 +37,20 @@
       padding-left: 10px;
     }
     span.right{
-      padding-left: 80px;
+      padding-left: 70px;
       padding-right: 5px;
     }
+    button {
+      margin-bottom: 20px;
+    }
+  }
+
+  .response-set-control{
+    padding-right: 0px;
+  }
+
+  #program-var{
+    width: 200px;
+    margin-top: 10px;
   }
 }
