@@ -25,3 +25,12 @@ not_admin:
   admin: false
   first_name: "Ordinary"
   last_name: "User"
+  last_system: nids
+  last_program: generic
+
+publisher:
+  email: publisher@example.com
+  admin: false
+  first_name: Publish
+  last_name: McPublishFace
+  roles: publisher

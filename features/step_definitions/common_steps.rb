@@ -140,6 +140,12 @@ Then(/^I take a screenshot named (.*)$/) do |name|
   page.save_screenshot('/tmp/' + name + '.png')
 end
 
+Given(/^the user (.*) is a (.*)$/) do |user_email, role|
+  user = User.find_by(email: user_email)
+  user.add_role role.to_sym
+  user.save
+end
+
 def create_path(object_type, object_id)
   if object_type == 'Question'
     '//div[@id="question_id_' + object_id + '"]'

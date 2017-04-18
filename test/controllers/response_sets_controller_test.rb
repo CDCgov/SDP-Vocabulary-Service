@@ -146,4 +146,25 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     assert response_json['surveillance_systems'].include? 'National Insignificant Digits System'
     assert response_json['surveillance_programs'].include? 'Generic Surveillance Program'
   end
+
+  test 'publishers should see response_sets from other authors' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    get response_set_url(response_sets(:two), format: :json)
+    assert_response :success
+  end
+
+  test 'publishers should be able to publish response_sets' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    put publish_response_set_path(response_sets(:two), format: :json, params: {response_set: response_sets(:two)})
+    assert_response :success
+  end
+
+  test 'authors should not be able to publish response_sets' do
+    put publish_response_set_path(response_sets(:two),format: :json,  params: {response_set: response_sets(:two)})
+    assert_response :forbidden
+  end
 end
