@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import moment from 'moment';
 import currentUserProps from "../prop-types/current_user_props";
+import { responseSetProps } from "../prop-types/response_set_props";
 
 // Note, acceptable type strings are: response_set, question, form_question, form, survey
 export default class SearchResult extends Component {
@@ -34,10 +35,13 @@ export default class SearchResult extends Component {
     return source.status === 'published';
   }
 
-  resultDropdownMenu(result, type, extraActionName, extraAction) {
-    type = type.replace('_s','S');
+  resultDropdownMenu(result, originalType, extraActionName, extraAction) {
+    var type = originalType.replace('_s','S').replace('form_','');
     return (
       <ul className="dropdown-menu dropdown-menu-right">
+        {originalType === 'form_question' && <li>
+          <a title="Modify Program Variable" href="#" onClick={this.props.showProgramVarModal}>Modify Program Variable</a>
+        </li>}
         {this.isRevisable(result) && <li>
           <Link to={`/${type}s/${result.id}/revise`}>Revise</Link>
         </li>}
@@ -142,6 +146,25 @@ export default class SearchResult extends Component {
             <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-form`}><i className="fa fa-bars" aria-hidden="true"></i>Questions: {result.questions && result.questions.length}</a></li>
           </ul>
         );
+      case 'form_question':
+        var selectedResponseSet = this.props.responseSets.find((r) => r.id == this.props.selectedResponseSetId);
+        return (
+          <div className="panel-body panel-body-form-question">
+            <span className="selected-response-set">Response Set: {(selectedResponseSet && selectedResponseSet.name) || '(None)'}</span>
+            <div className="form-question-group">
+            <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.result.id}/>
+            <select className="response-set-select" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSetId || ''} onChange={this.props.handleResponseSetChange}>
+              {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
+                return (
+                  <option value={r.id} key={`${r.id}-${i}`}>{r.name} </option>
+                );
+              })}
+              <option aria-label=' '></option>
+            </select>
+            <a title="Search Response Sets" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i></a>
+            </div>
+          </div>
+        );
       case 'survey':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__form">
@@ -169,8 +192,6 @@ export default class SearchResult extends Component {
             </div>
           </div>
         );
-      case 'form_question':
-        return ('');
       case 'response_set':
         return (
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
@@ -225,7 +246,7 @@ export default class SearchResult extends Component {
   }
 
   baseResult(type, result, highlight, handleSelectSearchResult, isEditPage, actionName, action) {
-    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form': 'fa-clipboard', 'survey': 'fa-clipboard'};
+    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-clipboard', 'survey': 'fa-clipboard'};
     return (
       <div className="u-result-group">
         <div className="u-result" id={`${type}_id_${result.id}`}>
@@ -249,10 +270,10 @@ export default class SearchResult extends Component {
                       {result.surveillancePrograms && this.programsInfo(result)}
                       {result.surveillanceSystems && this.systemsInfo(result)}
                       {result.status && this.resultStatus(result.status)}
-                      <li className="result-timestamp pull-right">
+                      <li className={`result-timestamp pull-right ${this.props.programVar && 'list-program-var'}`}>
                       <p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p>
                       <p>version {result.version && result.version} | {type}</p>
-                      <p>{result.programVar && `Program Defined Variable: ${result.programVar}`}</p>
+                      {this.props.programVar && (<p>{this.props.programVar}</p>)}
                       </li>
                     </ul>
                   </div>
@@ -278,7 +299,7 @@ export default class SearchResult extends Component {
               </li>
             </ul>
           </div>
-          {this.detailsPanel(result, type)}
+          {(type !== "form_question") && this.detailsPanel(result, type)}
         </div>
       </div>
     );
@@ -287,11 +308,18 @@ export default class SearchResult extends Component {
 }
 
 SearchResult.propTypes = {
-  type: PropTypes.string,
-  currentUser: currentUserProps,
+  type:   PropTypes.string,
+  index:  PropTypes.number,
   result: PropTypes.object.isRequired,
+  programVar: PropTypes.string,
   isEditPage: PropTypes.bool,
-  handleSelectSearchResult: PropTypes.func,
+  currentUser:  currentUserProps,
+  extraAction:  PropTypes.func,
+  responseSets: PropTypes.arrayOf(responseSetProps),
   extraActionName: PropTypes.string,
-  extraAction: PropTypes.func
+  showProgramVarModal: PropTypes.func,
+  selectedResponseSetId: PropTypes.number,
+  showResponseSetSearch: PropTypes.func,
+  handleResponseSetChange:  PropTypes.func,
+  handleSelectSearchResult: PropTypes.func
 };

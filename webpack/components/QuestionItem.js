@@ -14,12 +14,15 @@ class QuestionItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      programVar: this.props.question.programVar,
       searchTerms: '',
-      showSearchModal: false
+      programVar: this.props.programVar,
+      showSearchModal: false,
+      showProgramVarModal: false,
     };
     this.showResponseSetSearch = this.showResponseSetSearch.bind(this);
     this.hideResponseSetSearch = this.hideResponseSetSearch.bind(this);
+    this.showProgramVarModal = this.showProgramVarModal.bind(this);
+    this.hideProgramVarModal = this.hideProgramVarModal.bind(this);
     this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
     this.search = this.search.bind(this);
   }
@@ -30,6 +33,14 @@ class QuestionItem extends Component {
 
   hideResponseSetSearch() {
     this.setState({ showSearchModal: false });
+  }
+
+  showProgramVarModal() {
+    this.setState({ showProgramVarModal: true });
+  }
+
+  hideProgramVarModal() {
+    this.setState({ showProgramVarModal: false });
   }
 
   handleSelectSearchResult(rs) {
@@ -63,6 +74,34 @@ class QuestionItem extends Component {
     );
   }
 
+  programVarModal(){
+    return (
+      <Modal show={this.state.showProgramVarModal} onHide={this.hideProgramVarModal}>
+        <Modal.Header closeButton bsStyle='search'>
+          <Modal.Title>Modify Program Defined Variable Name</Modal.Title>
+        </Modal.Header>
+        <Modal.Body bsStyle='search'>
+          <label htmlFor="program-var" hidden>Program Variable</label>
+          <input id="program-var"
+                 name="program-var"
+                 type="text"
+                 className="input-format"
+                 placeholder="Program Defined Variable Name"
+                 value={this.state.programVar || ''}
+                 onChange={(e) => this.setState({programVar : e.target.value})} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.hideProgramVarModal}>Cancel</Button>
+          <Button bsStyle="primary" onClick={(e) => {
+            e.preventDefault();
+            this.props.handleProgramVarChange(this.state.programVar);
+            this.hideProgramVarModal();
+          }}>Done</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
   render() {
     if (!this.props.question) {
       return (<div>Loading...</div>);
@@ -70,26 +109,29 @@ class QuestionItem extends Component {
     return (
       <div className='question-item'>
         {this.searchModal()}
-        <div className="col-md-9"><SearchResult type='form_question' result={{Source:this.props.question}} currentUser={{id: -1}} isEditPage={true} /></div>
-        <div className="col-md-3 response-set-control">
-          <div className="form-question-group">
-            <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.question.id}/>
-            <select className="col-md-12" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSet || ''} onChange={this.props.handleResponseSetChange}>
-              {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
-                return (
-                  <option value={r.id} key={`${r.id}-${i}`}>{r.name} </option>
-                );
-              })}
-              <option aria-label=' '></option>
-            </select>
-            <a title="Search Response Sets" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.showResponseSetSearch();
-              this.props.fetchSearchResults('', 'response_set');
-            }}><i className="fa fa-search fa-2x"></i>Search All</a>
-              <label htmlFor="program-var" hidden>Program Variable</label>
-              <input className="input-format" placeholder="Program Defined Variable" type="text" value={this.props.programVar || ''}  name="program-var" id="program-var" onChange={this.props.handleProgramVarChange}/>
-          </div>
+        {this.programVarModal()}
+        <div className="col-md-12">
+          <SearchResult type  ='form_question'
+                        result={{Source:this.props.question}}
+                        currentUser ={{id: -1}}
+                        isEditPage  ={true}
+                        index = {this.props.index}
+                        programVar={this.props.programVar}
+                        responseSets={this.props.responseSets}
+                        handleResponseSetChange={this.props.handleResponseSetChange}
+                        handleProgramVarChange ={this.props.handleProgramVarChange}
+                        selectedResponseSetId  ={this.props.selectedResponseSet}
+                        showResponseSetSearch={(e) => {
+                          e.preventDefault();
+                          this.showResponseSetSearch();
+                          this.props.fetchSearchResults('', 'response_set');
+                        }}
+                        showProgramVarModal={(e) => {
+                          e.preventDefault();
+                          this.showProgramVarModal();
+                        }}
+
+                        />
         </div>
       </div>
     );

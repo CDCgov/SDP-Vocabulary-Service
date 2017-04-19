@@ -175,7 +175,7 @@ class FormEdit extends Component {
         <div className="added-question-group">
           {form.formQuestions.map((q, i) =>
             <div className="row" key={i}>
-              <div className="col-md-9">
+              <div className="col-md-11">
                 <QuestionItem index={i}
                               question={this.props.questions[q.questionId]}
                               responseSets={this.linkedResponseSets(q.questionId)}
@@ -183,30 +183,34 @@ class FormEdit extends Component {
                               programVar={q.programVar}
                               removeQuestion ={this.props.removeQuestion}
                               reorderQuestion={this.props.reorderQuestion}
+                              handleProgramVarChange  ={(value) => this.handleProgramVarChange(i, value)}
                               handleResponseSetChange ={(event) => this.handleResponseSetChange(i, parseInt(event.target.value))}
-                              handleProgramVarChange  ={(event) => this.handleProgramVarChange(i, event.target.value)}
                               handleSelectSearchResult={(responseSet) => {
                                 this.addLinkedResponseSet(i, responseSet);
                                 this.handleResponseSetChange(i, responseSet.id);
                               }} />
               </div>
-              <div className="form-question-group">
-                <div className="col-md-3">
+              <div className="col-md-1">
+                <div className="row form-question-controls">
                   <div className="btn btn-small btn-default move-up"
                        onClick={() => this.props.reorderQuestion(form, i, 1)}>
                     <i title="Move Up" className="fa fa fa-arrow-up"></i>
                   </div>
+                </div>
+                <div className="row form-question-controls">
                   <div className="btn btn-small btn-default move-down"
                        onClick={() => this.props.reorderQuestion(form, i, -1)}>
                     <i className="fa fa fa-arrow-down" title="Move Down"></i>
                   </div>
-                  <div className="btn btn-small btn-default"
+                </div>
+                <div className="row form-question-controls">
+                  <div className="btn btn-small btn-default delete-question"
                        onClick={() => this.props.removeQuestion(form, i)}>
                     <i className="fa fa fa-trash" title="Remove"></i>
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
           )}
         </div>
       </div>

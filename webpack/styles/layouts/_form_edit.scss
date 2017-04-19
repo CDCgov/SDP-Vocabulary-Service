@@ -11,24 +11,20 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
-
   .add-question{
     padding: 15px;
     button{
       margin-right:10px;
     }
   }
-
   .question-result{
     margin: 0px;
   }
-
   .response-set-header{
     button {
       float: right;
     }
   }
-
   .response-set-label{
     text-align: left;
     vertical-align: middle;
@@ -44,11 +40,35 @@
       margin-bottom: 20px;
     }
   }
-
   .response-set-control{
     padding-right: 0px;
   }
-
+  .response-set-search{
+    font-size: 1.5em;
+  }
+  .response-set-select{
+    width: 70%;
+    margin-right: 10px;
+  }
+  .selected-response-set{
+    margin-top: 5px;
+    padding-top: 0px !important;
+    max-width: 49%;
+    display: block;
+    float: left;
+  }
+  .panel-body-form-question{
+    padding-top: 6px;
+    padding-bottom: 0px;
+    padding-right: 5px;
+    min-height: 0px;
+  }
+  .form-question-controls{
+    margin-bottom: 15px;
+  }
+  .delete-question{
+    font-size: 17px;
+  }
   #program-var{
     width: 200px;
     margin-top: 10px;
