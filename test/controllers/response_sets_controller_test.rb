@@ -26,15 +26,6 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     assert true
   end
 
-  test 'should be able to publish a draft rs' do
-    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
-    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    assert_equal DRAFT, ResponseSet.last.status
-    put publish_response_set_path(ResponseSet.last, format: :json)
-    assert_response :success
-    assert_equal PUBLISHED, ResponseSet.last.status
-  end
-
   test 'should be able to delete a draft rs' do
     rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
@@ -48,10 +39,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not be able to delete a published rs' do
-    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
-    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    put publish_response_set_path(ResponseSet.last, format: :json)
-    delete response_set_url(ResponseSet.last), headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    delete response_set_url(response_sets(:one)), headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_response 422
   end
 
@@ -66,13 +54,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not be able to update a published rs' do
-    rs_json = { response_set: { description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
-    post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    assert_equal DRAFT, ResponseSet.last.status
-    put publish_response_set_path(ResponseSet.last, format: :json)
-    assert_equal PUBLISHED, ResponseSet.last.status
-
-    patch response_set_url(ResponseSet.last, format: :json), params: { response_set: { description: 'secret description' } }
+    patch response_set_url(response_sets(:one), format: :json), params: { response_set: { description: 'secret description' } }
     assert_response :unprocessable_entity
     assert_nil ResponseSet.find_by(description: 'secret description')
   end
@@ -159,12 +141,12 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     sign_out @current_user
     @current_publisher = users(:publisher)
     sign_in @current_publisher
-    put publish_response_set_path(response_sets(:two), format: :json, params: {response_set: response_sets(:two)})
+    put publish_response_set_path(response_sets(:two), format: :json)
     assert_response :success
   end
 
   test 'authors should not be able to publish response_sets' do
-    put publish_response_set_path(response_sets(:two),format: :json,  params: {response_set: response_sets(:two)})
+    put publish_response_set_path(response_sets(:two),format: :json)
     assert_response :forbidden
   end
 end

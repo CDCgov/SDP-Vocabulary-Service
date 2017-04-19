@@ -49,14 +49,6 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 5
   end
 
-  test 'should publish a survey' do
-    assert_equal 'draft', @survey.status
-    put publish_survey_url(@survey)
-    assert_response :success
-    @survey.reload
-    assert_equal 'published', @survey.status
-  end
-
   test 'should not publish a published survey' do
     @survey = surveys(:two)
     put publish_survey_url(@survey)
