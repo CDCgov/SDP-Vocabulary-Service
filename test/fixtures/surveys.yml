@@ -6,6 +6,7 @@ one:
   control_number: '1234-5678'
   surveillance_program: generic
   surveillance_system: nids
+  published_by: publisher
 two:
   name: Search Survey 1
   created_by: admin

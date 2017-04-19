@@ -7,6 +7,7 @@ one:
   version_independent_id: RS-1
   created_by_id: admin
   status: published
+  published_by: publisher
 
 two:
   name: Gender Full

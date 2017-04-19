@@ -6,6 +6,7 @@ class FormSerializer < ActiveModel::Serializer
   attribute :name, key: :formName
   attribute :form_uri, key: :formUri
   attribute :version
+  attribute :published_by, serializer: UserSerializer
   def form_uri
     Rails.application.routes.url_helpers.api_form_url(object.version_independent_id, version: object.version, only_path: true)
   end
