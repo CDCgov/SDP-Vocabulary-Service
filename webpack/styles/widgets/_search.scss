@@ -112,3 +112,7 @@
   @extend .btn-default;
   border: 1px solid $cdc-blue;
 }
+
+.adv-filter-modal-body {
+  min-height: 160px;
+}

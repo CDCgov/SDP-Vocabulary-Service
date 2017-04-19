@@ -6,6 +6,8 @@ import { fetchStats } from '../actions/landing';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
+import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import currentUserProps from '../prop-types/current_user_props';
 
 class DashboardContainer extends Component {
@@ -33,7 +35,7 @@ class DashboardContainer extends Component {
         <div className="row dashboard">
           <div className="col-md-8">
             <div className="dashboard-details">
-              <DashboardSearch search={this.search} />
+              <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems} surveillancePrograms={this.props.surveillancePrograms} />
               <div className="row">
                 <div className="col-md-12">
                   {this.analyticsGroup(this.state.searchType)}
@@ -178,6 +180,8 @@ function mapStateToProps(state) {
     myResponseSetCount: state.stats.myResponseSetCount,
     mySurveyCount: state.stats.mySurveyCount,
     searchResults: state.searchResults,
+    surveillanceSystems: state.surveillanceSystems,
+    surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
   };
 }
@@ -199,7 +203,9 @@ DashboardContainer.propTypes = {
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
-  searchResults: PropTypes.object
+  searchResults: PropTypes.object,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);
