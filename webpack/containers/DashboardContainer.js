@@ -7,8 +7,6 @@ import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_re
 import DashboardSearch from '../components/DashboardSearch';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
-import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
-import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import currentUserProps from '../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
