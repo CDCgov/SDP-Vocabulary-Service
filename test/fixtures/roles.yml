@@ -10,4 +10,5 @@ one: {}
 two: {}
 # column: value
 
-publisher: {}
+publisher:
+  name: publisher

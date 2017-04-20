@@ -5,7 +5,7 @@ one:
   description: M / F
   version: 1
   version_independent_id: RS-1
-  created_by_id: admin
+  created_by: admin
   status: published
   published_by: publisher
 
@@ -14,21 +14,21 @@ two:
   description: M/F/NA
   version: 1
   version_independent_id: RS-2
-  created_by_id: admin
+  created_by: admin
 
 three:
   name: Gender Full
   description: M/F/NA
   version: 1
   version_independent_id: RS-3
-  created_by_id: not_admin
+  created_by: not_admin
 
 gfv2:
   name: Gender Full
   description: Tweak
   version: 2
   version_independent_id: RS-2
-  created_by_id: admin
+  created_by: admin
 
 search_1:
   name: Search Response Set 1

@@ -3,9 +3,14 @@ require 'test_helper'
 class SurveysControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+
+  DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
+
   setup do
+    @current_user = users(:not_admin)
     @survey = surveys(:one)
-    sign_in users(:admin)
+    sign_in @current_user
   end
 
   test 'should get index' do
@@ -48,17 +53,32 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 5
   end
 
-  test 'should publish a survey' do
-    assert_equal 'draft', @survey.status
-    put publish_survey_url(@survey)
-    assert_response :success
-    @survey.reload
-    assert_equal 'published', @survey.status
-  end
-
   test 'should not publish a published survey' do
     @survey = surveys(:two)
     put publish_survey_url(@survey)
     assert_response :unprocessable_entity
+  end
+
+  test 'publishers should see surveys from other authors' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    get survey_url(surveys(:one), format: :json)
+    assert_response :success
+  end
+
+  test 'publishers should be able to publish surveys' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
+    assert_response :success
+    assert_equal Survey.find(surveys(:one).id).status, PUBLISHED
+    assert_equal Survey.find(surveys(:one).id).published_by.id, users(:publisher).id
+  end
+
+  test 'authors should not be able to publish surveys' do
+    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
+    assert_response :forbidden
   end
 end

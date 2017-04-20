@@ -1,8 +1,17 @@
 
 # Given clauses
-Given(/^I am logged in as (.+)$/) do |user_name|
+Given(/^I am logged in as (.+?)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  login_as(user, scope: :user)
+end
+
+Given(/^I am the publisher (.+)$/) do |user_name|
+  user = User.create_with(password: 'password').find_or_create_by(email: user_name)
+  Ability.new(user)
+  user.add_role :publisher
+  user.save
+  user.reload
   login_as(user, scope: :user)
 end
 
@@ -138,6 +147,12 @@ end
 
 Then(/^I take a screenshot named (.*)$/) do |name|
   page.save_screenshot('/tmp/' + name + '.png')
+end
+
+Given(/^the user (.*) is a (.*)$/) do |user_email, role|
+  user = User.find_by(email: user_email)
+  user.add_role role.to_sym
+  user.save
 end
 
 def create_path(object_type, object_id)

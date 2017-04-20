@@ -16,7 +16,7 @@ Feature: Draft, Publish, and Revise Questions
     Then I should see "What is your favorite color?"
     And I should see "This is a description"
     And I should see "Edit"
-    And I should see "Publish"
+    And I should not see "Publish"
 
   Scenario: Edit a draft Question
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
@@ -39,11 +39,11 @@ Feature: Draft, Publish, and Revise Questions
     And I should see "Other Allowed: No"
     And I should not see "Version: 2"
     And I should see "Edit"
-    And I should see "Publish"
+    And I should not see "Publish"
 
   Scenario: Publish a Question via Show
     Given I have a Question with the content "What is your gender?" and the type "MC"
-    And I am logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     When I go to the list of Questions
     Then I should see "What is your gender?"
     When I click on the menu link for the Question with the content "What is your gender?"
@@ -64,7 +64,7 @@ Feature: Draft, Publish, and Revise Questions
 
   Scenario: Revise a published question
     Given I have a Question with the content "What is your gender?" and the type "MC"
-    And I am logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
