@@ -17,13 +17,14 @@
         "publisher" : {"type" : "boolean"}
       }
     },
-    "questions" : { 
+    "questions" : {
       "type" : "array",
       "items": {
         "type" : "object",
         "properties": {
           "question": {"type": "object"},
-          "response": {"type": "object"}
+          "response": {"type": "object"},
+					"program_var": {"type": "string"}
         }
       }
     }
