@@ -4,6 +4,13 @@
   text-align: left;
   margin-bottom: 20px;
 }
+.form-question-group {
+  @extend .panel-group;
+  text-align: right;
+  margin-bottom: 10px;
+  float: right;
+  width: 50%;
+}
 .form {
   @extend .panel;
   width: 180px;
@@ -94,5 +101,10 @@
     font-size: 16px;
     font-weight: bold;
     padding-top: 2px;
+  }
+}
+.list-program-var{
+  p{
+    margin-bottom: 0px;
   }
 }

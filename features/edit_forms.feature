@@ -32,12 +32,17 @@ Feature: Edit Forms
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
+    When I select the modify program variable option for the Question "What is your gender?"
+    And I fill in the "program-var" field with "Test Var"
+    And I click on the "Done" button
+    And I should see "TEST VAR"
     And I click on the "Save" button
     Then I should see "Name: Gender Form"
     Then I should see "Revised Description"
     And I should see "What is your gender?"
     And I should see "Publish"
     And I should see "Edit"
+    And I should see "TEST VAR"
 
   Scenario: Reorder Questions
     Given I have a published Form with the name "Test Form"
@@ -53,14 +58,20 @@ Feature: Edit Forms
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
+    When I select the modify program variable option for the Question "What is your gender?"
+    And I fill in the "program-var" field with "Test Var"
+    And I click on the "Done" button
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your name?"
     And I move the Question "What is your name?" up
+    And I should see "TEST VAR"
     And I click on the "Save" button
     And I should see "What is your gender?"
+    Then I wait 1 seconds
     And I should see the question "What is your name?" first
     And I should see the response set "Gender Partial" second
+    And I should see "TEST VAR"
 
   Scenario: Create New Form from List and Create a Question using New Question Modal
     Given I have a Response Set with the name "Gender Full"
@@ -105,6 +116,7 @@ Feature: Edit Forms
     Then I click on the "Add New Response Set" button
     Then I fill in the "response_set_name" field with "New Response Set"
     And I click on the "Add Response Set" button
+    Then I wait 1 seconds
     And I use the response set search modal to select "New Response Set"
     And I click on the "Save" button
     Then I should see "Test Form"

@@ -39,8 +39,8 @@ export default function forms(state = {}, action) {
       } else {
         responseSetId = null;
       }
-      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: responseSetId});
-      newForm = Object.assign({}, form);
+      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: responseSetId, position: form.formQuestions.length});
+      newForm  = Object.assign({}, form);
       newForm.formQuestions.push(newFormQuestion);
       newState = Object.assign({}, state);
       newState[form.id] = newForm;
@@ -55,7 +55,7 @@ export default function forms(state = {}, action) {
       newState[form.id] = newForm;
       return newState;
     case REORDER_QUESTION:
-      form = action.payload.form;
+      form  = action.payload.form;
       index = action.payload.index;
       direction = action.payload.direction;
       newForm = Object.assign({}, form);
@@ -76,5 +76,8 @@ export default function forms(state = {}, action) {
 let move = (array, from, to) => {
   let copyArray = array.slice(0);
   copyArray.splice(to, 0, copyArray.splice(from, 1)[0]);
+  for(var i = 0; i < copyArray.length; i++){
+    copyArray[i].position = i;
+  }
   return copyArray;
 };

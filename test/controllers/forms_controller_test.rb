@@ -115,7 +115,8 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'should destroy a draft form and formQuestions' do
     post questions_url(format: :json), params: { question: { status: 'draft', content: 'TBD content' } }
     last_id = Form.last.id
-    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @form.created_by_id, linked_questions: [Question.last.id], linked_response_sets: [nil] } }
+    linked_question = { question_id: Question.last.id, response_set_id: nil, position: 1, program_var: 'test' }
+    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @form.created_by_id, linked_questions: [linked_question] } }
     assert_difference('Question.count', 0) do
       assert_difference('FormQuestion.count', -1) do
         assert_difference('Form.count', -1) do

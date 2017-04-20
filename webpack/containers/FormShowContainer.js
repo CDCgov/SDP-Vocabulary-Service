@@ -6,6 +6,8 @@ import { fetchQuestions } from '../actions/questions_actions';
 import { fetchResponseSets } from '../actions/response_set_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
+import { questionsProps } from '../prop-types/question_props';
+import { responseSetsProps } from '../prop-types/response_set_props';
 import CommentList from '../containers/CommentList';
 import currentUserProps from '../prop-types/current_user_props';
 
@@ -24,6 +26,29 @@ class FormShowContainer extends Component {
     }
   }
 
+  // this.props.form.formQuestions doesn't have all the needed data
+  // Also, if you just modify the props directly to add the data, things can break
+  // So this function takes the form, clones it, then adds the extra data
+  getCompleteForm(){
+    var form = Object.assign({}, this.props.form);
+    if (form.formQuestions && form.formQuestions.length > 0) {
+      form.formQuestions = this.props.form.formQuestions.map((fq) => {
+        var formQuestion = Object.assign({}, this.props.questions[fq.questionId]);
+        formQuestion.programVar = fq.programVar || '';
+        formQuestion.responseSets = [{name: 'None'}];
+        if (fq.responseSetId) {
+          if(this.props.responseSets[fq.responseSetId]) {
+            formQuestion.responseSets = [this.props.responseSets[fq.responseSetId]];
+          } else {
+            formQuestion.responseSets = [{name: 'Loading...'}];
+          }
+        }
+        return formQuestion;
+      });
+    }
+    return form;
+  }
+
   render() {
     if(!this.props.form){
       return (
@@ -34,9 +59,7 @@ class FormShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <FormShow form={this.props.form}
-                      formQuestions={this.props.formQuestions}
-                      formResponseSets={this.props.formResponseSets}
+            <FormShow form={this.getCompleteForm()}
                       router={this.props.router}
                       currentUser={this.props.currentUser}
                       publishForm={this.props.publishForm}
@@ -51,25 +74,7 @@ class FormShowContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const props = {};
-  props.currentUser = state.currentUser;
-  props.form = state.forms[ownProps.params.formId];
-  if (props.form && props.form.formQuestions && props.form.formQuestions.length > 0) {
-    props.formQuestions = props.form.formQuestions.map((fq) => state.questions[fq.questionId]);
-    props.formResponseSets = props.form.formQuestions.map((fq) => {
-      let rs;
-      if (fq.responseSetId) {
-        if(state.responseSets[fq.responseSetId]) {
-          rs = state.responseSets[fq.responseSetId];
-        } else {
-          rs = {name: 'Loading...'};
-        }
-      } else {
-        rs = {name: 'None'};
-      }
-      return rs;
-    });
-  }
+  const props = {currentUser: state.currentUser, responseSets: state.responseSets, questions: state.questions, form: state.forms[ownProps.params.formId]};
   return props;
 }
 
@@ -79,15 +84,15 @@ function mapDispatchToProps(dispatch) {
 
 FormShowContainer.propTypes = {
   form: formProps,
+  questions: questionsProps,
+  responseSets: responseSetsProps,
   params: PropTypes.object,
   router: PropTypes.object.isRequired,
   currentUser: currentUserProps,
-  fetchForm:  PropTypes.func,
-  fetchQuestions:  PropTypes.func,
+  fetchForm: PropTypes.func,
+  fetchQuestions: PropTypes.func,
   fetchResponseSets: PropTypes.func,
-  formQuestions: PropTypes.array,
-  formResponseSets: PropTypes.array,
-  deleteForm: PropTypes.func,
+  deleteForm:  PropTypes.func,
   publishForm: PropTypes.func
 };
 

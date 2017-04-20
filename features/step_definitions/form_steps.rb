@@ -10,7 +10,7 @@ end
 
 When(/^I use the response set search modal to select "([^"]*)"$/) do |name|
   Elastictest.fake_rs_search_results
-  page.find('a', text: 'Search All').click
+  page.find('a', id: 'search-response-sets').click
   sleep 1
   page.all('a', id: "select-#{name}")[1].click
 end
@@ -47,13 +47,9 @@ end
 
 When(/^I move the Question "([^"]*)" (up|down)$/) do |question_content, direction|
   object_id = attribute_to_id('Question', 'content', question_content)
-  old_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
-
+  old_index = page.find_all('.question-item').index { |el| el.has_css?("#form_question_id_#{object_id}") }
   page.all(".move-#{direction}")[1].click
-  # page.all("#question_id_#{object_id}")[1].find(:xpath, '../../../..').find(".move-#{direction}").click
-
-  new_index = page.find_all('.question-item').index { |el| el.has_css?("#question_id_#{object_id}") }
-
+  new_index = page.find_all('.question-item').index { |el| el.has_css?("#form_question_id_#{object_id}") }
   offset = direction.eql?('up') ? -1 : 1
 
   assert(old_index != new_index)
@@ -72,4 +68,11 @@ end
 
 Then(/^I should see the link "([^"]*)"$/) do |link|
   page.find(link)
+end
+
+When(/^I select the modify program variable option for the Question "([^"]*)"$/) do |question_content|
+  object_id = attribute_to_id('Question', 'content', question_content)
+  page.find("#form_question_#{object_id}_menu").click
+  click_on('Modify Program Variable')
+  sleep 1
 end
