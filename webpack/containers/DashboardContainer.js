@@ -5,10 +5,13 @@ import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
+import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
+import currentUserProps from '../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
-import currentUserProps from '../prop-types/current_user_props';
+import { signUp } from '../actions/current_user_actions';
+import _ from 'lodash';
 
 class DashboardContainer extends Component {
   constructor(props){
@@ -17,11 +20,14 @@ class DashboardContainer extends Component {
     this.setFiltersParent = this.setFiltersParent.bind(this);
     this.selectType = this.selectType.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.openSignUpModal = this.openSignUpModal.bind(this);
+    this.closeSignUpModal = this.closeSignUpModal.bind(this);
     this.state = {
       searchType: '',
       searchTerms: '',
       progFilters: [],
       sysFilters: [],
+      signUpOpen: false,
       page: 1
     };
   }
@@ -46,37 +52,75 @@ class DashboardContainer extends Component {
   }
 
   render() {
+    let loggedIn = ! _.isEmpty(this.props.currentUser);
     const searchResults = this.props.searchResults;
     return (
-      <div className="container">
-        <div className="row dashboard">
-          <div className="col-md-8">
-            <div className="dashboard-details">
-              <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
-                               surveillancePrograms={this.props.surveillancePrograms}
-                               setFiltersParent={this.setFiltersParent}
-                               searchSource={this.props.searchResults.Source} />
-              <div className="row">
-                <div className="col-md-12">
-                  {this.analyticsGroup(this.state.searchType)}
+      <div className="container-fluid">
+        {!loggedIn &&
+          <div className="row">
+            <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen}
+              closer={() => this.closeSignUpModal()}
+              surveillanceSystems={this.props.surveillanceSystems}
+              surveillancePrograms={this.props.surveillancePrograms} />
+            <div className="cdc-jumbotron">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="col-md-8">
+                      <div className="cdc-promo-banner">
+                        <h1 className="banner-title">CDC Vocabulary Service</h1>
+                        <h3>Author Questions, Response Sets, and Forms</h3>
+                        <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
+                        <p><a className="btn btn-lg btn-success" href="#" role="button" onClick={this.openSignUpModal}>Get Started!</a></p>
+                      </div>
+                    </div>
+                    <div className="col-md-4"></div>
+                  </div>
                 </div>
-              </div>
-              <div className="load-more-search">
-                <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} />
-                {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
-                  <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
-                }
               </div>
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="dashboard-activity">
-              {this.authorStats()}
+        }
+        <div className="container">
+          <div className="row dashboard">
+            <div className={loggedIn ? ("col-md-8") : ("col-md-12")}>
+              <div className="dashboard-details">
+                <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
+                                 surveillancePrograms={this.props.surveillancePrograms}
+                                 setFiltersParent={this.setFiltersParent}
+                                 searchSource={this.props.searchResults.Source} />
+                <div className="row">
+                  <div className="col-md-12">
+                    {this.analyticsGroup(this.state.searchType)}
+                  </div>
+                </div>
+                <div className="load-more-search">
+                  <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} />
+                  {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+                    <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+                  }
+                </div>
+              </div>
             </div>
+            {loggedIn &&
+              <div className="col-md-4">
+                <div className="dashboard-activity">
+                  {this.authorStats()}
+                </div>
+              </div>
+            }
           </div>
         </div>
       </div>
     );
+  }
+
+  openSignUpModal() {
+    this.setState({signUpOpen: true});
+  }
+
+  closeSignUpModal() {
+    this.setState({signUpOpen: false});
   }
 
   loadMore() {
@@ -213,7 +257,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults}, dispatch);
+  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -228,6 +272,7 @@ DashboardContainer.propTypes = {
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
+  signUp: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
