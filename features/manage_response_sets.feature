@@ -48,7 +48,7 @@ Feature: Manage Response Sets
     And I click on the "Save" button
     Then I should see "Gender Partial"
     And I should see "M / F"
-    And I should see "Publish"
+    And I should not see "Publish"
 
    Scenario: Delete a draft Response Set
     Given I have a Response Set with the name "Test Response Set" and the description "Response Set description"

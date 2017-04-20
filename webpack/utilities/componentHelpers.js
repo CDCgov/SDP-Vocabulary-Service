@@ -6,7 +6,10 @@ export function isRevisable(object, currentUser) {
 }
 
 export function isPublishable(object, currentUser) {
-  return isEditable(object, currentUser);
+  return currentUser && currentUser.id &&
+    object.mostRecent === object.version &&
+    object.status === 'draft' &&
+    currentUser.publisher;
 }
 
 export function isEditable(object, currentUser) {

@@ -16,7 +16,7 @@ Feature: Draft, Publish, and Revise Questions
     Then I should see "What is your favorite color?"
     And I should see "This is a description"
     And I should see "Edit"
-    And I should see "Publish"
+    And I should not see "Publish"
 
   Scenario: Edit a draft Question
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
@@ -39,7 +39,7 @@ Feature: Draft, Publish, and Revise Questions
     And I should see "Other Allowed: No"
     And I should not see "Version: 2"
     And I should see "Edit"
-    And I should see "Publish"
+    And I should not see "Publish"
 
   Scenario: Publish a Question via Show
     Given I have a Question with the content "What is your gender?" and the type "MC"

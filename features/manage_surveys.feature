@@ -35,7 +35,7 @@ Feature: Manage Surveys
    Then I should see "Name: Gender Survey"
    Then I should see "Revised Description"
    And I should see "Test Gender Form"
-   And I should see "Publish"
+   And I should not see "Publish"
    And I should see "Edit"
 
  Scenario: Delete a draft Survey
@@ -79,7 +79,7 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
     Then I should see "Survey description"
-    And I should see "Publish"
+    And I should not see "Publish"
     And I should see "Edit"
     And I should see "Surveillance System: National Violent Death Reporting System"
 

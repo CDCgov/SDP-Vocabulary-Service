@@ -14,7 +14,7 @@ Feature: Edit Forms
     And I click on the "Save" button
     Then I should see "Name: Edited Form"
     Then I should see "Form description"
-    And I should see "Publish"
+    And I should not see "Publish"
     And I should see "Edit"
 
   Scenario: Revise Form
@@ -40,7 +40,7 @@ Feature: Edit Forms
     Then I should see "Name: Gender Form"
     Then I should see "Revised Description"
     And I should see "What is your gender?"
-    And I should see "Publish"
+    And I should not see "Publish"
     And I should see "Edit"
     And I should see "TEST VAR"
 
