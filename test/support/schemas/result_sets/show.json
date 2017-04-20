@@ -24,6 +24,19 @@
           }
         }
       }
+    },
+    "published_by" : {
+      "type" : "object",
+      "properties:": {
+        "id" : {"type" : "string"},
+        "email" : {"type" : "string"},
+        "name" : {"type" : "string"},
+        "first_name" : {"type" : "string"},
+        "last_name" : {"type" : "string"},
+        "last_program_id" : {"type" : "string"},
+        "last_system_id" : {"type" : "string"},
+        "publisher" : {"type" : "boolean"}
+      }
     }
   }
 }

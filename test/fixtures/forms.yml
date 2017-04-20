@@ -8,6 +8,7 @@ one:
   control_number: 1234-5678
   status: published
   oid: 2.16.840.1.113883.3.1502.1.1
+  published_by: publisher
 
 two:
   name: MyString
