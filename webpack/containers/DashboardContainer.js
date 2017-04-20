@@ -6,17 +6,22 @@ import { fetchStats } from '../actions/landing';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
+import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import currentUserProps from '../prop-types/current_user_props';
 
 class DashboardContainer extends Component {
   constructor(props){
     super(props);
     this.search = this.search.bind(this);
+    this.setFiltersParent = this.setFiltersParent.bind(this);
     this.selectType = this.selectType.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.state = {
       searchType: '',
       searchTerms: '',
+      progFilters: [],
+      sysFilters: [],
       page: 1
     };
   }
@@ -26,6 +31,20 @@ class DashboardContainer extends Component {
     this.search('');
   }
 
+  componentDidUpdate(_prevProps, prevState) {
+    if(prevState != this.state && prevState.page === this.state.page) {
+      let searchType = this.state.searchType;
+      let searchTerms = this.state.searchTerms;
+      if(searchType === '') {
+        searchType = null;
+      }
+      if(searchTerms === ''){
+        searchTerms = null;
+      }
+      this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters);
+    }
+  }
+
   render() {
     const searchResults = this.props.searchResults;
     return (
@@ -33,7 +52,10 @@ class DashboardContainer extends Component {
         <div className="row dashboard">
           <div className="col-md-8">
             <div className="dashboard-details">
-              <DashboardSearch search={this.search} />
+              <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
+                               surveillancePrograms={this.props.surveillancePrograms}
+                               setFiltersParent={this.setFiltersParent}
+                               searchSource={this.props.searchResults.Source} />
               <div className="row">
                 <div className="col-md-12">
                   {this.analyticsGroup(this.state.searchType)}
@@ -67,11 +89,17 @@ class DashboardContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState);
+    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState,
+                                      this.state.progFilters,
+                                      this.state.sysFilters);
     this.setState({page: tempState});
   }
 
-  search(searchTerms) {
+  setFiltersParent(newState) {
+    this.setState(newState);
+  }
+
+  search(searchTerms, progFilters, sysFilters) {
     let searchType = null;
     if(this.state.searchType === '') {
       searchType = null;
@@ -81,8 +109,8 @@ class DashboardContainer extends Component {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms});
-    this.props.fetchSearchResults(searchTerms, searchType);
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters);
   }
 
   selectType(searchType) {
@@ -98,7 +126,7 @@ class DashboardContainer extends Component {
     } else {
       this.setState({searchType: searchType, page: 1});
     }
-    this.props.fetchSearchResults(searchTerms, searchType);
+    this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters);
   }
 
   analyticsGroup(searchType) {
@@ -134,7 +162,7 @@ class DashboardContainer extends Component {
           </div>
           </li>
       </ul>
-      {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Filter</a>}
+      {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
     </div>);
   }
 
@@ -178,6 +206,8 @@ function mapStateToProps(state) {
     myResponseSetCount: state.stats.myResponseSetCount,
     mySurveyCount: state.stats.mySurveyCount,
     searchResults: state.searchResults,
+    surveillanceSystems: state.surveillanceSystems,
+    surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
   };
 }
@@ -199,7 +229,9 @@ DashboardContainer.propTypes = {
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
-  searchResults: PropTypes.object
+  searchResults: PropTypes.object,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);
