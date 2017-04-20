@@ -1,7 +1,7 @@
 .search-group {
   @extend .input-group;
   margin-top: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   margin-left: 20px;
   margin-right: 20px;
 }
@@ -115,4 +115,24 @@
 
 .adv-filter-modal-body {
   min-height: 160px;
+}
+
+.adv-search-link {
+  margin-right: 25px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.adv-filter-list {
+  padding-left: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: $dark-gray;
+
+  .adv-filter-list-item {
+    font-size: 13px;
+    font-weight: normal;
+    color: $dark-gray;
+  }
 }

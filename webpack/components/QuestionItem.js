@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 import { questionProps } from "../prop-types/question_props";
 import { responseSetProps } from "../prop-types/response_set_props";
 import currentUserProps from '../prop-types/current_user_props';
+import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import { fetchSearchResults } from '../actions/search_results_actions';
 import SearchResult from './SearchResult';
 import DashboardSearch from './DashboardSearch';
@@ -18,13 +20,26 @@ class QuestionItem extends Component {
       programVar: this.props.programVar,
       showSearchModal: false,
       showProgramVarModal: false,
+      progFilters: [],
+      sysFilters: []
     };
+    this.setFiltersParent = this.setFiltersParent.bind(this);
     this.showResponseSetSearch = this.showResponseSetSearch.bind(this);
     this.hideResponseSetSearch = this.hideResponseSetSearch.bind(this);
     this.showProgramVarModal = this.showProgramVarModal.bind(this);
     this.hideProgramVarModal = this.hideProgramVarModal.bind(this);
     this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
     this.search = this.search.bind(this);
+  }
+
+  componentDidUpdate(_prevProps, prevState) {
+    if(prevState != this.state) {
+      let searchTerms = this.state.searchTerms;
+      if(searchTerms === ''){
+        searchTerms = null;
+      }
+      this.props.fetchSearchResults(searchTerms, 'response_set', this.state.progFilters, this.state.sysFilters);
+    }
   }
 
   showResponseSetSearch() {
@@ -48,13 +63,17 @@ class QuestionItem extends Component {
     this.setState({ showSearchModal: false });
   }
 
-  search(searchTerms) {
+  setFiltersParent(newState) {
+    this.setState(newState);
+  }
+
+  search(searchTerms, progFilters, sysFilters) {
     let searchType = 'response_set';
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms});
-    this.props.fetchSearchResults(searchTerms, searchType);
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters);
   }
 
   searchModal() {
@@ -64,7 +83,7 @@ class QuestionItem extends Component {
           <Modal.Title>Search Response Sets</Modal.Title>
         </Modal.Header>
         <Modal.Body bsStyle='search'>
-          <DashboardSearch search={this.search} />
+          <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems} surveillancePrograms={this.props.surveillancePrograms} setFiltersParent={this.setFiltersParent}/>
           <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} handleSelectSearchResult={this.handleSelectSearchResult} />
         </Modal.Body>
         <Modal.Footer>
@@ -141,6 +160,8 @@ class QuestionItem extends Component {
 function mapStateToProps(state) {
   return {
     searchResults: state.searchResults,
+    surveillanceSystems: state.surveillanceSystems,
+    surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
   };
 }
@@ -161,7 +182,9 @@ QuestionItem.propTypes = {
   responseSetId: PropTypes.number,
   programVar: PropTypes.string,
   searchResults: PropTypes.object,
-  currentUser: currentUserProps
+  currentUser: currentUserProps,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionItem);

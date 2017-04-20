@@ -8,14 +8,19 @@ import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_re
 import SearchResult from '../components/SearchResult';
 import DashboardSearch from '../components/DashboardSearch';
 import currentUserProps from "../prop-types/current_user_props";
+import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 
 class QuestionSearchContainer extends Component {
   constructor(props) {
     super(props);
     this.search = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.setFiltersParent = this.setFiltersParent.bind(this);
     this.state = {
       searchTerms: '',
+      progFilters: [],
+      sysFilters: [],
       page: 1
     };
   }
@@ -24,12 +29,30 @@ class QuestionSearchContainer extends Component {
     this.search('');
   }
 
-  search(searchTerms) {
+  componentDidUpdate(_prevProps, prevState) {
+    if(prevState != this.state) {
+      let searchType = this.state.searchType;
+      let searchTerms = this.state.searchTerms;
+      if(searchType === '') {
+        searchType = null;
+      }
+      if(searchTerms === ''){
+        searchTerms = null;
+      }
+      this.props.fetchSearchResults(searchTerms, 'question', this.state.progFilters, this.state.sysFilters);
+    }
+  }
+
+  setFiltersParent(newState) {
+    this.setState(newState);
+  }
+
+  search(searchTerms, progFilters, sysFilters) {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms});
-    this.props.fetchSearchResults(searchTerms, 'question');
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.props.fetchSearchResults(searchTerms, 'question', progFilters, sysFilters);
   }
 
   loadMore() {
@@ -38,7 +61,9 @@ class QuestionSearchContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, 'question', tempState);
+    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState,
+                                      this.state.progFilters,
+                                      this.state.sysFilters);
     this.setState({page: tempState});
   }
 
@@ -46,7 +71,7 @@ class QuestionSearchContainer extends Component {
     const searchResults = this.props.searchResults;
     return (
       <div>
-        <DashboardSearch search={this.search} />
+        <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems} surveillancePrograms={this.props.surveillancePrograms} setFiltersParent={this.setFiltersParent}/>
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((q, i) => {
             return (
@@ -68,6 +93,8 @@ class QuestionSearchContainer extends Component {
 function mapStateToProps(state) {
   return {
     searchResults: state.searchResults,
+    surveillanceSystems: state.surveillanceSystems,
+    surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
   };
 }
@@ -82,7 +109,9 @@ QuestionSearchContainer.propTypes = {
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
-  searchResults: PropTypes.object
+  searchResults: PropTypes.object,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionSearchContainer);
