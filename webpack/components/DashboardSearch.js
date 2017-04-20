@@ -43,7 +43,7 @@ class DashboardSearch extends Component {
   }
 
   selectFilters(e, filterType) {
-    let newState = {}
+    let newState = {};
     newState[filterType] = _.values(e.target.selectedOptions).map((opt) => opt.value);
     this.props.setFiltersParent(newState);
     return this.setState(newState);

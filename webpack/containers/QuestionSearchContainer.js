@@ -61,7 +61,7 @@ class QuestionSearchContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState,
+    this.props.fetchMoreSearchResults(searchTerms, 'question', tempState,
                                       this.state.progFilters,
                                       this.state.sysFilters);
     this.setState({page: tempState});
