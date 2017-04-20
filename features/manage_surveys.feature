@@ -146,3 +146,20 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"
     And I should see "controlNumber - must be a valid OMB Control Number"
+
+  Scenario: An author should not be able to publish the survey
+    Given I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Details the Survey with the name "Test Survey"
+    Then I should not see "Publish"
+
+  Scenario: A publisher should not be able to edit another author's survey
+    Given I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I am the publisher test_publisher@gmail.com
+    When I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Details the Survey with the name "Test Survey"
+    Then I should see "Publish"
+    And I should not see "Revise"
