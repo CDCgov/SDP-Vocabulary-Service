@@ -6,6 +6,11 @@ Feature: Session Management
     When I click on the "Register" link
     Then I should see "Sign Up"
 
+  Scenario: Navigate to the sign in page through the jumbotron
+    Given I am on the "/" page
+    When I click on the "Get Started!" link
+    Then I should see "Sign Up"
+
   Scenario: Create an account
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
     And I have a Surveillance System with the name "National Vital Statistics System"
@@ -26,11 +31,15 @@ Feature: Session Management
   Scenario: Login to an existing account
     Given I am on the "/" page
     And a user "test_author@gmail.com" exists
+    Then I should see "Get Started!"
+    And I should not see "My Stuff"
     When I click on the "Login" link
     And I fill in the "email" field with "test_author@gmail.com"
     And I fill in the "password" field with "password"
     And I click on the "Log In" button
     Then I should see "test_author@gmail.com"
+    And I should see "My Stuff"
+    And I should not see "Get Started!"
 
   Scenario: Edit an existing account
     Given I am logged in as test_author@gmail.com

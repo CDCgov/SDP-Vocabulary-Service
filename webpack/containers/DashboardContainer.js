@@ -5,10 +5,14 @@ import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
+import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import currentUserProps from '../prop-types/current_user_props';
+import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
+import { signUp } from '../actions/current_user_actions';
 import _ from 'lodash';
 
 class DashboardContainer extends Component {
@@ -18,11 +22,14 @@ class DashboardContainer extends Component {
     this.setFiltersParent = this.setFiltersParent.bind(this);
     this.selectType = this.selectType.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.openSignUpModal = this.openSignUpModal.bind(this);
+    this.closeSignUpModal = this.closeSignUpModal.bind(this);
     this.state = {
       searchType: '',
       searchTerms: '',
       progFilters: [],
       sysFilters: [],
+      signUpOpen: false,
       page: 1
     };
   }
@@ -53,6 +60,10 @@ class DashboardContainer extends Component {
       <div className="container-fluid">
         {!loggedIn &&
           <div className="row">
+            <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen}
+              closer={() => this.closeSignUpModal()}
+              surveillanceSystems={this.props.surveillanceSystems}
+              surveillancePrograms={this.props.surveillancePrograms} />
             <div className="cdc-jumbotron">
               <div className="container">
                 <div className="row">
@@ -62,7 +73,7 @@ class DashboardContainer extends Component {
                         <h1 className="banner-title">CDC Vocabulary Service</h1>
                         <h3>Author Questions, Response Sets, and Forms</h3>
                         <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
-                        <p><a className="btn btn-lg btn-success" href="#" role="button">Get Started!</a></p>
+                        <p><a className="btn btn-lg btn-success" href="#" role="button" onClick={this.openSignUpModal}>Get Started!</a></p>
                       </div>
                     </div>
                     <div className="col-md-4"></div>
@@ -104,6 +115,14 @@ class DashboardContainer extends Component {
         </div>
       </div>
     );
+  }
+
+  openSignUpModal() {
+    this.setState({signUpOpen: true});
+  }
+
+  closeSignUpModal() {
+    this.setState({signUpOpen: false});
   }
 
   loadMore() {
@@ -240,7 +259,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults}, dispatch);
+  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -255,6 +274,7 @@ DashboardContainer.propTypes = {
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
+  signUp: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
