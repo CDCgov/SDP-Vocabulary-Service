@@ -61,7 +61,7 @@ class SurveysController < ApplicationController
   # PATCH/PUT /surveys/1/publish
   def publish
     if @survey.status == 'draft'
-      if @current_user.has_role?(:publisher)
+      if @current_user.publisher?
         @survey.publish(@current_user)
         render :show
       else

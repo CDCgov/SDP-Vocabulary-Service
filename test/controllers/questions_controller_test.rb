@@ -84,13 +84,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_nil Question.find_by(content: 'secret content')
   end
 
-  # test 'should publish a draft question' do
-  #   post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
-  #   assert_equal DRAFT, Question.last.status
-  #   put publish_question_path(Question.last, format: :json)
-  #   assert_equal PUBLISHED, Question.last.status
-  # end
-
   test 'should fail to destroy a published question' do
     delete question_url(questions(:one))
     assert_response 422
@@ -155,7 +148,8 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     sign_in @current_publisher
     put publish_question_path(questions(:two), params: { question: questions(:two) }, format: :json)
     assert_response :success
-    assert_equal PUBLISHED, Question.find(questions(:two).id).status
+    assert_equal Question.find(questions(:two).id).status, PUBLISHED
+    assert_equal Question.find(questions(:two).id).published_by.id, users(:publisher).id
   end
 
   test 'authors should not be able to publish questions' do

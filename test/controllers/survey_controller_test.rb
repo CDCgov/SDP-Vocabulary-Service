@@ -3,6 +3,10 @@ require 'test_helper'
 class SurveysControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+
+  DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
+
   setup do
     @current_user = users(:not_admin)
     @survey = surveys(:one)
@@ -69,6 +73,8 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     sign_in @current_publisher
     put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
     assert_response :success
+    assert_equal Survey.find(surveys(:one).id).status, PUBLISHED
+    assert_equal Survey.find(surveys(:one).id).published_by.id, users(:publisher).id
   end
 
   test 'authors should not be able to publish surveys' do

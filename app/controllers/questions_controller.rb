@@ -63,8 +63,8 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1/publish
   def publish
     if @question.status == 'draft'
-      if @current_user.has_role?(:publisher)
-        @question.publish(current_user)
+      if @current_user.publisher?
+        @question.publish(@current_user)
         render :show, status: :ok, location: @question
       else
         render json: @question, status: :forbidden

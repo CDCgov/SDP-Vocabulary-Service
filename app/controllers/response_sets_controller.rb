@@ -64,8 +64,8 @@ class ResponseSetsController < ApplicationController
   # PATCH/PUT /response_sets/1/publish
   def publish
     if @response_set.status == 'draft'
-      if current_user.has_role?(:publisher)
-        @response_set.publish(current_user)
+      if @current_user.publisher?
+        @response_set.publish(@current_user)
         render :show, status: :ok, location: @response_set
       else
         render json: @response_set, status: :forbidden

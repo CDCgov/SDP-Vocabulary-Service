@@ -48,7 +48,7 @@ class Ability
       cannot :read, Form, status: 'draft'
       # cannot :read, ResponseSet, { status: 'draft' }
     end
-    if user && user.has_role?(:publisher)
+    if user && user.publisher?
       can :manage, Question, status: 'draft'
       can :manage, Form, status: 'draft'
       can :manage, ResponseSet, status: 'draft'

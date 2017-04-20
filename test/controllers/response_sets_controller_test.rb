@@ -143,6 +143,8 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     sign_in @current_publisher
     put publish_response_set_path(response_sets(:two), format: :json)
     assert_response :success
+    assert_equal ResponseSet.find(response_sets(:two).id).status, PUBLISHED
+    assert_equal ResponseSet.find(response_sets(:two).id).published_by.id, users(:publisher).id
   end
 
   test 'authors should not be able to publish response_sets' do
