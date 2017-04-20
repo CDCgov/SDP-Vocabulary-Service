@@ -118,7 +118,7 @@ class DashboardSearch extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onFormSubmit}>
+    <form onSubmit={this.onFormSubmit}>
       {this.advSearchModal()}
       <div className="row">
         <div className="col-md-12">

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
@@ -28,6 +27,7 @@ class DashboardContainer extends Component {
       progFilters: [],
       sysFilters: [],
       signUpOpen: false,
+      myStuffFilter: false,
       page: 1
     };
   }
@@ -47,7 +47,7 @@ class DashboardContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
     }
   }
 
@@ -105,7 +105,7 @@ class DashboardContainer extends Component {
             {loggedIn &&
               <div className="col-md-4">
                 <div className="dashboard-activity">
-                  {this.authorStats()}
+                  {this.authorStats(this.state.searchType, this.state.myStuffFilter)}
                 </div>
               </div>
             }
@@ -135,7 +135,8 @@ class DashboardContainer extends Component {
     }
     this.props.fetchMoreSearchResults(searchTerms, searchType, tempState,
                                       this.state.progFilters,
-                                      this.state.sysFilters);
+                                      this.state.sysFilters,
+                                      this.state.myStuffFilter);
     this.setState({page: tempState});
   }
 
@@ -145,32 +146,44 @@ class DashboardContainer extends Component {
 
   search(searchTerms, progFilters, sysFilters) {
     let searchType = null;
-    if(this.state.searchType === '') {
-      searchType = null;
-    } else {
+    if(this.state.searchType !== '') {
       searchType = this.state.searchType;
     }
     if(searchTerms === ''){
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters);
+    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
   }
 
-  selectType(searchType) {
+  selectType(searchType, myStuffToggle=false) {
     let searchTerms = null;
-    if(this.state.searchTerms === '') {
-      searchTerms = null;
-    } else {
+    let myStuffFilter = false;
+    if(this.state.searchTerms !== '') {
       searchTerms = this.state.searchTerms;
     }
-    if(this.state.searchType === searchType) {
+    if(myStuffToggle) {
+      if(this.state.searchType === searchType && this.state.myStuffFilter) {
+        myStuffFilter = false;
+        this.setState({myStuffFilter: false});
+      } else {
+        myStuffFilter = true;
+        this.setState({myStuffFilter: true});
+      }
+    } else {
+      myStuffFilter = false;
+      this.setState({myStuffFilter: false});
+    }
+    if(this.state.searchType === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
       this.setState({searchType: '', page: 1});
       searchType = null;
     } else {
       this.setState({searchType: searchType, page: 1});
     }
-    this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters);
+    if(searchType === '') {
+      searchType = null;
+    }
+    this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
   }
 
   analyticsGroup(searchType) {
@@ -210,28 +223,31 @@ class DashboardContainer extends Component {
     </div>);
   }
 
-  authorStats() {
+  authorStats(searchType, myStuffFilter) {
     return (
       <div className="recent-items-panel">
         <div className="recent-items-heading">My Stuff</div>
         <div className="recent-items-body">
           <ul className="list-group">
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'question' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('question', true)}>
               <div className="recent-items-icon"><i className="fa fa-tasks recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.myQuestionCount} Questions</Link>
+              <div className="recent-items-value">{this.props.myQuestionCount} Questions</div>
             </li>
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'response_set' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set', true)}>
               <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.myResponseSetCount} Response Sets</Link>
+              <div className="recent-items-value">{this.props.myResponseSetCount} Response Sets</div>
             </li>
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'form' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('form', true)}>
               <div className="recent-items-icon"><i className="fa fa-list-alt recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.myFormCount} Forms</Link>
+              <div className="recent-items-value">{this.props.myFormCount} Forms</div>
             </li>
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'survey' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('survey', true)}>
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.mySurveyCount} Surveys</Link>
+              <div className="recent-items-value">{this.props.mySurveyCount} Surveys</div>
             </li>
+            {myStuffFilter ? (<a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
+              <a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
+            )}
           </ul>
         </div>
       </div>

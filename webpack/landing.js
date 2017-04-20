@@ -14,7 +14,6 @@ import ResponseSetEditContainer from './containers/ResponseSetEditContainer';
 import QuestionEditContainer from './containers/QuestionEditContainer';
 import SurveyEditContainer from './containers/SurveyEditContainer';
 import FormsEditContainer from './containers/FormsEditContainer';
-import MyStuffContainer from './containers/MyStuffContainer';
 import SurveyShowContainer from './containers/surveys/ShowContainer';
 import Privacy from './containers/Privacy';
 import App from './containers/App';
@@ -31,7 +30,6 @@ ReactDOM.render(
       <Route path='/' component={App}>
         <IndexRoute component={DashboardContainer} />
         <Route component={AuthenticatedRoutes}>
-          <Route path='/mystuff' component={MyStuffContainer} />
           <Route path='/forms/new' component={FormsEditContainer} />
           <Route path='/forms/:formId/:action' component={FormsEditContainer} />
           <Route path='/responseSets/new' component={ResponseSetEditContainer} />

@@ -1,13 +1,13 @@
 # rubocop:disable Metrics/ParameterLists
 module SDP
   module SimpleSearch
-    def self.search(type, query_string, current_user_id = nil, limit = 10, page = 1, publisher_search = false)
+    def self.search(type, query_string, current_user_id = nil, limit = 10, page = 1, publisher_search = false, my_stuff_search = false)
       current_user_id = current_user_id == -1 ? nil : current_user_id
       types = [type.camelize.constantize] if type
       types ||= [Form, Question, ResponseSet, Survey]
       results = {}
       types.map do |search_type|
-        query = search_type.search(query_string, current_user_id, publisher_search)
+        query = search_type.search(query_string, current_user_id, publisher_search, my_stuff_search)
         count = query.count()
         results[search_type] = { total: count, hits: query.limit(limit).offset(limit * (page - 1)).to_a }
       end
