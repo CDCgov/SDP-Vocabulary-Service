@@ -86,8 +86,6 @@ Feature: Session Management
     And I should see "2 Questions"
 
   Scenario: Users should not be able to access restricted pages
-    Given I am on the "/#/mystuff" page
-    Then I should see "You are not authorized to see this content, please login."
     Given I am on the "/#/responseSets/new" page
     Then I should see "You are not authorized to see this content, please login."
     Given I am on the "/#/questions/new" page
@@ -100,11 +98,13 @@ Feature: Session Management
   Scenario: Sessions that expire result in redirection
     Given I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
-    When I go to My Stuff
+    When I go to the dashboard
     Then I should see "What is your gender?"
+    And I should see "My Stuff"
     Then my session expires
-    And I am on the "/#/mystuff" page
-    Then I should see "You are not authorized to see this content, please login."
+    And I go to the dashboard
+    Then I should not see "My Stuff"
+    And I should see "Get Started!"
 
   Scenario: Accessing content that belongs to another user causes a forbidden error
     Given I am logged in as test_author@gmail.com

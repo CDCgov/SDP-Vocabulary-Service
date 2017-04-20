@@ -146,9 +146,7 @@ class DashboardContainer extends Component {
 
   search(searchTerms, progFilters, sysFilters) {
     let searchType = null;
-    if(this.state.searchType === '') {
-      searchType = null;
-    } else {
+    if(this.state.searchType !== '') {
       searchType = this.state.searchType;
     }
     if(searchTerms === ''){
@@ -161,9 +159,7 @@ class DashboardContainer extends Component {
   selectType(searchType, myStuffToggle=false) {
     let searchTerms = null;
     let myStuffFilter = false;
-    if(this.state.searchTerms === '') {
-      searchTerms = null;
-    } else {
+    if(this.state.searchTerms !== '') {
       searchTerms = this.state.searchTerms;
     }
     if(myStuffToggle) {
