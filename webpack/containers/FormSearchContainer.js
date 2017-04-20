@@ -38,7 +38,7 @@ class FormSearchContainer extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if(prevState != this.state) {
+    if(prevState != this.state && prevState.page === this.state.page) {
       let searchType = this.state.searchType;
       let searchTerms = this.state.searchTerms;
       if(searchType === '') {
