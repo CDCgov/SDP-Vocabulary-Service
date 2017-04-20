@@ -23,7 +23,7 @@ Feature: Edit Questions
 
   Scenario: Extend Question
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
-    And I am logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"

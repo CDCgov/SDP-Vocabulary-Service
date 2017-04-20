@@ -64,7 +64,7 @@ Feature: Manage Response Sets
 
   Scenario: Publish a Draft Response Set
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
-    And I am logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Details the Response Set with the name "Gender Full"

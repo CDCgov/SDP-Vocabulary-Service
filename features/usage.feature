@@ -8,6 +8,7 @@ Feature: Manage Usage
     And I have a Surveillance System with the name "National Vital Statistics System"
     And I have a Surveillance Program with the name "FoodNet"
     And I am working the program "FoodNet" and system "National Vital Statistics System" logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     And I have a Question with the content "What is your gender?" linked to Surveillance System "National Violent Death Reporting System"
     When I go to the list of Questions
     And I click on the menu link for the Question with the content "What is your gender?"
@@ -44,6 +45,7 @@ Feature: Manage Usage
     And I have a Surveillance System with the name "National Vital Statistics System"
     And I have a Surveillance Program with the name "FoodNet"
     And I am working the program "FoodNet" and system "National Vital Statistics System" logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     And I have a Response Set with the name "Gender Full" linked to Surveillance System "National Violent Death Reporting System"
     When I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Gender Full"

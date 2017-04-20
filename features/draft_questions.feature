@@ -43,7 +43,7 @@ Feature: Draft, Publish, and Revise Questions
 
   Scenario: Publish a Question via Show
     Given I have a Question with the content "What is your gender?" and the type "MC"
-    And I am logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     When I go to the list of Questions
     Then I should see "What is your gender?"
     When I click on the menu link for the Question with the content "What is your gender?"
@@ -64,7 +64,7 @@ Feature: Draft, Publish, and Revise Questions
 
   Scenario: Revise a published question
     Given I have a Question with the content "What is your gender?" and the type "MC"
-    And I am logged in as test_author@gmail.com
+    And I am the publisher test_author@gmail.com
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
