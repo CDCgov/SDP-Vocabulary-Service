@@ -43,16 +43,6 @@ export function reorderQuestion(form, index, direction) {
   };
 }
 
-export function fetchMyQuestions(searchTerms) {
-  return {
-    type: FETCH_QUESTIONS,
-    payload: axios.get(routes.myQuestionsPath(), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params:  { search: searchTerms }
-    })
-  };
-}
-
 export function fetchQuestions(searchTerms) {
   return {
     type: FETCH_QUESTIONS,
