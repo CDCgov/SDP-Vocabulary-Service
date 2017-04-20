@@ -146,12 +146,12 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     sign_out @current_user
     @current_publisher = users(:publisher)
     sign_in @current_publisher
-    put publish_form_path(forms(:three), format: :json, params: {form: forms(:three)})
+    put publish_form_path(forms(:three), format: :json, params: { form: forms(:three) })
     assert_response :success
   end
 
   test 'authors should not be able to publish forms' do
-    put publish_form_path(forms(:three),format: :json,  params: {form: forms(:three)})
+    put publish_form_path(forms(:three), format: :json, params: { form: forms(:three) })
     assert_response :forbidden
   end
 

@@ -146,7 +146,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'authors should not be able to publish response_sets' do
-    put publish_response_set_path(response_sets(:two),format: :json)
+    put publish_response_set_path(response_sets(:two), format: :json)
     assert_response :forbidden
   end
 end

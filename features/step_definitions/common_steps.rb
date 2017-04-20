@@ -15,7 +15,6 @@ Given(/^I am the publisher (.+)$/) do |user_name|
   login_as(user, scope: :user)
 end
 
-
 Given(/^I am working the program "(.+)" and system "(.+)" logged in as (.+)$/) do |program_name, system_name, user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
@@ -136,7 +135,6 @@ end
 
 # Quick little helper for popping a debugger, will cause tests to fail if left in
 Then(/^debugger$/) do
-  binding.pry
   assert false
 end
 

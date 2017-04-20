@@ -141,7 +141,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert response_json['surveillance_programs'].include? 'Generic Surveillance Program'
   end
 
-
   test 'publishers should see questions from other authors' do
     sign_out @current_user
     @current_publisher = users(:publisher)
@@ -154,14 +153,13 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     sign_out @current_user
     @current_publisher = users(:publisher)
     sign_in @current_publisher
-    put publish_question_path(questions(:two), params: {question: questions(:two)}, format: :json)
+    put publish_question_path(questions(:two), params: { question: questions(:two) }, format: :json)
     assert_response :success
     assert_equal PUBLISHED, Question.find(questions(:two).id).status
   end
 
   test 'authors should not be able to publish questions' do
-    put publish_question_path(questions(:two),format: :json,  params: {question: questions(:two)})
+    put publish_question_path(questions(:two), format: :json, params: { question: questions(:two) })
     assert_response :forbidden
   end
-
 end

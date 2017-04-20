@@ -67,12 +67,12 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     sign_out @current_user
     @current_publisher = users(:publisher)
     sign_in @current_publisher
-    put publish_survey_path(surveys(:one), format: :json, params: {survey: surveys(:one)})
+    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
     assert_response :success
   end
 
   test 'authors should not be able to publish surveys' do
-    put publish_survey_path(surveys(:one),format: :json,  params: {survey: surveys(:one)})
+    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
     assert_response :forbidden
   end
 end
