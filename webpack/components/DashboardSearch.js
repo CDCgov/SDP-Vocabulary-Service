@@ -32,6 +32,10 @@ class DashboardSearch extends Component {
   }
 
   clearAdvSearch() {
+    this.props.setFiltersParent({
+      progFilters: [],
+      sysFilters: []
+    });
     this.setState({
       progFilters: [],
       sysFilters: []
@@ -39,13 +43,10 @@ class DashboardSearch extends Component {
   }
 
   selectFilters(e, filterType) {
-    let progIds = [];
-    // _.values(e.target.selectedOptions).map((opt) => progIds.push(opt.value));
     let newState = {}
     newState[filterType] = _.values(e.target.selectedOptions).map((opt) => opt.value);
-    //let newState = {'progFilters' : progIds};
+    this.props.setFiltersParent(newState);
     return this.setState(newState);
-    // return this.setState({`${filterType}`: progIds});
   }
 
   surveillanceProgramsSelect() {
@@ -112,7 +113,7 @@ class DashboardSearch extends Component {
 
   onFormSubmit(event){
     event.preventDefault();
-    this.props.search(this.state.searchTerms);
+    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters);
   }
 
   render() {
@@ -142,7 +143,8 @@ class DashboardSearch extends Component {
 DashboardSearch.propTypes = {
   search: PropTypes.func.isRequired,
   surveillanceSystems: surveillanceSystemsProps,
-  surveillancePrograms: surveillanceProgramsProps
+  surveillancePrograms: surveillanceProgramsProps,
+  setFiltersParent: PropTypes.func
 };
 
 export default DashboardSearch;

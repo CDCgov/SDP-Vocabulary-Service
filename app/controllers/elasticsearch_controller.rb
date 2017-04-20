@@ -13,8 +13,8 @@ class ElasticsearchController < ApplicationController
     current_user_id  = current_user ? current_user.id : -1
     publisher_search = current_user ? current_user.publisher? : false
     my_stuff_filter = params[:my_stuff_filter] ? params[:my_stuff_filter] : false
-    program_filter = params[:program_filter] ? params[:program_filter] : []
-    system_filter = params[:system_filter] ? params[:system_filter] : []
+    program_filter = params[:programs] ? params[:programs] : []
+    system_filter = params[:systems] ? params[:systems] : []
     results = if SDP::Elasticsearch.ping
                 SDP::Elasticsearch.search(type, query_string, page, query_size,
                                           current_user_id, publisher_search,
