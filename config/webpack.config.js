@@ -48,6 +48,7 @@ var config = {
     loaders: [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
       { test: /\.css$/, loaders: ['style', 'css', 'postcss'] },
+      { test: /\.(png|jpeg|gif|svg)$/i, loader: "file-loader?hash=sha512&digest=hex&name=[path][name]-[hash].[ext]" },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/[name].[ext]' },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=8192' },
       { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] }
