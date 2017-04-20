@@ -79,7 +79,10 @@ class FormSearchContainer extends Component {
     const searchResults = this.props.searchResults;
     return (
       <div>
-        <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems} surveillancePrograms={this.props.surveillancePrograms} setFiltersParent={this.setFiltersParent}/>
+        <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
+                         surveillancePrograms={this.props.surveillancePrograms}
+                         setFiltersParent={this.setFiltersParent}
+                         searchSource={this.props.searchResults.Source} />
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((f, i) => {
             return (

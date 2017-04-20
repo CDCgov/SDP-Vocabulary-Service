@@ -52,7 +52,10 @@ class DashboardContainer extends Component {
         <div className="row dashboard">
           <div className="col-md-8">
             <div className="dashboard-details">
-              <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems} surveillancePrograms={this.props.surveillancePrograms} setFiltersParent={this.setFiltersParent}/>
+              <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
+                               surveillancePrograms={this.props.surveillancePrograms}
+                               setFiltersParent={this.setFiltersParent}
+                               searchSource={this.props.searchResults.Source} />
               <div className="row">
                 <div className="col-md-12">
                   {this.analyticsGroup(this.state.searchType)}

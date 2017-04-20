@@ -83,7 +83,10 @@ class QuestionItem extends Component {
           <Modal.Title>Search Response Sets</Modal.Title>
         </Modal.Header>
         <Modal.Body bsStyle='search'>
-          <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems} surveillancePrograms={this.props.surveillancePrograms} setFiltersParent={this.setFiltersParent}/>
+          <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
+                           surveillancePrograms={this.props.surveillancePrograms}
+                           setFiltersParent={this.setFiltersParent}
+                           searchSource={this.props.searchResults.Source} />
           <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} handleSelectSearchResult={this.handleSelectSearchResult} />
         </Modal.Body>
         <Modal.Footer>
