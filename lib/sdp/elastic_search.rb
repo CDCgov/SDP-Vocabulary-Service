@@ -1,6 +1,7 @@
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
+# rubocop:disable Metrics/PerceivedComplexity
 module SDP
   module Elasticsearch
     def self.with_client
@@ -12,132 +13,103 @@ module SDP
       Vocabulary::Elasticsearch.client.ping
     end
 
-    def self.search(type, query_string, page, query_size = 10, current_user_id = nil)
+    def self.search(type, query_string, page, query_size = 10,
+                    current_user_id = nil, publisher_search = false,
+                    my_stuff_filter = false, program_filter = [],
+                    system_filter = [])
+
+      filter_body = if my_stuff_filter
+                      { dis_max: { queries: [
+                        { term: { 'createdBy.id': current_user_id } }
+                      ] } }
+                    elsif publisher_search
+                      {}
+                    else
+                      { dis_max: { queries: [
+                        { term: { 'createdBy.id': current_user_id } },
+                        { match: { status: 'published' } }
+                      ] } }
+                    end
+
+      must_body = if query_string.blank?
+                    {}
+                  else
+                    { dis_max: { queries: [
+                      { match: { name: { query: query_string, boost: 9 } } },
+                      { match: { description: { query: query_string, boost: 8 } } },
+                      { match: { 'codes.code': { query: query_string, boost: 7 } } },
+                      { match: { 'codes.codeSystem': { query: query_string, boost: 7 } } },
+                      { match: { 'codes.displayName': { query: query_string, boost: 7 } } },
+                      { match: { category: { query: query_string } } },
+                      { match: { 'createdBy.email': { query: query_string } } },
+                      { match: { 'createdBy.name': { query: query_string } } },
+                      { match: { status: { query: query_string } } }
+                    ] } }
+                  end
+
+      highlight_body = if query_string.blank?
+                         {}
+                       else
+                         {
+                           pre_tags: ['<strong>'], post_tags: ['</strong>'],
+                           fields: {
+                             name: {}, description: {}
+                           }
+                         }
+                       end
+
+      # prog_name = type == 'survey' ? 'surveillance_program' : 'surveillance_programs'
+      # sys_name = type == 'survey' ? 'surveillance_system' : 'surveillance_systems'
+
+      prog_terms = if program_filter.empty?
+                     {}
+                   else
+                     { dis_max: { queries: [
+                       { 'terms': { 'surveillance_programs.id': program_filter } },
+                       { 'terms': { 'surveillance_program.id': program_filter } }
+                     ] } }
+                   end
+
+      sys_terms = if system_filter.empty?
+                    {}
+                  else
+                    { dis_max: { queries: [
+                      { 'terms': { 'surveillance_systems.id': system_filter } },
+                      { 'terms': { 'surveillance_system.id': system_filter } }
+                    ] } }
+                  end
+
+      from_index = (page - 1) * query_size
+      search_body = {
+        size: query_size,
+        from: from_index,
+        query: {
+          bool: {
+            filter: { bool: { filter: filter_body, must: [prog_terms, sys_terms] } },
+            must: must_body
+          }
+        },
+        highlight: highlight_body
+      }
+
       with_client do |client|
         results = if query_string
-                    SDP::Elasticsearch.search_on_string(client, query_size, page, type, query_string, current_user_id)
+                    SDP::Elasticsearch.search_on_string(client, type, search_body)
                   elsif type
-                    SDP::Elasticsearch.search_on_type(client, query_size, page, type, current_user_id)
+                    client.search index: 'vocabulary', type: type, body: search_body
                   else
-                    SDP::Elasticsearch.search_all(client, query_size, page, current_user_id)
+                    client.search index: 'vocabulary', body: search_body
                   end
         return results
       end
     end
 
-    def self.query_with_type(client, query_size, page, type, query_string, current_user_id)
-      from_index = (page - 1) * query_size
-      client.search index: 'vocabulary', type: type, body: {
-        size: query_size,
-        from: from_index,
-        query: {
-          bool: {
-            filter: { dis_max: { queries: [
-              { term: { 'createdBy.id': current_user_id } },
-              { match: { status: 'published' } }
-            ] } },
-            should: [
-              { match: { name: { query: query_string, boost: 9 } } },
-              { match: { description: { query: query_string, boost: 8 } } },
-              { match: { 'codes.code': { query: query_string, boost: 7 } } },
-              { match: { 'codes.codeSystem': { query: query_string, boost: 7 } } },
-              { match: { 'codes.displayName': { query: query_string, boost: 7 } } },
-              { match: { category: { query: query_string } } },
-              { match: { 'createdBy.email': { query: query_string } } },
-              { match: { 'createdBy.name': { query: query_string } } },
-              { match: { status: { query: query_string } } }
-            ]
-          }
-        },
-        highlight: {
-          pre_tags: ['<strong>'], post_tags: ['</strong>'],
-          fields: {
-            name: {}, description: {}
-          }
-        }
-      }
-    end
-
-    def self.query_without_type(client, query_size, page, query_string, current_user_id)
-      from_index = (page - 1) * query_size
-      client.search index: 'vocabulary', body: {
-        size: query_size,
-        from: from_index,
-        query: {
-          bool: {
-            filter: { dis_max: { queries: [
-              { term: { 'createdBy.id': current_user_id } },
-              { match: { status: 'published' } }
-            ] } },
-            should: [
-              { match: { name: { query: query_string, boost: 9 } } },
-              { match: { description: { query: query_string, boost: 8 } } },
-              { match: { 'codes.code': { query: query_string, boost: 7 } } },
-              { match: { 'codes.codeSystem': { query: query_string, boost: 7 } } },
-              { match: { 'codes.displayName': { query: query_string, boost: 7 } } },
-              { match: { category: { query: query_string } } },
-              { match: { 'createdBy.email': { query: query_string } } },
-              { match: { 'createdBy.name': { query: query_string } } },
-              { match: { status: { query: query_string } } }
-            ]
-          }
-        },
-        highlight: {
-          pre_tags: ['<strong>'], post_tags: ['</strong>'],
-          fields: {
-            name: {}, description: {}
-          }
-        }
-      }
-    end
-
-    def self.search_on_string(client, query_size, page, type, query_string, current_user_id)
+    def self.search_on_string(client, type, search_body)
       if type
-        query_with_type(client, query_size, page, type, query_string, current_user_id)
+        client.search index: 'vocabulary', type: type, body: search_body
       else
-        query_without_type(client, query_size, page, query_string, current_user_id)
+        client.search index: 'vocabulary', body: search_body
       end
-    end
-
-    def self.search_on_type(client, query_size, page, type, current_user_id)
-      from_index = (page - 1) * query_size
-      client.search index: 'vocabulary', type: type, body: {
-        size: query_size,
-        from: from_index,
-        query: {
-          bool: {
-            filter: {
-              dis_max: {
-                queries: [
-                  { term: { 'createdBy.id': current_user_id } },
-                  { match: { status: 'published' } }
-                ]
-              }
-            }
-          }
-        }
-      }
-    end
-
-    def self.search_all(client, query_size, page, current_user_id)
-      # The first result is index 0 so page 2 should be from: 10
-      from_index = (page - 1) * query_size
-      client.search index: 'vocabulary', body: {
-        size: query_size,
-        from: from_index,
-        query: {
-          bool: {
-            filter: {
-              dis_max: {
-                queries: [
-                  { term: { 'createdBy.id': current_user_id } },
-                  { match: { status: 'published' } }
-                ]
-              }
-            }
-          }
-        }
-      }
     end
 
     def self.ensure_index
@@ -210,3 +182,4 @@ end
 # rubocop:enable Metrics/ModuleLength
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ParameterLists
+# rubocop:enable Metrics/PerceivedComplexity

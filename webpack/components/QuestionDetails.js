@@ -23,7 +23,7 @@ export default class QuestionDetails extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title">Question Details</li>
+            <li className="showpage_title">Question Details {question.status === 'draft' && <text>[DRAFT]</text>}</li>
           </ul>
         </div>
         {this.historyBar(question)}
@@ -126,15 +126,17 @@ export default class QuestionDetails extends Component {
               <strong>Created: </strong>
               { moment(question.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
             </div>
-            <div className="box-content">
-              <strong>Harmonized: </strong>
-              {question.harmonized ? 'Yes' : 'No'}
-            </div>
             { question.parent &&
               <div className="box-content">
                 <strong>Extended from: </strong>
                 <Link to={`/questions/${question.parent.id}`}>{ question.parent.name }</Link>
               </div>
+            }
+            { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
+            <div className="box-content">
+              <strong>Published By: </strong>
+              {question.publishedBy.email}
+            </div>
             }
             {question.questionType && <div className="box-content">
               <strong>Question Type: </strong>

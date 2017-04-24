@@ -22,7 +22,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'revisions should increment version without needing a param' do
     form_json = { form: { name: @form.name, version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    Form.last.publish
+    Form.last.publish(@current_user)
     v1 = Form.last
     form_json = { form: { name: 'A revised name', version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
@@ -36,7 +36,7 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'cannot revise something you do not own' do
     form_json = { form: { name: @form.name, version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
-    Form.last.publish
+    Form.last.publish(@current_user)
     sign_in users(:not_admin)
     form_json = { form: { name: 'A Failed revision', version_independent_id: 'F-1337' } }.to_json
     post forms_url, params: form_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
@@ -115,7 +115,8 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
   test 'should destroy a draft form and formQuestions' do
     post questions_url(format: :json), params: { question: { status: 'draft', content: 'TBD content' } }
     last_id = Form.last.id
-    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @form.created_by_id, linked_questions: [Question.last.id], linked_response_sets: [nil] } }
+    linked_question = { question_id: Question.last.id, response_set_id: nil, position: 1, program_var: 'test' }
+    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @form.created_by_id, linked_questions: [linked_question] } }
     assert_difference('Question.count', 0) do
       assert_difference('FormQuestion.count', -1) do
         assert_difference('Form.count', -1) do
@@ -131,6 +132,29 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     get form_url(@form, format: :json)
     assert_response :success
     assert_response_schema('forms/show_default.json')
+  end
+
+  test 'publishers should see forms from other authors' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    get form_url(forms(:three), format: :json)
+    assert_response :success
+  end
+
+  test 'publishers should be able to publish forms' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    put publish_form_path(forms(:three), format: :json, params: { form: forms(:three) })
+    assert_response :success
+    assert_equal Form.find(forms(:three).id).status, PUBLISHED
+    assert_equal Form.find(forms(:three).id).published_by.id, users(:publisher).id
+  end
+
+  test 'authors should not be able to publish forms' do
+    put publish_form_path(forms(:three), format: :json, params: { form: forms(:three) })
+    assert_response :forbidden
   end
 
   private

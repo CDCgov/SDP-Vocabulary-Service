@@ -1,22 +1,33 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
+import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
 import currentUserProps from '../prop-types/current_user_props';
+import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
+import { signUp } from '../actions/current_user_actions';
+import _ from 'lodash';
 
 class DashboardContainer extends Component {
   constructor(props){
     super(props);
     this.search = this.search.bind(this);
+    this.setFiltersParent = this.setFiltersParent.bind(this);
     this.selectType = this.selectType.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.openSignUpModal = this.openSignUpModal.bind(this);
+    this.closeSignUpModal = this.closeSignUpModal.bind(this);
     this.state = {
       searchType: '',
       searchTerms: '',
+      progFilters: [],
+      sysFilters: [],
+      signUpOpen: false,
+      myStuffFilter: false,
       page: 1
     };
   }
@@ -26,35 +37,90 @@ class DashboardContainer extends Component {
     this.search('');
   }
 
+  componentDidUpdate(_prevProps, prevState) {
+    if(prevState != this.state && prevState.page === this.state.page) {
+      let searchType = this.state.searchType;
+      let searchTerms = this.state.searchTerms;
+      if(searchType === '') {
+        searchType = null;
+      }
+      if(searchTerms === ''){
+        searchTerms = null;
+      }
+      this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+    }
+  }
+
   render() {
+    let loggedIn = ! _.isEmpty(this.props.currentUser);
     const searchResults = this.props.searchResults;
     return (
-      <div className="container">
-        <div className="row dashboard">
-          <div className="col-md-8">
-            <div className="dashboard-details">
-              <DashboardSearch search={this.search} />
-              <div className="row">
-                <div className="col-md-12">
-                  {this.analyticsGroup(this.state.searchType)}
+      <div className="container-fluid">
+        {!loggedIn &&
+          <div className="row">
+            <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen}
+              closer={() => this.closeSignUpModal()}
+              surveillanceSystems={this.props.surveillanceSystems}
+              surveillancePrograms={this.props.surveillancePrograms} />
+            <div className="cdc-jumbotron">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="col-md-8">
+                      <div className="cdc-promo-banner">
+                        <h1 className="banner-title">CDC Vocabulary Service</h1>
+                        <h3>Author Questions, Response Sets, and Forms</h3>
+                        <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
+                        <p><a className="btn btn-lg btn-success" href="#" role="button" onClick={this.openSignUpModal}>Get Started!</a></p>
+                      </div>
+                    </div>
+                    <div className="col-md-4"></div>
+                  </div>
                 </div>
-              </div>
-              <div className="load-more-search">
-                <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} />
-                {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
-                  <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
-                }
               </div>
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="dashboard-activity">
-              {this.authorStats()}
+        }
+        <div className="container">
+          <div className="row dashboard">
+            <div className={loggedIn ? ("col-md-8") : ("col-md-12")}>
+              <div className="dashboard-details">
+                <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
+                                 surveillancePrograms={this.props.surveillancePrograms}
+                                 setFiltersParent={this.setFiltersParent}
+                                 searchSource={this.props.searchResults.Source} />
+                <div className="row">
+                  <div className="col-md-12">
+                    {this.analyticsGroup(this.state.searchType)}
+                  </div>
+                </div>
+                <div className="load-more-search">
+                  <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} />
+                  {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+                    <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+                  }
+                </div>
+              </div>
             </div>
+            {loggedIn &&
+              <div className="col-md-4">
+                <div className="dashboard-activity">
+                  {this.authorStats(this.state.searchType, this.state.myStuffFilter)}
+                </div>
+              </div>
+            }
           </div>
         </div>
       </div>
     );
+  }
+
+  openSignUpModal() {
+    this.setState({signUpOpen: true});
+  }
+
+  closeSignUpModal() {
+    this.setState({signUpOpen: false});
   }
 
   loadMore() {
@@ -67,38 +133,57 @@ class DashboardContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState);
+    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState,
+                                      this.state.progFilters,
+                                      this.state.sysFilters,
+                                      this.state.myStuffFilter);
     this.setState({page: tempState});
   }
 
-  search(searchTerms) {
+  setFiltersParent(newState) {
+    this.setState(newState);
+  }
+
+  search(searchTerms, progFilters, sysFilters) {
     let searchType = null;
-    if(this.state.searchType === '') {
-      searchType = null;
-    } else {
+    if(this.state.searchType !== '') {
       searchType = this.state.searchType;
     }
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms});
-    this.props.fetchSearchResults(searchTerms, searchType);
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
   }
 
-  selectType(searchType) {
+  selectType(searchType, myStuffToggle=false) {
     let searchTerms = null;
-    if(this.state.searchTerms === '') {
-      searchTerms = null;
-    } else {
+    let myStuffFilter = false;
+    if(this.state.searchTerms !== '') {
       searchTerms = this.state.searchTerms;
     }
-    if(this.state.searchType === searchType) {
+    if(myStuffToggle) {
+      if(this.state.searchType === searchType && this.state.myStuffFilter) {
+        myStuffFilter = false;
+        this.setState({myStuffFilter: false});
+      } else {
+        myStuffFilter = true;
+        this.setState({myStuffFilter: true});
+      }
+    } else {
+      myStuffFilter = false;
+      this.setState({myStuffFilter: false});
+    }
+    if(this.state.searchType === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
       this.setState({searchType: '', page: 1});
       searchType = null;
     } else {
       this.setState({searchType: searchType, page: 1});
     }
-    this.props.fetchSearchResults(searchTerms, searchType);
+    if(searchType === '') {
+      searchType = null;
+    }
+    this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
   }
 
   analyticsGroup(searchType) {
@@ -134,32 +219,35 @@ class DashboardContainer extends Component {
           </div>
           </li>
       </ul>
-      {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Filter</a>}
+      {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
     </div>);
   }
 
-  authorStats() {
+  authorStats(searchType, myStuffFilter) {
     return (
       <div className="recent-items-panel">
         <div className="recent-items-heading">My Stuff</div>
         <div className="recent-items-body">
           <ul className="list-group">
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'question' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('question', true)}>
               <div className="recent-items-icon"><i className="fa fa-tasks recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.myQuestionCount} Questions</Link>
+              <div className="recent-items-value">{this.props.myQuestionCount} Questions</div>
             </li>
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'response_set' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set', true)}>
               <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.myResponseSetCount} Response Sets</Link>
+              <div className="recent-items-value">{this.props.myResponseSetCount} Response Sets</div>
             </li>
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'form' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('form', true)}>
               <div className="recent-items-icon"><i className="fa fa-list-alt recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.myFormCount} Forms</Link>
+              <div className="recent-items-value">{this.props.myFormCount} Forms</div>
             </li>
-            <li className="recent-item-list">
+            <li className={"recent-item-list btn" + (searchType === 'survey' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('survey', true)}>
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
-              <Link to="/mystuff" className="recent-items-value">{this.props.mySurveyCount} Surveys</Link>
+              <div className="recent-items-value">{this.props.mySurveyCount} Surveys</div>
             </li>
+            {myStuffFilter ? (<a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
+              <a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
+            )}
           </ul>
         </div>
       </div>
@@ -178,12 +266,14 @@ function mapStateToProps(state) {
     myResponseSetCount: state.stats.myResponseSetCount,
     mySurveyCount: state.stats.mySurveyCount,
     searchResults: state.searchResults,
+    surveillanceSystems: state.surveillanceSystems,
+    surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults}, dispatch);
+  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -198,8 +288,11 @@ DashboardContainer.propTypes = {
   fetchStats: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
+  signUp: PropTypes.func,
   currentUser: currentUserProps,
-  searchResults: PropTypes.object
+  searchResults: PropTypes.object,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

@@ -2,7 +2,7 @@
 <ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redcap="https://projectredcap.org" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 schema/odm/ODM1-3-1.xsd" ODMVersion="1.3.1" FileOID="000-00-0000" FileType="Snapshot" Description="test"   AsOfDateTime="<%= Time.now %>"   CreationDateTime="<%= @form.created_at %>"   SourceSystem="SDP-Vocabulary-Service" SourceSystemVersion="0.1">
 <Study OID="Project.Test">
 <GlobalVariables>
-	<StudyName>SDP Vocaulary Form</StudyName> <!--  -->
+	<StudyName>SDP Vocabulary Form</StudyName> <!--  -->
 	<StudyDescription>This file contains the metadata, events, and data for REDCap project "Test".</StudyDescription>
 	<ProtocolName>Test</ProtocolName>
 	<redcap:RecordAutonumberingEnabled>1</redcap:RecordAutonumberingEnabled>
@@ -21,12 +21,12 @@
    <!-- item groups -->
    <ItemGroupDef OID="<%= @form.name.underscore %>.single_section" Name="Section" Repeating="No">
      <% @form.form_questions.each do |fq| %>
-     <ItemRef ItemOID="question_<%=fq.question.id%>" Mandatory="No" redcap:Variable="question_<%=fq.question.id%>"/>
+     <ItemRef ItemOID="question_<%=fq.question.id%>" Mandatory="No" redcap:Variable="<%=fq.program_var || "question_#{fq.question.id}"%>"/>
      <% end %>
    </ItemGroupDef>
   <!-- item defs -->
   <% @form.form_questions.each do |fq| %>
-    <ItemDef OID="question_<%=fq.question.id%>" Name="question_<%=fq.question.id%>" DataType="text" Length="999" redcap:Variable="question_<%=fq.question.id%>" redcap:FieldType="<%= fq.response_set ? 'select' : 'text' %>" >
+    <ItemDef OID="question_<%=fq.question.id%>" Name="question_<%=fq.question.id%>" DataType="text" Length="999" redcap:Variable="<%=fq.program_var || "question_#{fq.question.id}"%>" redcap:FieldType="<%= fq.response_set ? 'select' : 'text' %>" >
       <Question><TranslatedText><%= fq.question.content %></TranslatedText></Question>
       <% if fq.response_set %>
       <CodeListRef CodeListOID="question_<%=fq.question.id%>.choices"/>
@@ -38,7 +38,7 @@
   <!-- code list defs -->
   <% @form.form_questions.each do |fq| %>
      <% if fq.response_set %>
-      <CodeList OID="question_<%=fq.question.id%>.choices" Name="question_<%=fq.question.id%>" DataType="text" redcap:Variable="question_<%=fq.question.id%>">
+      <CodeList OID="question_<%=fq.question.id%>.choices" Name="question_<%=fq.question.id%>" DataType="text" redcap:Variable="<%=fq.program_var || "question_#{fq.question.id}"%>">
         <% fq.response_set.responses.each do |response| %>
         <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.blank? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
         <% end %>

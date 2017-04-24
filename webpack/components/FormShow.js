@@ -20,7 +20,7 @@ class FormShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title">Form Details</li>
+            <li className="showpage_title">Form Details {form.status === 'draft' && <text>[DRAFT]</text>}</li>
           </ul>
         </div>
         {this.historyBar(form)}
@@ -88,9 +88,15 @@ class FormShow extends Component {
             <div className="box-content">
               {form.description}
             </div>
+            { form.status === 'published' && form.publishedBy && form.publishedBy.email &&
+            <div className="box-content">
+              <strong>Published By: </strong>
+              {form.publishedBy.email}
+            </div>
+            }
           </div>
-          {this.props.formQuestions && this.props.formQuestions.length > 0 &&
-            <FormQuestionList questions={this.props.formQuestions} responseSets={this.props.formResponseSets} />
+          {this.props.form.formQuestions && this.props.form.formQuestions.length > 0 &&
+            <FormQuestionList questions={this.props.form.formQuestions} />
           }
         </div>
       </div>
@@ -100,8 +106,6 @@ class FormShow extends Component {
 
 FormShow.propTypes = {
   form: formProps,
-  formQuestions: PropTypes.array,
-  formResponseSets: PropTypes.array,
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishForm: PropTypes.func,

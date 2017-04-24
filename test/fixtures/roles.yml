@@ -9,3 +9,6 @@ one: {}
 #
 two: {}
 # column: value
+
+publisher:
+  name: publisher

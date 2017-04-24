@@ -65,6 +65,7 @@ class ResponseSetDragWidget extends Component {
     super(props);
     this.search = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.addRsButtonHandler = this.addRsButtonHandler.bind(this);
     this.state = {
       searchTerms: '',
       page: 1
@@ -93,6 +94,14 @@ class ResponseSetDragWidget extends Component {
     this.setState({page: tempState});
   }
 
+  addRsButtonHandler(rs) {
+    if(!this.props.selectedResponseSets.find((r) => {
+      return r.id === rs.Source.id;
+    })) {
+      this.props.handleResponseSetsChange(this.props.selectedResponseSets.concat([rs.Source]));
+    }
+  }
+
   render(){
     const searchResults = this.props.searchResults;
     return (
@@ -103,9 +112,9 @@ class ResponseSetDragWidget extends Component {
             {searchResults.hits && searchResults.hits.hits.map((rs, i) => {
               return <DraggableResponseSet key={i} type={rs.Type} result={rs}
                       currentUser={this.props.currentUser}
-                      handleSelectSearchResult={() => this.props.handleResponseSetsChange(this.props.selectedResponseSets.concat([rs.Source]))} />;
+                      handleSelectSearchResult={() => this.addRsButtonHandler(rs)} />;
             })}
-            {searchResults.hits && searchResults.hits.total && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+            {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
               <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
             }
           </div>

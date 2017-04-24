@@ -1,5 +1,5 @@
 class ResponseSet < ApplicationRecord
-  include Versionable, OidGenerator
+  include Versionable, OidGenerator, Searchable
   SOURCE_OPTIONS = %w(local PHIN_VADS).freeze
   acts_as_commentable
 
@@ -11,6 +11,8 @@ class ResponseSet < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
+  belongs_to :published_by, class_name: 'User'
+
   belongs_to :parent, class_name: 'ResponseSet'
 
   validates :status, presence: true
@@ -31,20 +33,12 @@ class ResponseSet < ApplicationRecord
     DeleteFromIndexJob.perform_later('response_set', id)
   end
 
-  def self.search(search = nil, current_user_id = nil)
-    if current_user_id && search
-      where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")
-    elsif current_user_id
-      where("(status= 'published' OR created_by_id = ?)", current_user_id)
-    elsif search
-      where('status= ? and name ILIKE ?', 'published', "%#{search}%")
-    else
-      where('status=  ?', 'published')
+  def publish(publisher)
+    if status == 'draft'
+      self.status = 'published'
+      self.published_by = publisher
+      save!
     end
-  end
-
-  def publish
-    update(status: 'published') if status == 'draft'
   end
 
   # Builds a new ResponseSet object with the same version_independent_id. Increments
@@ -52,7 +46,7 @@ class ResponseSet < ApplicationRecord
   def build_new_revision
     new_revision = ResponseSet.new(version_independent_id: version_independent_id,
                                    version: version + 1, description: description,
-                                   status: status, name: name, coded: coded,
+                                   status: status, name: name,
                                    parent_id: parent_id, oid: oid)
     responses.each do |r|
       new_revision.responses << r.dup
@@ -66,7 +60,6 @@ class ResponseSet < ApplicationRecord
     extended_set.name = name
     extended_set.description = description
     extended_set.status = status
-    extended_set.coded  = coded
     extended_set.parent = self
     extended_set.version = 1
     extended_set.version_independent_id = nil
@@ -76,13 +69,13 @@ class ResponseSet < ApplicationRecord
 
   def surveillance_programs
     SurveillanceProgram.joins(surveys: :survey_forms)
-                       .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
-                       .where('form_questions.response_set_id = ?', id)
+                       .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
+                       .where('form_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def surveillance_systems
     SurveillanceSystem.joins(surveys: :survey_forms)
-                      .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
-                      .where('form_questions.response_set_id = ?', id)
+                      .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
+                      .where('form_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 end

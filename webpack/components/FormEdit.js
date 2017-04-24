@@ -45,6 +45,7 @@ class FormEdit extends Component {
         this.state = this.stateForRevise({});
     }
     this.unsavedState = false;
+    this.lastQuestionCount = this.state.formQuestions.length;
     this.addedResponseSets = _.compact(this.state.formQuestions.map((fq) => fq.responseSetId));
   }
 
@@ -56,6 +57,13 @@ class FormEdit extends Component {
   componentWillUnmount() {
     this.unsavedState = false;
     this.unbindHook();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.lastQuestionCount !== prevState.formQuestions.length) {
+      this.unsavedState = true;
+      this.lastQuestionCount = prevState.formQuestions.length;
+    }
   }
 
   routerWillLeave(nextLocation) {
@@ -71,8 +79,7 @@ class FormEdit extends Component {
       this.props.router.push(this.nextLocation.pathname);
     }else{
       let form = Object.assign({}, this.state);
-      form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
-      form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId);
+      form.linkedQuestions = this.state.formQuestions;
       this.props.formSubmitter(form, (response) => {
         // TODO: Handle when the saving form fails.
         this.unsavedState = false;
@@ -97,6 +104,13 @@ class FormEdit extends Component {
     this.unsavedState = true;
   }
 
+  handleProgramVarChange(questionIndex, programVar) {
+    let newState = Object.assign({}, this.state);
+    newState.formQuestions[questionIndex].programVar = programVar;
+    this.setState(newState);
+    this.unsavedState = true;
+  }
+
   handleChange(field) {
     return (event) => {
       let newState = {};
@@ -110,8 +124,7 @@ class FormEdit extends Component {
     event.preventDefault();
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let form = Object.assign({}, this.state);
-    form.linkedQuestions = this.state.formQuestions.map((q) => q.questionId);
-    form.linkedResponseSets = this.state.formQuestions.map((q) => q.responseSetId || '');
+    form.linkedQuestions = this.state.formQuestions;
     this.props.formSubmitter(form, (response) => {
       this.unsavedState = false;
       this.props.router.push(`/forms/${response.data.id}`);
@@ -162,36 +175,42 @@ class FormEdit extends Component {
         <div className="added-question-group">
           {form.formQuestions.map((q, i) =>
             <div className="row" key={i}>
-              <div className="col-md-9">
+              <div className="col-md-11">
                 <QuestionItem index={i}
                               question={this.props.questions[q.questionId]}
                               responseSets={this.linkedResponseSets(q.questionId)}
                               selectedResponseSet={q.responseSetId}
+                              programVar={q.programVar}
                               removeQuestion ={this.props.removeQuestion}
                               reorderQuestion={this.props.reorderQuestion}
+                              handleProgramVarChange  ={(value) => this.handleProgramVarChange(i, value)}
                               handleResponseSetChange ={(event) => this.handleResponseSetChange(i, parseInt(event.target.value))}
                               handleSelectSearchResult={(responseSet) => {
                                 this.addLinkedResponseSet(i, responseSet);
                                 this.handleResponseSetChange(i, responseSet.id);
                               }} />
               </div>
-              <div className="form-group">
-                <div className="col-md-3">
+              <div className="col-md-1">
+                <div className="row form-question-controls">
                   <div className="btn btn-small btn-default move-up"
                        onClick={() => this.props.reorderQuestion(form, i, 1)}>
                     <i title="Move Up" className="fa fa fa-arrow-up"></i>
                   </div>
+                </div>
+                <div className="row form-question-controls">
                   <div className="btn btn-small btn-default move-down"
                        onClick={() => this.props.reorderQuestion(form, i, -1)}>
                     <i className="fa fa fa-arrow-down" title="Move Down"></i>
                   </div>
-                  <div className="btn btn-small btn-default"
+                </div>
+                <div className="row form-question-controls">
+                  <div className="btn btn-small btn-default delete-question"
                        onClick={() => this.props.removeQuestion(form, i)}>
                     <i className="fa fa fa-trash" title="Remove"></i>
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
           )}
         </div>
       </div>
@@ -205,7 +224,7 @@ class FormEdit extends Component {
       );
     }
     return (
-      <div className="col-md-8">
+      <div className="col-md-7">
       <div className="" id='form-div'>
       <ModalDialog show ={this.state.showWarningModal}
                    title="Warning"

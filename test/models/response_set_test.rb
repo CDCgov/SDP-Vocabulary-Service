@@ -24,7 +24,7 @@ class ResponseSetTest < ActiveSupport::TestCase
     assert !rs.valid?, 'Response set should not be valid without a created_by user'
   end
 
-  test 'validates  source' do
+  test 'validates source' do
     rs = ResponseSet.new(name: 'Test Set',  created_by: @user)
     assert rs.valid?
     assert_equal 'local', rs.source, 'default source attribute should be local'
@@ -40,9 +40,11 @@ class ResponseSetTest < ActiveSupport::TestCase
   end
 
   test 'publish' do
-    rs1 = ResponseSet.new
+    user = users(:admin)
+    rs1 = ResponseSet.new(name: 'Test Response Set', created_by: user)
     assert_equal DRAFT, rs1.status
-    rs1.publish
+    rs1.publish(user)
+    assert_equal user, rs1.published_by
     assert_equal PUBLISHED, rs1.status
   end
 
@@ -124,12 +126,15 @@ class ResponseSetTest < ActiveSupport::TestCase
   test 'surveillance_systems' do
     rs = response_sets(:one)
     ss = rs.surveillance_systems
-    assert_equal 'National Insignificant Digits System', ss.first.name
+    assert_equal 2, ss.length
+    assert_includes ss.map(&:name), 'National Insignificant Digits System'
+    assert_includes ss.map(&:name), 'National Spork Monitoring System'
   end
 
   test 'surveillance_programs' do
     rs = response_sets(:one)
     sp = rs.surveillance_programs
-    assert_equal 'Generic Surveillance Program', sp.first.name
+    assert_equal 1, sp.length
+    assert_includes sp.map(&:name), 'Generic Surveillance Program'
   end
 end

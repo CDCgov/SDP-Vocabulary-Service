@@ -67,20 +67,19 @@ export default class ResponseSetForm extends Component {
   stateForRevise(responseSet) {
     const name = responseSet.name || '';
     const oid  = responseSet.oid  || '';
-    const coded = responseSet.coded || false;
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = responseSet.version + 1;
-    const parentId  = responseSet.parent ? responseSet.parent.id : null;
+    const parentId  = responseSet.parent ? responseSet.parent.id : ''; // Cannot use null, must use undefined or blank string
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
-    return {name, oid, description, coded, responsesAttributes,
+    return {name, oid, description, responsesAttributes,
       version, parentId, versionIndependentId, showModal};
   }
 
   stateForNew() {
     return {
-      name: '', oid: '', coded: false, description: '',
+      name: '', oid: '', description: '',
       responsesAttributes: [],
       version: 1, versionIndependentId: null, showModal: false
     };
@@ -89,14 +88,13 @@ export default class ResponseSetForm extends Component {
   stateForExtend(responseSet) {
     const name = responseSet.name || '';
     const oid  = '';
-    const coded = responseSet.coded || false;
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = 1;
     const versionIndependentId = null;
     const parentId  = responseSet.id;
     const showModal = false;
-    return {name, oid, description, coded, responsesAttributes,
+    return {name, oid, description, responsesAttributes,
       version, versionIndependentId, parentId, showModal};
   }
 
@@ -104,14 +102,13 @@ export default class ResponseSetForm extends Component {
     const id = responseSet.id;
     const name = responseSet.name || '';
     const oid  = responseSet.oid  || '';
-    const coded = responseSet.coded || false;
     const description = responseSet.description || '';
     const responsesAttributes = filterResponses(responseSet.responses);
     const version = responseSet.version;
-    const parentId  = responseSet.parent ? responseSet.parent.id : null;
+    const parentId  = responseSet.parent ? responseSet.parent.id : ''; // null not allowed here
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
-    return {id, name, oid, description, coded, responsesAttributes,
+    return {id, name, oid, description, responsesAttributes,
       version, parentId, versionIndependentId, showModal};
   }
 
@@ -152,10 +149,6 @@ export default class ResponseSetForm extends Component {
                     <input className="input-format" type="text" value={this.state.name} name="response_set_name" id="name" onChange={this.handleChange('name')}/>
                   </div>
 
-                  <div className="col-md-4 question-form-group">
-                    <label className="input-label"  htmlFor="coded">Coded</label>
-                    <input  className=" big-checkbox checkbox" type="checkbox" value={this.state.coded} name="coded" id="coded" onChange={this.handleChange('coded')}/>
-                  </div>
                   <div className="hidden">
                     <input type="hidden" name="parentId" id="parentId" value={this.state.parentId} />
                   </div>

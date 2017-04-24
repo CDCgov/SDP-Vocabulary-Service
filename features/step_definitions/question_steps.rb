@@ -54,7 +54,7 @@ end
 Given(/^I have a published Question with the content "([^"]*)"$/) do |content|
   user = get_user('test_author@gmail.com')
   q = Question.create!(content: content, version: 1, created_by: user)
-  q.publish
+  q.publish(user)
 end
 
 # When clauses
@@ -71,4 +71,10 @@ Then(/^I navigate to a question created by "(.+)"$/) do |owner_email|
   user = get_user(owner_email)
   question = Question.create!(status: 'draft', content: 'content', description: 'description', version: 1, created_by: user)
   visit "#/questions/#{question.id}"
+end
+
+Then(/^I should only see (.+) copy of the "(.+)" response set associated$/) do |expected_count, rs_name|
+  # Add 1 for finding in search result list
+  count = expected_count.to_i + 1
+  assert_equal(count, page.all('li', class: 'result-name', text: rs_name).length)
 end

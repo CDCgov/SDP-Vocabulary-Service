@@ -80,7 +80,7 @@ class QuestionForm extends Component{
     if (this.props.action === 'revise') {
       reviseState.version += 1;
     }
-    reviseState.parentId  = question.parent ? question.parent.id : null;
+    reviseState.parentId  = question.parent ? question.parent.id : ''; // null is not allowed as a value
     reviseState.responseTypeId = question.responseTypeId;
     reviseState.otherAllowed = question.otherAllowed;
     return reviseState;
@@ -93,7 +93,6 @@ class QuestionForm extends Component{
       questionTypeId: null,
       versionIndependentId: null,
       version: 1,
-      harmonized: false,
       responseTypeId: null,
       conceptsAttributes: [],
       linkedResponseSets: [],
@@ -112,7 +111,6 @@ class QuestionForm extends Component{
     extendState.version = 1;
     extendState.parentId  = question.id;
     extendState.oid = '';
-    extendState.harmonized = false;
     extendState.versionIndependentId = null;
     extendState.otherAllowed = question.otherAllowed;
     extendState.responseTypeId = question.responseTypeId;
@@ -141,7 +139,7 @@ class QuestionForm extends Component{
                       this.setState({ showWarningModal: false });
                     }}
                     secondaryButtonAction={()=> this.handleModalResponse(true)} />
-        <ResponseSetModal show={this.state.showResponseSetModal}
+        <ResponseSetModal show={this.state.showResponseSetModal || false}
                           closeModal={() => this.setState({showResponseSetModal: false})}
                           saveResponseSetSuccess={this.handleResponseSetSuccess} />
         <Errors errors={this.state.errors} />
@@ -167,23 +165,21 @@ class QuestionForm extends Component{
                       </select>
                     </div>
                 </div>
+
                 <div className="row ">
                   <div className="col-md-8 question-form-group">
                     <label className="input-label" htmlFor="description">Description</label>
                     <textarea className="input-format" placeholder="Question description" type="text" name="question_description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
                   </div>
-                  <div className="col-md-4 question-form-group">
-                    <label className="input-label" htmlFor="responseTypeId">Response Type</label>
-                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={state.responseTypeId} onChange={this.handleResponseTypeChange()} >
-                      <option value=""></option>
-                      {_.values(responseTypes).map((rt) => {
-                        return (<option key={rt.id} value={rt.id}>{rt.name} - {rt.description}</option>);
+
+                <div className="col-md-4 question-form-group">
+                  <label className="input-label" htmlFor="responseTypeId">Response Type</label>
+                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
+                      {this.sortedResponseTypes().map((rt) => {
+                        return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
+
                       })}
                     </select>
-                  </div>
-                  <div className="col-md-4 question-form-group harmonized-group">
-                    <label className="input-label" htmlFor="harmonized">Harmonized: </label>
-                    <input className="form-ckeck-input" type="checkbox" name="harmonized" id="harmonized" checked={state.harmonized} onChange={() => this.toggleHarmonized()} />
                   </div>
                 </div>
                 {this.otherAllowedBox()}
@@ -196,6 +192,7 @@ class QuestionForm extends Component{
                              childName={'tag'} />
                   </div>
                 </div>
+                { this.isChoiceType() ?
                 <div className="row response-set-row">
                   <div className="col-md-6 response-set-label">
                     <label htmlFor="linked_response_sets">Response Sets</label>
@@ -205,9 +202,12 @@ class QuestionForm extends Component{
                     <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
                   </div>
                 </div>
-                <ResponseSetDragWidget responseSets={responseSets}
-                                       handleResponseSetsChange={this.handleResponseSetsChange}
-                                       selectedResponseSets={this.state.linkedResponseSets && this.state.linkedResponseSets.map((r) => this.props.responseSets[r] ).filter((r) => r !== undefined)} />
+                : ''}
+                { this.isChoiceType() ?
+                  <ResponseSetDragWidget responseSets={responseSets}
+                                         handleResponseSetsChange={this.handleResponseSetsChange}
+                                         selectedResponseSets={this.state.linkedResponseSets && this.state.linkedResponseSets.map((r) => this.props.responseSets[r] ).filter((r) => r !== undefined)} />
+                : ''}
                 <div className="panel-footer">
                   <div className="actions form-group">
                     <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with="Save">Save</button>
@@ -227,6 +227,26 @@ class QuestionForm extends Component{
     return wordMap[this.props.action];
   }
 
+
+  isChoiceType(){
+    let rt = _.values(this.props.responseTypes).find((a) => {
+      return a.id == this.state.responseTypeId;
+    });
+    if(rt && (rt.code == "choice" || rt.code == "open-choice")){
+      return true;
+    }
+  }
+
+  sortedResponseTypes(){
+    return _.values(this.props.responseTypes).sort((a,b) => {
+      if(a.name == b.name ){
+        return 0;
+      }else if(a.name < b.name){
+        return -1;
+      }
+      return 1;
+    });
+  }
   cancelButton() {
     if (this.props.question && this.props.question.id) {
       return(<Link className="btn btn-default" to={`/questions/${this.props.question.id}`}>Cancel</Link>);
@@ -286,10 +306,6 @@ class QuestionForm extends Component{
       this.setState(newState);
       this.unsavedState = true;
     };
-  }
-
-  toggleHarmonized() {
-    this.setState({harmonized: !this.state.harmonized});
   }
 
   toggleOtherAllowed() {

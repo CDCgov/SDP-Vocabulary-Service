@@ -30,13 +30,17 @@ export default function forms(state = {}, action) {
     case ADD_QUESTION:
       question = action.payload.question;
       form = action.payload.form;
+      form.id = form.id || 0;
+      if(state[form.id] && state[form.id].formQuestions.findIndex( (s) => s.questionId == question.id) > -1){
+        return state;
+      }
       if(question.responseSets && question.responseSets[0]){
         responseSetId = question.responseSets[0].id || question.responseSets[0];
       } else {
         responseSetId = null;
       }
-      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: responseSetId});
-      newForm = Object.assign({}, form);
+      let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: responseSetId, position: form.formQuestions.length});
+      newForm  = Object.assign({}, form);
       newForm.formQuestions.push(newFormQuestion);
       newState = Object.assign({}, state);
       newState[form.id] = newForm;
@@ -44,13 +48,14 @@ export default function forms(state = {}, action) {
     case REMOVE_QUESTION:
       form  = action.payload.form;
       index = action.payload.index;
+      form.id = form.id || 0;
       newForm = Object.assign({}, form);
       newForm.formQuestions.splice(index, 1);
       newState = Object.assign({}, state);
       newState[form.id] = newForm;
       return newState;
     case REORDER_QUESTION:
-      form = action.payload.form;
+      form  = action.payload.form;
       index = action.payload.index;
       direction = action.payload.direction;
       newForm = Object.assign({}, form);
@@ -71,5 +76,8 @@ export default function forms(state = {}, action) {
 let move = (array, from, to) => {
   let copyArray = array.slice(0);
   copyArray.splice(to, 0, copyArray.splice(from, 1)[0]);
+  for(var i = 0; i < copyArray.length; i++){
+    copyArray[i].position = i;
+  }
   return copyArray;
 };

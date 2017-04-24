@@ -107,10 +107,12 @@ export default class ResponseSetDetails extends Component {
                 <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
               </div>
             }
+            { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
             <div className="box-content">
-              <strong>OID: </strong>
-              {responseSet.oid}
+              <strong>Published By: </strong>
+              {responseSet.publishedBy.email}
             </div>
+            }
           </div>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">

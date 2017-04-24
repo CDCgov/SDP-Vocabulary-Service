@@ -6,22 +6,25 @@ one:
   control_number: '1234-5678'
   surveillance_program: generic
   surveillance_system: nids
+  published_by: publisher
 two:
   name: Search Survey 1
   created_by: admin
   version: 1
   status: published
   version_independent_id: 'S-2'
-  control_number: '1234-5678'
+  control_number: '5678-5678'
+  surveillance_program: generic
+  surveillance_system: nsms
 three:
   name: Search Survey 2
   created_by: admin
   version: 1
   version_independent_id: 'S-3'
-  control_number: '1234-5678'
+  control_number: '1111-5678'
 four:
   name: Search Survey 3
   created_by: not_admin
   version: 1
   version_independent_id: 'S-3'
-  control_number: '1234-5678'
+  control_number: '1111-5678'

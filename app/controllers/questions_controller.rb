@@ -63,8 +63,12 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1/publish
   def publish
     if @question.status == 'draft'
-      @question.publish
-      render :show, statis: :published, location: @question
+      if @current_user.publisher?
+        @question.publish(@current_user)
+        render :show, status: :ok, location: @question
+      else
+        render json: @question, status: :forbidden
+      end
     else
       render json: @question.errors, status: :unprocessable_entity
     end
@@ -94,8 +98,8 @@ class QuestionsController < ApplicationController
       render(json: { error: 'Only published Questions provide usage information' }, status: :bad_request)
     else
       response = { id: @question.id }
-      response[:surveillance_programs] = @question.surveillance_programs.map(&:name).uniq
-      response[:surveillance_systems] = @question.surveillance_systems.map(&:name).uniq
+      response[:surveillance_programs] = @question.surveillance_programs.map(&:name)
+      response[:surveillance_systems] = @question.surveillance_systems.map(&:name)
       render json: response
     end
   end
@@ -125,7 +129,7 @@ class QuestionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
     params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id,
-                                     :version_independent_id, :description, :status, :harmonized, :other_allowed,
+                                     :version_independent_id, :description, :status, :other_allowed,
                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

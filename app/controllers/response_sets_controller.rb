@@ -28,8 +28,8 @@ class ResponseSetsController < ApplicationController
       render(json: { error: 'Only published Response Sets provide usage information' }, status: :bad_request)
     else
       response = { id: @response_set.id }
-      response[:surveillance_programs] = @response_set.surveillance_programs.map(&:name).uniq
-      response[:surveillance_systems] = @response_set.surveillance_systems.map(&:name).uniq
+      response[:surveillance_programs] = @response_set.surveillance_programs.map(&:name)
+      response[:surveillance_systems] = @response_set.surveillance_systems.map(&:name)
       render json: response
     end
   end
@@ -64,8 +64,12 @@ class ResponseSetsController < ApplicationController
   # PATCH/PUT /response_sets/1/publish
   def publish
     if @response_set.status == 'draft'
-      @response_set.publish
-      render :show, statis: :published, location: @response_set
+      if @current_user.publisher?
+        @response_set.publish(@current_user)
+        render :show, status: :ok, location: @response_set
+      else
+        render json: @response_set, status: :forbidden
+      end
     else
       render json: @response_set.errors, status: :unprocessable_entity
     end
@@ -81,7 +85,7 @@ class ResponseSetsController < ApplicationController
       if @response_set.update(response_set_params)
         render :show, status: :ok, location: @response_set
       else
-        render json: @response_set.errors, status: :unprocessable_entity
+        render json: @response_set.errors, status: :forbidden
       end
     else
       render json: @response_set.errors, status: :unprocessable_entity
@@ -110,7 +114,7 @@ class ResponseSetsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
-    params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author, :coded,
+    params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author,
                                          :version_independent_id, :status,
                                          responses_attributes: [:id, :value, :display_name, :code_system])
   end

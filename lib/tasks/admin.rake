@@ -34,4 +34,28 @@ namespace :admin do
       puts "User #{args.email} not found"
     end
   end
+
+  # Make a user a publisher
+  task :make_publisher, [:email] => :environment do |_t, args|
+    user = User.find_by(email: args.email)
+    if user
+      user.add_role :publisher
+      user.save
+      puts "Publisher role assigned to #{args.email}"
+    else
+      puts "User #{args.email} not found"
+    end
+  end
+
+  # Revoke the publisher role from a user
+  task :revoke_publisher, [:email] => :environment do |_t, args|
+    user = User.find_by(email: args.email)
+    if user
+      user.remove_role :publisher
+      user.save
+      puts "Publisher role revoked for #{args.email}"
+    else
+      puts "User #{args.email} not found"
+    end
+  end
 end

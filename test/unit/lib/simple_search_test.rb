@@ -4,6 +4,8 @@ require 'sdp/simple_search'
 class SimpleSearchTest < ActiveSupport::TestCase
   setup do
     @admin = users(:admin)
+    @publisher = users(:publisher)
+    @publisher.add_role :publisher
     @user = users(:not_admin)
   end
 
@@ -83,5 +85,32 @@ class SimpleSearchTest < ActiveSupport::TestCase
     assert_equal 2, hit_types['question']
     assert_equal 2, hit_types['response_set']
     assert_equal 2, hit_types['survey']
+  end
+
+  test 'publisher can search other users content ' do
+    %w(question form response_set survey).each do |type|
+      publisher_search = @publisher ? @publisher.has_role?(:publisher) : false
+      publisher_results = SDP::SimpleSearch.search(type, 'Search', @publisher.id, 10, 1, publisher_search)
+      publisher_json = JSON.parse(publisher_results.target!)
+      publisher_search = @user ? @user.has_role?(:publisher) : false
+      user_results = SDP::SimpleSearch.search(type, 'Search', @user.id, 10, 1, publisher_search)
+      user_json = JSON.parse(user_results.target!)
+
+      # Publisher should see admin and user's published and draft items
+      # (3 for each object type) despite not owning anything itself
+      assert_equal 3, publisher_json['hits']['total']
+      assert_equal 3, publisher_json['hits']['hits'].length
+      publisher_json['hits']['hits'].each do |hit|
+        assert_equal type, hit['_type']
+      end
+
+      assert_equal 2, user_json['hits']['total']
+      assert_equal 2, user_json['hits']['hits'].length
+      user_json['hits']['hits'].each do |hit|
+        assert_equal type, hit['_type']
+        source = hit['_source']
+        assert source['createdBy']['id'] == @user.id || source['status'] == 'published'
+      end
+    end
   end
 end

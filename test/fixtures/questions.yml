@@ -6,6 +6,7 @@ one:
   status: published
   version: 1
   version_independent_id: Q-1
+  published_by: publisher
 
 two:
   content: What is another question example?

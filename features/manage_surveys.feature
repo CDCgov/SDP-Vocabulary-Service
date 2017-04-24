@@ -35,7 +35,7 @@ Feature: Manage Surveys
    Then I should see "Name: Gender Survey"
    Then I should see "Revised Description"
    And I should see "Test Gender Form"
-   And I should see "Publish"
+   And I should not see "Publish"
    And I should see "Edit"
 
  Scenario: Delete a draft Survey
@@ -52,16 +52,17 @@ Feature: Manage Surveys
 
  Scenario: Publish a draft Survey
    Given I have a Survey with the name "Test Survey" and the description "Survey description"
-   And I am logged in as test_author@gmail.com
+   And I am the publisher test_author@gmail.com
    When I go to the list of Surveys
    And I click on the menu link for the Survey with the name "Test Survey"
    And I click on the option to Details the Survey with the name "Test Survey"
    Then I should see "Test Survey"
    Then I should see "Survey description"
    When I click on the "Publish" link
-   Then I should not see "Publish"
    And I should see "Revise"
+   And I should see "Published By: test_author@gmail.com"
    And I should not see "Edit"
+   And I should not see a "Publish" link
 
   Scenario: Edit a draft Survey
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
@@ -78,7 +79,7 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
     Then I should see "Survey description"
-    And I should see "Publish"
+    And I should not see "Publish"
     And I should see "Edit"
     And I should see "Surveillance System: National Violent Death Reporting System"
 
@@ -145,3 +146,20 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"
     And I should see "controlNumber - must be a valid OMB Control Number"
+
+  Scenario: An author should not be able to publish the survey
+    Given I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Details the Survey with the name "Test Survey"
+    Then I should not see "Publish"
+
+  Scenario: A publisher should not be able to edit another author's survey
+    Given I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I am the publisher test_publisher@gmail.com
+    When I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Details the Survey with the name "Test Survey"
+    Then I should see "Publish"
+    And I should not see "Revise"

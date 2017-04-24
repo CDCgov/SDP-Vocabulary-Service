@@ -14,6 +14,12 @@ class ResponseSetShowContainer extends Component {
     this.props.fetchResponseSet(this.props.params.rsId);
   }
 
+  componentDidMount() {
+    if (this.props.responseSet && this.props.responseSet.status === 'published') {
+      this.props.fetchResponseSetUsage(this.props.params.rsId);
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if(prevProps.params.rsId != this.props.params.rsId){
       this.props.fetchResponseSet(this.props.params.rsId);

@@ -6,6 +6,11 @@ Feature: Session Management
     When I click on the "Register" link
     Then I should see "Sign Up"
 
+  Scenario: Navigate to the sign in page through the jumbotron
+    Given I am on the "/" page
+    When I click on the "Get Started!" link
+    Then I should see "Sign Up"
+
   Scenario: Create an account
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
     And I have a Surveillance System with the name "National Vital Statistics System"
@@ -26,11 +31,15 @@ Feature: Session Management
   Scenario: Login to an existing account
     Given I am on the "/" page
     And a user "test_author@gmail.com" exists
+    Then I should see "Get Started!"
+    And I should not see "My Stuff"
     When I click on the "Login" link
     And I fill in the "email" field with "test_author@gmail.com"
     And I fill in the "password" field with "password"
     And I click on the "Log In" button
     Then I should see "test_author@gmail.com"
+    And I should see "My Stuff"
+    And I should not see "Get Started!"
 
   Scenario: Edit an existing account
     Given I am logged in as test_author@gmail.com
@@ -61,9 +70,22 @@ Feature: Session Management
     Given I am on the "/" page
     Then I should not see a "Create" link
 
+  Scenario: On login page should update and users should see their My Stuff content
+    Given I am on the "/" page
+    And a user "test_author@gmail.com" exists
+    And I have a Question with the content "What?" and the description "A simple question"
+    And I have a Question with the content "Who?" and the description "Another simple question"
+    # This step should be "should not see my stuff" once landing page is merged / test are written
+    Then I should see "0 Questions"
+    And I should not see "2 Questions"
+    When I click on the "Login" link
+    And I fill in the "email" field with "test_author@gmail.com"
+    And I fill in the "password" field with "password"
+    And I click on the "Log In" button
+    Then I should see "test_author@gmail.com"
+    And I should see "2 Questions"
+
   Scenario: Users should not be able to access restricted pages
-    Given I am on the "/#/mystuff" page
-    Then I should see "You are not authorized to see this content, please login."
     Given I am on the "/#/responseSets/new" page
     Then I should see "You are not authorized to see this content, please login."
     Given I am on the "/#/questions/new" page
@@ -76,11 +98,13 @@ Feature: Session Management
   Scenario: Sessions that expire result in redirection
     Given I have a Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
-    When I go to My Stuff
+    When I go to the dashboard
     Then I should see "What is your gender?"
+    And I should see "My Stuff"
     Then my session expires
-    And I am on the "/#/mystuff" page
-    Then I should see "You are not authorized to see this content, please login."
+    And I go to the dashboard
+    Then I should not see "My Stuff"
+    And I should see "Get Started!"
 
   Scenario: Accessing content that belongs to another user causes a forbidden error
     Given I am logged in as test_author@gmail.com

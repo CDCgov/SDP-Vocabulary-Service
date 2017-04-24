@@ -9,7 +9,7 @@ info:
     name: SDP Support
     url: http://www.cdc.gov/sdp/
     email: surveillanceplatform@cdc.gov
-    
+
 tags:
   -
     name: questions
@@ -33,7 +33,7 @@ paths:
         Get a list of questions that match the supplied search criteria.
       produces:
       - application/json
-          
+
       parameters:
         -
           name: limit
@@ -83,7 +83,7 @@ paths:
         question, these may be filtered using optional query parameters.
       produces:
       - application/json
-          
+
       responses:
         200:
           description: Successful response
@@ -106,7 +106,7 @@ paths:
         URL.
       produces:
       - application/json
-          
+
       responses:
         200:
           description: Successful response
@@ -123,7 +123,7 @@ paths:
         Get a list of programs that match the supplied search criteria.
       produces:
       - application/json
-          
+
       parameters:
         -
           name: limit
@@ -170,7 +170,7 @@ paths:
           description: Successful response
           schema:
             $ref: '#/definitions/Program'
-  
+
   /systems:
     get:
       tags:
@@ -179,7 +179,7 @@ paths:
         Get a list of systems that match the supplied search criteria.
       produces:
       - application/json
-          
+
       parameters:
         -
           name: limit
@@ -235,7 +235,7 @@ paths:
         Get a list of surveys that match the supplied search criteria.
       produces:
       - application/json
-          
+
       parameters:
         -
           name: limit
@@ -261,7 +261,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Survey'
-      
+
   /surveys/{id}:
     parameters:
       -
@@ -291,7 +291,7 @@ paths:
         Get a list of forms that match the supplied search criteria.
       produces:
       - application/json
-          
+
       parameters:
         -
           name: limit
@@ -354,7 +354,7 @@ paths:
         Get a list of value sets that match the supplied search criteria.
       produces:
       - application/json
-          
+
       parameters:
         -
           name: limit
@@ -424,7 +424,7 @@ paths:
         URL.
       produces:
       - application/json
-          
+
       responses:
         200:
           description: Successful response
@@ -492,7 +492,7 @@ definitions:
                 system:
                   type: string
                   title: System value for the code
-                version: 
+                version:
                   type: string
                   title: Version of the system in which this code/display is defined
                 code:
@@ -502,6 +502,10 @@ definitions:
                   type: string
                   title:
                     User display for the concept
+      published_by:
+        type: object
+        title: User that published the value set
+        $ref: '#/definitions/User'
 
   Usage:
     type: array
@@ -556,6 +560,10 @@ definitions:
       version:
         type: string
         title: Logical identifier for this version of the question
+      published_by:
+        type: object
+        title: User that published the question
+        $ref: '#/definitions/User'
       # TODO additional metadata
 
   Program:
@@ -636,6 +644,10 @@ definitions:
       surveyDescription:
         type: string
         title: Human readable description of the survey
+       published_by:
+        type: object
+        title: User that published the survey
+        $ref: '#/definitions/User'
       # TODO additional metadata
       forms:
         type: array
@@ -661,6 +673,10 @@ definitions:
       version:
         type: string
         title: Logical identifier for this version of the form
+      published_by:
+        type: object
+        title: User that published the form
+        $ref: '#/definitions/User'
       # TODO additional metadata
       questions:
         type: array
@@ -673,3 +689,36 @@ definitions:
               $ref: '#/definitions/Question'
             response:
               $ref: '#/definitions/ValueSet'
+            program_var:
+              type: string
+              title: Program Defined Variable name
+
+  User:
+    type: object
+    description:
+      User of vocabulary service
+    properties:
+      id:
+        type: string
+        title: User ID
+      email:
+        type: string
+        title: User's email address
+      name:
+        type: string
+        title: User's full name
+      first_name:
+        type: string
+        title: User's first name
+      last_name:
+        type: string
+        title: User's last name
+      last_program_id:
+        type: string
+        title: Last program associated with User
+      last_system_id:
+        type: string
+        title: Last system associated with User
+      publisher:
+        type: boolean
+        title: Whether user has publisher role

@@ -84,7 +84,7 @@ class FormsController < ApplicationController
   # PATCH/PUT /forms/1/publish
   def publish
     if @form.status == 'draft'
-      @form.publish
+      @form.publish(current_user)
       render :show
     else
       render json: @form.errors, status: :unprocessable_entity
@@ -126,13 +126,11 @@ class FormsController < ApplicationController
   end
 
   def create_form_questions
-    question_ids = params[:form][:linked_questions]
-    response_set_ids = params[:form][:linked_response_sets]
     form_questions = []
-    if question_ids
-      question_ids.zip(response_set_ids).each do |qid, rsid|
-        rsid = nil if rsid == ''
-        form_questions << FormQuestion.new(question_id: qid, response_set_id: rsid)
+    if params[:form][:linked_questions]
+      params[:form][:linked_questions].each do |q|
+        form_questions << FormQuestion.new(question_id: q[:question_id], response_set_id: q[:response_set_id],\
+                                           position: q[:position], program_var: q[:program_var])
       end
     end
     form_questions

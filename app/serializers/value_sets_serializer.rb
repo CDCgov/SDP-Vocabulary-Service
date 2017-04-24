@@ -37,4 +37,5 @@ class ValueSetsSerializer < ActiveModel::Serializer
     end
     expansion
   end
+  attribute :published_by, serializer: UserSerializer
 end

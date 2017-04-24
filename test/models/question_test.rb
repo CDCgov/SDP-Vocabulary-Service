@@ -48,14 +48,14 @@ class QuestionTest < ActiveSupport::TestCase
   test 'last_published' do
     q = questions(:two)
     assert_difference('Question.last_published.count') do
-      assert q.publish
+      assert q.publish(users(:admin))
     end
   end
 
   test 'Question status should change to published when published' do
     qs = questions(:gfv2)
     assert_equal 'draft', qs.status
-    qs.publish
+    qs.publish(users(:admin))
     assert_equal 'published', qs.status
   end
 
@@ -107,6 +107,21 @@ class QuestionTest < ActiveSupport::TestCase
     assert_equal q1.oid, q7.oid
   end
 
+  test 'surveillance_systems' do
+    q = questions(:one)
+    ss = q.surveillance_systems
+    assert_equal 2, ss.length
+    assert_includes ss.map(&:name), 'National Insignificant Digits System'
+    assert_includes ss.map(&:name), 'National Spork Monitoring System'
+  end
+
+  test 'surveillance_programs' do
+    q = questions(:one)
+    sp = q.surveillance_programs
+    assert_equal 1, sp.length
+    assert_includes sp.map(&:name), 'Generic Surveillance Program'
+  end
+
   test 'only choice response type allows other' do
     blank_rs_question = Question.new(content: 'test', other_allowed: true)
     refute blank_rs_question.valid?
@@ -116,5 +131,18 @@ class QuestionTest < ActiveSupport::TestCase
 
     valid_other_question = Question.new(content: 'test', other_allowed: true, response_type: ResponseType.new(code: 'choice'))
     assert valid_other_question.valid?
+  end
+
+  test 'Publish also publishes response sets' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test publish', created_by: user)
+    assert rs.save
+    q = Question.new(content: 'Test publish', created_by: user)
+    q.response_sets = [rs]
+    assert q.save
+    q.publish(user)
+    assert_equal user, q.published_by
+    assert_equal 'published', q.status
+    assert_equal 'published', q.response_sets.first.status
   end
 end

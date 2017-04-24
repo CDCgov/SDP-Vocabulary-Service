@@ -53,11 +53,19 @@ class SurveyEdit extends Component {
         this.state = this.stateForNew();
     }
     this.unsavedState = false;
+    this.lastFormCount = this.state.surveyForms.length;
   }
 
   componentDidMount() {
     this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
     window.onbeforeunload = this.windowWillUnload.bind(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.lastFormCount !== prevState.surveyForms.length) {
+      this.unsavedState  = true;
+      this.lastFormCount = prevState.surveyForms.length;
+    }
   }
 
   componentWillUnmount() {
@@ -128,7 +136,7 @@ class SurveyEdit extends Component {
       return ('Loading');
     }
     return (
-      <div className="col-md-8">
+      <div className="col-md-7">
       <div className="" id='survey-div'>
       <ModalDialog  show ={this.state.showModal}
                     title="Warning"

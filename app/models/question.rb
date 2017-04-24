@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  include Versionable, OidGenerator
+  include Versionable, OidGenerator, Searchable
   acts_as_commentable
 
   has_many :question_response_sets
@@ -12,6 +12,7 @@ class Question < ApplicationRecord
   belongs_to :question_type
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
+  belongs_to :published_by, class_name: 'User'
   belongs_to :parent, class_name: 'Question'
 
   validates :content, presence: true
@@ -29,20 +30,13 @@ class Question < ApplicationRecord
     DeleteFromIndexJob.perform_later('question', id)
   end
 
-  def self.search(search = nil, current_user_id = nil)
-    if current_user_id && search
-      where("(status='published' OR created_by_id= ?) AND (content ILIKE ?)", current_user_id, "%#{search}%")
-    elsif current_user_id
-      where("(status= 'published' OR created_by_id = ?)", current_user_id)
-    elsif search
-      where('status= ? and content ILIKE ?', 'published', "%#{search}%")
-    else
-      where('status=  ?', 'published')
+  def publish(publisher)
+    if status == 'draft'
+      self.status = 'published'
+      self.published_by = publisher
+      save!
     end
-  end
-
-  def publish
-    update(status: 'published') if status == 'draft'
+    response_sets.each { |rs| rs.publish(publisher) }
   end
 
   def build_new_revision
@@ -63,14 +57,14 @@ class Question < ApplicationRecord
   # form is contained in
   def surveillance_programs
     SurveillanceProgram.joins(surveys: :survey_forms)
-                       .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
-                       .where('form_questions.question_id = ?', id)
+                       .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
+                       .where('form_questions.question_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def surveillance_systems
     SurveillanceSystem.joins(surveys: :survey_forms)
-                      .joins('INNER join  form_questions on form_questions.form_id = survey_forms.form_id')
-                      .where('form_questions.question_id = ?', id)
+                      .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
+                      .where('form_questions.question_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def other_allowed_on_when_choice

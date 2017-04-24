@@ -3,9 +3,14 @@ require 'test_helper'
 class SurveysControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
+
+  DRAFT = 'draft'.freeze
+  PUBLISHED = 'published'.freeze
+
   setup do
+    @current_user = users(:not_admin)
     @survey = surveys(:one)
-    sign_in users(:admin)
+    sign_in @current_user
   end
 
   test 'should get index' do
@@ -23,7 +28,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Survey.count') do
       post surveys_url params: { survey: { linked_forms: [forms(:one).id], name: 'Test' } }
     end
-    assert_enqueued_jobs 2 # one for the survey one for the form update
+    assert_enqueued_jobs 5 # 1 for the survey, 1 for the form update, 2 for questions, 1 for response set
     assert_response :success
     assert_equal 1, Survey.last.forms.length
     assert_equal 'GSP', Survey.last.surveillance_program.acronym
@@ -48,16 +53,32 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 5
   end
 
-  test 'should publish a survey' do
-    assert_equal 'draft', @survey.status
-    @survey.publish
-    put survey_url(@survey), params: { survey: { linked_forms: [forms(:one).id], name: @survey.name, status: @survey.status, control_number: '9876-5432' } }
+  test 'should not publish a published survey' do
+    @survey = surveys(:two)
+    put publish_survey_url(@survey)
+    assert_response :unprocessable_entity
+  end
+
+  test 'publishers should see surveys from other authors' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    get survey_url(surveys(:one), format: :json)
     assert_response :success
   end
 
-  test 'should not publish a published survey' do
-    @survey = surveys(:two)
-    put survey_url(@survey), params: { survey: { linked_forms: [forms(:one).id], name: @survey.name, status: @survey.status, control_number: '9876-5432' } }
-    assert_response :unprocessable_entity
+  test 'publishers should be able to publish surveys' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
+    assert_response :success
+    assert_equal Survey.find(surveys(:one).id).status, PUBLISHED
+    assert_equal Survey.find(surveys(:one).id).published_by.id, users(:publisher).id
+  end
+
+  test 'authors should not be able to publish surveys' do
+    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
+    assert_response :forbidden
   end
 end

@@ -1,5 +1,5 @@
 .recent-items-panel {
-  @extend .panel; 
+  @extend .panel;
   border: none;
   border-radius: 0px;
 }
@@ -10,7 +10,7 @@
   font-weight: bold;
   color: $dark-gray;
   font-size: 18px;
-  border-bottom: 3px solid $light-gray; 
+  border-bottom: 3px solid $light-gray;
 }
 
 .recent-items-body {
@@ -34,7 +34,10 @@
 
 .recent-item-list {
   @extend .list-group-item;
-  padding: 30px 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 18px;
+  padding-bottom: 36px;
   border: 0px;
   font-weight: bold;
   color: $cdc-blue;

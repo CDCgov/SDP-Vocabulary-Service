@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403180740) do
+ActiveRecord::Schema.define(version: 20170413150852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20170403180740) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "position"
+    t.string   "program_var"
   end
 
   create_table "forms", force: :cascade do |t|
@@ -69,6 +70,7 @@ ActiveRecord::Schema.define(version: 20170403180740) do
     t.string   "oid"
     t.text     "description"
     t.string   "status",                           default: "draft"
+    t.integer  "published_by_id"
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -108,9 +110,9 @@ ActiveRecord::Schema.define(version: 20170403180740) do
     t.string   "oid"
     t.text     "description"
     t.string   "status",                 default: "draft"
-    t.boolean  "harmonized"
     t.integer  "parent_id"
     t.boolean  "other_allowed"
+    t.integer  "published_by_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id", using: :btree
     t.index ["question_type_id"], name: "index_questions_on_question_type_id", using: :btree
     t.index ["response_type_id"], name: "index_questions_on_response_type_id", using: :btree
@@ -125,12 +127,12 @@ ActiveRecord::Schema.define(version: 20170403180740) do
     t.datetime "updated_at",                               null: false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
-    t.boolean  "coded"
     t.string   "version_independent_id"
     t.integer  "version",                default: 1
     t.integer  "parent_id"
     t.string   "status",                 default: "draft"
     t.string   "source",                 default: "local"
+    t.integer  "published_by_id"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id", using: :btree
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id", using: :btree
   end
@@ -199,6 +201,7 @@ ActiveRecord::Schema.define(version: 20170403180740) do
     t.string   "description"
     t.integer  "surveillance_program_id"
     t.integer  "surveillance_system_id"
+    t.integer  "published_by_id"
     t.index ["created_by_id"], name: "index_surveys_on_created_by_id", using: :btree
   end
 
@@ -235,16 +238,20 @@ ActiveRecord::Schema.define(version: 20170403180740) do
   add_foreign_key "authentications", "users"
   add_foreign_key "concepts", "questions"
   add_foreign_key "forms", "users", column: "created_by_id"
+  add_foreign_key "forms", "users", column: "published_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
   add_foreign_key "questions", "users", column: "created_by_id"
+  add_foreign_key "questions", "users", column: "published_by_id"
   add_foreign_key "questions", "users", column: "updated_by_id"
   add_foreign_key "response_sets", "users", column: "created_by_id"
+  add_foreign_key "response_sets", "users", column: "published_by_id"
   add_foreign_key "response_sets", "users", column: "updated_by_id"
   add_foreign_key "responses", "response_sets"
   add_foreign_key "surveys", "surveillance_programs"
   add_foreign_key "surveys", "surveillance_systems"
   add_foreign_key "surveys", "users", column: "created_by_id"
+  add_foreign_key "surveys", "users", column: "published_by_id"
   add_foreign_key "users", "surveillance_programs", column: "last_program_id"
   add_foreign_key "users", "surveillance_systems", column: "last_system_id"
 end

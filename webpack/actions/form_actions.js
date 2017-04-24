@@ -49,19 +49,6 @@ export function deleteForm(id, callback=null) {
   };
 }
 
-export function fetchMyForms(searchTerms) {
-  return {
-    type: FETCH_FORMS,
-    payload: axios.get(routes.myFormsPath(), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      },
-      params: { search: searchTerms }
-    })
-  };
-}
-
 export function fetchForms(searchTerms) {
   return {
     type: FETCH_FORMS,

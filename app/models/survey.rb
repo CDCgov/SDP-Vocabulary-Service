@@ -1,9 +1,10 @@
 class Survey < ApplicationRecord
-  include Versionable
+  include Versionable, Searchable
   acts_as_commentable
 
   has_many :survey_forms
   belongs_to :created_by, class_name: 'User'
+  belongs_to :published_by, class_name: 'User'
 
   has_many :forms, through: :survey_forms
 
@@ -29,20 +30,13 @@ class Survey < ApplicationRecord
     DeleteFromIndexJob.perform_later('survey', id)
   end
 
-  def publish
-    update(status: 'published')
-  end
-
-  def self.search(search = nil, current_user_id = nil)
-    if current_user_id && search
-      where("(status='published' OR created_by_id= ?) AND (name ILIKE ?)", current_user_id, "%#{search}%")
-    elsif current_user_id
-      where("(status= 'published' OR created_by_id = ?)", current_user_id)
-    elsif search
-      where('status= ? and name ILIKE ?', 'published', "%#{search}%")
-    else
-      where('status=  ?', 'published')
+  def publish(publisher)
+    if status == 'draft'
+      self.status = 'published'
+      self.published_by = publisher
+      save!
     end
+    forms.each { |f| f.publish(publisher) }
   end
 
   def build_new_revision

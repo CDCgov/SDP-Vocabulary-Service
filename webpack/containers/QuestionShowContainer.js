@@ -14,6 +14,12 @@ class QuestionShowContainer extends Component {
     this.props.fetchQuestion(this.props.params.qId);
   }
 
+  componentDidMount() {
+    if (this.props.question && this.props.question.status === 'published') {
+      this.props.fetchQuestionUsage(this.props.params.qId);
+    }
+  }
+
   componentDidUpdate(prevProps){
     if(prevProps.params.qId !== this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
