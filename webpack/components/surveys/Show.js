@@ -4,7 +4,7 @@ import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import VersionInfo from '../VersionInfo';
-import { isEditable, isRevisable, isPublishable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component{
   historyBar() {
@@ -51,6 +51,9 @@ class SurveyShow extends Component{
               return false;
             }}>Delete</a>
           }
+          {isExtendable(this.props.survey, this.props.currentUser) &&
+            <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
+          }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
         </div>
         <div className="maincontent-details">
@@ -69,6 +72,12 @@ class SurveyShow extends Component{
             <div className="box-content">
               <strong>Published By: </strong>
               {this.props.survey.publishedBy.email}
+            </div>
+            }
+            { this.props.survey.parent &&
+            <div className="box-content">
+              <strong>Extended from: </strong>
+              <Link to={`/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name }</Link>
             </div>
             }
           </div>

@@ -23,6 +23,7 @@ class FormEdit extends Component {
     state.versionIndependentId = null;
     state.version = 1;
     state.parentId = form.id;
+    state.controlNumber = '';
     return state;
   }
 
