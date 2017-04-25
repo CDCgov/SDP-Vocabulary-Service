@@ -35,7 +35,16 @@ module SDP
 
       def self.write_out_programs(programs)
         programs.compact.each do |p|
-          SurveillanceProgram.find_or_create_by!(name: p.strip)
+          program_name = p.strip
+          acronym = nil
+          # If the program name has the acronym in parens, then pull out the
+          # acronym and strip it from the name
+          md = program_name.match(/\((\w+)\)/)
+          if md
+            acronym = md[1]
+            program_name = program_name.split('(')[0].strip
+          end
+          SurveillanceProgram.create!(name: program_name, acronym: acronym) unless SurveillanceProgram.find_by(name: program_name)
         end
       end
     end
