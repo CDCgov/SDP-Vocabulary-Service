@@ -38,6 +38,26 @@ Feature: Manage Surveys
    And I should not see "Publish"
    And I should see "Edit"
 
+  Scenario: Extend Survey
+    Given I have a published Survey with the name "Test Survey" and the description "Parent description"
+    Given I have a published Form with the name "Test Gender Form" and the description "Form description"
+    And I am logged in as test_author@gmail.com
+    When I go to the dashboard
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Extend the Survey with the name "Test Survey"
+    And I fill in the "name" field with "Test Survey Extended"
+    And I fill in the "search" field with "Gender"
+    And I click on the "search-btn" button
+    And I use the form search to select "Test Gender Form"
+    And I click on the "Save" button
+    Then I should see "Name: Test Survey Extended"
+    Then I should see "Parent description"
+    And I should see "Extended from: Test Survey"
+    And I should see "Test Gender Form"
+    And I should not see "Publish"
+    And I should see "Version: 1"
+    And I should see "Edit"
+
  Scenario: Delete a draft Survey
   Given I have a Survey with the name "Test Survey" and the description "Survey description"
   And I am logged in as test_author@gmail.com

@@ -61,7 +61,7 @@ export default class ResponseSetDetails extends Component {
             {isEditable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/edit`}>Edit</Link>
             }
-            {isExtendable(responseSet) &&
+            {isExtendable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
             }
             {isPublishable(responseSet, this.props.currentUser) &&

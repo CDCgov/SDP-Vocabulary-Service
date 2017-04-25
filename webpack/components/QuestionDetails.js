@@ -90,7 +90,7 @@ export default class QuestionDetails extends Component {
             {isEditable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/edit`}>Edit</Link>
             }
-            {isExtendable(question) &&
+            {isExtendable(question, this.props.currentUser) &&
               <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
             }
             {isPublishable(question, this.props.currentUser) &&

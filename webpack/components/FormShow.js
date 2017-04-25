@@ -5,7 +5,7 @@ import Routes from '../routes';
 import VersionInfo from './VersionInfo';
 import { hashHistory, Link } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
-import { isEditable, isRevisable, isPublishable } from '../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 
 class FormShow extends Component {
   render() {
@@ -73,6 +73,9 @@ class FormShow extends Component {
               return false;
             }}>Delete</a>
           }
+          {isExtendable(form, this.props.currentUser) &&
+            <Link className="btn btn-default" to={`/forms/${form.id}/extend`}>Extend</Link>
+          }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           {this.props.currentUser && this.props.currentUser.id &&
             <a className="btn btn-default" href={Routes.redcapFormPath(form)}>Export to Redcap</a>
@@ -92,6 +95,12 @@ class FormShow extends Component {
             <div className="box-content">
               <strong>Published By: </strong>
               {form.publishedBy.email}
+            </div>
+            }
+            { form.parent &&
+            <div className="box-content">
+              <strong>Extended from: </strong>
+              <Link to={`/forms/${form.parent.id}`}>{ form.parent.name }</Link>
             </div>
             }
           </div>
