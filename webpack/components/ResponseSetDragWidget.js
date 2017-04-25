@@ -9,13 +9,13 @@ import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_re
 import { responseSetsProps } from '../prop-types/response_set_props';
 
 let setData = function(){
-  return {"json/responseSet": JSON.stringify(this.props.result.Source)};
+  return {"Text": JSON.stringify(this.props.result.Source)};
 };
 
 let DraggableResponseSet = Draggable(SearchResult, setData);
 
 let onDrop = (evt, self) => {
-  let rs = JSON.parse(evt.dataTransfer.getData("json/responseSet"));
+  let rs = JSON.parse(evt.dataTransfer.getData("Text"));
   if(!self.props.selectedResponseSets.find((r) => {
     return r.id == rs.id;
   })) {
