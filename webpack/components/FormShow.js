@@ -97,6 +97,12 @@ class FormShow extends Component {
               {form.publishedBy.email}
             </div>
             }
+            { form.parent &&
+            <div className="box-content">
+              <strong>Extended from: </strong>
+              <Link to={`/forms/${form.parent.id}`}>{ form.parent.name }</Link>
+            </div>
+            }
           </div>
           {this.props.form.formQuestions && this.props.form.formQuestions.length > 0 &&
             <FormQuestionList questions={this.props.form.formQuestions} />
