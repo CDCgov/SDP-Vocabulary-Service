@@ -50,6 +50,17 @@ Feature: Manage Response Sets
     And I should see "M / F"
     And I should not see "Publish"
 
+  Scenario: Send a Draft Response Set to a Publisher
+    Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
+    And I am logged in as test_author@gmail.com
+    And I have a publisher "johnny@test.org" with the first name "Johnny" and last name "Test"
+    When I go to the list of Response Sets
+    When I click on the menu link for the Response Set with the name "Gender Full"
+    And I click on the option to Details the Response Set with the name "Gender Full"
+    Then I should see "Send to publisher"
+    When I click on the "Send to publisher" button
+    And I should see "Johnny Test <johnny@test.org>"
+
    Scenario: Delete a draft Response Set
     Given I have a Response Set with the name "Test Response Set" and the description "Response Set description"
     And I am logged in as test_author@gmail.com

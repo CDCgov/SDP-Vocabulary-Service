@@ -57,7 +57,7 @@ export default class ResponseSetDetails extends Component {
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
-            {isPublishable(responseSet, this.props.currentUser) &&
+            {isEditable(responseSet, this.props.currentUser) &&
               <PublisherLookUp publishers={this.props.publishers}
                              itemType="Response Set" />
             }
