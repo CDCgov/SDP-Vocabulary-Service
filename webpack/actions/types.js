@@ -126,3 +126,7 @@ export const CREATE_SURVEY = 'CREATE_SURVEY';
 
 // Current User
 export const LOG_OUT = 'LOG_OUT';
+
+// Publisher types
+export const FETCH_PUBLISHERS = 'FETCH_PUBLISHERS';
+export const FETCH_PUBLISHERS_FULFILLED = 'FETCH_PUBLISHERS_FULFILLED';

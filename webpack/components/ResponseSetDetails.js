@@ -9,7 +9,9 @@ import { hashHistory } from 'react-router';
 import QuestionList  from './QuestionList';
 import CodedSetTable from "./CodedSetTable";
 import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
+import PublisherLookUp from "./shared_show/PublisherLookUp";
 import currentUserProps from "../prop-types/current_user_props";
+import { publishersProps } from "../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 import _ from 'lodash';
 
@@ -55,6 +57,10 @@ export default class ResponseSetDetails extends Component {
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
+            {isPublishable(responseSet, this.props.currentUser) &&
+              <PublisherLookUp publishers={this.props.publishers}
+                             itemType="Response Set" />
+            }
             {isRevisable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>
             }
@@ -147,5 +153,6 @@ ResponseSetDetails.propTypes = {
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
-  questions: PropTypes.arrayOf(questionProps)
+  questions: PropTypes.arrayOf(questionProps),
+  publishers: publishersProps
 };
