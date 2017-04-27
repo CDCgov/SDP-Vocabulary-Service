@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import {formProps} from '../prop-types/form_props';
+import { hashHistory, Link } from 'react-router';
+
 import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
 import VersionInfo from './VersionInfo';
-import { hashHistory, Link } from 'react-router';
+import PublisherLookUp from "./shared_show/PublisherLookUp";
+
+import { formProps } from '../prop-types/form_props';
 import currentUserProps from '../prop-types/current_user_props';
+import { publishersProps } from "../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 
 class FormShow extends Component {
@@ -47,6 +51,10 @@ class FormShow extends Component {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
+          {isEditable(form, this.props.currentUser) &&
+            <PublisherLookUp publishers={this.props.publishers}
+                           itemType="Form" />
+          }
           {isPublishable(form, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -118,7 +126,8 @@ FormShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishForm: PropTypes.func,
-  deleteForm:  PropTypes.func.isRequired
+  deleteForm:  PropTypes.func.isRequired,
+  publishers: publishersProps
 };
 
 export default FormShow;

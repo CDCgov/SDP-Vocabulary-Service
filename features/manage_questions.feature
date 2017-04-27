@@ -25,6 +25,18 @@ Feature: Manage Questions
     And I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
 
+  Scenario: Send a Draft Question to a Publisher
+    Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
+    And I have a publisher "johnny@test.org" with the first name "Johnny" and last name "Test"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    When I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    Then I should see "Name: What is your gender?"
+    And I should see "Send to publisher"
+    When I click on the "Send to publisher" button
+    And I should see "Johnny Test <johnny@test.org>"
+
   Scenario: Show Question in Detail No Concepts
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC"
     And I am logged in as test_author@gmail.com

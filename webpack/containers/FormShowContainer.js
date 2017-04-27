@@ -10,6 +10,7 @@ import { questionsProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import CommentList from '../containers/CommentList';
 import currentUserProps from '../prop-types/current_user_props';
+import { publishersProps } from "../prop-types/publisher_props";
 
 class FormShowContainer extends Component {
   componentWillMount() {
@@ -63,7 +64,8 @@ class FormShowContainer extends Component {
                       router={this.props.router}
                       currentUser={this.props.currentUser}
                       publishForm={this.props.publishForm}
-                      deleteForm ={this.props.deleteForm} />
+                      deleteForm ={this.props.deleteForm}
+                      publishers ={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Form' commentableId={this.props.form.id} />
           </div>
@@ -74,7 +76,13 @@ class FormShowContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const props = {currentUser: state.currentUser, responseSets: state.responseSets, questions: state.questions, form: state.forms[ownProps.params.formId]};
+  const props = {
+    currentUser: state.currentUser,
+    responseSets: state.responseSets,
+    questions: state.questions,
+    form: state.forms[ownProps.params.formId],
+    publishers: state.publishers
+  };
   return props;
 }
 
@@ -93,7 +101,8 @@ FormShowContainer.propTypes = {
   fetchQuestions: PropTypes.func,
   fetchResponseSets: PropTypes.func,
   deleteForm:  PropTypes.func,
-  publishForm: PropTypes.func
+  publishForm: PropTypes.func,
+  publishers: publishersProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormShowContainer);
