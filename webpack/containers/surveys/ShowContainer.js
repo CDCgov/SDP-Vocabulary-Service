@@ -9,6 +9,7 @@ import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
+import { publishersProps } from "../../prop-types/publisher_props";
 
 class SurveyShowContainer extends Component {
   componentWillMount() {
@@ -35,12 +36,7 @@ class SurveyShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <SurveyShow currentUser={this.props.currentUser}
-                        publishSurvey={this.props.publishSurvey}
-                        router={this.props.router}
-                        survey={this.props.survey}
-                        forms ={this.props.forms}
-                        deleteSurvey={this.props.deleteSurvey} />
+            <SurveyShow {...this.props} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
           </div>
@@ -53,6 +49,7 @@ class SurveyShowContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
+  props.publishers = state.publishers;
   props.survey = state.surveys[ownProps.params.surveyId];
   if (props.survey) {
     props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
@@ -81,7 +78,8 @@ SurveyShowContainer.propTypes = {
   fetchQuestions: PropTypes.func,
   fetchForms: PropTypes.func,
   params: PropTypes.object,
-  router: PropTypes.object
+  router: PropTypes.object,
+  publishers: publishersProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyShowContainer);
