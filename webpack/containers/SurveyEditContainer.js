@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchQuestions } from '../actions/questions_actions';
+import { setSteps } from '../actions/tutorial_actions';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
 import { fetchForms, removeForm, reorderForm } from '../actions/form_actions';
 import { formsProps }  from '../prop-types/form_props';
@@ -31,6 +32,46 @@ class SurveyEditContainer extends Component {
 
   componentWillMount() {
     this.props.fetchForms();
+  }
+
+  componentDidMount() {
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Form Search',
+        text: 'Type in your search keywords here to search for forms to add to the survey.',
+        selector: '.search-group',
+        position: 'right',
+      },
+      {
+        title: 'Advanced Search Filters',
+        text: 'Click Advanced to see additional filters you can apply to your search.',
+        selector: '.adv-search-link',
+        position: 'right',
+      },
+      {
+        title: 'Form Result',
+        text: 'Use these search results to find the form you want to add.',
+        selector: '.u-result',
+        position: 'right',
+      },
+      {
+        title: 'Add Form',
+        text: 'Click on the add button to select a form for the survey.',
+        selector: '.fa-plus-square',
+        position: 'right',
+      },
+      {
+        title: 'Survey Details',
+        text: 'Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.',
+        selector: '.survey-edit-details',
+        position: 'left',
+      }]);
   }
 
   componentDidUpdate(prevProps) {
@@ -79,7 +120,7 @@ class SurveyEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({newSurvey, fetchForms, removeForm, reorderForm,
+  return bindActionCreators({setSteps, newSurvey, fetchForms, removeForm, reorderForm,
     saveSurvey, saveDraftSurvey, fetchSurvey, fetchQuestions}, dispatch);
 }
 
@@ -99,6 +140,7 @@ SurveyEditContainer.propTypes = {
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
+  setSteps:    PropTypes.func,
   newSurvey:   PropTypes.func,
   saveSurvey:  PropTypes.func,
   fetchSurvey: PropTypes.func,

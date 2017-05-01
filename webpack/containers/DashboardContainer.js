@@ -22,7 +22,6 @@ class DashboardContainer extends Component {
     this.loadMore = this.loadMore.bind(this);
     this.openSignUpModal = this.openSignUpModal.bind(this);
     this.closeSignUpModal = this.closeSignUpModal.bind(this);
-    this.addSteps = this.addSteps.bind(this);
     this.state = {
       searchType: '',
       searchTerms: '',
@@ -39,35 +38,7 @@ class DashboardContainer extends Component {
     this.search('');
   }
 
-  componentDidMount() {
-    this.addSteps([
-    {
-      title: 'Help',
-      text: 'Click next to see a step by step walkthrough for using this page.',
-      selector: '.help-link',
-      position: 'bottom',
-    },
-    {
-      title: 'Dashboard Search',
-      text: 'Type in your search term and search across all items by default. Results include items you own and published items.',
-      selector: '.search-group',
-      position: 'right',
-    },
-    {
-      title: 'Type Filters',
-      text: 'Click on any of the type boxes to highlight them and toggle on filtering by that single item type.',
-      selector: '.analytics-list-group',
-      position: 'right',
-    },
-    {
-      title: 'Advanced Search Filters',
-      text: 'Click Advanced Link to see additional filters you can apply to your search.',
-      selector: '.adv-search-link',
-      position: 'right',
-    }]);
-  }
-
-  componentDidUpdate(_prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if(prevState != this.state && prevState.page === this.state.page) {
       let searchType = this.state.searchType;
       let searchTerms = this.state.searchTerms;
@@ -78,6 +49,76 @@ class DashboardContainer extends Component {
         searchTerms = null;
       }
       this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+    }
+
+    if(prevProps.currentUser != this.props.currentUser) {
+      let steps = [
+        {
+          title: 'Help',
+          text: 'Click next to see a step by step walkthrough for using this page.',
+          selector: '.help-link',
+          position: 'bottom',
+        },
+        {
+          title: 'Dashboard Search',
+          text: 'Type in your search term and search across all items by default. Results include items you own and published items.',
+          selector: '.search-group',
+          position: 'right',
+        },
+        {
+          title: 'Type Filters',
+          text: 'Click on any of the type boxes to highlight them and toggle on filtering by that single item type.',
+          selector: '.analytics-list-group',
+          position: 'right',
+        },
+        {
+          title: 'Advanced Search Filters',
+          text: 'Click Advanced Link to see additional filters you can apply to your search.',
+          selector: '.adv-search-link',
+          position: 'right',
+        }];
+      if(_.isEmpty(this.props.currentUser)) {
+        steps = steps.concat([
+          {
+            title: 'Log In',
+            text: 'If you already have an account you can log in to unlock more features in the top right of the dashboard page.',
+            selector: '.log-in-link',
+            position: 'left',
+          },
+          {
+            title: 'Sign Up!',
+            text: 'Click the Get Started! button on the banner to register a new account.',
+            selector: '.cdc-promo-banner',
+            position: 'right',
+          }]);
+      } else {
+        steps = steps.concat([
+          {
+            title: 'My Stuff Filtering',
+            text: 'Click on any of the rows in the My Stuff Analytics panel to filter by items you authored.',
+            selector: '.recent-items-body',
+            position: 'left',
+          },
+          {
+            title: 'Create Menu',
+            text: 'Click the create menu and then select an item type to author a new item.',
+            selector: '.create-menu',
+            position: 'bottom',
+          },
+          {
+            title: 'Notifications',
+            text: 'Click the alerts dropdown to see any new notifications about your content.',
+            selector: '.notification-dropdown',
+            position: 'bottom',
+          },
+          {
+            title: 'Manage Account',
+            text: 'Click your e-mail to see various account management options.',
+            selector: '.account-dropdown',
+            position: 'bottom',
+          }]);
+      }
+      this.props.setSteps(steps);
     }
   }
 
@@ -184,18 +225,6 @@ class DashboardContainer extends Component {
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
     this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
-  }
-
-  addSteps(steps) {
-    let newSteps = steps;
-    if (!Array.isArray(newSteps)) {
-      newSteps = [newSteps];
-    }
-    if (!newSteps.length) {
-      return;
-    }
-
-    this.props.setSteps(newSteps);
   }
 
   selectType(searchType, myStuffToggle=false) {

@@ -150,7 +150,7 @@ class SurveyEdit extends Component {
       return ('Loading');
     }
     return (
-      <div className="col-md-7">
+      <div className="col-md-7 survey-edit-details">
       <div className="" id='survey-div'>
       <ModalDialog  show ={this.state.showModal}
                     title="Warning"

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
@@ -6,35 +6,22 @@ import { setSteps } from '../actions/tutorial_actions';
 class Help extends Component {
   constructor(props){
     super(props);
-    this.addSteps = this.addSteps.bind(this);
   }
 
   componentDidMount() {
-    this.addSteps([
-    {
-      title: 'Help',
-      text: 'Click next to see a step by step walkthrough for using this page.',
-      selector: '.help-link',
-      position: 'bottom',
-    },
-    {
-      title: 'Tutorials',
-      text: 'Click any item in this side bar to see instructions on how to perform any of the specified activities.',
-      selector: '.how-to-nav',
-      position: 'right',
-    }]);
-  }
-
-  addSteps(steps) {
-    let newSteps = steps;
-    if (!Array.isArray(newSteps)) {
-      newSteps = [newSteps];
-    }
-    if (!newSteps.length) {
-      return;
-    }
-
-    this.props.setSteps(newSteps);
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Tutorials',
+        text: 'Click any item in this side bar to see instructions on how to perform any of the specified activities.',
+        selector: '.how-to-nav',
+        position: 'right',
+      }]);
   }
 
   generalInstructions() {
@@ -199,63 +186,63 @@ class Help extends Component {
     );
   }
 
+  glossaryTab() {
+    return (
+      <div className="tab-pane" id="glossary" role="tabpanel">
+        <h1 id="glossary">Glossary</h1>
+        <p><strong>Author –</strong> An actor (organization, person, or program) responsible for creating and/or maintaining a data collection item, a code set, a value set, or a data collection instrument</p>
+        <p><strong>Code –</strong> a succinct label for a concept, variable, value, or question</p>
+        <p><strong>Code System –</strong> a collection of unique codes pertaining to one or more topic areas and maintained as a unit; aka code set</p>
+        <p><strong>Data Collection Instrument –</strong> a  method for collecting data from or about subjects using tests, questionnaires, inventories, interview schedules or guides, and survey plans</p>
+        <p><strong>Data Collection Item –</strong> A question or data element used to indicate the name and meaning of a datum. It may be identified by a code in a code system, and it may be associated with keywords or search tags from a code system</p>
+        <p><strong>Data Collection Item Group –</strong> a set of data collection items such as questions that are used together in data collection instruments, for example as questionnaire sections, message segments, or SDV-Forms</p>
+        <p><strong>Data Collection Specification -</strong> a set of data terms or questions, definitions, and data value constraints used to describe information collected manually or electronically for surveillance purposes and may also prescribe organization and collection instructions, guidelines, or logic. Examples include an HL7 V2.x  message mapping guide, and HL7 CDA implementation guide</p>
+        <p><strong>Data Element –</strong> A unit of data or a variable defined for evaluating and processing. It typically is associated with a code name, a description, and a set of expected values. It may have other associated metadata.</p>
+        <p><strong>Question –</strong> a data collection item that has a natural language expression used to solicit a value for  a data variable. A question may be identified by a code name that stands for the question.</p>
+        <p><strong>SDP-V Survey –</strong> a kind of data collection specification created in the SDP Vocabulary Service. It is a selection of questions and response sets (grouped into sections) used together to define the contents of a data collection instrument such as a survey instrument.</p>
+        <p><strong>Survey Instrument -</strong> a data collection instrument in which the collection is done by asking questions and receiving responses. A survey can be implemented as a paper or electronic form, or as a live interview. This is also called a questionnaire</p>
+        <p><strong>Value –</strong> an item of data that can be assigned to a data element or a response to a question</p>
+        <p><strong>Value Set –</strong> a set of value choices that are applicable to one or more data collection items (e.g. data elements or questions). In the case where the data collection item is a question, a value set is also referred to as a response set.</p>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-    		  	<div className="showpage_header_container no-print">
+            <div className="showpage_header_container no-print">
               <ul className="list-inline">
                 <li className="showpage_button"><span className="fa fa-question-circle fa-2x" aria-hidden="true"></span></li>
                 <li className="showpage_title">Help</li>
               </ul>
             </div>
-        		<div className="container col-md-12">
-        			<div className="row">
+            <div className="container col-md-12">
+              <div className="row">
                 <div className="col-md-12 nopadding">
                   <ul className="nav nav-tabs" role="tablist">
                     <li className="nav-item active">
                       <a className="nav-link" data-toggle="tab" href="#instructions" role="tab">Instructions</a>
                     </li>
-                    <li className="nav-item disabled">
-                      <a className="nav-link" data-toggle="tab" href="#faq" role="tab">FAQs</a>
-                    </li>
                     <li className="nav-item">
                       <a className="nav-link" data-toggle="tab" href="#glossary" role="tab">Glossary</a>
                     </li>
-                    <li className="nav-item">
-                      <a className="nav-link" data-toggle="tab" href="#releasenotes" role="tab">Release Notes</a>
+                    <li className="nav-item disabled">
+                      <a className="nav-link" data-toggle="tab" href="#faq" role="tab">FAQs</a>
                     </li>
                   </ul>
                   <div className="tab-content">
                     {this.instructionsTab()}
                     <div className="tab-pane" id="faq" role="tabpanel">
                       <h1 className="help-section-title">FAQs</h1>
-                      <div className="help-section">
-                        <h2 className="help-section-question">Sed semper quis est et eleifend?</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et neque eu lacus tincidunt egestas. In varius nibh et sodales sollicitudin. Donec fringilla velit lorem, eu efficitur est egestas in. Aliquam at leo quis mauris fringilla euismod. Phasellus sed elit dolor. Praesent ac accumsan augue. Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit no.</p>
-                      </div>
-                      <div className="help-section">
-                          <h2 className="help-section-question">Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit?</h2>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et neque eu lacus tincidunt egestas. In varius nibh et sodales sollicitudin. Donec fringilla velit lorem, eu efficitur est egestas in. Aliquam at leo quis mauris fringilla euismod. Phasellus sed elit dolor. Praesent ac accumsan augue. Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit no.</p>
-                      </div>
-                      <div className="help-section">
-                          <h2 className="help-section-question">onec fringilla velit lorem, eu efficitur est egestas in?</h2>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et neque eu lacus tincidunt egestas. In varius nibh et sodales sollicitudin. Donec fringilla velit lorem, eu efficitur est egestas in. Aliquam at leo quis mauris fringilla euismod. Phasellus sed elit dolor. Praesent ac accumsan augue. Nunc dictum auctor aliquet. Sed semper quis est et eleifend. Ut ante ex, auctor blandit blandit no.</p>
-                      </div>
+                      <p>This section has not been added. Please check back later.</p>
                     </div>
-                    <div className="tab-pane" id="glossary" role="tabpanel">
-                      <h1>Glossary</h1>
-                      <p>content</p>
-                    </div>
-                    <div className="tab-pane" id="releasenotes" role="tabpanel">
-                      <h1>Release Notes</h1>
-                      <p>content</p>
-                    </div>
+                    {this.glossaryTab()}
                   </div>
-				        </div>
-					    </div>
-			      </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -266,5 +253,9 @@ class Help extends Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps}, dispatch);
 }
+
+Help.propTypes = {
+  setSteps: PropTypes.func
+};
 
 export default connect(null, mapDispatchToProps)(Help);

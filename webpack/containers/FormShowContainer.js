@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchForm, publishForm, deleteForm } from '../actions/form_actions';
 import { fetchQuestions } from '../actions/questions_actions';
 import { fetchResponseSets } from '../actions/response_set_actions';
+import { setSteps } from '../actions/tutorial_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
 import { questionsProps } from '../prop-types/question_props';
@@ -17,6 +18,34 @@ class FormShowContainer extends Component {
     this.props.fetchForm(this.props.params.formId);
     this.props.fetchQuestions();
     this.props.fetchResponseSets();
+  }
+
+  componentDidMount() {
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Version Navigation',
+        text: 'Use the history side bar to switch between revisions of an item if more than one exists.',
+        selector: '.nav-stacked',
+        position: 'right',
+      },
+      {
+        title: 'View Details',
+        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions.',
+        selector: '.maincontent',
+        position: 'left',
+      },
+      {
+        title: 'Comment Threads',
+        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content.',
+        selector: '.showpage-comments-title',
+        position: 'top',
+      }]);
   }
 
   componentDidUpdate(prevProps) {
@@ -87,7 +116,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchForm, fetchQuestions, fetchResponseSets, publishForm, deleteForm}, dispatch);
+  return bindActionCreators({setSteps, fetchForm, fetchQuestions, fetchResponseSets, publishForm, deleteForm}, dispatch);
 }
 
 FormShowContainer.propTypes = {
@@ -97,6 +126,7 @@ FormShowContainer.propTypes = {
   params: PropTypes.object,
   router: PropTypes.object.isRequired,
   currentUser: currentUserProps,
+  setSteps: PropTypes.func,
   fetchForm: PropTypes.func,
   fetchQuestions: PropTypes.func,
   fetchResponseSets: PropTypes.func,

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } from '../actions/questions_actions';
+import { setSteps } from '../actions/tutorial_actions';
 import { questionProps } from "../prop-types/question_props";
 import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
@@ -19,6 +20,32 @@ class QuestionShowContainer extends Component {
     if (this.props.question && this.props.question.status === 'published') {
       this.props.fetchQuestionUsage(this.props.params.qId);
     }
+
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Version Navigation',
+        text: 'Use the history side bar to switch between revisions of an item if more than one exists.',
+        selector: '.nav-stacked',
+        position: 'right',
+      },
+      {
+        title: 'View Details',
+        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions.',
+        selector: '.maincontent',
+        position: 'left',
+      },
+      {
+        title: 'Comment Threads',
+        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content.',
+        selector: '.showpage-comments-title',
+        position: 'top',
+      }]);
   }
 
   componentDidUpdate(prevProps){
@@ -74,7 +101,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, fetchQuestionUsage}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, fetchQuestionUsage, setSteps}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -86,6 +113,7 @@ QuestionShowContainer.propTypes = {
   responseSets:  PropTypes.arrayOf(responseSetProps),
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
+  setSteps: PropTypes.func,
   deleteQuestion: PropTypes.func,
   publishers: publishersProps
 };

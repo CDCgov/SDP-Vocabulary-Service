@@ -14,7 +14,7 @@ let LoginMenu = ({logInOpener, signUpOpener, currentUser}) => {
   if(!loggedIn) {
     return (
       <ul className="nav navbar-nav">
-        <li>
+        <li className="log-in-link">
           <a href="#" onClick={() => {
             logInOpener();
             return false;
@@ -45,7 +45,7 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
     let {email} = currentUser;
     return(
       <li className="dropdown">
-        <a href="#" id="account-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
+        <a href="#" id="account-dropdown" className="dropdown-toggle account-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
         <ul className="dropdown-menu">
           <li><Link to='/mystuff'>My Stuff</Link></li>
           <li><a href="#" onClick={() => {
@@ -78,7 +78,7 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
         <li className="active"><a href="#" className="cdc-navbar-item"><i className="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
         {!location.pathname.includes("revise") && !location.pathname.includes("edit") && !location.pathname.includes("extend") &&
           <li className="dropdown">
-            <a href="#" id = "create-menu" className="dropdown-toggle cdc-navbar-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
+            <a href="#" id = "create-menu" className="dropdown-toggle cdc-navbar-item create-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
             <ul className="cdc-nav-dropdown">
               <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
               <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
@@ -87,7 +87,7 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
             </ul>
           </li>
         }
-        <li className="dropdown">
+        <li className="dropdown notification-dropdown">
           <NotificationDropdown notifications={notifications} notificationCount={notificationCount} />
           { notificationCount > 0 ? (
             <NotificationMenu notifications={notifications} />
@@ -154,7 +154,7 @@ class Header extends Component {
     });
   }
 
-  renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex, steps) {
+  renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex) {
     return (
       <Joyride
         ref={c => (this.joyride = c)}
@@ -162,7 +162,7 @@ class Header extends Component {
         locale={{
           back: (<span>Back</span>),
           close: (<span>Close</span>),
-          last: (<span>Last</span>),
+          last: (<span>End</span>),
           next: (<span>Next</span>),
           skip: (<span>Exit Tutorial</span>),
         }}
@@ -186,13 +186,12 @@ class Header extends Component {
       joyrideType,
       selector,
       stepIndex,
-      steps,
     } = this.state;
 
     return (
       <nav className="cdc-utlt-nav">
         <div className="container">
-          {isReady && <div>{this.renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex, steps)}</div>}
+          {isReady && <div>{this.renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex)}</div>}
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span className="sr-only">Toggle navigation</span>
@@ -211,7 +210,12 @@ class Header extends Component {
                 <a href="#" id = "help-menu" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
                 <ul className="cdc-nav-dropdown">
                   <li className="nav-dropdown-item"><Link to='/Help'>Help Documentation</Link></li>
-                  {isReady && this.props.steps.length > 0 && <li><a href="#" onClick={(e) => {e.preventDefault(); return this.joyride.reset(true);}}>Step-by-Step Walkthrough</a></li>}
+                  {isReady && this.props.steps.length > 0 &&
+                    <li><a href="#" onClick={(e) => {
+                      e.preventDefault();
+                      return this.joyride.reset(true);
+                    }}>Step-by-Step Walkthrough</a></li>
+                  }
                 </ul>
               </li>
             </ul>
