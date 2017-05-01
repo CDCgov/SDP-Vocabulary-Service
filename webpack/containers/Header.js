@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Joyride from 'react-joyride';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -12,7 +13,7 @@ let LoginMenu = ({logInOpener, signUpOpener, currentUser}) => {
   let loggedIn = ! _.isEmpty(currentUser);
   if(!loggedIn) {
     return (
-      <ul className="nav navbar-nav navbar-right">
+      <ul className="nav navbar-nav">
         <li>
           <a href="#" onClick={() => {
             logInOpener();
@@ -43,27 +44,22 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
   if(loggedIn) {
     let {email} = currentUser;
     return(
-      <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul className="cdc-nav cdc-utlt-navbar-nav navbar-right">
-          <li className="dropdown">
-            <a href="#" id="account-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
-            <ul className="dropdown-menu">
-              <li><Link to='/mystuff'>My Stuff</Link></li>
-              <li><a href="#" onClick={() => {
-                settingsOpener();
-                return false;
-              }}>Settings</a></li>
-              <li><a href="#">Saved Searches</a></li>
-              <li><a href="#">System Activity</a></li>
-              <li role="separator" className="divider"></li>
-              <li>
-                <a href="/users/sign_out">Logout</a>
-              </li>
-            </ul>
+      <li className="dropdown">
+        <a href="#" id="account-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
+        <ul className="dropdown-menu">
+          <li><Link to='/mystuff'>My Stuff</Link></li>
+          <li><a href="#" onClick={() => {
+            settingsOpener();
+            return false;
+          }}>Settings</a></li>
+          <li><a href="#">Saved Searches</a></li>
+          <li><a href="#">System Activity</a></li>
+          <li role="separator" className="divider"></li>
+          <li>
+            <a href="/users/sign_out">Logout</a>
           </li>
-          <li><a href="#"><Link to='/Help'><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help</Link></a></li>
         </ul>
-      </div>
+      </li>
     );
   }
   return false;
@@ -114,14 +110,89 @@ SignedInMenu.propTypes = {
 };
 
 class Header extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      joyrideOverlay: true,
+      joyrideType: 'continuous',
+      isReady: false,
+      isRunning: false,
+      stepIndex: 0,
+      steps: [],
+      selector: ''
+    };
+    this.renderJoyride = this.renderJoyride.bind(this);
+    this.addSteps = this.addSteps.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetchNotifications();
   }
 
+  componentDidMount() {
+    this.addSteps(this.props.steps);
+    setTimeout(() => {
+      this.setState({
+        isReady: true,
+        isRunning: false,
+      });
+    }, 1000);
+  }
+
+  addSteps(steps) {
+    let newSteps = steps;
+    if (!Array.isArray(newSteps)) {
+      newSteps = [newSteps];
+    }
+    if (!newSteps.length) {
+      return;
+    }
+
+    this.setState(currentState => {
+      currentState.steps = currentState.steps.concat(newSteps);
+      return currentState;
+    });
+  }
+
+  renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex, steps) {
+    return (
+      <Joyride
+        ref={c => (this.joyride = c)}
+        debug={false}
+        locale={{
+          back: (<span>Back</span>),
+          close: (<span>Close</span>),
+          last: (<span>Last</span>),
+          next: (<span>Next</span>),
+          skip: (<span>Exit Tutorial</span>),
+        }}
+        autoStart={true}
+        run={isRunning}
+        showOverlay={joyrideOverlay}
+        showSkipButton={true}
+        showStepsProgress={true}
+        stepIndex={stepIndex}
+        steps={this.props.steps}
+        type={joyrideType}
+      />
+    );
+  }
+
   render() {
+    const {
+      isReady,
+      isRunning,
+      joyrideOverlay,
+      joyrideType,
+      selector,
+      stepIndex,
+      steps,
+    } = this.state;
+
     return (
       <nav className="cdc-utlt-nav">
         <div className="container">
+          {isReady && <div>{this.renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex, steps)}</div>}
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span className="sr-only">Toggle navigation</span>
@@ -132,10 +203,20 @@ class Header extends Component {
             <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
           </div>
           <SignedInMenu currentUser={this.props.currentUser} location={this.props.location} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
-          <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
-          <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
+          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul className="cdc-nav cdc-utlt-navbar-nav navbar-right">
+              <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
+              <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
+              <li className="dropdown">
+                <a href="#" id = "help-menu" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
+                <ul className="cdc-nav-dropdown">
+                  <li className="nav-dropdown-item"><Link to='/Help'>Help Documentation</Link></li>
+                  {isReady && this.props.steps.length > 0 && <li><a href="#" onClick={(e) => {e.preventDefault(); return this.joyride.reset(true);}}>Step-by-Step Walkthrough</a></li>}
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-
       </nav>
     );
   }
@@ -145,6 +226,7 @@ function mapStateToProps(state) {
   return {
     notifications: state.notifications,
     currentUser: state.currentUser,
+    steps: state.tutorialSteps,
     notificationCount: state.notifications.length
   };
 }
@@ -155,6 +237,7 @@ function mapDispatchToProps(dispatch) {
 
 Header.propTypes = {
   currentUser: currentUserProps,
+  steps: PropTypes.array,
   location: PropTypes.object,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,

@@ -10,6 +10,7 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
+@import '~react-joyride/lib/react-joyride';
 @import "widgets/comments";
 //BASE//
 @import "base/colors";
@@ -36,7 +37,6 @@
 
 //LAYOUTS//
 @import "layouts/body";
-@import "layouts/home";
 @import "layouts/panels";
 @import "layouts/footer";
 @import "layouts/frameworks";

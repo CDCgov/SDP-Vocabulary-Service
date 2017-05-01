@@ -90,17 +90,19 @@ class DashboardSearch extends Component {
           <Modal.Title>Advanced Search Filters</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="adv-filter-modal-body">
-            <div className="col-md-6">
-              {this.surveillanceProgramsSelect()}
+          {this.props.searchSource === 'simple_search' ? (<p className="adv-filter-list">Could not connect to advanced search - this feature should return shortly. Please contact your system admin if this issue persists. You may continue to use search with basic functionality.</p>) : (
+            <div className="adv-filter-modal-body">
+              <div className="col-md-6">
+                {this.surveillanceProgramsSelect()}
+              </div>
+              <div className="col-md-6">
+                {this.surveillanceSystemsSelect()}
+              </div>
             </div>
-            <div className="col-md-6">
-              {this.surveillanceSystemsSelect()}
-            </div>
-          </div>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.clearAdvSearch} bsStyle="primary">Clear Filters</Button>
+          <Button onClick={this.clearAdvSearch} disabled={this.props.searchSource === 'simple_search'} bsStyle="primary">Clear Filters</Button>
           <Button onClick={this.hideAdvSearch} bsStyle="primary">Close</Button>
         </Modal.Footer>
       </Modal>
@@ -129,30 +131,28 @@ class DashboardSearch extends Component {
               <button id="search-btn" className="search-btn search-btn-default" aria-label="search-btn" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
           </div>
-          {this.props.searchSource === 'simple_search' ? (<text className="adv-filter-list">Could not connect to elasticsearch, advanced searching disabled.</text>) : (
-            <div>
-              {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0) && <a href="#" className="adv-search-link pull-right" onClick={(e) => {
-                e.preventDefault();
-                this.clearAdvSearch();
-              }}>Clear Filters</a>}
-              <a className="adv-search-link pull-right" title="Advanced Search" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.showAdvSearch();
-              }}>Advanced</a>
-              {this.state.progFilters.length > 0 &&
-                <div className="adv-filter-list">Program Filters: {this.state.progFilters.map((id, i) => {
-                  return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</row>;
-                })}
-                </div>
-              }
-              {this.state.sysFilters.length > 0 &&
-                <div className="adv-filter-list">System Filters: {this.state.sysFilters.map((id, i) => {
-                  return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillanceSystems[id].name}</row>;
-                })}
-                </div>
-              }
-            </div>
-          )}<br/>
+          <div>
+            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0) && <a href="#" className="adv-search-link pull-right" onClick={(e) => {
+              e.preventDefault();
+              this.clearAdvSearch();
+            }}>Clear Filters</a>}
+            <a className="adv-search-link pull-right" title="Advanced Search" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.showAdvSearch();
+            }}>Advanced</a>
+            {this.state.progFilters.length > 0 &&
+              <div className="adv-filter-list">Program Filters: {this.state.progFilters.map((id, i) => {
+                return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</row>;
+              })}
+              </div>
+            }
+            {this.state.sysFilters.length > 0 &&
+              <div className="adv-filter-list">System Filters: {this.state.sysFilters.map((id, i) => {
+                return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillanceSystems[id].name}</row>;
+              })}
+              </div>
+            }
+          </div><br/>
         </div>
       </div>
     </form>

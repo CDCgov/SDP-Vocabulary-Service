@@ -17,7 +17,6 @@ import FormsEditContainer from './containers/FormsEditContainer';
 import SurveyShowContainer from './containers/surveys/ShowContainer';
 import Privacy from './containers/Privacy';
 import Help from './containers/Help';
-import Home from './containers/Home';
 import App from './containers/App';
 import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
 import ErrorPage, {GenericError ,Forbidden403} from './containers/ErrorPages';
@@ -29,8 +28,6 @@ const store = configureStore();
 ReactDOM.render(
   <Provider store={store}>
     <Router history={hashHistory} onUpdate={logPageViewed}>
-    <Route path='/home' component={Home}/>
-
       <Route path='/' component={App}>
         <IndexRoute component={DashboardContainer} />
         <Route component={AuthenticatedRoutes}>

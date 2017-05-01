@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchStats } from '../actions/landing';
+import { setSteps } from '../actions/tutorial_actions';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SignUpModal from '../components/accounts/SignUpModal';
@@ -21,6 +22,7 @@ class DashboardContainer extends Component {
     this.loadMore = this.loadMore.bind(this);
     this.openSignUpModal = this.openSignUpModal.bind(this);
     this.closeSignUpModal = this.closeSignUpModal.bind(this);
+    this.addSteps = this.addSteps.bind(this);
     this.state = {
       searchType: '',
       searchTerms: '',
@@ -35,6 +37,34 @@ class DashboardContainer extends Component {
   componentWillMount() {
     this.props.fetchStats();
     this.search('');
+  }
+
+  componentDidMount() {
+    this.addSteps([
+    {
+      title: 'Help',
+      text: 'Click next to see a step by step walkthrough for using this page.',
+      selector: '.help-link',
+      position: 'bottom',
+    },
+    {
+      title: 'Dashboard Search',
+      text: 'Type in your search term and search across all items by default. Results include items you own and published items.',
+      selector: '.search-group',
+      position: 'right',
+    },
+    {
+      title: 'Type Filters',
+      text: 'Click on any of the type boxes to highlight them and toggle on filtering by that single item type.',
+      selector: '.analytics-list-group',
+      position: 'right',
+    },
+    {
+      title: 'Advanced Search Filters',
+      text: 'Click Advanced Link to see additional filters you can apply to your search.',
+      selector: '.adv-search-link',
+      position: 'right',
+    }]);
   }
 
   componentDidUpdate(_prevProps, prevState) {
@@ -156,6 +186,18 @@ class DashboardContainer extends Component {
     this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
   }
 
+  addSteps(steps) {
+    let newSteps = steps;
+    if (!Array.isArray(newSteps)) {
+      newSteps = [newSteps];
+    }
+    if (!newSteps.length) {
+      return;
+    }
+
+    this.props.setSteps(newSteps);
+  }
+
   selectType(searchType, myStuffToggle=false) {
     let searchTerms = null;
     let myStuffFilter = false;
@@ -273,7 +315,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
+  return bindActionCreators({fetchStats, setSteps, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -286,6 +328,7 @@ DashboardContainer.propTypes = {
   myResponseSetCount: PropTypes.number,
   mySurveyCount: PropTypes.number,
   fetchStats: PropTypes.func,
+  setSteps: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   signUp: PropTypes.func,
