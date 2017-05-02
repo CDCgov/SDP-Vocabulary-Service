@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
@@ -90,7 +91,12 @@ class DashboardSearch extends Component {
           <Modal.Title>Advanced Search Filters</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {this.props.searchSource === 'simple_search' ? (<p className="adv-filter-list">Could not connect to advanced search - this feature should return shortly. Please contact your system admin if this issue persists. You may continue to use search with basic functionality.</p>) : (
+          {this.props.searchSource === 'simple_search' ? (
+            <div>
+              <p className="adv-filter-list">Could not connect to advanced search - this feature should return shortly. Please contact your system admin if this issue persists. You may continue to use search with basic functionality.</p>
+              <p className="adv-filter-list">For more information see the search section on the <Link to="/help">Help Page.</Link></p>
+            </div>
+            ) : (
             <div className="adv-filter-modal-body">
               <div className="col-md-6">
                 {this.surveillanceProgramsSelect()}
@@ -139,7 +145,7 @@ class DashboardSearch extends Component {
             <a className="adv-search-link pull-right" title="Advanced Search" href="#" onClick={(e) => {
               e.preventDefault();
               this.showAdvSearch();
-            }}>Advanced</a>
+            }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>
             {this.state.progFilters.length > 0 &&
               <div className="adv-filter-list">Program Filters: {this.state.progFilters.map((id, i) => {
                 return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</row>;
