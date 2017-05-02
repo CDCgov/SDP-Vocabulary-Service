@@ -16,6 +16,7 @@ import SurveyEditContainer from './containers/SurveyEditContainer';
 import FormsEditContainer from './containers/FormsEditContainer';
 import SurveyShowContainer from './containers/surveys/ShowContainer';
 import Privacy from './containers/Privacy';
+import Help from './containers/Help';
 import App from './containers/App';
 import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
 import ErrorPage, {GenericError ,Forbidden403} from './containers/ErrorPages';
@@ -40,6 +41,7 @@ ReactDOM.render(
           <Route path='/surveys/:surveyId/:action' component={SurveyEditContainer} />
         </Route>
         <Route path='/privacy' component={Privacy}/>
+        <Route path='/help' component={Help}/>
         <Route path='/forms/:formId' component={FormShowContainer} />
         <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
         <Route path='/questions/:qId' component={QuestionShowContainer} />

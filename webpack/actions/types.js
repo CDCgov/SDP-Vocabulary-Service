@@ -23,6 +23,9 @@ export const ADD_COMMENT_FULFILLED = 'ADD_COMMENT_FULFILLED';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const FETCH_COMMENTS_FULFILLED = 'FETCH_COMMENTS_FULFILLED';
 
+// Tutorial Info
+export const SET_STEPS = 'SET_STEPS';
+
 // Landing types
 export const FETCH_STATS = 'FETCH_STATS';
 export const FETCH_STATS_FULFILLED = 'FETCH_STATS_FULFILLED';

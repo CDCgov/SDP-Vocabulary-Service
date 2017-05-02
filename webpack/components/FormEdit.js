@@ -235,7 +235,7 @@ class FormEdit extends Component {
       );
     }
     return (
-      <div className="col-md-7">
+      <div className="col-md-7 form-edit-details">
       <div className="" id='form-div'>
       <ModalDialog show ={this.state.showWarningModal}
                    title="Warning"

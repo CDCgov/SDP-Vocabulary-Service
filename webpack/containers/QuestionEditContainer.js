@@ -9,6 +9,7 @@ import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchQuestionTypes } from '../actions/question_type_actions';
 import { fetchResponseSets }  from '../actions/response_set_actions';
 import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
+import { setSteps } from '../actions/tutorial_actions';
 
 class QuestionEditContainer extends Component {
   componentWillMount() {
@@ -18,6 +19,34 @@ class QuestionEditContainer extends Component {
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
     this.props.fetchResponseSets();
+  }
+
+  componentDidMount() {
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Question Details',
+        text: 'Use the input fields to edit content of the question. If the response type is open choice this panel will also give you the option to associate response sets with this quesiton at creation time.',
+        selector: '.panel-default',
+        position: 'right',
+      },
+      {
+        title: 'Find Tags',
+        text: 'Click the search icon to search for and add tags to the question.',
+        selector: '.fa-search',
+        position: 'right',
+      },
+      {
+        title: 'Action Buttons',
+        text: 'Click save to save a draft of the edited content.',
+        selector: '.panel-footer',
+        position: 'top',
+      }]);
   }
 
   render() {
@@ -63,7 +92,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets}, dispatch);
+  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets, setSteps}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
@@ -79,6 +108,7 @@ QuestionEditContainer.propTypes = {
   fetchResponseSets:  PropTypes.func,
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
+  setSteps: PropTypes.func,
   params: PropTypes.object.isRequired,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired
