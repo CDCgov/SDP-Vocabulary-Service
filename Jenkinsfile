@@ -78,5 +78,10 @@ pipeline {
           waitTime: '10', waitUnit: 'min'
       }
     }
+
+    stage('Archive report artifacts') {
+      archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
+                                fingerprint: true
+    }
   }
 }
