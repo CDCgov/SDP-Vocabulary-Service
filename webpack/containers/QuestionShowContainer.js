@@ -7,6 +7,7 @@ import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
 import { responseSetProps } from "../prop-types/response_set_props";
 import currentUserProps from "../prop-types/current_user_props";
+import { publishersProps } from "../prop-types/publisher_props";
 
 class QuestionShowContainer extends Component {
 
@@ -50,7 +51,8 @@ class QuestionShowContainer extends Component {
                              router={this.props.router}
                              currentUser={this.props.currentUser}
                              handlePublish={this.handlePublish.bind(this)}
-                             deleteQuestion={this.props.deleteQuestion} />
+                             deleteQuestion={this.props.deleteQuestion}
+                             publishers={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
           </div>
@@ -64,6 +66,7 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   props.question = state.questions[ownProps.params.qId];
   props.currentUser = state.currentUser;
+  props.publishers = state.publishers;
   if (props.question && props.question.responseSets) {
     props.responseSets = props.question.responseSets.map((rsId) => state.responseSets[rsId]);
   }
@@ -83,7 +86,8 @@ QuestionShowContainer.propTypes = {
   responseSets:  PropTypes.arrayOf(responseSetProps),
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
-  deleteQuestion: PropTypes.func
+  deleteQuestion: PropTypes.func,
+  publishers: publishersProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionShowContainer);

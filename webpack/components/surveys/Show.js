@@ -1,9 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import { hashHistory, Link} from 'react-router';
+import { hashHistory, Link } from 'react-router';
+
+import VersionInfo from '../VersionInfo';
+import PublisherLookUp from "../shared_show/PublisherLookUp";
+
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
 import currentUserProps from '../../prop-types/current_user_props';
-import VersionInfo from '../VersionInfo';
+import { publishersProps } from "../../prop-types/publisher_props";
+
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component{
@@ -25,6 +30,10 @@ class SurveyShow extends Component{
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
+          {isEditable(this.props.survey, this.props.currentUser) &&
+            <PublisherLookUp publishers={this.props.publishers}
+                           itemType="Survey" />
+          }
           {isPublishable(this.props.survey, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -144,7 +153,8 @@ SurveyShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,
-  deleteSurvey:  PropTypes.func
+  deleteSurvey:  PropTypes.func,
+  publishers: publishersProps
 };
 
 export default SurveyShow;

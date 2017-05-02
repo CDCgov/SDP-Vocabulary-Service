@@ -7,6 +7,7 @@ import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import CommentList from '../containers/CommentList';
 import currentUserProps from "../prop-types/current_user_props";
+import { publishersProps } from "../prop-types/publisher_props";
 import _ from 'lodash';
 
 class ResponseSetShowContainer extends Component {
@@ -41,12 +42,7 @@ class ResponseSetShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <ResponseSetDetails responseSet={this.props.responseSet}
-                                currentUser={this.props.currentUser}
-                                publishResponseSet={this.props.publishResponseSet}
-                                questions={this.props.questions}
-                                deleteResponseSet={this.props.deleteResponseSet}
-                                router={this.props.router} />
+            <ResponseSetDetails {...this.props} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
           </div>
@@ -60,6 +56,7 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
   props.responseSet = state.responseSets[ownProps.params.rsId];
+  props.publishers = state.publishers;
   if (props.responseSet && props.responseSet.questions) {
     props.questions = _.compact(props.responseSet.questions.map((qId) => state.questions[qId]));
   }
@@ -79,7 +76,8 @@ ResponseSetShowContainer.propTypes = {
   fetchResponseSetUsage: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   params: PropTypes.object,
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
+  publishers: publishersProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResponseSetShowContainer);

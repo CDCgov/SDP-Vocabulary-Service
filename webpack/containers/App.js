@@ -14,6 +14,7 @@ import { surveillanceProgramsProps } from '../prop-types/surveillance_program_pr
 import { fetchCurrentUser, logIn, signUp, updateUser } from '../actions/current_user_actions';
 import { fetchSurveillanceSystems } from '../actions/surveillance_system_actions';
 import { fetchSurveillancePrograms } from '../actions/surveillance_program_actions';
+import { fetchPublishers } from '../actions/publisher_actions';
 
 class App extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class App extends Component {
     this.props.fetchCurrentUser();
     this.props.fetchSurveillancePrograms();
     this.props.fetchSurveillanceSystems();
+    this.props.fetchPublishers();
   }
 
   openLogInModal() {
@@ -97,6 +99,7 @@ App.propTypes = {
   updateUser: PropTypes.func,
   fetchSurveillanceSystems: PropTypes.func,
   fetchSurveillancePrograms: PropTypes.func,
+  fetchPublishers: PropTypes.func,
   children: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
@@ -112,4 +115,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {fetchCurrentUser, logIn, signUp, updateUser,
-  fetchSurveillanceSystems, fetchSurveillancePrograms})(App);
+  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers})(App);
