@@ -81,8 +81,13 @@ module Versionable
       if version
         find_by(version_independent_id: id, version: version)
       else
-        latest_version = find_by(version_independent_id: id).most_recent
-        find_by(version_independent_id: id, version: latest_version)
+        object = find_by(version_independent_id: id)
+        if !object.nil?
+          latest_version = object.most_recent
+          find_by(version_independent_id: id, version: latest_version)
+        else
+          return nil
+        end
       end
     end
   end
