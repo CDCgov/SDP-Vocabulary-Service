@@ -9,7 +9,7 @@ module Api
     end
 
     def show
-      @system = SurveillanceSystem.find(params[:id], params[:version])
+      @system = SurveillanceSystem.find_by(id: params[:id])
       if @system.nil?
         not_found
         return
@@ -18,7 +18,7 @@ module Api
     end
 
     def usage
-      @system = SurveillanceSystem.find(params[:id], params[:version])
+      @system = SurveillanceSystem.find_by(id: params[:id])
       if @system.nil?
         not_found
         return
