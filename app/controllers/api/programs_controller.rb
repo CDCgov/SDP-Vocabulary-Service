@@ -9,7 +9,7 @@ module Api
     end
 
     def show
-      @program = SurveillanceProgram.find(params[:id], params[:version])
+      @program = SurveillanceProgram.find_by(id: params[:id])
       if @program.nil?
         not_found
         return
@@ -18,7 +18,7 @@ module Api
     end
 
     def usage
-      @program = SurveillanceProgram.find(params[:id], params[:version])
+      @program = SurveillanceProgram.find_by(id: params[:id])
       if @program.nil?
         not_found
         return
