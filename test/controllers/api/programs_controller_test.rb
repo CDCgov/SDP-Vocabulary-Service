@@ -22,4 +22,11 @@ class ProgramsControllerTest < ActionDispatch::IntegrationTest
     assert_serializer 'ProgramSerializer'
     assert_response_schema('programs/show.json')
   end
+
+  test 'api should 404 on program that doesnt exist' do
+    get api_program_url(99)
+    assert_response :not_found
+    res = JSON.parse response.body
+    assert_equal(res['message'], 'Resource Not Found')
+  end
 end
