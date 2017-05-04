@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'lib/tasks/cucumber.rake'
+    - 'lib/tasks/data.rake'
     - 'db/schema.rb'
     - 'node_modules/**/*'
 Rails:
