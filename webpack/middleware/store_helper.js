@@ -5,4 +5,17 @@ const dispatchIfNotPresent = (store, type, obj, dispatchAction) => {
   }
 };
 
-export default dispatchIfNotPresent;
+const dispatchCollectionMembersIfNotPresent = (store, type, collection, dispatchAction) => {
+  let membersNotInStore = [];
+  collection.forEach((obj) => {
+    if (store.getState()[type] === undefined ||
+        store.getState()[type][obj.id] === undefined) {
+      membersNotInStore.push(obj);
+    }
+  });
+  if (membersNotInStore.length > 0) {
+    store.dispatch({type: dispatchAction, payload: {data: membersNotInStore}});
+  }
+};
+
+export {dispatchIfNotPresent, dispatchCollectionMembersIfNotPresent};
