@@ -52,8 +52,6 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
             settingsOpener();
             return false;
           }}>Settings</a></li>
-          <li><a href="#">Saved Searches</a></li>
-          <li><a href="#">System Activity</a></li>
           <li role="separator" className="divider"></li>
           <li>
             <a href="/users/sign_out">Logout</a>

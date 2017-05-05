@@ -51,7 +51,7 @@ class DashboardContainer extends Component {
       this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
     }
 
-    if(prevProps.currentUser != this.props.currentUser) {
+    if(prevProps != this.props) {
       let steps = [
         {
           title: 'Help',
