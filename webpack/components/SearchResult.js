@@ -282,7 +282,7 @@ export default class SearchResult extends Component {
                   {this.linkedDetails(result, type)}
                 </div>
               </li>
-              <li className="u-result-content-item result-nav">
+              <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
                 <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i></Link></div>
                 <div className="result-nav-item">
                   {handleSelectSearchResult ? (
