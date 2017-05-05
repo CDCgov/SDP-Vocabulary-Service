@@ -1,13 +1,18 @@
 import React, { Component, PropTypes } from 'react';
-import { questionProps } from "../prop-types/question_props";
+import moment from 'moment';
+import _ from 'lodash';
+import { hashHistory, Link } from 'react-router';
+
 import VersionInfo from "./VersionInfo";
 import ResponseSetList from "./ResponseSetList";
 import CodedSetTable from "./CodedSetTable";
 import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
-import moment from 'moment';
-import _ from 'lodash';
-import { hashHistory, Link } from 'react-router';
+import PublisherLookUp from "./shared_show/PublisherLookUp";
+
+import { questionProps } from "../prop-types/question_props";
 import currentUserProps from "../prop-types/current_user_props";
+import { publishersProps } from "../prop-types/publisher_props";
+
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 
 export default class QuestionDetails extends Component {
@@ -84,13 +89,17 @@ export default class QuestionDetails extends Component {
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
           <div className="action_bar no-print">
+            {isEditable(question, this.props.currentUser) &&
+              <PublisherLookUp publishers={this.props.publishers}
+                             itemType="Question" />
+            }
             {isRevisable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
             }
             {isEditable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/edit`}>Edit</Link>
             }
-            {isExtendable(question) &&
+            {isExtendable(question, this.props.currentUser) &&
               <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
             }
             {isPublishable(question, this.props.currentUser) &&
@@ -200,5 +209,6 @@ QuestionDetails.propTypes = {
   router: PropTypes.object,
   responseSets: PropTypes.array,
   handlePublish:  PropTypes.func,
-  deleteQuestion: PropTypes.func
+  deleteQuestion: PropTypes.func,
+  publishers: publishersProps
 };

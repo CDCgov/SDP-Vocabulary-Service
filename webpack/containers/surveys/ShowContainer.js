@@ -4,11 +4,13 @@ import { bindActionCreators } from 'redux';
 import { fetchSurvey, publishSurvey, deleteSurvey } from '../../actions/survey_actions';
 import { fetchForms } from '../../actions/form_actions';
 import { fetchQuestions } from '../../actions/questions_actions';
+import { setSteps } from '../../actions/tutorial_actions';
 import SurveyShow from '../../components/surveys/Show';
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
+import { publishersProps } from "../../prop-types/publisher_props";
 
 class SurveyShowContainer extends Component {
   componentWillMount() {
@@ -17,6 +19,34 @@ class SurveyShowContainer extends Component {
     this.props.fetchForms();
     this.props.fetchQuestions();
     this.props.fetchSurvey(this.props.params.surveyId);
+  }
+
+  componentDidMount() {
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Version Navigation',
+        text: 'Use the history side bar to switch between revisions of an item if more than one exists.',
+        selector: '.nav-stacked',
+        position: 'right',
+      },
+      {
+        title: 'View Details',
+        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions.',
+        selector: '.maincontent',
+        position: 'left',
+      },
+      {
+        title: 'Comment Threads',
+        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content.',
+        selector: '.showpage-comments-title',
+        position: 'top',
+      }]);
   }
 
   componentDidUpdate(prevProps) {
@@ -35,12 +65,7 @@ class SurveyShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <SurveyShow currentUser={this.props.currentUser}
-                        publishSurvey={this.props.publishSurvey}
-                        router={this.props.router}
-                        survey={this.props.survey}
-                        forms ={this.props.forms}
-                        deleteSurvey={this.props.deleteSurvey} />
+            <SurveyShow {...this.props} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
           </div>
@@ -53,6 +78,7 @@ class SurveyShowContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
+  props.publishers = state.publishers;
   props.survey = state.surveys[ownProps.params.surveyId];
   if (props.survey) {
     props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
@@ -68,7 +94,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({publishSurvey, fetchSurvey, deleteSurvey, fetchForms, fetchQuestions}, dispatch);
+  return bindActionCreators({setSteps, publishSurvey, fetchSurvey, deleteSurvey, fetchForms, fetchQuestions}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -80,8 +106,10 @@ SurveyShowContainer.propTypes = {
   deleteSurvey: PropTypes.func,
   fetchQuestions: PropTypes.func,
   fetchForms: PropTypes.func,
+  setSteps: PropTypes.func,
   params: PropTypes.object,
-  router: PropTypes.object
+  router: PropTypes.object,
+  publishers: publishersProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyShowContainer);

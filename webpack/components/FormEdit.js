@@ -17,6 +17,16 @@ class FormEdit extends Component {
     return state;
   }
 
+  stateForExtend(form) {
+    var state = this.stateForEdit(form);
+    state.id = null;
+    state.versionIndependentId = null;
+    state.version = 1;
+    state.parentId = form.id;
+    state.controlNumber = '';
+    return state;
+  }
+
   stateForEdit(form) {
     const id = form.id;
     const versionIndependentId = form.versionIndependentId;
@@ -26,17 +36,18 @@ class FormEdit extends Component {
     const formQuestions = form.formQuestions || [];
     const controlNumber = form.controlNumber;
     const showWarningModal = false;
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal};
+    const parentId = form.parent ? form.parent.id : '';
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId};
   }
 
   constructor(props) {
     super(props);
-    // This switch is currently effectively a no-op but I retained the structure
-    //  from ResponseSetForm to make it easier to adapt in the future and be
-    //  consistent.
     switch (this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(props.form);
+        break;
+      case 'extend':
+        this.state = this.stateForExtend(props.form);
         break;
       case 'edit':
         this.state = this.stateForEdit(props.form);
@@ -224,7 +235,7 @@ class FormEdit extends Component {
       );
     }
     return (
-      <div className="col-md-7">
+      <div className="col-md-7 form-edit-details">
       <div className="" id='form-div'>
       <ModalDialog show ={this.state.showWarningModal}
                    title="Warning"

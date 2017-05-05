@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { setSteps } from '../actions/tutorial_actions';
 import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../actions/response_set_actions';
 import ResponseSetForm from '../components/ResponseSetForm';
 import { responseSetProps } from '../prop-types/response_set_props';
@@ -15,6 +16,34 @@ class ResponseSetEditContainer extends Component {
       }
     }
     this.state = {selectedResponseSetSaver};
+  }
+
+  componentDidMount() {
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Response Set Details',
+        text: 'Use the input fields to edit content of the response set.',
+        selector: '.panel-default',
+        position: 'right',
+      },
+      {
+        title: 'Find Coded Responses',
+        text: 'Click the search icon to search for and add coded responses to the response set.',
+        selector: '.fa-search',
+        position: 'right',
+      },
+      {
+        title: 'Action Buttons',
+        text: 'Click save to save a draft of the edited content.',
+        selector: '.panel-footer',
+        position: 'top',
+      }]);
   }
 
   componentDidUpdate(prevProps) {
@@ -57,6 +86,7 @@ function mapStateToProps(state, ownProps) {
 
 ResponseSetEditContainer.propTypes = {
   responseSet: responseSetProps,
+  setSteps: PropTypes.func,
   fetchResponseSet: PropTypes.func,
   saveResponseSet: PropTypes.func,
   saveDraftResponseSet: PropTypes.func,
@@ -65,4 +95,4 @@ ResponseSetEditContainer.propTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, {fetchResponseSet, saveResponseSet, saveDraftResponseSet})(ResponseSetEditContainer);
+export default connect(mapStateToProps, {setSteps, fetchResponseSet, saveResponseSet, saveDraftResponseSet})(ResponseSetEditContainer);

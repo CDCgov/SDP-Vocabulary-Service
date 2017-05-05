@@ -10,6 +10,7 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
+@import '~react-joyride/lib/react-joyride';
 @import "widgets/comments";
 //BASE//
 @import "base/colors";
@@ -31,7 +32,6 @@
 @import "widgets/modal";
 @import "widgets/question_modal";
 @import "widgets/response_set_modal";
-@import "layouts/response_set";
 @import "widgets/searchresults";
 
 
@@ -48,6 +48,7 @@
 @import "layouts/response_set";
 @import "layouts/survey_edit";
 @import "layouts/cdcjumbotron";
+@import "layouts/help";
 
 //NAVIGATION//
 @import "navigation/nav";

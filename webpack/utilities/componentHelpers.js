@@ -19,6 +19,7 @@ export function isEditable(object, currentUser) {
     object.createdById === currentUser.id;
 }
 
-export function isExtendable(object) {
-  return object.status === 'published';
+export function isExtendable(object, currentUser) {
+  return currentUser && currentUser.id &&
+    object.status === 'published';
 }

@@ -44,6 +44,29 @@ Feature: Edit Forms
     And I should see "Edit"
     And I should see "TEST VAR"
 
+  Scenario: Extend Form
+    Given I have a published Form with the name "Test Form" and the description "Description from parent"
+    And I have a published Question with the content "What is your gender?" and the type "MC"
+    And I have a published Response Set with the name "Gender Partial"
+    And I am logged in as test_author@gmail.com
+    When I go to the dashboard
+    And I click on the menu link for the Form with the name "Test Form"
+    And I click on the option to Extend the Form with the name "Test Form"
+    And I fill in the "name" field with "Test Form Extended"
+    And I fill in the "search" field with "What"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
+    And I use the response set search modal to select "Gender Partial"
+    And I click on the "Save" button
+    Then I should see "Name: Test Form Extended"
+    And I should see "Description from parent"
+    And I should see "Extended from: Test Form"
+    And I should see "What is your gender?"
+    And I should not see "Publish"
+    And I should see "Version: 1"
+    And I should see "Edit"
+
   Scenario: Reorder Questions
     Given I have a published Form with the name "Test Form"
     And I have a Question with the content "What is your gender?" and the type "MC"

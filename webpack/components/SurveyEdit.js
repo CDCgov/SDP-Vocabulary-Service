@@ -22,6 +22,16 @@ class SurveyEdit extends Component {
     };
   }
 
+  stateForExtend(survey) {
+    var state = this.stateForEdit(survey);
+    state.id = null;
+    state.versionIndependentId = null;
+    state.version = 1;
+    state.parentId = survey.id;
+    state.controlNumber = '';
+    return state;
+  }
+
   stateForEdit(survey) {
     var newState = this.stateForNew();
     newState.id = survey.id;
@@ -30,6 +40,7 @@ class SurveyEdit extends Component {
     newState.description = survey.description || '';
     newState.surveyForms = survey.surveyForms || [];
     newState.controlNumber = survey.controlNumber;
+    newState.parentId = survey.parent ? survey.parent.id : '';
     newState.versionIndependentId = survey.versionIndependentId;
     return newState;
   }
@@ -45,6 +56,9 @@ class SurveyEdit extends Component {
     switch (this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(props.survey);
+        break;
+      case 'extend':
+        this.state = this.stateForExtend(props.survey);
         break;
       case 'edit':
         this.state = this.stateForEdit(props.survey);
@@ -136,7 +150,7 @@ class SurveyEdit extends Component {
       return ('Loading');
     }
     return (
-      <div className="col-md-7">
+      <div className="col-md-7 survey-edit-details">
       <div className="" id='survey-div'>
       <ModalDialog  show ={this.state.showModal}
                     title="Warning"

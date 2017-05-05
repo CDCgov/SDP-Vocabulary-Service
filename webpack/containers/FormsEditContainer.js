@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { setSteps } from '../actions/tutorial_actions';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
 import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
@@ -37,6 +38,52 @@ class FormsEditContainer extends Component {
   componentWillMount() {
     this.props.fetchQuestions();
     this.props.fetchResponseSets();
+  }
+
+  componentDidMount() {
+    this.props.setSteps([
+      {
+        title: 'Help',
+        text: 'Click next to see a step by step walkthrough for using this page.',
+        selector: '.help-link',
+        position: 'bottom',
+      },
+      {
+        title: 'Author Question For Form',
+        text: 'If you need to create a new question without leaving the the form use this button to author a new question from scratch.',
+        selector: '.add-question',
+        position: 'right',
+      },
+      {
+        title: 'Question Search',
+        text: 'Type in your search keywords here to search for questions to add to the form.',
+        selector: '.search-group',
+        position: 'right',
+      },
+      {
+        title: 'Advanced Search Filters',
+        text: 'Click Advanced to see additional filters you can apply to your search.',
+        selector: '.adv-search-link',
+        position: 'right',
+      },
+      {
+        title: 'Question Result',
+        text: 'Use these search results to find the question you want to add.',
+        selector: '.u-result',
+        position: 'right',
+      },
+      {
+        title: 'Add Question',
+        text: 'Click on the add button to select a question for the form.',
+        selector: '.fa-plus-square',
+        position: 'right',
+      },
+      {
+        title: 'Form Details',
+        text: 'Edit the various form details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.',
+        selector: '.form-edit-details',
+        position: 'left',
+      }]);
   }
 
   componentDidUpdate(prevProps) {
@@ -107,7 +154,7 @@ class FormsEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchResponseSets, addQuestion, fetchQuestions, fetchQuestion,
+  return bindActionCreators({setSteps, fetchResponseSets, addQuestion, fetchQuestions, fetchQuestion,
     newForm, fetchForm, removeQuestion, reorderQuestion,
     saveForm, saveDraftForm}, dispatch);
 }
@@ -127,6 +174,7 @@ FormsEditContainer.propTypes = {
   params: PropTypes.object.isRequired,
   questions: questionsProps,
   responseSets: responseSetsProps,
+  setSteps: PropTypes.func,
   newForm:  PropTypes.func,
   saveForm: PropTypes.func,
   fetchForm: PropTypes.func,

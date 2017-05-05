@@ -1,0 +1,43 @@
+{
+  "nodedataarr": [
+    {
+      "name": "Arctic Investigations Program",
+      "id": "P1",
+      "labels": "Program",
+      "relCount": 9,
+      "status": "Fully Operational and Implemented",
+      "attributes": [
+        {
+          "key": "purpose",
+          "value": "The mission of the Arctic Investigations Program (AIP) is prevention of infectious diseases in peoples of the Arctic and Subarctic with special emphasis on diseases of high incidence and concern among Alaska Natives and American Indians. Priority activities include prevention of diseases caused by Streptococcus pneumoniae, Haemophilus influenzae type b, Helicobacter pylori, methicillin-resistant staphylococcus aureus, and respiratory syncytial..."
+        }
+      ]
+    },
+    {
+      "name": "Biosecurity Engagement Program",
+      "id": "P2",
+      "labels": "Program",
+      "relCount": 6,
+      "status": "Fully Operational and Implemented",
+      "attributes": [
+        {
+          "key": "purpose",
+          "value": "The Biosecurity Engagement Program (BEP) is a portfolio of security-related overseas projects supported by the U.S. Department of State Bureau of International Security and Nonproliferation. Projects include those initiated in the former Soviet Union as the Biotechnology Engagement Program (BTEP) implemented through the International Science and Technology Center in Russia and the Science and Technology Center in Ukraine. BEP supports a broad ..."
+        }
+      ]
+    },
+    {
+      "name": "Program with N/A description",
+      "id": "P3",
+      "labels": "Program",
+      "relCount": 6,
+      "status": "Fully Operational and Implemented",
+      "attributes": [
+        {
+          "key": "purpose",
+          "value": "N/A"
+        }
+      ]
+    }
+  ]
+}

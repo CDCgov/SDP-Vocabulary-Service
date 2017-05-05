@@ -1,11 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import {formProps} from '../prop-types/form_props';
+import { hashHistory, Link } from 'react-router';
+
 import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
 import VersionInfo from './VersionInfo';
-import { hashHistory, Link } from 'react-router';
+import PublisherLookUp from "./shared_show/PublisherLookUp";
+
+import { formProps } from '../prop-types/form_props';
 import currentUserProps from '../prop-types/current_user_props';
-import { isEditable, isRevisable, isPublishable } from '../utilities/componentHelpers';
+import { publishersProps } from "../prop-types/publisher_props";
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 
 class FormShow extends Component {
   render() {
@@ -47,6 +51,10 @@ class FormShow extends Component {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
+          {isEditable(form, this.props.currentUser) &&
+            <PublisherLookUp publishers={this.props.publishers}
+                           itemType="Form" />
+          }
           {isPublishable(form, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -73,6 +81,9 @@ class FormShow extends Component {
               return false;
             }}>Delete</a>
           }
+          {isExtendable(form, this.props.currentUser) &&
+            <Link className="btn btn-default" to={`/forms/${form.id}/extend`}>Extend</Link>
+          }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           {this.props.currentUser && this.props.currentUser.id &&
             <a className="btn btn-default" href={Routes.redcapFormPath(form)}>Export to Redcap</a>
@@ -94,6 +105,12 @@ class FormShow extends Component {
               {form.publishedBy.email}
             </div>
             }
+            { form.parent &&
+            <div className="box-content">
+              <strong>Extended from: </strong>
+              <Link to={`/forms/${form.parent.id}`}>{ form.parent.name }</Link>
+            </div>
+            }
           </div>
           {this.props.form.formQuestions && this.props.form.formQuestions.length > 0 &&
             <FormQuestionList questions={this.props.form.formQuestions} />
@@ -109,7 +126,8 @@ FormShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishForm: PropTypes.func,
-  deleteForm:  PropTypes.func.isRequired
+  deleteForm:  PropTypes.func.isRequired,
+  publishers: publishersProps
 };
 
 export default FormShow;

@@ -246,7 +246,7 @@ export default class SearchResult extends Component {
   }
 
   baseResult(type, result, highlight, handleSelectSearchResult, isEditPage, actionName, action) {
-    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-clipboard', 'survey': 'fa-clipboard'};
+    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-list-alt', 'survey': 'fa-clipboard'};
     return (
       <div className="u-result-group">
         <div className="u-result" id={`${type}_id_${result.id}`}>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170413150852) do
+ActiveRecord::Schema.define(version: 20170425171343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20170413150852) do
     t.text     "description"
     t.string   "status",                           default: "draft"
     t.integer  "published_by_id"
+    t.integer  "parent_id"
     t.index ["created_by_id"], name: "index_forms_on_created_by_id", using: :btree
   end
 
@@ -202,6 +203,7 @@ ActiveRecord::Schema.define(version: 20170413150852) do
     t.integer  "surveillance_program_id"
     t.integer  "surveillance_system_id"
     t.integer  "published_by_id"
+    t.integer  "parent_id"
     t.index ["created_by_id"], name: "index_surveys_on_created_by_id", using: :btree
   end
 

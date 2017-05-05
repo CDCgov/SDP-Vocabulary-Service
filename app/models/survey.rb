@@ -5,6 +5,7 @@ class Survey < ApplicationRecord
   has_many :survey_forms
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
+  belongs_to :parent, class_name: 'Survey'
 
   has_many :forms, through: :survey_forms
 
@@ -41,7 +42,7 @@ class Survey < ApplicationRecord
 
   def build_new_revision
     new_revision = Survey.new(version_independent_id: version_independent_id,
-                              name: name,
+                              name: name, parent_id: parent_id,
                               version: version + 1, status: status,
                               created_by: created_by, control_number: control_number)
 

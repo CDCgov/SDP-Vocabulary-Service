@@ -10,6 +10,7 @@ class Form < ApplicationRecord
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
+  belongs_to :parent, class_name: 'Form'
 
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\d{4}-\d{4}/,
@@ -50,7 +51,7 @@ class Form < ApplicationRecord
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
     new_revision = Form.new(version_independent_id: version_independent_id,
-                            description: description, status: status,
+                            description: description, parent_id: parent_id, status: status,
                             version: version + 1, name: name, oid: oid,
                             created_by: created_by, control_number: control_number)
 
