@@ -37,35 +37,6 @@ export default class QuestionDetails extends Component {
     );
   }
 
-  conceptTable(concepts){
-    if(!concepts || concepts.length < 1){
-      return (<h1>No Responses Selected</h1>);
-    }else{
-      return (
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Response Code</th>
-              <th>Code System</th>
-              <th>Display Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            { concepts.map((concept) => {
-              return (
-                <tr key={"concept_" + concept.id}>
-                  <td>{ concept.value }</td>
-                  <td>{ concept.codeSystem }</td>
-                  <td>{ concept.displayName }</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      );
-    }
-  }
-
   reviseQuestionButton(){
     if(this.props.currentUser && this.props.currentUser.id && this.props.question && this.props.question.mostRecent == this.props.question.version){
       if(this.props.question.status && this.props.question.status == 'draft'){

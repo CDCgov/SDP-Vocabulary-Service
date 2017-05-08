@@ -8,11 +8,12 @@ export default class CodedSetTable extends Component {
     }
     return (
       <table className="table table-striped">
+        <caption>Information about associated {this.props.itemName}s:</caption>
         <thead>
           <tr>
-            <th>{this.props.itemName} Code</th>
-            <th>Code System</th>
-            <th>Display Name</th>
+            <th scope="col">{this.props.itemName} Code</th>
+            <th scope="col">Code System</th>
+            <th scope="col">Display Name</th>
           </tr>
         </thead>
         <tbody>
