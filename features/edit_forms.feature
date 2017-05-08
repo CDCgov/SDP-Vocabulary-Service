@@ -10,7 +10,7 @@ Feature: Edit Forms
     Then I should see "Test Form"
     Then I should see "Form description"
     When I click on the "Edit" link
-    And I fill in the "form name" field with "Edited Form"
+    And I fill in the "form-name" field with "Edited Form"
     And I click on the "Save" button
     Then I should see "Name: Edited Form"
     Then I should see "Form description"
@@ -25,8 +25,8 @@ Feature: Edit Forms
     When I go to the dashboard
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Revise the Form with the name "Test Form"
-    And I fill in the "form name" field with "Gender Form"
-    And I fill in the "form description" field with "Revised Description"
+    And I fill in the "form-name" field with "Gender Form"
+    And I fill in the "form-description" field with "Revised Description"
     And I fill in the "search" field with "What"
     And I set search filter to "question"
     And I click on the "search-btn" button
@@ -52,7 +52,7 @@ Feature: Edit Forms
     When I go to the dashboard
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Extend the Form with the name "Test Form"
-    And I fill in the "form name" field with "Test Form Extended"
+    And I fill in the "form-name" field with "Test Form Extended"
     And I fill in the "search" field with "What"
     And I set search filter to "question"
     And I click on the "search-btn" button
@@ -102,9 +102,9 @@ Feature: Edit Forms
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Forms" dropdown item
-    And I fill in the "form name" field with "Test Form"
+    And I fill in the "form-name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
-    And I fill in the "form description" field with "Form description"
+    And I fill in the "form-description" field with "Form description"
     And I fill in the "search" field with "What"
     And I set search filter to "question"
     And I click on the "search-btn" button
@@ -113,7 +113,7 @@ Feature: Edit Forms
     And I click on the "Add New Question" button
     And I fill in the "Question" field with "What is your favorite color?"
     And I select the "Open Choice" option in the "Response Type" list
-    And I fill in the "question description" field with "This is a description"
+    And I fill in the "question-description" field with "This is a description"
     And I should see "No Response Sets selected"
     Then I select the "Text" option in the "Response Type" list
     And I should not see "No Response Sets selected"
@@ -129,15 +129,15 @@ Feature: Edit Forms
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Forms" dropdown item
-    And I fill in the "form name" field with "Test Form"
+    And I fill in the "form-name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
-    And I fill in the "form description" field with "Form description"
+    And I fill in the "form-description" field with "Form description"
     And I fill in the "search" field with "What"
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     Then I click on the "Add New Response Set" button
-    Then I fill in the "response set name" field with "New Response Set"
+    Then I fill in the "response-set-name" field with "New Response Set"
     And I click on the "Add Response Set" button
     Then I wait 1 seconds
     And I use the response set search modal to select "New Response Set"
@@ -164,7 +164,7 @@ Feature: Edit Forms
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Forms" dropdown item
-    And I fill in the "form name" field with "Test Form"
+    And I fill in the "form-name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "search" field with "What"
     And I set search filter to "question"
@@ -182,7 +182,7 @@ Feature: Edit Forms
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the create "Forms" dropdown item
-    And I fill in the "form name" field with "Test Form"
+    And I fill in the "form-name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234-1234"
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Continue Without Saving" button
@@ -195,7 +195,7 @@ Feature: Edit Forms
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Forms" dropdown item
-    And I fill in the "form name" field with "Test Form"
+    And I fill in the "form-name" field with "Test Form"
     And I fill in the "controlNumber" field with "1234"
     And I fill in the "search" field with "What"
     And I set search filter to "question"

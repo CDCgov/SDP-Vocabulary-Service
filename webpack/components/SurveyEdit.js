@@ -182,14 +182,14 @@ class SurveyEdit extends Component {
           <div className="col-md-12">
             <div className="row">
               <div className="survey-group col-md-12">
-                <label htmlFor="survey name" hidden>Name</label>
-                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="survey name" id="survey name" onChange={this.handleChange('name')}/>
+                <label htmlFor="survey-name" hidden>Name</label>
+                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="survey-name" id="survey-name" onChange={this.handleChange('name')}/>
               </div>
             </div>
             <div className="row">
               <div className="survey-group col-md-8">
-                <label htmlFor="survey description">Description</label>
-                <input className="input-format" type="text" value={this.state.description || ''} name="survey description" id="survey description" onChange={this.handleChange('description')}/>
+                <label htmlFor="survey-description">Description</label>
+                <input className="input-format" type="text" value={this.state.description || ''} name="survey-description" id="survey-description" onChange={this.handleChange('description')}/>
               </div>
               <div className="survey-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>

@@ -268,14 +268,14 @@ class FormEdit extends Component {
           <div className="col-md-12">
             <div className="row">
               <div className="form-group col-md-12">
-                <label htmlFor="form name" hidden>Name</label>
-                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="form name" id="form name" onChange={this.handleChange('name')}/>
+                <label htmlFor="form-name" hidden>Name</label>
+                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="form-name" id="form-name" onChange={this.handleChange('name')}/>
               </div>
             </div>
             <div className="row">
               <div className="form-group col-md-8">
-                <label htmlFor="form description">Description</label>
-                <input className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form description" id="form description" onChange={this.handleChange('description')}/>
+                <label htmlFor="form-description">Description</label>
+                <input className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form-description" id="form-description" onChange={this.handleChange('description')}/>
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
