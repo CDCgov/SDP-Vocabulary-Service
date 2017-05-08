@@ -228,7 +228,7 @@ class Help extends Component {
                     <li className="nav-item">
                       <a className="nav-link" data-toggle="tab" href="#glossary" role="tab">Glossary</a>
                     </li>
-                    <li className="nav-item disabled">
+                    <li className="nav-item">
                       <a className="nav-link" data-toggle="tab" href="#faq" role="tab">FAQs</a>
                     </li>
                   </ul>
