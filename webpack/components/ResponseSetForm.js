@@ -140,7 +140,7 @@ export default class ResponseSetForm extends Component {
         <div>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">{`${this.actionWord()} Response Set`}</h3>
+              <h1 className="panel-title">{`${this.actionWord()} Response Set`}</h1>
             </div>
             <div className="panel-body">
                 <div className="row">
@@ -163,9 +163,9 @@ export default class ResponseSetForm extends Component {
 
                 <div className="row">
                   <div className="col-md-12">
-                    <label className="input-label" >Responses</label>
-                    </div>
+                    <h1 className="tags-table-header"><strong>Responses</strong></h1>
                   </div>
+                </div>
                 <CodedSetTableEditContainer itemWatcher={(r) => this.handleResponsesChange(r)}
                                    initialItems={this.state.responsesAttributes}
                                    parentName={'response_set'}

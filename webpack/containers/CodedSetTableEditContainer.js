@@ -222,8 +222,7 @@ class CodedSetTableEditContainer extends Component {
                   <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                 </td>
                 <td>
-                  <label className="hidden" htmlFor={`remove_${i}`}>Remove</label>
-                  <a href="#" title="Remove" id={`remove_${i}`} onClick={(e) => {
+                  <a href="#" title="Remove" aria-label={`remove_row_number_${i}`} id={`remove_${i}`} onClick={(e) => {
                     e.preventDefault();
                     this.removeItemRow(i);
                   }}><i className="fa fa-2x fa-trash"></i><span className="sr-only">Delete this row</span></a>

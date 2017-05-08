@@ -17,7 +17,7 @@ class ModalDialog extends Component{
             <Modal.Title>{this.props.warning && <span className={'fa fa-exclamation-circle'}></span>} {this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {this.props.subTitle && <h4 style={{fontWeight: 'bold'}}>{this.props.subTitle}</h4>}
+            {this.props.subTitle && <h1 style={{fontWeight: 'bold'}}>{this.props.subTitle}</h1>}
             {this.props.message}
           </Modal.Body>
           <br/>

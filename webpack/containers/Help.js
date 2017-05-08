@@ -49,11 +49,11 @@ class Help extends Component {
         <li><a href="#logging-in">Logging In</a></li>
         <li><a href="#logging-out">Logging Out</a></li>
         </ul>
-        <h3 id="sign-up">Sign Up</h3>
+        <h2 className="help-section-subtitle" id="sign-up">Sign Up</h2>
         <p>When you navigate to the page and you have not yet logged in there will be a sign up button at the top right corner of the screen. You can also click the &quot;Get Started!&quot; button on the landing page banner. A window will pop up asking for your information. Fill out as much information as possible and save. You should now see your e-mail with a gear icon in the navigation bar in the top right.</p>
-        <h3 id="logging-in">Logging In</h3>
+        <h2 className="help-section-subtitle" id="logging-in">Logging In</h2>
         <p>If you already have an account simply click the log-in link in the blue navigation bar in the top right of the screen. If you do not see a log-in button the browser may be logged in from a previous session. In that case see how to log out below.</p>
-        <h3 id="logging-out">Logging Out</h3>
+        <h2 className="help-section-subtitle" id="logging-out">Logging Out</h2>
         <p>On any page you should be able to log-out by first clicking the e-mail in the top-right corner of the navigation bar, then selecting log-out from the drop-down menu that will appear. The page should refresh automatically.</p>
       </div>
     );
@@ -70,13 +70,13 @@ class Help extends Component {
         <li><a href="#see-content-you-own">See content you own</a></li>
         <li><a href="#advanced-filtering">Advanced filtering</a></li>
         </ul>
-        <h3 id="basic-search">Basic Search</h3>
+        <h2 className="help-section-subtitle" id="basic-search">Basic Search</h2>
         <p>On the dashboard there is a search bar that can be used to find questions, response sets, forms, and surveys. Typing in search terms that might be found in the name, description, author e-mail, and various other relevant fields on the items.</p>
-        <h3 id="filtering-by-type">Filtering by Type</h3>
+        <h2 className="help-section-subtitle" id="filtering-by-type">Filtering by Type</h2>
         <p>You can filter a search by the type of content by clicking on the analytics icons immediately below the search bar on the dashboard page. Clicking on any of those four squares on the top of the page will filter by the type specified in the square and highlight the square. Once a filter is applied you can click on the &#39;clear filter&#39; link that will appear under the icons on the dashboard.</p>
-        <h3 id="see-content-you-own">See Content You Own</h3>
+        <h2 className="help-section-subtitle" id="see-content-you-own">See Content You Own</h2>
         <p>Similar to searching by type (described above) when you are logged in to an account the dashboard will have a &quot;My Stuff&quot; section displayed on the right side of the dashboard. Clicking on any of the icons or the filter link in that panel will highlight the filter applied in blue and filter any searches done to only return drafts and published content that you own.</p>
-        <h3 id="advanced-filtering">Advanced Filtering</h3>
+        <h2 className="help-section-subtitle" id="advanced-filtering">Advanced Filtering</h2>
         <p>Under the search bars seen across the app there is an &#39;Advanced&#39; link. If you click that link it will pop up a window with additional filters that you can apply. Any filters you select will limit your searches by the selected filters. The window also has a clear filters buttons that will reset back to the default search.</p>
         <p>If a warning symbol appears next to the Advanced link or you see an error message in the advanced search pop-up, the advanced search server (Elasticsearch) is likely down. Please check back later or contact your system administrator if the issue is persistent.</p>
       </div>
@@ -109,27 +109,27 @@ class Help extends Component {
         <li><a href="#revise-content">Revise Content</a></li>
         <li><a href="#extend-content">Extend Content</a></li>
         </ul>
-        <h3 id="create-new-content">Create New Content</h3>
+        <h2 className="help-section-subtitle" id="create-new-content">Create New Content</h2>
         <ul>
         <li>To start a new draft of any item click on the &quot;Create&quot; drop down in the top navigation bar on the dashboard.</li>
         <li>On the creation / editing page change any fields that need to be updated and press save - this saves a draft of the first version of the new item that will need to get published by a publisher before it will be visible to others.</li>
         <li>If you try to navigate away before saving the changes a prompt will ask if you want to navigate away without saving or save before you leave.</li>
         </ul>
-        <h3 id="edit-content">Edit Content</h3>
+        <h2 className="help-section-subtitle" id="edit-content">Edit Content</h2>
         <p><strong>Note:</strong> You can only edit your own draft content - once content is published you will be given the option to create a new revision of the content.</p>
         <ul>
         <li>When looking at the search result for the item you want to edit click on the menu button in the bottom right and select edit.</li>
         <li>When on the details page of an item the edit or revise button should appear in the top right above the item information.</li>
         <li>On the edit page change any fields that need to be updated and press save - this overwrites the previous draft with the changes made and does not keep a history of the previous draft.</li>
         </ul>
-        <h3 id="revise-content">Revise Content</h3>
+        <h2 className="help-section-subtitle" id="revise-content">Revise Content</h2>
         <p><strong>Note:</strong> You can only revise your own published content. Saving a revision will save a draft of that revision until you publish the new version.</p>
         <ul>
         <li>When looking at the search result for the item you want to revise click on the menu button in the bottom right and select revise</li>
         <li>When on the details page of an item the edit or revise button should appear in the top right above the item information</li>
         <li>On the revision editing page change any fields that need to be updated and press save - this saves a draft of the new version that will need to get published by a publisher before it will be visible to others.</li>
         </ul>
-        <h3 id="extend-content">Extend Content</h3>
+        <h2 className="help-section-subtitle" id="extend-content">Extend Content</h2>
         <p><strong>Note:</strong> You can only extend published content. Unlike revising, you do not need to be the original author of something to extend it (use it as a template with its own version history). Saving an extension will save a draft that is the first version (new revision history) with a link to the content it was extended from.</p>
         <ul>
         <li>When looking at the search result for the item you want to revise click on the menu button in the bottom right and select revise</li>

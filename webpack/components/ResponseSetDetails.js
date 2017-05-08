@@ -93,11 +93,11 @@ export default class ResponseSetDetails extends Component {
           </div>
         }
         <div className="maincontent-details">
-          <h3 className="maincontent-item-name"><strong>Name:</strong> {responseSet.name} </h3>
+          <h1 className="maincontent-item-name"><strong>Name:</strong> {responseSet.name} </h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">Details</h3>
+              <h1 className="panel-title">Details</h1>
             </div>
             <div className="box-content">
               <strong>Description: </strong>
@@ -122,7 +122,7 @@ export default class ResponseSetDetails extends Component {
           </div>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">Responses</h3>
+              <h1 className="panel-title">Responses</h1>
             </div>
             <div className="box-content">
             <CodedSetTable items={responseSet.responses} itemName={'Response'} />
@@ -131,7 +131,7 @@ export default class ResponseSetDetails extends Component {
           {this.props.questions && this.props.questions.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">Linked Questions</h3>
+                <h1 className="panel-title">Linked Questions</h1>
               </div>
               <div className="box-content">
                 <QuestionList questions={_.keyBy(this.props.questions, 'id')} routes={Routes} />

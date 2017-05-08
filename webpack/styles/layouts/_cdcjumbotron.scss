@@ -11,6 +11,9 @@
     background: url(../images/CDC_Landing_Page3.png)$cdc-blue left calc(50% - -310px) top no-repeat;
     background-size: auto 100%;
     border-bottom: 2px solid $cdc-dark-blue;
+    .banner-subtitle {
+      font-size: 24px;
+    }
   }
 }
 

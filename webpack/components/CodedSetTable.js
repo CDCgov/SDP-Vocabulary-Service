@@ -4,7 +4,7 @@ export default class CodedSetTable extends Component {
 
   render() {
     if(!this.props.items || this.props.items.length < 1){
-      return (<h3>No {this.props.itemName}s Selected</h3>);
+      return (<strong>No {this.props.itemName}s Selected</strong>);
     }
     return (
       <table className="table table-striped">
