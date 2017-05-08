@@ -47,7 +47,7 @@ Feature: Edit Questions
     And I select the "Open Choice" option in the "Response Type" list
     And I click on the "select-Gender Full" link
     Then I click on the "Add New Response Set" button
-    Then I fill in the "response_set_name" field with "New Response Set"
+    Then I fill in the "response set name" field with "New Response Set"
     And I click on the "Add Response Set" button
     Then I should see "New Response Set"
     And I click on the "Save" button

@@ -38,8 +38,8 @@ Feature: Manage Surveys
    When I go to the dashboard
    And I click on the menu link for the Survey with the name "Test Survey"
    And I click on the option to Revise the Survey with the name "Test Survey"
-   And I fill in the "name" field with "Gender Survey"
-   And I fill in the "description" field with "Revised Description"
+   And I fill in the "survey name" field with "Gender Survey"
+   And I fill in the "survey description" field with "Revised Description"
    And I fill in the "search" field with "Gender"
    And I click on the "search-btn" button
    And I use the form search to select "Test Gender Form"
@@ -57,7 +57,7 @@ Feature: Manage Surveys
     When I go to the dashboard
     And I click on the menu link for the Survey with the name "Test Survey"
     And I click on the option to Extend the Survey with the name "Test Survey"
-    And I fill in the "name" field with "Test Survey Extended"
+    And I fill in the "survey name" field with "Test Survey Extended"
     And I fill in the "search" field with "Gender"
     And I click on the "search-btn" button
     And I use the form search to select "Test Gender Form"
@@ -107,7 +107,7 @@ Feature: Manage Surveys
     Then I should see "Test Survey"
     Then I should see "Survey description"
     When I click on the "Edit" link
-    And I fill in the "name" field with "Edited Survey"
+    And I fill in the "survey name" field with "Edited Survey"
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
     Then I should see "Survey description"
@@ -140,7 +140,7 @@ Feature: Manage Surveys
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Surveys" dropdown item
-    And I fill in the "name" field with "Test Survey"
+    And I fill in the "survey name" field with "Test Survey"
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "search" field with "Gender"
     And I click on the "search-btn" button
@@ -157,7 +157,7 @@ Feature: Manage Surveys
    And I am logged in as test_author@gmail.com
    When I go to the dashboard
    And I click on the create "Surveys" dropdown item
-   And I fill in the "name" field with "Test Survey"
+   And I fill in the "survey name" field with "Test Survey"
    And I fill in the "controlNumber" field with "1234-1234"
    And I fill in the "search" field with "Gender"
    And I click on the "search-btn" button
@@ -173,7 +173,7 @@ Feature: Manage Surveys
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Surveys" dropdown item
-    And I fill in the "name" field with "Test Survey"
+    And I fill in the "survey name" field with "Test Survey"
     And I fill in the "controlNumber" field with "1234"
     And I click on the "Save" button
     Then I should see "error(s) prohibited this form from being saved"

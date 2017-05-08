@@ -8,7 +8,7 @@ Feature: Export Forms
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Forms" dropdown item
-    And I fill in the "name" field with "Test Form"
+    And I fill in the "form name" field with "Test Form"
     And I fill in the "search" field with "What"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
@@ -22,7 +22,7 @@ Feature: Export Forms
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Forms" dropdown item
-    And I fill in the "name" field with "Test Form"
+    And I fill in the "form name" field with "Test Form"
     And I fill in the "search" field with "What"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
