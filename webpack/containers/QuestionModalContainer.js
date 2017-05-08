@@ -19,7 +19,7 @@ class QuestionModalContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {linkedResponseSets:{}, showResponseSetWidget: false, showResponseSets: true};
+    this.state = {linkedResponseSets: {}, showResponseSetWidget: false, showResponseSets: false};
     this.saveNewQuestion = this.saveNewQuestion.bind(this);
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);

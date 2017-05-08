@@ -58,6 +58,9 @@ export default function forms(state = {}, action) {
       form  = action.payload.form;
       index = action.payload.index;
       direction = action.payload.direction;
+      if(index == 0  && direction == 1){
+        return state;
+      }
       newForm = Object.assign({}, form);
       newForm.formQuestions = move(form.formQuestions, index, index-direction);
       newState = Object.assign({}, state);
