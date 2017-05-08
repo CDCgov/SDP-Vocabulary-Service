@@ -169,7 +169,7 @@ class SurveyEdit extends Component {
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <Errors errors={this.state.errors} />
           <div className="survey-inline">
-            <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span></button>
+            <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
             <input className='btn btn-default pull-right' name="Save Survey" type="submit" value={`Save`}/>
             {this.cancelButton()}
           </div>
@@ -182,14 +182,14 @@ class SurveyEdit extends Component {
           <div className="col-md-12">
             <div className="row">
               <div className="survey-group col-md-12">
-                <label htmlFor="name" hidden>Name</label>
-                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+                <label htmlFor="survey name" hidden>Name</label>
+                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="survey name" id="survey name" onChange={this.handleChange('name')}/>
               </div>
             </div>
             <div className="row">
               <div className="survey-group col-md-8">
-                <label htmlFor="description">Description</label>
-                <input className="input-format" type="text" value={this.state.description || ''} name="description" id="description" onChange={this.handleChange('description')}/>
+                <label htmlFor="survey description">Description</label>
+                <input className="input-format" type="text" value={this.state.description || ''} name="survey description" id="survey description" onChange={this.handleChange('description')}/>
               </div>
               <div className="survey-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>

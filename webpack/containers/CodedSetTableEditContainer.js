@@ -145,10 +145,12 @@ class CodedSetTableEditContainer extends Component {
                 title={this.state.selectedSystem ? this.state.selectedSystem : 'Code System'} onSelect={(key, e) => this.searchConcepts(e.target.text)} >
                 <MenuItem key={0} value={''}>None</MenuItem>
                 {_.values(this.props.conceptSystems).map((s, i) => {
-                  return <MenuItem key={i} value={s.name}>{s.name}</MenuItem>;
+                  if(s.name) {
+                    return <MenuItem key={i} value={s.name}>{s.name}</MenuItem>;
+                  }
                 })}
               </DropdownButton>
-              <FormControl type="text" onChange={(e) => this.handleSearchChange(e)} placeholder="Search Codes"/>
+              <FormControl type="text" onChange={(e) => this.handleSearchChange(e)} placeholder="Search Codes" aria-label="Search Codes"/>
               <FormControl.Feedback>
                 <Glyphicon glyph="search"/>
               </FormControl.Feedback>
@@ -184,7 +186,7 @@ class CodedSetTableEditContainer extends Component {
               <a title="Search Codes" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.showCodeSearch();
-              }}><i className="fa fa-search fa-2x"></i></a>
+              }}><i className="fa fa-search fa-2x"></i><span className="sr-only">Open Search Modal</span></a>
             </th>
             <th>{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
             <th>Code System</th>
@@ -193,7 +195,7 @@ class CodedSetTableEditContainer extends Component {
               <a title="Add Row" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.addItemRow();
-              }}><i className="fa fa-plus fa-2x"></i></a>
+              }}><i className="fa fa-plus fa-2x"></i><span className="sr-only">Add a row to the table</span></a>
             </th>
           </tr>
         </thead>
@@ -223,7 +225,7 @@ class CodedSetTableEditContainer extends Component {
                   <a href="#" title="Remove" id={`remove_${i}`} onClick={(e) => {
                     e.preventDefault();
                     this.removeItemRow(i);
-                  }}><i className="fa fa-2x fa-trash"></i></a>
+                  }}><i className="fa fa-2x fa-trash"></i><span className="sr-only">Delete this row</span></a>
                 </td>
               </tr>
             );

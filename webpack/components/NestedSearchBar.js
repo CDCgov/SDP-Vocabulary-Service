@@ -13,6 +13,7 @@ class NestedSearchBar extends Component {
             className="input-format"
             placeholder={`Search ${this.props.modelName}s...`}
             value={this.state.term}
+            aria-label={`Search ${this.props.modelName}s`}
             onChange={event => this.onInputChange(event.target.value)}
             onKeyPress={event => this.onEnter(event)} />
       </div>

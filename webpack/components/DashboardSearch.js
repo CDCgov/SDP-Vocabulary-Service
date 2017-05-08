@@ -56,7 +56,7 @@ class DashboardSearch extends Component {
     } else {
       return (
         <div className="form-group">
-          <label>Select Programs:</label>
+          <label htmlFor="select-prog">Select Programs:</label>
           <select multiple className="form-control" id="select-prog" value={this.state.progFilters} onChange={(e) => this.selectFilters(e, 'progFilters')}>
             {this.props.surveillancePrograms && _.values(this.props.surveillancePrograms).map((sp) => {
               return <option key={sp.id} value={sp.id}>{sp.name}</option>;
@@ -73,7 +73,7 @@ class DashboardSearch extends Component {
     } else {
       return (
         <div className="form-group">
-          <label>Select Systems:</label>
+          <label htmlFor="select-sys">Select Systems:</label>
           <select multiple className="form-control" id="select-sys" value={this.state.sysFilters} onChange={(e) => this.selectFilters(e, 'sysFilters')}>
             {this.props.surveillanceSystems && _.values(this.props.surveillanceSystems).map((ss) => {
               return <option key={ss.id} value={ss.id}>{ss.name}</option>;
@@ -131,8 +131,7 @@ class DashboardSearch extends Component {
       <div className="row">
         <div className="col-md-12">
           <div className="input-group search-group">
-            <label htmlFor="search" className="hidden">Search</label>
-            <input onChange={this.onInputChange} type="text" id="search" name="search" className="search-input" placeholder="Search..."/>
+            <input onChange={this.onInputChange} type="text" id="search" name="search" aria-label="search-bar" className="search-input" placeholder="Search..."/>
             <span className="input-group-btn">
               <button id="search-btn" className="search-btn search-btn-default" aria-label="search-btn" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
