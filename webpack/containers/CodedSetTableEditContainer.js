@@ -159,10 +159,10 @@ class CodedSetTableEditContainer extends Component {
           <table className="table table-striped scroll-table-header">
             <thead>
               <tr>
-                <th style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
-                <th style={{width: '50%', padding:' 0px'}}>Display Name</th>
-                <th style={{width: '10%', padding:' 0px'}}>Code</th>
-                <th style={{width: '30%', padding:' 0px'}}>Code System</th>
+                <th scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
+                <th scope="col" style={{width: '50%', padding:' 0px'}}>Display Name</th>
+                <th scope="col" style={{width: '10%', padding:' 0px'}}>Code</th>
+                <th scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
               </tr>
             </thead>
           </table>
@@ -179,19 +179,20 @@ class CodedSetTableEditContainer extends Component {
   render() {
     return (
       <table className="set-table">
+        <caption>Add, search, and create associated {this.state.childName[0].toUpperCase() + this.state.childName.slice(1)}s:</caption>
         {this.conceptModal()}
         <thead>
           <tr>
-            <th>
+            <th scope="col">
               <a title="Search Codes" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.showCodeSearch();
               }}><i className="fa fa-search fa-2x"></i><span className="sr-only">Open Search Modal</span></a>
             </th>
-            <th>{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
-            <th>Code System</th>
-            <th>Display Name</th>
-            <th>
+            <th scope="col">{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
+            <th scope="col">Code System</th>
+            <th scope="col">Display Name</th>
+            <th scope="col">
               <a title="Add Row" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.addItemRow();
