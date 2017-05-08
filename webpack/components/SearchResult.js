@@ -40,7 +40,7 @@ export default class SearchResult extends Component {
     return (
       <ul className="dropdown-menu dropdown-menu-right">
         {originalType === 'form_question' && <li>
-          <a title="Modify Program Variable" href="#" onClick={this.props.showProgramVarModal}>Modify Program Variable</a>
+          <a title="Modify Program Variable Value" href="#" onClick={this.props.showProgramVarModal}>Modify Program Variable</a>
         </li>}
         {this.isRevisable(result) && <li>
           <Link to={`/${type}s/${result.id}/revise`}>Revise</Link>
@@ -161,7 +161,7 @@ export default class SearchResult extends Component {
               })}
               <option aria-label=' '></option>
             </select>
-            <a title="Search Response Sets" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i><span className="sr-only">Search Response Sets</span></a>
+            <a title="Search Response Sets to Link" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i><span className="sr-only">Search Response Sets</span></a>
             </div>
           </div>
         );

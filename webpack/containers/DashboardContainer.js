@@ -140,7 +140,7 @@ class DashboardContainer extends Component {
                     <div className="col-md-8">
                       <div className="cdc-promo-banner">
                         <h1 className="banner-title">CDC Vocabulary Service</h1>
-                        <h3>Author Questions, Response Sets, and Forms</h3>
+                        <h2 className="banner-subtitle">Author Questions, Response Sets, Forms, and Surveys</h2>
                         <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
                         <p><a className="btn btn-lg btn-success" href="#" role="button" onClick={this.openSignUpModal}>Get Started!</a></p>
                       </div>

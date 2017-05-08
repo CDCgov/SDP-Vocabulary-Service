@@ -92,11 +92,11 @@ export default class QuestionDetails extends Component {
           </div>
         }
         <div className="maincontent-details">
-          <h3 className="maincontent-item-name"><strong>Name:</strong> {question.content} </h3>
+          <h1 className="maincontent-item-name"><strong>Name:</strong> {question.content} </h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">Details</h3>
+              <h1 className="panel-title">Details</h1>
             </div>
             <div className="box-content">
               <strong>Description: </strong>
@@ -133,7 +133,7 @@ export default class QuestionDetails extends Component {
           </div>
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">Tags</h3>
+                <h1 className="panel-title">Tags</h1>
               </div>
               <div className="box-content">
                 <div id="concepts-table">
@@ -144,7 +144,7 @@ export default class QuestionDetails extends Component {
           {responseSets && responseSets.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">Linked Response Sets</h3>
+                <h1 className="panel-title">Linked Response Sets</h1>
               </div>
               <div className="box-content">
                 <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} />

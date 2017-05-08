@@ -90,11 +90,11 @@ class FormShow extends Component {
           }
         </div>
         <div className="maincontent-details">
-          <h3 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h3>
+          <h1 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h1>
           <p className="maincontent-item-info">Version: {form.version} - Author: {form.userId} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">Description</h3>
+              <h1 className="panel-title">Description</h1>
             </div>
             <div className="box-content">
               {form.description}

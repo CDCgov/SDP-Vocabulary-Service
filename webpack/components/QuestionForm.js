@@ -147,7 +147,7 @@ class QuestionForm extends Component{
           <div>
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">{`${this.actionWord()} Question`}</h3>
+                <h1 className="panel-title">{`${this.actionWord()} Question`}</h1>
               </div>
               <div className="panel-body">
                 <div className="row">
@@ -185,7 +185,7 @@ class QuestionForm extends Component{
                 {this.otherAllowedBox()}
                 <div className="row ">
                   <div className="col-md-12 ">
-                    <label className="input-label" htmlFor="concept_id">Tags</label>
+                    <h1 className="tags-table-header"><strong>Tags</strong></h1>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
