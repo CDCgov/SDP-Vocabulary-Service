@@ -56,12 +56,13 @@ class App extends Component {
   render() {
     return (
       <div>
+        <a href="#main-content" className="sr-only sr-only-focusable">Skip to main content</a>
         <Header currentUser={this.props.currentUser}
                 location={this.props.location}
                 logInOpener={() => this.openLogInModal()}
                 signUpOpener={() => this.openSignUpModal()}
                 settingsOpener={() => this.openSettingsModal()}/>
-        <div className='main-content'>
+        <div className='main-content' id="main-content">
           {this.props.children}
         </div>
         <footer className="footer">
