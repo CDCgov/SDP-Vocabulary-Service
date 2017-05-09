@@ -122,16 +122,22 @@ export default class SearchResult extends Component {
     );
   }
 
+  questionCollapsable(result) {
+    if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
+      return (<li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>);
+    } else if (result.responseSets && result.responseSets.length === 1) {
+      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Set</a></li>);
+    } else {
+      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
+    }
+  }
+
   linkedDetails(result, type){
     switch(type) {
       case 'question':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__responseset">
-            {result.responseSets && result.responseSets.length === 1 ? (
-              <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Set</a></li>
-            ) : (
-              <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>
-            )}
+            {this.questionCollapsable(result)}
           </ul>
         );
       case 'response_set':
@@ -147,24 +153,32 @@ export default class SearchResult extends Component {
           </ul>
         );
       case 'form_question':
-        var selectedResponseSet = this.props.responseSets.find((r) => r.id == this.props.selectedResponseSetId);
-        return (
-          <div className="panel-body panel-body-form-question">
-            <span className="selected-response-set">Response Set: {(selectedResponseSet && selectedResponseSet.name) || '(None)'}</span>
-            <div className="form-question-group">
-            <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.result.id}/>
-            <select className="response-set-select" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSetId || ''} onChange={this.props.handleResponseSetChange}>
-              {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
-                return (
-                  <option value={r.id} key={`${r.id}-${i}`}>{r.name} </option>
-                );
-              })}
-              <option aria-label=' '></option>
-            </select>
-            <a title="Search Response Sets to Link" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i><span className="sr-only">Search Response Sets</span></a>
+        if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
+          return (
+            <ul className="list-inline result-linked-number result-linked-item associated__responseset">
+              <li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>
+            </ul>
+          );
+        } else {
+          var selectedResponseSet = this.props.responseSets.find((r) => r.id == this.props.selectedResponseSetId);
+          return (
+            <div className="panel-body panel-body-form-question">
+              <span className="selected-response-set">Response Set: {(selectedResponseSet && selectedResponseSet.name) || '(None)'}</span>
+              <div className="form-question-group">
+                <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.result.id}/>
+                <select className="response-set-select" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSetId || ''} onChange={this.props.handleResponseSetChange}>
+                  {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
+                    return (
+                      <option value={r.id} key={`${r.id}-${i}`}>{r.name} </option>
+                    );
+                  })}
+                  <option aria-label=' '></option>
+                </select>
+                <a title="Search Response Sets to Link" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i><span className="sr-only">Search Response Sets</span></a>
+              </div>
             </div>
-          </div>
-        );
+          );
+        }
       case 'survey':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__form">

@@ -6,6 +6,12 @@ Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*
                    concepts_attributes: [{ value: '', display_name: concept, code_system: '' }])
 end
 
+Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the response type "([^"]*)"$/) do |content, description, type|
+  user  = get_user('test_author@gmail.com')
+  qt314 = ResponseType.find_or_create_by(name: type)
+  Question.create!(content: content, description: description, response_type_id: qt314.id, version: 1, created_by: user)
+end
+
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"$/) do |content, description, type|
   user  = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
