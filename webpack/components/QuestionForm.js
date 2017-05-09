@@ -157,7 +157,7 @@ class QuestionForm extends Component{
                     </div>
                     <div className="col-md-4 question-form-group">
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
-                      <select className="input-format" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
+                      <select className="input-select" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
                         {questionTypes && _.values(questionTypes).map((qt) => {
                           return <option key={qt.id} value={qt.id}>{qt.name}</option>;
@@ -174,7 +174,7 @@ class QuestionForm extends Component{
 
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Response Type</label>
-                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
+                    <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
                       {this.sortedResponseTypes().map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
 
