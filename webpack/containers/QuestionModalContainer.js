@@ -69,7 +69,7 @@ class QuestionModalContainer extends Component {
               <label htmlFor="linked_response_sets">Response Sets</label>
             </div>
             <div className="col-md-6 response-set-label">
-              <label htmlFor="selected_response_sets">Selected Response Sets</label>
+              <h2 className="tags-table-header">Selected Response Sets</h2>
             </div>
           </div>
           <ResponseSetDragWidget responseSets={this.props.responseSets}

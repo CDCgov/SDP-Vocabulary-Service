@@ -198,7 +198,7 @@ class QuestionForm extends Component{
                     <label htmlFor="linked_response_sets">Response Sets</label>
                   </div>
                   <div className="col-md-6 response-set-label">
-                    <label htmlFor="selected_response_sets">Selected Response Sets</label>
+                    <h2>Selected Response Sets</h2>
                     <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
                   </div>
                 </div>
