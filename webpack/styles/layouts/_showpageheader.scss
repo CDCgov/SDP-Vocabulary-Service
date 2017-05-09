@@ -1,7 +1,7 @@
 .showpage_header_container {
   border-bottom: 1px solid $light-gray;
   height: 58px;
-  padding-top: 8px;   
+  padding-top: 8px;
 }
 
 .showpage_title {
@@ -55,7 +55,7 @@
 }
 
 .subtitle {
-  color: gray;
+  color: $medium-gray;
   span {
     margin-left: 10px;
     margin-right: 6px;

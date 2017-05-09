@@ -118,7 +118,7 @@ export default class SearchResult extends Component {
       <a title="Select Search Result" href="#" id={`select-${result.name}`} onClick={(e) => {
         e.preventDefault();
         handleSelectSearchResult(result);
-      }}><i className="fa fa-plus-square fa-2x"></i></a>
+      }}><i className="fa fa-plus-square fa-2x"></i><span className="sr-only">Add or Select Result</span></a>
     );
   }
 
@@ -161,7 +161,7 @@ export default class SearchResult extends Component {
               })}
               <option aria-label=' '></option>
             </select>
-            <a title="Search Response Sets" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i></a>
+            <a title="Search Response Sets" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i><span className="sr-only">Search Response Sets</span></a>
             </div>
           </div>
         );
@@ -283,14 +283,14 @@ export default class SearchResult extends Component {
                 </div>
               </li>
               <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
-                <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i></Link></div>
+                <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
                 <div className="result-nav-item">
                   {handleSelectSearchResult ? (
                     this.selectResultButton(result, handleSelectSearchResult)
                   ) : (
                     <div className="dropdown">
                       <a id={`${type}_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
-                        <span className="fa fa-ellipsis-h"></span>
+                        <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
                       </a>
                       {this.resultDropdownMenu(result, type, actionName, action)}
                     </div>

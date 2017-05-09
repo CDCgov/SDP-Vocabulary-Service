@@ -254,7 +254,7 @@ class FormEdit extends Component {
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <Errors errors={this.state.errors} />
           <div className="form-inline">
-            <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span></button>
+            <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
             <input  className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
             <button className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
@@ -268,14 +268,14 @@ class FormEdit extends Component {
           <div className="col-md-12">
             <div className="row">
               <div className="form-group col-md-12">
-                <label htmlFor="name" hidden>Name</label>
-                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="name" id="name" onChange={this.handleChange('name')}/>
+                <label htmlFor="form-name" hidden>Name</label>
+                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="form-name" id="form-name" onChange={this.handleChange('name')}/>
               </div>
             </div>
             <div className="row">
               <div className="form-group col-md-8">
-                <label htmlFor="description">Description</label>
-                <input className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="description" id="description" onChange={this.handleChange('description')}/>
+                <label htmlFor="form-description">Description</label>
+                <input className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form-description" id="form-description" onChange={this.handleChange('description')}/>
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>

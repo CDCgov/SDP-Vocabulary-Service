@@ -16,7 +16,7 @@ Feature: Manage Usage
     Then I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
     When I click on the create "Forms" dropdown item
-    And I fill in the "name" field with "Test Form"
+    And I fill in the "form-name" field with "Test Form"
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
@@ -24,7 +24,7 @@ Feature: Manage Usage
     Then I should see "Test Form"
     When I click on the "Publish" button
     And I click on the create "Surveys" dropdown item
-    And I fill in the "name" field with "Test Survey"
+    And I fill in the "survey-name" field with "Test Survey"
     And I set search filter to "form"
     And I click on the "search-btn" button
     And I use the form search to select "Test Form"
@@ -53,7 +53,7 @@ Feature: Manage Usage
     Then I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
     When I click on the create "Forms" dropdown item
-    And I fill in the "name" field with "Test Form"
+    And I fill in the "form-name" field with "Test Form"
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
@@ -62,7 +62,7 @@ Feature: Manage Usage
     Then I should see "Test Form"
     When I click on the "Publish" button
     And I click on the create "Surveys" dropdown item
-    And I fill in the "name" field with "Test Survey"
+    And I fill in the "survey-name" field with "Test Survey"
     And I set search filter to "form"
     And I click on the "search-btn" button
     And I use the form search to select "Test Form"
