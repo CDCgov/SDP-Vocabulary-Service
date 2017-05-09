@@ -1,5 +1,6 @@
 module Api
   class ApplicationController < ActionController::Base
+    protect_from_forgery with: :exception
     rescue_from Exception do |e|
       error(e)
     end
