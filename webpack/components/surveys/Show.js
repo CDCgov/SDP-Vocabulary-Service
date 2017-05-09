@@ -93,12 +93,12 @@ class SurveyShow extends Component{
           {this.props.forms.map((f,i ) =>
             <div  key={i} className="basic-c-box panel-default survey-form">
               <div className="panel-heading">
-                <h1 className="panel-title">{f.name}</h1>
+                <h1 className="panel-title"><Link to={`/forms/${f.id}`}>{ f.name }</Link></h1>
               </div>
               <div className="box-content">
                 <ul>
                   {f.questions.map((q,i) =>
-                    <li key={i}>{q.content}</li>
+                    <li key={i}><Link to={`/questions/${q.id}`}>{q.content}</Link></li>
                   )}
                 </ul>
               </div>
