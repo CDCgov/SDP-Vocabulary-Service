@@ -13,7 +13,7 @@ class Form < ApplicationRecord
   belongs_to :parent, class_name: 'Form'
 
   validates :created_by, presence: true
-  validates :control_number, allow_blank: true, format: { with: /\d{4}-\d{4}/,
+  validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
                                                           message: 'must be a valid OMB Control Number' },
                              uniqueness: { message: 'forms should have different OMB Control Numbers',
                                            unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
