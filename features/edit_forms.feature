@@ -126,6 +126,7 @@ Feature: Edit Forms
   Scenario: Create New Form from List and Create a Response Set using New Response Set Modal
     Given I have a Response Set with the name "Gender Full"
     And I have a Question with the content "What is your gender?" and the type "MC"
+    And I have a Question with the content "Do you like apples?" and the description "A simple boolean" and the response type "Boolean"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Forms" dropdown item
@@ -135,6 +136,7 @@ Feature: Edit Forms
     And I fill in the "search" field with "What"
     And I set search filter to "question"
     And I click on the "search-btn" button
+    And I use the question search to select "Do you like apples?"
     And I use the question search to select "What is your gender?"
     Then I click on the "Add New Response Set" button
     Then I fill in the "response-set-name" field with "New Response Set"
@@ -144,6 +146,7 @@ Feature: Edit Forms
     And I click on the "Save" button
     Then I should see "Test Form"
     And I should see "What is your gender?"
+    And I should see "Response Type: Boolean"
 
   Scenario: Show warning modal after adding question
     Given I have a Response Set with the name "Gender Full"

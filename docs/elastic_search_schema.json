@@ -76,6 +76,17 @@
         "updatedAt": {
           "type": "date"
         },
+        "responseType": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "code": {
+              "type": "string"
+            }
+          }
+        },
         "createdBy": {
           "type": "object",
           "properties": {
