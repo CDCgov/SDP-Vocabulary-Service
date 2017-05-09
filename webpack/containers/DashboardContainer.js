@@ -259,7 +259,7 @@ class DashboardContainer extends Component {
 
   analyticsGroup(searchType) {
     return (
-    <div className="analytics-group">
+    <div className="analytics-group" role="navigation" aria-label="Analytics">
       <ul className="analytics-list-group">
         <li id="questions-analytics-item" className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
           <div>
