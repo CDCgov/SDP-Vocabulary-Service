@@ -113,6 +113,16 @@ export default class ResponseSetDetails extends Component {
                 <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
               </div>
             }
+            { responseSet.source &&
+              <div className="box-content">
+                <strong>Import / Source: </strong>
+                {responseSet.source === 'PHIN_VADS' ? (
+                  <a href="https://phinvads.cdc.gov">PHIN VADS</a>
+                ) : (
+                  <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>
+                )}
+              </div>
+            }
             { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
             <div className="box-content">
               <strong>Published By: </strong>

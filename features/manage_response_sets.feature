@@ -22,6 +22,7 @@ Feature: Manage Response Sets
     Then I should see "Name: Gender Full"
     And I should see "Response set description"
     And I should see "Original Response"
+    And I should see "Source: Local"
     And I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
 
