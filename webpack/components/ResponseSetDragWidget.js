@@ -38,7 +38,7 @@ class DropTarget extends Component {
         {selectedResponseSets.map((rs, i) => {
           return (
           <div key={i}>
-          <i className='pull-right fa fa-close' onClick={() => removeResponseSet(rs.id)}/>
+          <button className="pull-right" onClick={() => removeResponseSet(rs.id)}><i className='fa fa-close' aria-hidden="true"/><span className="sr-only">Remove Selected Response Set</span></button>
           <DraggableResponseSet type='response_set' result={{Source: rs}} currentUser={{id: -1}} />
           </div>);
         })}
@@ -115,7 +115,7 @@ class ResponseSetDragWidget extends Component {
                       handleSelectSearchResult={() => this.addRsButtonHandler(rs)} />;
             })}
             {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
-              <div id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</div>
+              <button id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</button>
             }
           </div>
         </div>

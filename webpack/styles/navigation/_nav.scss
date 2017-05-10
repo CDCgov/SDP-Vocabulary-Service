@@ -121,3 +121,24 @@ a.cdc-brand:focus {
     overflow-x: hidden;
   }
 }
+
+.skiptocontent {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: $cdc-dark-blue;
+  color: white;
+  width: 15%;
+  -webkit-transition: top 1s ease-out, background 1s linear;
+  transition: top 1s ease-out, background 1s linear;
+  a:focus {
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    padding: 10px;
+    background: $cdc-dark-blue;
+    color: white;
+    -webkit-transition: top .1s ease-in, background .5s linear;
+    transition: top .1s ease-in, background .5s linear;
+  }
+}
