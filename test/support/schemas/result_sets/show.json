@@ -6,6 +6,7 @@
     "version" : {"type" : "number"},
     "name" : {"type" : "string"},
     "description" : {"type" : "string"},
+    "publisher" : {"type" : "string"},
     "expansion" : {
       "type" : "object",
       "properties" : {

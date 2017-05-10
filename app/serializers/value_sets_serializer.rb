@@ -18,6 +18,10 @@ class ValueSetsSerializer < ActiveModel::Serializer
   end
 
   attribute :description
+  attribute :real_source, key: :publisher
+  def real_source
+    object.source == 'local' ? 'SDP-Vocabulary' : object.source
+  end
 
   attribute :expansion
   def expansion

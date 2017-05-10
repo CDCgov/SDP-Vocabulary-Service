@@ -24,6 +24,8 @@ tags:
     name: valueSets
     description: Access to value sets
 
+basePath: /api
+
 paths:
   /questions:
     get:
@@ -474,6 +476,9 @@ definitions:
       description:
         type: string
         title: Human readable description of the value set
+      publisher:
+        type: string
+        title: The name of the individual or organization that published the value set
       expansion:
         type: object
         properties:
@@ -557,6 +562,9 @@ definitions:
       questionUri:
         type: string
         title: Relative URI of the question
+      questionType:
+        type: string
+        title: Type of the question
       version:
         type: string
         title: Logical identifier for this version of the question
