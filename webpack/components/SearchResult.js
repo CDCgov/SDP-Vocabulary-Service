@@ -303,8 +303,9 @@ export default class SearchResult extends Component {
                     this.selectResultButton(result, handleSelectSearchResult)
                   ) : (
                     <div className="dropdown">
-                      <a id={`${type}_${result.id}_menu`} className="dropdown-toggle" type="" data-toggle="dropdown">
+                      <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
                         <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
+                        <span className="sr-only">View Item Action Menu</span>
                       </a>
                       {this.resultDropdownMenu(result, type, actionName, action)}
                     </div>

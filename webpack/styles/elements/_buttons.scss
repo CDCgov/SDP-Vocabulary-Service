@@ -38,7 +38,22 @@
 }
 
 a.dropdown-toggle{
-  cursor: pointer;
+}
+
+a.widget-dropdown-toggle{
+  @extend .dropdown-toggle;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:focus {
+    outline: 1px;
+    outline-style: dashed;
+    outline-color: black;
+    box-shadow: 2px 2px 2px #888;
+  }
+}
+
+caption {
+  color: $medium-gray;
 }
 
 i.fa-close{
