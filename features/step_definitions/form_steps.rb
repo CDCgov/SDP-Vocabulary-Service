@@ -18,7 +18,7 @@ end
 When(/^I go to the list of Forms$/) do
   Elastictest.fake_form_search_results
   visit '/'
-  page.find('li[id="forms-analytics-item"]').click
+  page.find('button[id="forms-analytics-item"]').click
 end
 
 When(/^I click on the button to add the Question "([^"]*)"$/) do |question_content|

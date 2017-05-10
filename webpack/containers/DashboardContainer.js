@@ -261,34 +261,34 @@ class DashboardContainer extends Component {
     return (
     <div className="analytics-group" role="navigation" aria-label="Analytics">
       <ul className="analytics-list-group">
-        <li id="questions-analytics-item" className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
+        <button id="questions-analytics-item" className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
           <div>
             <i className="fa fa-tasks fa-3x item-icon" aria-hidden="true"></i>
-            <p className="item-value">{this.props.questionCount}</p>
-            <h2 className="item-title">Questions</h2>
+            <p className="item-value" aria-describedby="question-analytics-item-title">{this.props.questionCount}</p>
+            <h2 className="item-title" id="question-analytics-item-title">Questions</h2>
           </div>
-        </li>
-        <li id="response-sets-analytics-item" className={"analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
+        </button>
+        <button id="response-sets-analytics-item" className={"analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
           <div>
             <i className="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
-            <p className="item-value">{this.props.responseSetCount}</p>
-            <h2 className="item-title">Response Sets</h2>
+            <p className="item-value" aria-describedby="response-sets-analytics-item-title">{this.props.responseSetCount}</p>
+            <h2 className="item-title" id="response-sets-analytics-item-title">Response Sets</h2>
           </div>
-          </li>
-        <li id="forms-analytics-item" className={"analytics-list-item btn" + (searchType === 'form' ? " analytics-active-item" : "")} onClick={() => this.selectType('form')}>
+          </button>
+        <button id="forms-analytics-item" className={"analytics-list-item btn" + (searchType === 'form' ? " analytics-active-item" : "")} onClick={() => this.selectType('form')}>
           <div>
             <i className="fa fa-list-alt fa-3x item-icon" aria-hidden="true"></i>
-            <p className="item-value">{this.props.formCount}</p>
-            <h2 className="item-title">Forms</h2>
+            <p className="item-value" aria-describedby="forms-analytics-item-title">{this.props.formCount}</p>
+            <h2 className="item-title" id="forms-analytics-item-title">Forms</h2>
           </div>
-          </li>
-        <li id="surveys-analytics-item" className={"analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
+          </button>
+        <button id="surveys-analytics-item" className={"analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
           <div>
             <i className="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
-            <p className="item-value">{this.props.surveyCount}</p>
-            <h2 className="item-title">Surveys</h2>
+            <p className="item-value" aria-describedby="surveys-analytics-item-title">{this.props.surveyCount}</p>
+            <h2 className="item-title" id="surveys-analytics-item-title">Surveys</h2>
           </div>
-          </li>
+          </button>
       </ul>
       {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
     </div>);
@@ -300,22 +300,22 @@ class DashboardContainer extends Component {
         <div className="recent-items-heading">My Stuff</div>
         <div className="recent-items-body">
           <ul className="list-group">
-            <li className={"recent-item-list btn" + (searchType === 'question' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('question', true)}>
+            <button className={"recent-item-list btn" + (searchType === 'question' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('question', true)}>
               <div className="recent-items-icon"><i className="fa fa-tasks recent-items-icon" aria-hidden="true"></i></div>
               <div className="recent-items-value">{this.props.myQuestionCount} Questions</div>
-            </li>
-            <li className={"recent-item-list btn" + (searchType === 'response_set' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set', true)}>
+            </button>
+            <button className={"recent-item-list btn" + (searchType === 'response_set' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set', true)}>
               <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
               <div className="recent-items-value">{this.props.myResponseSetCount} Response Sets</div>
-            </li>
-            <li className={"recent-item-list btn" + (searchType === 'form' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('form', true)}>
+            </button>
+            <button className={"recent-item-list btn" + (searchType === 'form' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('form', true)}>
               <div className="recent-items-icon"><i className="fa fa-list-alt recent-items-icon" aria-hidden="true"></i></div>
               <div className="recent-items-value">{this.props.myFormCount} Forms</div>
-            </li>
-            <li className={"recent-item-list btn" + (searchType === 'survey' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('survey', true)}>
+            </button>
+            <button className={"recent-item-list btn" + (searchType === 'survey' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('survey', true)}>
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
               <div className="recent-items-value">{this.props.mySurveyCount} Surveys</div>
-            </li>
+            </button>
             {myStuffFilter ? (<a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
               <a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
             )}

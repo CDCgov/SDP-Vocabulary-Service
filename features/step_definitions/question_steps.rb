@@ -54,7 +54,7 @@ end
 When(/^I go to the list of Questions$/) do
   Elastictest.fake_question_search_results
   visit '/'
-  page.find('li[id="questions-analytics-item"]').click
+  page.find('button[id="questions-analytics-item"]').click
 end
 
 Given(/^I have a published Question with the content "([^"]*)"$/) do |content|
