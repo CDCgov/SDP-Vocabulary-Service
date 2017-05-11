@@ -23,15 +23,24 @@ class SurveyFormList extends Component {
                   <h1 className="panel-title">{f.name}</h1>
                   <div className='form-group-controls'>
                     <button className="btn btn-small btn-default move-up"
-                         onClick={(event) => {event.preventDefault(); this.props.reorderForm(survey, i, 1);}}>
+                         onClick={(event) => {
+                           event.preventDefault();
+                           this.props.reorderForm(survey, i, 1);
+                         }}>
                       <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move form up on survey</span>
                     </button>
                     <button className="btn btn-small btn-default move-down"
-                         onClick={(event) => {event.preventDefault(); this.props.reorderForm(survey, i, -1);}}>
+                         onClick={(event) => {
+                           event.preventDefault();
+                           this.props.reorderForm(survey, i, -1);
+                         }}>
                       <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move form down on survey</span>
                     </button>
                     <button className="btn btn-small btn-default"
-                         onClick={(event) => {event.preventDefault(); this.props.removeForm(survey, i);}}>
+                         onClick={(event) => {
+                           event.preventDefault();
+                           this.props.removeForm(survey, i);
+                         }}>
                       <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove form from selected form list</span>
                     </button>
                   </div>

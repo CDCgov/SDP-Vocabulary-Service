@@ -204,19 +204,28 @@ class FormEdit extends Component {
               <div className="col-md-1">
                 <div className="row form-question-controls">
                   <button className="btn btn-small btn-default move-up"
-                       onClick={(event) => {event.preventDefault(); this.props.reorderQuestion(form, i, 1);}}>
+                       onClick={(event) => {
+                         event.preventDefault();
+                         this.props.reorderQuestion(form, i, 1);
+                       }}>
                     <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move question up on form</span>
                   </button>
                 </div>
                 <div className="row form-question-controls">
                   <button className="btn btn-small btn-default move-down"
-                       onClick={(event) => {event.preventDefault(); this.props.reorderQuestion(form, i, -1);}}>
+                       onClick={(event) => {
+                         event.preventDefault();
+                         this.props.reorderQuestion(form, i, -1);
+                       }}>
                     <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move question down on form</span>
                   </button>
                 </div>
                 <div className="row form-question-controls">
                   <button className="btn btn-small btn-default delete-question"
-                       onClick={(event) => {event.preventDefault(); this.props.removeQuestion(form, i);}}>
+                       onClick={(event) => {
+                         event.preventDefault();
+                         this.props.removeQuestion(form, i);
+                       }}>
                     <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove question from selected question list</span>
                   </button>
                 </div>
