@@ -644,8 +644,7 @@ definitions:
       surveyDescription:
         type: string
         title: Human readable description of the survey
-       published_by:
-        type: object
+      published_by:
         title: User that published the survey
         $ref: '#/definitions/User'
       # TODO additional metadata
