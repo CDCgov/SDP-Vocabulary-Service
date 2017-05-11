@@ -152,6 +152,11 @@ When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
   drag.drag_to(drop)
 end
 
+Then(/^I press the key (.*)$/) do |key|
+  key = key.to_sym if key.length > 1
+  find('.body').send_keys(key)
+end
+
 Then(/^I take a screenshot named (.*)$/) do |name|
   page.save_screenshot('/tmp/' + name + '.png')
 end

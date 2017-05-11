@@ -202,3 +202,18 @@ Feature: Manage Response Sets
     And I click on the "Continue Without Saving" button
     And I go to the list of Response Sets
     Then I should not see "Gender Partial"
+
+  Scenario: Close the warning modal on New Response Set with the escape key
+    Given I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the create "Response Sets" dropdown item
+    And I fill in the "response-set-name" field with "Gender Partial"
+    And I fill in the "Description" field with "M / F"
+    And I click on the "Add Row" link
+    And I fill in the "value_0" field with "Test Response 1"
+    And I fill in the "value_1" field with "Test Response 2"
+    And I click on the "remove_0" link
+    When I click on the "CDC Vocabulary Service" link
+    Then I should see "Unsaved Changes"
+    Then I press the key escape
+    Then I should not see "Unsaved Changes"
