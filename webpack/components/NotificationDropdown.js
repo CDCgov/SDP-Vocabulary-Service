@@ -33,7 +33,7 @@ class NotificationDropdown extends Component {
   render() {
     if(this.state.notificationCount > 0 && this.props.notifications){
       return (
-        <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onClick={() => this.onDropdownClick(this.props.notifications)}>
+        <a href="#notifications" tabIndex="2" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onClick={() => this.onDropdownClick(this.props.notifications)}>
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
           Alerts
           <span className="caret"></span>
@@ -42,7 +42,7 @@ class NotificationDropdown extends Component {
       );
     } else {
       return (
-        <a href="#notifications" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <a href="#notifications" tabIndex="2" className="dropdown-toggle cdc-navbar-item" id="notification-dropdown"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i className="fa fa-bell item-navbar-icon" aria-hidden="true"></i>
           Alerts
           <span className="caret"></span>

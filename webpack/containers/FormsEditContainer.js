@@ -130,7 +130,7 @@ class FormsEditContainer extends Component {
             <div className="panel-body">
               <div className="col-md-5">
                 <div className="row add-question">
-                  <Button onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
+                  <Button tabIndex="4" onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
                 </div>
                 <QuestionSearchContainer form={this.props.form} />
               </div>

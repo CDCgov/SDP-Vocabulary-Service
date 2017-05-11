@@ -22,18 +22,27 @@ class SurveyFormList extends Component {
                 <div className="panel-heading">
                   <h1 className="panel-title">{f.name}</h1>
                   <div className='form-group-controls'>
-                    <div className="btn btn-small btn-default move-up"
-                         onClick={() => this.props.reorderForm(survey, i, 1)}>
-                      <i title="Move Up" className="fa fa fa-arrow-up"></i>
-                    </div>
-                    <div className="btn btn-small btn-default move-down"
-                         onClick={() => this.props.reorderForm(survey, i, -1)}>
-                      <i className="fa fa fa-arrow-down" title="Move Down"></i>
-                    </div>
-                    <div className="btn btn-small btn-default"
-                         onClick={() => this.props.removeForm(survey, i)}>
-                      <i className="fa fa fa-trash" title="Remove"></i>
-                    </div>
+                    <button className="btn btn-small btn-default move-up"
+                         onClick={(event) => {
+                           event.preventDefault();
+                           this.props.reorderForm(survey, i, 1);
+                         }}>
+                      <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move form up on survey</span>
+                    </button>
+                    <button className="btn btn-small btn-default move-down"
+                         onClick={(event) => {
+                           event.preventDefault();
+                           this.props.reorderForm(survey, i, -1);
+                         }}>
+                      <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move form down on survey</span>
+                    </button>
+                    <button className="btn btn-small btn-default"
+                         onClick={(event) => {
+                           event.preventDefault();
+                           this.props.removeForm(survey, i);
+                         }}>
+                      <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove form from selected form list</span>
+                    </button>
                   </div>
                 </div>
                 <div className="box-content">

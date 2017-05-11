@@ -131,17 +131,17 @@ class DashboardSearch extends Component {
       <div className="row">
         <div className="col-md-12">
           <div className="input-group search-group">
-            <input onChange={this.onInputChange} type="text" id="search" name="search" aria-label="search-bar" className="search-input" placeholder="Search..."/>
+            <input onChange={this.onInputChange} type="text" id="search" tabIndex="4" name="search" aria-label="search-bar" className="search-input" placeholder="Search..."/>
             <span className="input-group-btn">
-              <button id="search-btn" className="search-btn search-btn-default" aria-label="search-btn" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
+              <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="search-btn" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
           </div>
           <div>
-            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0) && <a href="#" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Filters</a>}
-            <a className="adv-search-link pull-right" title="Advanced Search" href="#" onClick={(e) => {
+            <a className="adv-search-link pull-right" title="Advanced Search" href="#" tabIndex="4" onClick={(e) => {
               e.preventDefault();
               this.showAdvSearch();
             }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>

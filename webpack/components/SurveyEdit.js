@@ -140,9 +140,9 @@ class SurveyEdit extends Component {
 
   cancelButton() {
     if(this.props.survey && this.props.survey.id) {
-      return(<Link className="btn btn-default pull-right" to={`/surveys/${this.props.survey.id}`}>Cancel</Link>);
+      return(<Link tabIndex="3" className="btn btn-default pull-right" to={`/surveys/${this.props.survey.id}`}>Cancel</Link>);
     }
-    return(<Link className="btn btn-default pull-right" to='/'>Cancel</Link>);
+    return(<Link tabIndex="3" className="btn btn-default pull-right" to='/'>Cancel</Link>);
   }
 
   render() {
@@ -169,8 +169,8 @@ class SurveyEdit extends Component {
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <Errors errors={this.state.errors} />
           <div className="survey-inline">
-            <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
-            <input className='btn btn-default pull-right' name="Save Survey" type="submit" value={`Save`}/>
+            <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
+            <input tabIndex="3" className='btn btn-default pull-right' name="Save Survey" type="submit" value={`Save`}/>
             {this.cancelButton()}
           </div>
         <div className="row">
@@ -183,17 +183,17 @@ class SurveyEdit extends Component {
             <div className="row">
               <div className="survey-group col-md-12">
                 <label htmlFor="survey-name" hidden>Name</label>
-                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="survey-name" id="survey-name" onChange={this.handleChange('name')}/>
+                <input tabIndex="3" className="input-format" placeholder="Name" type="text" value={this.state.name} name="survey-name" id="survey-name" onChange={this.handleChange('name')}/>
               </div>
             </div>
             <div className="row">
               <div className="survey-group col-md-8">
                 <label htmlFor="survey-description">Description</label>
-                <input className="input-format" type="text" value={this.state.description || ''} name="survey-description" id="survey-description" onChange={this.handleChange('description')}/>
+                <input tabIndex="3" className="input-format" type="text" value={this.state.description || ''} name="survey-description" id="survey-description" onChange={this.handleChange('description')}/>
               </div>
               <div className="survey-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
-                <input className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+                <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
               </div>
             </div>
           </div>

@@ -146,9 +146,9 @@ class FormEdit extends Component {
 
   cancelButton() {
     if(this.props.form && this.props.form.id) {
-      return(<Link className="btn btn-default pull-right" to={`/forms/${this.props.form.id}`}>Cancel</Link>);
+      return(<Link tabIndex="3" className="btn btn-default pull-right" to={`/forms/${this.props.form.id}`}>Cancel</Link>);
     }
-    return(<Link className="btn btn-default pull-right" to='/'>Cancel</Link>);
+    return(<Link tabIndex="3" className="btn btn-default pull-right" to='/'>Cancel</Link>);
   }
 
   addLinkedResponseSet(questionIndex, responseSet){
@@ -203,22 +203,31 @@ class FormEdit extends Component {
               </div>
               <div className="col-md-1">
                 <div className="row form-question-controls">
-                  <div className="btn btn-small btn-default move-up"
-                       onClick={() => this.props.reorderQuestion(form, i, 1)}>
-                    <i title="Move Up" className="fa fa fa-arrow-up"></i>
-                  </div>
+                  <button className="btn btn-small btn-default move-up"
+                       onClick={(event) => {
+                         event.preventDefault();
+                         this.props.reorderQuestion(form, i, 1);
+                       }}>
+                    <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move question up on form</span>
+                  </button>
                 </div>
                 <div className="row form-question-controls">
-                  <div className="btn btn-small btn-default move-down"
-                       onClick={() => this.props.reorderQuestion(form, i, -1)}>
-                    <i className="fa fa fa-arrow-down" title="Move Down"></i>
-                  </div>
+                  <button className="btn btn-small btn-default move-down"
+                       onClick={(event) => {
+                         event.preventDefault();
+                         this.props.reorderQuestion(form, i, -1);
+                       }}>
+                    <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move question down on form</span>
+                  </button>
                 </div>
                 <div className="row form-question-controls">
-                  <div className="btn btn-small btn-default delete-question"
-                       onClick={() => this.props.removeQuestion(form, i)}>
-                    <i className="fa fa fa-trash" title="Remove"></i>
-                  </div>
+                  <button className="btn btn-small btn-default delete-question"
+                       onClick={(event) => {
+                         event.preventDefault();
+                         this.props.removeQuestion(form, i);
+                       }}>
+                    <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove question from selected question list</span>
+                  </button>
                 </div>
               </div>
               </div>
@@ -254,9 +263,9 @@ class FormEdit extends Component {
       <form onSubmit={(e) => this.handleSubmit(e)}>
         <Errors errors={this.state.errors} />
           <div className="form-inline">
-            <button className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
-            <input  className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
-            <button className="btn btn-default pull-right" disabled>Export</button>
+            <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
+            <input tabIndex="3" className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
+            <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>
         <div className="row">
@@ -269,17 +278,17 @@ class FormEdit extends Component {
             <div className="row">
               <div className="form-group col-md-12">
                 <label htmlFor="form-name" hidden>Name</label>
-                <input className="input-format" placeholder="Name" type="text" value={this.state.name} name="form-name" id="form-name" onChange={this.handleChange('name')}/>
+                <input tabIndex="3" className="input-format" placeholder="Name" type="text" value={this.state.name} name="form-name" id="form-name" onChange={this.handleChange('name')}/>
               </div>
             </div>
             <div className="row">
               <div className="form-group col-md-8">
                 <label htmlFor="form-description">Description</label>
-                <input className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form-description" id="form-description" onChange={this.handleChange('description')}/>
+                <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form-description" id="form-description" onChange={this.handleChange('description')}/>
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
-                <input className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+                <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
               </div>
             </div>
           </div>
