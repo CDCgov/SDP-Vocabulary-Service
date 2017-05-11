@@ -15,13 +15,13 @@ let LoginMenu = ({logInOpener, signUpOpener, currentUser}) => {
     return (
       <ul className="nav navbar-nav">
         <li className="log-in-link">
-          <a href="#" onClick={() => {
+          <a href="#" tabIndex="2" onClick={() => {
             logInOpener();
             return false;
           }}>Login </a>
         </li>
         <li>
-          <a href="#" onClick={() => {
+          <a href="#" tabIndex="2" onClick={() => {
             signUpOpener();
             return false;
           }}> Register </a>
@@ -45,16 +45,15 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
     let {email} = currentUser;
     return(
       <li className="dropdown">
-        <a href="#" id="account-dropdown" className="dropdown-toggle account-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
+        <a href="#" tabIndex="2" id="account-dropdown" className="dropdown-toggle account-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
         <ul className="dropdown-menu">
-          <li><Link to='/mystuff'>My Stuff</Link></li>
-          <li><a href="#" onClick={() => {
+          <li><a href="#" tabIndex="2" onClick={() => {
             settingsOpener();
             return false;
           }}>Settings</a></li>
           <li role="separator" className="divider"></li>
           <li>
-            <a href="/users/sign_out">Logout</a>
+            <a href="/users/sign_out" tabIndex="2">Logout</a>
           </li>
         </ul>
       </li>
@@ -73,15 +72,15 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
   if(loggedIn) {
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">
-        <li className="active"><a href="#" className="cdc-navbar-item"><i className="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
+        <li className="active"><a href="#" tabIndex="2" className="cdc-navbar-item"><i className="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
         {!location.pathname.includes("revise") && !location.pathname.includes("edit") && !location.pathname.includes("extend") &&
           <li className="dropdown">
-            <a href="#" id = "create-menu" className="dropdown-toggle cdc-navbar-item create-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
+            <a href="#" id="create-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item create-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
             <ul className="cdc-nav-dropdown">
-              <li className="nav-dropdown-item"><Link to="/questions/new">Questions</Link></li>
-              <li className="nav-dropdown-item"><Link to="/responseSets/new">Response Sets</Link></li>
-              <li className="nav-dropdown-item"><Link to="/forms/new">Forms</Link></li>
-              <li className="nav-dropdown-item"><Link to="/surveys/new">Surveys</Link></li>
+              <li className="nav-dropdown-item"><Link to="/questions/new" tabIndex="2">Questions</Link></li>
+              <li className="nav-dropdown-item"><Link to="/responseSets/new" tabIndex="2">Response Sets</Link></li>
+              <li className="nav-dropdown-item"><Link to="/forms/new" tabIndex="2">Forms</Link></li>
+              <li className="nav-dropdown-item"><Link to="/surveys/new" tabIndex="2">Surveys</Link></li>
             </ul>
           </li>
         }
@@ -197,7 +196,7 @@ class Header extends Component {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
             </button>
-            <Link to="/" className="cdc-brand">CDC Vocabulary Service</Link>
+            <Link to="/" className="cdc-brand" tabIndex="2">CDC Vocabulary Service</Link>
           </div>
           <SignedInMenu currentUser={this.props.currentUser} location={this.props.location} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -205,11 +204,11 @@ class Header extends Component {
               <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
               <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
               <li className="dropdown">
-                <a href="#" id = "help-menu" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
+                <a href="#" id = "help-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
                 <ul className="cdc-nav-dropdown">
-                  <li className="nav-dropdown-item"><Link to='/Help'>Help Documentation</Link></li>
+                  <li className="nav-dropdown-item"><Link to='/Help' tabIndex="2">Help Documentation</Link></li>
                   {isReady && this.props.steps.length > 0 &&
-                    <li><a href="#" onClick={(e) => {
+                    <li><a href="#" tabIndex="2" onClick={(e) => {
                       e.preventDefault();
                       return this.joyride.reset(true);
                     }}>Step-by-Step Walkthrough</a></li>

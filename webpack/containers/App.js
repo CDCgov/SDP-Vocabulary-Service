@@ -56,7 +56,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <a href="#main-content" className="sr-only sr-only-focusable">Skip to main content</a>
+        <a href="#main-content" className="sr-only sr-only-focusable" tabIndex="1">Skip to main content</a>
         <Header currentUser={this.props.currentUser}
                 location={this.props.location}
                 logInOpener={() => this.openLogInModal()}
