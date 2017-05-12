@@ -37,6 +37,14 @@
     margin: 0px;
   }
 
+  .survey-form-controls{
+    margin-bottom: 15px;
+  }
+
+  .delete-form{
+    font-size: 17px;
+  }
+
   .form-container {
     @extend .panel-body;
     border-bottom: 1px solid $light-gray;
