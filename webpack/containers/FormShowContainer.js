@@ -16,8 +16,6 @@ import { publishersProps } from "../prop-types/publisher_props";
 class FormShowContainer extends Component {
   componentWillMount() {
     this.props.fetchForm(this.props.params.formId);
-    this.props.fetchQuestions();
-    this.props.fetchResponseSets();
   }
 
   componentDidMount() {

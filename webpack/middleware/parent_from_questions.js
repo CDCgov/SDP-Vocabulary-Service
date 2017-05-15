@@ -3,7 +3,7 @@ import {
   FETCH_QUESTION_FULFILLED
 } from '../actions/types';
 
-import dispatchIfNotPresent from './store_helper';
+import { dispatchIfNotPresent } from './store_helper';
 
 const parentFromQuestions = store => next => action => {
   if(store == null) return;

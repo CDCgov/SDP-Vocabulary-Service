@@ -3,7 +3,7 @@ import {
   FETCH_RESPONSE_SET_FULFILLED
 } from '../actions/types';
 
-import dispatchIfNotPresent from './store_helper';
+import { dispatchIfNotPresent } from './store_helper';
 
 const parentFromResponseSets = store => next => action => {
   if (store == null) return;

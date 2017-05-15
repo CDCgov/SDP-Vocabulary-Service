@@ -5,7 +5,7 @@ import {
   FETCH_QUESTIONS_FULFILLED
 } from '../actions/types';
 
-import dispatchIfNotPresent from './store_helper';
+import { dispatchIfNotPresent } from './store_helper';
 
 const responseTypesFromQuestions = store => next => action => {
   switch (action.type) {
