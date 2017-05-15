@@ -37,11 +37,10 @@ end
 
 When(/^I move the Form "([^"]*)" (up|down)$/) do |form_name, direction|
   object_id = attribute_to_id('Form', 'name', form_name)
-  old_index = page.find_all('.survey-form').index { |el| el.matches_css?("#form_id_#{object_id}") }
-  page.find(".survey-form#form_id_#{object_id}").find(".move-#{direction}").click
-  new_index = page.find_all('.survey-form').index { |el| el.matches_css?("#form_id_#{object_id}") }
+  old_index = page.find_all('.survey-form').index { |el| el.has_css?("#survey_form_id_#{object_id}") }
+  page.all(".move-#{direction}")[old_index].click
+  new_index = page.find_all('.survey-form').index { |el| el.has_css?("#survey_form_id_#{object_id}") }
   offset = direction.eql?('up') ? -1 : 1
-
   assert(old_index != new_index)
   assert(old_index + offset == new_index)
 end

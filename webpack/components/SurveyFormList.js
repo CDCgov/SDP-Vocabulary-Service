@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { formsProps } from "../prop-types/form_props";
 import { questionsProps } from "../prop-types/question_props";
+import SearchResult from './SearchResult';
 
 class SurveyFormList extends Component {
   render() {
@@ -18,45 +19,48 @@ class SurveyFormList extends Component {
               );
             } else {
               return (
-              <div  key={i} className="basic-c-box panel-default survey-form" id={`form_id_${f.id}`}>
-                <div className="panel-heading">
-                  <h1 className="panel-title">{f.name}</h1>
-                  <div className='form-group-controls'>
-                    <button className="btn btn-small btn-default move-up"
-                         onClick={(event) => {
-                           event.preventDefault();
-                           this.props.reorderForm(survey, i, 1);
-                         }}>
-                      <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move form up on survey</span>
-                    </button>
-                    <button className="btn btn-small btn-default move-down"
-                         onClick={(event) => {
-                           event.preventDefault();
-                           this.props.reorderForm(survey, i, -1);
-                         }}>
-                      <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move form down on survey</span>
-                    </button>
-                    <button className="btn btn-small btn-default"
-                         onClick={(event) => {
-                           event.preventDefault();
-                           this.props.removeForm(survey, i);
-                         }}>
-                      <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove form from selected form list</span>
-                    </button>
-                  </div>
-                </div>
-                <div className="box-content">
-                  <ul>
-                    {f.formQuestions.map((q,i) =>
-                      <li key={i}>{this.props.questions[q.questionId].content}</li>
-                    )}
-                  </ul>
-                </div>
-              </div>
+                      <div className="row survey-form" key={i}>
+                        <div className="col-md-11">
+                          <SearchResult type  ='survey_form'
+                                        result={{Source: f}}
+                                        currentUser={{id: -1}}
+                                        isEditPage ={true}
+                                        index={i} />
+                        </div>
+                        <div className="col-md-1">
+                          <div className="row survey-form-controls">
+                              <button className="btn btn-small btn-default move-up"
+                                   onClick={(event) => {
+                                     event.preventDefault();
+                                     this.props.reorderForm(survey, i, 1);
+                                   }}>
+                                <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move form up on survey</span>
+                              </button>
+                          </div>
+                          <div className="row survey-form-controls">
+                              <button className="btn btn-small btn-default move-down"
+                                   onClick={(event) => {
+                                     event.preventDefault();
+                                     this.props.reorderForm(survey, i, -1);
+                                   }}>
+                                <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move form down on survey</span>
+                              </button>
+                          </div>
+                          <div className="row survey-form-controls">
+                              <button className="btn btn-small btn-default delete-form"
+                                   onClick={(event) => {
+                                     event.preventDefault();
+                                     this.props.removeForm(survey, i);
+                                   }}>
+                                <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove form from selected form list</span>
+                              </button>
+                          </div>
+                        </div>
+                      </div>
               );
             }
           }
-          )}
+         )}
       </div>
     );
   }

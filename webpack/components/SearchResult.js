@@ -6,7 +6,7 @@ import moment from 'moment';
 import currentUserProps from "../prop-types/current_user_props";
 import { responseSetProps } from "../prop-types/response_set_props";
 
-// Note, acceptable type strings are: response_set, question, form_question, form, survey
+// Note, acceptable type strings are: response_set, question, form_question, form, survey, survey_form
 export default class SearchResult extends Component {
   render() {
     return (this.baseResult(this.props.type,
@@ -36,7 +36,7 @@ export default class SearchResult extends Component {
   }
 
   resultDropdownMenu(result, originalType, extraActionName, extraAction) {
-    var type = originalType.replace('_s','S').replace('form_','');
+    var type = originalType.replace('_s','S').replace('form_','').replace('survey_','');
     return (
       <ul className="dropdown-menu dropdown-menu-right">
         {originalType === 'form_question' && <li>
@@ -147,9 +147,10 @@ export default class SearchResult extends Component {
           </ul>
         );
       case 'form':
+      case 'survey_form':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-form`}><i className="fa fa-bars" aria-hidden="true"></i>Questions: {result.questions && result.questions.length}</a></li>
+            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i>Questions: {result.questions && result.questions.length}</a></li>
           </ul>
         );
       case 'form_question':
@@ -223,15 +224,16 @@ export default class SearchResult extends Component {
           </div>
         );
       case 'form':
+      case 'survey_form':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-form`}>
+          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-${type}`}>
             <div className="panel-body">
               {result.questions && result.questions.length > 0 &&
                 result.questions.map((q, i) => {
                   return(
                     <div key={`question-${q.id}-${i}`} className="result-details-content">
                       <text>
-                        <Link to={`/questions/${q.id}`}> {q.name}</Link>
+                        <Link to={`/questions/${q.id}`}> {q.name || q.content}</Link>
                       </text>
                     </div>
                   );
@@ -260,7 +262,7 @@ export default class SearchResult extends Component {
   }
 
   baseResult(type, result, highlight, handleSelectSearchResult, isEditPage, actionName, action) {
-    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-list-alt', 'survey': 'fa-clipboard'};
+    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-list-alt', 'survey_form': 'fa-list-alt', 'survey': 'fa-clipboard'};
     return (
       <div className="u-result-group">
         <div className="u-result" id={`${type}_id_${result.id}`}>
