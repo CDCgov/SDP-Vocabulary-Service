@@ -75,7 +75,11 @@ var config = {
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
-    })]
+    }),
+    new webpack.DefinePlugin({
+      OPIDC_HOST: JSON.stringify(process.env.OPIDC_HOST || '')
+    }),
+  ]
 };
 
 if (production) {
