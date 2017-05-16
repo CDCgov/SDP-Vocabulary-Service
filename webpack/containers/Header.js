@@ -16,7 +16,7 @@ let LoginMenu = ({openIdServer, logInOpener, signUpOpener, currentUser}) => {
       return (
         <ul className="nav navbar-nav">
           <li className="log-in-link">
-            <a href={openIdServer}>Login</a>
+            <a tabIndex="2" href={openIdServer}>Login</a>
           </li>
         </ul>
       );
