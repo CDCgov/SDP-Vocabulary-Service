@@ -164,7 +164,7 @@ export default class SearchResult extends Component {
           var selectedResponseSet = this.props.responseSets.find((r) => r.id == this.props.selectedResponseSetId);
           return (
             <div className="panel-body panel-body-form-question">
-              <span className="selected-response-set">Response Set: {(selectedResponseSet && selectedResponseSet.name) || '(None)'}</span>
+              <span className="selected-response-set" aria-label={`Selected Response set for Question ${result.content}`}>Response Set: {(selectedResponseSet && selectedResponseSet.name) || '(None)'}</span>
               <div className="form-question-group">
                 <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.result.id}/>
                 <select className="response-set-select" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSetId || ''} onChange={this.props.handleResponseSetChange}>
