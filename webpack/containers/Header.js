@@ -19,7 +19,7 @@ let LoginMenu = ({openIdServer, logInOpener, signUpOpener, currentUser}) => {
             <a href={openIdServer}>Login</a>
           </li>
         </ul>
-      )
+      );
     }
     return (
       <ul className="nav navbar-nav">
@@ -45,7 +45,8 @@ let LoginMenu = ({openIdServer, logInOpener, signUpOpener, currentUser}) => {
 LoginMenu.propTypes = {
   currentUser: currentUserProps,
   logInOpener: PropTypes.func.isRequired,
-  signUpOpener: PropTypes.func.isRequired
+  signUpOpener: PropTypes.func.isRequired,
+  openIdServer: PropTypes.string
 };
 
 let ContentMenu = ({settingsOpener, currentUser}) => {

@@ -90,7 +90,8 @@ if (production) {
       sourceMap: false
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') }
+      'process.env': { NODE_ENV: JSON.stringify('production') },
+      OPIDC_HOST: JSON.stringify(process.env.OPIDC_HOST || '')
     }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin()

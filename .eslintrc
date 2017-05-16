@@ -45,5 +45,8 @@
   },
   "plugins": [
     "react"
-  ]
+  ],
+  "globals": {
+        OPIDC_HOST: true
+    }
 }

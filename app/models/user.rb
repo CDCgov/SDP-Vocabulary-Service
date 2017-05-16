@@ -2,8 +2,14 @@ class User < ApplicationRecord
   rolify
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:openid_connect]
+  if Settings.openid_connect.client_options.host
+    devise :database_authenticatable,
+           :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:openid_connect]
+  else
+    devise :database_authenticatable, :registerable,
+           :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:openid_connect]
+
+  end
 
   validates :email, uniqueness: true, case_sensitive: false
   has_many :authentications
