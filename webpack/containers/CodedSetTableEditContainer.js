@@ -132,7 +132,7 @@ class CodedSetTableEditContainer extends Component {
 
   conceptModal(){
     return (
-      <Modal show={this.state.showConceptModal} onHide={this.hideCodeSearch} >
+      <Modal show={this.state.showConceptModal} onHide={this.hideCodeSearch} aria-label="Search Codes">
         <Modal.Header closeButton bsStyle='concept'>
           <Modal.Title>Search Codes</Modal.Title>
         </Modal.Header>

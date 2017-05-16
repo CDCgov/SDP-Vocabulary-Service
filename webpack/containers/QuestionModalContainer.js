@@ -154,7 +154,7 @@ class QuestionModalContainer extends Component {
       );
     }
     return (
-      <Modal bsStyle='question' show={this.props.showModal} onHide={this.closeQuestionModal} >
+      <Modal bsStyle='question' show={this.props.showModal} onHide={this.closeQuestionModal} aria-label="New Question">
         <Modal.Header closeButton bsStyle='question'>
           <Modal.Title>New Question</Modal.Title>
         </Modal.Header>

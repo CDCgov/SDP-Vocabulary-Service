@@ -26,7 +26,7 @@ class ResponseSetModal extends Component {
 
   render() {
     return (
-      <Modal bsStyle='response-set' show={this.props.show} onHide={this.props.closeModal}>
+      <Modal bsStyle='response-set' show={this.props.show} onHide={this.props.closeModal} aria-label="New Response Set">
         <Modal.Header closeButton bsStyle='response-set'>
           <Modal.Title>New Response Set</Modal.Title>
         </Modal.Header>
