@@ -9,6 +9,11 @@
   color: $cdc-blue;
   margin-left: 8px;
   font-weight: bold;
+  h1 {
+    margin: 0px;
+    font-size: 24px;
+    font-weight: bold;
+  }
 }
 
 .showpage-comments-title {
@@ -29,9 +34,10 @@
 
 .showpage_sidenav_subtitle {
   font-size: 18px;
+  margin: 0px;
   color: $dark-gray;
   height: 42px;
-  padding-top: 6px;
+  padding-top: 12px;
   padding-left: 8px;
   border-bottom: 1px solid $light-gray;
 }

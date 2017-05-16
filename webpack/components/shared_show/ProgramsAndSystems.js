@@ -5,7 +5,7 @@ class ProgramsAndSystems extends Component {
   render() {
     return (<div className="basic-c-box panel-default">
       <div className="panel-heading">
-        <h1 className="panel-title">Usage</h1>
+        <h2 className="panel-title">Usage</h2>
       </div>
       <div className="box-content">
         <strong>Surveillance Programs: </strong> {this.surveillancePrograms(this.props.item)}

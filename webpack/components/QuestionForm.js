@@ -147,7 +147,7 @@ class QuestionForm extends Component{
           <div>
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h1 className="panel-title">{`${this.actionWord()} Question`}</h1>
+                <h2 className="panel-title">{`${this.actionWord()} Question`}</h2>
               </div>
               <div className="panel-body">
                 <div className="row">

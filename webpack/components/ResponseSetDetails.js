@@ -29,7 +29,7 @@ export default class ResponseSetDetails extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title">Response Set Details {responseSet.status === 'draft' && <text>[DRAFT]</text>}</li>
+            <li className="showpage_title"><h1>Response Set Details {responseSet.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
           </ul>
         </div>
         {this.historyBar(responseSet)}
@@ -41,12 +41,13 @@ export default class ResponseSetDetails extends Component {
   historyBar(responseSet) {
     return (
       <div className="col-md-3 nopadding no-print">
-        <div className="showpage_sidenav_subtitle">
+        <h2 className="showpage_sidenav_subtitle">
+          <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
             <li className="subtitle_icon"><span className="fa fa-history" aria-hidden="true"></span></li>
             <li className="subtitle">History</li>
           </ul>
-        </div>
+        </h2>
         <VersionInfo versionable={responseSet} versionableType='ResponseSet' />
       </div>
     );
@@ -97,7 +98,7 @@ export default class ResponseSetDetails extends Component {
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">Details</h1>
+              <h2 className="panel-title">Details</h2>
             </div>
             <div className="box-content">
               <strong>Description: </strong>
@@ -132,7 +133,7 @@ export default class ResponseSetDetails extends Component {
           </div>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">Responses</h1>
+              <h2 className="panel-title">Responses</h2>
             </div>
             <div className="box-content">
             <CodedSetTable items={responseSet.responses} itemName={'Response'} />
@@ -141,7 +142,7 @@ export default class ResponseSetDetails extends Component {
           {this.props.questions && this.props.questions.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h1 className="panel-title">Linked Questions</h1>
+                <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
                 <QuestionList questions={_.keyBy(this.props.questions, 'id')} routes={Routes} />

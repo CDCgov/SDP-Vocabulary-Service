@@ -94,7 +94,7 @@ class SurveyEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{_.capitalize(this.props.params.action)} Survey </h1>
+              <h2 className="panel-title">{_.capitalize(this.props.params.action)} Survey </h2>
             </div>
             <div className="panel-body">
               <div className="col-md-5">

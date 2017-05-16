@@ -77,10 +77,10 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
           <li className="dropdown">
             <a href="#" id="create-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item create-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
             <ul className="cdc-nav-dropdown">
-              <li className="nav-dropdown-item"><Link to="/questions/new" tabIndex="2">Questions</Link></li>
-              <li className="nav-dropdown-item"><Link to="/responseSets/new" tabIndex="2">Response Sets</Link></li>
-              <li className="nav-dropdown-item"><Link to="/forms/new" tabIndex="2">Forms</Link></li>
-              <li className="nav-dropdown-item"><Link to="/surveys/new" tabIndex="2">Surveys</Link></li>
+              <li className="nav-dropdown-item"><Link to="/questions/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Questions</Link></li>
+              <li className="nav-dropdown-item"><Link to="/responseSets/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Response Sets</Link></li>
+              <li className="nav-dropdown-item"><Link to="/forms/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Forms</Link></li>
+              <li className="nav-dropdown-item"><Link to="/surveys/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Surveys</Link></li>
             </ul>
           </li>
         }
@@ -90,7 +90,7 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
             <NotificationMenu notifications={notifications} />
           ) : (
             <ul className="cdc-nav-dropdown">
-              <ul><li className="notification-menu-item">No new notifications</li></ul>
+              <li className="notification-menu-item">No new notifications</li>
             </ul>
           )}
         </li>

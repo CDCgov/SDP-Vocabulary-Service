@@ -159,12 +159,13 @@ class Help extends Component {
     return(
       <div className="tab-pane active" id="instructions" role="tabpanel">
         <div className="col-md-3 how-to-nav no-print">
-          <div className="showpage_sidenav_subtitle">
+          <h2 className="showpage_sidenav_subtitle">
+            <text className="sr-only">Version History Navigation Links</text>
             <ul className="list-inline">
               <li className="subtitle_icon"><span className="fa fa-graduation-cap " aria-hidden="true"></span></li>
               <li className="subtitle">Learn How To:</li>
             </ul>
-          </div>
+          </h2>
           <ul className="nav nav-pills nav-stacked">
             <li className="active" role="presentation"><a data-toggle="tab" href="#general">General</a></li>
             <li role="presentation"><a data-toggle="tab" href="#manage-account">Manage Account</a></li>
@@ -215,7 +216,7 @@ class Help extends Component {
             <div className="showpage_header_container no-print">
               <ul className="list-inline">
                 <li className="showpage_button"><span className="fa fa-question-circle fa-2x" aria-hidden="true"></span></li>
-                <li className="showpage_title">Help</li>
+                <li className="showpage_title"><h1>Help</h1></li>
               </ul>
             </div>
             <div className="container col-md-12">

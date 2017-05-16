@@ -111,6 +111,7 @@ a.cdc-brand:focus {
 
 .cdc-nav-dropdown {
   @extend .dropdown-menu;
+  min-width: 200px;
   ul {
     list-style-type: none;
     padding-left: 0px;
