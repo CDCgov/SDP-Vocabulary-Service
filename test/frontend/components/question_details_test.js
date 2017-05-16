@@ -12,7 +12,7 @@ describe('QuestionDetails', () => {
   });
 
   it('should display a question', () => {
-    expect(component.find("h1[class='panel-title']")).to.contain("Details");
+    expect(component.find("h2[class='panel-title']")).to.contain("Details");
   });
 
 });

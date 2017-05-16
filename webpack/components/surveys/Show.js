@@ -15,12 +15,13 @@ class SurveyShow extends Component{
   historyBar() {
     return (
       <div className="col-md-3 nopadding no-print">
-        <div className="showpage_sidenav_subtitle">
+        <h2 className="showpage_sidenav_subtitle">
+          <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
             <li className="subtitle_icon"><span className="fa fa-history" aria-hidden="true"></span></li>
             <li className="subtitle">History</li>
           </ul>
-        </div>
+        </h2>
         <VersionInfo versionable={this.props.survey} versionableType='survey' />
       </div>
     );
@@ -72,7 +73,7 @@ class SurveyShow extends Component{
           {this.surveillanceSystem()}
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">Description</h1>
+              <h2 className="panel-title">Description</h2>
             </div>
             <div className="box-content">
               {this.props.survey.description}
@@ -93,7 +94,7 @@ class SurveyShow extends Component{
           {this.props.forms.map((f,i ) =>
             <div  key={i} className="basic-c-box panel-default survey-form">
               <div className="panel-heading">
-                <h1 className="panel-title"><Link to={`/forms/${f.id}`}>{ f.name }</Link></h1>
+                <h2 className="panel-title"><Link to={`/forms/${f.id}`}>{ f.name }</Link></h2>
               </div>
               <div className="box-content">
                 <ul>
@@ -137,7 +138,7 @@ class SurveyShow extends Component{
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title">Survey Details {survey.status === 'draft' && <text>[DRAFT]</text>}</li>
+            <li className="showpage_title"><h1>Survey Details {survey.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
           </ul>
         </div>
         {this.historyBar()}

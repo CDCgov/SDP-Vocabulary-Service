@@ -56,6 +56,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <text className="sr-only">Welcome to the vocabulary service. Click the next link to skip navigation and go to main content.</text>
         <a href="#main-content" id="skip-nav" className="sr-only sr-only-focusable" tabIndex="1">Skip to main content</a>
         <Header currentUser={this.props.currentUser}
                 location={this.props.location}

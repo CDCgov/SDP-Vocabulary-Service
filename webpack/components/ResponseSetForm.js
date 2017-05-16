@@ -140,7 +140,7 @@ export default class ResponseSetForm extends Component {
         <div>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{`${this.actionWord()} Response Set`}</h1>
+              <h2 className="panel-title">{`${this.actionWord()} Response Set`}</h2>
             </div>
             <div className="panel-body">
                 <div className="row">

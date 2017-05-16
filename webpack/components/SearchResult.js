@@ -68,14 +68,14 @@ export default class SearchResult extends Component {
       return(
         <li className="result-analytics-item">
           <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-          <p className="item-description">published</p>
+          <p className="item-description"><text className="sr-only">Item visibility status: </text>published</p>
         </li>
       );
     } else if (status === 'draft') {
       return(
         <li className="result-analytics-item">
           <span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span>
-          <p className="item-description">draft</p>
+          <p className="item-description"><text className="sr-only">Item visibility status: </text>draft</p>
         </li>
       );
     }
@@ -98,8 +98,8 @@ export default class SearchResult extends Component {
   programsInfo(result) {
     return (
       <li className="result-analytics-item">
-        <span className="item-value">{result.surveillancePrograms.length}</span>
-        <p className="item-description">programs</p>
+        <span className="item-value"><text className="sr-only">Item program usage count: </text>{result.surveillancePrograms.length}</span>
+        <p className="item-description" aria-hidden="true">programs</p>
       </li>
     );
   }
@@ -107,8 +107,8 @@ export default class SearchResult extends Component {
   systemsInfo(result) {
     return (
       <li className="result-analytics-item">
-        <span className="item-value">{result.surveillanceSystems.length}</span>
-        <p className="item-description">systems</p>
+        <span className="item-value"><text className="sr-only">Item system usage count: </text>{result.surveillanceSystems.length}</span>
+        <p className="item-description" aria-hidden="true">systems</p>
       </li>
     );
   }
@@ -126,9 +126,9 @@ export default class SearchResult extends Component {
     if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
       return (<li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>);
     } else if (result.responseSets && result.responseSets.length === 1) {
-      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Set</a></li>);
+      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Set</a></li>);
     } else {
-      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
+      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
     }
   }
 
@@ -136,27 +136,27 @@ export default class SearchResult extends Component {
     switch(type) {
       case 'question':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__responseset">
+          <ul className="list-inline result-linked-number result-linked-item associated__responseset" aria-label="Additional Question details.">
             {this.questionCollapsable(result)}
           </ul>
         );
       case 'response_set':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__question">
-            {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i>Responses: {result.codes && result.codes.length}</a></li>}
+          <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Response Set details.">
+            {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.codes && result.codes.length}</a></li>}
           </ul>
         );
       case 'form':
       case 'survey_form':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__question">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i>Questions: {result.questions && result.questions.length}</a></li>
+          <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Form details.">
+            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions: {result.questions && result.questions.length}</a></li>
           </ul>
         );
       case 'form_question':
         if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
           return (
-            <ul className="list-inline result-linked-number result-linked-item associated__responseset">
+            <ul className="list-inline result-linked-number result-linked-item associated__responseset" aria-label="Additional Question details.">
               <li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>
             </ul>
           );
@@ -175,15 +175,15 @@ export default class SearchResult extends Component {
                   })}
                   <option aria-label=' '></option>
                 </select>
-                <a title="Search Response Sets to Link" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i><span className="sr-only">Search Response Sets</span></a>
+                <a title="Search Response Sets to Link" id="search-response-sets" href="#" onClick={this.props.showResponseSetSearch}><i className="fa fa-search fa-2x response-set-search"></i><span className="sr-only">Click link to search all Response Sets and select one to link to this question</span></a>
               </div>
             </div>
           );
         }
       case 'survey':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__form">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i>Forms: {result.forms && result.forms.length}</a></li>
+          <ul className="list-inline result-linked-number result-linked-item associated__form" aria-label="Additional Survey details.">
+            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Forms: {result.forms && result.forms.length}</a></li>
           </ul>
         );
     }
@@ -195,6 +195,7 @@ export default class SearchResult extends Component {
         return (
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-question`}>
             <div className="panel-body">
+              <text className="sr-only">List of links to response sets on this question:</text>
               {result.responseSets && result.responseSets.length > 0 &&
                 result.responseSets.map((rs, i) => {
                   return(
@@ -211,6 +212,7 @@ export default class SearchResult extends Component {
         return (
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
             <div className="panel-body">
+              <text className="sr-only">List of responses on this response set:</text>
               {result.codes && result.codes.length > 0 &&
                 result.codes.map((c, i) => {
                   return(
@@ -228,6 +230,7 @@ export default class SearchResult extends Component {
         return (
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-${type}`}>
             <div className="panel-body">
+              <text className="sr-only">List of links and names of questions linked to this form:</text>
               {result.questions && result.questions.length > 0 &&
                 result.questions.map((q, i) => {
                   return(
@@ -246,6 +249,7 @@ export default class SearchResult extends Component {
         return (
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-survey`}>
             <div className="panel-body">
+              <text className="sr-only">List of links and names of forms on this survey</text>
               {result.forms && result.forms.length > 0 &&
                 result.forms.map((f, i) => {
                   return(
@@ -267,18 +271,18 @@ export default class SearchResult extends Component {
       <div className="u-result-group">
         <div className="u-result" id={`${type}_id_${result.id}`}>
           <div className="u-result-container">
-            <ul className="u-result-content">
+            <ul className="u-result-content" aria-label="Summary of a search result or linked object's attributes.">
               <li className="u-result-content-item">
                 <div className={`u-result-details result__${type}`}>
                   <div className="result">
                     <ul className="list-inline result-type-wrapper">
                       <li className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></li>
-                      <li className="result-name">
+                      <li className="result-name" aria-label="Item Name.">
                         {this.resultName(result, highlight, type, isEditPage)}
                       </li>
                     </ul>
                   </div>
-                  <div className="result-description">
+                  <div className="result-description" aria-label="Item Description.">
                     {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
                   </div>
                   <div className="result-analytics">
@@ -287,9 +291,9 @@ export default class SearchResult extends Component {
                       {result.surveillanceSystems && this.systemsInfo(result)}
                       {result.status && this.resultStatus(result.status)}
                       <li className={`result-timestamp pull-right ${this.props.programVar && 'list-program-var'}`}>
-                      <p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p>
-                      <p>version {result.version && result.version} | {type}</p>
-                      {this.props.programVar && (<p>{this.props.programVar}</p>)}
+                        <p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p>
+                        <p><text className="sr-only">Item Version Number: </text>version {result.version && result.version} | <text className="sr-only">Item type: </text>{type}</p>
+                        {this.props.programVar && (<p><text className="sr-only">Item program defined Variable: </text>{this.props.programVar}</p>)}
                       </li>
                     </ul>
                   </div>
@@ -297,6 +301,7 @@ export default class SearchResult extends Component {
                 <div className="result-linked-details">
                   {this.linkedDetails(result, type)}
                 </div>
+                {(type !== "form_question") && this.detailsPanel(result, type)}
               </li>
               <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
                 <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
@@ -316,7 +321,6 @@ export default class SearchResult extends Component {
               </li>
             </ul>
           </div>
-          {(type !== "form_question") && this.detailsPanel(result, type)}
         </div>
       </div>
     );
