@@ -178,7 +178,6 @@ class FormEdit extends Component {
           <div className="response-set-header">
             <div className="col-md-5 response-set-label"><span><b>Questions</b></span></div>
             <div className="col-md-7 response-set-label">
-              <span className="right"><b>Response Sets</b></span>
               <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
             </div>
           </div>

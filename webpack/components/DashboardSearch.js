@@ -4,6 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import _ from 'lodash';
+import $ from 'jquery';
 
 class DashboardSearch extends Component {
   constructor(props){
@@ -44,8 +45,8 @@ class DashboardSearch extends Component {
   }
 
   selectFilters(e, filterType) {
-    let newState = {};
-    newState[filterType] = _.values(e.target.selectedOptions).map((opt) => opt.value);
+    var newState = {};
+    newState[filterType] = $(e.target).val().map((opt) => parseInt(opt));
     this.props.setFiltersParent(newState);
     return this.setState(newState);
   }
