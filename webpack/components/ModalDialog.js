@@ -12,7 +12,7 @@ class ModalDialog extends Component{
   render(){
     return(
       <div className="static-modal" id='saveModal'>
-        <Modal show={this.props.show} onHide={this.props.cancelButtonAction} role="dialog">
+        <Modal show={this.props.show} onHide={this.props.cancelButtonAction} role="dialog" aria-label={this.props.title}>
           <Modal.Header>
             <Modal.Title>{this.props.warning && <span className={'fa fa-exclamation-circle'}></span>} {this.props.title}</Modal.Title>
           </Modal.Header>
