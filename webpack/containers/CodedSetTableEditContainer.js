@@ -117,10 +117,10 @@ class CodedSetTableEditContainer extends Component {
               {_.values(this.props.concepts[this.state.selectedSystem]).map((c, i) => {
                 return (
                   <tr key={i}>
-                    <td><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
-                    <td>{c.display}</td>
-                    <td>{c.code}</td>
-                    <td>{c.system}</td>
+                    <td headers="add-code-checkboxes-column"><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
+                    <td headers="modal-code-display-name-column">{c.display}</td>
+                    <td headers="modal-code-column">{c.code}</td>
+                    <td headers="modal-code-system-column">{c.system}</td>
                   </tr>);
               })}
             </tbody>
@@ -159,10 +159,10 @@ class CodedSetTableEditContainer extends Component {
           <table className="table table-striped scroll-table-header">
             <thead>
               <tr>
-                <th scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
-                <th scope="col" style={{width: '50%', padding:' 0px'}}>Display Name</th>
-                <th scope="col" style={{width: '10%', padding:' 0px'}}>Code</th>
-                <th scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
+                <th id="add-code-checkboxes-column" scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
+                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name</th>
+                <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code</th>
+                <th id="modal-code-system-column" scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
               </tr>
             </thead>
           </table>
@@ -183,21 +183,21 @@ class CodedSetTableEditContainer extends Component {
         {this.conceptModal()}
         <thead>
           <tr>
-            <th scope="col">
+            <td>
               <a title="Search Codes" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.showCodeSearch();
               }}><i className="fa fa-search fa-2x"></i><span className="sr-only">Open Search Modal</span></a>
-            </th>
-            <th scope="col">{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
-            <th scope="col">Code System</th>
-            <th scope="col">Display Name</th>
-            <th scope="col">
+            </td>
+            <th scope="col" id="code-column">{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
+            <th scope="col" id="code-system-column">Code System</th>
+            <th scope="col" id="display-name-column">Display Name</th>
+            <td>
               <a title="Add Row" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.addItemRow();
               }}><i className="fa fa-plus fa-2x"></i><span className="sr-only">Add a row to the table</span></a>
-            </th>
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -209,15 +209,15 @@ class CodedSetTableEditContainer extends Component {
               <tr key={i}>
                 <td>
                 </td>
-                <td>
+                <td headers="code-column">
                   <label className="hidden" htmlFor={`value_${i}`}>Value</label>
                   <input className="input-format" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
                 </td>
-                <td>
+                <td headers="code-system-column">
                   <label className="hidden" htmlFor={`codeSystem_${i}`}>Code system</label>
                   <input className="input-format" type="text" value={r.codeSystem}  name="codeSystem" id={`codeSystem_${i}`} onChange={this.handleChange(i, 'codeSystem')}/>
                 </td>
-                <td>
+                <td headers="display-name-column">
                   <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
                   <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                 </td>

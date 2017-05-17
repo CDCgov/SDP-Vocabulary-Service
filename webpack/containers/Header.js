@@ -73,7 +73,7 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">
         <li className="active"><a href="#" tabIndex="2" className="cdc-navbar-item"><i className="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
-        {!location.pathname.includes("revise") && !location.pathname.includes("edit") && !location.pathname.includes("extend") &&
+        {!location.pathname.includes("revise") && !location.pathname.includes("edit") && !location.pathname.includes("extend") && !location.pathname.includes("new") &&
           <li className="dropdown">
             <a href="#" id="create-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item create-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
             <ul className="cdc-nav-dropdown">
