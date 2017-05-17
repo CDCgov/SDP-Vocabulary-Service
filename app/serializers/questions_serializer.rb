@@ -9,6 +9,6 @@ class QuestionsSerializer < ActiveModel::Serializer
   attribute :version, key: :version
   attribute :published_by, serializer: UserSerializer
   attribute :questionType do
-    object.question_type.name
+    object.question_type.name if object.question_type
   end
 end
