@@ -34,7 +34,7 @@ class SurveyFormList extends Component {
                                      event.preventDefault();
                                      this.props.reorderForm(survey, i, 1);
                                    }}>
-                                <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move form up on survey</span>
+                                <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up form ${f.name} on survey`}</span>
                               </button>
                           </div>
                           <div className="row survey-form-controls">
@@ -43,7 +43,7 @@ class SurveyFormList extends Component {
                                      event.preventDefault();
                                      this.props.reorderForm(survey, i, -1);
                                    }}>
-                                <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move form down on survey</span>
+                                <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down form ${f.name} on survey`}</span>
                               </button>
                           </div>
                           <div className="row survey-form-controls">
@@ -52,7 +52,7 @@ class SurveyFormList extends Component {
                                      event.preventDefault();
                                      this.props.removeForm(survey, i);
                                    }}>
-                                <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove form from selected form list</span>
+                                <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Delete form ${f.name} on survey`}</span>
                               </button>
                           </div>
                         </div>

@@ -208,7 +208,7 @@ class FormEdit extends Component {
                          event.preventDefault();
                          this.props.reorderQuestion(form, i, 1);
                        }}>
-                    <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">Move question up on form</span>
+                    <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up question ${this.props.questions[q.questionId].content} on form`}</span>
                   </button>
                 </div>
                 <div className="row form-question-controls">
@@ -217,7 +217,7 @@ class FormEdit extends Component {
                          event.preventDefault();
                          this.props.reorderQuestion(form, i, -1);
                        }}>
-                    <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">Move question down on form</span>
+                    <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down question ${this.props.questions[q.questionId].content} on form`}</span>
                   </button>
                 </div>
                 <div className="row form-question-controls">
@@ -226,7 +226,7 @@ class FormEdit extends Component {
                          event.preventDefault();
                          this.props.removeQuestion(form, i);
                        }}>
-                    <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">Remove question from selected question list</span>
+                    <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove question ${this.props.questions[q.questionId].content} on form`}</span>
                   </button>
                 </div>
               </div>

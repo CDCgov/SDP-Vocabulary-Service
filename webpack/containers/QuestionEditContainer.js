@@ -16,6 +16,12 @@ class QuestionEditContainer extends Component {
     if(this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
     }
+    this.action = this.props.params.action;
+    this.id = this.props.params.qId;
+    if (this.props.params.action === undefined) {
+      this.action = 'new';
+    }
+
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
     this.props.fetchResponseSets();
@@ -55,15 +61,10 @@ class QuestionEditContainer extends Component {
         <div>Loading...</div>
       );
     }
-    let action = this.props.params.action;
-    let id = this.props.params.qId;
-    if (action === undefined) {
-      action = 'new';
-    }
     return (
       <div className="container">
-        <QuestionForm id={id}
-                      action={action}
+        <QuestionForm id={this.id}
+                      action={this.action}
                       question={this.props.question}
                       draftSubmitter={this.props.saveDraftQuestion}
                       questionSubmitter={this.props.saveQuestion}
