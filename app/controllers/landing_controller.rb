@@ -4,10 +4,10 @@ class LandingController < ApplicationController
   end
 
   def stats
-    response_set_count = ResponseSet.all.count
-    question_count = Question.all.count
-    form_count = Form.all.count
-    survey_count = Survey.all.count
+    response_set_count = ResponseSet.analytics_count(current_user)
+    question_count = Question.analytics_count(current_user)
+    form_count = Form.analytics_count(current_user)
+    survey_count = Survey.analytics_count(current_user)
 
     my_response_set_count = current_user ? ResponseSet.where(created_by: current_user.id).all.count : 0
     my_question_count = current_user ? Question.where(created_by: current_user.id).all.count : 0
