@@ -45,5 +45,8 @@
   },
   "plugins": [
     "react"
-  ]
+  ],
+  "globals": {
+        OIDC_LOGIN_URL: true
+    }
 }

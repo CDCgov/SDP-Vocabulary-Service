@@ -75,7 +75,11 @@ var config = {
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
-    })]
+    }),
+    new webpack.DefinePlugin({
+      OIDC_LOGIN_URL: JSON.stringify(process.env.OIDC_LOGIN_URL || '')
+    }),
+  ]
 };
 
 if (production) {
@@ -86,7 +90,8 @@ if (production) {
       sourceMap: false
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') }
+      'process.env': { NODE_ENV: JSON.stringify('production') },
+      OIDC_LOGIN_URL: JSON.stringify(process.env.OIDC_LOGIN_URL || '')
     }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin()

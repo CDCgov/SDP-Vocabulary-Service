@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'registrations',
                                     sessions: 'sessions',
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
+
   resources :authentications
 
   get '/publishers' => 'publishers#index'

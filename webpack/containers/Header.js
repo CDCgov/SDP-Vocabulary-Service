@@ -9,9 +9,18 @@ import NotificationDropdown from '../components/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
-let LoginMenu = ({logInOpener, signUpOpener, currentUser}) => {
+let LoginMenu = ({openIdLoginUrl, logInOpener, signUpOpener, currentUser}) => {
   let loggedIn = ! _.isEmpty(currentUser);
   if(!loggedIn) {
+    if(openIdLoginUrl != '') {
+      return (
+        <ul className="nav navbar-nav">
+          <li className="log-in-link">
+            <a tabIndex="2" href={openIdLoginUrl}>Login</a>
+          </li>
+        </ul>
+      );
+    }
     return (
       <ul className="nav navbar-nav">
         <li className="log-in-link">
@@ -36,7 +45,8 @@ let LoginMenu = ({logInOpener, signUpOpener, currentUser}) => {
 LoginMenu.propTypes = {
   currentUser: currentUserProps,
   logInOpener: PropTypes.func.isRequired,
-  signUpOpener: PropTypes.func.isRequired
+  signUpOpener: PropTypes.func.isRequired,
+  openIdLoginUrl: PropTypes.string
 };
 
 let ContentMenu = ({settingsOpener, currentUser}) => {
@@ -202,7 +212,7 @@ class Header extends Component {
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul className="cdc-nav cdc-utlt-navbar-nav navbar-right">
               <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
-              <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener}/>
+              <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener} openIdLoginUrl={this.props.openIdLoginUrl}/>
               <li className="dropdown">
                 <a href="#" id = "help-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
                 <ul className="cdc-nav-dropdown">
@@ -246,6 +256,7 @@ Header.propTypes = {
   logInOpener: PropTypes.func.isRequired,
   signUpOpener: PropTypes.func.isRequired,
   settingsOpener: PropTypes.func.isRequired,
+  openIdLoginUrl: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
