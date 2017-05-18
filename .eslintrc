@@ -47,6 +47,6 @@
     "react"
   ],
   "globals": {
-        OPIDC_HOST: true
+        OIDC_LOGIN_URL: true
     }
 }
