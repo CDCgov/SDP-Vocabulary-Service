@@ -77,7 +77,7 @@ var config = {
       jQuery: "jquery"
     }),
     new webpack.DefinePlugin({
-      OIDC_LOGIN_URL: JSON.stringify(process.env.OIDC_LOGIN_URL || '')
+      DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
     }),
   ]
 };
@@ -91,7 +91,7 @@ if (production) {
     }),
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: JSON.stringify('production') },
-      OIDC_LOGIN_URL: JSON.stringify(process.env.OIDC_LOGIN_URL || '')
+      DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
     }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin()
