@@ -47,6 +47,6 @@
     "react"
   ],
   "globals": {
-        OIDC_LOGIN_URL: true
+        DISABLE_USER_REGISTRATION: 'false'
     }
 }
