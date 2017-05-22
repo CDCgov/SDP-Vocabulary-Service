@@ -47,6 +47,9 @@
     .result__form {
       border-left: 5px solid $form-id;
     }
+    .result__survey_form {
+      border-left: 5px solid $form-id;
+    }
     .result__response_set {
       border-left: 5px solid $responseset-id;
     }
@@ -74,7 +77,7 @@
     display: table-cell;
     width: 10%;
     text-align: center;
-    color: $light-gray;
+    color: $medium-gray;
     vertical-align: top;
     padding-top: 6px;
   }

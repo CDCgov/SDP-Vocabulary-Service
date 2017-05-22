@@ -22,6 +22,7 @@ Feature: Manage Response Sets
     Then I should see "Name: Gender Full"
     And I should see "Response set description"
     And I should see "Original Response"
+    And I should see "Source: Local"
     And I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
 
@@ -43,7 +44,7 @@ Feature: Manage Response Sets
     And I click on the option to Details the Response Set with the name "Gender Full"
     Then I should see "Edit"
     When I click on the "Edit" button
-    And I fill in the "response_set_name" field with "Gender Partial"
+    And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Save" button
     Then I should see "Gender Partial"
@@ -96,7 +97,7 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Revise the Response Set with the name "Gender Full"
-    And I fill in the "response_set_name" field with "Gender Partial"
+    And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Response 2"
@@ -126,7 +127,7 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Extend the Response Set with the name "Gender Full"
-    And I fill in the "response_set_name" field with "Gender Partial"
+    And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F / O"
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Response 2"
@@ -143,7 +144,7 @@ Feature: Manage Response Sets
     Given I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     And I click on the create "Response Sets" dropdown item
-    And I fill in the "response_set_name" field with "Gender Partial"
+    And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I click on the "Add Row" link
@@ -174,7 +175,7 @@ Feature: Manage Response Sets
     Given I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     And I click on the create "Response Sets" dropdown item
-    And I fill in the "response_set_name" field with "Gender Partial"
+    And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Response 1"
@@ -191,7 +192,7 @@ Feature: Manage Response Sets
     Given I am logged in as test_author@gmail.com
     When I go to the list of Response Sets
     And I click on the create "Response Sets" dropdown item
-    And I fill in the "response_set_name" field with "Gender Partial"
+    And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Response 1"
@@ -201,3 +202,18 @@ Feature: Manage Response Sets
     And I click on the "Continue Without Saving" button
     And I go to the list of Response Sets
     Then I should not see "Gender Partial"
+
+  Scenario: Close the warning modal on New Response Set with the escape key
+    Given I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    And I click on the create "Response Sets" dropdown item
+    And I fill in the "response-set-name" field with "Gender Partial"
+    And I fill in the "Description" field with "M / F"
+    And I click on the "Add Row" link
+    And I fill in the "value_0" field with "Test Response 1"
+    And I fill in the "value_1" field with "Test Response 2"
+    And I click on the "remove_0" link
+    When I click on the "CDC Vocabulary Service" link
+    Then I should see "Unsaved Changes"
+    Then I press the key escape
+    Then I should not see "Unsaved Changes"

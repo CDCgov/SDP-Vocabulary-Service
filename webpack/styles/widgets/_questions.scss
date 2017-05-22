@@ -8,6 +8,13 @@
   text-align: left;
   vertical-align: middle;
   margin-bottom: 0px;
+  h2 {
+    padding-top: 7px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+  }
   label{
     padding-top: 7px;
   }
@@ -35,12 +42,12 @@
     padding: 6px 8px 6px 10px;
     li:first-child {
       width: 95%;
-      float: left;    
+      float: left;
     }
   }
 
   .question {
-    @extend .panel; 
+    @extend .panel;
     border-radius: 0px;
     border: 1px solid $light-gray;
   }

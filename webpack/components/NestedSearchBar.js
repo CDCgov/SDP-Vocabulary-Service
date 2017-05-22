@@ -8,15 +8,24 @@ class NestedSearchBar extends Component {
 
   render() {
     return (
-      <div className="search-bar">
+      <div className="search-bar input-group search-group">
         <input
-            className="input-format"
+            className="search-input"
             placeholder={`Search ${this.props.modelName}s...`}
             value={this.state.term}
+            aria-label={`Search ${this.props.modelName}s`}
             onChange={event => this.onInputChange(event.target.value)}
             onKeyPress={event => this.onEnter(event)} />
+          <span className="input-group-btn">
+            <button id="search-btn" className="search-btn search-btn-default" aria-label="search-button" onClick={(event) => this.onButtonClick(event)}><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
+          </span>
       </div>
     );
+  }
+
+  onButtonClick(e) {
+    e.preventDefault();
+    this.props.onSearchTermChange(this.state.term);
   }
 
   onEnter(e) {

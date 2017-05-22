@@ -140,13 +140,13 @@ export default class ResponseSetForm extends Component {
         <div>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">{`${this.actionWord()} Response Set`}</h3>
+              <h2 className="panel-title">{`${this.actionWord()} Response Set`}</h2>
             </div>
             <div className="panel-body">
                 <div className="row">
                   <div className="col-md-8 question-form-group">
-                    <label className="input-label" htmlFor="name">Name</label>
-                    <input className="input-format" type="text" value={this.state.name} name="response_set_name" id="name" onChange={this.handleChange('name')}/>
+                    <label className="input-label" htmlFor="response-set-name">Name</label>
+                    <input className="input-format" type="text" value={this.state.name} name="response-set-name" id="response-set-name" onChange={this.handleChange('name')}/>
                   </div>
 
                   <div className="hidden">
@@ -156,16 +156,16 @@ export default class ResponseSetForm extends Component {
 
                 <div className="row">
                 <div className="col-md-8 question-form-group">
-                    <label className="input-label"  htmlFor="description">Description</label>
-                    <textarea className="input-format"  value={this.state.description} name="description" id="description" onChange={this.handleChange('description')}/>
+                    <label className="input-label"  htmlFor="response-set-description">Description</label>
+                    <textarea className="input-format"  value={this.state.description} name="response-set-description" id="response-set-description" onChange={this.handleChange('description')}/>
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="col-md-12">
-                    <label className="input-label" >Responses</label>
-                    </div>
+                    <h1 className="tags-table-header"><strong>Responses</strong></h1>
                   </div>
+                </div>
                 <CodedSetTableEditContainer itemWatcher={(r) => this.handleResponsesChange(r)}
                                    initialItems={this.state.responsesAttributes}
                                    parentName={'response_set'}

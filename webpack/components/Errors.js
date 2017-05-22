@@ -5,7 +5,7 @@ export default class Errors extends Component {
     if (_.keys(this.props.errors).length > 0) {
       return (
         <div id="error_explanation">
-          <h2>{this.errorCount()} error(s) prohibited this form from being saved:</h2>
+          <h1>{this.errorCount()} error(s) prohibited this form from being saved:</h1>
           <ul>
           {_.map(this.errorList(), (e, i) => <li key={i}>{e}</li>)}
           </ul>

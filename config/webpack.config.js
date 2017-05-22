@@ -75,7 +75,11 @@ var config = {
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
-    })]
+    }),
+    new webpack.DefinePlugin({
+      DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
+    }),
+  ]
 };
 
 if (production) {
@@ -86,7 +90,8 @@ if (production) {
       sourceMap: false
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') }
+      'process.env': { NODE_ENV: JSON.stringify('production') },
+      DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
     }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin()

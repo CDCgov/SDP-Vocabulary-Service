@@ -1,26 +1,25 @@
 class ValueSetsSerializer < ActiveModel::Serializer
-  attribute :url
-  def url
+  attribute :url do
     Rails.application.routes.url_helpers.api_valueSet_url(object.version_independent_id, version: object.version, only_path: true)
   end
 
   attribute :version_independent_id, key: :id
 
-  attribute :identifier # additional identifiers not yet available
-  def identifier
+  attribute :identifier do # additional identifiers not yet available
   end
 
   attribute :version, key: :version
   attribute :name
 
-  attribute :status # status not yet available
-  def status
+  attribute :status do # status not yet available
   end
 
   attribute :description
+  attribute :publisher do
+    object.source == 'local' ? 'SDP-Vocabulary' : object.source
+  end
 
-  attribute :expansion
-  def expansion
+  attribute :expansion do
     expansion = {}
     expansion['identifier'] = nil
     expansion['timestamp'] = nil

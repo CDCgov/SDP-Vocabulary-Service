@@ -31,6 +31,9 @@ a.cdc-brand:focus {
 .cdc-nav {
   @extend .nav;
   padding: 0px;
+  .open>a {
+    color: $cdc-dark-blue;
+  }
 }
 
 .cdc-utlt-navbar-nav {
@@ -40,11 +43,11 @@ a.cdc-brand:focus {
     height: 50px;
   }
   .utlt-navbar-icon {
-    padding-right: 6px; 
+    padding-right: 6px;
   }
   span {
     margin-left: 6px;
-  } 
+  }
 }
 
 .cdc-nav-main {
@@ -69,7 +72,7 @@ a.cdc-brand:focus {
     .item-navbar-icon {
       margin-right: 6px;
     }
-    a:hover, a:focus, a:visited {
+    a:hover, a:focus {
       background-color: white;
       height: 60px;
     }
@@ -111,6 +114,7 @@ a.cdc-brand:focus {
 
 .cdc-nav-dropdown {
   @extend .dropdown-menu;
+  min-width: 200px;
   ul {
     list-style-type: none;
     padding-left: 0px;
@@ -120,4 +124,25 @@ a.cdc-brand:focus {
     overflow-y: auto;
     overflow-x: hidden;
   }
-} 
+}
+
+.skiptocontent {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: $cdc-dark-blue;
+  color: white;
+  width: 15%;
+  -webkit-transition: top 1s ease-out, background 1s linear;
+  transition: top 1s ease-out, background 1s linear;
+  a:focus {
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    padding: 10px;
+    background: $cdc-dark-blue;
+    color: white;
+    -webkit-transition: top .1s ease-in, background .5s linear;
+    transition: top .1s ease-in, background .5s linear;
+  }
+}

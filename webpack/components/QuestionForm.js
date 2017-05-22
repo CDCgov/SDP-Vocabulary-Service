@@ -147,7 +147,7 @@ class QuestionForm extends Component{
           <div>
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title">{`${this.actionWord()} Question`}</h3>
+                <h2 className="panel-title">{`${this.actionWord()} Question`}</h2>
               </div>
               <div className="panel-body">
                 <div className="row">
@@ -157,7 +157,7 @@ class QuestionForm extends Component{
                     </div>
                     <div className="col-md-4 question-form-group">
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
-                      <select className="input-format" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
+                      <select className="input-select" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
                         {questionTypes && _.values(questionTypes).map((qt) => {
                           return <option key={qt.id} value={qt.id}>{qt.name}</option>;
@@ -168,13 +168,13 @@ class QuestionForm extends Component{
 
                 <div className="row ">
                   <div className="col-md-8 question-form-group">
-                    <label className="input-label" htmlFor="description">Description</label>
-                    <textarea className="input-format" placeholder="Question description" type="text" name="question_description" id="description" defaultValue={state.description} onChange={this.handleChange('description')} />
+                    <label className="input-label" htmlFor="question-description">Description</label>
+                    <textarea className="input-format" placeholder="Question description" type="text" name="question-description" id="question-description" defaultValue={state.description} onChange={this.handleChange('description')} />
                   </div>
 
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Response Type</label>
-                    <select name="responseTypeId" id="responseTypeId" className="input-format" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
+                    <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
                       {this.sortedResponseTypes().map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
 
@@ -185,7 +185,7 @@ class QuestionForm extends Component{
                 {this.otherAllowedBox()}
                 <div className="row ">
                   <div className="col-md-12 ">
-                    <label className="input-label" htmlFor="concept_id">Tags</label>
+                    <h1 className="tags-table-header"><strong>Tags</strong></h1>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
@@ -198,7 +198,7 @@ class QuestionForm extends Component{
                     <label htmlFor="linked_response_sets">Response Sets</label>
                   </div>
                   <div className="col-md-6 response-set-label">
-                    <label htmlFor="selected_response_sets">Selected Response Sets</label>
+                    <h2>Selected Response Sets</h2>
                     <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
                   </div>
                 </div>

@@ -38,7 +38,7 @@ end
 When(/^I go to the list of Response Sets$/) do
   Elastictest.fake_rs_search_results
   visit '/'
-  page.find('li[id="response-sets-analytics-item"]').click
+  page.find('button[id="response-sets-analytics-item"]').click
 end
 
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
@@ -49,7 +49,7 @@ end
 When(/^I click on the link to remove the Response "([^"]*)"$/) do |response_name|
   node = find('input[value="' + response_name + '"]')
   tr = node.find(:xpath, '../..')
-  tr.click_on('Remove')
+  tr.click_on('Delete this row')
 end
 When(/^I click on the menu link for the Response Set with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Response Set', attribute, attribute_value)

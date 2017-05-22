@@ -24,6 +24,16 @@ module Searchable
         where("status='published'")
       end
     end
+
+    def analytics_count(current_user)
+      if current_user && current_user.publisher?
+        all.count
+      elsif current_user
+        where("(status='published' OR created_by_id= #{current_user.id})").all.count
+      else
+        where(status: 'published').all.count
+      end
+    end
   end
 end
 # rubocop:enable Metrics/PerceivedComplexity

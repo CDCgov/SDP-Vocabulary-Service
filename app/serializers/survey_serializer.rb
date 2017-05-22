@@ -1,28 +1,23 @@
 class SurveySerializer < ActiveModel::Serializer
-  attribute :surveillance_program_id, key: :programId
-  def surveillance_program_id
+  attribute :programId do
     object.surveillance_program ? object.surveillance_program.id : nil
   end
-  attribute :surveillance_program_name, key: :programName
-  def surveillance_program_name
+  attribute :programName do
     object.surveillance_program ? object.surveillance_program.name : nil
   end
-  attribute :surveillance_program_uri, key: :programUri
-  def surveillance_program_uri
+  attribute :programUri do
     if object.surveillance_program
       Rails.application.routes.url_helpers.api_program_url(object.surveillance_program, only_path: true)
     end
   end
 
-  def surveillance_system_id
+  attribute :systemId do
     object.surveillance_system ? object.surveillance_system.id : nil
   end
-  attribute :surveillance_system_name, key: :systemName
-  def surveillance_system_name
+  attribute :systemName do
     object.surveillance_system ? object.surveillance_system.name : nil
   end
-  attribute :surveillance_system_uri, key: :systemUri
-  def surveillance_system_uri
+  attribute :systemUri do
     if object.surveillance_system
       Rails.application.routes.url_helpers.api_system_url(object.surveillance_system, only_path: true)
     end
@@ -30,11 +25,10 @@ class SurveySerializer < ActiveModel::Serializer
 
   attribute :version_independent_id, key: :surveyId
   attribute :name, key: :surveyName
-  attribute :survey_uri, key: :surveyUri
-  attribute :version
-  attribute :published_by, serializer: UserSerializer
-  def survey_uri
+  attribute :surveyUri do
     Rails.application.routes.url_helpers.api_survey_url(object.version_independent_id, version: object.version, only_path: true)
   end
+  attribute :version
+  attribute :published_by, serializer: UserSerializer
   has_many :forms, serializer: FormSerializer
 end

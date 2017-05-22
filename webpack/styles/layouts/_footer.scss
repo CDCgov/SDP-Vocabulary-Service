@@ -5,4 +5,11 @@
   background-color: $cdc-dark-blue;
   text-align: center;
   color: white;
+  padding-top: 10px;
+  a {
+    color: white;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-decoration: underline;
+  }
 }

@@ -152,6 +152,28 @@ When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
   drag.drag_to(drop)
 end
 
+Then(/^I press the key (.*)$/) do |key|
+  key = key.to_sym if key.length > 1
+  find('.body').send_keys(key)
+end
+
+Then(/^I press the (.*) key (.*) times$/) do |key, iterations|
+  key = key.to_sym if key.length > 1
+  iterations.to_i.times do
+    find('.body').send_keys(key)
+  end
+end
+
+Then(/^I press the keys (.*) and (.*)$/) do |key_one, key_two|
+  key_one = key_one.to_sym if key_one.length > 1
+  key_two = key_two.to_sym if key_two.length > 1
+  find('.body').send_keys([key_one, key_two])
+end
+
+Then(/^"(.*)" should be my focus$/) do |element|
+  page.evaluate_script('document.activeElement.id') == element
+end
+
 Then(/^I take a screenshot named (.*)$/) do |name|
   page.save_screenshot('/tmp/' + name + '.png')
 end

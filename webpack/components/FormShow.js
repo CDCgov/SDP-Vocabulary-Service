@@ -24,7 +24,7 @@ class FormShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title">Form Details {form.status === 'draft' && <text>[DRAFT]</text>}</li>
+            <li className="showpage_title"><h1>Form Details {form.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
           </ul>
         </div>
         {this.historyBar(form)}
@@ -36,12 +36,13 @@ class FormShow extends Component {
   historyBar(form){
     return (
       <div className="col-md-3 nopadding no-print">
-        <div className="showpage_sidenav_subtitle">
+        <h2 className="showpage_sidenav_subtitle">
+          <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
             <li className="subtitle_icon"><span className="fa fa-history" aria-hidden="true"></span></li>
             <li className="subtitle">History</li>
           </ul>
-        </div>
+        </h2>
         <VersionInfo versionable={form} versionableType='form' />
       </div>
     );
@@ -90,11 +91,11 @@ class FormShow extends Component {
           }
         </div>
         <div className="maincontent-details">
-          <h3 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h3>
+          <h1 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h1>
           <p className="maincontent-item-info">Version: {form.version} - Author: {form.userId} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">Description</h3>
+              <h2 className="panel-title">Description</h2>
             </div>
             <div className="box-content">
               {form.description}

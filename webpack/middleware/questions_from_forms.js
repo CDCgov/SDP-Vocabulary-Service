@@ -1,10 +1,11 @@
 import {
   FETCH_FORM_FULFILLED,
   FETCH_FORMS_FULFILLED,
-  FETCH_QUESTION_FULFILLED
+  FETCH_QUESTION_FULFILLED,
+  FETCH_QUESTIONS_FULFILLED
 } from '../actions/types';
 
-import dispatchIfNotPresent from './store_helper';
+import { dispatchIfNotPresent, dispatchCollectionMembersIfNotPresent } from './store_helper';
 
 const questionsFromForms = store => next => action => {
   switch (action.type) {
@@ -23,9 +24,7 @@ const questionsFromForms = store => next => action => {
       break;
     case FETCH_FORM_FULFILLED:
       if (action.payload.data.questions) {
-        action.payload.data.questions.forEach((q) => {
-          dispatchIfNotPresent(store, 'questions', q, FETCH_QUESTION_FULFILLED);
-        });
+        dispatchCollectionMembersIfNotPresent(store, 'questions', action.payload.data.questions, FETCH_QUESTIONS_FULFILLED);
       }
       action.payload.data.questions = action.payload.data.questions.map((q) => {
         return ({id: q.id, content: q.content });

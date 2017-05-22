@@ -18,24 +18,25 @@
 
 .analytics-list-item {
   @extend .list-group-item;
-  display: table-cell;
-  width: 23%;
-  color: $cdc-blue;
-  border: none;
-  border-left: solid 1px $light-gray;
-  border-bottom: solid 1px $light-gray;
-  height: 150px;
+  display: table-cell !important;
+  width: 25% !important;
+  color: $cdc-blue !important;
+  text-align: center !important;
+  border: none !important;
+  border-left: solid 1px $light-gray !important;
+  border-bottom: solid 1px $light-gray !important;
+  height: 150px !important;
   &:first-child {
-    border-left: none;
+    border-left: none !important;
   }
   &:hover {
-    background-color: $analytics-hover-blue;
-    text-decoration: none;
+    background-color: $analytics-hover-blue !important;
+    text-decoration: none !important;
   }
 }
 
 .analytics-active-item {
-  background-color: $analytics-hover-blue;
+  background-color: $analytics-hover-blue !important;
 }
 
 .item-icon {

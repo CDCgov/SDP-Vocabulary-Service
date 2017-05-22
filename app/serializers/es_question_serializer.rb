@@ -18,6 +18,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :forms
   attribute :surveillance_programs
   attribute :surveillance_systems
+  attribute :response_type
 
   def forms
     object.form_questions.collect do |fq|
@@ -27,6 +28,10 @@ class ESQuestionSerializer < ActiveModel::Serializer
 
   def codes
     object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
+
+  def response_type
+    { name: object.response_type.name, code: object.response_type.code } if object.response_type
   end
 
   def response_sets

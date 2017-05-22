@@ -45,5 +45,8 @@
   },
   "plugins": [
     "react"
-  ]
+  ],
+  "globals": {
+        DISABLE_USER_REGISTRATION: 'false'
+    }
 }

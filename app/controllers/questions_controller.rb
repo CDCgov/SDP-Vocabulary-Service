@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions.json
   def index
-    @questions = params[:search] ? Question.search(params[:search]).all : Question.all
+    @questions = params[:search] ? Question.search(params[:search]).includes(:response_sets).all : Question.includes(:response_sets).all
   end
 
   def my_questions

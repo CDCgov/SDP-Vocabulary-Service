@@ -2,6 +2,7 @@
   @extend .panel;
   border: none;
   border-radius: 0px;
+  box-shadow: none;
 }
 
 .recent-items-heading {
@@ -34,20 +35,24 @@
 
 .recent-item-list {
   @extend .list-group-item;
-  padding-right: 15px;
-  padding-left: 15px;
-  padding-top: 18px;
-  padding-bottom: 36px;
-  border: 0px;
-  font-weight: bold;
-  color: $cdc-blue;
-  font-size: 16px;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  border: 0px !important;
+  font-weight: bold !important;
+  color: $cdc-blue !important;
+  font-size: 16px !important;
   &:first-child {
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
+    border-top-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
   }
   &:last-child {
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+  }
+  &:hover {
+    background-color: $analytics-hover-blue !important;
+    text-decoration: none !important;
   }
 }

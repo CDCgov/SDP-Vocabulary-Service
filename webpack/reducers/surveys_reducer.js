@@ -51,6 +51,9 @@ export default function surveys(state = {}, action) {
       survey = action.payload.survey;
       index = action.payload.index;
       direction = action.payload.direction;
+      if(index == 0  && direction == 1){
+        return state;
+      }
       newSurvey = Object.assign({}, survey);
       newSurvey.surveyForms = move(survey.surveyForms, index, index-direction);
       newState = Object.assign({}, state);

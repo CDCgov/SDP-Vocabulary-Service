@@ -19,7 +19,7 @@ class QuestionModalContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {linkedResponseSets:{}, showResponseSetWidget: false, showResponseSets: true};
+    this.state = {linkedResponseSets: {}, showResponseSetWidget: false, showResponseSets: false};
     this.saveNewQuestion = this.saveNewQuestion.bind(this);
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
@@ -69,7 +69,7 @@ class QuestionModalContainer extends Component {
               <label htmlFor="linked_response_sets">Response Sets</label>
             </div>
             <div className="col-md-6 response-set-label">
-              <label htmlFor="selected_response_sets">Selected Response Sets</label>
+              <h2 className="tags-table-header">Selected Response Sets</h2>
             </div>
           </div>
           <ResponseSetDragWidget responseSets={this.props.responseSets}
@@ -154,7 +154,7 @@ class QuestionModalContainer extends Component {
       );
     }
     return (
-      <Modal bsStyle='question' show={this.props.showModal} onHide={this.closeQuestionModal} >
+      <Modal bsStyle='question' show={this.props.showModal} onHide={this.closeQuestionModal} aria-label="New Question">
         <Modal.Header closeButton bsStyle='question'>
           <Modal.Title>New Question</Modal.Title>
         </Modal.Header>
