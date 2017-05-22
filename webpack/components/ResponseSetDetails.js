@@ -117,7 +117,9 @@ export default class ResponseSetDetails extends Component {
             { responseSet.source &&
               <div className="box-content">
                 <strong>Import / Source: </strong>
-                {responseSet.source === 'PHIN_VADS' ? (
+                { responseSet.source === 'PHIN_VADS' &&  responseSet.oid && responseSet.version === responseSet.mostRecent ? (
+                  <a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`}>PHIN VADS</a>
+                ) : responseSet.source === 'PHIN_VADS' ? (
                   <a href="https://phinvads.cdc.gov">PHIN VADS</a>
                 ) : (
                   <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>
