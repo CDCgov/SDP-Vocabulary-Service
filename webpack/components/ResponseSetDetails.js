@@ -53,6 +53,16 @@ export default class ResponseSetDetails extends Component {
     );
   }
 
+  sourceLink(responseSet) {
+    if(responseSet.source === 'PHIN_VADS' &&  responseSet.oid && responseSet.version === responseSet.mostRecent) {
+      return <a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`}>PHIN VADS</a>;
+    } else if (responseSet.source === 'PHIN_VADS') {
+      return <a href="https://phinvads.cdc.gov">PHIN VADS</a>;
+    } else {
+      return <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>;
+    }
+  }
+
   mainContent(responseSet) {
     return (
       <div className="col-md-9 nopadding maincontent">
@@ -117,13 +127,7 @@ export default class ResponseSetDetails extends Component {
             { responseSet.source &&
               <div className="box-content">
                 <strong>Import / Source: </strong>
-                { responseSet.source === 'PHIN_VADS' &&  responseSet.oid && responseSet.version === responseSet.mostRecent ? (
-                  <a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`}>PHIN VADS</a>
-                ) : responseSet.source === 'PHIN_VADS' ? (
-                  <a href="https://phinvads.cdc.gov">PHIN VADS</a>
-                ) : (
-                  <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>
-                )}
+                {this.sourceLink(responseSet)}
               </div>
             }
             { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
