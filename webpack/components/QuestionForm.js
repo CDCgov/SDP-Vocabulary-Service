@@ -195,7 +195,7 @@ class QuestionForm extends Component{
                 { this.isChoiceType() ?
                 <div className="row response-set-row">
                   <div className="col-md-6 response-set-label">
-                    <label htmlFor="linked_response_sets">Response Sets</label>
+                    <h2>Response Sets</h2>
                   </div>
                   <div className="col-md-6 response-set-label">
                     <h2>Selected Response Sets</h2>

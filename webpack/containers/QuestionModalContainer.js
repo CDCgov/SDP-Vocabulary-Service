@@ -66,7 +66,7 @@ class QuestionModalContainer extends Component {
         <Modal.Body bsStyle='response-set'>
           <div className="row response-set-row">
             <div className="col-md-6 response-set-label">
-              <label htmlFor="linked_response_sets">Response Sets</label>
+              <h2>Response Sets</h2>
             </div>
             <div className="col-md-6 response-set-label">
               <h2 className="tags-table-header">Selected Response Sets</h2>
@@ -110,7 +110,9 @@ class QuestionModalContainer extends Component {
     if(this.state.showResponseSets){
       responseSetsDiv = (
         <div className="row selected_response_sets">
-          <label className="input-label" htmlFor="response-set-list">Response Sets</label>
+          <div className="col-md-12 response-set-label">
+            <h2>Response Sets</h2>
+          </div>
           <div className="col-md-12">
               <div className="panel panel-default">
                 <div className="panel-body">

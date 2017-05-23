@@ -42,7 +42,7 @@ class DropTarget extends Component {
           <DraggableResponseSet type='response_set' result={{Source: rs}} currentUser={{id: -1}} />
           </div>);
         })}
-        <select readOnly={true} value={selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
+        <select readOnly={true} value={selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" aria-label="Selected Response Sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
           {selectedResponseSets.map((rs) => {
             return <option key={rs.id} value={rs.id}>a</option>;
           })}
