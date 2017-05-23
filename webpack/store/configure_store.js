@@ -5,6 +5,7 @@ import createLogger from 'redux-logger';
 import questionsFromResponseSets from '../middleware/questions_from_response_sets';
 import questionsFromForms from '../middleware/questions_from_forms';
 import responseSetsFromQuestions from '../middleware/response_sets_from_questions';
+import responseSetsFromForms from '../middleware/response_sets_from_forms';
 import parentFromResponseSets from '../middleware/parent_from_response_sets';
 import parentFromQuestions from '../middleware/parent_from_questions';
 import parentFromForms from '../middleware/parent_from_forms';
@@ -28,7 +29,8 @@ export default function configureStore(initialState) {
     parentFromForms,
     parentFromSurveys,
     responseTypesFromQuestions,
-    questionTypesFromQuestions
+    questionTypesFromQuestions,
+    responseSetsFromForms
   );
 
   // Sets up http://zalmoxisus.github.io/redux-devtools-extension/
