@@ -29,13 +29,10 @@ class QuestionSearchContainer extends Component {
     this.search('');
   }
 
-  componentDidUpdate(_prevProps, prevState) {
-    if(prevState != this.state && prevState.page === this.state.page) {
-      let searchType = this.state.searchType;
+  componentDidUpdate(prevProps, prevState) {
+    if((prevState != this.state && prevState.page === this.state.page) ||
+       (prevProps.searchResultsInUse !== this.props.searchResultsInUse && !this.props.searchResultsInUse)) {
       let searchTerms = this.state.searchTerms;
-      if(searchType === '') {
-        searchType = null;
-      }
       if(searchTerms === ''){
         searchTerms = null;
       }
@@ -48,11 +45,13 @@ class QuestionSearchContainer extends Component {
   }
 
   search(searchTerms, progFilters, sysFilters) {
-    if(searchTerms === ''){
-      searchTerms = null;
+    if (!this.props.searchResultsInUse) {
+      if(searchTerms === ''){
+        searchTerms = null;
+      }
+      this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+      this.props.fetchSearchResults(searchTerms, 'question', progFilters, sysFilters);
     }
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, 'question', progFilters, sysFilters);
   }
 
   loadMore() {
@@ -114,7 +113,8 @@ QuestionSearchContainer.propTypes = {
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
-  surveillancePrograms: surveillanceProgramsProps
+  surveillancePrograms: surveillanceProgramsProps,
+  searchResultsInUse: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionSearchContainer);
