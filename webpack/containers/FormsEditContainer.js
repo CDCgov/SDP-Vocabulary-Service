@@ -30,8 +30,8 @@ class FormsEditContainer extends Component {
       this.props.params.formId = 0;
       this.props.params.action = 'new';
     }
-    this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false, showResponseSetModal: false};
-    this.closeQuestionModal = this.closeQuestionModal.bind(this);
+    this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false,
+      showResponseSetModal: false, searchResultsInUse: false};
     this.handleSaveQuestionSuccess = this.handleSaveQuestionSuccess.bind(this);
   }
 
@@ -95,10 +95,6 @@ class FormsEditContainer extends Component {
     }
   }
 
-  closeQuestionModal(){
-    this.setState({showQuestionModal: false});
-  }
-
   handleSaveQuestionSuccess(successResponse){
     this.setState({showQuestionModal: false});
     this.props.fetchQuestion(successResponse.data.id);
@@ -116,7 +112,7 @@ class FormsEditContainer extends Component {
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
-                                closeQuestionModal ={()=>this.setState({showQuestionModal: false})}
+                                closeQuestionModal={()=>this.setState({showQuestionModal: false, searchResultsInUse: false})}
                                 handleSaveQuestionSuccess={this.handleSaveQuestionSuccess} />
         <ResponseSetModal show={this.state.showResponseSetModal}
                           router={this.props.router}
@@ -130,9 +126,9 @@ class FormsEditContainer extends Component {
             <div className="panel-body">
               <div className="col-md-5">
                 <div className="row add-question">
-                  <Button tabIndex="4" onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
+                  <Button tabIndex="4" onClick={()=>this.setState({showQuestionModal: true, searchResultsInUse: true})} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer form={this.props.form} />
+                <QuestionSearchContainer form={this.props.form} searchResultsInUse={this.state.searchResultsInUse}/>
               </div>
               <FormEdit ref ='form'
                         form={this.props.form}
