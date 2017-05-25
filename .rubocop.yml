@@ -35,7 +35,7 @@ Metrics/MethodLength:
     - 'db/migrate/*'
     - 'lib/sdp/simple_search.rb'
 Metrics/ClassLength:
-  Max: 200
+  Max: 250
   Exclude:
     - 'test/**/*'
 Metrics/AbcSize:
