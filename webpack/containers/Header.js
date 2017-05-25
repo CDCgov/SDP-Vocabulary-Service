@@ -223,6 +223,8 @@ class Header extends Component {
                       return this.joyride.reset(true);
                     }}>Step-by-Step Walkthrough</a></li>
                   }
+                  <li role="separator" className="divider"></li>
+                  <li className="nav-dropdown-item"><span className="version-display">Release: v{this.props.appVersion}</span></li>
                 </ul>
               </li>
             </ul>
@@ -250,6 +252,7 @@ Header.propTypes = {
   currentUser: currentUserProps,
   steps: PropTypes.array,
   location: PropTypes.object,
+  appVersion: PropTypes.number,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,
   fetchNotifications: PropTypes.func,
