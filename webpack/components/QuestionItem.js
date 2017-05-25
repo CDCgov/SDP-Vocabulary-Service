@@ -12,6 +12,8 @@ import DashboardSearch from './DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
 import { Modal, Button } from 'react-bootstrap';
 
+const QUESTION_ITEM_CONTEXT = 'QUESTION_ITEM_CONTEXT';
+
 class QuestionItem extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +40,7 @@ class QuestionItem extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(searchTerms, 'response_set', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, 'response_set', this.state.progFilters, this.state.sysFilters);
     }
   }
 
@@ -73,7 +75,7 @@ class QuestionItem extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters);
+    this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, searchType, progFilters, sysFilters);
   }
 
   searchModal() {
@@ -146,7 +148,7 @@ class QuestionItem extends Component {
                         showResponseSetSearch={(e) => {
                           e.preventDefault();
                           this.showResponseSetSearch();
-                          this.props.fetchSearchResults('', 'response_set');
+                          this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, '', 'response_set');
                         }}
                         showProgramVarModal={(e) => {
                           e.preventDefault();
@@ -162,7 +164,7 @@ class QuestionItem extends Component {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[QUESTION_ITEM_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser

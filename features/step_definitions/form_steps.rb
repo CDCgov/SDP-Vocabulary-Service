@@ -12,7 +12,7 @@ When(/^I use the response set search modal to select "([^"]*)"$/) do |name|
   Elastictest.fake_rs_search_results
   page.find('a', id: 'search-response-sets').click
   sleep 1
-  page.all('a', id: "select-#{name}")[1].click
+  page.all('a', id: "select-#{name}")[0].click
 end
 
 When(/^I go to the list of Forms$/) do

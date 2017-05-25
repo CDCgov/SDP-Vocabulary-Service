@@ -60,6 +60,8 @@ DropTarget.propTypes = {
 
 let DroppableTarget = Droppable(DropTarget, onDrop);
 
+const DRAG_WIDGET_CONTEXT = 'DRAG_WIDGET_CONTEXT';
+
 class ResponseSetDragWidget extends Component {
   constructor(props){
     super(props);
@@ -81,7 +83,7 @@ class ResponseSetDragWidget extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms});
-    this.props.fetchSearchResults(searchTerms, 'response_set');
+    this.props.fetchSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set');
   }
 
   loadMore() {
@@ -90,7 +92,7 @@ class ResponseSetDragWidget extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, 'response_set', tempState);
+    this.props.fetchMoreSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set', tempState);
     this.setState({page: tempState});
   }
 
@@ -129,7 +131,7 @@ class ResponseSetDragWidget extends Component {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[DRAG_WIDGET_CONTEXT] || {},
     currentUser: state.currentUser
   };
 }

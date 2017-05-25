@@ -11,6 +11,8 @@ import currentUserProps from "../prop-types/current_user_props";
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 
+const QUESTION_SEARCH_CONTEXT = 'QUESTION_SEARCH_CONTEXT';
+
 class QuestionSearchContainer extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +41,7 @@ class QuestionSearchContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(searchTerms, 'question', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', this.state.progFilters, this.state.sysFilters);
     }
   }
 
@@ -52,7 +54,7 @@ class QuestionSearchContainer extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, 'question', progFilters, sysFilters);
+    this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', progFilters, sysFilters);
   }
 
   loadMore() {
@@ -61,7 +63,7 @@ class QuestionSearchContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, 'question', tempState,
+    this.props.fetchMoreSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', tempState,
                                       this.state.progFilters,
                                       this.state.sysFilters);
     this.setState({page: tempState});
@@ -95,7 +97,7 @@ class QuestionSearchContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[QUESTION_SEARCH_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser

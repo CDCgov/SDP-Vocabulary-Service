@@ -5,9 +5,10 @@ import {
   FETCH_MORE_SEARCH_RESULTS
 } from './types';
 
-export function fetchSearchResults(searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false) {
+export function fetchSearchResults(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false) {
   return {
     type: FETCH_SEARCH_RESULTS,
+    meta: {context: context},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
@@ -15,9 +16,10 @@ export function fetchSearchResults(searchTerms=null, type=null, programFilter=[]
   };
 }
 
-export function fetchMoreSearchResults(searchTerms=null, type=null, page, programFilter=[], systemFilter=[], myStuffFilter=false) {
+export function fetchMoreSearchResults(context, searchTerms=null, type=null, page, programFilter=[], systemFilter=[], myStuffFilter=false) {
   return {
     type: FETCH_MORE_SEARCH_RESULTS,
+    meta: {context: context},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, page: page, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
