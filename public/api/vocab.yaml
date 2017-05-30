@@ -565,6 +565,9 @@ definitions:
       questionType:
         type: string
         title: Type of the question
+      responseType:
+        type: string
+        title: Type of response
       version:
         type: string
         title: Logical identifier for this version of the question

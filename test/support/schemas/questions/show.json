@@ -4,6 +4,7 @@
       "questionText" : {"type" : "string"},
       "questionUri" : {"type" : "string"},
       "questionType" : {"type" : "string"},
+      "responseType" : {"type" : "string"},
       "version" : {"type" : "number"},
       "published_by" : {
       "type" : "object",
