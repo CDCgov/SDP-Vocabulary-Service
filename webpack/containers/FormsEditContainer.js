@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
-import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions } from '../actions/questions_actions';
+import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
 import ResponseSetModal from '../components/ResponseSetModal';
-import { fetchResponseSets }   from '../actions/response_set_actions';
 import QuestionModalContainer  from './QuestionModalContainer';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
@@ -149,7 +148,7 @@ class FormsEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchResponseSets, addQuestion, fetchQuestions, fetchQuestion,
+  return bindActionCreators({setSteps, addQuestion, fetchQuestion,
     newForm, fetchForm, removeQuestion, reorderQuestion,
     saveForm, saveDraftForm}, dispatch);
 }
@@ -176,10 +175,8 @@ FormsEditContainer.propTypes = {
   addQuestion: PropTypes.func,
   saveDraftForm: PropTypes.func,
   fetchQuestion: PropTypes.func,
-  fetchQuestions: PropTypes.func,
   removeQuestion: PropTypes.func,
-  reorderQuestion: PropTypes.func,
-  fetchResponseSets: PropTypes.func
+  reorderQuestion: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);
