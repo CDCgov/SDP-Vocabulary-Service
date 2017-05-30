@@ -10,6 +10,7 @@ Feature: Export Forms
     And I click on the create "Forms" dropdown item
     And I fill in the "form-name" field with "Test Form"
     And I fill in the "search" field with "What"
+    And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
@@ -24,6 +25,7 @@ Feature: Export Forms
     And I click on the create "Forms" dropdown item
     And I fill in the "form-name" field with "Test Form"
     And I fill in the "search" field with "What"
+    And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"

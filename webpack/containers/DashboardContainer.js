@@ -13,6 +13,9 @@ import { surveillanceProgramsProps } from '../prop-types/surveillance_program_pr
 import { signUp } from '../actions/current_user_actions';
 import _ from 'lodash';
 
+const DASHBOARD_CONTEXT = 'DASHBOARD_CONTEXT';
+const NO_SEARCH_RESULTS = {};
+
 class DashboardContainer extends Component {
   constructor(props){
     super(props);
@@ -48,7 +51,7 @@ class DashboardContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+      this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
     }
 
     if(prevProps != this.props) {
@@ -204,7 +207,7 @@ class DashboardContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState,
+    this.props.fetchMoreSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, tempState,
                                       this.state.progFilters,
                                       this.state.sysFilters,
                                       this.state.myStuffFilter);
@@ -224,7 +227,7 @@ class DashboardContainer extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
   }
 
   selectType(searchType, myStuffToggle=false) {
@@ -254,7 +257,7 @@ class DashboardContainer extends Component {
     if(searchType === '') {
       searchType = null;
     }
-    this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
   }
 
   analyticsGroup(searchType) {
@@ -340,7 +343,7 @@ function mapStateToProps(state) {
     myQuestionCount: state.stats.myQuestionCount,
     myResponseSetCount: state.stats.myResponseSetCount,
     mySurveyCount: state.stats.mySurveyCount,
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[DASHBOARD_CONTEXT] || NO_SEARCH_RESULTS,
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
