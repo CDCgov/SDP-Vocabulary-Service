@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {Modal, Glyphicon, Checkbox, Button, ControlLabel, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem} from 'react-bootstrap';
+import {Modal, Checkbox, Button, ControlLabel, FormGroup, InputGroup, DropdownButton, MenuItem} from 'react-bootstrap';
+import NestedSearchBar from '../components/NestedSearchBar';
 import { fetchConcepts, fetchConceptSystems } from '../actions/concepts_actions';
 import _ from 'lodash';
 
@@ -10,7 +11,7 @@ class CodedSetTableEditContainer extends Component {
     super(props);
     var items = props.initialItems.length < 1 ? [{value: '', codeSystem: '', displayName: ''}] : props.initialItems;
     this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
-    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.search = this.search.bind(this);
     this.hideCodeSearch = this.hideCodeSearch.bind(this);
   }
 
@@ -65,6 +66,14 @@ class CodedSetTableEditContainer extends Component {
     this.setState({selectedConcepts: []});
   }
 
+  search(searchTerms) {
+    if(searchTerms === ''){
+      searchTerms = null;
+    }
+    this.setState({selectedConcepts: [], searchTerm: searchTerms});
+    this.props.fetchConcepts(this.state.selectedSystem, searchTerms, 1);
+  }
+
   searchConcepts(system){
     if(system=='None'){
       this.setState({selectedSystem: ''});
@@ -73,12 +82,6 @@ class CodedSetTableEditContainer extends Component {
       this.setState({selectedSystem: system});
       this.props.fetchConcepts(system, this.state.searchTerm, 1);
     }
-  }
-
-  handleSearchChange(e){
-    var value = e.target.value;
-    this.setState({selectedConcepts: [], searchTerm: value});
-    this.props.fetchConcepts(this.state.selectedSystem, value, 1);
   }
 
   selectConcept(e,i){
@@ -150,10 +153,7 @@ class CodedSetTableEditContainer extends Component {
                   }
                 })}
               </DropdownButton>
-              <FormControl type="text" onChange={(e) => this.handleSearchChange(e)} placeholder="Search Codes" aria-label="Search Codes"/>
-              <FormControl.Feedback>
-                <Glyphicon glyph="search"/>
-              </FormControl.Feedback>
+              <NestedSearchBar onSearchTermChange={this.search} modelName="Code" />
             </InputGroup>
           </FormGroup>
           <table className="table table-striped scroll-table-header">
