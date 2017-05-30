@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchStats } from '../actions/landing';
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
@@ -37,7 +36,6 @@ class DashboardContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchStats();
     this.search('');
   }
 
@@ -351,7 +349,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, setSteps, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
+  return bindActionCreators({setSteps, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -363,7 +361,6 @@ DashboardContainer.propTypes = {
   myQuestionCount: PropTypes.number,
   myResponseSetCount: PropTypes.number,
   mySurveyCount: PropTypes.number,
-  fetchStats: PropTypes.func,
   setSteps: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,

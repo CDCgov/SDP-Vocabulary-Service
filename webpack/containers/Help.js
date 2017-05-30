@@ -33,7 +33,7 @@ class Help extends Component {
         <li>Use the top bar to log-in, sign-up, or navigate to various pages.</li>
         <li>Clicking the CDC logo in the top left will return you to the landing page at any time.</li>
         <li>On most pages the top right navigation bar gives a &quot;Help&quot; option. Click on this option to view documentation for various actions or see step-by-step walk throughs on some pages.</li>
-        <li>The footer contains useful links to pages with additional information about the site.</li>
+        <li>The footer contains useful links to pages with additional information about the site, including the application version. Please reference this version number in any bug reports.</li>
         </ul>
       </div>
     );

@@ -15,6 +15,7 @@ import { fetchCurrentUser, logIn, signUp, updateUser } from '../actions/current_
 import { fetchSurveillanceSystems } from '../actions/surveillance_system_actions';
 import { fetchSurveillancePrograms } from '../actions/surveillance_program_actions';
 import { fetchPublishers } from '../actions/publisher_actions';
+import { fetchStats } from '../actions/landing';
 
 class App extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class App extends Component {
     this.props.fetchSurveillancePrograms();
     this.props.fetchSurveillanceSystems();
     this.props.fetchPublishers();
+    this.props.fetchStats();
   }
 
   openLogInModal() {
@@ -63,7 +65,8 @@ class App extends Component {
                 location={this.props.location}
                 logInOpener={() => this.openLogInModal()}
                 signUpOpener={() => this.openSignUpModal()}
-                settingsOpener={() => this.openSettingsModal()}/>
+                settingsOpener={() => this.openSettingsModal()}
+                appVersion={this.props.appVersion} />
         <div className='main-content' id="main-content">
           {this.props.children}
         </div>
@@ -72,8 +75,9 @@ class App extends Component {
             2016 Centers for Disease Control and Prevention. All rights reserved.
             <div className="nav-links">
               <Link to="/privacy">Privacy</Link>
-              <span href="#">Security</span>
-              <span href="#">Terms of Service</span>
+              <Link to="/">Security</Link>
+              <Link to="/">Terms of Service</Link>
+              Release: v{this.props.appVersion}
             </div>
           </div>
         </footer>
@@ -98,11 +102,13 @@ App.propTypes = {
   fetchCurrentUser: PropTypes.func,
   logIn: PropTypes.func,
   location: PropTypes.object,
+  appVersion: PropTypes.number,
   signUp: PropTypes.func,
   updateUser: PropTypes.func,
   fetchSurveillanceSystems: PropTypes.func,
   fetchSurveillancePrograms: PropTypes.func,
   fetchPublishers: PropTypes.func,
+  fetchStats: PropTypes.func,
   children: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
@@ -113,9 +119,10 @@ function mapStateToProps(state) {
     currentUser: state.currentUser,
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
+    appVersion: state.stats.version,
     errors: state.errors
   };
 }
 
 export default connect(mapStateToProps, {fetchCurrentUser, logIn, signUp, updateUser,
-  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers})(App);
+  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers, fetchStats})(App);
