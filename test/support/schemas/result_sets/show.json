@@ -1,7 +1,16 @@
 {
   "properties": {
     "url" : {"type" : "string"},
-    //"identifier" : {"type": "string"},
+    "identifier" : {
+      "type": "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "system" : {"type" : "string"},
+          "value" : {"type" : "string"}
+        }
+      }
+    },
     //"status" : {"type" : "string"},
     "version" : {"type" : "number"},
     "name" : {"type" : "string"},

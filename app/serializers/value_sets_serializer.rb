@@ -5,7 +5,14 @@ class ValueSetsSerializer < ActiveModel::Serializer
 
   attribute :version_independent_id, key: :id
 
-  attribute :identifier do # additional identifiers not yet available
+  attribute :identifier do
+    if object.oid
+      identifiers = []
+      identifier = {}
+      identifier['system'] = 'urn:ietf:rfc:3986'
+      identifier['value'] = 'urn:oid:' + object.oid
+      identifiers << identifier
+    end
   end
 
   attribute :version, key: :version
