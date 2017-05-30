@@ -35,11 +35,6 @@ class FormsEditContainer extends Component {
     this.handleSaveQuestionSuccess = this.handleSaveQuestionSuccess.bind(this);
   }
 
-  componentWillMount() {
-    this.props.fetchQuestions();
-    this.props.fetchResponseSets();
-  }
-
   componentDidMount() {
     this.props.setSteps([
       {
