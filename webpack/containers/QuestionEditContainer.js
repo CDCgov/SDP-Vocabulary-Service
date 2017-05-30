@@ -7,6 +7,7 @@ import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps }  from '../prop-types/response_set_props';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchQuestionTypes } from '../actions/question_type_actions';
+import { fetchResponseSet }  from '../actions/response_set_actions';
 import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
 import { setSteps } from '../actions/tutorial_actions';
 
@@ -23,7 +24,7 @@ class QuestionEditContainer extends Component {
 
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
-    // this.props.fetchResponseSets();
+    this.props.fetchResponseSets();
   }
 
   componentDidMount() {
@@ -55,7 +56,7 @@ class QuestionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.question || !this.props.questionTypes || !this.props.responseTypes){
+    if(!this.props.question || !this.props.questionTypes || !this.props.responseSets || !this.props.responseTypes){
       return (
         <div>Loading...</div>
       );
@@ -69,6 +70,7 @@ class QuestionEditContainer extends Component {
                       questionSubmitter={this.props.saveQuestion}
                       publishSubmitter ={this.props.publishQuestion}
                       questionTypes={this.props.questionTypes}
+                      responseSets ={this.props.responseSets}
                       responseTypes={this.props.responseTypes}
                       router={this.props.router}
                       route ={this.props.route} />
@@ -91,7 +93,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, setSteps}, dispatch);
+  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets, setSteps}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
@@ -104,6 +106,7 @@ QuestionEditContainer.propTypes = {
   deleteQuestion:  PropTypes.func,
   publishQuestion: PropTypes.func,
   saveDraftQuestion:  PropTypes.func,
+  fetchResponseSets:  PropTypes.func,
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   setSteps: PropTypes.func,
