@@ -21,6 +21,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {logInOpen: false, signUpOpen: false, settingsOpen: false};
+    this.updateUser        = this.updateUser.bind(this);
+    this.openLogInModal    = this.openLogInModal.bind(this);
+    this.openSignUpModal   = this.openSignUpModal.bind(this);
+    this.closeLogInModal   = this.closeLogInModal.bind(this);
+    this.closeSignUpModal  = this.closeSignUpModal.bind(this);
+    this.openSettingsModal = this.openSettingsModal.bind(this);
+    this.closeSettingsModal= this.closeSettingsModal.bind(this);
   }
 
   componentWillMount() {
@@ -55,6 +62,13 @@ class App extends Component {
     this.setState({settingsOpen: false});
   }
 
+  updateUser(user, successHandler=null, failureHandler=null){
+    this.props.updateUser(user, ()=>{
+      this.props.fetchCurrentUser();
+      successHandler();
+    }, failureHandler);
+  }
+
   render() {
     return (
       <div>
@@ -63,9 +77,9 @@ class App extends Component {
         <Header currentUser={this.props.currentUser}
                 disableUserRegistration={DISABLE_USER_REGISTRATION}
                 location={this.props.location}
-                logInOpener={() => this.openLogInModal()}
-                signUpOpener={() => this.openSignUpModal()}
-                settingsOpener={() => this.openSettingsModal()}
+                logInOpener={this.openLogInModal}
+                signUpOpener={this.openSignUpModal}
+                settingsOpener={this.openSettingsModal}
                 appVersion={this.props.appVersion} />
         <div className='main-content' id="main-content">
           {this.props.children}
@@ -81,14 +95,14 @@ class App extends Component {
             </div>
           </div>
         </footer>
-        <LogInModal logIn={this.props.logIn} show={this.state.logInOpen} closer={() => this.closeLogInModal()}/>
+        <LogInModal logIn={this.props.logIn} show={this.state.logInOpen} closer={this.closeLogInModal}/>
         <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen}
-          closer={() => this.closeSignUpModal()}
+          closer={this.closeSignUpModal}
           surveillanceSystems={this.props.surveillanceSystems}
           surveillancePrograms={this.props.surveillancePrograms} />
-        <SettingsModal update={this.props.updateUser}
+        <SettingsModal update={this.updateUser}
           show={this.state.settingsOpen}
-          closer={() => this.closeSettingsModal()}
+          closer={this.closeSettingsModal}
           currentUser={this.props.currentUser}
           surveillanceSystems={this.props.surveillanceSystems}
           surveillancePrograms={this.props.surveillancePrograms} />
