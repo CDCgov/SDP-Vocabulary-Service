@@ -184,6 +184,14 @@ Given(/^the user (.*) is a (.*)$/) do |user_email, role|
   user.save
 end
 
+Then(/^the list "([^"]*)" should contain the option "([^"]*)"$/) do |list_name, option_text|
+  assert page.has_select?(list_name, with_options: [option_text])
+end
+
+Then(/^the list "([^"]*)" should not contain the option "([^"]*)"$/) do |list_name, option_text|
+  assert_not page.has_select?(list_name, with_options: [option_text])
+end
+
 def create_path(object_type, object_id)
   if object_type == 'Question'
     '//div[@id="question_id_' + object_id + '"]'

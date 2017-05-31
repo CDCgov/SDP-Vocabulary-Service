@@ -12,10 +12,13 @@ export default class SettingsModal extends ProfileEditor {
       firstName: this.props.currentUser.firstName || '',
       lastName: this.props.currentUser.lastName || '',
       lastProgramId: this.props.currentUser.lastProgramId || -1,
-      lastSystemId: this.props.currentUser.lastSystemId || -1, errors: {}};
+      lastSystemId: this.props.currentUser.lastSystemId || -1,
+      errors: {}
+    };
   }
 
   componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
     if (nextProps.currentUser) {
       this.setState({email: nextProps.currentUser.email,
         id: nextProps.currentUser.id,

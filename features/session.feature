@@ -21,11 +21,18 @@ Feature: Session Management
     And I fill in the "email" field with "test_author@gmail.com"
     And I fill in the "password" field with "password"
     And I fill in the "passwordConfirmation" field with "password"
+    Then I search for the system "vital"
+    Then the list "Surveillance System" should not contain the option "National Violent Death Reporting System"
+    Then the list "Surveillance System" should contain the option "National Vital Statistics System"
     And I select the "National Vital Statistics System" option in the "Surveillance System" list
+    Then I search for the program "flu"
+    Then the list "Surveillance Program" should not contain the option "FoodNet"
+    Then the list "Surveillance Program" should contain the option "Influenza"
     And I select the "Influenza" option in the "Surveillance Program" list
     And I click on the "Sign Up" button
     Then I should see "test_author@gmail.com"
     And a user "test_author@gmail.com" should exist
+    And a user "test_author@gmail.com" should have a last Surveillance System named "National Vital Statistics System"
     And a user "test_author@gmail.com" should have a last Surveillance Program named "Influenza"
 
   Scenario: Login to an existing account
@@ -42,11 +49,34 @@ Feature: Session Management
     And I should not see "Get Started!"
 
   Scenario: Edit an existing account
-    Given I am logged in as test_author@gmail.com
+    Given I have a Surveillance System with the name "National Violent Death Reporting System"
+    And I have a Surveillance System with the name "National Vital Statistics System"
+    And I have a Surveillance Program with the name "FoodNet"
+    And I have a Surveillance Program with the name "Influenza"
+    And I am working the program "FoodNet" and system "National Violent Death Reporting System" logged in as test_author@gmail.com
     And I am on the "/" page
     When I click on the "account-dropdown" link
     And I click on the "Settings" link
     Then I should see "Account Details"
+    Then I search for the system "violent"
+    Then the list "Surveillance System" should contain the option "National Violent Death Reporting System"
+    Then the list "Surveillance System" should not contain the option "National Vital Statistics System"
+    Then I search for the system "vital"
+    Then I take a screenshot named "test"
+    Then the list "Surveillance System" should contain the option "National Violent Death Reporting System"
+    Then the list "Surveillance System" should contain the option "National Vital Statistics System"
+    And I select the "National Vital Statistics System" option in the "Surveillance System" list
+    Then I search for the program "food"
+    Then the list "Surveillance Program" should contain the option "FoodNet"
+    Then the list "Surveillance Program" should not contain the option "Influenza"
+    Then I search for the program "flu"
+    Then the list "Surveillance Program" should contain the option "FoodNet"
+    Then the list "Surveillance Program" should contain the option "Influenza"
+    And I select the "Influenza" option in the "Surveillance Program" list
+    When I click on the "Update" button
+    Then I wait 1 seconds  
+    And a user "test_author@gmail.com" should have a last Surveillance System named "National Vital Statistics System"
+    And a user "test_author@gmail.com" should have a last Surveillance Program named "Influenza"
 
   Scenario: Edit an existing account without programs
     Given I am logged in as test_author@gmail.com
