@@ -11,6 +11,44 @@ Feature: Session Management
     When I click on the "Get Started!" link
     Then I should see "Sign Up"
 
+  Scenario: Create an account with default program and system
+    Given I have a Surveillance System with the name "National Violent Death Reporting System"
+    And I have a Surveillance System with the name "National Vital Statistics System"
+    And I have a Surveillance Program with the name "FoodNet"
+    And I have a Surveillance Program with the name "Influenza"
+    And I am on the "/" page
+    When I click on the "Register" link
+    And I fill in the "email" field with "test_author@gmail.com"
+    And I fill in the "password" field with "password"
+    And I fill in the "passwordConfirmation" field with "password"
+    And I click on the "Sign Up" button
+    Then I should see "test_author@gmail.com"
+    And a user "test_author@gmail.com" should exist
+    And a user "test_author@gmail.com" should have a last Surveillance System named "National Violent Death Reporting System"
+    And a user "test_author@gmail.com" should have a last Surveillance Program named "FoodNet"
+
+  Scenario: Create an account with default program and system after search
+    Given I have a Surveillance System with the name "National Violent Death Reporting System"
+    And I have a Surveillance System with the name "National Vital Statistics System"
+    And I have a Surveillance Program with the name "FoodNet"
+    And I have a Surveillance Program with the name "Influenza"
+    And I am on the "/" page
+    When I click on the "Register" link
+    And I fill in the "email" field with "test_author@gmail.com"
+    And I fill in the "password" field with "password"
+    And I fill in the "passwordConfirmation" field with "password"
+    Then I search for the system "vital"
+    Then the list "Surveillance System" should not contain the option "National Violent Death Reporting System"
+    Then the list "Surveillance System" should contain the option "National Vital Statistics System"
+    Then I search for the program "flu"
+    Then the list "Surveillance Program" should not contain the option "FoodNet"
+    Then the list "Surveillance Program" should contain the option "Influenza"
+    And I click on the "Sign Up" button
+    Then I should see "test_author@gmail.com"
+    And a user "test_author@gmail.com" should exist
+    And a user "test_author@gmail.com" should have a last Surveillance System named "National Vital Statistics System"
+    And a user "test_author@gmail.com" should have a last Surveillance Program named "Influenza"
+
   Scenario: Create an account
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
     And I have a Surveillance System with the name "National Vital Statistics System"

@@ -18,8 +18,13 @@ export default class ProfileEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({surveillanceSystems:  _.values(nextProps.surveillanceSystems),
-      surveillancePrograms: _.values(nextProps.surveillancePrograms)});
+    var surveillanceSystems  =  _.values(nextProps.surveillanceSystems);
+    var surveillancePrograms =  _.values(nextProps.surveillancePrograms);
+    this.setState({surveillanceSystems:  surveillanceSystems,
+      surveillancePrograms: surveillancePrograms,
+      defaultProgramId: (surveillancePrograms[0] && surveillancePrograms[0].id) || -1,
+      defaultSystemId:  (surveillanceSystems[0] && surveillanceSystems[0].id) || -1
+    });
   }
 
   render() {
@@ -71,19 +76,17 @@ export default class ProfileEditor extends Component {
   programSearch(programSearchTerm){
     var surveillancePrograms = _.values(this.props.surveillancePrograms);
     if(programSearchTerm && programSearchTerm.length > 1){
-      this.setState({surveillancePrograms: _.filter(surveillancePrograms, (sp) => sp.name.toLowerCase().includes(programSearchTerm.toLowerCase()) || sp.id === this.state.lastProgramId || sp.id.toString() === this.state.lastProgramId)});
-    } else {
-      this.setState({surveillancePrograms: surveillancePrograms});
+      surveillancePrograms = _.filter(surveillancePrograms, (sp) => sp.name.toLowerCase().includes(programSearchTerm.toLowerCase()) || sp.id === this.state.lastProgramId || sp.id.toString() === this.state.lastProgramId);
     }
+    this.setState({surveillancePrograms: surveillancePrograms, defaultProgramId: (surveillancePrograms[0] && surveillancePrograms[0].id) || -1});
   }
 
   systemSearch(systemSearchTerm){
     var surveillanceSystems = _.values(this.props.surveillanceSystems);
     if(systemSearchTerm && systemSearchTerm.length > 1){
-      this.setState({surveillanceSystems: _.filter(surveillanceSystems, (ss) => ss.name.toLowerCase().includes(systemSearchTerm.toLowerCase()) || ss.id === this.state.lastSystemId || ss.id.toString() === this.state.lastSystemId)});
-    } else {
-      this.setState({surveillanceSystems: surveillanceSystems});
+      surveillanceSystems = _.filter(surveillanceSystems, (ss) => ss.name.toLowerCase().includes(systemSearchTerm.toLowerCase()) || ss.id === this.state.lastSystemId || ss.id.toString() === this.state.lastSystemId);
     }
+    this.setState({surveillanceSystems: surveillanceSystems, defaultSystemId:(surveillanceSystems[0] && surveillanceSystems[0].id) || -1});
   }
 
   surveillanceProgramsField() {
@@ -122,10 +125,18 @@ export default class ProfileEditor extends Component {
     let profileInformation = _.clone(this.state);
     delete profileInformation.errors;
     if (profileInformation.lastSystemId === -1) {
-      delete profileInformation.lastSystemId;
+      if (profileInformation.defaultSystemId !== -1){
+        profileInformation.lastSystemId = profileInformation.defaultSystemId;
+      } else {
+        delete profileInformation.lastSystemId;
+      }
     }
     if (profileInformation.lastProgramId === -1) {
-      delete profileInformation.lastProgramId;
+      if (profileInformation.defaultProgramId !== -1){
+        profileInformation.lastProgramId = profileInformation.defaultProgramId;
+      } else {
+        delete profileInformation.lastProgramId;
+      }
     }
     return profileInformation;
   }

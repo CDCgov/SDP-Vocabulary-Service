@@ -5,8 +5,8 @@ import ProfileEditor from './ProfileEditor';
 export default class SignUpModal extends ProfileEditor {
   constructor(props) {
     super(props);
-    this.state = {email: '', firstName: '', lastName: '', password: '',
-      passwordConfirmation: '', lastProgramId: -1, lastSystemId: -1, errors: {}};
+    this.state = {email: '', firstName: '', lastName: '', password: '', passwordConfirmation: '',
+      lastProgramId: -1, lastSystemId: -1, defaultProgramId: -1, defaultSystemId: -1, errors: {}};
   }
 
   title() {

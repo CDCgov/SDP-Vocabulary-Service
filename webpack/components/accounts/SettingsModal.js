@@ -10,11 +10,12 @@ export default class SettingsModal extends ProfileEditor {
     this.state = {email: this.props.currentUser.email,
       id: this.props.currentUser.id,
       firstName: this.props.currentUser.firstName || '',
-      lastName: this.props.currentUser.lastName || '',
+      lastName:  this.props.currentUser.lastName  || '',
       lastProgramId: this.props.currentUser.lastProgramId || -1,
-      lastSystemId: this.props.currentUser.lastSystemId || -1,
-      errors: {}
-    };
+      lastSystemId:  this.props.currentUser.lastSystemId  || -1,
+      defaultProgramId: this.props.currentUser.lastProgramId || -1,
+      defaultSystemId:  this.props.currentUser.lastSystemId  || -1,
+      errors: {} };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,7 +26,8 @@ export default class SettingsModal extends ProfileEditor {
         firstName: nextProps.currentUser.firstName || '',
         lastName: nextProps.currentUser.lastName || '',
         lastProgramId: this.props.currentUser.lastProgramId || -1,
-        lastSystemId: this.props.currentUser.lastSystemId || -1});
+        lastSystemId: this.props.currentUser.lastSystemId || -1
+      });
     }
   }
 
