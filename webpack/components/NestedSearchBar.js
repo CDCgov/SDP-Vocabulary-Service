@@ -8,7 +8,7 @@ class NestedSearchBar extends Component {
 
   render() {
     return (
-      <div className="search-bar input-group search-group">
+      <div className="search-bar input-group nested-search-group">
         <input
             className="search-input"
             placeholder={`Search ${this.props.modelName}s...`}
