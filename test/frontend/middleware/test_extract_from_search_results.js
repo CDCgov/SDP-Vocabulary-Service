@@ -1,14 +1,14 @@
 import { expect } from '../test_helper';
 import MockStore from '../mock_store';
 
-import questionsFromSearchResult from '../../../webpack/middleware/questions_from_search_result';
+import extractFromSearchResults from '../../../webpack/middleware/extract_from_search_results';
 
 import {
   FETCH_SEARCH_RESULTS_FULFILLED,
   FETCH_QUESTION_FULFILLED
 } from '../../../webpack/actions/types';
 
-describe('questionsFromSearchResult middleware', () => {
+describe('extractFromSearchResults middleware', () => {
   let store;
   let action;
 
@@ -30,7 +30,7 @@ describe('questionsFromSearchResult middleware', () => {
   });
 
   it('will dispatch actions for questions in forms', () => {
-    questionsFromSearchResult(store)(next)(action);
+    extractFromSearchResults(store)(next)(action);
     let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_QUESTION_FULFILLED);
     expect(dispatchedAction).to.exist;
     expect(dispatchedAction.payload.data.content).to.equal('M?');
