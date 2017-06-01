@@ -212,7 +212,7 @@ export default class ResponseSetForm extends Component {
   }
 }
 
-function filterResponses(responses) {
+function filterResponses(responses=[]) {
   return responses.filter((r)=>{
     return (r.value!=='' ||  r.codeSystem !== '' || r.displayName !=='');
   }).map((r) => {

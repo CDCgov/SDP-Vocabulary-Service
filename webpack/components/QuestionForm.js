@@ -120,7 +120,7 @@ class QuestionForm extends Component{
   render(){
     const {question, questionTypes, responseSets, responseTypes} = this.props;
     const state = this.state;
-    if(!question || !questionTypes || !responseSets || !responseTypes){
+    if(!question || !questionTypes || !responseTypes){
       return (<div>Loading....</div>);
     }
     return (
