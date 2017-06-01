@@ -15,7 +15,6 @@ import questionTypesFromQuestions from '../middleware/question_types_from_questi
 import stuffFromSurveys from '../middleware/stuff_from_surveys';
 import extractFromSearchResults from '../middleware/extract_from_search_results';
 import unauthenticatedResponse from '../middleware/unauthenticated_response';
-import responseSetsFromSearch from '../middleware/response_set_from_search';
 
 import rootReducer from '../reducers';
 
@@ -34,7 +33,6 @@ export default function configureStore(initialState) {
     responseTypesFromQuestions,
     questionTypesFromQuestions,
     responseSetsFromForms,
-    responseSetsFromSearch,
     stuffFromSurveys,
     extractFromSearchResults
   );
