@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForm, publishForm, deleteForm } from '../actions/form_actions';
-import { fetchQuestions } from '../actions/questions_actions';
-import { fetchResponseSets } from '../actions/response_set_actions';
 import { setSteps } from '../actions/tutorial_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
@@ -16,7 +14,6 @@ import { publishersProps } from "../prop-types/publisher_props";
 class FormShowContainer extends Component {
   componentWillMount() {
     this.props.fetchForm(this.props.params.formId);
-    this.props.fetchResponseSets();
   }
 
   componentDidMount() {
@@ -50,8 +47,6 @@ class FormShowContainer extends Component {
   componentDidUpdate(prevProps) {
     if(prevProps.params.formId != this.props.params.formId){
       this.props.fetchForm(this.props.params.formId);
-      this.props.fetchQuestions();
-      this.props.fetchResponseSets();
     }
   }
 
@@ -115,7 +110,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchForm, fetchQuestions, fetchResponseSets, publishForm, deleteForm}, dispatch);
+  return bindActionCreators({setSteps, fetchForm, publishForm, deleteForm}, dispatch);
 }
 
 FormShowContainer.propTypes = {
@@ -127,8 +122,6 @@ FormShowContainer.propTypes = {
   currentUser: currentUserProps,
   setSteps: PropTypes.func,
   fetchForm: PropTypes.func,
-  fetchQuestions: PropTypes.func,
-  fetchResponseSets: PropTypes.func,
   deleteForm:  PropTypes.func,
   publishForm: PropTypes.func,
   publishers: publishersProps

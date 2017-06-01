@@ -9,3 +9,9 @@ json.questions form.questions do |q|
                 :version, :version_independent_id, \
                 :other_allowed
 end
+
+json.response_sets form.response_sets.uniq do |rs|
+  json.extract! rs, :id, :name, :description, :oid, \
+                :status, :version, :version_independent_id, \
+                :created_at, :updated_at, :published_by_id, :source
+end
