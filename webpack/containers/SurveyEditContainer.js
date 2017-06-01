@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchQuestions } from '../actions/questions_actions';
 import { setSteps } from '../actions/tutorial_actions';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
-import { fetchForms, removeForm, reorderForm } from '../actions/form_actions';
+import { removeForm, reorderForm } from '../actions/form_actions';
 import { formsProps }  from '../prop-types/form_props';
 import { questionsProps }  from '../prop-types/question_props';
 import { surveyProps } from '../prop-types/survey_props';
@@ -28,10 +28,6 @@ class SurveyEditContainer extends Component {
       this.props.params.action = 'new';
     }
     this.state = {selectedSurveySaver: selectedSurveySaver};
-  }
-
-  componentWillMount() {
-    this.props.fetchForms();
   }
 
   componentDidMount() {
@@ -120,7 +116,7 @@ class SurveyEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, newSurvey, fetchForms, removeForm, reorderForm,
+  return bindActionCreators({setSteps, newSurvey, removeForm, reorderForm,
     saveSurvey, saveDraftSurvey, fetchSurvey, fetchQuestions}, dispatch);
 }
 
@@ -144,7 +140,6 @@ SurveyEditContainer.propTypes = {
   newSurvey:   PropTypes.func,
   saveSurvey:  PropTypes.func,
   fetchSurvey: PropTypes.func,
-  fetchForms:  PropTypes.func,
   removeForm:  PropTypes.func,
   reorderForm: PropTypes.func,
   currentUser: currentUserProps,

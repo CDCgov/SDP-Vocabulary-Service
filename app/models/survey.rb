@@ -23,6 +23,10 @@ class Survey < ApplicationRecord
   after_commit :index, on: [:create, :update]
   after_commit :delete_index, on: :destroy
 
+  def questions
+    Question.joins(form_questions: { form: { survey_forms: :survey } }).where(surveys: { id: id }).all
+  end
+
   def index
     UpdateIndexJob.perform_later('survey', ESSurveySerializer.new(self).as_json)
   end
