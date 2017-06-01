@@ -14,6 +14,7 @@ import parentFromSurveys from '../middleware/parent_from_surveys';
 import responseTypesFromQuestions from '../middleware/response_types_from_questions';
 import questionTypesFromQuestions from '../middleware/question_types_from_questions';
 import unauthenticatedResponse from '../middleware/unauthenticated_response';
+import responseSetsFromSearch from '../middleware/response_set_from_search';
 
 import rootReducer from '../reducers';
 
@@ -32,7 +33,8 @@ export default function configureStore(initialState) {
     parentFromSurveys,
     responseTypesFromQuestions,
     questionTypesFromQuestions,
-    responseSetsFromForms
+    responseSetsFromForms,
+    responseSetsFromSearch
   );
 
   // Sets up http://zalmoxisus.github.io/redux-devtools-extension/

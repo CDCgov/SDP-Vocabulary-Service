@@ -7,8 +7,6 @@ import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps }  from '../prop-types/response_set_props';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchQuestionTypes } from '../actions/question_type_actions';
-import { fetchResponseSet }  from '../actions/response_set_actions';
-import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
 import { setSteps } from '../actions/tutorial_actions';
 
 class QuestionEditContainer extends Component {
@@ -24,7 +22,7 @@ class QuestionEditContainer extends Component {
 
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
-    this.props.fetchResponseSets();
+    // this.props.fetchResponseSets();
   }
 
   componentDidMount() {
@@ -88,12 +86,12 @@ function mapStateToProps(state, ownProps) {
   }
   props.questionTypes = state.questionTypes;
   props.responseTypes = state.responseTypes;
-  props.responseSets  = getMostRecentResponseSets(state);
+  props.responseSets  = state.responseSets;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, fetchResponseSets, setSteps}, dispatch);
+  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, setSteps}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
