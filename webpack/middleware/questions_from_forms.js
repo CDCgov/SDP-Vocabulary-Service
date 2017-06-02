@@ -16,10 +16,10 @@ const questionsFromForms = store => next => action => {
           f.questions.forEach((q) => {
             dispatchIfNotPresent(store, 'questions', q, FETCH_QUESTION_FULFILLED);
           });
+          f.questions = f.questions.map((q) => {
+            return ({id: q.id, content: q.content });
+          });
         }
-        f.questions = f.questions.map((q) => {
-          return ({id: q.id, content: q.content });
-        });
       });
       break;
     case FETCH_FORM_FULFILLED:
