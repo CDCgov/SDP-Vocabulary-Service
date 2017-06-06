@@ -40,7 +40,7 @@ class DashboardContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState != this.state && prevState.page === this.state.page) {
+    if(prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
       let searchType = this.state.searchType;
       let searchTerms = this.state.searchTerms;
       if(searchType === '') {
@@ -224,8 +224,8 @@ class DashboardContainer extends Component {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
   }
 
   selectType(searchType, myStuffToggle=false) {

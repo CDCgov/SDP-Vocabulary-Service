@@ -3,6 +3,8 @@ import {
   FETCH_MORE_SEARCH_RESULTS_FULFILLED
 } from '../actions/types';
 
+import _ from 'lodash';
+
 export default function searchResults(state = {}, action) {
   switch (action.type) {
     case FETCH_SEARCH_RESULTS_FULFILLED:
@@ -10,9 +12,9 @@ export default function searchResults(state = {}, action) {
       stateClone[action.meta.context] = action.payload.data;
       return stateClone;
     case FETCH_MORE_SEARCH_RESULTS_FULFILLED:
-      const newStateClone = Object.assign({}, state);
-      const searchResultsArray = newStateClone[action.meta.context].hits.hits;
-      searchResultsArray.push.apply(searchResultsArray, action.payload.data.hits.hits);
+      const newStateClone = _.cloneDeep(state);
+      const hits = newStateClone[action.meta.context].hits;
+      hits.hits = hits.hits.concat(action.payload.data.hits.hits);
       return newStateClone;
     default:
       return state;
