@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
-import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, setLastSearch } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
@@ -36,7 +36,11 @@ class DashboardContainer extends Component {
   }
 
   componentWillMount() {
-    this.search('');
+    var lastSearch = this.props.lastSearch;
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
+                                    lastSearch.programs, lastSearch.systems, lastSearch.mystuff);
+    this.setState({searchTerms: lastSearch.search, searchType: lastSearch.type, progFilters: lastSearch.programs,
+      sysFilters: lastSearch.systems, myStuffFilter: lastSearch.mystuff});
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -50,6 +54,7 @@ class DashboardContainer extends Component {
         searchTerms = null;
       }
       this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+      this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
     }
 
     if(prevProps != this.props) {
@@ -225,6 +230,7 @@ class DashboardContainer extends Component {
       searchTerms = null;
     }
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
   }
 
@@ -256,6 +262,7 @@ class DashboardContainer extends Component {
       searchType = null;
     }
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
   }
 
   analyticsGroup(searchType) {
@@ -342,6 +349,7 @@ function mapStateToProps(state) {
     myResponseSetCount: state.stats.myResponseSetCount,
     mySurveyCount: state.stats.mySurveyCount,
     searchResults: state.searchResults[DASHBOARD_CONTEXT] || NO_SEARCH_RESULTS,
+    lastSearch: state.lastSearch,
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
@@ -349,7 +357,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
+  return bindActionCreators({setSteps, fetchSearchResults, setLastSearch, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -363,6 +371,8 @@ DashboardContainer.propTypes = {
   mySurveyCount: PropTypes.number,
   setSteps: PropTypes.func,
   fetchSearchResults: PropTypes.func,
+  setLastSearch: PropTypes.func,
+  lastSearch: PropTypes.object,
   fetchMoreSearchResults: PropTypes.func,
   signUp: PropTypes.func,
   currentUser: currentUserProps,
