@@ -32,17 +32,21 @@ Feature: Edit Forms
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
-    When I select the modify program variable option for the Question "What is your gender?"
+    When I select the add program variable option for the Question "What is your gender?"
     And I fill in the "program-var" field with "Test Var"
     And I click on the "Done" button
     And I should see "TEST VAR"
+    When I select the modify program variable option for the Question "What is your gender?"
+    And I fill in the "program-var" field with "Test Var Edit"
+    And I click on the "Done" button
+    And I should see "TEST VAR EDIT"
     And I click on the "Save" button
     Then I should see "Name: Gender Form"
     Then I should see "Revised Description"
     And I should see "What is your gender?"
     And I should not see "Publish"
     And I should see "Edit"
-    And I should see "TEST VAR"
+    And I should see "TEST VAR EDIT"
 
   Scenario: Extend Form
     Given I have a published Form with the name "Test Form" and the description "Description from parent"
@@ -81,7 +85,7 @@ Feature: Edit Forms
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
-    When I select the modify program variable option for the Question "What is your gender?"
+    When I select the add program variable option for the Question "What is your gender?"
     And I fill in the "program-var" field with "Test Var"
     And I click on the "Done" button
     And I set search filter to "question"

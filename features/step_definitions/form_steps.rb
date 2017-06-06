@@ -70,9 +70,9 @@ Then(/^I should see the link "([^"]*)"$/) do |link|
   page.find(link)
 end
 
-When(/^I select the modify program variable option for the Question "([^"]*)"$/) do |question_content|
+When(/^I select the ([^"]*) program variable option for the Question "([^"]*)"$/) do |action, question_content|
   object_id = attribute_to_id('Question', 'content', question_content)
   page.find("#form_question_#{object_id}_menu").click
-  click_on('Modify Program Variable')
+  click_on("#{action.capitalize} Program Variable")
   sleep 1
 end

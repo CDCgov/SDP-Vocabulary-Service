@@ -28,6 +28,8 @@ class QuestionItem extends Component {
     this.setFiltersParent = this.setFiltersParent.bind(this);
     this.showResponseSetSearch = this.showResponseSetSearch.bind(this);
     this.hideResponseSetSearch = this.hideResponseSetSearch.bind(this);
+    this.updateProgramVar = this.updateProgramVar.bind(this);
+    this.submitProgramVar = this.submitProgramVar.bind(this);
     this.showProgramVarModal = this.showProgramVarModal.bind(this);
     this.hideProgramVarModal = this.hideProgramVarModal.bind(this);
     this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
@@ -44,15 +46,20 @@ class QuestionItem extends Component {
     }
   }
 
-  showResponseSetSearch() {
+  showResponseSetSearch(e) {
+    e.preventDefault();
     this.setState({ showSearchModal: true });
+    this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, '', 'response_set');
   }
 
   hideResponseSetSearch() {
     this.setState({ showSearchModal: false });
   }
 
-  showProgramVarModal() {
+  showProgramVarModal(e) {
+    if(e){
+      e.preventDefault();
+    }
     this.setState({ showProgramVarModal: true });
   }
 
@@ -67,6 +74,16 @@ class QuestionItem extends Component {
 
   setFiltersParent(newState) {
     this.setState(newState);
+  }
+
+  updateProgramVar(e){
+    this.setState({programVar : e.target.value});
+  }
+
+  submitProgramVar(e){
+    e.preventDefault();
+    this.hideProgramVarModal();
+    this.props.handleProgramVarChange(this.state.programVar);
   }
 
   search(searchTerms, progFilters, sysFilters) {
@@ -85,10 +102,12 @@ class QuestionItem extends Component {
           <Modal.Title>Search Response Sets</Modal.Title>
         </Modal.Header>
         <Modal.Body bsStyle='search'>
-          <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
-                           surveillancePrograms={this.props.surveillancePrograms}
+          <DashboardSearch search={this.search}
+                           searchSource={this.props.searchResults.Source}
                            setFiltersParent={this.setFiltersParent}
-                           searchSource={this.props.searchResults.Source} />
+                           surveillanceSystems={this.props.surveillanceSystems}
+                           surveillancePrograms={this.props.surveillancePrograms}
+                          />
           <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} handleSelectSearchResult={this.handleSelectSearchResult} />
         </Modal.Body>
         <Modal.Footer>
@@ -102,7 +121,7 @@ class QuestionItem extends Component {
     return (
       <Modal show={this.state.showProgramVarModal} onHide={this.hideProgramVarModal}>
         <Modal.Header closeButton bsStyle='search'>
-          <Modal.Title>Modify Program Defined Variable Name</Modal.Title>
+          <Modal.Title>{this.props.programVar ? 'Modify' : 'Add'} Program Defined Variable Name</Modal.Title>
         </Modal.Header>
         <Modal.Body bsStyle='search'>
           <label htmlFor="program-var" hidden>Program Variable</label>
@@ -112,15 +131,11 @@ class QuestionItem extends Component {
                  className="input-format"
                  placeholder="Program Defined Variable Name"
                  value={this.state.programVar || ''}
-                 onChange={(e) => this.setState({programVar : e.target.value})} />
+                 onChange={this.updateProgramVar} />
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.hideProgramVarModal}>Cancel</Button>
-          <Button bsStyle="primary" onClick={(e) => {
-            e.preventDefault();
-            this.props.handleProgramVarChange(this.state.programVar);
-            this.hideProgramVarModal();
-          }}>Done</Button>
+          <Button bsStyle="primary" onClick={this.submitProgramVar}>Done</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -136,25 +151,17 @@ class QuestionItem extends Component {
         {this.programVarModal()}
         <div className="col-md-12">
           <SearchResult type  ='form_question'
+                        index ={this.props.index}
                         result={{Source:this.props.question}}
-                        currentUser ={{id: -1}}
-                        isEditPage  ={true}
-                        index = {this.props.index}
-                        programVar={this.props.programVar}
+                        isEditPage ={true}
+                        programVar ={this.props.programVar}
+                        currentUser={{id: -1}}
                         responseSets={this.props.responseSets}
-                        handleResponseSetChange={this.props.handleResponseSetChange}
+                        showProgramVarModal={this.showProgramVarModal}
+                        selectedResponseSetId={this.props.selectedResponseSet}
+                        showResponseSetSearch={this.showResponseSetSearch}
                         handleProgramVarChange ={this.props.handleProgramVarChange}
-                        selectedResponseSetId  ={this.props.selectedResponseSet}
-                        showResponseSetSearch={(e) => {
-                          e.preventDefault();
-                          this.showResponseSetSearch();
-                          this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, '', 'response_set');
-                        }}
-                        showProgramVarModal={(e) => {
-                          e.preventDefault();
-                          this.showProgramVarModal();
-                        }}
-
+                        handleResponseSetChange={this.props.handleResponseSetChange}
                         />
         </div>
       </div>
