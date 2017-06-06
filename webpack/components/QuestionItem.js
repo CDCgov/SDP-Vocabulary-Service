@@ -83,7 +83,7 @@ class QuestionItem extends Component {
   submitProgramVar(e){
     e.preventDefault();
     this.hideProgramVarModal();
-    this.props.handleProgramVarChange(this.state.programVar); 
+    this.props.handleProgramVarChange(this.state.programVar);
   }
 
   search(searchTerms, progFilters, sysFilters) {
