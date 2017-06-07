@@ -94,6 +94,17 @@ class Help extends Component {
         <li>In most places the full details page can be seen by clicking the name / title link of the item.</li>
         <li>On the edit pages the name link is disabled but you can click the eyeball icon on any of the widgets to navigate to the details page.</li>
         </ul>
+        <h2 className="help-section-subtitle" id="exporting">Exporting</h2>
+        <p>On the view pages for forms there is an action button that exports the current form to Redcap. To export a form and use it in redcap execute the following steps (exact wording may differ slightly based on your version of Redcap):</p>
+        <ul>
+        <li>Click on the 'Export to Redcap' button on the Vocabulary service form details page (this will save a .xml file to the folder your browser directs downloads)</li>
+        <li>Open up Redcap</li>
+        <li>Choose the option to create a new project</li>
+        <li>On the project creation page follow the on screen instructions to add a name and various attributes to the new projects</li>
+        <li>Look for an option titled something similar to "Start project from scratch or begin with a template?" and choose the "Upload a REDCap project XML file" option</li>
+        <li>Click the "Choose File" button to select the .xml file you downloaded from the vocabulary service, it will be in the folder your browser downloads content into (usually the 'Downloads' folder)</li>
+        <li>After selecting the .xml file to import and filling out the rest of the fields, click on the Create Project or Start Project button at the bottom of the page</li>
+        </ul>
       </div>
     );
   }
@@ -170,7 +181,7 @@ class Help extends Component {
             <li className="active" role="presentation"><a data-toggle="tab" href="#general">General</a></li>
             <li role="presentation"><a data-toggle="tab" href="#manage-account">Manage Account</a></li>
             <li role="presentation"><a data-toggle="tab" href="#search">Search</a></li>
-            <li role="presentation"><a data-toggle="tab" href="#view">View Content</a></li>
+            <li role="presentation"><a data-toggle="tab" href="#view">View and Export Content</a></li>
             <li role="presentation"><a data-toggle="tab" href="#create-and-edit">Create and Edit Content</a></li>
             <li role="presentation"><a data-toggle="tab" href="#comment">Comment on Content</a></li>
           </ul>
