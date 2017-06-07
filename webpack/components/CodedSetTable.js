@@ -41,7 +41,7 @@ CodedSetTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
     value:    PropTypes.string,
     codeSystem:  PropTypes.string,
-    display: PropTypes.string
+    displayName: PropTypes.string
   })),
   itemName:  PropTypes.string
 };
