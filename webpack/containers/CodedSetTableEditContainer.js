@@ -189,9 +189,9 @@ class CodedSetTableEditContainer extends Component {
                 this.showCodeSearch();
               }}><i className="fa fa-search fa-2x"></i><span className="sr-only">Open Search Modal</span></a>
             </td>
-            <th scope="col" id="code-column">{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
-            <th scope="col" id="code-system-column">Code System</th>
-            <th scope="col" id="display-name-column">Display Name</th>
+            <th scope="col" className="display-name-column" id="display-name-column">Display Name</th>
+            <th scope="col" className="code-column" id="code-column">{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
+            <th scope="col" className="code-system-column" id="code-system-column">Code System</th>
             <td>
               <a title="Add Row" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -209,6 +209,10 @@ class CodedSetTableEditContainer extends Component {
               <tr key={i}>
                 <td>
                 </td>
+                <td headers="display-name-column">
+                  <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
+                  <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
+                </td>
                 <td headers="code-column">
                   <label className="hidden" htmlFor={`value_${i}`}>Value</label>
                   <input className="input-format" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
@@ -216,10 +220,6 @@ class CodedSetTableEditContainer extends Component {
                 <td headers="code-system-column">
                   <label className="hidden" htmlFor={`codeSystem_${i}`}>Code system</label>
                   <input className="input-format" type="text" value={r.codeSystem}  name="codeSystem" id={`codeSystem_${i}`} onChange={this.handleChange(i, 'codeSystem')}/>
-                </td>
-                <td headers="display-name-column">
-                  <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
-                  <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                 </td>
                 <td>
                   <a href="#" title="Delete this row" aria-label={`remove_row_number_${i+1}`} id={`remove_${i}`} onClick={(e) => {

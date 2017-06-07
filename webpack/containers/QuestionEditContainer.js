@@ -46,6 +46,24 @@ class QuestionEditContainer extends Component {
         position: 'right',
       },
       {
+        title: 'Create Your Own Tags',
+        text: 'Alternatively, you can manually add a tag - click the plus sign to add additional tags to associate with the question.',
+        selector: '.fa-plus',
+        position: 'top',
+      },
+      {
+        title: 'Create Your Own Tags (Name)',
+        text: 'The Display Name field is what the user will see on the page.',
+        selector: '.display-name-column',
+        position: 'top',
+      },
+      {
+        title: 'Create Your Own Tags (Code)',
+        text: 'Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOWMED).',
+        selector: '.code-system-column',
+        position: 'top',
+      },
+      {
         title: 'Action Buttons',
         text: 'Click save to save a draft of the edited content.',
         selector: '.panel-footer',

@@ -11,18 +11,18 @@ export default class CodedSetTable extends Component {
         <caption>Information about associated {this.props.itemName}s:</caption>
         <thead>
           <tr>
+            <th scope="col" id="display-name-column">Display Name</th>
             <th scope="col" id="code-column">{this.props.itemName} Code</th>
             <th scope="col" id="code-system-column">Code System</th>
-            <th scope="col" id="display-name-column">Display Name</th>
           </tr>
         </thead>
         <tbody>
           {this.props.items.map((item,i) => {
             return (
               <tr key={i}>
+                <td headers="display-name-column">{item.displayName}</td>
                 <td headers="code-column">{item.value}</td>
                 <td headers="code-system-column">{item.codeSystem}</td>
-                <td headers="display-name-column">{item.displayName}</td>
               </tr>
             );
           })}
