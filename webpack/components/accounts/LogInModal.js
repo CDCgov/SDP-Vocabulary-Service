@@ -15,7 +15,7 @@ export default class LogInModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <form>
-            <div hidden={!this.state.invalidCredentials}>Invalid Credentials</div>
+            <div className="alert alert-danger" hidden={!this.state.invalidCredentials}><strong>Invalid Credentials!</strong> Please check the information you entered and try again.</div>
             <div>
               <label className="control-label" htmlFor="email">Email</label>
               <input autoFocus="autofocus" className="form-control input-lg" type="email" value={this.state.email} name="email" id="email" onChange={this.handleChange('email')}/>

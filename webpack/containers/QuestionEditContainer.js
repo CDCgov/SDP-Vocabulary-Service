@@ -29,7 +29,7 @@ class QuestionEditContainer extends Component {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page.',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a>',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -44,6 +44,24 @@ class QuestionEditContainer extends Component {
         text: 'Click the search icon to search for and add tags to the question.',
         selector: '.fa-search',
         position: 'right',
+      },
+      {
+        title: 'Create Your Own Tags',
+        text: 'Alternatively, you can manually add a tag - click the plus sign to add additional tags to associate with the question.',
+        selector: '.fa-plus',
+        position: 'top',
+      },
+      {
+        title: 'Create Your Own Tags (Name)',
+        text: 'The Display Name field is what the user will see on the page.',
+        selector: '.display-name-column',
+        position: 'top',
+      },
+      {
+        title: 'Create Your Own Tags (Code)',
+        text: 'Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOWMED).',
+        selector: '.code-system-column',
+        position: 'top',
       },
       {
         title: 'Action Buttons',

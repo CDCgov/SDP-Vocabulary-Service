@@ -24,7 +24,7 @@ class QuestionShowContainer extends Component {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page.',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a>',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -36,7 +36,7 @@ class QuestionShowContainer extends Component {
       },
       {
         title: 'View Details',
-        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions.',
+        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a class="tutorial-link" href="#help">Help Documentation (linked here).</a>',
         selector: '.maincontent',
         position: 'left',
       },
