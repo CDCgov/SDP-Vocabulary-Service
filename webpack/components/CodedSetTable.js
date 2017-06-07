@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 
 export default class CodedSetTable extends Component {
 
@@ -17,7 +18,7 @@ export default class CodedSetTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.items.map((item,i) => {
+          {this.sortedItems().map((item,i) => {
             return (
               <tr key={i}>
                 <td headers="display-name-column">{item.displayName}</td>
@@ -30,12 +31,16 @@ export default class CodedSetTable extends Component {
       </table>
     );
   }
+
+  sortedItems() {
+    return _.sortBy(this.props.items, ['codeSystem', 'value']);
+  }
 }
 
 CodedSetTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
-    code:    PropTypes.string,
-    system:  PropTypes.string,
+    value:    PropTypes.string,
+    codeSystem:  PropTypes.string,
     display: PropTypes.string
   })),
   itemName:  PropTypes.string
