@@ -51,13 +51,10 @@ class FormsController < ApplicationController
     else
       update_successful = nil
       @form.transaction do
-        # @form.updated_by = current_user
-        @form.form_questions.destroy_all
-        @form.form_questions = create_form_questions
+        @form.form_questions = update_form_questions
         # When we assign update_successful, it is the last expression in the block
         # That means, if the form fails to update, this block will return false,
         # which will cause the transaction to rollback.
-        # Otherwise, we have killed all FormQuestions, without replacing them.
         update_successful = @form.update(form_params)
       end
       if update_successful
@@ -134,6 +131,43 @@ class FormsController < ApplicationController
       end
     end
     form_questions
+  end
+
+  # old_q is a FormQuestion, new_q is hash representing a new form question from the request params
+  def update_form_question(old_q, new_q)
+    old_q.position = new_q[:position]
+    old_q.program_var = new_q[:program_var]
+    old_q.question_id = new_q[:question_id]
+    old_q.response_set_id = new_q[:response_set_id]
+    # While this seems unecessary, checking changed? here improves performance
+    old_q.save! if old_q.changed?
+    old_q
+  end
+
+  # !!! this algorithm assumes a question cannot appear twice on the same form !!!
+  # Only update form questions that were changed
+  def update_form_questions
+    updated_qs = []
+    if params[:form][:linked_questions]
+      new_qs_hash = {}
+      params[:form][:linked_questions].each { |q| new_qs_hash[q[:question_id]] = q }
+      # Be aware, wrapping this loop in a transaction improves performance by batching all the updates to be committed at once
+      FormQuestion.transaction do
+        @form.form_questions.each do |q|
+          if new_qs_hash.include? q.question_id
+            updated_qs << update_form_question(q, new_qs_hash.delete(q.question_id))
+          else
+            q.destroy!
+          end
+        end
+      end
+      # any new form question still in this hash needs to be created
+      new_qs_hash.each do |_id, q|
+        updated_qs << FormQuestion.new(question_id: q[:question_id], response_set_id: q[:response_set_id],\
+                                       position: q[:position], program_var: q[:program_var])
+      end
+    end
+    updated_qs
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -2,7 +2,7 @@ class Form < ApplicationRecord
   include OidGenerator, Versionable, Searchable
   acts_as_commentable
 
-  has_many :form_questions
+  has_many :form_questions, -> { order 'position asc' }
   has_many :questions, through: :form_questions
   has_many :response_sets, through: :form_questions
   has_many :survey_forms
