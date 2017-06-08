@@ -13,7 +13,7 @@ class QuestionWidget extends Component {
   }
 
   deleteQuestionClick(){
-    if(confirm('Are you sure?')){
+    if(confirm('Are you sure? This action cannot be undone.')){
       this.props.deleteQuestion(this.props.question.id, document.head.querySelector("[name=csrf-token]").content);
     }
   }

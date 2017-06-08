@@ -43,7 +43,7 @@ export default class ResponseSetWidget extends Component {
                       </Link>
                     </li>
                     <li>
-                      <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href={routes.responseSetPath(this.props.responseSet)}>Delete</a>
+                      <a data-confirm="Are you sure? This action cannot be undone." rel="nofollow" data-method="delete" href={routes.responseSetPath(this.props.responseSet)}>Delete</a>
                     </li>
                   </ul>
                 </div>
