@@ -21,7 +21,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :response_type
 
   def forms
-    object.form_questions.collect do |fq|
+    object.form_questions.includes(:form).collect do |fq|
       { id: fq.form.id, name: fq.form.name }
     end
   end
