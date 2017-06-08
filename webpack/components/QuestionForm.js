@@ -107,7 +107,7 @@ class QuestionForm extends Component{
     var extendState = {};
     _.forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
     extendState.conceptsAttributes = filterConcepts(question.concepts);
-    extendState.linkedResponseSets = question.responseSets;
+    extendState.linkedResponseSets = question.responseSets || [];
     extendState.version = 1;
     extendState.parentId  = question.id;
     extendState.oid = '';
