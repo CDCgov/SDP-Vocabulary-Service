@@ -91,7 +91,7 @@ export default class ResponseSetDetails extends Component {
             {isEditable(responseSet, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              if(confirm('Are you sure you want to delete this Response Set?')){
+              if(confirm('Are you sure you want to delete this Response Set? This action cannot be undone.')){
                 this.props.deleteResponseSet(responseSet.id, (response) => {
                   if (response.status == 200) {
                     this.props.router.push('/');

@@ -72,7 +72,7 @@ class FormShow extends Component {
           {isEditable(form, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              if(confirm('Are you sure you want to delete this Form?')){
+              if(confirm('Are you sure you want to delete this Form? This action cannot be undone.')){
                 this.props.deleteForm(form.id, (response) => {
                   if (response.status == 200) {
                     this.props.router.push('/');

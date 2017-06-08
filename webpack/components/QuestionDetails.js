@@ -79,7 +79,7 @@ export default class QuestionDetails extends Component {
             {isEditable(question, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                if(confirm('Are you sure you want to delete this Question?')){
+                if(confirm('Are you sure you want to delete this Question? This action cannot be undone.')){
                   this.props.deleteQuestion(question.id, (response) => {
                     if (response.status == 200) {
                       this.props.router.push('/');
