@@ -35,10 +35,14 @@ class DropTarget extends Component {
 
     return (
       <div style={{minHeight: '440px', backgroundColor:isValidDrop?'green':'grey'}}>
-        {selectedResponseSets.map((rs, i) => {
+        {selectedResponseSets.map((rs) => {
           return (
-          <div key={i}>
-          <button className="pull-right" onClick={() => removeResponseSet(rs.id)}><i className='fa fa-close' aria-hidden="true"/><span className="sr-only">Remove Selected Response Set</span></button>
+          <div key={rs.id}>
+          <button className="pull-right" onClick={(event) => {
+            event.preventDefault();
+            removeResponseSet(rs.id);
+          }
+          }><i className='fa fa-close' aria-hidden="true"/><span className="sr-only">Remove Selected Response Set</span></button>
           <DraggableResponseSet type='response_set' result={{Source: rs}} currentUser={{id: -1}} />
           </div>);
         })}
