@@ -37,7 +37,7 @@ class QuestionItem extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if(prevState != this.state && prevState.page === this.state.page) {
+    if(prevState.page === this.state.page && prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
       let searchTerms = this.state.searchTerms;
       if(searchTerms === ''){
         searchTerms = null;
@@ -91,8 +91,8 @@ class QuestionItem extends Component {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
     this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, searchType, progFilters, sysFilters);
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
   }
 
   searchModal() {
