@@ -120,7 +120,7 @@ class QuestionForm extends Component{
 
   selectedResponseSets(linkedResponseSets, allResponseSets) {
     if(linkedResponseSets) {
-      return this.state.linkedResponseSets.map((r) => this.props.responseSets[r]).filter((r) => r !== undefined);
+      return linkedResponseSets.map((r) => allResponseSets[r]).filter((r) => r !== undefined);
     } else {
       return [];
     }
