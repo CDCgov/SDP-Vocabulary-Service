@@ -28,6 +28,7 @@ class QuestionForm extends Component{
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
+    this.selectedResponseSets = this.selectedResponseSets.bind(this);
     this.unsavedState = false;
   }
 
@@ -115,6 +116,14 @@ class QuestionForm extends Component{
     extendState.otherAllowed = question.otherAllowed;
     extendState.responseTypeId = question.responseTypeId;
     return extendState;
+  }
+
+  selectedResponseSets(linkedResponseSets, allResponseSets) {
+    if(linkedResponseSets) {
+      return this.state.linkedResponseSets.map((r) => this.props.responseSets[r]).filter((r) => r !== undefined);
+    } else {
+      return [];
+    }
   }
 
   render(){
@@ -206,7 +215,7 @@ class QuestionForm extends Component{
                 { this.isChoiceType() ?
                   <ResponseSetDragWidget responseSets={responseSets}
                                          handleResponseSetsChange={this.handleResponseSetsChange}
-                                         selectedResponseSets={this.state.linkedResponseSets && this.state.linkedResponseSets.map((r) => this.props.responseSets[r] ).filter((r) => r !== undefined)} />
+                                         selectedResponseSets={this.selectedResponseSets(this.state.linkedResponseSets, this.props.responseSets)} />
                 : ''}
                 <div className="panel-footer">
                   <div className="actions form-group">
