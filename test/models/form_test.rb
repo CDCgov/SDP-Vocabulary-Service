@@ -88,7 +88,7 @@ class FormTest < ActiveSupport::TestCase
     q3 = Question.new(content: 'Test publish 3', created_by: user)
     assert q3.save
     f = Form.new(name: 'Test publish', created_by: user)
-    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id), FormQuestion.new(question_id: q2.id, response_set_id: rs2.id), FormQuestion.new(question_id: q3.id)]
+    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0), FormQuestion.new(question_id: q2.id, response_set_id: rs2.id, position: 1), FormQuestion.new(question_id: q3.id, position: 2)]
     assert f.save
     f.publish(user)
     assert_equal user, f.published_by

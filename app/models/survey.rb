@@ -2,7 +2,7 @@ class Survey < ApplicationRecord
   include Versionable, Searchable
   acts_as_commentable
 
-  has_many :survey_forms
+  has_many :survey_forms, -> { order 'position asc' }
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
   belongs_to :parent, class_name: 'Survey'

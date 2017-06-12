@@ -28,10 +28,10 @@ class SurveyTest < ActiveSupport::TestCase
     q.response_sets = [rs]
     assert q.save
     f = Form.new(name: 'Test publish', created_by: user)
-    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id)]
+    f.form_questions = [FormQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
     assert f.save
     s = Survey.new(name: 'Test publish', created_by: user)
-    s.survey_forms = [SurveyForm.new(form_id: f.id)]
+    s.survey_forms = [SurveyForm.new(form_id: f.id, position: 0)]
     assert s.save
     s.publish(user)
     assert_equal user, s.published_by

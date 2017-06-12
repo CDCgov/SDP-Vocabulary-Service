@@ -32,7 +32,7 @@ export default function surveys(state = {}, action) {
       if(state[survey.id] && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
         return state;
       }
-      let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id});
+      let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id, position: survey.surveyForms.length});
       newSurvey = Object.assign({}, survey);
       newSurvey.surveyForms.push(newSurveyForm);
       newState = Object.assign({}, state);
