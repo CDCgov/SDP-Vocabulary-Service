@@ -2,7 +2,7 @@ class FormQuestion < ApplicationRecord
   belongs_to :form
   belongs_to :question
   belongs_to :response_set
-  # validates_uniqueness_of :position, :scope => :form
+  validates :position, presence: true
 
   after_commit :reindex, on: [:create, :update, :destroy]
 
