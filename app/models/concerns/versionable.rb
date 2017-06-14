@@ -10,6 +10,8 @@ module Versionable
 
     after_save :assign_version_independent_id,
                if: proc { |v| v.version == 1 && v.version_independent_id.blank? }
+
+    attr_accessor :_all_versions
   end
 
   # Callback that assigns the version_independent_id. This should never be called
@@ -25,16 +27,13 @@ module Versionable
     end
   end
 
-  # Finds any other versions of this ResponseSet in descending version order
   def other_versions
-    self.class.where(version_independent_id: version_independent_id)
-        .where.not(version: version)
-        .order(version: :desc)
+    all_versions.reject { |v| v.version == version }
   end
 
   def all_versions
-    self.class.where(version_independent_id: version_independent_id)
-        .order(version: :desc)
+    @_all_versions ||= self.class.where(version_independent_id: version_independent_id)
+                           .order(version: :desc)
   end
 
   def most_recent

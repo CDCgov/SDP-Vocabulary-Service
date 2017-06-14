@@ -4,7 +4,11 @@ module Api
     respond_to :json
 
     def index
-      @questions = params[:search] ? Question.search(params[:search]) : Question.all
+      @questions = if params[:search]
+                     Question.includes(:response_type, :published_by).search(params[:search])
+                   else
+                     Question.all.includes(:response_type, :published_by)
+                   end
       @questions = params[:limit] ? @questions.limit(params[:limit]) : @questions
       @questions = @questions.order(version_independent_id: :asc)
       render json: @questions, each_serializer: QuestionsSerializer

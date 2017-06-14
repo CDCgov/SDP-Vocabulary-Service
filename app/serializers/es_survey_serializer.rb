@@ -33,7 +33,7 @@ class ESSurveySerializer < ActiveModel::Serializer
 
   def questions
     form_questions = []
-    object.survey_forms.each do |sf|
+    object.survey_forms.includes(form: { form_questions: [:response_set, { question: :concepts }] }).each do |sf|
       form_questions.concat sf.form.form_questions.to_a
     end
     form_questions.collect do |fq|
@@ -46,7 +46,7 @@ class ESSurveySerializer < ActiveModel::Serializer
   end
 
   def forms
-    object.survey_forms.collect do |sf|
+    object.survey_forms.includes(:form).collect do |sf|
       { id: sf.form_id, name: sf.form.name }
     end
   end

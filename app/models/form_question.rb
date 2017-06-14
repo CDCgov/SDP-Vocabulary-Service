@@ -4,9 +4,15 @@ class FormQuestion < ApplicationRecord
   belongs_to :response_set
   validates :position, presence: true
 
-  after_commit :reindex, on: [:create, :update, :destroy]
+  after_commit :reindex, on: [:create, :destroy]
+  after_commit :reindex_on_update, on: [:update]
 
   def reindex
+    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question).as_json) if previous_changes[:question_id]
+    UpdateIndexJob.perform_later('response_set', ESResponseSetSerializer.new(response_set).as_json) if response_set
+  end
+
+  def reindex_on_update
     # While question can't actually change, previous_changes[:question_id] will exist if this form question was just created
     UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question).as_json) if previous_changes[:question_id]
     if response_set && previous_changes[:response_set_id]

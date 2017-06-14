@@ -2,8 +2,8 @@ class SurveyForm < ApplicationRecord
   belongs_to :survey
   belongs_to :form
   validates :position, presence: true
-
-  after_commit :reindex, on: [:create, :update, :destroy]
+  # Note, the only updates we currently allow are changing position, so we dont need to call reindex on update
+  after_commit :reindex, on: [:create, :destroy]
 
   def reindex
     if form
