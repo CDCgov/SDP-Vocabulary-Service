@@ -3,7 +3,11 @@ module Api
     respond_to :json
 
     def index
-      @forms = params[:search] ? Form.search(params[:search]) : Form.all
+      @forms = if params[:search]
+                 Form.includes(:published_by, form_questions: [{ response_set: :responses }, :question]).search(params[:search])
+               else
+                 Form.includes(:published_by, form_questions: [{ response_set: :responses }, :question]).all
+               end
       @forms = params[:limit] ? @forms.limit(params[:limit]) : @forms
       @forms = @forms.order(version_independent_id: :asc)
       render json: @forms, each_serializer: FormSerializer

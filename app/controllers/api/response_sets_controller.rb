@@ -3,7 +3,7 @@ module Api
     respond_to :json
 
     def index
-      @value_sets = params[:search] ? ResponseSet.search(params[:search]) : ResponseSet.all
+      @value_sets = params[:search] ? ResponseSet.search(params[:search]) : ResponseSet.all.includes(:responses, :published_by)
       @value_sets = params[:limit] ? @value_sets.limit(params[:limit]) : @value_sets
       @value_sets = @value_sets.order(version_independent_id: :asc)
       render json: @value_sets, each_serializer: ValueSetsSerializer

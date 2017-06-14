@@ -1,7 +1,7 @@
 class SurveysController < ApplicationController
   load_and_authorize_resource except: [:create]
   def index
-    @surveys = Survey.all
+    @surveys = Survey.includes([:created_by, :survey_forms, :forms]).all
     @users = User.all
   end
 

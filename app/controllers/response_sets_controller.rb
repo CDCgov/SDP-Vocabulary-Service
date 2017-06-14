@@ -4,7 +4,7 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets
   # GET /response_sets.json
   def index
-    @response_sets = params[:search] ? ResponseSet.search(params[:search]).all : ResponseSet.all
+    @response_sets = ResponseSet.includes(:created_by, :responses, questions: :created_by).all
   end
 
   def my_response_sets
