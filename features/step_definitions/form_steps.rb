@@ -31,7 +31,7 @@ When(/^I use the question search to select "([^"]*)"$/) do |name|
 end
 
 Then(/^I should see the question "([^"]*)" first$/) do |name|
-  page.first('li', class: 'result-name').has_content?(name)
+  page.first('div', class: 'result-name').has_content?(name)
 end
 
 Then(/^I should see the response set "([^"]*)" second$/) do |name|

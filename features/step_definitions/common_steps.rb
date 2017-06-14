@@ -146,7 +146,7 @@ Then(/^debugger$/) do
 end
 
 When(/^I drag the "([^"]*)" option to the "([^"]*)" list$/) do |option, target|
-  drag = find('li', class: 'result-name', text: option)
+  drag = find('div', class: 'result-name', text: option)
   target = '.' + target.downcase.tr(' ', '_')
   drop = find(target)
   drag.drag_to(drop)
@@ -194,13 +194,13 @@ end
 
 def create_path(object_type, object_id)
   if object_type == 'Question'
-    '//div[@id="question_id_' + object_id + '"]'
+    '//ul[@id="question_id_' + object_id + '"]'
   elsif object_type == 'Response Set'
-    '//div[@id="response_set_id_' + object_id + '"]'
+    '//ul[@id="response_set_id_' + object_id + '"]'
   elsif object_type == 'Form'
-    '//div[@id="form_id_' + object_id + '"]'
+    '//ul[@id="form_id_' + object_id + '"]'
   elsif object_type == 'Survey'
-    '//div[@id="survey_id_' + object_id + '"]'
+    '//ul[@id="survey_id_' + object_id + '"]'
   else
     '//tr[td="id_' + object_id + '"]'
   end

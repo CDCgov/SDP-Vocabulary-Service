@@ -82,5 +82,5 @@ end
 Then(/^I should only see (.+) copy of the "(.+)" response set associated$/) do |expected_count, rs_name|
   # Add 1 for finding in search result list
   count = expected_count.to_i + 1
-  assert_equal(count, page.all('li', class: 'result-name', text: rs_name).length)
+  assert_equal(count, page.all('div', class: 'result-name', text: rs_name).length)
 end
