@@ -97,7 +97,7 @@ class DashboardSearch extends Component {
 
   advSearchModal() {
     return (
-      <Modal show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
+      <Modal animation={false} show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
         <Modal.Header closeButton bsStyle='search'>
           <Modal.Title>Advanced Search Filters</Modal.Title>
         </Modal.Header>
