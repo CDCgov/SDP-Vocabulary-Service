@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
-import 'rc-pagination/assets/index.css';
 
 import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
@@ -137,7 +136,9 @@ class FormShow extends Component {
           {this.props.form.formQuestions && this.props.form.formQuestions.length > 0 &&
             <div>
               <FormQuestionList questions={this.questionsForPage()} />
+              {this.props.form.formQuestions.length > 10 &&
               <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.form.formQuestions.length} />
+              }
             </div>
           }
         </div>
