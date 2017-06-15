@@ -30,7 +30,10 @@ class FormsEditContainer extends Component {
       this.props.params.action = 'new';
     }
     this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false, showResponseSetModal: false};
+    this.showQuestionModal  = this.showQuestionModal.bind(this);
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
+    this.showResponseSetModal  = this.showResponseSetModal.bind(this);
+    this.closeResponseSetModal = this.closeResponseSetModal.bind(this);
     this.handleSaveQuestionSuccess = this.handleSaveQuestionSuccess.bind(this);
   }
 
@@ -89,8 +92,20 @@ class FormsEditContainer extends Component {
     }
   }
 
+  showQuestionModal(){
+    this.setState({showQuestionModal: true});
+  }
+
   closeQuestionModal(){
     this.setState({showQuestionModal: false});
+  }
+
+  showResponseSetModal(){
+    this.setState({showResponseSetModal: true});
+  }
+
+  closeResponseSetModal(){
+    this.setState({showResponseSetModal: false});
   }
 
   handleSaveQuestionSuccess(successResponse){
@@ -110,12 +125,12 @@ class FormsEditContainer extends Component {
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
-                                closeQuestionModal ={()=>this.setState({showQuestionModal: false})}
+                                closeQuestionModal ={this.closeQuestionModal}
                                 handleSaveQuestionSuccess={this.handleSaveQuestionSuccess} />
         <ResponseSetModal show={this.state.showResponseSetModal}
                           router={this.props.router}
-                          closeModal={() => this.setState({showResponseSetModal: false})}
-                          saveResponseSetSuccess={() => this.setState({showResponseSetModal: false})} />
+                          closeModal={this.closeResponseSetModal}
+                          saveResponseSetSuccess={this.closeResponseSetModal} />
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
@@ -124,7 +139,7 @@ class FormsEditContainer extends Component {
             <div className="panel-body">
               <div className="col-md-5">
                 <div className="row add-question">
-                  <Button tabIndex="4" onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
+                  <Button tabIndex="4" onClick={this.showQuestionModal} bsStyle="primary">Add New Question</Button>
                 </div>
                 <QuestionSearchContainer form={this.props.form} />
               </div>
@@ -138,7 +153,7 @@ class FormsEditContainer extends Component {
                         formSubmitter={this.state.selectedFormSaver}
                         removeQuestion ={this.props.removeQuestion}
                         reorderQuestion={this.props.reorderQuestion}
-                        showResponseSetModal={() => this.setState({showResponseSetModal: true})} />
+                        showResponseSetModal={this.showResponseSetModal} />
             </div>
           </div>
         </div>
