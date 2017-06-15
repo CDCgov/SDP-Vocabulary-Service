@@ -99,7 +99,7 @@ class QuestionItem extends Component {
     return (
       <Modal show={this.state.showSearchModal} onHide={this.hideResponseSetSearch} aria-label="Search Response Sets">
         <Modal.Header closeButton bsStyle='search'>
-          <Modal.Title>Search Response Sets</Modal.Title>
+          <Modal.Title componentClass="h1">Search Response Sets</Modal.Title>
         </Modal.Header>
         <Modal.Body bsStyle='search'>
           <DashboardSearch search={this.search}
@@ -121,7 +121,7 @@ class QuestionItem extends Component {
     return (
       <Modal show={this.state.showProgramVarModal} onHide={this.hideProgramVarModal}>
         <Modal.Header closeButton bsStyle='search'>
-          <Modal.Title>{this.props.programVar ? 'Modify' : 'Add'} Program Defined Variable Name</Modal.Title>
+          <Modal.Title componentClass="h1">{this.props.programVar ? 'Modify' : 'Add'} Program Defined Variable Name</Modal.Title>
         </Modal.Header>
         <Modal.Body bsStyle='search'>
           <label htmlFor="program-var" hidden>Program Variable</label>

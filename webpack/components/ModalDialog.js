@@ -14,7 +14,7 @@ class ModalDialog extends Component{
       <div className="static-modal" id='saveModal'>
         <Modal show={this.props.show} onHide={this.props.cancelButtonAction} role="dialog" aria-label={this.props.title}>
           <Modal.Header>
-            <Modal.Title>{this.props.warning && <span className={'fa fa-exclamation-circle'}></span>} {this.props.title}</Modal.Title>
+            <Modal.Title componentClass="h1">{this.props.warning && <span className={'fa fa-exclamation-circle'}></span>} {this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {this.props.subTitle && <h1 style={{fontWeight: 'bold'}}>{this.props.subTitle}</h1>}
