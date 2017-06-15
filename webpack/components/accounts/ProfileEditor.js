@@ -31,7 +31,7 @@ export default class ProfileEditor extends Component {
     return (
       <Modal animation={false} show={this.props.show} onHide={this.props.closer} aria-label={this.title()}>
         <Modal.Header closeButton>
-          <Modal.Title>{this.title()}</Modal.Title>
+          <Modal.Title componentClass="h1">{this.title()}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>

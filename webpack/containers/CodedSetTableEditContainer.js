@@ -137,7 +137,7 @@ class CodedSetTableEditContainer extends Component {
     return (
       <Modal animation={false} show={this.state.showConceptModal} onHide={this.hideCodeSearch} aria-label="Search Codes">
         <Modal.Header closeButton bsStyle='concept'>
-          <Modal.Title>Search Codes</Modal.Title>
+          <Modal.Title componentClass="h1">Search Codes</Modal.Title>
         </Modal.Header>
         <Modal.Body bsStyle='concept'>
           <FormGroup controlId="formControlsSelect">

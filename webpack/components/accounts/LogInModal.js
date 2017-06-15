@@ -11,7 +11,7 @@ export default class LogInModal extends Component {
     return (
       <Modal animation={false} show={this.props.show} onHide={this.props.closer} aria-label="Sign In">
         <Modal.Header closeButton>
-          <Modal.Title>Sign In</Modal.Title>
+          <Modal.Title componentClass="h1">Sign In</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
