@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
-import _ from 'lodash';
 import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from "./VersionInfo";
@@ -147,7 +146,7 @@ export default class QuestionDetails extends Component {
                 <h2 className="panel-title">Linked Response Sets</h2>
               </div>
               <div className="box-content">
-                <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} />
+                <ResponseSetList responseSets={responseSets} />
               </div>
             </div>
           }

@@ -113,10 +113,10 @@ class QuestionModalContainer extends Component {
           <div className="col-md-12 response-set-label">
             <h2>Response Sets</h2>
           </div>
-          <div className="col-md-12">
+          <div className="col-md-8">
               <div className="panel panel-default">
                 <div className="panel-body">
-                  {_.keys(this.state.linkedResponseSets).length > 0 ? <ResponseSetList responseSets={this.state.linkedResponseSets} /> : 'No Response Sets selected'}
+                  {_.keys(this.state.linkedResponseSets).length > 0 ? <ResponseSetList responseSets={_.values(this.state.linkedResponseSets)} /> : 'No Response Sets selected'}
                 </div>
               </div>
           </div>

@@ -134,6 +134,8 @@ export default class SearchResult extends Component {
       return (<li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>);
     } else if (result.responseSets && result.responseSets.length === 1) {
       return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Set</a></li>);
+    } else if (result.responseSets == undefined) {
+      return (<li>Click question name to view additional question information.</li>);
     } else {
       return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
     }

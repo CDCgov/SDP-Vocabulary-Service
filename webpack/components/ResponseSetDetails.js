@@ -1,19 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import Routes from "../routes";
 import moment from 'moment';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
-import QuestionList  from './QuestionList';
+import FormQuestionList from './FormQuestionList';
 import CodedSetTable from "./CodedSetTable";
 import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
 import PublisherLookUp from "./shared_show/PublisherLookUp";
 import currentUserProps from "../prop-types/current_user_props";
 import { publishersProps } from "../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
-import _ from 'lodash';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -151,7 +149,7 @@ export default class ResponseSetDetails extends Component {
                 <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
-                <QuestionList questions={_.keyBy(this.props.questions, 'id')} routes={Routes} />
+                <FormQuestionList questions={this.props.questions} />
               </div>
             </div>
           }
