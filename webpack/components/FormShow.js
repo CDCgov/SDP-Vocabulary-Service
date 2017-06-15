@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { hashHistory, Link } from 'react-router';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
 
 import FormQuestionList from './FormQuestionList';
 import Routes from '../routes';
@@ -11,7 +13,16 @@ import currentUserProps from '../prop-types/current_user_props';
 import { publishersProps } from "../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
 
+const PAGE_SIZE = 10;
+
 class FormShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {page: 1};
+    this.questionsForPage = this.questionsForPage.bind(this);
+    this.pageChange = this.pageChange.bind(this);
+  }
+
   render() {
     const {form} = this.props;
     if(!form){
@@ -46,6 +57,16 @@ class FormShow extends Component {
         <VersionInfo versionable={form} versionableType='form' />
       </div>
     );
+  }
+
+  pageChange(nextPage) {
+    this.setState({page: nextPage});
+  }
+
+  questionsForPage() {
+    const startIndex = (this.state.page - 1) * PAGE_SIZE;
+    const endIndex = this.state.page * PAGE_SIZE;
+    return this.props.form.formQuestions.slice(startIndex, endIndex);
   }
 
   mainContent(form) {
@@ -114,7 +135,10 @@ class FormShow extends Component {
             }
           </div>
           {this.props.form.formQuestions && this.props.form.formQuestions.length > 0 &&
-            <FormQuestionList questions={this.props.form.formQuestions} />
+            <div>
+              <FormQuestionList questions={this.questionsForPage()} />
+              <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.form.formQuestions.length} />
+            </div>
           }
         </div>
       </div>
