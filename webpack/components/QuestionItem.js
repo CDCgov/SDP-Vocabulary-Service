@@ -33,6 +33,7 @@ class QuestionItem extends Component {
     this.showProgramVarModal = this.showProgramVarModal.bind(this);
     this.hideProgramVarModal = this.hideProgramVarModal.bind(this);
     this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
+    this.handleResponseSetChangeEvent = this.handleResponseSetChangeEvent.bind(this);
     this.search = this.search.bind(this);
   }
 
@@ -68,8 +69,12 @@ class QuestionItem extends Component {
   }
 
   handleSelectSearchResult(rs) {
-    this.props.handleSelectSearchResult(rs);
+    this.props.handleSelectSearchResult(this.props.index, rs);
     this.setState({ showSearchModal: false });
+  }
+
+  handleResponseSetChangeEvent(event){
+    this.props.handleResponseSetChange(this.props.index, event);
   }
 
   setFiltersParent(newState) {
@@ -83,7 +88,7 @@ class QuestionItem extends Component {
   submitProgramVar(e){
     e.preventDefault();
     this.hideProgramVarModal();
-    this.props.handleProgramVarChange(this.state.programVar);
+    this.props.handleProgramVarChange(this.props.index, this.state.programVar);
   }
 
   search(searchTerms, progFilters, sysFilters) {
@@ -161,7 +166,7 @@ class QuestionItem extends Component {
                         selectedResponseSetId={this.props.selectedResponseSet}
                         showResponseSetSearch={this.showResponseSetSearch}
                         handleProgramVarChange ={this.props.handleProgramVarChange}
-                        handleResponseSetChange={this.props.handleResponseSetChange}
+                        handleResponseSetChange={this.handleResponseSetChangeEvent}
                         />
         </div>
       </div>

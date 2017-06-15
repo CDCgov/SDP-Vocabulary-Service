@@ -58,6 +58,19 @@ class FormEdit extends Component {
     this.unsavedState = false;
     this.lastQuestionCount = this.state.formQuestions.length;
     this.addedResponseSets = _.compact(this.state.formQuestions.map((fq) => fq.responseSetId));
+    this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
+    this.handleResponseSetChangeEvent = this.handleResponseSetChangeEvent.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleProgramVarChange = this.handleProgramVarChange.bind(this);
+    this.handleChangeName = this.handleChangeName.bind(this);
+    this.handleChangeDescription = this.handleChangeDescription.bind(this);
+    this.handleChangeControl = this.handleChangeControl.bind(this);
+    this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
+    this.handleModalResponse = this.handleModalResponse.bind(this);
+    this.handleModalResponseAndLeave = this.handleModalResponseAndLeave.bind(this);
+    this.moveQuestionUp = this.moveQuestionUp.bind(this);
+    this.moveQuestionDown = this.moveQuestionDown.bind(this);
+    this.removeQuestion = this.removeQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -83,22 +96,23 @@ class FormEdit extends Component {
     return !this.unsavedState;
   }
 
-  handleModalResponse(leavePage){
+  handleModalResponse(){
     this.setState({ showWarningModal: false });
-    if(leavePage){
+    let form = Object.assign({}, this.state);
+    form.linkedQuestions = this.state.formQuestions;
+    this.props.formSubmitter(form, (response) => {
+      // TODO: Handle when the saving form fails.
       this.unsavedState = false;
-      this.props.router.push(this.nextLocation.pathname);
-    }else{
-      let form = Object.assign({}, this.state);
-      form.linkedQuestions = this.state.formQuestions;
-      this.props.formSubmitter(form, (response) => {
-        // TODO: Handle when the saving form fails.
-        this.unsavedState = false;
-        if (response.status === 201) {
-          this.props.router.push(this.nextLocation.pathname);
-        }
-      });
-    }
+      if (response.status === 201) {
+        this.props.router.push(this.nextLocation.pathname);
+      }
+    });
+  }
+
+  handleModalResponseAndLeave(){
+    this.setState({ showWarningModal: false });
+    this.unsavedState = false;
+    this.props.router.push(this.nextLocation.pathname);
   }
 
   windowWillUnload() {
@@ -122,13 +136,23 @@ class FormEdit extends Component {
     this.unsavedState = true;
   }
 
-  handleChange(field) {
-    return (event) => {
-      let newState = {};
-      newState[field] = event.target.value;
-      this.setState(newState);
-      this.unsavedState = true;
-    };
+  handleChange(field, event) {
+    let newState = {};
+    newState[field] = event.target.value;
+    this.setState(newState);
+    this.unsavedState = true;
+  }
+
+  handleChangeName(event){
+    this.handleChange('name', event);
+  }
+
+  handleChangeDescription(event){
+    this.handleChange('description', event);
+  }
+
+  handleChangeControl(event){
+    this.handleChange('controlNumber', event);
   }
 
   handleSubmit(event) {
@@ -151,6 +175,11 @@ class FormEdit extends Component {
     return(<Link tabIndex="3" className="btn btn-default pull-right" to='/'>Cancel</Link>);
   }
 
+  cancelLeaveModal(){
+    this.props.router.push(this.props.route.path);
+    this.setState({ showWarningModal: false });
+  }
+
   addLinkedResponseSet(questionIndex, responseSet){
     if(this.state.formQuestions[questionIndex].responseSetId == responseSet.id){
       return;
@@ -170,8 +199,31 @@ class FormEdit extends Component {
     return _.compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
   }
 
+  handleSelectSearchResult(i, responseSet){
+    this.addLinkedResponseSet(i, responseSet);
+    this.handleResponseSetChange(i, responseSet.id);
+  }
+
+  handleResponseSetChangeEvent(i, event){
+    this.handleResponseSetChange(i, parseInt(event.target.value));
+  }
+
+  moveQuestionUp(event){
+    event.preventDefault();
+    this.props.reorderQuestion(this.state, event.target.dataset.index, 1);
+  }
+
+  moveQuestionDown(event){
+    event.preventDefault();
+    this.props.reorderQuestion(this.state, event.target.dataset.index, -1);
+  }
+
+  removeQuestion(event){
+    event.preventDefault();
+    this.props.removeQuestion(this.state, event.target.dataset.index);
+  }
+
   addedQuestions() {
-    var form = this.state;
     return (
       <div id="added-questions" aria-label="Added">
         <div className="row">
@@ -183,49 +235,34 @@ class FormEdit extends Component {
           </div>
         </div>
         <div className="added-question-group">
-          {form.formQuestions.map((q, i) =>
-            <div className="row" key={i}>
+          {this.state.formQuestions.map((q, i) =>
+            <div className="row" key={q.questionId}>
               <div className="col-md-11">
                 <QuestionItem index={i}
                               question={this.props.questions[q.questionId]}
+                              programVar={q.programVar}
                               responseSets={this.linkedResponseSets(q.questionId)}
                               selectedResponseSet={q.responseSetId}
-                              programVar={q.programVar}
                               removeQuestion ={this.props.removeQuestion}
                               reorderQuestion={this.props.reorderQuestion}
-                              handleProgramVarChange  ={(value) => this.handleProgramVarChange(i, value)}
-                              handleResponseSetChange ={(event) => this.handleResponseSetChange(i, parseInt(event.target.value))}
-                              handleSelectSearchResult={(responseSet) => {
-                                this.addLinkedResponseSet(i, responseSet);
-                                this.handleResponseSetChange(i, responseSet.id);
-                              }} />
+                              handleProgramVarChange  ={this.handleProgramVarChange}
+                              handleResponseSetChange ={this.handleResponseSetChangeEvent}
+                              handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <div className="col-md-1">
                 <div className="row form-question-controls">
-                  <button className="btn btn-small btn-default move-up"
-                       onClick={(event) => {
-                         event.preventDefault();
-                         this.props.reorderQuestion(form, i, 1);
-                       }}>
-                    <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up question ${this.props.questions[q.questionId].content} on form`}</span>
+                  <button data-index={i} className="btn btn-small btn-default move-up" onClick={this.moveQuestionUp}>
+                    <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up question ${this.props.questions[q.questionId].content} on form`}</span>
                   </button>
                 </div>
                 <div className="row form-question-controls">
-                  <button className="btn btn-small btn-default move-down"
-                       onClick={(event) => {
-                         event.preventDefault();
-                         this.props.reorderQuestion(form, i, -1);
-                       }}>
-                    <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down question ${this.props.questions[q.questionId].content} on form`}</span>
+                  <button data-index={i} className="btn btn-small btn-default move-down" onClick={this.moveQuestionDown}>
+                    <i data-index={i} className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down question ${this.props.questions[q.questionId].content} on form`}</span>
                   </button>
                 </div>
                 <div className="row form-question-controls">
-                  <button className="btn btn-small btn-default delete-question"
-                       onClick={(event) => {
-                         event.preventDefault();
-                         this.props.removeQuestion(form, i);
-                       }}>
-                    <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove question ${this.props.questions[q.questionId].content} on form`}</span>
+                  <button data-index={i} className="btn btn-small btn-default delete-question" onClick={this.removeQuestion}>
+                    <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove question ${this.props.questions[q.questionId].content} on form`}</span>
                   </button>
                 </div>
               </div>
@@ -253,13 +290,10 @@ class FormEdit extends Component {
                    secondaryButtonMessage="Continue Without Saving"
                    primaryButtonMessage="Save & Leave"
                    cancelButtonMessage="Cancel"
-                   primaryButtonAction={()=> this.handleModalResponse(false)}
-                   cancelButtonAction ={()=> {
-                     this.props.router.push(this.props.route.path);
-                     this.setState({ showWarningModal: false });
-                   }}
-                   secondaryButtonAction={()=> this.handleModalResponse(true)} />
-      <form onSubmit={(e) => this.handleSubmit(e)}>
+                   primaryButtonAction={this.handleModalResponse}
+                   cancelButtonAction ={this.cancelLeaveModal}
+                   secondaryButtonAction={this.handleModalResponseAndLeave} />
+      <form onSubmit={this.handleSubmit}>
         <Errors errors={this.state.errors} />
           <div className="form-inline">
             <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
@@ -277,17 +311,17 @@ class FormEdit extends Component {
             <div className="row">
               <div className="form-group col-md-12">
                 <label htmlFor="form-name" hidden>Name</label>
-                <input tabIndex="3" className="input-format" placeholder="Name" type="text" value={this.state.name} name="form-name" id="form-name" onChange={this.handleChange('name')}/>
+                <input tabIndex="3" className="input-format" placeholder="Name" type="text" value={this.state.name} name="form-name" id="form-name" onChange={this.handleChangeName}/>
               </div>
             </div>
             <div className="row">
               <div className="form-group col-md-8">
                 <label htmlFor="form-description">Description</label>
-                <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form-description" id="form-description" onChange={this.handleChange('description')}/>
+                <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form-description" id="form-description" onChange={this.handleChangeDescription}/>
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
-                <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+                <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChangeControl}/>
               </div>
             </div>
           </div>

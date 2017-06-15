@@ -16,8 +16,8 @@ const responseSetProps = PropTypes.shape({
   version: PropTypes.number,
   parent: PropTypes.object,
   responses: PropTypes.arrayOf(responseProps),
-  surveillancePrograms: PropTypes.arrayOf(PropTypes.string),
-  surveillanceSystems: PropTypes.arrayOf(PropTypes.string),
+  surveillancePrograms: PropTypes.arrayOf(PropTypes.object),
+  surveillanceSystems: PropTypes.arrayOf(PropTypes.object),
 });
 
 const responseSetsProps = PropTypes.objectOf(responseSetProps);
