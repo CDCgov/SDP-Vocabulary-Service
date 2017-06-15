@@ -224,7 +224,6 @@ class FormEdit extends Component {
   }
 
   addedQuestions() {
-    var form = this.state;
     return (
       <div id="added-questions" aria-label="Added">
         <div className="row">
@@ -236,8 +235,8 @@ class FormEdit extends Component {
           </div>
         </div>
         <div className="added-question-group">
-          {form.formQuestions.map((q, i) =>
-            <div className="row" key={i}>
+          {this.state.formQuestions.map((q, i) =>
+            <div className="row" key={q.questionId}>
               <div className="col-md-11">
                 <QuestionItem index={i}
                               question={this.props.questions[q.questionId]}

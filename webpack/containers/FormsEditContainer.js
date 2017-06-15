@@ -34,6 +34,7 @@ class FormsEditContainer extends Component {
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.showResponseSetModal  = this.showResponseSetModal.bind(this);
     this.closeResponseSetModal = this.closeResponseSetModal.bind(this);
+    this.handleSelectSearchResult  = this.handleSelectSearchResult.bind(this);
     this.handleSaveQuestionSuccess = this.handleSaveQuestionSuccess.bind(this);
   }
 
@@ -114,6 +115,10 @@ class FormsEditContainer extends Component {
     this.props.addQuestion(this.props.form, successResponse.data);
   }
 
+  handleSelectSearchResult(q){
+    this.props.addQuestion(this.props.form, q);
+  }
+
   render() {
     if(!this.props.form || !this.props.questions){
       return (
@@ -141,7 +146,7 @@ class FormsEditContainer extends Component {
                 <div className="row add-question">
                   <Button tabIndex="4" onClick={this.showQuestionModal} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer form={this.props.form} />
+                <QuestionSearchContainer handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <FormEdit ref ='form'
                         form={this.props.form}
