@@ -6,13 +6,40 @@ import { setSteps } from '../actions/tutorial_actions';
 class Help extends Component {
   constructor(props){
     super(props);
+    this.selectTab = this.selectTab.bind(this);
+    this.selectInstruction = this.selectInstruction.bind(this);
+    this.state = {
+      selectedTab: 'instructions',
+      selectedInstruction: 'general'
+    };
+  }
+
+  selectTab(tabName) {
+    if(tabName === 'instructions'){
+      this.setState({
+        selectedTab: tabName,
+        selectedInstruction: 'general'
+      });
+    } else {
+      this.setState({
+        selectedTab: tabName,
+        selectedInstruction: ''
+      });
+    }
+  }
+
+  selectInstruction(instrName) {
+    this.setState({
+      selectedTab: 'instructions',
+      selectedInstruction: instrName
+    });
   }
 
   componentDidMount() {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a>',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -26,14 +53,90 @@ class Help extends Component {
 
   generalInstructions() {
     return(
-      <div className="tab-pane active" id="general" role="tabpanel">
+      <div className="tab-pane active" id="general" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'general'} aria-labelledby="general-tab">
         <h1 id="general">General</h1>
         <p><strong>Navigation and Help Basics:</strong></p>
         <ul>
         <li>Use the top bar to log-in, sign-up, or navigate to various pages.</li>
         <li>Clicking the CDC logo in the top left will return you to the landing page at any time.</li>
-        <li>On most pages the top right navigation bar gives a &quot;Help&quot; option. Click on this option to view documentation for various actions or see step-by-step walk throughs on some pages.</li>
         <li>The footer contains useful links to pages with additional information about the site, including the application version. Please reference this version number in any bug reports.</li>
+        <li>On most pages the top right navigation bar gives a &quot;Help&quot; option. Click on this option to view documentation for various actions or see step-by-step walk throughs on some pages. The step by step walkthroughs are also available below in plain text format.</li>
+        </ul>
+        <h2 id="step-by-step">Step-by-Step Walkthroughs by Page</h2>
+        <h3>Dashboard</h3>
+        <ul>
+        <li>Type in your search term and search across all items by default. Results include items you own and published items.</li>
+        <li>Click on any of the type boxes to highlight them and toggle on filtering by that single item type.</li>
+        <li>Click Advanced Link to see additional filters you can apply to your search.</li>
+        <li>If you already have an account you can log in to unlock more features in the top right of the dashboard page.</li>
+        <li>Click the Get Started! button on the banner to register a new account.</li>
+        <li>Click on any of the rows in the My Stuff Analytics panel to filter by items you authored.</li>
+        <li>Click the create menu and then select an item type to author a new item.</li>
+        <li>Click the alerts dropdown to see any new notifications about your content.</li>
+        <li>Click your e-mail to see various account management options.</li>
+        </ul>
+        <h3>Form Edit Page</h3>
+        <ul>
+        <li>If you need to create a new question without leaving the the form use this button to author a new question from scratch.</li>
+        <li>Type in your search keywords here to search for questions to add to the form.</li>
+        <li>Click Advanced to see additional filters you can apply to your search.</li>
+        <li>Use these search results to find the question you want to add.</li>
+        <li>Click on the add button to select a question for the form.</li>
+        <li>Edit the various form details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.</li>
+        </ul>
+        <h3>Form Details Page</h3>
+        <ul>
+        <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
+        <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        </ul>
+        <h3>Question Edit Page</h3>
+        <ul>
+        <li>Use the input fields to edit content of the question. If the response type is open choice this panel will also give you the option to associate response sets with this quesiton at creation time</li>
+        <li>Click the search icon to search for and add tags to the question</li>
+        <li>Alternatively, you can manually add a tag - click the plus sign to add additional tags to associate with the question</li>
+        <li>The Display Name field is what the user will see on the page</li>
+        <li>Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOWMED)</li>
+        <li>Click save to save a draft of the edited content</li>
+        </ul>
+        <h3>Question Details Page</h3>
+        <ul>
+        <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
+        <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        </ul>
+        <h3>Response Set Edit Page</h3>
+        <ul>
+        <li>Use the input fields to edit content of the response set</li>
+        <li>Click the search icon to search for and add coded responses to the response set</li>
+        <li>Alternatively, you can manually add a response - click the plus sign to add additional responses to associate with the response set</li>
+        <li>The Display Name field is what the user will see on the page</li>
+        <li>Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOWMED)</li>
+        <li>Click save to save a draft of the edited content</li>
+        </ul>
+        <h3>Response Set Details Page</h3>
+        <ul>
+        <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
+        <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        </ul>
+        <h3>Survey Edit Page</h3>
+        <ul>
+        <li>Type in your search keywords here to search for forms to add to the survey</li>
+        <li>Click Advanced to see additional filters you can apply to your search</li>
+        <li>Use these search results to find the form you want to add</li>
+        <li>Click on the add button to select a form for the survey</li>
+        <li>Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content</li>
+        </ul>
+        <h3>Survey Details Page</h3>
+        <ul>
+        <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
+        <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        </ul>
+        <h3>Help Page</h3>
+        <ul>
+        <li>Click any item in the left side bar to see instructions on how to perform any of the specified activities</li>
         </ul>
       </div>
     );
@@ -41,7 +144,7 @@ class Help extends Component {
 
   accountInstructions() {
     return(
-      <div className="tab-pane active" id="manage-account" role="tabpanel">
+      <div className="tab-pane" id="manage-account" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'manage-account'} aria-labelledby="manage-account-tab">
         <h1 id="account-management">Account Management</h1>
         <p><strong>Options:</strong></p>
         <ul>
@@ -61,7 +164,7 @@ class Help extends Component {
 
   searchInstructions() {
     return(
-      <div className="tab-pane active" id="search" role="tabpanel">
+      <div className="tab-pane" id="search" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'search'} aria-labelledby="search-tab">
         <h1 id="search-functionality">Search Functionality</h1>
         <p><strong>Features:</strong></p>
         <ul>
@@ -85,7 +188,7 @@ class Help extends Component {
 
   viewInstructions() {
     return(
-      <div className="tab-pane active" id="view" role="tabpanel">
+      <div className="tab-pane" id="view" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'view'} aria-labelledby="view-tab">
         <h1 id="view-content">View Content</h1>
         <p><strong>Options:</strong></p>
         <ul>
@@ -111,7 +214,7 @@ class Help extends Component {
 
   editInstructions() {
     return(
-      <div className="tab-pane active" id="create-and-edit" role="tabpanel">
+      <div className="tab-pane" id="create-and-edit" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'create-and-edit'} aria-labelledby="create-and-edit-tab">
         <h1 id="content-creation-and-editing">Content Creation and Editing</h1>
         <p><strong>Options:</strong></p>
         <ul>
@@ -153,7 +256,7 @@ class Help extends Component {
 
   commentInstructions() {
     return(
-      <div className="tab-pane active" id="comment" role="tabpanel">
+      <div className="tab-pane" id="comment" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'comment'} aria-labelledby="comment-tab">
         <h1 id="commenting-on-content">Commenting on Content</h1>
         <p><strong>Steps:</strong></p>
         <ul>
@@ -168,7 +271,7 @@ class Help extends Component {
 
   instructionsTab() {
     return(
-      <div className="tab-pane active" id="instructions" role="tabpanel">
+      <div className="tab-pane active" id="instructions" role="tabpanel" aria-hidden={this.state.selectedTab !== 'instructions'} aria-labelledby="instructions-tab">
         <div className="col-md-3 how-to-nav no-print">
           <h2 className="showpage_sidenav_subtitle">
             <text className="sr-only">Version History Navigation Links</text>
@@ -177,13 +280,13 @@ class Help extends Component {
               <li className="subtitle">Learn How To:</li>
             </ul>
           </h2>
-          <ul className="nav nav-pills nav-stacked">
-            <li className="active" role="presentation"><a data-toggle="tab" href="#general">General</a></li>
-            <li role="presentation"><a data-toggle="tab" href="#manage-account">Manage Account</a></li>
-            <li role="presentation"><a data-toggle="tab" href="#search">Search</a></li>
-            <li role="presentation"><a data-toggle="tab" href="#view">View and Export Content</a></li>
-            <li role="presentation"><a data-toggle="tab" href="#create-and-edit">Create and Edit Content</a></li>
-            <li role="presentation"><a data-toggle="tab" href="#comment">Comment on Content</a></li>
+          <ul className="nav nav-pills nav-stacked" role="tablist">
+            <li id="general-tab" className="active" role="tab" onClick={() => this.selectInstruction('general')} aria-selected={this.state.selectedInstruction === 'general'} aria-controls="general"><a data-toggle="tab" href="#general">General</a></li>
+            <li id="manage-account-tab" role="tab" onClick={() => this.selectInstruction('manage-account')} aria-selected={this.state.selectedInstruction === 'manage-account'} aria-controls="manage-account"><a data-toggle="tab" href="#manage-account">Manage Account</a></li>
+            <li id="search-tab" role="tab" onClick={() => this.selectInstruction('search')} aria-selected={this.state.selectedInstruction === 'search'} aria-controls="search"><a data-toggle="tab" href="#search">Search</a></li>
+            <li id="view-tab" role="tab" onClick={() => this.selectInstruction('view')} aria-selected={this.state.selectedInstruction === 'view'} aria-controls="view"><a data-toggle="tab" href="#view">View and Export Content</a></li>
+            <li id="create-and-edit-tab" role="tab" onClick={() => this.selectInstruction('create-and-edit')} aria-selected={this.state.selectedInstruction === 'create-and-edit'} aria-controls="create-and-edit"><a data-toggle="tab" href="#create-and-edit">Create and Edit Content</a></li>
+            <li id="comment-tab" role="tab" onClick={() => this.selectInstruction('comment')} aria-selected={this.state.selectedInstruction === 'comment'} aria-controls="comment"><a data-toggle="tab" href="#comment">Comment on Content</a></li>
           </ul>
         </div>
         <div className="tab-content col-md-8">
@@ -200,7 +303,7 @@ class Help extends Component {
 
   glossaryTab() {
     return (
-      <div className="tab-pane" id="glossary" role="tabpanel">
+      <div className="tab-pane" id="glossary" role="tabpanel" aria-hidden={this.state.selectedTab !== 'glossary'} aria-labelledby="glossary-tab">
         <h1 id="glossary">Glossary</h1>
         <p><strong>Author –</strong> An actor (organization, person, or program) responsible for creating and/or maintaining a data collection item, a code set, a value set, or a data collection instrument</p>
         <p><strong>Code –</strong> a succinct label for a concept, variable, value, or question</p>
@@ -234,19 +337,19 @@ class Help extends Component {
               <div className="row">
                 <div className="col-md-12 nopadding">
                   <ul className="nav nav-tabs" role="tablist">
-                    <li className="nav-item active">
+                    <li id="instructions-tab" className="nav-item active" role="tab" onClick={() => this.selectTab('instructions')} aria-selected={this.state.selectedTab === 'instructions'} aria-controls="instructions">
                       <a className="nav-link" data-toggle="tab" href="#instructions" role="tab">Instructions</a>
                     </li>
-                    <li className="nav-item">
+                    <li id="glossary-tab" className="nav-item" role="tab" onClick={() => this.selectTab('glossary')} aria-selected={this.state.selectedTab === 'glossary'} aria-controls="glossary">
                       <a className="nav-link" data-toggle="tab" href="#glossary" role="tab">Glossary</a>
                     </li>
-                    <li className="nav-item">
+                    <li id="faq-tab" className="nav-item" role="tab" onClick={() => this.selectTab('faq')} aria-selected={this.state.selectedTab === 'faq'} aria-controls="faq">
                       <a className="nav-link" data-toggle="tab" href="#faq" role="tab">FAQs</a>
                     </li>
                   </ul>
                   <div className="tab-content">
                     {this.instructionsTab()}
-                    <div className="tab-pane" id="faq" role="tabpanel">
+                    <div className="tab-pane" id="faq" role="tabpanel" aria-hidden={this.state.selectedTab !== 'faq'} aria-labelledby="faq-tab">
                       <h1 className="help-section-title">FAQs</h1>
                       <p>This section has not been added. Please check back later.</p>
                     </div>

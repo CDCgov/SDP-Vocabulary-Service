@@ -61,7 +61,7 @@ class DashboardContainer extends Component {
       let steps = [
         {
           title: 'Help',
-          text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a>',
+          text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" id="tutorial-link" tabindex="3" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
           selector: '.help-link',
           position: 'bottom',
         },
@@ -299,7 +299,7 @@ class DashboardContainer extends Component {
           </div>
           </button>
       </ul>
-      {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
+      {searchType != '' && <a href="#" tabIndex="4" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
     </div>);
   }
 

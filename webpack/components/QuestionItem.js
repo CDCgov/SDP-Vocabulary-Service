@@ -97,7 +97,7 @@ class QuestionItem extends Component {
 
   searchModal() {
     return (
-      <Modal show={this.state.showSearchModal} onHide={this.hideResponseSetSearch} aria-label="Search Response Sets">
+      <Modal animation={false} show={this.state.showSearchModal} onHide={this.hideResponseSetSearch} aria-label="Search Response Sets">
         <Modal.Header closeButton bsStyle='search'>
           <Modal.Title>Search Response Sets</Modal.Title>
         </Modal.Header>

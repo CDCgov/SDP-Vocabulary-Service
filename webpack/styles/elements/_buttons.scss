@@ -57,6 +57,14 @@ a.widget-dropdown-toggle{
   margin-right: 0px !important;
 }
 
+.darker-text {
+  color: $dark-gray;
+}
+
+.joyride-tooltip__close {
+  visibility: hidden !important;
+}
+
 caption {
   color: $medium-gray;
 }
