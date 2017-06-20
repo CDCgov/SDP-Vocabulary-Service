@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import moment from 'moment';
+import parse from 'date-fns/parse';
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import { connect } from 'react-redux';
 import CommentForm from './CommentForm';
 
@@ -17,7 +18,7 @@ class Comment extends Component {
               <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
             </button>
             <span className="label label-info">{this.props.comment.id}</span>
-            {moment(this.props.comment.createdAt,'').fromNow()} by {this.props.comment.userName}
+            {distanceInWordsToNow(parse(this.props.comment.createdAt,''), {addSuffix: true})} by {this.props.comment.userName}
           </div>
 
           <div className="panel-collapse collapse in" id={"comment_id_"+this.props.comment.id}>

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import moment from 'moment';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
@@ -114,7 +115,7 @@ export default class ResponseSetDetails extends Component {
             </div>
             <div className="box-content">
               <strong>Created: </strong>
-              { moment(responseSet.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
+              { format(parse(responseSet.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
             </div>
             { responseSet.parent &&
               <div className="box-content">

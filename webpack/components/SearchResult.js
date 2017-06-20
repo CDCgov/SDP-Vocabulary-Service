@@ -2,7 +2,8 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import moment from 'moment';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 import currentUserProps from "../prop-types/current_user_props";
 import { responseSetProps } from "../prop-types/response_set_props";
 
@@ -285,7 +286,7 @@ export default class SearchResult extends Component {
                 {result.surveillanceSystems && this.systemsInfo(result)}
                 {this.resultStatus(result.status)}
                 <li className={`result-timestamp pull-right ${this.props.programVar && 'list-program-var'}`}>
-                  <p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p>
+                  <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
                   <p><text className="sr-only">Item Version Number: </text>version {result.version && result.version} | <text className="sr-only">Item type: </text>{type}</p>
                   {this.props.programVar && (<p><text className="sr-only">Item program defined Variable: </text>{this.props.programVar}</p>)}
                 </li>

@@ -1,13 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import forOwn from 'lodash/forOwn';
+import values from 'lodash/values';
+
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
+
 import Errors from './Errors';
 import ModalDialog from './ModalDialog';
 import ResponseSetModal from './ResponseSetModal';
 import ResponseSetDragWidget from './ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
-import _ from 'lodash';
+
 
 class QuestionForm extends Component{
 
@@ -75,7 +79,7 @@ class QuestionForm extends Component{
 
   stateForRevise(question) {
     var reviseState = {};
-    _.forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
+    forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
     reviseState.conceptsAttributes = filterConcepts(question.concepts);
     reviseState.linkedResponseSets = question.responseSets;
     if (this.props.action === 'revise') {
@@ -106,7 +110,7 @@ class QuestionForm extends Component{
   //not working because of map => questionType
   stateForExtend(question) {
     var extendState = {};
-    _.forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
+    forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
     extendState.conceptsAttributes = filterConcepts(question.concepts);
     extendState.linkedResponseSets = question.responseSets || [];
     extendState.version = 1;
@@ -168,7 +172,7 @@ class QuestionForm extends Component{
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
                       <select className="input-select" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
-                        {questionTypes && _.values(questionTypes).map((qt) => {
+                        {questionTypes && values(questionTypes).map((qt) => {
                           return <option key={qt.id} value={qt.id}>{qt.name}</option>;
                         })}
                       </select>
@@ -238,7 +242,7 @@ class QuestionForm extends Component{
 
 
   isChoiceType(){
-    let rt = _.values(this.props.responseTypes).find((a) => {
+    let rt = values(this.props.responseTypes).find((a) => {
       return a.id == this.state.responseTypeId;
     });
     if(rt && (rt.code == "choice" || rt.code == "open-choice")){
@@ -247,7 +251,7 @@ class QuestionForm extends Component{
   }
 
   sortedResponseTypes(){
-    return _.values(this.props.responseTypes).sort((a,b) => {
+    return values(this.props.responseTypes).sort((a,b) => {
       if(a.name == b.name ){
         return 0;
       }else if(a.name < b.name){

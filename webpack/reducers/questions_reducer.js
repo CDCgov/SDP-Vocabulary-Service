@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import keyBy from 'lodash/keyBy';
+import omitBy from 'lodash/omitBy';
+import assign from 'lodash/assign';
 
 import {
   SAVE_QUESTION_FULFILLED,
@@ -13,7 +15,7 @@ function addQuestionToState(action, state){
   const id = action.payload.data.id;
   const existingQuestion = questionsClone[action.payload.data.id];
   if (existingQuestion) {
-    questionsClone[id] = _.assign(existingQuestion, action.payload.data);
+    questionsClone[id] = assign(existingQuestion, action.payload.data);
   } else {
     questionsClone[id] = action.payload.data;
   }
@@ -23,12 +25,12 @@ function addQuestionToState(action, state){
 export default function questions(state = {}, action) {
   switch (action.type) {
     case FETCH_QUESTIONS_FULFILLED:
-      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
+      return Object.assign({}, state, keyBy(action.payload.data, 'id'));
     case SAVE_QUESTION_FULFILLED:
     case FETCH_QUESTION_FULFILLED:
       return addQuestionToState(action, state);
     case DELETE_QUESTION_FULFILLED:
-      return _.omitBy(state,(v, k)=>{
+      return omitBy(state,(v, k)=>{
         return action.payload.data.id==k;
       });
     case FETCH_QUESTION_USAGE_FULFILLED:

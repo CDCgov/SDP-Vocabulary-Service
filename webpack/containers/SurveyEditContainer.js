@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import values from 'lodash/values';
+import capitalize from 'lodash/capitalize';
+
 import { fetchQuestions } from '../actions/questions_actions';
 import { setSteps } from '../actions/tutorial_actions';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
@@ -11,7 +14,6 @@ import { surveyProps } from '../prop-types/survey_props';
 import SurveyEdit from '../components/SurveyEdit';
 import currentUserProps from "../prop-types/current_user_props";
 import FormSearchContainer from './FormSearchContainer';
-import _ from 'lodash';
 
 class SurveyEditContainer extends Component {
   constructor(props) {
@@ -90,12 +92,12 @@ class SurveyEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{_.capitalize(this.props.params.action)} Survey </h1>
+              <h1 className="panel-title">{capitalize(this.props.params.action)} Survey </h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">
                 <FormSearchContainer survey  ={this.props.survey}
-                                     allForms={_.values(this.props.forms)}
+                                     allForms={values(this.props.forms)}
                                      currentUser={this.props.currentUser} />
               </div>
               <SurveyEdit ref='survey' survey={this.props.survey}

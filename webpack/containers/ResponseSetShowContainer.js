@@ -9,7 +9,7 @@ import { questionProps } from '../prop-types/question_props';
 import CommentList from '../containers/CommentList';
 import currentUserProps from "../prop-types/current_user_props";
 import { publishersProps } from "../prop-types/publisher_props";
-import _ from 'lodash';
+import compact from 'lodash/compact';
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
@@ -85,7 +85,7 @@ function mapStateToProps(state, ownProps) {
   props.responseSet = state.responseSets[ownProps.params.rsId];
   props.publishers = state.publishers;
   if (props.responseSet && props.responseSet.questions) {
-    props.questions = _.compact(props.responseSet.questions.map((qId) => state.questions[qId]));
+    props.questions = compact(props.responseSet.questions.map((qId) => state.questions[qId]));
   }
   return props;
 }

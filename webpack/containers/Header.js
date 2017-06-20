@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Joyride from 'react-joyride';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
@@ -10,7 +10,7 @@ import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
 let LoginMenu = ({disableUserRegistration, logInOpener, signUpOpener, currentUser}) => {
-  let loggedIn = ! _.isEmpty(currentUser);
+  let loggedIn = ! isEmpty(currentUser);
   if(!loggedIn) {
     if(disableUserRegistration == 'true') {
       return (
@@ -50,7 +50,7 @@ LoginMenu.propTypes = {
 };
 
 let ContentMenu = ({settingsOpener, currentUser}) => {
-  let loggedIn = ! _.isEmpty(currentUser);
+  let loggedIn = ! isEmpty(currentUser);
   if(loggedIn) {
     let {email} = currentUser;
     return(
@@ -78,7 +78,7 @@ ContentMenu.propTypes = {
 
 
 let SignedInMenu = ({currentUser, location, notifications, notificationCount}) => {
-  let loggedIn = ! _.isEmpty(currentUser);
+  let loggedIn = ! isEmpty(currentUser);
   if(loggedIn) {
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">

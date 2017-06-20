@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import keyBy from 'lodash/keyBy';
 
 // Returns a reducer function. This function will listen for the passed in
 // successType and it it finds it will return an object where the keys are the
@@ -8,7 +8,7 @@ import _ from 'lodash';
 export function byIdReducer(successType) {
   return (state = {}, action) => {
     if (action.type === successType) {
-      return _.keyBy(action.payload.data, 'id');
+      return keyBy(action.payload.data, 'id');
     } else {
       return state;
     }
@@ -29,7 +29,7 @@ export function byIdWithIndividualReducer(batchSuccessType, individualSuccessTyp
         stateClone[action.payload.data.id] = action.payload.data;
         return stateClone;
       case batchSuccessType:
-        return _.keyBy(action.payload.data, 'id');
+        return keyBy(action.payload.data, 'id');
       default:
         return state;
     }

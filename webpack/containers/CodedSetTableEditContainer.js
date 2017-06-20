@@ -2,9 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Modal, Checkbox, Button, ControlLabel, FormGroup, InputGroup, DropdownButton, MenuItem} from 'react-bootstrap';
+import values from 'lodash/values';
+import filter from 'lodash/filter';
+import concat from 'lodash/concat';
+
 import NestedSearchBar from '../components/NestedSearchBar';
 import { fetchConcepts, fetchConceptSystems } from '../actions/concepts_actions';
-import _ from 'lodash';
+
 
 class CodedSetTableEditContainer extends Component {
   constructor(props) {
@@ -20,7 +24,7 @@ class CodedSetTableEditContainer extends Component {
   }
 
   addItemRow(displayName='', codeSystem='', value='') {
-    let newItems = _.concat(this.state.items, [{displayName: displayName, codeSystem: codeSystem, value: value}]);
+    let newItems = concat(this.state.items, [{displayName: displayName, codeSystem: codeSystem, value: value}]);
     this.setState({items: newItems});
     if (this.props.itemWatcher) {
       this.props.itemWatcher(newItems);
@@ -28,7 +32,7 @@ class CodedSetTableEditContainer extends Component {
   }
 
   addItemRows(items) {
-    let newItems = _.concat(this.state.items, items);
+    let newItems = concat(this.state.items, items);
     newItems = newItems.filter((i) => (i.displayName!=='' || i.codeSystem!=='' || i.value!==''));
     this.setState({items: newItems});
     if (this.props.itemWatcher) {
@@ -88,9 +92,9 @@ class CodedSetTableEditContainer extends Component {
     var newConcepts = [];
     var selectedConcept = this.props.concepts[this.state.selectedSystem][i];
     if(e.target.checked){
-      newConcepts = _.concat(this.state.selectedConcepts, selectedConcept);
+      newConcepts = concat(this.state.selectedConcepts, selectedConcept);
     }else{
-      newConcepts = _.filter(this.state.selectedConcepts, (c) => {
+      newConcepts = filter(this.state.selectedConcepts, (c) => {
         return (c.code !== selectedConcept.code);
       });
     }
@@ -117,7 +121,7 @@ class CodedSetTableEditContainer extends Component {
         <div className='table-scrolling-div'>
           <table className="table table-striped scroll-table-body">
             <tbody>
-              {_.values(this.props.concepts[this.state.selectedSystem]).map((c, i) => {
+              {values(this.props.concepts[this.state.selectedSystem]).map((c, i) => {
                 return (
                   <tr key={i}>
                     <td headers="add-code-checkboxes-column"><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
@@ -147,7 +151,7 @@ class CodedSetTableEditContainer extends Component {
                 id="system-select-dropdown"
                 title={this.state.selectedSystem ? this.state.selectedSystem : 'Code System'} onSelect={(key, e) => this.searchConcepts(e.target.text)} >
                 <MenuItem key={0} value={''}>None</MenuItem>
-                {_.values(this.props.conceptSystems).map((s, i) => {
+                {values(this.props.conceptSystems).map((s, i) => {
                   if(s.name) {
                     return <MenuItem key={i} value={s.name}>{s.name}</MenuItem>;
                   }

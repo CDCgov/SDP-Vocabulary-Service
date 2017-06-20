@@ -8,15 +8,15 @@ import {
   REMOVE_QUESTION,
   REORDER_QUESTION,
   CREATE_FORM
-
 } from '../actions/types';
-import _ from 'lodash';
+import keyBy from 'lodash/keyBy';
+import omitBy from 'lodash/omitBy';
 
 export default function forms(state = {}, action) {
   let form , index, newState, newForm, direction, question, responseSetId;
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
-      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
+      return Object.assign({}, state, keyBy(action.payload.data, 'id'));
     case PUBLISH_FORM_FULFILLED:
     case SAVE_DRAFT_FORM_FULFILLED:
     case FETCH_FORM_FULFILLED:
@@ -67,7 +67,7 @@ export default function forms(state = {}, action) {
       newState[form.id||0] = newForm;
       return newState;
     case DELETE_FORM_FULFILLED:
-      return _.omitBy(state,(v, k)=>{
+      return omitBy(state,(v, k)=>{
         return action.payload.data.id==k;
       });
     default:

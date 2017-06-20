@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
-import _ from 'lodash';
+import values from 'lodash/values';
+import filter from 'lodash/filter';
+import clone from 'lodash/clone';
+import isEmpty from 'lodash/isEmpty';
 
 import Errors from '../Errors.js';
 import NestedSearchBar from '../NestedSearchBar';
@@ -18,8 +21,8 @@ export default class ProfileEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    var surveillanceSystems  =  _.values(nextProps.surveillanceSystems);
-    var surveillancePrograms =  _.values(nextProps.surveillancePrograms);
+    var surveillanceSystems  =  values(nextProps.surveillanceSystems);
+    var surveillancePrograms =  values(nextProps.surveillancePrograms);
     this.setState({surveillanceSystems:  surveillanceSystems,
       surveillancePrograms: surveillancePrograms,
       defaultProgramId: (surveillancePrograms[0] && surveillancePrograms[0].id) || -1,
@@ -74,23 +77,23 @@ export default class ProfileEditor extends Component {
   }
 
   programSearch(programSearchTerm){
-    var surveillancePrograms = _.values(this.props.surveillancePrograms);
+    var surveillancePrograms = values(this.props.surveillancePrograms);
     if(programSearchTerm && programSearchTerm.length > 1){
-      surveillancePrograms = _.filter(surveillancePrograms, (sp) => sp.name.toLowerCase().includes(programSearchTerm.toLowerCase()) || sp.id === this.state.lastProgramId || sp.id.toString() === this.state.lastProgramId);
+      surveillancePrograms = filter(surveillancePrograms, (sp) => sp.name.toLowerCase().includes(programSearchTerm.toLowerCase()) || sp.id === this.state.lastProgramId || sp.id.toString() === this.state.lastProgramId);
     }
     this.setState({surveillancePrograms: surveillancePrograms, defaultProgramId: (surveillancePrograms[0] && surveillancePrograms[0].id) || -1});
   }
 
   systemSearch(systemSearchTerm){
-    var surveillanceSystems = _.values(this.props.surveillanceSystems);
+    var surveillanceSystems = values(this.props.surveillanceSystems);
     if(systemSearchTerm && systemSearchTerm.length > 1){
-      surveillanceSystems = _.filter(surveillanceSystems, (ss) => ss.name.toLowerCase().includes(systemSearchTerm.toLowerCase()) || ss.id === this.state.lastSystemId || ss.id.toString() === this.state.lastSystemId);
+      surveillanceSystems = filter(surveillanceSystems, (ss) => ss.name.toLowerCase().includes(systemSearchTerm.toLowerCase()) || ss.id === this.state.lastSystemId || ss.id.toString() === this.state.lastSystemId);
     }
     this.setState({surveillanceSystems: surveillanceSystems, defaultSystemId:(surveillanceSystems[0] && surveillanceSystems[0].id) || -1});
   }
 
   surveillanceProgramsField() {
-    if (_.isEmpty(this.props.surveillancePrograms)) {
+    if (isEmpty(this.props.surveillancePrograms)) {
       return <p>No surveillance programs loaded in the database</p>;
     } else {
       return (<div id="search-programs">
@@ -106,7 +109,7 @@ export default class ProfileEditor extends Component {
   }
 
   surveillanceSystemsField() {
-    if (_.isEmpty(this.props.surveillanceSystems)) {
+    if (isEmpty(this.props.surveillanceSystems)) {
       return <p>No surveillance systems loaded in the database</p>;
     } else {
       return (<div id="search-systems">
@@ -122,7 +125,7 @@ export default class ProfileEditor extends Component {
   }
 
   profileInformation() {
-    let profileInformation = _.clone(this.state);
+    let profileInformation = clone(this.state);
     delete profileInformation.errors;
     if (profileInformation.lastSystemId === -1) {
       if (profileInformation.defaultSystemId !== -1){

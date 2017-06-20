@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import moment from 'moment';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from "./VersionInfo";
@@ -103,7 +104,7 @@ export default class QuestionDetails extends Component {
             </div>
             <div className="box-content">
               <strong>Created: </strong>
-              { moment(question.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
+              { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
             </div>
             { question.parent &&
               <div className="box-content">
