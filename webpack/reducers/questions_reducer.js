@@ -43,7 +43,7 @@ export default function questions(state = {}, action) {
       newData.forEach((obj) => {
         obj['fromMiddleware'] = true;
       });
-      return Object.assign({}, state, _.keyBy(newData, 'id'));
+      return Object.assign({}, state, keyBy(newData, 'id'));
     case FETCH_QUESTION_USAGE_FULFILLED:
       const questionsClone = Object.assign({}, state);
       if (questionsClone[action.payload.data.id] === undefined) {

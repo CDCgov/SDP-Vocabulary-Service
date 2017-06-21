@@ -35,7 +35,7 @@ export default function responseSets(state = {}, action) {
       const rsId = action.payload.data.id;
       const existRs = responseSetClone[rsId];
       if (existRs) {
-        responseSetClone[rsId] = _.assign(existRs, action.payload.data);
+        responseSetClone[rsId] = assign(existRs, action.payload.data);
       } else {
         responseSetClone[rsId] = action.payload.data;
       }
