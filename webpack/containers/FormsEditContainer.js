@@ -12,7 +12,7 @@ import { formProps } from '../prop-types/form_props';
 import { questionsProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import {Button} from 'react-bootstrap';
-import _ from 'lodash';
+import capitalize from 'lodash/capitalize';
 
 class FormsEditContainer extends Component {
 
@@ -139,7 +139,7 @@ class FormsEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{_.capitalize(this.props.params.action)} Form </h1>
+              <h1 className="panel-title">{capitalize(this.props.params.action)} Form </h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">

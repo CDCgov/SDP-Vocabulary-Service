@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import _ from 'lodash';
+import sortBy from 'lodash/sortBy';
 
 export default class CodedSetTable extends Component {
 
@@ -33,7 +33,7 @@ export default class CodedSetTable extends Component {
   }
 
   sortedItems() {
-    return _.sortBy(this.props.items, ['codeSystem', 'value']);
+    return sortBy(this.props.items, ['codeSystem', 'value']);
   }
 }
 

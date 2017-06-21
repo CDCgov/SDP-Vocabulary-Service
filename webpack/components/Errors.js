@@ -1,13 +1,18 @@
 import React, { Component, PropTypes } from 'react';
-import _ from 'lodash';
+import keys from 'lodash/keys';
+import map from 'lodash/map';
+import reduce from 'lodash/reduce';
+import flatten from 'lodash/flatten';
+import values from 'lodash/values';
+
 export default class Errors extends Component {
   render() {
-    if (_.keys(this.props.errors).length > 0) {
+    if (keys(this.props.errors).length > 0) {
       return (
         <div id="error_explanation">
           <h1>{this.errorCount()} error(s) prohibited this form from being saved:</h1>
           <ul>
-          {_.map(this.errorList(), (e, i) => <li key={i}>{e}</li>)}
+          {map(this.errorList(), (e, i) => <li key={i}>{e}</li>)}
           </ul>
         </div>
       );
@@ -17,11 +22,11 @@ export default class Errors extends Component {
   }
 
   errorCount() {
-    return _.reduce(_.values(this.props.errors), (sum, v) => sum + v.length, 0);
+    return reduce(values(this.props.errors), (sum, v) => sum + v.length, 0);
   }
 
   errorList() {
-    return _.flatten(_.keys(this.props.errors).map((k) => {
+    return flatten(keys(this.props.errors).map((k) => {
       return this.props.errors[k].map((e) => `${k} - ${e}`);
     }));
   }

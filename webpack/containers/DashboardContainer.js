@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import isEmpty from 'lodash/isEmpty';
+
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchSearchResults, fetchMoreSearchResults, setLastSearch } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
@@ -10,7 +12,7 @@ import currentUserProps from '../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import { signUp } from '../actions/current_user_actions';
-import _ from 'lodash';
+
 
 const DASHBOARD_CONTEXT = 'DASHBOARD_CONTEXT';
 const NO_SEARCH_RESULTS = {};
@@ -83,7 +85,7 @@ class DashboardContainer extends Component {
           selector: '.adv-search-link',
           position: 'right',
         }];
-      if(_.isEmpty(this.props.currentUser)) {
+      if(isEmpty(this.props.currentUser)) {
         steps = steps.concat([
           {
             title: 'Log In',
@@ -129,7 +131,7 @@ class DashboardContainer extends Component {
   }
 
   render() {
-    let loggedIn = ! _.isEmpty(this.props.currentUser);
+    let loggedIn = ! isEmpty(this.props.currentUser);
     const searchResults = this.props.searchResults;
     return (
       <div className="container-fluid">

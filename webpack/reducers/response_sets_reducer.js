@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import keyBy from 'lodash/keyBy';
+import assign from 'lodash/assign';
 
 import {
   FETCH_RESPONSE_SETS_FULFILLED,
@@ -14,7 +15,7 @@ export default function responseSets(state = {}, action) {
   switch (action.type) {
     case FETCH_RESPONSE_SETS_FULFILLED:
       responseSetClone = Object.assign({}, state);
-      return _.assign(responseSetClone, _.keyBy(action.payload.data, 'id'));
+      return assign(responseSetClone, keyBy(action.payload.data, 'id'));
     case FETCH_RESPONSE_SET_FULFILLED:
     case SAVE_DRAFT_RESPONSE_SET_FULFILLED:
     case PUBLISH_RESPONSE_SET_FULFILLED:
@@ -23,7 +24,7 @@ export default function responseSets(state = {}, action) {
       const id = action.payload.data.id;
       const existingRs = responseSetClone[action.payload.data.id];
       if (existingRs) {
-        responseSetClone[id] = _.assign(existingRs, action.payload.data);
+        responseSetClone[id] = assign(existingRs, action.payload.data);
       } else {
         responseSetClone[id] = action.payload.data;
       }

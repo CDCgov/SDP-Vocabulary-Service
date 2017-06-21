@@ -1,13 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import { Button } from 'react-bootstrap';
+import compact from 'lodash/compact';
+import union from 'lodash/union';
+
 import { formProps } from '../prop-types/form_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import { questionsProps } from '../prop-types/question_props';
-import { Button } from 'react-bootstrap';
+
 import QuestionItem from './QuestionItem';
 import ModalDialog  from './ModalDialog';
 import Errors from './Errors';
-import _ from 'lodash';
+
 
 class FormEdit extends Component {
 
@@ -57,7 +61,7 @@ class FormEdit extends Component {
     }
     this.unsavedState = false;
     this.lastQuestionCount = this.state.formQuestions.length;
-    this.addedResponseSets = _.compact(this.state.formQuestions.map((fq) => fq.responseSetId));
+    this.addedResponseSets = compact(this.state.formQuestions.map((fq) => fq.responseSetId));
     this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
     this.handleResponseSetChangeEvent = this.handleResponseSetChangeEvent.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -184,7 +188,7 @@ class FormEdit extends Component {
     if(this.state.formQuestions[questionIndex].responseSetId == responseSet.id){
       return;
     }
-    this.addedResponseSets = _.union(this.addedResponseSets, [responseSet.id]);
+    this.addedResponseSets = union(this.addedResponseSets, [responseSet.id]);
     var newState = Object.assign({}, this.state);
     newState.formQuestions[questionIndex].responseSetId = responseSet.id;
     this.setState(newState);
@@ -195,8 +199,8 @@ class FormEdit extends Component {
     if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
       linkedResponseSets = this.props.questions[qId].responseSets || [];
     }
-    linkedResponseSets = _.union(linkedResponseSets, this.addedResponseSets, this.state.formQuestions.map((fq) => fq.responseSetId));
-    return _.compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
+    linkedResponseSets = union(linkedResponseSets, this.addedResponseSets, this.state.formQuestions.map((fq) => fq.responseSetId));
+    return compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
   }
 
   handleSelectSearchResult(i, responseSet){

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { publishersProps } from '../../prop-types/publisher_props';
-import _ from 'lodash';
+import values from 'lodash/values';
 import strictUriEncode from 'strict-uri-encode';
 
 class PublisherLookUp extends Component {
@@ -11,7 +11,7 @@ class PublisherLookUp extends Component {
               </button>
               <ul className="dropdown-menu">
                 <li key="header" className="dropdown-header">Publishers</li>
-                {_.values(this.props.publishers).map((p, i) => {
+                {values(this.props.publishers).map((p, i) => {
                   return <li key={i}><a href={this.link(p)}>{p.name} &lt;{p.email}&gt;</a></li>;
                 })}
               </ul>

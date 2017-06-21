@@ -3,7 +3,7 @@ import {
   FETCH_MORE_SEARCH_RESULTS_FULFILLED
 } from '../actions/types';
 
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 
 export default function searchResults(state = {}, action) {
   switch (action.type) {
@@ -12,7 +12,7 @@ export default function searchResults(state = {}, action) {
       stateClone[action.meta.context] = action.payload.data;
       return stateClone;
     case FETCH_MORE_SEARCH_RESULTS_FULFILLED:
-      const newStateClone = _.cloneDeep(state);
+      const newStateClone = cloneDeep(state);
       const hits = newStateClone[action.meta.context].hits;
       hits.hits = hits.hits.concat(action.payload.data.hits.hits);
       return newStateClone;
