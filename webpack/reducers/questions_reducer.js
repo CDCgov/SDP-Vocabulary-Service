@@ -7,7 +7,9 @@ import {
   FETCH_QUESTION_FULFILLED,
   FETCH_QUESTION_USAGE_FULFILLED,
   FETCH_QUESTIONS_FULFILLED,
-  DELETE_QUESTION_FULFILLED
+  DELETE_QUESTION_FULFILLED,
+  FETCH_QUESTION_FROM_MIDDLE_FULFILLED,
+  FETCH_QUESTIONS_FROM_MIDDLE_FULFILLED
 } from '../actions/types';
 
 function addQuestionToState(action, state){
@@ -33,6 +35,15 @@ export default function questions(state = {}, action) {
       return omitBy(state,(v, k)=>{
         return action.payload.data.id==k;
       });
+    case FETCH_QUESTION_FROM_MIDDLE_FULFILLED:
+      action.payload.data['fromMiddleware'] = true;
+      return addQuestionToState(action, state);
+    case FETCH_QUESTIONS_FROM_MIDDLE_FULFILLED:
+      let newData = action.payload.data.slice();
+      newData.forEach((obj) => {
+        obj['fromMiddleware'] = true;
+      });
+      return Object.assign({}, state, keyBy(newData, 'id'));
     case FETCH_QUESTION_USAGE_FULFILLED:
       const questionsClone = Object.assign({}, state);
       if (questionsClone[action.payload.data.id] === undefined) {

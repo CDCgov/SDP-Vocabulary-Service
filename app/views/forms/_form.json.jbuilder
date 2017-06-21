@@ -6,7 +6,7 @@ json.url form_url(form, format: :json)
 
 json.questions form.questions do |q|
   json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :question_type_id, :description, :status, \
-                :version, :version_independent_id, \
+                :version, :version_independent_id, :response_type, \
                 :other_allowed
 end
 
