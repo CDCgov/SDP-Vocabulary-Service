@@ -5,7 +5,7 @@ import extractFromSearchResults from '../../../webpack/middleware/extract_from_s
 
 import {
   FETCH_SEARCH_RESULTS_FULFILLED,
-  FETCH_QUESTION_FULFILLED
+  FETCH_QUESTION_FROM_MIDDLE_FULFILLED
 } from '../../../webpack/actions/types';
 
 describe('extractFromSearchResults middleware', () => {
@@ -31,7 +31,7 @@ describe('extractFromSearchResults middleware', () => {
 
   it('will dispatch actions for questions in forms', () => {
     extractFromSearchResults(store)(next)(action);
-    let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_QUESTION_FULFILLED);
+    let dispatchedAction = store.dispatchedActions.find((a) => a.type === FETCH_QUESTION_FROM_MIDDLE_FULFILLED);
     expect(dispatchedAction).to.exist;
     expect(dispatchedAction.payload.data.content).to.equal('M?');
   });

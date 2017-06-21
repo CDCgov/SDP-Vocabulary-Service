@@ -7,7 +7,8 @@ import {
   FETCH_RESPONSE_SET_USAGE_FULFILLED,
   SAVE_RESPONSE_SET_FULFILLED,
   SAVE_DRAFT_RESPONSE_SET_FULFILLED,
-  PUBLISH_RESPONSE_SET_FULFILLED
+  PUBLISH_RESPONSE_SET_FULFILLED,
+  FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED
 } from '../actions/types';
 
 export default function responseSets(state = {}, action) {
@@ -28,6 +29,17 @@ export default function responseSets(state = {}, action) {
       } else {
         responseSetClone[id] = action.payload.data;
       }
+      return responseSetClone;
+    case FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED:
+      responseSetClone = Object.assign({}, state);
+      const rsId = action.payload.data.id;
+      const existRs = responseSetClone[rsId];
+      if (existRs) {
+        responseSetClone[rsId] = _.assign(existRs, action.payload.data);
+      } else {
+        responseSetClone[rsId] = action.payload.data;
+      }
+      responseSetClone[rsId]['fromMiddleware'] = true;
       return responseSetClone;
     case FETCH_RESPONSE_SET_USAGE_FULFILLED:
       responseSetClone = Object.assign({}, state);

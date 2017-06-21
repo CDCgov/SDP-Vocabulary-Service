@@ -1,6 +1,8 @@
 import {
   FETCH_FORM_FULFILLED,
   FETCH_FORMS_FULFILLED,
+  FETCH_FORM_FROM_MIDDLE_FULFILLED,
+  FETCH_FORMS_FROM_MIDDLE_FULFILLED,
   PUBLISH_FORM_FULFILLED,
   DELETE_FORM_FULFILLED,
   SAVE_DRAFT_FORM_FULFILLED,
@@ -17,12 +19,23 @@ export default function forms(state = {}, action) {
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
       return Object.assign({}, state, keyBy(action.payload.data, 'id'));
+    case FETCH_FORMS_FROM_MIDDLE_FULFILLED:
+      let newData = action.payload.data.slice();
+      newData.forEach((obj) => {
+        obj['fromMiddleware'] = true;
+      });
+      return Object.assign({}, state, keyBy(newData, 'id'));
     case PUBLISH_FORM_FULFILLED:
     case SAVE_DRAFT_FORM_FULFILLED:
     case FETCH_FORM_FULFILLED:
       const formClone = Object.assign({}, state);
       formClone[action.payload.data.id] = action.payload.data;
       return formClone;
+    case FETCH_FORM_FROM_MIDDLE_FULFILLED:
+      newState = Object.assign({}, state);
+      newState[action.payload.data.id] = action.payload.data;
+      newState[action.payload.data.id]['fromMiddleware'] = true;
+      return newState;
     case CREATE_FORM:
       newState = Object.assign({}, state);
       newState[0] = {formQuestions: [], questions: [], version: 1, id: 0};

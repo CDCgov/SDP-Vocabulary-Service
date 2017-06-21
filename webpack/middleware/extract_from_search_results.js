@@ -1,8 +1,8 @@
 import {
   FETCH_SEARCH_RESULTS_FULFILLED,
-  FETCH_QUESTION_FULFILLED,
-  FETCH_FORM_FULFILLED,
-  FETCH_RESPONSE_SET_FULFILLED
+  FETCH_QUESTION_FROM_MIDDLE_FULFILLED,
+  FETCH_FORM_FROM_MIDDLE_FULFILLED,
+  FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED
 } from '../actions/types';
 
 import { dispatchIfNotPresent } from './store_helper';
@@ -29,7 +29,7 @@ const extractFromSearchResults = store => next => action => {
         switch (hit.Type) {
           case 'question':
             const question = createQuestion(hit.Source);
-            dispatchIfNotPresent(store, 'questions', question, FETCH_QUESTION_FULFILLED);
+            dispatchIfNotPresent(store, 'questions', question, FETCH_QUESTION_FROM_MIDDLE_FULFILLED);
             break;
           case 'form':
             const form = {id: hit.Source.id, name: hit.Source.name,
@@ -41,13 +41,13 @@ const extractFromSearchResults = store => next => action => {
             if (hit.Source.questions) {
               form.questions = hit.Source.questions.map((q) => createQuestion(q));
             }
-            dispatchIfNotPresent(store, 'forms', form, FETCH_FORM_FULFILLED);
+            dispatchIfNotPresent(store, 'forms', form, FETCH_FORM_FROM_MIDDLE_FULFILLED);
             break;
           case 'response_set':
             let responseSet = Object.assign({}, hit.Source);
             responseSet.responses = responseSet.codes;
             delete responseSet["codes"];
-            dispatchIfNotPresent(store, 'response_sets', responseSet, FETCH_RESPONSE_SET_FULFILLED);
+            dispatchIfNotPresent(store, 'response_sets', responseSet, FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED);
             break;
         }
       });
