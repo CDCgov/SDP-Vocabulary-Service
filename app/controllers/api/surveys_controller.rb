@@ -3,7 +3,11 @@ module Api
     respond_to :json
 
     def index
-      @surveys = params[:search] ? Survey.includes(:forms, :published_by).search(params[:search]) : Survey.all.includes(:forms, :published_by)
+      @surveys = if params[:search]
+                   Survey.includes(:published_by, survey_forms: [form: { form_questions: [:response_set, :question] }]).search(params[:search])
+                 else
+                   Survey.includes(:published_by, survey_forms: [form: { form_questions: [:response_set, :question] }]).all
+                 end
       @surveys = params[:limit] ? @surveys.limit(params[:limit]) : @surveys
       @surveys = @surveys.order(version_independent_id: :asc)
       render json: @surveys, each_serializer: SurveySerializer
