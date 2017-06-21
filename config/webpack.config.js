@@ -5,6 +5,7 @@ var path = require('path');
 var webpack = require('webpack');
 var StatsPlugin = require('stats-webpack-plugin');
 var autoprefixer = require('autoprefixer');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // must match config.webpack.dev_server.port
 var devServerPort = 3808;
@@ -21,7 +22,7 @@ var config = {
     'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',
     'landing': './webpack/landing.js'
-    },
+  },
 
   output: {
     // Build assets directly in to public/webpack/, let webpack know
@@ -54,7 +55,7 @@ var config = {
       { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] }
     ],
     options: {
-	    sourceMap: true
+      sourceMap: true
     }
   },
 
@@ -79,6 +80,7 @@ var config = {
     new webpack.DefinePlugin({
       DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
     }),
+    new BundleAnalyzerPlugin()
   ]
 };
 
