@@ -135,7 +135,7 @@ module SDP
       with_client do |_client|
         delete_all('form', Form.ids)
         Form.all.each do |form|
-          UpdateIndexJob.perform_later('form', ESFormSerializer.new(form).as_json)
+          UpdateIndexJob.perform_later('form', form)
         end
       end
     end
@@ -145,7 +145,7 @@ module SDP
       with_client do |_client|
         delete_all('question', Question.ids)
         Question.all.each do |question|
-          UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question).as_json)
+          UpdateIndexJob.perform_later('question', question)
         end
       end
     end
@@ -155,7 +155,7 @@ module SDP
       with_client do |_client|
         delete_all('response_set', ResponseSet.ids)
         ResponseSet.all.each do |response_set|
-          UpdateIndexJob.perform_later('response_set', ESResponseSetSerializer.new(response_set).as_json)
+          UpdateIndexJob.perform_later('response_set', response_set)
         end
       end
     end
@@ -165,7 +165,7 @@ module SDP
       with_client do |_client|
         delete_all('survey', Survey.ids)
         Survey.all.each do |survey|
-          UpdateIndexJob.perform_later('survey', ESSurveySerializer.new(survey).as_json)
+          UpdateIndexJob.perform_later('survey', survey)
         end
       end
     end

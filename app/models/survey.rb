@@ -28,7 +28,7 @@ class Survey < ApplicationRecord
   end
 
   def index
-    UpdateIndexJob.perform_later('survey', ESSurveySerializer.new(self).as_json)
+    UpdateIndexJob.perform_later('survey', self)
   end
 
   def delete_index
