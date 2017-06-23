@@ -41,5 +41,7 @@ namespace :data do
       survey.survey_forms << SurveyForm.new(form: f, position: survey_position)
     end
     survey.save!
+    #wait for the async job queue to be processed
+    sleep 60
   end
 end
