@@ -20,7 +20,6 @@
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-1": "^6.16.0",
-    "bootstrap-loader": "^1.2.1",
     "css-loader": "^0.25.0",
     "date-fns": "^1.28.5",
     "extract-text-webpack-plugin": "^1.0.1",

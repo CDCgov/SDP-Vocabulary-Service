@@ -1,4 +1,5 @@
 require("styles/master.scss");
+require("bootstrap-sass/assets/javascripts/bootstrap.js");
 
 import React from 'react';
 import ReactDOM from 'react-dom';
