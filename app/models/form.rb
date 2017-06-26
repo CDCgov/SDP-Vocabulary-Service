@@ -24,7 +24,7 @@ class Form < ApplicationRecord
   after_commit :delete_index, on: :destroy
 
   def index
-    UpdateIndexJob.perform_later('form', ESFormSerializer.new(self).as_json)
+    UpdateIndexJob.perform_later('form', self)
   end
 
   def delete_index

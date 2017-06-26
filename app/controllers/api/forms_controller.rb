@@ -14,7 +14,7 @@ module Api
     end
 
     def show
-      @form = Form.by_id_and_version(params[:id], params[:version])
+      @form = Form.includes(:published_by, form_questions: [{ response_set: :responses }, :question]).by_id_and_version(params[:id], params[:version])
       if @form.nil?
         not_found
         return

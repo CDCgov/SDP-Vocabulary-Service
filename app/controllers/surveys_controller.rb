@@ -39,7 +39,7 @@ class SurveysController < ApplicationController
         update_successful = @survey.update(form_params)
       end
       if update_successful
-        render :show, status: :ok, location: @survey
+        render json: @survey.to_json, status: :ok
       else
         render json: @survey.errors, status: :unprocessable_entity
       end

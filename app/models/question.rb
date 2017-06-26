@@ -23,7 +23,7 @@ class Question < ApplicationRecord
   after_commit :delete_index, on: :destroy
 
   def index
-    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(self).as_json)
+    UpdateIndexJob.perform_later('question', self)
   end
 
   def delete_index

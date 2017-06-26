@@ -58,7 +58,7 @@ class FormsController < ApplicationController
         update_successful = @form.update(form_params)
       end
       if update_successful
-        render :show, status: :ok, location: @form
+        render json: @form.to_json, status: :ok
       else
         render json: @form.errors, status: :unprocessable_entity
       end
