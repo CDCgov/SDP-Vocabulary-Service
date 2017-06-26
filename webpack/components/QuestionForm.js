@@ -36,6 +36,14 @@ class QuestionForm extends Component{
     this.unsavedState = false;
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(this.props.responseTypes !== nextProps.responseTypes && (this.state.responseTypeId === null || this.state.responseTypeId === undefined)) {
+      const sortedRT = this.sortedResponseTypes(nextProps.responseTypes);
+      let rtid = sortedRT[0] ? sortedRT[0].id : null;
+      this.setState({ responseTypeId: rtid });
+    }
+  }
+
   componentDidMount() {
     if(this.props.route && this.props.router){
       this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
@@ -188,9 +196,8 @@ class QuestionForm extends Component{
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
-                      {this.sortedResponseTypes().map((rt) => {
+                      {this.sortedResponseTypes(this.props.responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
-
                       })}
                     </select>
                   </div>
@@ -250,8 +257,8 @@ class QuestionForm extends Component{
     }
   }
 
-  sortedResponseTypes(){
-    return values(this.props.responseTypes).sort((a,b) => {
+  sortedResponseTypes(responseTypes){
+    return values(responseTypes).sort((a,b) => {
       if(a.name == b.name ){
         return 0;
       }else if(a.name < b.name){
