@@ -14,7 +14,7 @@ class FormQuestion < ApplicationRecord
 
   def reindex_on_update
     # While question can't actually change, previous_changes[:question_id] will exist if this form question was just created
-    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(question)) if previous_changes[:question_id]
+    UpdateIndexJob.perform_later('question', question) if previous_changes[:question_id]
     if response_set && previous_changes[:response_set_id]
       UpdateIndexJob.perform_later('response_set', response_set)
     end
