@@ -12,6 +12,7 @@ class Form < ApplicationRecord
   belongs_to :published_by, class_name: 'User'
   belongs_to :parent, class_name: 'Form'
 
+  validates :name, presence: true
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
                                                           message: 'must be a valid OMB Control Number' },

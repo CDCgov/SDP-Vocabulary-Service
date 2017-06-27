@@ -12,6 +12,7 @@ class Survey < ApplicationRecord
   belongs_to :surveillance_system
   belongs_to :surveillance_program
 
+  validates :name, presence: true
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
                                                           message: 'must be a valid OMB Control Number' },

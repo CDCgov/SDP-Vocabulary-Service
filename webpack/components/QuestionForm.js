@@ -37,7 +37,7 @@ class QuestionForm extends Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.responseTypes !== nextProps.responseTypes && (this.state.responseTypeId === null || this.state.responseTypeId === undefined)) {
+    if(this.state.responseTypeId === null || this.state.responseTypeId === undefined) {
       const sortedRT = this.sortedResponseTypes(nextProps.responseTypes);
       let rtid = sortedRT[0] ? sortedRT[0].id : null;
       this.setState({ responseTypeId: rtid });
