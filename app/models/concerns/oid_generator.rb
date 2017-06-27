@@ -9,8 +9,6 @@ module OidGenerator
   end
 
   included do
-    validate :validate_oid
-    after_save :assign_oid, if: proc { |r| r.oid.blank? }
   end
 
   # Callback that assigns the oid. This should never be called directly.
