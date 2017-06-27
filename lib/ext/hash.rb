@@ -1,4 +1,5 @@
 class Hash
+  
   def respond_to_missing?(m, include_private = false)
     k = m.to_s.sub(/^get([A-Z])/) { Regexp.last_match(1).downcase.to_s }
     k2 = k[0...-1]
