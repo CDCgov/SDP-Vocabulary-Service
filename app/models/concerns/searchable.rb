@@ -1,5 +1,4 @@
-# rubocop:disable Metrics/PerceivedComplexity
-# rubocop:disable Metrics/CyclomaticComplexity
+
 module Searchable
   extend ActiveSupport::Concern
 

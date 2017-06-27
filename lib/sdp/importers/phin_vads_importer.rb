@@ -1,5 +1,5 @@
-require_relative '../../hessian'
-require_relative '../../hash'
+require_relative '../../ext/hessian'
+require_relative '../../ext/hash'
 module SDP
   module Importers
     class PhinVadsImporter

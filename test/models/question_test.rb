@@ -63,50 +63,6 @@ class QuestionTest < ActiveSupport::TestCase
     assert true
   end
 
-  test 'assign_new_oids' do
-    prefix = Question.oid_prefix
-
-    q1 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    assert q1.save
-    assert_equal 1, q1.version
-    assert_equal "Q-#{q1.id}", q1.version_independent_id
-    assert_equal "#{prefix}.#{q1.id}", q1.oid
-
-    q2 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q2.oid = "#{prefix}.#{q1.id}"
-    assert_not q2.valid?
-    q2.oid = "#{prefix}.#{q1.id + 1}"
-    assert q2.valid?
-    assert q2.save
-
-    q3 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q3.oid = "#{prefix}.#{q2.id + 3}"
-    assert q3.save
-
-    q4 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q4.oid = "#{prefix}.#{q2.id + 5}"
-    assert q4.save
-
-    # Should find next available oid which is q2.id+4 NOT q2.id+5
-    q5 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    assert q5.save
-    assert_equal "#{prefix}.#{q2.id + 4}", q5.oid
-
-    # Should follow special validation rules for new versions
-    q6 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q6.version_independent_id = q1.version_independent_id
-    q6.version = q1.version + 1
-    assert q6.save
-    assert_equal q1.oid, q6.oid
-
-    q7 = Question.new(content: 'test', question_type: QuestionType.new(name: 'TestName'))
-    q7.version_independent_id = q1.version_independent_id
-    q7.version = q1.version + 2
-    q7.oid = q1.oid
-    assert q7.save
-    assert_equal q1.oid, q7.oid
-  end
-
   test 'surveillance_systems' do
     q = questions(:one)
     ss = q.surveillance_systems
