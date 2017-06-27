@@ -3,7 +3,7 @@ AllCops:
   TargetRubyVersion: 2.2
   Exclude:
     - 'bin/**/*'
-    - 'lib/hessian*'
+    - 'lib/ext/*'
     - 'lib/sdp/importers/phin_vads_importer.rb'
     - 'lib/tasks/cucumber.rake'
     - 'lib/tasks/data.rake'
