@@ -28,7 +28,7 @@ Feature: Draft, Publish, and Revise Questions
     And I should see "Description: This is a question"
     And I should see "Edit"
     When I click on the "Edit" button
-    Then I should not see "Other Allowed"
+    Then I should see "Other Allowed"
     And I fill in the "Description" field with "This is NOT a good description"
     And I select the "Choice - Answer is a Coding drawn from a list of options." option in the "Response Type" list
     Then I should see "Other Allowed"
