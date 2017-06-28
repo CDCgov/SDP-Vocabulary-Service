@@ -24,7 +24,7 @@ class SurveyTest < ActiveSupport::TestCase
     user = users(:admin)
     rs = ResponseSet.new(name: 'Test publish', created_by: user)
     assert rs.save
-    q = Question.new(content: 'Test publish', created_by: user)
+    q = Question.new(content: 'Test publish', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
     q.response_sets = [rs]
     assert q.save
     f = Form.new(name: 'Test publish', created_by: user)

@@ -152,7 +152,7 @@ class DashboardSearch extends Component {
             {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
-            }}>Clear Filters</a>}
+            }}>Clear Programs & Systems</a>}
             <a className="adv-search-link pull-right" title="Advanced Search" href="#" tabIndex="4" onClick={(e) => {
               e.preventDefault();
               this.showAdvSearch();

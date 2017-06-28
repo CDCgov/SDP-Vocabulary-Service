@@ -28,10 +28,10 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'revisions should increment version without needing a param' do
-    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     Question.last.publish(@current_user)
     v1 = Question.last
-    post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     assert_response :success
     v2 = Question.last
     assert_equal v1.version_independent_id, v2.version_independent_id
@@ -40,25 +40,25 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot revise something you do not own' do
-    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     Question.last.publish(@current_user)
     sign_in users(:not_admin)
-    post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     assert_response :unauthorized
   end
 
   test 'cannot revise a draft' do
-    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     # Question.last.publish
     assert_equal DRAFT, Question.last.status
-    post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     assert_response :unprocessable_entity
   end
 
   test 'should create a draft question' do
     assert_enqueued_jobs 0
     assert_difference('Question.count') do
-      post questions_url(format: :json), params: { question: { content: 'Unique content', question_type_id: @question.question_type.id } }
+      post questions_url(format: :json), params: { question: { content: 'Unique content', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     end
     assert_enqueued_jobs 1
     assert_response :created
@@ -67,19 +67,19 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update a draft question' do
-    post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { content: 'TBD content', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     assert_equal DRAFT, Question.last.status
-    put question_url(Question.last, format: :json), params: { question: { content: 'new content' } }
+    put question_url(Question.last, format: :json), params: { question: { content: 'new content', response_type_id: @question.response_type.id } }
     assert_equal 'new content', Question.last.content
   end
 
   test 'should be unable to update a draft question owned by someone else' do
-    patch question_url(@question5, format: :json), params: { question: { content: 'new content' } }
+    patch question_url(@question5, format: :json), params: { question: { content: 'new content', response_type_id: @question.response_type.id } }
     assert_response :forbidden
   end
 
   test 'should be unable to update a published question' do
-    patch question_url(questions(:one), format: :json), params: { question: { content: 'secret content' } }
+    patch question_url(questions(:one), format: :json), params: { question: { content: 'secret content', response_type_id: @question.response_type.id } }
     assert_response :unprocessable_entity
     assert_nil Question.find_by(content: 'secret content')
   end
@@ -98,7 +98,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy a draft question' do
-    post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { content: 'TBD content', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     assert_equal Question.last.status, 'draft'
     last_id = Question.last.id
     assert_difference('Question.count', -1) do
@@ -109,7 +109,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy a draft question and questionForms' do
-    post questions_url(format: :json), params: { question: { content: 'TBD content', question_type_id: @question.question_type.id } }
+    post questions_url(format: :json), params: { question: { content: 'TBD content', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     assert_equal Question.last.status, 'draft'
     last_id = Question.last.id
     linked_question = { question_id: last_id, response_set_id: nil, position: 1, program_var: 'test' }

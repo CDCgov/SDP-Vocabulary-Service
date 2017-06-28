@@ -78,7 +78,6 @@ var config = {
     new webpack.DefinePlugin({
       DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
     }),
-    new BundleAnalyzerPlugin()
   ]
 };
 
@@ -97,6 +96,9 @@ if (production) {
     new webpack.optimize.OccurenceOrderPlugin()
   );
 } else {
+  config.plugins.push(
+    new BundleAnalyzerPlugin()
+  );
   config.devServer = {
     port: devServerPort,
     headers: { 'Access-Control-Allow-Origin': '*' }
