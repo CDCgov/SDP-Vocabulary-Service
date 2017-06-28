@@ -16,7 +16,6 @@ class Question < ApplicationRecord
   belongs_to :parent, class_name: 'Question'
 
   validates :content, presence: true
-  validates :response_type, presence: true
   validate :other_allowed_on_when_choice
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
