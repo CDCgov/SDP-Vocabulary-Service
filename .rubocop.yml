@@ -3,6 +3,8 @@ AllCops:
   TargetRubyVersion: 2.2
   Exclude:
     - 'bin/**/*'
+    - 'lib/ext/*'
+    - 'lib/sdp/importers/phin_vads_importer.rb'
     - 'lib/tasks/cucumber.rake'
     - 'lib/tasks/data.rake'
     - 'db/schema.rb'
@@ -48,9 +50,9 @@ Metrics/ModuleLength:
   Exclude:
 # Avoid complex methods.
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 20
 Metrics/PerceivedComplexity:
-  Max: 10
+  Max: 20
 
 Style/GuardClause:
   Enabled: false

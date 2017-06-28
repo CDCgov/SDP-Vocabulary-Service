@@ -1,7 +1,6 @@
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
-# rubocop:disable Metrics/PerceivedComplexity
 module SDP
   module Elasticsearch
     def self.with_client
