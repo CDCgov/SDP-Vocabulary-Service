@@ -32,7 +32,7 @@ Metrics/BlockLength:
     - 'db/migrate/*'
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
-  Max: 20
+  Max: 30
   Exclude:
     - 'db/migrate/*'
     - 'lib/sdp/simple_search.rb'
@@ -43,7 +43,7 @@ Metrics/ClassLength:
 Metrics/AbcSize:
   # The ABC size is a calculated magnitude, so this number can be a Fixnum or
   # a Float.
-  Max: 30
+  Max: 35
   Exclude:
     - 'test/**/*.rb'
 Metrics/ModuleLength:
