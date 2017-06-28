@@ -113,7 +113,6 @@ class SurveysController < ApplicationController
 
   # !!! this algorithm assumes a form cannot appear twice on the same survey !!!
   # Only update survey forms that were changed
-  # rubocop:disable MethodLength
   def update_survey_forms
     updated_fs = []
     if params[:survey][:linked_forms]

@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/MethodLength
 require 'fakeweb'
 require 'json'
 require_relative '../lib/sdp/elastic_search'
@@ -91,4 +90,3 @@ module Elastictest
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
 end
-# rubocop:enable Metrics/MethodLength
