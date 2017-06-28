@@ -18,6 +18,7 @@ The SDP Vocabulary Service requires: Ruby (version 2.3 or later), bundler (versi
 - Otherwise, install Ruby: [Ruby Installation Instructions](https://www.ruby-lang.org/en/documentation/installation/)
     
 #### Bundler >= 1.13.6
+- The gem command should be available after installing Ruby
 
 ```
 gem install bundler
@@ -52,13 +53,13 @@ sudo -u postgres createuser -d <username>
 - Be aware, Elasticsearch can take up a lot of ram (2gb by default) and many file descriptors
 - Install the Oracle JDK >= 1.8 : [Oracle JDK Installation Instructions](http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html)
 - Be careful, if another JDK is installed (Such as OpenJDK) there may be issues if Elasticsearch uses it (for example if JAVA_HOME is pointing to the wrong installation)
-- Install Elasticsearch: [Elasticseach Installation Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html)
+- Install Elasticsearch: [Elasticsearch Installation Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html)
 
 #### (Optional) Install Chrome >= 59
 - Needed for ChromeDriver to run Cucumber tests
 - Install Chrome: [Chrome Download](https://www.google.com/chrome/browser/desktop/index.html)
 
-#### (Optional) Install Elasticsearch >= 5.3.1
+#### (Optional) Install ChromeDriver >= 2.30
 - Needed to run Cucumber tests
 - Install ChromeDriver: [ChromeDriver Download](https://sites.google.com/a/chromium.org/chromedriver/)
 - Make sure ChromeDriver is available in the system PATH or equivalent
@@ -121,8 +122,8 @@ rake cdc:import_systems[<your csv file with systems.csv>]
 // A csv file with programs
 rake cdc:import_programs[<your csv file with programs.csv>]
 
-// An excel file with programs and sytems
-cdc:import_excel[<your excel file with progams and systems.xlsx>]
+// An excel file with programs and systems
+cdc:import_excel[<your excel file with programs and systems.xlsx>]
 ```
 
 ### Start the Service
@@ -140,7 +141,7 @@ foreman start -p 3000
 rake
 ```
 
-- If you wish to run the cucumber tests, which use a browser window to simulate user activity, you need to have installed Chrome and Chromedriver (see above)
+- If you wish to run the cucumber tests, which use a browser window to simulate user activity, you need to have installed Chrome and ChromeDriver (see above)
 - Run Cucumber tests with:
 
 ```
