@@ -3,7 +3,8 @@ Given(/^I have a Response Set with the name "([^"]*)" linked to Surveillance Sys
   ss = SurveillanceSystem.where(name: system_name).first
   rs = ResponseSet.where(name: set_name).first
   rs.update_attribute(:status, 'published')
-  q = Question.new(content: 'test', created_by: user)
+  rt = ResponseType.where(code: 'choice').first
+  q = Question.new(content: 'test', response_type_id: rt.id, created_by: user)
   q.response_sets << rs
   q.save!
   f = Form.new(name: 'test', created_by: user)

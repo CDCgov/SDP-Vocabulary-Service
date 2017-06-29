@@ -3,7 +3,6 @@ module SDP
     class Redcap
       attr_accessor :xml
       attr_accessor :user
-
       def initialize(xml, user)
         @xml = parse_document(xml)
         @user = user
@@ -70,9 +69,24 @@ module SDP
         xml.xpath('//odm:ItemDef').each do |q|
           question = Question.new(content: q.at_xpath('./odm:Question/odm:TranslatedText').text,
                                   created_by: user)
+          type = q.attribute('FieldType')
+          if type && %w(select yesno).index(type.value)
+            question.response_type = ResponseType.where(code: 'choice').first
+            clr = q.at_xpath('./odm:CodeListRef')
+            question.response_sets << response_sets[clr['CodeListOID']] if clr
+          else
+            data_type = q.attribute('DataType')
+            rt = if data_type && data_type.value == 'float'
+                   ResponseType.where(code: 'decimal').first
+                 elsif data_type
+                   ResponseType.where(code: data_type.value).first ||
+                     ResponseType.where(code: 'text').first
+                 else
+                   ResponseType.where(code: 'text').first
+                 end
+            question.response_type = rt
+          end
           questions[q['OID']] = question
-          clr = q.at_xpath('./odm:CodeListRef')
-          question.response_sets << response_sets[clr['CodeListOID']] if clr
         end
         questions
       end
