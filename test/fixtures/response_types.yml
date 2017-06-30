@@ -17,3 +17,9 @@ three:
 four:
   name: "Choice"
   code: "choice"
+five:
+  name: "Decimal"
+  code: "decimal"
+six:
+  name: "Text"
+  code: "text"

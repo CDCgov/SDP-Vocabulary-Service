@@ -2,7 +2,7 @@ class Survey < ApplicationRecord
   include Versionable, Searchable
   acts_as_commentable
 
-  has_many :survey_forms
+  has_many :survey_forms, -> { order 'position asc' }
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
   belongs_to :parent, class_name: 'Survey'
@@ -12,6 +12,7 @@ class Survey < ApplicationRecord
   belongs_to :surveillance_system
   belongs_to :surveillance_program
 
+  validates :name, presence: true
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
                                                           message: 'must be a valid OMB Control Number' },
@@ -23,8 +24,12 @@ class Survey < ApplicationRecord
   after_commit :index, on: [:create, :update]
   after_commit :delete_index, on: :destroy
 
+  def questions
+    Question.joins(form_questions: { form: { survey_forms: :survey } }).where(surveys: { id: id }).all
+  end
+
   def index
-    UpdateIndexJob.perform_later('survey', ESSurveySerializer.new(self).as_json)
+    UpdateIndexJob.perform_later('survey', self)
   end
 
   def delete_index

@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchSurvey, publishSurvey, deleteSurvey } from '../../actions/survey_actions';
-import { fetchForms } from '../../actions/form_actions';
-import { fetchQuestions } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import SurveyShow from '../../components/surveys/Show';
 import { surveyProps } from '../../prop-types/survey_props';
@@ -14,10 +12,6 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 class SurveyShowContainer extends Component {
   componentWillMount() {
-    // Only grabbing forms the first time this loads.
-    // If we create a new form it'll already be in store.
-    this.props.fetchForms();
-    this.props.fetchQuestions();
     this.props.fetchSurvey(this.props.params.surveyId);
   }
 
@@ -25,7 +19,7 @@ class SurveyShowContainer extends Component {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page.',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -37,7 +31,7 @@ class SurveyShowContainer extends Component {
       },
       {
         title: 'View Details',
-        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions.',
+        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a class="tutorial-link" href="#help">Help Documentation (linked here).</a>',
         selector: '.maincontent',
         position: 'left',
       },
@@ -83,6 +77,13 @@ function mapStateToProps(state, ownProps) {
   if (props.survey) {
     props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
     props.forms = props.forms.filter((f) => f !== undefined);
+    props.forms = props.forms.map((f) => {
+      const formWithQuestions = Object.assign({}, f);
+      if (formWithQuestions.formQuestions) {
+        formWithQuestions.questions = formWithQuestions.formQuestions.map((fq) => state.questions[fq.questionId]);
+      }
+      return formWithQuestions;
+    });
     if (props.survey.surveillanceSystemId) {
       props.survey.surveillanceSystem = state.surveillanceSystems[props.survey.surveillanceSystemId];
     }
@@ -94,7 +95,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, publishSurvey, fetchSurvey, deleteSurvey, fetchForms, fetchQuestions}, dispatch);
+  return bindActionCreators({setSteps, publishSurvey, fetchSurvey, deleteSurvey}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -104,8 +105,6 @@ SurveyShowContainer.propTypes = {
   fetchSurvey: PropTypes.func,
   publishSurvey: PropTypes.func,
   deleteSurvey: PropTypes.func,
-  fetchQuestions: PropTypes.func,
-  fetchForms: PropTypes.func,
   setSteps: PropTypes.func,
   params: PropTypes.object,
   router: PropTypes.object,

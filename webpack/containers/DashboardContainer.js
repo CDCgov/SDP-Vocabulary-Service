@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchStats } from '../actions/landing';
+import isEmpty from 'lodash/isEmpty';
+
 import { setSteps } from '../actions/tutorial_actions';
-import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, setLastSearch } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
@@ -11,7 +12,10 @@ import currentUserProps from '../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import { signUp } from '../actions/current_user_actions';
-import _ from 'lodash';
+
+
+const DASHBOARD_CONTEXT = 'DASHBOARD_CONTEXT';
+const NO_SEARCH_RESULTS = {};
 
 class DashboardContainer extends Component {
   constructor(props){
@@ -34,12 +38,15 @@ class DashboardContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchStats();
-    this.search('');
+    var lastSearch = this.props.lastSearch;
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
+                                    lastSearch.programs, lastSearch.systems, lastSearch.mystuff);
+    this.setState({searchTerms: lastSearch.search, searchType: lastSearch.type, progFilters: lastSearch.programs,
+      sysFilters: lastSearch.systems, myStuffFilter: lastSearch.mystuff});
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState != this.state && prevState.page === this.state.page) {
+    if(prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
       let searchType = this.state.searchType;
       let searchTerms = this.state.searchTerms;
       if(searchType === '') {
@@ -48,14 +55,15 @@ class DashboardContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+      this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+      this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
     }
 
     if(prevProps != this.props) {
       let steps = [
         {
           title: 'Help',
-          text: 'Click next to see a step by step walkthrough for using this page.',
+          text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" id="tutorial-link" tabindex="3" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
           selector: '.help-link',
           position: 'bottom',
         },
@@ -77,7 +85,7 @@ class DashboardContainer extends Component {
           selector: '.adv-search-link',
           position: 'right',
         }];
-      if(_.isEmpty(this.props.currentUser)) {
+      if(isEmpty(this.props.currentUser)) {
         steps = steps.concat([
           {
             title: 'Log In',
@@ -123,7 +131,7 @@ class DashboardContainer extends Component {
   }
 
   render() {
-    let loggedIn = ! _.isEmpty(this.props.currentUser);
+    let loggedIn = ! isEmpty(this.props.currentUser);
     const searchResults = this.props.searchResults;
     return (
       <div className="container-fluid">
@@ -159,7 +167,8 @@ class DashboardContainer extends Component {
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
                                  surveillancePrograms={this.props.surveillancePrograms}
                                  setFiltersParent={this.setFiltersParent}
-                                 searchSource={this.props.searchResults.Source} />
+                                 searchSource={this.props.searchResults.Source}
+                                 lastSearch={this.props.lastSearch} />
                 <div className="row">
                   <div className="col-md-12">
                     {this.analyticsGroup(this.state.searchType)}
@@ -204,7 +213,7 @@ class DashboardContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, searchType, tempState,
+    this.props.fetchMoreSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, tempState,
                                       this.state.progFilters,
                                       this.state.sysFilters,
                                       this.state.myStuffFilter);
@@ -223,8 +232,9 @@ class DashboardContainer extends Component {
     if(searchTerms === ''){
       searchTerms = null;
     }
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
   }
 
   selectType(searchType, myStuffToggle=false) {
@@ -254,7 +264,8 @@ class DashboardContainer extends Component {
     if(searchType === '') {
       searchType = null;
     }
-    this.props.fetchSearchResults(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
   }
 
   analyticsGroup(searchType) {
@@ -290,7 +301,7 @@ class DashboardContainer extends Component {
           </div>
           </button>
       </ul>
-      {searchType != '' && <a href="#" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
+      {(searchType !== '' && searchType !== undefined)&& <a href="#" tabIndex="4" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
     </div>);
   }
 
@@ -340,7 +351,8 @@ function mapStateToProps(state) {
     myQuestionCount: state.stats.myQuestionCount,
     myResponseSetCount: state.stats.myResponseSetCount,
     mySurveyCount: state.stats.mySurveyCount,
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[DASHBOARD_CONTEXT] || NO_SEARCH_RESULTS,
+    lastSearch: state.lastSearch,
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
@@ -348,7 +360,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchStats, setSteps, fetchSearchResults, fetchMoreSearchResults, signUp}, dispatch);
+  return bindActionCreators({setSteps, fetchSearchResults, setLastSearch, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -360,9 +372,10 @@ DashboardContainer.propTypes = {
   myQuestionCount: PropTypes.number,
   myResponseSetCount: PropTypes.number,
   mySurveyCount: PropTypes.number,
-  fetchStats: PropTypes.func,
   setSteps: PropTypes.func,
   fetchSearchResults: PropTypes.func,
+  setLastSearch: PropTypes.func,
+  lastSearch: PropTypes.object,
   fetchMoreSearchResults: PropTypes.func,
   signUp: PropTypes.func,
   currentUser: currentUserProps,

@@ -2,7 +2,8 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import moment from 'moment';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 import currentUserProps from "../prop-types/current_user_props";
 import { responseSetProps } from "../prop-types/response_set_props";
 
@@ -40,7 +41,7 @@ export default class SearchResult extends Component {
     return (
       <ul className="dropdown-menu dropdown-menu-right">
         {originalType === 'form_question' && <li>
-          <a title="Modify Program Variable Value" href="#" onClick={this.props.showProgramVarModal}>Modify Program Variable</a>
+          <a title={this.props.programVar ? 'Modify Program Variable Value' : 'Add Program Variable Value'} href="#" onClick={this.props.showProgramVarModal}>{this.props.programVar ? 'Modify' : 'Add'} Program Variable</a>
         </li>}
         {this.isRevisable(result) && <li>
           <Link to={`/${type}s/${result.id}/revise`}>Revise</Link>
@@ -55,7 +56,7 @@ export default class SearchResult extends Component {
           <Link to={`/${type}s/${result.id}`}>Details</Link>
         </li>
         {extraActionName && extraAction && <li>
-          <a className="menu-action" id={`action_for_${result.id}`} onClick={() => extraAction()}>
+          <a className="menu-action" id={`action_for_${result.id}`} onClick={extraAction}>
             {extraActionName}
           </a>
         </li>}
@@ -76,6 +77,13 @@ export default class SearchResult extends Component {
         <li className="result-analytics-item">
           <span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span>
           <p className="item-description"><text className="sr-only">Item visibility status: </text>draft</p>
+        </li>
+      );
+    } else {
+      return(
+        <li className="result-analytics-item">
+          <span className="fa fa-question-circle fa-lg item-status-undefined" aria-hidden="true"></span>
+          <p className="item-description"><text className="sr-only">Item visibility status: </text>Undefined Status</p>
         </li>
       );
     }
@@ -127,6 +135,8 @@ export default class SearchResult extends Component {
       return (<li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>);
     } else if (result.responseSets && result.responseSets.length === 1) {
       return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Set</a></li>);
+    } else if (result.responseSets == undefined) {
+      return (<li>Click question name to view additional question information.</li>);
     } else {
       return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
     }
@@ -193,73 +203,63 @@ export default class SearchResult extends Component {
     switch(type) {
       case 'question':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-question`}>
-            <div className="panel-body">
-              <text className="sr-only">List of links to response sets on this question:</text>
-              {result.responseSets && result.responseSets.length > 0 &&
-                result.responseSets.map((rs, i) => {
-                  return(
-                    <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link>}
-                    </div>
-                  );
-                })
-              }
-            </div>
+          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-question`}>
+            <text className="sr-only">List of links to response sets on this question:</text>
+            {result.responseSets && result.responseSets.length > 0 &&
+              result.responseSets.map((rs, i) => {
+                return(
+                  <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
+                    {rs.name === 'None' ? <text>No Associated Response Set.</text> : <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link>}
+                  </div>
+                );
+              })
+            }
           </div>
         );
       case 'response_set':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
-            <div className="panel-body">
-              <text className="sr-only">List of responses on this response set:</text>
-              {result.codes && result.codes.length > 0 &&
-                result.codes.map((c, i) => {
-                  return(
-                    <div key={`response-${c.id}-${i}`} className="result-details-content">
-                      {`${i+1}. ${c.displayName ? c.displayName : c.code}`}
-                    </div>
-                  );
-                })
-              }
-            </div>
+          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-rs`}>
+            <text className="sr-only">List of responses on this response set:</text>
+            {result.codes && result.codes.length > 0 &&
+              result.codes.map((c, i) => {
+                return(
+                  <div key={`response-${c.id}-${i}`} className="result-details-content">
+                    {`${i+1}. ${c.displayName ? c.displayName : c.code}`}
+                  </div>
+                );
+              })
+            }
           </div>
         );
       case 'form':
       case 'survey_form':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-${type}`}>
-            <div className="panel-body">
-              <text className="sr-only">List of links and names of questions linked to this form:</text>
-              {result.questions && result.questions.length > 0 &&
-                result.questions.map((q, i) => {
-                  return(
-                    <div key={`question-${q.id}-${i}`} className="result-details-content">
-                      <text>
-                        <Link to={`/questions/${q.id}`}> {q.name || q.content}</Link>
-                      </text>
-                    </div>
-                  );
-                })
-              }
-            </div>
+          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-${type}`}>
+            <text className="sr-only">List of links and names of questions linked to this form:</text>
+            {result.questions && result.questions.length > 0 &&
+              result.questions.map((q, i) => {
+                return(
+                  <div key={`question-${q.id}-${i}`} className="result-details-content">
+                    <Link to={`/questions/${q.id}`}> {q.name || q.content}</Link>
+                  </div>
+                );
+              })
+            }
           </div>
         );
       case 'survey':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-survey`}>
-            <div className="panel-body">
-              <text className="sr-only">List of links and names of forms on this survey</text>
-              {result.forms && result.forms.length > 0 &&
-                result.forms.map((f, i) => {
-                  return(
-                    <div key={`form-${f.id}-${i}`} className="result-details-content">
-                      <Link to={`/forms/${f.id}`}>{f.name}</Link>
-                    </div>
-                  );
-                })
-              }
-            </div>
+          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-survey`}>
+            <text className="sr-only">List of links and names of forms on this survey</text>
+            {result.forms && result.forms.length > 0 &&
+              result.forms.map((f, i) => {
+                return(
+                  <div key={`form-${f.id}-${i}`} className="result-details-content">
+                    <Link to={`/forms/${f.id}`}>{f.name}</Link>
+                  </div>
+                );
+              })
+            }
           </div>
         );
     }
@@ -268,64 +268,55 @@ export default class SearchResult extends Component {
   baseResult(type, result, highlight, handleSelectSearchResult, isEditPage, actionName, action) {
     const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-list-alt', 'survey_form': 'fa-list-alt', 'survey': 'fa-clipboard'};
     return (
-      <div className="u-result-group">
-        <div className="u-result" id={`${type}_id_${result.id}`}>
-          <div className="u-result-container">
-            <ul className="u-result-content" aria-label="Summary of a search result or linked object's attributes.">
-              <li className="u-result-content-item">
-                <div className={`u-result-details result__${type}`}>
-                  <div className="result">
-                    <ul className="list-inline result-type-wrapper">
-                      <li className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></li>
-                      <li className="result-name" aria-label="Item Name.">
-                        {this.resultName(result, highlight, type, isEditPage)}
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="result-description" aria-label="Item Description.">
-                    {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
-                  </div>
-                  <div className="result-analytics">
-                    <ul className="list-inline">
-                      {result.surveillancePrograms && this.programsInfo(result)}
-                      {result.surveillanceSystems && this.systemsInfo(result)}
-                      {result.status && this.resultStatus(result.status)}
-                      <li className={`result-timestamp pull-right ${this.props.programVar && 'list-program-var'}`}>
-                        <p>{ moment(result.createdAt,'').format('MMMM Do, YYYY') }</p>
-                        <p><text className="sr-only">Item Version Number: </text>version {result.version && result.version} | <text className="sr-only">Item type: </text>{type}</p>
-                        {this.props.programVar && (<p><text className="sr-only">Item program defined Variable: </text>{this.props.programVar}</p>)}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="result-linked-details">
-                  {this.linkedDetails(result, type)}
-                </div>
-                {(type !== "form_question") && this.detailsPanel(result, type)}
-              </li>
-              <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
-                <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
-                <div className="result-nav-item">
-                  {handleSelectSearchResult ? (
-                    this.selectResultButton(result, handleSelectSearchResult)
-                  ) : (
-                    <div className="dropdown">
-                      <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
-                        <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
-                        <span className="sr-only">View Item Action Menu</span>
-                      </a>
-                      {this.resultDropdownMenu(result, type, actionName, action)}
-                    </div>
-                  )}
-                </div>
-              </li>
-            </ul>
+      <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
+        <li className="u-result-content-item">
+          <div className={`u-result-details result__${type}`}>
+            <div className="list-inline result-type-wrapper">
+              <div className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></div>
+              <div className="result-name" aria-label="Item Name.">
+                {this.resultName(result, highlight, type, isEditPage)}
+              </div>
+            </div>
+            <div className="result-description" aria-label="Item Description.">
+              {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
+            </div>
+            <div className="result-analytics">
+              <ul className="list-inline">
+                {result.surveillancePrograms && this.programsInfo(result)}
+                {result.surveillanceSystems && this.systemsInfo(result)}
+                {this.resultStatus(result.status)}
+                <li className={`result-timestamp pull-right ${this.props.programVar && 'list-program-var'}`}>
+                  <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
+                  <p><text className="sr-only">Item Version Number: </text>version {result.version && result.version} | <text className="sr-only">Item type: </text>{type}</p>
+                  {this.props.programVar && (<p><text className="sr-only">Item program defined Variable: </text>{this.props.programVar}</p>)}
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </div>
+          <div className="result-linked-details">
+            {this.linkedDetails(result, type)}
+          </div>
+          {(type !== "form_question") && this.detailsPanel(result, type)}
+        </li>
+        <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
+          <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div className="result-nav-item">
+            {handleSelectSearchResult ? (
+              this.selectResultButton(result, handleSelectSearchResult)
+            ) : (
+              <div className="dropdown">
+                <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
+                  <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
+                  <span className="sr-only">View Item Action Menu</span>
+                </a>
+                {this.resultDropdownMenu(result, type, actionName, action)}
+              </div>
+            )}
+          </div>
+        </li>
+      </ul>
     );
   }
-
 }
 
 SearchResult.propTypes = {

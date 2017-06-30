@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import moment from 'moment';
-import _ from 'lodash';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from "./VersionInfo";
@@ -79,7 +79,7 @@ export default class QuestionDetails extends Component {
             {isEditable(question, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                if(confirm('Are you sure you want to delete this Question?')){
+                if(confirm('Are you sure you want to delete this Question? This action cannot be undone.')){
                   this.props.deleteQuestion(question.id, (response) => {
                     if (response.status == 200) {
                       this.props.router.push('/');
@@ -104,7 +104,7 @@ export default class QuestionDetails extends Component {
             </div>
             <div className="box-content">
               <strong>Created: </strong>
-              { moment(question.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
+              { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
             </div>
             { question.parent &&
               <div className="box-content">
@@ -147,7 +147,7 @@ export default class QuestionDetails extends Component {
                 <h2 className="panel-title">Linked Response Sets</h2>
               </div>
               <div className="box-content">
-                <ResponseSetList responseSets={_.keyBy(responseSets, 'id')} />
+                <ResponseSetList responseSets={responseSets} />
               </div>
             </div>
           }

@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addQuestion } from '../actions/questions_actions';
 import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
 
 import SearchResult from '../components/SearchResult';
@@ -11,18 +10,20 @@ import currentUserProps from "../prop-types/current_user_props";
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 
+const QUESTION_SEARCH_CONTEXT = 'QUESTION_SEARCH_CONTEXT';
+
 class QuestionSearchContainer extends Component {
   constructor(props) {
     super(props);
-    this.search = this.search.bind(this);
-    this.loadMore = this.loadMore.bind(this);
-    this.setFiltersParent = this.setFiltersParent.bind(this);
     this.state = {
       searchTerms: '',
       progFilters: [],
       sysFilters: [],
       page: 1
     };
+    this.search   = this.search.bind(this);
+    this.loadMore = this.loadMore.bind(this);
+    this.setFiltersParent = this.setFiltersParent.bind(this);
   }
 
   componentWillMount() {
@@ -30,7 +31,7 @@ class QuestionSearchContainer extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if(prevState != this.state && prevState.page === this.state.page) {
+    if(prevState.page === this.state.page && prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
       let searchType = this.state.searchType;
       let searchTerms = this.state.searchTerms;
       if(searchType === '') {
@@ -39,7 +40,7 @@ class QuestionSearchContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(searchTerms, 'question', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', this.state.progFilters, this.state.sysFilters);
     }
   }
 
@@ -52,7 +53,7 @@ class QuestionSearchContainer extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, 'question', progFilters, sysFilters);
+    this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', progFilters, sysFilters);
   }
 
   loadMore() {
@@ -61,7 +62,7 @@ class QuestionSearchContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, 'question', tempState,
+    this.props.fetchMoreSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', tempState,
                                       this.state.progFilters,
                                       this.state.sysFilters);
     this.setState({page: tempState});
@@ -71,7 +72,8 @@ class QuestionSearchContainer extends Component {
     const searchResults = this.props.searchResults;
     return (
       <div>
-        <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
+        <DashboardSearch search={this.search}
+                         surveillanceSystems={this.props.surveillanceSystems}
                          surveillancePrograms={this.props.surveillancePrograms}
                          setFiltersParent={this.setFiltersParent}
                          searchSource={this.props.searchResults.Source} />
@@ -79,13 +81,15 @@ class QuestionSearchContainer extends Component {
           {searchResults.hits && searchResults.hits.hits.map((q, i) => {
             return (
               <SearchResult key={`${q.Source.versionIndependentId}-${q.Source.updatedAt}-${i}`}
-              type={q.Type} result={q} currentUser={this.props.currentUser}
-              handleSelectSearchResult={() => this.props.addQuestion(this.props.form, q.Source)}
-              isEditPage={true}/>
+                            type={q.Type}
+                            result={q}
+                            isEditPage={true}
+                            currentUser={this.props.currentUser}
+                            handleSelectSearchResult={this.props.handleSelectSearchResult} />
             );
           })}
           {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
-            <button id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</button>
+            <button id="load-more-btn" className="button button-action center-block" onClick={this.loadMore}>LOAD MORE</button>
           }
         </div>
       </div>
@@ -95,7 +99,7 @@ class QuestionSearchContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[QUESTION_SEARCH_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
@@ -103,12 +107,11 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addQuestion, fetchSearchResults, fetchMoreSearchResults}, dispatch);
+  return bindActionCreators({fetchSearchResults, fetchMoreSearchResults}, dispatch);
 }
 
 QuestionSearchContainer.propTypes = {
-  addQuestion: PropTypes.func.isRequired,
-  form: PropTypes.object,
+  handleSelectSearchResult: PropTypes.func.isRequired,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,

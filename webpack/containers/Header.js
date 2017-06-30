@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Joyride from 'react-joyride';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
@@ -10,7 +10,7 @@ import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
 let LoginMenu = ({disableUserRegistration, logInOpener, signUpOpener, currentUser}) => {
-  let loggedIn = ! _.isEmpty(currentUser);
+  let loggedIn = ! isEmpty(currentUser);
   if(!loggedIn) {
     if(disableUserRegistration == 'true') {
       return (
@@ -50,7 +50,7 @@ LoginMenu.propTypes = {
 };
 
 let ContentMenu = ({settingsOpener, currentUser}) => {
-  let loggedIn = ! _.isEmpty(currentUser);
+  let loggedIn = ! isEmpty(currentUser);
   if(loggedIn) {
     let {email} = currentUser;
     return(
@@ -78,7 +78,7 @@ ContentMenu.propTypes = {
 
 
 let SignedInMenu = ({currentUser, location, notifications, notificationCount}) => {
-  let loggedIn = ! _.isEmpty(currentUser);
+  let loggedIn = ! isEmpty(currentUser);
   if(loggedIn) {
     return (
       <ul className="cdc-nav cdc-utlt-navbar-nav">
@@ -120,7 +120,7 @@ class Header extends Component {
   constructor(props){
     super(props);
     this.state={
-      joyrideOverlay: true,
+      joyrideOverlay: false,
       joyrideType: 'continuous',
       isReady: false,
       isRunning: false,
@@ -167,11 +167,11 @@ class Header extends Component {
         ref={c => (this.joyride = c)}
         debug={false}
         locale={{
-          back: (<span>Back</span>),
-          close: (<span>Close</span>),
-          last: (<span>End</span>),
-          next: (<span>Next</span>),
-          skip: (<span>Exit Tutorial</span>),
+          back: (<span tabIndex='3'>Back</span>),
+          close: (<span tabIndex='3'>Close</span>),
+          last: (<span tabIndex='3'>End</span>),
+          next: (<span tabIndex='3'>Next</span>),
+          skip: (<span className='darker-text' tabIndex='3'>Exit Tutorial</span>),
         }}
         autoStart={true}
         run={isRunning}
@@ -181,6 +181,8 @@ class Header extends Component {
         stepIndex={stepIndex}
         steps={this.props.steps}
         type={joyrideType}
+        tooltipOffset={0}
+        keyboardNavigation={false}
       />
     );
   }
@@ -223,6 +225,8 @@ class Header extends Component {
                       return this.joyride.reset(true);
                     }}>Step-by-Step Walkthrough</a></li>
                   }
+                  <li role="separator" className="divider"></li>
+                  <li className="nav-dropdown-item"><span className="version-display">Release: v{this.props.appVersion}</span></li>
                 </ul>
               </li>
             </ul>
@@ -250,6 +254,7 @@ Header.propTypes = {
   currentUser: currentUserProps,
   steps: PropTypes.array,
   location: PropTypes.object,
+  appVersion: PropTypes.number,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,
   fetchNotifications: PropTypes.func,

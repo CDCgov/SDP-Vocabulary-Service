@@ -8,13 +8,13 @@ import {
   REORDER_FORM,
   CREATE_SURVEY
 } from '../actions/types';
-import _ from 'lodash';
+import keyBy from 'lodash/keyBy';
 
 export default function surveys(state = {}, action) {
   let survey , index, newState, newSurvey, direction, form;
   switch (action.type) {
     case FETCH_SURVEYS_FULFILLED:
-      return Object.assign({}, state, _.keyBy(action.payload.data, 'id'));
+      return Object.assign({}, state, keyBy(action.payload.data, 'id'));
     case PUBLISH_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:
     case FETCH_SURVEY_FULFILLED:
@@ -32,7 +32,7 @@ export default function surveys(state = {}, action) {
       if(state[survey.id] && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
         return state;
       }
-      let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id});
+      let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id, position: survey.surveyForms.length});
       newSurvey = Object.assign({}, survey);
       newSurvey.surveyForms.push(newSurveyForm);
       newState = Object.assign({}, state);

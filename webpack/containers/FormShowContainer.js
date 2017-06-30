@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForm, publishForm, deleteForm } from '../actions/form_actions';
-import { fetchQuestions } from '../actions/questions_actions';
-import { fetchResponseSets } from '../actions/response_set_actions';
 import { setSteps } from '../actions/tutorial_actions';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
@@ -16,14 +14,13 @@ import { publishersProps } from "../prop-types/publisher_props";
 class FormShowContainer extends Component {
   componentWillMount() {
     this.props.fetchForm(this.props.params.formId);
-    this.props.fetchResponseSets();
   }
 
   componentDidMount() {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page.',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -35,7 +32,7 @@ class FormShowContainer extends Component {
       },
       {
         title: 'View Details',
-        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions.',
+        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a class="tutorial-link" href="#help">Help Documentation (linked here).</a>',
         selector: '.maincontent',
         position: 'left',
       },
@@ -50,8 +47,6 @@ class FormShowContainer extends Component {
   componentDidUpdate(prevProps) {
     if(prevProps.params.formId != this.props.params.formId){
       this.props.fetchForm(this.props.params.formId);
-      this.props.fetchQuestions();
-      this.props.fetchResponseSets();
     }
   }
 
@@ -115,7 +110,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchForm, fetchQuestions, fetchResponseSets, publishForm, deleteForm}, dispatch);
+  return bindActionCreators({setSteps, fetchForm, publishForm, deleteForm}, dispatch);
 }
 
 FormShowContainer.propTypes = {
@@ -127,8 +122,6 @@ FormShowContainer.propTypes = {
   currentUser: currentUserProps,
   setSteps: PropTypes.func,
   fetchForm: PropTypes.func,
-  fetchQuestions: PropTypes.func,
-  fetchResponseSets: PropTypes.func,
   deleteForm:  PropTypes.func,
   publishForm: PropTypes.func,
   publishers: publishersProps

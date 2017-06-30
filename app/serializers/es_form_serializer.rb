@@ -32,7 +32,7 @@ class ESFormSerializer < ActiveModel::Serializer
   end
 
   def questions
-    object.form_questions.collect do |fq|
+    object.form_questions.includes(:response_set, question: [:concepts]).collect do |fq|
       { id: fq.question_id,
         name: fq.question.content,
         codes: (fq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
@@ -42,7 +42,7 @@ class ESFormSerializer < ActiveModel::Serializer
   end
 
   def surveys
-    object.survey_forms.collect do |fq|
+    object.survey_forms.includes(:survey).collect do |fq|
       { id: fq.survey_id,
         name: fq.survey.name }
     end

@@ -5,13 +5,19 @@ describe('CodedSetTable', () => {
   let component;
 
   beforeEach(() => {
-    const items = [{code:"Code 1",display:" Display Name 1",system:"Test system 1"},
-                   {code:"Code 2",display:" Display Name 2",system:"Test system 2"},
-                   {code:"Code 3",display:" Display Name 3",system:"Test system 3"}];
+    const items = [{value: "Bravo", displayName: "Display Name 1", codeSystem: "Test system B"},
+                   {value: "Alpha", displayName: "Display Name 2", codeSystem: "Test system B"},
+                   {value: "Charlie", displayName: "Display Name 3", codeSystem: "Test system A"}];
     component = renderComponent(CodedSetTable, {items});
   });
 
   it('should create a list of vocab concepts', () => {
     expect(component.find("tr").length).to.equal(4);
+  });
+
+  it('should create a list of vocab concepts in order', () => {
+    expect(component.find("tbody tr:nth-child(1) td:nth-child(2)")).to.have.text("Charlie");
+    expect(component.find("tbody tr:nth-child(2) td:nth-child(2)")).to.have.text("Alpha");
+    expect(component.find("tbody tr:nth-child(3) td:nth-child(2)")).to.have.text("Bravo");
   });
 });

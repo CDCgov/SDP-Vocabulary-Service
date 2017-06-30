@@ -5,6 +5,7 @@ var path = require('path');
 var webpack = require('webpack');
 var StatsPlugin = require('stats-webpack-plugin');
 var autoprefixer = require('autoprefixer');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // must match config.webpack.dev_server.port
 var devServerPort = 3808;
@@ -17,11 +18,9 @@ var config = {
 
   entry: {
     // Sources are expected to live in $app_root/webpack
-    'application': './webpack/application.js',
-    'bootstrap': 'bootstrap-loader',
     'babel-polyfill': 'babel-polyfill',
     'landing': './webpack/landing.js'
-    },
+  },
 
   output: {
     // Build assets directly in to public/webpack/, let webpack know
@@ -54,7 +53,7 @@ var config = {
       { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] }
     ],
     options: {
-	    sourceMap: true
+      sourceMap: true
     }
   },
 
@@ -97,6 +96,9 @@ if (production) {
     new webpack.optimize.OccurenceOrderPlugin()
   );
 } else {
+  config.plugins.push(
+    new BundleAnalyzerPlugin()
+  );
   config.devServer = {
     port: devServerPort,
     headers: { 'Access-Control-Allow-Origin': '*' }

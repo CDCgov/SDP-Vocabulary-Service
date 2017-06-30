@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import values from 'lodash/values';
+import capitalize from 'lodash/capitalize';
+
 import { fetchQuestions } from '../actions/questions_actions';
 import { setSteps } from '../actions/tutorial_actions';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
-import { fetchForms, removeForm, reorderForm } from '../actions/form_actions';
+import { removeForm, reorderForm } from '../actions/form_actions';
 import { formsProps }  from '../prop-types/form_props';
 import { questionsProps }  from '../prop-types/question_props';
 import { surveyProps } from '../prop-types/survey_props';
 import SurveyEdit from '../components/SurveyEdit';
 import currentUserProps from "../prop-types/current_user_props";
 import FormSearchContainer from './FormSearchContainer';
-import _ from 'lodash';
 
 class SurveyEditContainer extends Component {
   constructor(props) {
@@ -30,15 +32,11 @@ class SurveyEditContainer extends Component {
     this.state = {selectedSurveySaver: selectedSurveySaver};
   }
 
-  componentWillMount() {
-    this.props.fetchForms();
-  }
-
   componentDidMount() {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page.',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -94,12 +92,12 @@ class SurveyEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h2 className="panel-title">{_.capitalize(this.props.params.action)} Survey </h2>
+              <h1 className="panel-title">{capitalize(this.props.params.action)} Survey </h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">
                 <FormSearchContainer survey  ={this.props.survey}
-                                     allForms={_.values(this.props.forms)}
+                                     allForms={values(this.props.forms)}
                                      currentUser={this.props.currentUser} />
               </div>
               <SurveyEdit ref='survey' survey={this.props.survey}
@@ -120,7 +118,7 @@ class SurveyEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, newSurvey, fetchForms, removeForm, reorderForm,
+  return bindActionCreators({setSteps, newSurvey, removeForm, reorderForm,
     saveSurvey, saveDraftSurvey, fetchSurvey, fetchQuestions}, dispatch);
 }
 
@@ -144,7 +142,6 @@ SurveyEditContainer.propTypes = {
   newSurvey:   PropTypes.func,
   saveSurvey:  PropTypes.func,
   fetchSurvey: PropTypes.func,
-  fetchForms:  PropTypes.func,
   removeForm:  PropTypes.func,
   reorderForm: PropTypes.func,
   currentUser: currentUserProps,

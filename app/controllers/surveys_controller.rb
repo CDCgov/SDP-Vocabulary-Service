@@ -1,7 +1,7 @@
 class SurveysController < ApplicationController
   load_and_authorize_resource except: [:create]
   def index
-    @surveys = Survey.all
+    @surveys = Survey.includes([:created_by, :survey_forms, :forms]).all
     @users = User.all
   end
 
@@ -33,15 +33,13 @@ class SurveysController < ApplicationController
     else
       update_successful = nil
       @survey.transaction do
-        @survey.surveillance_system = current_user.last_system
+        @survey.surveillance_system  = current_user.last_system
         @survey.surveillance_program = current_user.last_program
-        @survey.survey_forms.destroy_all
-        @survey.survey_forms = create_survey_forms
-
+        @survey.survey_forms = update_survey_forms
         update_successful = @survey.update(form_params)
       end
       if update_successful
-        render :show, status: :ok, location: @survey
+        render json: @survey.to_json, status: :ok
       else
         render json: @survey.errors, status: :unprocessable_entity
       end
@@ -104,13 +102,40 @@ class SurveysController < ApplicationController
   end
 
   def create_survey_forms
-    form_ids = params[:survey][:linked_forms]
     survey_forms = []
-    if form_ids
-      form_ids.each_with_index do |f, i|
-        survey_forms << SurveyForm.new(form_id: f, position: i)
+    if params[:survey][:linked_forms]
+      params[:survey][:linked_forms].each do |f|
+        survey_forms << SurveyForm.new(form_id: f[:form_id], position: f[:position])
       end
     end
     survey_forms
+  end
+
+  # !!! this algorithm assumes a form cannot appear twice on the same survey !!!
+  # Only update survey forms that were changed
+  def update_survey_forms
+    updated_fs = []
+    if params[:survey][:linked_forms]
+      new_fs_hash = {}
+      params[:survey][:linked_forms].each { |q| new_fs_hash[q[:form_id]] = q }
+      # Be aware, wrapping this loop in a transaction improves performance by batching all the updates to be committed at once
+      SurveyForm.transaction do
+        @survey.survey_forms.each do |old_form|
+          if new_fs_hash.exclude? old_form.form_id
+            old_form.destroy!
+          else
+            new_form = new_fs_hash.delete(old_form.form_id)
+            if old_form.position != new_form[:position]
+              old_form.position = new_form[:position]
+              old_form.save!
+            end
+            updated_fs << old_form
+          end
+        end
+      end
+      # any new survey form still in this hash needs to be created
+      new_fs_hash.each { |_id, f| updated_fs << SurveyForm.new(form_id: f[:form_id], position: f[:position]) }
+    end
+    updated_fs
   end
 end

@@ -3,17 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
-import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion, fetchQuestions } from '../actions/questions_actions';
+import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
 import ResponseSetModal from '../components/ResponseSetModal';
-import { fetchResponseSets }   from '../actions/response_set_actions';
 import QuestionModalContainer  from './QuestionModalContainer';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
 import { questionsProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import {Button} from 'react-bootstrap';
-import _ from 'lodash';
+import capitalize from 'lodash/capitalize';
 
 class FormsEditContainer extends Component {
 
@@ -31,20 +30,19 @@ class FormsEditContainer extends Component {
       this.props.params.action = 'new';
     }
     this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false, showResponseSetModal: false};
+    this.showQuestionModal  = this.showQuestionModal.bind(this);
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
+    this.showResponseSetModal  = this.showResponseSetModal.bind(this);
+    this.closeResponseSetModal = this.closeResponseSetModal.bind(this);
+    this.handleSelectSearchResult  = this.handleSelectSearchResult.bind(this);
     this.handleSaveQuestionSuccess = this.handleSaveQuestionSuccess.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.fetchQuestions();
-    this.props.fetchResponseSets();
   }
 
   componentDidMount() {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page.',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -95,14 +93,30 @@ class FormsEditContainer extends Component {
     }
   }
 
+  showQuestionModal(){
+    this.setState({showQuestionModal: true});
+  }
+
   closeQuestionModal(){
     this.setState({showQuestionModal: false});
+  }
+
+  showResponseSetModal(){
+    this.setState({showResponseSetModal: true});
+  }
+
+  closeResponseSetModal(){
+    this.setState({showResponseSetModal: false});
   }
 
   handleSaveQuestionSuccess(successResponse){
     this.setState({showQuestionModal: false});
     this.props.fetchQuestion(successResponse.data.id);
     this.props.addQuestion(this.props.form, successResponse.data);
+  }
+
+  handleSelectSearchResult(q){
+    this.props.addQuestion(this.props.form, q);
   }
 
   render() {
@@ -116,23 +130,23 @@ class FormsEditContainer extends Component {
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
-                                closeQuestionModal ={()=>this.setState({showQuestionModal: false})}
+                                closeQuestionModal ={this.closeQuestionModal}
                                 handleSaveQuestionSuccess={this.handleSaveQuestionSuccess} />
         <ResponseSetModal show={this.state.showResponseSetModal}
                           router={this.props.router}
-                          closeModal={() => this.setState({showResponseSetModal: false})}
-                          saveResponseSetSuccess={() => this.setState({showResponseSetModal: false})} />
+                          closeModal={this.closeResponseSetModal}
+                          saveResponseSetSuccess={this.closeResponseSetModal} />
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h2 className="panel-title">{_.capitalize(this.props.params.action)} Form </h2>
+              <h1 className="panel-title">{capitalize(this.props.params.action)} Form </h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">
                 <div className="row add-question">
-                  <Button tabIndex="4" onClick={()=>this.setState({showQuestionModal: true})} bsStyle="primary">Add New Question</Button>
+                  <Button tabIndex="4" onClick={this.showQuestionModal} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer form={this.props.form} />
+                <QuestionSearchContainer handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <FormEdit ref ='form'
                         form={this.props.form}
@@ -144,7 +158,7 @@ class FormsEditContainer extends Component {
                         formSubmitter={this.state.selectedFormSaver}
                         removeQuestion ={this.props.removeQuestion}
                         reorderQuestion={this.props.reorderQuestion}
-                        showResponseSetModal={() => this.setState({showResponseSetModal: true})} />
+                        showResponseSetModal={this.showResponseSetModal} />
             </div>
           </div>
         </div>
@@ -154,7 +168,7 @@ class FormsEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchResponseSets, addQuestion, fetchQuestions, fetchQuestion,
+  return bindActionCreators({setSteps, addQuestion, fetchQuestion,
     newForm, fetchForm, removeQuestion, reorderQuestion,
     saveForm, saveDraftForm}, dispatch);
 }
@@ -181,10 +195,8 @@ FormsEditContainer.propTypes = {
   addQuestion: PropTypes.func,
   saveDraftForm: PropTypes.func,
   fetchQuestion: PropTypes.func,
-  fetchQuestions: PropTypes.func,
   removeQuestion: PropTypes.func,
-  reorderQuestion: PropTypes.func,
-  fetchResponseSets: PropTypes.func
+  reorderQuestion: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);

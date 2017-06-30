@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
-import _ from 'lodash';
+import values from 'lodash/values';
+import isEmpty from 'lodash/isEmpty';
 import $ from 'jquery';
 
 class DashboardSearch extends Component {
@@ -23,6 +24,16 @@ class DashboardSearch extends Component {
     this.onFormSubmit  = this.onFormSubmit.bind(this);
     this.surveillanceProgramsSelect = this.surveillanceProgramsSelect.bind(this);
     this.surveillanceSystemsSelect = this.surveillanceSystemsSelect.bind(this);
+  }
+
+  componentWillMount() {
+    if(this.props.lastSearch) {
+      var lastSearch = this.props.lastSearch;
+      var searchTerms = lastSearch.search || '';
+      var progFilters = lastSearch.programs || [];
+      var sysFilters = lastSearch.systems || [];
+      this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    }
   }
 
   showAdvSearch() {
@@ -52,14 +63,14 @@ class DashboardSearch extends Component {
   }
 
   surveillanceProgramsSelect() {
-    if (_.isEmpty(this.props.surveillancePrograms)) {
+    if (isEmpty(this.props.surveillancePrograms)) {
       return <p>No surveillance programs loaded in the database</p>;
     } else {
       return (
         <div className="form-group">
           <label htmlFor="select-prog">Select Programs:</label>
           <select multiple className="form-control" id="select-prog" value={this.state.progFilters} onChange={(e) => this.selectFilters(e, 'progFilters')}>
-            {this.props.surveillancePrograms && _.values(this.props.surveillancePrograms).map((sp) => {
+            {this.props.surveillancePrograms && values(this.props.surveillancePrograms).map((sp) => {
               return <option key={sp.id} value={sp.id}>{sp.name}</option>;
             })}
           </select>
@@ -69,14 +80,14 @@ class DashboardSearch extends Component {
   }
 
   surveillanceSystemsSelect() {
-    if (_.isEmpty(this.props.surveillanceSystems)) {
+    if (isEmpty(this.props.surveillanceSystems)) {
       return <p>No surveillance systems loaded in the database</p>;
     } else {
       return (
         <div className="form-group">
           <label htmlFor="select-sys">Select Systems:</label>
           <select multiple className="form-control" id="select-sys" value={this.state.sysFilters} onChange={(e) => this.selectFilters(e, 'sysFilters')}>
-            {this.props.surveillanceSystems && _.values(this.props.surveillanceSystems).map((ss) => {
+            {this.props.surveillanceSystems && values(this.props.surveillanceSystems).map((ss) => {
               return <option key={ss.id} value={ss.id}>{ss.name}</option>;
             })}
           </select>
@@ -87,9 +98,9 @@ class DashboardSearch extends Component {
 
   advSearchModal() {
     return (
-      <Modal show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
+      <Modal animation={false} show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
         <Modal.Header closeButton bsStyle='search'>
-          <Modal.Title>Advanced Search Filters</Modal.Title>
+          <Modal.Title componentClass="h1">Advanced Search Filters</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {this.props.searchSource === 'simple_search' ? (
@@ -132,7 +143,7 @@ class DashboardSearch extends Component {
       <div className="row">
         <div className="col-md-12">
           <div className="input-group search-group">
-            <input onChange={this.onInputChange} type="text" id="search" tabIndex="4" name="search" aria-label="search-bar" className="search-input" placeholder="Search..."/>
+            <input onChange={this.onInputChange} value={this.state.searchTerms} type="text" id="search" tabIndex="4" name="search" aria-label="search-bar" className="search-input" placeholder="Search..."/>
             <span className="input-group-btn">
               <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="search-btn" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
@@ -141,7 +152,7 @@ class DashboardSearch extends Component {
             {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
-            }}>Clear Filters</a>}
+            }}>Clear Programs & Systems</a>}
             <a className="adv-search-link pull-right" title="Advanced Search" href="#" tabIndex="4" onClick={(e) => {
               e.preventDefault();
               this.showAdvSearch();
@@ -171,7 +182,8 @@ DashboardSearch.propTypes = {
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps,
   setFiltersParent: PropTypes.func,
-  searchSource: PropTypes.string
+  searchSource: PropTypes.string,
+  lastSearch: PropTypes.object
 };
 
 export default DashboardSearch;

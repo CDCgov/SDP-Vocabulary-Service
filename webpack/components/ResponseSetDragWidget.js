@@ -35,14 +35,18 @@ class DropTarget extends Component {
 
     return (
       <div style={{minHeight: '440px', backgroundColor:isValidDrop?'green':'grey'}}>
-        {selectedResponseSets.map((rs, i) => {
+        {selectedResponseSets.map((rs) => {
           return (
-          <div key={i}>
-          <button className="pull-right" onClick={() => removeResponseSet(rs.id)}><i className='fa fa-close' aria-hidden="true"/><span className="sr-only">Remove Selected Response Set</span></button>
+          <div key={rs.id}>
+          <button className="pull-right" onClick={(event) => {
+            event.preventDefault();
+            removeResponseSet(rs.id);
+          }
+          }><i className='fa fa-close' aria-hidden="true"/><span className="sr-only">Remove Selected Response Set</span></button>
           <DraggableResponseSet type='response_set' result={{Source: rs}} currentUser={{id: -1}} />
           </div>);
         })}
-        <select readOnly={true} value={selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
+        <select readOnly={true} value={selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" aria-label="Selected Response Sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
           {selectedResponseSets.map((rs) => {
             return <option key={rs.id} value={rs.id}>a</option>;
           })}
@@ -59,6 +63,8 @@ DropTarget.propTypes = {
 };
 
 let DroppableTarget = Droppable(DropTarget, onDrop);
+
+const DRAG_WIDGET_CONTEXT = 'DRAG_WIDGET_CONTEXT';
 
 class ResponseSetDragWidget extends Component {
   constructor(props){
@@ -81,7 +87,7 @@ class ResponseSetDragWidget extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms});
-    this.props.fetchSearchResults(searchTerms, 'response_set');
+    this.props.fetchSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set');
   }
 
   loadMore() {
@@ -90,7 +96,7 @@ class ResponseSetDragWidget extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, 'response_set', tempState);
+    this.props.fetchMoreSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set', tempState);
     this.setState({page: tempState});
   }
 
@@ -129,7 +135,7 @@ class ResponseSetDragWidget extends Component {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[DRAG_WIDGET_CONTEXT] || {},
     currentUser: state.currentUser
   };
 }

@@ -1,5 +1,5 @@
 import {
-  FETCH_RESPONSE_SET_FULFILLED,
+  FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED,
   SAVE_QUESTION_FULFILLED,
   FETCH_QUESTION_FULFILLED,
   FETCH_QUESTIONS_FULFILLED
@@ -14,7 +14,7 @@ const responseSetsFromQuestions = store => next => action => {
       questions.forEach((q, i) => {
         if (q.responseSets) {
           q.responseSets.forEach((rs) => {
-            dispatchIfNotPresent(store, 'responseSets', rs, FETCH_RESPONSE_SET_FULFILLED);
+            dispatchIfNotPresent(store, 'responseSets', rs, FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED);
           });
           action.payload.data[i].responseSets = q.responseSets.map((rs) => rs.id);
         }
@@ -24,7 +24,7 @@ const responseSetsFromQuestions = store => next => action => {
     case SAVE_QUESTION_FULFILLED:
       if(action.payload.data.responseSets){
         action.payload.data.responseSets.forEach((rs) => {
-          dispatchIfNotPresent(store, 'responseSets', rs, FETCH_RESPONSE_SET_FULFILLED);
+          dispatchIfNotPresent(store, 'responseSets', rs, FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED);
         });
         action.payload.data.responseSets = action.payload.data.responseSets.map((rs) => rs.id);
       }

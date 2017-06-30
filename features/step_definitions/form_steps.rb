@@ -12,7 +12,7 @@ When(/^I use the response set search modal to select "([^"]*)"$/) do |name|
   Elastictest.fake_rs_search_results
   page.find('a', id: 'search-response-sets').click
   sleep 1
-  page.all('a', id: "select-#{name}")[1].click
+  page.all('a', id: "select-#{name}")[0].click
 end
 
 When(/^I go to the list of Forms$/) do
@@ -31,7 +31,7 @@ When(/^I use the question search to select "([^"]*)"$/) do |name|
 end
 
 Then(/^I should see the question "([^"]*)" first$/) do |name|
-  page.first('li', class: 'result-name').has_content?(name)
+  page.first('div', class: 'result-name').has_content?(name)
 end
 
 Then(/^I should see the response set "([^"]*)" second$/) do |name|
@@ -70,9 +70,9 @@ Then(/^I should see the link "([^"]*)"$/) do |link|
   page.find(link)
 end
 
-When(/^I select the modify program variable option for the Question "([^"]*)"$/) do |question_content|
+When(/^I select the ([^"]*) program variable option for the Question "([^"]*)"$/) do |action, question_content|
   object_id = attribute_to_id('Question', 'content', question_content)
   page.find("#form_question_#{object_id}_menu").click
-  click_on('Modify Program Variable')
+  click_on("#{action.capitalize} Program Variable")
   sleep 1
 end

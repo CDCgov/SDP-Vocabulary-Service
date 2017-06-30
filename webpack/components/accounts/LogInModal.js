@@ -9,13 +9,13 @@ export default class LogInModal extends Component {
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={this.props.closer} aria-label="Sign In">
+      <Modal animation={false} show={this.props.show} onHide={this.props.closer} aria-label="Sign In">
         <Modal.Header closeButton>
-          <Modal.Title>Sign In</Modal.Title>
+          <Modal.Title componentClass="h1">Sign In</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
-            <div hidden={!this.state.invalidCredentials}>Invalid Credentials</div>
+            <div className="alert alert-danger" hidden={!this.state.invalidCredentials}><strong>Invalid Credentials!</strong> Please check the information you entered and try again.</div>
             <div>
               <label className="control-label" htmlFor="email">Email</label>
               <input autoFocus="autofocus" className="form-control input-lg" type="email" value={this.state.email} name="email" id="email" onChange={this.handleChange('email')}/>

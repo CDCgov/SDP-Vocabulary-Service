@@ -8,12 +8,11 @@ describe('FormQuestionList', () => {
     const questions = [{id: 1, content: "Is this a question?", questionType: ""},
                        {id: 2, content: "Whats your name", questionType: ""},
                        {id: 3, content: "What is a question?", questionType: ""}];
-    const responseSets = [{name: 'None'},{name: 'None'},{name: 'None'}];
-    component = renderComponent(FormQuestionList, {questions, responseSets});
+    component = renderComponent(FormQuestionList, {questions});
   });
 
   it('should create list of questions', () => {
-    expect(component.find("div[class='u-result-group']").length).to.equal(3);
+    expect(component.find("div[class='result-description']").length).to.equal(3);
   });
 
 });

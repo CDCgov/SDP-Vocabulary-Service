@@ -1,6 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Modal, Button } from 'react-bootstrap';
+import values from 'lodash/values';
+import keys from 'lodash/keys';
+import keyBy from 'lodash/keyBy';
+import $ from 'jquery';
+
 import { saveQuestion } from '../actions/questions_actions';
 import Errors from '../components/Errors';
 import QuestionForm from '../components/QuestionForm';
@@ -11,9 +17,6 @@ import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchQuestionTypes } from '../actions/question_type_actions';
 import { fetchResponseSets }  from '../actions/response_set_actions';
 import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
-import {Modal, Button} from 'react-bootstrap';
-import _ from 'lodash';
-import $ from 'jquery';
 
 class QuestionModalContainer extends Component {
 
@@ -34,7 +37,7 @@ class QuestionModalContainer extends Component {
 
   handleResponseSetsChange(newResponseSets){
     this.unsavedState = true;
-    this.setState({linkedResponseSets: _.keyBy(newResponseSets, 'id')});
+    this.setState({linkedResponseSets: keyBy(newResponseSets, 'id')});
   }
 
   handleResponseTypeChange(newResponseType){
@@ -46,7 +49,7 @@ class QuestionModalContainer extends Component {
   }
 
   saveNewQuestion(newQuestion){
-    newQuestion.linkedResponseSets = _.values(this.state.linkedResponseSets).map((r) => r.id);
+    newQuestion.linkedResponseSets = values(this.state.linkedResponseSets).map((r) => r.id);
     this.props.saveQuestion(newQuestion, (successResponse) => {
       this.setState({showResponseSetWidget: false, linkedResponseSets: {}, errors: null});
       this.props.handleSaveQuestionSuccess(successResponse);
@@ -66,14 +69,14 @@ class QuestionModalContainer extends Component {
         <Modal.Body bsStyle='response-set'>
           <div className="row response-set-row">
             <div className="col-md-6 response-set-label">
-              <label htmlFor="linked_response_sets">Response Sets</label>
+              <h2>Response Sets</h2>
             </div>
             <div className="col-md-6 response-set-label">
               <h2 className="tags-table-header">Selected Response Sets</h2>
             </div>
           </div>
           <ResponseSetDragWidget responseSets={this.props.responseSets}
-                                 selectedResponseSets={_.values(this.state.linkedResponseSets)}
+                                 selectedResponseSets={values(this.state.linkedResponseSets)}
                                  handleResponseSetsChange={this.handleResponseSetsChange} />
         </Modal.Body>
         <Modal.Footer>
@@ -110,11 +113,13 @@ class QuestionModalContainer extends Component {
     if(this.state.showResponseSets){
       responseSetsDiv = (
         <div className="row selected_response_sets">
-          <label className="input-label" htmlFor="response-set-list">Response Sets</label>
-          <div className="col-md-12">
+          <div className="col-md-12 response-set-label">
+            <h2>Response Sets</h2>
+          </div>
+          <div className="col-md-8">
               <div className="panel panel-default">
                 <div className="panel-body">
-                  {_.keys(this.state.linkedResponseSets).length > 0 ? <ResponseSetList responseSets={this.state.linkedResponseSets} /> : 'No Response Sets selected'}
+                  {keys(this.state.linkedResponseSets).length > 0 ? <ResponseSetList responseSets={values(this.state.linkedResponseSets)} /> : 'No Response Sets selected'}
                 </div>
               </div>
           </div>
@@ -156,7 +161,7 @@ class QuestionModalContainer extends Component {
     return (
       <Modal bsStyle='question' show={this.props.showModal} onHide={this.closeQuestionModal} aria-label="New Question">
         <Modal.Header closeButton bsStyle='question'>
-          <Modal.Title>New Question</Modal.Title>
+          <Modal.Title componentClass="h1">New Question</Modal.Title>
         </Modal.Header>
         <Errors errors={this.state.errors} />
         {this.questionFormBody()}

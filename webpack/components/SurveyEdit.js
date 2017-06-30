@@ -100,8 +100,9 @@ class SurveyEdit extends Component {
       this.props.router.push(this.nextLocation.pathname);
     }else{
       let survey = Object.assign({}, this.state);
-      survey.linkedForms = this.state.surveyForms.map((q) => q.formId);
-      survey.linkedResponseSets = this.state.surveyForms.map((q) => q.responseSetId);
+      // Because we were saving SurveyForms with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
+      // At some point, we can remove this code
+      survey.linkedForms = this.state.surveyForms.map((f, i) => ({id: f.id, surveyId: f.surveyId, formId: f.formId, position: i}));
       this.props.surveySubmitter(survey, (response) => {
         // TODO: Handle when the saving survey fails.
         this.unsavedState = false;
@@ -129,7 +130,9 @@ class SurveyEdit extends Component {
     event.preventDefault();
     // Because of the way we have to pass the current forms in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
-    survey.linkedForms = this.state.surveyForms.map((q) => q.formId);
+    // Because we were saving SurveyForms with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
+    // At some point, we can remove this code
+    survey.linkedForms = this.state.surveyForms.map((f, i) => ({id: f.id, surveyId: f.surveyId, formId: f.formId, position: i}));
     this.props.surveySubmitter(survey, (response) => {
       this.unsavedState = false;
       this.props.router.push(`/surveys/${response.data.id}`);

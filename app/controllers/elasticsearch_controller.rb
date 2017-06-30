@@ -1,5 +1,4 @@
 # rubocop:disable Metrics/AbcSize
-# rubocop:disable Metrics/PerceivedComplexity
 require 'elasticsearch'
 require 'sdp/elastic_search'
 require 'sdp/simple_search'

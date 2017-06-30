@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
-import _ from 'lodash';
+import pickBy from 'lodash/pickBy';
 
 const getResponseSets = (state) => state.responseSets;
 
 export const getMostRecentResponseSets = createSelector(
   getResponseSets, (responseSets) => {
-    return _.pickBy(responseSets, (rs) => rs.mostRecent === rs.version);
+    return pickBy(responseSets, (rs) => rs.mostRecent === rs.version);
   }
 );

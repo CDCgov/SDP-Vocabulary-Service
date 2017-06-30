@@ -11,6 +11,7 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
 @import '~react-joyride/lib/react-joyride';
+@import '~rc-pagination/assets/index.css';
 @import "widgets/comments";
 //BASE//
 @import "base/colors";
@@ -33,6 +34,7 @@
 @import "widgets/question_modal";
 @import "widgets/response_set_modal";
 @import "widgets/searchresults";
+@import "widgets/pagination";
 
 
 //LAYOUTS//

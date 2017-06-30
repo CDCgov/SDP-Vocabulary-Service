@@ -2,7 +2,8 @@ Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*
  and the concept "([^"]*)"$/) do |content, description, type, concept|
   user  = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
-  Question.create!(content: content, description: description, question_type_id: qt314.id, version: 1, created_by: user,\
+  rt = ResponseType.where(code: 'choice').first
+  Question.create!(content: content, description: description, response_type_id: rt.id, question_type_id: qt314.id, version: 1, created_by: user,\
                    concepts_attributes: [{ value: '', display_name: concept, code_system: '' }])
 end
 
@@ -15,13 +16,15 @@ end
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"$/) do |content, description, type|
   user  = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
-  Question.create!(content: content, description: description, question_type_id: qt314.id, version: 1, created_by: user)
+  rt = ResponseType.where(code: 'choice').first
+  Question.create!(content: content, description: description, response_type_id: rt.id, question_type_id: qt314.id, version: 1, created_by: user)
 end
 
 Given(/^I have a Question with the content "([^"]*)" linked to Surveillance System "([^"]*)"$/) do |question_content, system_name|
   user = get_user 'test_author@gmail.com'
   ss = SurveillanceSystem.where(name: system_name).first
   q = Question.where(content: question_content).first
+  q.response_type_id = ResponseType.where(code: 'choice').first.id
   q.update_attribute(:status, 'published')
   q.save!
   f = Form.new(name: 'test', created_by: user)
@@ -34,13 +37,15 @@ end
 
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)"$/) do |content, description|
   user = get_user('test_author@gmail.com')
-  Question.create!(status: 'draft', content: content, description: description, version: 1, created_by: user)
+  rt = ResponseType.where(code: 'choice').first
+  Question.create!(status: 'draft', content: content, description: description, response_type_id: rt.id, version: 1, created_by: user)
 end
 
 Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) do |content, type|
   user = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
-  Question.create!(content: content, question_type_id: qt314.id, version: 1, created_by: user)
+  rt = ResponseType.where(code: 'choice').first
+  Question.create!(content: content, question_type_id: qt314.id, response_type_id: rt.id, version: 1, created_by: user)
 end
 
 Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
@@ -59,7 +64,8 @@ end
 
 Given(/^I have a published Question with the content "([^"]*)"$/) do |content|
   user = get_user('test_author@gmail.com')
-  q = Question.create!(content: content, version: 1, created_by: user)
+  rt = ResponseType.where(code: 'choice').first
+  q = Question.create!(content: content, response_type_id: rt.id, version: 1, created_by: user)
   q.publish(user)
 end
 
@@ -75,12 +81,13 @@ end
 
 Then(/^I navigate to a question created by "(.+)"$/) do |owner_email|
   user = get_user(owner_email)
-  question = Question.create!(status: 'draft', content: 'content', description: 'description', version: 1, created_by: user)
+  rt = ResponseType.where(code: 'choice').first
+  question = Question.create!(status: 'draft', content: 'content', response_type_id: rt.id, description: 'description', version: 1, created_by: user)
   visit "#/questions/#{question.id}"
 end
 
 Then(/^I should only see (.+) copy of the "(.+)" response set associated$/) do |expected_count, rs_name|
   # Add 1 for finding in search result list
   count = expected_count.to_i + 1
-  assert_equal(count, page.all('li', class: 'result-name', text: rs_name).length)
+  assert_equal(count, page.all('div', class: 'result-name', text: rs_name).length)
 end

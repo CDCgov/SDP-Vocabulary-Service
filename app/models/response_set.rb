@@ -26,7 +26,7 @@ class ResponseSet < ApplicationRecord
   after_commit :delete_index, on: :destroy
 
   def index
-    UpdateIndexJob.perform_later('response_set', ESResponseSetSerializer.new(self).as_json)
+    UpdateIndexJob.perform_later('response_set', self)
   end
 
   def delete_index

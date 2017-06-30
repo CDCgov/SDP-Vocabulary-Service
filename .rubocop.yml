@@ -3,6 +3,8 @@ AllCops:
   TargetRubyVersion: 2.2
   Exclude:
     - 'bin/**/*'
+    - 'lib/ext/*'
+    - 'lib/sdp/importers/phin_vads_importer.rb'
     - 'lib/tasks/cucumber.rake'
     - 'lib/tasks/data.rake'
     - 'db/schema.rb'
@@ -30,27 +32,27 @@ Metrics/BlockLength:
     - 'db/migrate/*'
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
-  Max: 20
+  Max: 30
   Exclude:
     - 'db/migrate/*'
     - 'lib/sdp/simple_search.rb'
 Metrics/ClassLength:
-  Max: 200
+  Max: 250
   Exclude:
     - 'test/**/*'
 Metrics/AbcSize:
   # The ABC size is a calculated magnitude, so this number can be a Fixnum or
   # a Float.
-  Max: 30
+  Max: 35
   Exclude:
     - 'test/**/*.rb'
 Metrics/ModuleLength:
   Exclude:
 # Avoid complex methods.
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 20
 Metrics/PerceivedComplexity:
-  Max: 10
+  Max: 20
 
 Style/GuardClause:
   Enabled: false

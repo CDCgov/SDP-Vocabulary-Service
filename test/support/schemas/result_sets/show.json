@@ -1,8 +1,16 @@
 {
   "properties": {
     "url" : {"type" : "string"},
-    //"identifier" : {"type": "string"},
-    //"status" : {"type" : "string"},
+    "identifier" : {
+      "type": "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "system" : {"type" : "string"},
+          "value" : {"type" : "string"}
+        }
+      }
+    },
     "version" : {"type" : "number"},
     "name" : {"type" : "string"},
     "description" : {"type" : "string"},
@@ -10,8 +18,6 @@
     "expansion" : {
       "type" : "object",
       "properties" : {
-        //"identifier" : {"type": "string"},
-        //"timestamp" : {"type": "string"},
         "contains" : {
           "type" : "array",
           "items" : {

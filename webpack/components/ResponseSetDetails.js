@@ -1,19 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import Routes from "../routes";
-import moment from 'moment';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
-import QuestionList  from './QuestionList';
+import FormQuestionList from './FormQuestionList';
 import CodedSetTable from "./CodedSetTable";
 import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
 import PublisherLookUp from "./shared_show/PublisherLookUp";
 import currentUserProps from "../prop-types/current_user_props";
 import { publishersProps } from "../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
-import _ from 'lodash';
 
 export default class ResponseSetDetails extends Component {
   render() {
@@ -53,6 +52,16 @@ export default class ResponseSetDetails extends Component {
     );
   }
 
+  sourceLink(responseSet) {
+    if(responseSet.source === 'PHIN_VADS' &&  responseSet.oid && responseSet.version === responseSet.mostRecent) {
+      return <a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`}>PHIN VADS</a>;
+    } else if (responseSet.source === 'PHIN_VADS') {
+      return <a href="https://phinvads.cdc.gov">PHIN VADS</a>;
+    } else {
+      return <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>;
+    }
+  }
+
   mainContent(responseSet) {
     return (
       <div className="col-md-9 nopadding maincontent">
@@ -81,7 +90,7 @@ export default class ResponseSetDetails extends Component {
             {isEditable(responseSet, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              if(confirm('Are you sure you want to delete this Response Set?')){
+              if(confirm('Are you sure you want to delete this Response Set? This action cannot be undone.')){
                 this.props.deleteResponseSet(responseSet.id, (response) => {
                   if (response.status == 200) {
                     this.props.router.push('/');
@@ -106,7 +115,7 @@ export default class ResponseSetDetails extends Component {
             </div>
             <div className="box-content">
               <strong>Created: </strong>
-              { moment(responseSet.createdAt,'').format('MMMM Do YYYY, h:mm:ss a') }
+              { format(parse(responseSet.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
             </div>
             { responseSet.parent &&
               <div className="box-content">
@@ -117,11 +126,7 @@ export default class ResponseSetDetails extends Component {
             { responseSet.source &&
               <div className="box-content">
                 <strong>Import / Source: </strong>
-                {responseSet.source === 'PHIN_VADS' ? (
-                  <a href="https://phinvads.cdc.gov">PHIN VADS</a>
-                ) : (
-                  <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>
-                )}
+                {this.sourceLink(responseSet)}
               </div>
             }
             { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
@@ -145,7 +150,7 @@ export default class ResponseSetDetails extends Component {
                 <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
-                <QuestionList questions={_.keyBy(this.props.questions, 'id')} routes={Routes} />
+                <FormQuestionList questions={this.props.questions} />
               </div>
             </div>
           }

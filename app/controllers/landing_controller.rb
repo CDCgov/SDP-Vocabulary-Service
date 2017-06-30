@@ -15,7 +15,7 @@ class LandingController < ApplicationController
     my_survey_count = current_user ? Survey.where(created_by: current_user.id).all.count : 0
 
     render json: { response_set_count: response_set_count, question_count: question_count,
-                   form_count: form_count, survey_count: survey_count,
+                   form_count: form_count, survey_count: survey_count, version: Settings.app_version,
                    my_response_set_count: my_response_set_count, my_question_count: my_question_count,
                    my_form_count: my_form_count, my_survey_count: my_survey_count }
   end

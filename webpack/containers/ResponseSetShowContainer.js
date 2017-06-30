@@ -9,7 +9,7 @@ import { questionProps } from '../prop-types/question_props';
 import CommentList from '../containers/CommentList';
 import currentUserProps from "../prop-types/current_user_props";
 import { publishersProps } from "../prop-types/publisher_props";
-import _ from 'lodash';
+import compact from 'lodash/compact';
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
@@ -24,7 +24,7 @@ class ResponseSetShowContainer extends Component {
     this.props.setSteps([
       {
         title: 'Help',
-        text: 'Click next to see a step by step walkthrough for using this page.',
+        text: 'Click next to see a step by step walkthrough for using this page. To see more detailed information about this application and actions you can take <a class="tutorial-link" href="#help">click here to view the full Help Documentation.</a> Accessible versions of these steps are also duplicated in the help documentation.',
         selector: '.help-link',
         position: 'bottom',
       },
@@ -36,7 +36,7 @@ class ResponseSetShowContainer extends Component {
       },
       {
         title: 'View Details',
-        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions.',
+        text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a class="tutorial-link" href="#help">Help Documentation (linked here).</a>',
         selector: '.maincontent',
         position: 'left',
       },
@@ -85,7 +85,7 @@ function mapStateToProps(state, ownProps) {
   props.responseSet = state.responseSets[ownProps.params.rsId];
   props.publishers = state.publishers;
   if (props.responseSet && props.responseSet.questions) {
-    props.questions = _.compact(props.responseSet.questions.map((qId) => state.questions[qId]));
+    props.questions = compact(props.responseSet.questions.map((qId) => state.questions[qId]));
   }
   return props;
 }

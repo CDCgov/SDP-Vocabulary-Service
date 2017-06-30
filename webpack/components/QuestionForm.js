@@ -1,13 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import forOwn from 'lodash/forOwn';
+import values from 'lodash/values';
+
 import { questionProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
+
 import Errors from './Errors';
 import ModalDialog from './ModalDialog';
 import ResponseSetModal from './ResponseSetModal';
 import ResponseSetDragWidget from './ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
-import _ from 'lodash';
+
 
 class QuestionForm extends Component{
 
@@ -28,7 +32,16 @@ class QuestionForm extends Component{
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
+    this.selectedResponseSets = this.selectedResponseSets.bind(this);
     this.unsavedState = false;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.state.responseTypeId === null || this.state.responseTypeId === undefined) {
+      const sortedRT = this.sortedResponseTypes(nextProps.responseTypes);
+      let rtid = sortedRT[0] ? sortedRT[0].id : null;
+      this.setState({ responseTypeId: rtid });
+    }
   }
 
   componentDidMount() {
@@ -74,7 +87,7 @@ class QuestionForm extends Component{
 
   stateForRevise(question) {
     var reviseState = {};
-    _.forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
+    forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
     reviseState.conceptsAttributes = filterConcepts(question.concepts);
     reviseState.linkedResponseSets = question.responseSets;
     if (this.props.action === 'revise') {
@@ -105,9 +118,9 @@ class QuestionForm extends Component{
   //not working because of map => questionType
   stateForExtend(question) {
     var extendState = {};
-    _.forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
+    forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
     extendState.conceptsAttributes = filterConcepts(question.concepts);
-    extendState.linkedResponseSets = question.responseSets;
+    extendState.linkedResponseSets = question.responseSets || [];
     extendState.version = 1;
     extendState.parentId  = question.id;
     extendState.oid = '';
@@ -117,10 +130,18 @@ class QuestionForm extends Component{
     return extendState;
   }
 
+  selectedResponseSets(linkedResponseSets, allResponseSets) {
+    if(linkedResponseSets) {
+      return linkedResponseSets.map((r) => allResponseSets[r]).filter((r) => r !== undefined);
+    } else {
+      return [];
+    }
+  }
+
   render(){
     const {question, questionTypes, responseSets, responseTypes} = this.props;
     const state = this.state;
-    if(!question || !questionTypes || !responseSets || !responseTypes){
+    if(!question || !questionTypes || !responseTypes){
       return (<div>Loading....</div>);
     }
     return (
@@ -147,7 +168,7 @@ class QuestionForm extends Component{
           <div>
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h2 className="panel-title">{`${this.actionWord()} Question`}</h2>
+                <h1 className="panel-title">{`${this.actionWord()} Question`}</h1>
               </div>
               <div className="panel-body">
                 <div className="row">
@@ -159,7 +180,7 @@ class QuestionForm extends Component{
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
                       <select className="input-select" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
-                        {questionTypes && _.values(questionTypes).map((qt) => {
+                        {questionTypes && values(questionTypes).map((qt) => {
                           return <option key={qt.id} value={qt.id}>{qt.name}</option>;
                         })}
                       </select>
@@ -175,9 +196,8 @@ class QuestionForm extends Component{
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
-                      {this.sortedResponseTypes().map((rt) => {
+                      {this.sortedResponseTypes(this.props.responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
-
                       })}
                     </select>
                   </div>
@@ -185,7 +205,7 @@ class QuestionForm extends Component{
                 {this.otherAllowedBox()}
                 <div className="row ">
                   <div className="col-md-12 ">
-                    <h1 className="tags-table-header"><strong>Tags</strong></h1>
+                    <h2 className="tags-table-header"><strong>Tags</strong></h2>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
@@ -195,7 +215,7 @@ class QuestionForm extends Component{
                 { this.isChoiceType() ?
                 <div className="row response-set-row">
                   <div className="col-md-6 response-set-label">
-                    <label htmlFor="linked_response_sets">Response Sets</label>
+                    <h2>Response Sets</h2>
                   </div>
                   <div className="col-md-6 response-set-label">
                     <h2>Selected Response Sets</h2>
@@ -206,7 +226,7 @@ class QuestionForm extends Component{
                 { this.isChoiceType() ?
                   <ResponseSetDragWidget responseSets={responseSets}
                                          handleResponseSetsChange={this.handleResponseSetsChange}
-                                         selectedResponseSets={this.state.linkedResponseSets && this.state.linkedResponseSets.map((r) => this.props.responseSets[r] ).filter((r) => r !== undefined)} />
+                                         selectedResponseSets={this.selectedResponseSets(this.state.linkedResponseSets, this.props.responseSets)} />
                 : ''}
                 <div className="panel-footer">
                   <div className="actions form-group">
@@ -229,7 +249,7 @@ class QuestionForm extends Component{
 
 
   isChoiceType(){
-    let rt = _.values(this.props.responseTypes).find((a) => {
+    let rt = values(this.props.responseTypes).find((a) => {
       return a.id == this.state.responseTypeId;
     });
     if(rt && (rt.code == "choice" || rt.code == "open-choice")){
@@ -237,8 +257,8 @@ class QuestionForm extends Component{
     }
   }
 
-  sortedResponseTypes(){
-    return _.values(this.props.responseTypes).sort((a,b) => {
+  sortedResponseTypes(responseTypes){
+    return values(responseTypes).sort((a,b) => {
       if(a.name == b.name ){
         return 0;
       }else if(a.name < b.name){

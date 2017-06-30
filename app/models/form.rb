@@ -2,7 +2,7 @@ class Form < ApplicationRecord
   include OidGenerator, Versionable, Searchable
   acts_as_commentable
 
-  has_many :form_questions
+  has_many :form_questions, -> { order 'position asc' }
   has_many :questions, through: :form_questions
   has_many :response_sets, through: :form_questions
   has_many :survey_forms
@@ -12,6 +12,7 @@ class Form < ApplicationRecord
   belongs_to :published_by, class_name: 'User'
   belongs_to :parent, class_name: 'Form'
 
+  validates :name, presence: true
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
                                                           message: 'must be a valid OMB Control Number' },
@@ -24,7 +25,7 @@ class Form < ApplicationRecord
   after_commit :delete_index, on: :destroy
 
   def index
-    UpdateIndexJob.perform_later('form', ESFormSerializer.new(self).as_json)
+    UpdateIndexJob.perform_later('form', self)
   end
 
   def delete_index

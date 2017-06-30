@@ -12,6 +12,10 @@
   }
 }
 
+a.tutorial-link {
+  color: $cdc-dark-blue !important;
+}
+
 a.cdc-brand:hover {
   color:white;
 }
@@ -124,6 +128,12 @@ a.cdc-brand:focus {
     overflow-y: auto;
     overflow-x: hidden;
   }
+}
+
+.version-display {
+  margin-left: 20px !important;
+  margin-bottom: 5px;
+  color: $medium-gray;
 }
 
 .skiptocontent {

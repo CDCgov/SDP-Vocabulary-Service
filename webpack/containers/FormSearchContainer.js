@@ -11,6 +11,8 @@ import currentUserProps from "../prop-types/current_user_props";
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 
+const FORM_SEARCH_CONTEXT = 'FORM_SEARCH_CONTEXT';
+
 class FormSearchContainer extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +40,7 @@ class FormSearchContainer extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if(prevState != this.state && prevState.page === this.state.page) {
+    if(prevState.page === this.state.page && prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
       let searchType = this.state.searchType;
       let searchTerms = this.state.searchTerms;
       if(searchType === '') {
@@ -47,7 +49,7 @@ class FormSearchContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(searchTerms, 'form', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(FORM_SEARCH_CONTEXT, searchTerms, 'form', this.state.progFilters, this.state.sysFilters);
     }
   }
 
@@ -60,7 +62,7 @@ class FormSearchContainer extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
-    this.props.fetchSearchResults(searchTerms, 'form', progFilters, sysFilters);
+    this.props.fetchSearchResults(FORM_SEARCH_CONTEXT, searchTerms, 'form', progFilters, sysFilters);
   }
 
   loadMore() {
@@ -103,7 +105,7 @@ class FormSearchContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults,
+    searchResults: state.searchResults[FORM_SEARCH_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser

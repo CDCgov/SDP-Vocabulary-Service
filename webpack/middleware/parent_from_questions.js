@@ -1,6 +1,7 @@
 import {
   FETCH_QUESTIONS_FULFILLED,
-  FETCH_QUESTION_FULFILLED
+  FETCH_QUESTION_FULFILLED,
+  FETCH_QUESTION_FROM_MIDDLE_FULFILLED
 } from '../actions/types';
 
 import { dispatchIfNotPresent } from './store_helper';
@@ -12,7 +13,7 @@ const parentFromQuestions = store => next => action => {
       const questions = action.payload.data;
       questions.forEach((q) => {
         if(q.parent){
-          dispatchIfNotPresent(store, 'questions', q.parent, FETCH_QUESTION_FULFILLED);
+          dispatchIfNotPresent(store, 'questions', q.parent, FETCH_QUESTION_FROM_MIDDLE_FULFILLED);
           q.parent = ({id: q.parent.id, name: q.parent.content});
         }
       });
@@ -20,7 +21,7 @@ const parentFromQuestions = store => next => action => {
     case FETCH_QUESTION_FULFILLED:
       if(action.payload.data.parent) {
         const parent = action.payload.data.parent;
-        dispatchIfNotPresent(store, 'questions', parent, FETCH_QUESTION_FULFILLED);
+        dispatchIfNotPresent(store, 'questions', parent, FETCH_QUESTION_FROM_MIDDLE_FULFILLED);
         action.payload.data.parent = ({id: parent.id, name: parent.content});
       }
   }

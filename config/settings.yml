@@ -22,5 +22,6 @@ oid_prefix:
 elasticsearch:
   log: false
 
+app_version: 0.7
 
 concept_service_url: 'http://concept-manager.129.83.185.216.xip.io'

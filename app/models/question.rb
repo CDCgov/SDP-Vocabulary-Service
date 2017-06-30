@@ -16,6 +16,7 @@ class Question < ApplicationRecord
   belongs_to :parent, class_name: 'Question'
 
   validates :content, presence: true
+  validates :response_type, presence: true
   validate :other_allowed_on_when_choice
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
@@ -23,7 +24,7 @@ class Question < ApplicationRecord
   after_commit :delete_index, on: :destroy
 
   def index
-    UpdateIndexJob.perform_later('question', ESQuestionSerializer.new(self).as_json)
+    UpdateIndexJob.perform_later('question', self)
   end
 
   def delete_index

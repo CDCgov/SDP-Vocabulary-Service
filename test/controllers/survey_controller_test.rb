@@ -26,7 +26,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
   test 'should create survey' do
     assert_enqueued_jobs 0
     assert_difference('Survey.count') do
-      post surveys_url params: { survey: { linked_forms: [forms(:one).id], name: 'Test' } }
+      post surveys_url params: { survey: { linked_forms: [{ form_id: forms(:one).id, position: 0 }], name: 'Test' } }
     end
     assert_enqueued_jobs 5 # 1 for the survey, 1 for the form update, 2 for questions, 1 for response set
     assert_response :success
@@ -42,7 +42,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
   test 'should destroy survey and surveyforms' do
     assert_enqueued_jobs 0
     post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @survey.created_by_id, linked_questions: [nil], linked_response_sets: [nil] } }
-    post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_forms: [Form.last.id] } }
+    post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_forms: [{ form_id: Form.last.id, position: 0 }] } }
     assert_difference('Survey.count', -1) do
       assert_difference('SurveyForm.count', -1) do
         assert_difference('Form.count', 0) do

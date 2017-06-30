@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import $ from 'jquery';
 
 import Header from './Header';
 import LogInModal from '../components/accounts/LogInModal';
@@ -15,11 +16,19 @@ import { fetchCurrentUser, logIn, signUp, updateUser } from '../actions/current_
 import { fetchSurveillanceSystems } from '../actions/surveillance_system_actions';
 import { fetchSurveillancePrograms } from '../actions/surveillance_program_actions';
 import { fetchPublishers } from '../actions/publisher_actions';
+import { fetchStats } from '../actions/landing';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {logInOpen: false, signUpOpen: false, settingsOpen: false};
+    this.updateUser        = this.updateUser.bind(this);
+    this.openLogInModal    = this.openLogInModal.bind(this);
+    this.openSignUpModal   = this.openSignUpModal.bind(this);
+    this.closeLogInModal   = this.closeLogInModal.bind(this);
+    this.closeSignUpModal  = this.closeSignUpModal.bind(this);
+    this.openSettingsModal = this.openSettingsModal.bind(this);
+    this.closeSettingsModal= this.closeSettingsModal.bind(this);
   }
 
   componentWillMount() {
@@ -27,6 +36,7 @@ class App extends Component {
     this.props.fetchSurveillancePrograms();
     this.props.fetchSurveillanceSystems();
     this.props.fetchPublishers();
+    this.props.fetchStats();
   }
 
   openLogInModal() {
@@ -53,17 +63,28 @@ class App extends Component {
     this.setState({settingsOpen: false});
   }
 
+  updateUser(user, successHandler=null, failureHandler=null){
+    this.props.updateUser(user, ()=>{
+      this.props.fetchCurrentUser();
+      successHandler();
+    }, failureHandler);
+  }
+
   render() {
     return (
       <div>
         <text className="sr-only">Welcome to the vocabulary service. Click the next link to skip navigation and go to main content.</text>
-        <a href="#main-content" id="skip-nav" className="sr-only sr-only-focusable" tabIndex="1">Skip to main content</a>
+        <a href="#main-content" id="skip-nav" className="sr-only sr-only-focusable" tabIndex="1" onClick={() => {
+          $('a[tabindex=2]').attr('tabindex', '-1');
+          $('a[tabindex=1]').attr('tabindex', '-1');
+        }}>Skip to main content</a>
         <Header currentUser={this.props.currentUser}
                 disableUserRegistration={DISABLE_USER_REGISTRATION}
                 location={this.props.location}
-                logInOpener={() => this.openLogInModal()}
-                signUpOpener={() => this.openSignUpModal()}
-                settingsOpener={() => this.openSettingsModal()}/>
+                logInOpener={this.openLogInModal}
+                signUpOpener={this.openSignUpModal}
+                settingsOpener={this.openSettingsModal}
+                appVersion={this.props.appVersion} />
         <div className='main-content' id="main-content">
           {this.props.children}
         </div>
@@ -72,19 +93,20 @@ class App extends Component {
             2016 Centers for Disease Control and Prevention. All rights reserved.
             <div className="nav-links">
               <Link to="/privacy">Privacy</Link>
-              <span href="#">Security</span>
-              <span href="#">Terms of Service</span>
+              <Link to="/">Security</Link>
+              <Link to="/">Terms of Service</Link>
+              Release: v{this.props.appVersion}
             </div>
           </div>
         </footer>
-        <LogInModal logIn={this.props.logIn} show={this.state.logInOpen} closer={() => this.closeLogInModal()}/>
+        <LogInModal logIn={this.props.logIn} show={this.state.logInOpen} closer={this.closeLogInModal}/>
         <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen}
-          closer={() => this.closeSignUpModal()}
+          closer={this.closeSignUpModal}
           surveillanceSystems={this.props.surveillanceSystems}
           surveillancePrograms={this.props.surveillancePrograms} />
-        <SettingsModal update={this.props.updateUser}
+        <SettingsModal update={this.updateUser}
           show={this.state.settingsOpen}
-          closer={() => this.closeSettingsModal()}
+          closer={this.closeSettingsModal}
           currentUser={this.props.currentUser}
           surveillanceSystems={this.props.surveillanceSystems}
           surveillancePrograms={this.props.surveillancePrograms} />
@@ -98,11 +120,13 @@ App.propTypes = {
   fetchCurrentUser: PropTypes.func,
   logIn: PropTypes.func,
   location: PropTypes.object,
+  appVersion: PropTypes.number,
   signUp: PropTypes.func,
   updateUser: PropTypes.func,
   fetchSurveillanceSystems: PropTypes.func,
   fetchSurveillancePrograms: PropTypes.func,
   fetchPublishers: PropTypes.func,
+  fetchStats: PropTypes.func,
   children: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
@@ -113,9 +137,10 @@ function mapStateToProps(state) {
     currentUser: state.currentUser,
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
+    appVersion: state.stats.version,
     errors: state.errors
   };
 }
 
 export default connect(mapStateToProps, {fetchCurrentUser, logIn, signUp, updateUser,
-  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers})(App);
+  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers, fetchStats})(App);

@@ -14,6 +14,7 @@ module SDP
           name: 'Data Element (DE) Name',
           description: 'Data Element Description',
           value_set: 'Value Set Name (VADS Hyperlink)',
+          program_var: 'Local Variable Code System',
           data_type: 'Data Type'
         },
         vs_columns: {
@@ -61,7 +62,7 @@ module SDP
             q = question_for(element)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
-            f.form_questions.create(question: q, response_set: rs)
+            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs)
           end
         end
       end
@@ -181,7 +182,10 @@ module SDP
       end
 
       def extract_data_element(row)
-        data_element = { name: normalize(row[:name]), description: normalize(row[:description]), data_type: normalize(row[:data_type]) }
+        data_element = {
+          name: normalize(row[:name]), description: normalize(row[:description]),
+          data_type: normalize(row[:data_type]), program_var: normalize(row[:program_var])
+        }
         if @config[:de_coded_type].include? data_element[:data_type]
           if row[:value_set].respond_to? :to_uri
             data_element[:value_set_url] = row[:value_set].to_uri
