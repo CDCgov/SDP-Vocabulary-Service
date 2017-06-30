@@ -6,6 +6,13 @@ namespace :data do
       exit(-1)
     end
 
+    boolean_rt = ResponseType.where(name: 'Boolean').first
+
+    if boolean_rt.blank?
+      STDERR.puts "Unable to Boolean ResponseType. Did you seed the database?"
+      exit(-1)
+    end
+
     rs = ResponseSet.new(created_by: user, status: 'draft',
                          name: '30 Code Response Set')
     responses = []
@@ -17,11 +24,13 @@ namespace :data do
     rs.responses = responses
     rs.save!
 
+
+
     form = Form.new(name: '500 Question Form', created_by: user, status: 'draft')
     500.times do |i|
       position = i + 1
       q = Question.create(content: "Is your favorite number #{position}?",
-                          created_by: user, status: 'draft')
+                          created_by: user, status: 'draft', response_type: boolean_rt)
       fq = FormQuestion.new(question: q, position: position)
       form.form_questions << fq
     end
@@ -33,7 +42,7 @@ namespace :data do
       100.times do |i|
         position = i + 1
         q = Question.create(content: "Is your favorite letter #{form_letter} and number #{position}?",
-                            created_by: user, status: 'draft')
+                            created_by: user, status: 'draft', response_type: boolean_rt)
         fq = FormQuestion.new(question: q, position: position)
         f.form_questions << fq
       end
