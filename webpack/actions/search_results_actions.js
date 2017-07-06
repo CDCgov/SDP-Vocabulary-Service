@@ -28,9 +28,9 @@ export function fetchMoreSearchResults(context, searchTerms=null, type=null, pag
   };
 }
 
-export function setLastSearch(searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false) {
+export function setLastSearch(searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, page=1) {
   return {
     type: SET_LAST_SEARCH,
-    payload: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
+    payload: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, page: page }
   };
 }
