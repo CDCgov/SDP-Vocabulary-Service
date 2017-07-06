@@ -11,6 +11,7 @@ import {
 } from '../actions/types';
 import keyBy from 'lodash/keyBy';
 import omitBy from 'lodash/omitBy';
+import { move } from './helpers';
 
 export default function surveys(state = {}, action) {
   let survey , index, newState, newSurvey, direction, form;
@@ -69,10 +70,3 @@ export default function surveys(state = {}, action) {
       return state;
   }
 }
-
-
-let move = (array, from, to) => {
-  let copyArray = array.slice(0);
-  copyArray.splice(to, 0, copyArray.splice(from, 1)[0]);
-  return copyArray;
-};

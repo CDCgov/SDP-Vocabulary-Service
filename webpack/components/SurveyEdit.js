@@ -130,9 +130,7 @@ class SurveyEdit extends Component {
     event.preventDefault();
     // Because of the way we have to pass the current forms in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
-    // Because we were saving SurveyForms with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
-    // At some point, we can remove this code
-    survey.linkedForms = this.state.surveyForms.map((f, i) => ({id: f.id, surveyId: f.surveyId, formId: f.formId, position: i}));
+    survey.linkedForms = this.state.surveyForms;
     this.props.surveySubmitter(survey, (response) => {
       this.unsavedState = false;
       this.props.router.push(`/surveys/${response.data.id}`);

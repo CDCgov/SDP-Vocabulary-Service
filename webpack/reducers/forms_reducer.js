@@ -13,6 +13,7 @@ import {
 } from '../actions/types';
 import keyBy from 'lodash/keyBy';
 import omitBy from 'lodash/omitBy';
+import { move } from './helpers';
 
 export default function forms(state = {}, action) {
   let form , index, newState, newForm, direction, question, responseSetId;
@@ -87,13 +88,3 @@ export default function forms(state = {}, action) {
       return state;
   }
 }
-
-
-let move = (array, from, to) => {
-  let copyArray = array.slice(0);
-  copyArray.splice(to, 0, copyArray.splice(from, 1)[0]);
-  for(var i = 0; i < copyArray.length; i++){
-    copyArray[i].position = i;
-  }
-  return copyArray;
-};
