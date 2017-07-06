@@ -44,8 +44,6 @@ class DashboardContainer extends Component {
                                     lastSearch.programs, lastSearch.systems, lastSearch.mystuff);
     if(lastSearch.page > 1 && lastSearch.page !== this.state.page) {
       let iterations = lastSearch.page - 1;
-      console.log("triggered")
-      console.log(lastSearch.search)
       times(iterations, this.loadMore(lastSearch.search, lastSearch.type, lastSearch.programs, lastSearch.systems, lastSearch.mystuff));
     }
     this.setState({searchTerms: lastSearch.search, searchType: lastSearch.type, progFilters: lastSearch.programs,
