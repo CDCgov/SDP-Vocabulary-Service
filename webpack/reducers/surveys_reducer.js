@@ -3,12 +3,14 @@ import {
   FETCH_SURVEYS_FULFILLED,
   PUBLISH_SURVEY_FULFILLED,
   SAVE_DRAFT_SURVEY_FULFILLED,
+  DELETE_SURVEY_FULFILLED,
   ADD_FORM,
   REMOVE_FORM,
   REORDER_FORM,
   CREATE_SURVEY
 } from '../actions/types';
 import keyBy from 'lodash/keyBy';
+import omitBy from 'lodash/omitBy';
 
 export default function surveys(state = {}, action) {
   let survey , index, newState, newSurvey, direction, form;
@@ -59,6 +61,10 @@ export default function surveys(state = {}, action) {
       newState = Object.assign({}, state);
       newState[survey.id||0] = newSurvey;
       return newState;
+    case DELETE_SURVEY_FULFILLED:
+      return omitBy(state,(v, k)=>{
+        return action.payload.data.id == k;
+      });
     default:
       return state;
   }
