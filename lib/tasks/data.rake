@@ -24,18 +24,6 @@ namespace :data do
     rs.responses = responses
     rs.save!
 
-
-
-    form = Form.new(name: '500 Question Form', created_by: user, status: 'draft')
-    500.times do |i|
-      position = i + 1
-      q = Question.create(content: "Is your favorite number #{position}?",
-                          created_by: user, status: 'draft', response_type: boolean_rt)
-      fq = FormQuestion.new(question: q, position: position)
-      form.form_questions << fq
-    end
-    form.save!
-
     survey = Survey.new(name: '500 Question Survey', created_by: user, status: 'draft')
     ['a', 'b', 'c', 'd', 'e'].each_with_index do |form_letter, survey_position|
       f = Form.new(name: "Form #{form_letter} - 100 questions", created_by: user, status: 'draft')
