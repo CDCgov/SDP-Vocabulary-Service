@@ -1,6 +1,7 @@
 import keyBy from 'lodash/keyBy';
-import omitBy from 'lodash/omitBy';
 import assign from 'lodash/assign';
+
+import * as helpers from './helpers';
 
 import {
   SAVE_QUESTION_FULFILLED,
@@ -27,14 +28,12 @@ function addQuestionToState(action, state){
 export default function questions(state = {}, action) {
   switch (action.type) {
     case FETCH_QUESTIONS_FULFILLED:
-      return Object.assign({}, state, keyBy(action.payload.data, 'id'));
+      return helpers.fetchGroup(state, action);
     case SAVE_QUESTION_FULFILLED:
     case FETCH_QUESTION_FULFILLED:
       return addQuestionToState(action, state);
     case DELETE_QUESTION_FULFILLED:
-      return omitBy(state,(v, k)=>{
-        return action.payload.data.id==k;
-      });
+      return helpers.deleteItem(state, action);
     case FETCH_QUESTION_FROM_MIDDLE_FULFILLED:
       action.payload.data['fromMiddleware'] = true;
       return addQuestionToState(action, state);

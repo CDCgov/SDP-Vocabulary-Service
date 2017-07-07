@@ -12,14 +12,13 @@ import {
   CREATE_FORM
 } from '../actions/types';
 import keyBy from 'lodash/keyBy';
-import omitBy from 'lodash/omitBy';
-import { move } from './helpers';
+import * as helpers from './helpers';
 
 export default function forms(state = {}, action) {
-  let form , index, newState, newForm, direction, question, responseSetId;
+  let form, newState, newForm, question, responseSetId;
   switch (action.type) {
     case FETCH_FORMS_FULFILLED:
-      return Object.assign({}, state, keyBy(action.payload.data, 'id'));
+      return helpers.fetchGroup(state, action);
     case FETCH_FORMS_FROM_MIDDLE_FULFILLED:
       let newData = action.payload.data.slice();
       newData.forEach((obj) => {
@@ -29,9 +28,7 @@ export default function forms(state = {}, action) {
     case PUBLISH_FORM_FULFILLED:
     case SAVE_DRAFT_FORM_FULFILLED:
     case FETCH_FORM_FULFILLED:
-      const formClone = Object.assign({}, state);
-      formClone[action.payload.data.id] = action.payload.data;
-      return formClone;
+      return helpers.fetchIndividual(state, action);
     case FETCH_FORM_FROM_MIDDLE_FULFILLED:
       newState = Object.assign({}, state);
       newState[action.payload.data.id] = action.payload.data;
@@ -60,30 +57,11 @@ export default function forms(state = {}, action) {
       newState[form.id] = newForm;
       return newState;
     case REMOVE_QUESTION:
-      form  = action.payload.form;
-      index = action.payload.index;
-      form.id = form.id || 0;
-      newForm = Object.assign({}, form);
-      newForm.formQuestions.splice(index, 1);
-      newState = Object.assign({}, state);
-      newState[form.id] = newForm;
-      return newState;
+      return helpers.removeNestedItem(state, action, 'form', 'formQuestions');
     case REORDER_QUESTION:
-      form  = action.payload.form;
-      index = action.payload.index;
-      direction = action.payload.direction;
-      if(index == 0  && direction == 1){
-        return state;
-      }
-      newForm = Object.assign({}, form);
-      newForm.formQuestions = move(form.formQuestions, index, index-direction);
-      newState = Object.assign({}, state);
-      newState[form.id||0] = newForm;
-      return newState;
+      return helpers.reorderNestedItem(state, action, 'form', 'formQuestions');
     case DELETE_FORM_FULFILLED:
-      return omitBy(state,(v, k)=>{
-        return action.payload.data.id==k;
-      });
+      return helpers.deleteItem(state, action);
     default:
       return state;
   }
