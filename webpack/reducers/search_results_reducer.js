@@ -1,6 +1,7 @@
 import {
   FETCH_SEARCH_RESULTS_FULFILLED,
-  FETCH_MORE_SEARCH_RESULTS_FULFILLED
+  FETCH_MORE_SEARCH_RESULTS_FULFILLED,
+  FETCH_LAST_SEARCH_FULFILLED
 } from '../actions/types';
 
 import cloneDeep from 'lodash/cloneDeep';
@@ -8,6 +9,7 @@ import cloneDeep from 'lodash/cloneDeep';
 export default function searchResults(state = {}, action) {
   switch (action.type) {
     case FETCH_SEARCH_RESULTS_FULFILLED:
+    case FETCH_LAST_SEARCH_FULFILLED:
       const stateClone = Object.assign({}, state);
       stateClone[action.meta.context] = action.payload.data;
       return stateClone;
