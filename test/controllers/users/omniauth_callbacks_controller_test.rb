@@ -8,7 +8,9 @@ module Users
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:openid_connect] = OmniAuth::AuthHash.new(provider: 'openid_connect',
                                                                           uid: '12345',
-                                                                          info: { email: 'admin@example.com' })
+                                                                          info: { email: 'admin@example.com',
+                                                                                  given_name: 'Mike',
+                                                                                  family_name: 'Smith' })
 
       @admin = User.find_by(email: 'admin@example.com')
       @user_count = User.count
@@ -27,6 +29,8 @@ module Users
       user = User.first
       assert_equal 1, user.authentications.count, 'expected the new user to be associated with a single authentication'
       assert_equal 'admin@example.com', user.email
+      assert_equal 'Mike', user.given_name
+      assert_equal 'Smith', user.family_name
       assert_authentication(user.authentications[0], 'openid_connect', '12345')
       assert_response :redirect
       assert_redirected_to root_url
