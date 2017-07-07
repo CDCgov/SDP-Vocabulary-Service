@@ -20,7 +20,7 @@ export function fetchSearchResults(context, searchTerms=null, type=null, program
 export function fetchMoreSearchResults(context, searchTerms=null, type=null, page, programFilter=[], systemFilter=[], myStuffFilter=false) {
   return {
     type: FETCH_MORE_SEARCH_RESULTS,
-    meta: {context: context},
+    meta: {context: context, page: page},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, page: page, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
