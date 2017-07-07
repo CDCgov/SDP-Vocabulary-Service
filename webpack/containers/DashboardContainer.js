@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
-import times from 'lodash/times';
 
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchSearchResults, fetchMoreSearchResults, setLastSearch } from '../actions/search_results_actions';
@@ -44,7 +43,11 @@ class DashboardContainer extends Component {
                                     lastSearch.programs, lastSearch.systems, lastSearch.mystuff);
     if(lastSearch.page > 1 && lastSearch.page !== this.state.page) {
       let iterations = lastSearch.page - 1;
-      times(iterations, this.loadMore(lastSearch.search, lastSearch.type, lastSearch.programs, lastSearch.systems, lastSearch.mystuff));
+      let page = 2;
+      for(var i = 0; i < iterations; i++) {
+        this.loadMore(lastSearch.search, lastSearch.type, lastSearch.programs, lastSearch.systems, lastSearch.mystuff, page);
+        page++;
+      }
     }
     this.setState({searchTerms: lastSearch.search, searchType: lastSearch.type, progFilters: lastSearch.programs,
       sysFilters: lastSearch.systems, myStuffFilter: lastSearch.mystuff});
@@ -208,13 +211,13 @@ class DashboardContainer extends Component {
     this.setState({signUpOpen: false});
   }
 
-  loadMore(term, type, prog, sys, mystuff) {
+  loadMore(term, type, prog, sys, mystuff, page) {
     let searchType = type || this.state.searchType;
     let searchTerms = term || this.state.searchTerms;
     let progFilters = prog || this.state.progFilters;
     let sysFilters = sys || this.state.sysFilters;
     let myStuffFilter = mystuff || this.state.myStuffFilter;
-    let tempState = this.state.page + 1;
+    let tempState = page || this.state.page + 1;
     if(searchType === '') {
       searchType = null;
     }
