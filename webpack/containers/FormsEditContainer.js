@@ -89,7 +89,7 @@ class FormsEditContainer extends Component {
       this.props.fetchForm(this.props.params.formId);
     }
     if(this.props.form && this.props.form.formQuestions) {
-      this.refs.form.setState(Object.assign(this.refs.form.state, {formQuestions: this.props.form.formQuestions}));
+      this.refs.form.updateFormQuestions(this.props.form.formQuestions);
     }
   }
 

@@ -41,7 +41,8 @@ class FormEdit extends Component {
     const controlNumber = form.controlNumber;
     const showWarningModal = false;
     const parentId = form.parent ? form.parent.id : '';
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId};
+    const linkedResponseSets = this.findLinkedResponseSets(formQuestions);
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId, linkedResponseSets};
   }
 
   constructor(props) {
@@ -62,19 +63,20 @@ class FormEdit extends Component {
     this.unsavedState = false;
     this.lastQuestionCount = this.state.formQuestions.length;
     this.addedResponseSets = compact(this.state.formQuestions.map((fq) => fq.responseSetId));
-    this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
-    this.handleResponseSetChangeEvent = this.handleResponseSetChangeEvent.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleProgramVarChange = this.handleProgramVarChange.bind(this);
-    this.handleChangeName = this.handleChangeName.bind(this);
-    this.handleChangeDescription = this.handleChangeDescription.bind(this);
-    this.handleChangeControl = this.handleChangeControl.bind(this);
-    this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
-    this.handleModalResponse = this.handleModalResponse.bind(this);
-    this.handleModalResponseAndLeave = this.handleModalResponseAndLeave.bind(this);
+
+    this.handleSubmit   = this.handleSubmit.bind(this);
     this.moveQuestionUp = this.moveQuestionUp.bind(this);
-    this.moveQuestionDown = this.moveQuestionDown.bind(this);
     this.removeQuestion = this.removeQuestion.bind(this);
+    this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
+    this.handleChangeName = this.handleChangeName.bind(this);
+    this.moveQuestionDown = this.moveQuestionDown.bind(this);
+    this.handleChangeControl = this.handleChangeControl.bind(this);
+    this.handleModalResponse = this.handleModalResponse.bind(this);
+    this.handleProgramVarChange   = this.handleProgramVarChange.bind(this);
+    this.handleChangeDescription  = this.handleChangeDescription.bind(this);
+    this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
+    this.handleModalResponseAndLeave  = this.handleModalResponseAndLeave.bind(this);
+    this.handleResponseSetChangeEvent = this.handleResponseSetChangeEvent.bind(this);
   }
 
   componentDidMount() {
@@ -129,6 +131,7 @@ class FormEdit extends Component {
     }
     let newState = Object.assign({}, this.state);
     newState.formQuestions[questionIndex].responseSetId = responseSetId;
+    newState.linkedResponseSets = this.findLinkedResponseSets(newState.formQuestions);
     this.setState(newState);
     this.unsavedState = true;
   }
@@ -194,13 +197,24 @@ class FormEdit extends Component {
     this.setState(newState);
   }
 
-  linkedResponseSets(qId) {
-    var linkedResponseSets = [];
-    if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
-      linkedResponseSets = this.props.questions[qId].responseSets || [];
-    }
-    linkedResponseSets = union(linkedResponseSets, this.addedResponseSets, this.state.formQuestions.map((fq) => fq.responseSetId));
-    return compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
+  updateFormQuestions(formQuestions){
+    var newState = Object.assign(this.state, {formQuestions: formQuestions, linkedResponseSets: this.findLinkedResponseSets(formQuestions)});
+    this.setState(newState);
+  }
+
+  findLinkedResponseSets(formQuestions, addedResponseSets){
+    var linkedResponseSetMap = {};
+    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, formQuestions.map((fq) => fq.responseSetId));
+    formQuestions.map((q) => {
+      var linkedResponseSets = [];
+      var qId = q.questionId;
+      if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
+        linkedResponseSets = this.props.questions[qId].responseSets || [];
+      }
+      linkedResponseSets = union(linkedResponseSets, otherResponseSets);
+      linkedResponseSetMap[q.questionId] = compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
+    });
+    return linkedResponseSetMap;
   }
 
   handleSelectSearchResult(i, responseSet){
@@ -245,11 +259,11 @@ class FormEdit extends Component {
                 <QuestionItem index={i}
                               question={this.props.questions[q.questionId]}
                               programVar={q.programVar}
-                              responseSets={this.linkedResponseSets(q.questionId)}
-                              selectedResponseSet={q.responseSetId}
+                              responseSets={this.state.linkedResponseSets[q.questionId] || []}
                               removeQuestion ={this.props.removeQuestion}
                               reorderQuestion={this.props.reorderQuestion}
-                              handleProgramVarChange  ={this.handleProgramVarChange}
+                              selectedResponseSet={q.responseSetId}
+                              handleProgramVarChange={this.handleProgramVarChange}
                               handleResponseSetChange ={this.handleResponseSetChangeEvent}
                               handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
@@ -305,11 +319,6 @@ class FormEdit extends Component {
             <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>
-        <div className="row">
-          <div className="col-md-12">
-            <hr />
-          </div>
-        </div>
         <div className="row">
           <div className="col-md-12">
             <div className="row">
