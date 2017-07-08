@@ -9,20 +9,17 @@ import {
   REORDER_FORM,
   CREATE_SURVEY
 } from '../actions/types';
-import keyBy from 'lodash/keyBy';
-import omitBy from 'lodash/omitBy';
+import * as helpers from './helpers';
 
 export default function surveys(state = {}, action) {
-  let survey , index, newState, newSurvey, direction, form;
+  let survey, newState, newSurvey, form;
   switch (action.type) {
     case FETCH_SURVEYS_FULFILLED:
-      return Object.assign({}, state, keyBy(action.payload.data, 'id'));
+      return helpers.fetchGroup(state, action);
     case PUBLISH_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:
     case FETCH_SURVEY_FULFILLED:
-      const surveyClone = Object.assign({}, state);
-      surveyClone[action.payload.data.id] = action.payload.data;
-      return surveyClone;
+      return helpers.fetchIndividual(state, action);
     case CREATE_SURVEY:
       newState = Object.assign({}, state);
       newState[0] = {surveyForms: [], forms: [], version: 1, id: 0};
@@ -41,38 +38,12 @@ export default function surveys(state = {}, action) {
       newState[survey.id] = newSurvey;
       return newState;
     case REMOVE_FORM:
-      index  = action.payload.index;
-      survey = action.payload.survey;
-      survey.id = survey.id || 0;
-      newSurvey = Object.assign({}, survey);
-      newSurvey.surveyForms.splice(index, 1);
-      newState = Object.assign({}, state);
-      newState[survey.id] = newSurvey;
-      return newState;
+      return helpers.removeNestedItem(state, action, 'survey', 'surveyForms');
     case REORDER_FORM:
-      survey = action.payload.survey;
-      index = action.payload.index;
-      direction = action.payload.direction;
-      if(index == 0  && direction == 1){
-        return state;
-      }
-      newSurvey = Object.assign({}, survey);
-      newSurvey.surveyForms = move(survey.surveyForms, index, index-direction);
-      newState = Object.assign({}, state);
-      newState[survey.id||0] = newSurvey;
-      return newState;
+      return helpers.reorderNestedItem(state, action, 'survey', 'surveyForms');
     case DELETE_SURVEY_FULFILLED:
-      return omitBy(state,(v, k)=>{
-        return action.payload.data.id == k;
-      });
+      return helpers.deleteItem(state, action);
     default:
       return state;
   }
 }
-
-
-let move = (array, from, to) => {
-  let copyArray = array.slice(0);
-  copyArray.splice(to, 0, copyArray.splice(from, 1)[0]);
-  return copyArray;
-};
