@@ -86,7 +86,8 @@ class QuestionSearchContainer extends Component {
                             result={q}
                             isEditPage={true}
                             currentUser={this.props.currentUser}
-                            handleSelectSearchResult={this.props.handleSelectSearchResult} />
+                            handleSelectSearchResult={this.props.handleSelectSearchResult}
+                            isSelected={this.props.selectedSearchResults[q.Id]} />
             );
           })}
           {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
@@ -113,6 +114,7 @@ function mapDispatchToProps(dispatch) {
 
 QuestionSearchContainer.propTypes = {
   handleSelectSearchResult: PropTypes.func.isRequired,
+  selectedSearchResults: PropTypes.object.isRequired,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,

@@ -91,8 +91,10 @@ class FormSearchContainer extends Component {
             return (
               <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`}
               type={f.Type} result={f} currentUser={this.props.currentUser}
+              isEditPage={true}
               handleSelectSearchResult={() => this.props.addForm(this.props.survey, f.Source)}
-              isEditPage={true}/>
+              isSelected={this.props.selectedSearchResults[f.Id]}
+              />
             );
           })}
           {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
@@ -125,6 +127,7 @@ FormSearchContainer.propTypes = {
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
+  isSelected: PropTypes.bool,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
 };

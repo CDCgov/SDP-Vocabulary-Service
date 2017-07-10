@@ -15,6 +15,7 @@ export default class SearchResult extends Component {
                             this.props.result.Source,
                             this.props.result.highlight,
                             this.props.handleSelectSearchResult,
+                            this.props.isSelected,
                             this.props.isEditPage,
                             this.props.extraActionName,
                             this.props.extraAction));
@@ -122,13 +123,22 @@ export default class SearchResult extends Component {
     );
   }
 
-  selectResultButton(result, handleSelectSearchResult) {
-    return (
-      <a title="Select Search Result" href="#" id={`select-${result.name}`} onClick={(e) => {
-        e.preventDefault();
-        handleSelectSearchResult(result);
-      }}><i className="fa fa-plus-square fa-2x"></i><span className="sr-only">Add or Select Result</span></a>
-    );
+  selectResultButton(result, isSelected, handleSelectSearchResult) {
+    if(isSelected){
+      return (
+        <div>
+          <i className="fa fa-check-square fa-2x" title="Result Already Added"></i>
+          <span className="sr-only">Result Already Added</span>
+        </div>
+      );
+    } else {
+      return (
+        <a title="Select Search Result" href="#" id={`select-${result.name}`} onClick={(e) => {
+          e.preventDefault();
+          handleSelectSearchResult(result);
+        }}><i className="fa fa-plus-square fa-2x"></i><span className="sr-only">Add or Select Result</span></a>
+      );
+    }
   }
 
   questionCollapsable(result) {
@@ -266,7 +276,7 @@ export default class SearchResult extends Component {
     }
   }
 
-  baseResult(type, result, highlight, handleSelectSearchResult, isEditPage, actionName, action) {
+  baseResult(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
     const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-list-alt', 'survey_form': 'fa-list-alt', 'survey': 'fa-clipboard'};
     return (
       <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
@@ -303,7 +313,7 @@ export default class SearchResult extends Component {
           <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
-              this.selectResultButton(result, handleSelectSearchResult)
+              this.selectResultButton(result, isSelected, handleSelectSearchResult)
             ) : (
               <div className="dropdown">
                 <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
@@ -334,5 +344,6 @@ SearchResult.propTypes = {
   selectedResponseSetId: PropTypes.number,
   showResponseSetSearch: PropTypes.func,
   handleResponseSetChange:  PropTypes.func,
-  handleSelectSearchResult: PropTypes.func
+  handleSelectSearchResult: PropTypes.func,
+  isSelected: PropTypes.bool
 };
