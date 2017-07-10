@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Notification extends Component {
   render() {
@@ -15,8 +16,8 @@ class Notification extends Component {
 }
 
 Notification.propTypes = {
-  notification: React.PropTypes.object,
-  onNotifClick: React.PropTypes.func
+  notification: PropTypes.object,
+  onNotifClick: PropTypes.func
 };
 
 export default Notification;

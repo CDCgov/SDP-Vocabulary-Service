@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';

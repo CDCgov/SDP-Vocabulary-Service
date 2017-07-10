@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../actions/response_set_actions';
