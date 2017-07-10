@@ -99,7 +99,7 @@ class SurveyEditContainer extends Component {
               <div className="col-md-5">
                 <FormSearchContainer survey  ={this.props.survey}
                                      allForms={values(this.props.forms)}
-                                     currentUser={this.props.currentUser} 
+                                     currentUser={this.props.currentUser}
                                      selectedSearchResults={this.props.selectedSearchResults} />
               </div>
               <SurveyEdit ref='survey' survey={this.props.survey}

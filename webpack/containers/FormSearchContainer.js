@@ -127,7 +127,7 @@ FormSearchContainer.propTypes = {
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
-  isSelected: PropTypes.bool,
+  selectedSearchResults: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
 };
