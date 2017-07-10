@@ -29,8 +29,8 @@ module Users
       user = User.first
       assert_equal 1, user.authentications.count, 'expected the new user to be associated with a single authentication'
       assert_equal 'admin@example.com', user.email
-      assert_equal 'Mike', user.given_name
-      assert_equal 'Smith', user.family_name
+      assert_equal 'Mike', user.first_name
+      assert_equal 'Smith', user.last_name
       assert_authentication(user.authentications[0], 'openid_connect', '12345')
       assert_response :redirect
       assert_redirected_to root_url
