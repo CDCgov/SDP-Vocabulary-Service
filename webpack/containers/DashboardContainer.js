@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 
 import { setSteps } from '../actions/tutorial_actions';
-import { fetchSearchResults, fetchMoreSearchResults, setLastSearch } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
@@ -39,8 +39,14 @@ class DashboardContainer extends Component {
 
   componentWillMount() {
     var lastSearch = this.props.lastSearch;
-    this.props.fetchSearchResults(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
-                                    lastSearch.programs, lastSearch.systems, lastSearch.mystuff);
+    if(lastSearch.page > 1 && lastSearch.page !== this.state.page) {
+      this.props.fetchLastSearch(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
+                                  lastSearch.programs, lastSearch.systems, lastSearch.mystuff, lastSearch.page);
+      this.setState({page: lastSearch.page});
+    } else {
+      this.props.fetchSearchResults(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
+                                      lastSearch.programs, lastSearch.systems, lastSearch.mystuff);
+    }
     this.setState({searchTerms: lastSearch.search, searchType: lastSearch.type, progFilters: lastSearch.programs,
       sysFilters: lastSearch.systems, myStuffFilter: lastSearch.mystuff});
   }
@@ -56,7 +62,7 @@ class DashboardContainer extends Component {
         searchTerms = null;
       }
       this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
-      this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+      this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter, this.state.page);
     }
 
     if(prevProps != this.props) {
@@ -217,6 +223,11 @@ class DashboardContainer extends Component {
                                       this.state.progFilters,
                                       this.state.sysFilters,
                                       this.state.myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType,
+                              this.state.progFilters,
+                              this.state.sysFilters,
+                              this.state.myStuffFilter,
+                              tempState);
     this.setState({page: tempState});
   }
 
@@ -233,7 +244,7 @@ class DashboardContainer extends Component {
       searchTerms = null;
     }
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
-    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, this.state.page);
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
   }
 
@@ -265,7 +276,7 @@ class DashboardContainer extends Component {
       searchType = null;
     }
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
-    this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter, this.state.page);
   }
 
   analyticsGroup(searchType) {
@@ -360,7 +371,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchSearchResults, setLastSearch, fetchMoreSearchResults, signUp}, dispatch);
+  return bindActionCreators({setSteps, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -375,6 +386,7 @@ DashboardContainer.propTypes = {
   setSteps: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   setLastSearch: PropTypes.func,
+  fetchLastSearch: PropTypes.func,
   lastSearch: PropTypes.object,
   fetchMoreSearchResults: PropTypes.func,
   signUp: PropTypes.func,

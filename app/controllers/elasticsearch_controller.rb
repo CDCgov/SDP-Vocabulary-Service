@@ -27,4 +27,3 @@ class ElasticsearchController < ApplicationController
   end
 end
 # rubocop:enable Metrics/AbcSize
-# rubocop:enable Metrics/PerceivedComplexity
