@@ -20,7 +20,7 @@ export function fetchSearchResults(context, searchTerms=null, type=null, program
 export function fetchMoreSearchResults(context, searchTerms=null, type=null, page, programFilter=[], systemFilter=[], myStuffFilter=false) {
   return {
     type: FETCH_MORE_SEARCH_RESULTS,
-    meta: {context: context},
+    meta: {context: context, page: page},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, page: page, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
@@ -28,9 +28,9 @@ export function fetchMoreSearchResults(context, searchTerms=null, type=null, pag
   };
 }
 
-export function setLastSearch(searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false) {
+export function setLastSearch(searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, page=1) {
   return {
     type: SET_LAST_SEARCH,
-    payload: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
+    payload: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, page: page }
   };
 }

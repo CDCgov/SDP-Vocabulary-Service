@@ -41,6 +41,14 @@ class DashboardContainer extends Component {
     var lastSearch = this.props.lastSearch;
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
                                     lastSearch.programs, lastSearch.systems, lastSearch.mystuff);
+    if(lastSearch.page > 1 && lastSearch.page !== this.state.page) {
+      let iterations = lastSearch.page - 1;
+      let page = 2;
+      for(var i = 0; i < iterations; i++) {
+        this.loadMore(lastSearch.search, lastSearch.type, lastSearch.programs, lastSearch.systems, lastSearch.mystuff, page);
+        page++;
+      }
+    }
     this.setState({searchTerms: lastSearch.search, searchType: lastSearch.type, progFilters: lastSearch.programs,
       sysFilters: lastSearch.systems, myStuffFilter: lastSearch.mystuff});
   }
@@ -56,7 +64,7 @@ class DashboardContainer extends Component {
         searchTerms = null;
       }
       this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
-      this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter);
+      this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter, this.state.page);
     }
 
     if(prevProps != this.props) {
@@ -203,20 +211,21 @@ class DashboardContainer extends Component {
     this.setState({signUpOpen: false});
   }
 
-  loadMore() {
-    let searchType = this.state.searchType;
-    let searchTerms = this.state.searchTerms;
-    let tempState = this.state.page + 1;
-    if(this.state.searchType === '') {
+  loadMore(term, type, prog, sys, mystuff, page) {
+    let searchType = type || this.state.searchType;
+    let searchTerms = term || this.state.searchTerms;
+    let progFilters = prog || this.state.progFilters;
+    let sysFilters = sys || this.state.sysFilters;
+    let myStuffFilter = mystuff || this.state.myStuffFilter;
+    let tempState = page || this.state.page + 1;
+    if(searchType === '') {
       searchType = null;
     }
-    if(this.state.searchTerms === '') {
+    if(searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, tempState,
-                                      this.state.progFilters,
-                                      this.state.sysFilters,
-                                      this.state.myStuffFilter);
+    this.props.fetchMoreSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, tempState, progFilters, sysFilters, myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, myStuffFilter, tempState);
     this.setState({page: tempState});
   }
 
@@ -233,7 +242,7 @@ class DashboardContainer extends Component {
       searchTerms = null;
     }
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
-    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, this.state.page);
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
   }
 
@@ -265,7 +274,7 @@ class DashboardContainer extends Component {
       searchType = null;
     }
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
-    this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter);
+    this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter, this.state.page);
   }
 
   analyticsGroup(searchType) {
