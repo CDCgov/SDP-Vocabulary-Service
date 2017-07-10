@@ -18,6 +18,8 @@ class User < ApplicationRecord
 
   def apply_omniauth(omniauth)
     self.email = omniauth['info']['email'] if email.blank? && omniauth['info']
+    self.first_name = omniauth['info']['given_name'] if omniauth['info']['given_name'] && !omniauth['info']['given_name'].blank?
+    self.last_name = omniauth['info']['family_name'] if omniauth['info']['family_name'] && !omniauth['info']['family_name'].blank?
     authentications.build(provider: omniauth['provider'], uid: omniauth['uid'])
   end
 
