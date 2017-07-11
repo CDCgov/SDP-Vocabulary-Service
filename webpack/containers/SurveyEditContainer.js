@@ -127,7 +127,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state, ownProps) {
   const survey = state.surveys[ownProps.params.surveyId||0];
   var selectedSearchResults = {};
-  if(survey){
+  if(survey && survey.surveyForms){
     survey.surveyForms.map((sf)=>{
       selectedSearchResults[sf.formId] = true;
     });

@@ -179,7 +179,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state, ownProps) {
   const form = state.forms[ownProps.params.formId || 0];
   var selectedSearchResults = {};
-  if(form){
+  if(form && form.formQuestions){
     form.formQuestions.map((fq)=>{
       selectedSearchResults[fq.questionId] = true;
     });
