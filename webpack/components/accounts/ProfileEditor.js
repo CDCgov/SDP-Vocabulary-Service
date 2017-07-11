@@ -59,7 +59,7 @@ export default class ProfileEditor extends Component {
   }
 
   disableUserUpdate(){
-    return this.props.disableUserUpdate == 'true'
+    return this.props.disableUserUpdate == 'true';
   }
 
   renderUserInfo(){
@@ -164,6 +164,7 @@ export default class ProfileEditor extends Component {
 ProfileEditor.propTypes = {
   closer: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
+  disableUserUpdate:PropTypes.string,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
 };
