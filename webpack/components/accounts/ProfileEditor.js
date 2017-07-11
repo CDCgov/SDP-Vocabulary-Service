@@ -40,7 +40,7 @@ export default class ProfileEditor extends Component {
         <Modal.Body>
           <form>
             <Errors errors={this.state.errors} />
-            {!this.disableUserUpdate() && this.renderUserInfo() }
+            {this.userInfo() }
             {this.extraContent()}
             <div className="field">
               {this.surveillanceProgramsField()}
@@ -58,11 +58,16 @@ export default class ProfileEditor extends Component {
     );
   }
 
-  disableUserUpdate(){
-    return this.props.disableUserUpdate == 'true';
+  userInfo(){
+    if(this.props.disableUserUpdate == 'true'){
+      return("");
+    }else{
+      return this.renderUserInfo();
+    }
   }
 
   renderUserInfo(){
+
     return(<div>
     <div className="control-group">
       <label className="control-label" htmlFor="email">E-mail</label>
