@@ -33,34 +33,15 @@ export default class ProfileEditor extends Component {
 
   render() {
     return (
-      <Modal animation={false} show={this.props.show} onHide={this.props.closer} aria-label={this.title()}>
+      <Modal animation={false} show={this.props.show}  onHide={this.props.closer} aria-label={this.title()}>
         <Modal.Header closeButton>
           <Modal.Title componentClass="h1">{this.title()}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
             <Errors errors={this.state.errors} />
-            <div className="control-group">
-              <label className="control-label" htmlFor="email">E-mail</label>
-              <div className="controls">
-                <input autoFocus="autofocus" placeholder="" className="form-control input-lg" type="email"
-                       value={this.state.email} name="email" id="email" onChange={this.handleChange('email')} />
-                <p className="help-block">Please provide your E-mail</p>
-              </div>
-            </div>
-            <div className="field">
-              <label className="control-label" htmlFor="firstName">First name</label>
-              <input className="form-control input-lg" type="text" name="firstName" id="firstName"
-                     value={this.state.firstName} onChange={this.handleChange('firstName')}/>
-            </div>
-            <div className="field">
-              <label className="control-label" htmlFor="lastName">Last name</label>
-              <input className="form-control input-lg" type="text" name="lastName" id="lastName"
-                     value={this.state.lastName} onChange={this.handleChange('lastName')}/>
-            </div>
-
+            {!this.disableUserUpdate() && this.renderUserInfo() }
             {this.extraContent()}
-
             <div className="field">
               {this.surveillanceProgramsField()}
             </div>
@@ -77,6 +58,32 @@ export default class ProfileEditor extends Component {
     );
   }
 
+  disableUserUpdate(){
+    return this.props.disableUserUpdate == 'true'
+  }
+
+  renderUserInfo(){
+    return(<div>
+    <div className="control-group">
+      <label className="control-label" htmlFor="email">E-mail</label>
+      <div className="controls">
+        <input autoFocus="autofocus" placeholder="" className="form-control input-lg" type="email"
+               value={this.state.email} name="email" id="email" onChange={this.handleChange('email')} />
+        <p className="help-block">Please provide your E-mail</p>
+      </div>
+    </div>
+    <div className="field">
+      <label className="control-label" htmlFor="firstName">First name</label>
+      <input className="form-control input-lg" type="text" name="firstName" id="firstName"
+             value={this.state.firstName} onChange={this.handleChange('firstName')}/>
+    </div>
+    <div className="field">
+      <label className="control-label" htmlFor="lastName">Last name</label>
+      <input className="form-control input-lg" type="text" name="lastName" id="lastName"
+             value={this.state.lastName} onChange={this.handleChange('lastName')}/>
+    </div>
+    </div>);
+  }
   programSearch(programSearchTerm){
     var surveillancePrograms = values(this.props.surveillancePrograms);
     if(programSearchTerm && programSearchTerm.length > 1){
