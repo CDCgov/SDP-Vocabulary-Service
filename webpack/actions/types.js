@@ -29,6 +29,8 @@ export const SET_STEPS = 'SET_STEPS';
 // Landing types
 export const FETCH_STATS = 'FETCH_STATS';
 export const FETCH_STATS_FULFILLED = 'FETCH_STATS_FULFILLED';
+export const SET_STATS = 'SET_STATS';
+export const SET_STATS_FULFILLED = 'SET_STATS_FULFILLED';
 
 // Search types
 export const FETCH_SEARCH_RESULTS = 'FETCH_SEARCH_RESULTS';
