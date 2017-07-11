@@ -27,7 +27,7 @@ describe('SettingsModal', () => {
     const instance = wrapper.instance();
     instance.renderUserInfo = sinon.spy(instance.renderUserInfo);
     instance.render();
-    expect(instance.renderUserInfo).to.not.have.been.called;
+    expect(expect(instance.renderUserInfo).to.not.have.been.called);
   });
 
   it('should not display the user update fields for email, first and last names when disableUserUpdate is true', () => {
@@ -38,7 +38,7 @@ describe('SettingsModal', () => {
     const instance = wrapper.instance();
     instance.renderUserInfo = sinon.spy(instance.renderUserInfo);
     instance.render();
-    expect(instance.renderUserInfo).to.have.been.calledOnec;
+    expect(expect(instance.renderUserInfo).to.have.been.calledOnce);
 
   });
 });
