@@ -126,6 +126,7 @@ class FormsEditContainer extends Component {
         <div>Loading...</div>
       );
     }
+
     return (
       <div className="form-edit-container">
         <QuestionModalContainer route ={this.props.route}
@@ -147,7 +148,8 @@ class FormsEditContainer extends Component {
                 <div className="row add-question">
                   <Button tabIndex="4" onClick={this.showQuestionModal} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer handleSelectSearchResult={this.handleSelectSearchResult} />
+                <QuestionSearchContainer selectedSearchResults={this.props.selectedSearchResults}
+                                         handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <FormEdit ref ='form'
                         form={this.props.form}
@@ -175,10 +177,18 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, ownProps) {
+  const form = state.forms[ownProps.params.formId || 0];
+  var selectedSearchResults = {};
+  if(form && form.formQuestions){
+    form.formQuestions.map((fq)=>{
+      selectedSearchResults[fq.questionId] = true;
+    });
+  }
   return {
-    form: state.forms[ownProps.params.formId||0],
+    form: form,
     questions: state.questions,
-    responseSets: state.responseSets
+    responseSets: state.responseSets,
+    selectedSearchResults: selectedSearchResults
   };
 }
 
@@ -197,7 +207,8 @@ FormsEditContainer.propTypes = {
   saveDraftForm: PropTypes.func,
   fetchQuestion: PropTypes.func,
   removeQuestion: PropTypes.func,
-  reorderQuestion: PropTypes.func
+  reorderQuestion: PropTypes.func,
+  selectedSearchResults: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);

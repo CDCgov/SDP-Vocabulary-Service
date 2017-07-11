@@ -125,11 +125,13 @@ Feature: Manage Surveys
     And I click on the option to Revise the Survey with the name "Test Survey"
     And I fill in the "search" field with "Form"
     And I click on the "search-btn" button
+    And I should not see "Result Already Added"
     And I use the form search to select "Gender Form"
     And I use the form search to select "Demographics Form"
     And I wait 3 seconds
     And I move the Form "Gender Form" down
     And I move the Form "Gender Form" up
+    And I should see "Result Already Added"
     And I click on the "Save" button
     And I should see "Gender Form"
     And I should see "Demographics Form"
