@@ -1,6 +1,7 @@
 /* eslint react/no-danger: 0 */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';

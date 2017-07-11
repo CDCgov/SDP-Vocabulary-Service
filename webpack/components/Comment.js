@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import { connect } from 'react-redux';

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 class ErrorPage extends Component {
   // This is the container for error pages
   // It has a default value in case it renders and doesn't have any children

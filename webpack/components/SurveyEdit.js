@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { surveyProps } from '../prop-types/survey_props';
 import { formsProps } from '../prop-types/form_props';

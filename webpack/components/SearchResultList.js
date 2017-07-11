@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SearchResult from './SearchResult';
 import currentUserProps from "../prop-types/current_user_props";
 

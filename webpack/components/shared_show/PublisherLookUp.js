@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { publishersProps } from '../../prop-types/publisher_props';
 import values from 'lodash/values';
 import strictUriEncode from 'strict-uri-encode';

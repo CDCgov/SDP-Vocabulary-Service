@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage } from '../actions/response_set_actions';

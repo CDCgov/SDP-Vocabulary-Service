@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
 
 export default class CodedSetTable extends Component {

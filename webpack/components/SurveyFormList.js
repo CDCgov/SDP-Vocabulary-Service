@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { formsProps } from "../prop-types/form_props";
 import { questionsProps } from "../prop-types/question_props";
 import SearchResult from './SearchResult';
