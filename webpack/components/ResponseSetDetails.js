@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
+import assign from 'lodash/assign';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
@@ -94,6 +95,10 @@ export default class ResponseSetDetails extends Component {
               if(confirm('Are you sure you want to delete this Response Set? This action cannot be undone.')){
                 this.props.deleteResponseSet(responseSet.id, (response) => {
                   if (response.status == 200) {
+                    let stats = Object.assign({}, this.props.stats);
+                    stats.responseSetCount = this.props.stats.responseSetCount - 1;
+                    stats.myResponseSetCount = this.props.stats.myResponseSetCount - 1;
+                    this.props.setStats(stats);
                     this.props.router.push('/');
                   }
                 });
@@ -170,6 +175,8 @@ ResponseSetDetails.propTypes = {
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   questions: PropTypes.arrayOf(questionProps),
   publishers: publishersProps
 };

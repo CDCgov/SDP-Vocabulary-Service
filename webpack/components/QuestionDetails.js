@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
+import assign from 'lodash/assign';
 
 import VersionInfo from "./VersionInfo";
 import ResponseSetList from "./ResponseSetList";
@@ -83,6 +84,10 @@ export default class QuestionDetails extends Component {
                 if(confirm('Are you sure you want to delete this Question? This action cannot be undone.')){
                   this.props.deleteQuestion(question.id, (response) => {
                     if (response.status == 200) {
+                      let stats = Object.assign({}, this.props.stats);
+                      stats.questionCount = this.props.stats.questionCount - 1;
+                      stats.myQuestionCount = this.props.stats.myQuestionCount - 1;
+                      this.props.setStats(stats);
                       this.props.router.push('/');
                     }
                   });
@@ -183,5 +188,7 @@ QuestionDetails.propTypes = {
   responseSets: PropTypes.array,
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   publishers: publishersProps
 };
