@@ -55,6 +55,10 @@ class SurveyShow extends Component{
               if(confirm('Are you sure you want to delete this Survey? This action cannot be undone.')){
                 this.props.deleteSurvey(this.props.survey.id, (response) => {
                   if (response.status == 200) {
+                    let stats = Object.assign({}, this.props.stats);
+                    stats.surveyCount = this.props.stats.surveyCount - 1;
+                    stats.mySurveyCount = this.props.stats.mySurveyCount - 1;
+                    this.props.setStats(stats);
                     this.props.router.push('/');
                   }
                 });
@@ -156,6 +160,8 @@ SurveyShow.propTypes = {
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,
   deleteSurvey:  PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   publishers: publishersProps
 };
 

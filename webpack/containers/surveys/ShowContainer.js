@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchSurvey, publishSurvey, deleteSurvey } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
 import SurveyShow from '../../components/surveys/Show';
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
@@ -74,6 +75,7 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
+  props.stats = state.stats;
   props.survey = state.surveys[ownProps.params.surveyId];
   if (props.survey) {
     props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
@@ -96,7 +98,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, publishSurvey, fetchSurvey, deleteSurvey}, dispatch);
+  return bindActionCreators({setSteps, setStats, publishSurvey, fetchSurvey, deleteSurvey}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -107,8 +109,10 @@ SurveyShowContainer.propTypes = {
   publishSurvey: PropTypes.func,
   deleteSurvey: PropTypes.func,
   setSteps: PropTypes.func,
+  setStats: PropTypes.func,
   params: PropTypes.object,
   router: PropTypes.object,
+  stats: PropTypes.object,
   publishers: publishersProps
 };
 

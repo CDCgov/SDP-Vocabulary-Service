@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } from '../actions/questions_actions';
 import { setSteps } from '../actions/tutorial_actions';
+import { setStats } from '../actions/landing';
 import { questionProps } from "../prop-types/question_props";
 import QuestionDetails  from '../components/QuestionDetails';
 import CommentList from '../containers/CommentList';
@@ -76,6 +77,8 @@ class QuestionShowContainer extends Component {
           <div className="col-md-12">
             <QuestionDetails question={this.props.question}
                              responseSets={this.props.responseSets}
+                             stats={this.props.stats}
+                             setStats={this.props.setStats}
                              router={this.props.router}
                              currentUser={this.props.currentUser}
                              handlePublish={this.handlePublish.bind(this)}
@@ -95,6 +98,7 @@ function mapStateToProps(state, ownProps) {
   props.question = state.questions[ownProps.params.qId];
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
+  props.stats = state.stats;
   if (props.question && props.question.responseSets) {
     props.responseSets = props.question.responseSets.map((rsId) => state.responseSets[rsId]);
   }
@@ -102,7 +106,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, fetchQuestionUsage, setSteps}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, fetchQuestionUsage, setSteps, setStats}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -115,6 +119,8 @@ QuestionShowContainer.propTypes = {
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
   setSteps: PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   deleteQuestion: PropTypes.func,
   publishers: publishersProps
 };
