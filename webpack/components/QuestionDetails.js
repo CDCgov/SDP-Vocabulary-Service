@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
-import assign from 'lodash/assign';
 
 import VersionInfo from "./VersionInfo";
 import ResponseSetList from "./ResponseSetList";

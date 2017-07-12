@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
-import assign from 'lodash/assign';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
