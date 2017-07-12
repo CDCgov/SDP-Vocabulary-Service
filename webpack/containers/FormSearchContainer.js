@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addForm } from '../actions/form_actions';
@@ -90,11 +91,13 @@ class FormSearchContainer extends Component {
             return (
               <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`}
               type={f.Type} result={f} currentUser={this.props.currentUser}
+              isEditPage={true}
               handleSelectSearchResult={() => this.props.addForm(this.props.survey, f.Source)}
-              isEditPage={true}/>
+              isSelected={this.props.selectedSearchResults[f.Id]}
+              />
             );
           })}
-          {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+          {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
             <button id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</button>
           }
         </div>
@@ -124,6 +127,7 @@ FormSearchContainer.propTypes = {
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
+  selectedSearchResults: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
 };

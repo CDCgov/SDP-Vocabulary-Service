@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Modal, Button } from 'react-bootstrap';
@@ -59,7 +60,7 @@ class QuestionModalContainer extends Component {
   }
 
   closeQuestionModal(){
-    this.setState({showResponseSets: true, showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
+    this.setState({showResponseSets: false, showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
     this.props.closeQuestionModal();
   }
 

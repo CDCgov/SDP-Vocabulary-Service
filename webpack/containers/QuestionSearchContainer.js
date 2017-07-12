@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -85,10 +86,11 @@ class QuestionSearchContainer extends Component {
                             result={q}
                             isEditPage={true}
                             currentUser={this.props.currentUser}
-                            handleSelectSearchResult={this.props.handleSelectSearchResult} />
+                            handleSelectSearchResult={this.props.handleSelectSearchResult}
+                            isSelected={this.props.selectedSearchResults[q.Id]} />
             );
           })}
-          {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor(searchResults.hits.total / 10) &&
+          {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
             <button id="load-more-btn" className="button button-action center-block" onClick={this.loadMore}>LOAD MORE</button>
           }
         </div>
@@ -112,6 +114,7 @@ function mapDispatchToProps(dispatch) {
 
 QuestionSearchContainer.propTypes = {
   handleSelectSearchResult: PropTypes.func.isRequired,
+  selectedSearchResults: PropTypes.object.isRequired,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,

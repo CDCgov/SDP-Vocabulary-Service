@@ -1,8 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage } from '../actions/response_set_actions';
 import { setSteps } from '../actions/tutorial_actions';
+import { setStats } from '../actions/landing';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
 import { questionProps } from '../prop-types/question_props';
@@ -84,6 +86,7 @@ function mapStateToProps(state, ownProps) {
   props.currentUser = state.currentUser;
   props.responseSet = state.responseSets[ownProps.params.rsId];
   props.publishers = state.publishers;
+  props.stats = state.stats;
   if (props.responseSet && props.responseSet.questions) {
     props.questions = compact(props.responseSet.questions.map((qId) => state.questions[qId]));
   }
@@ -91,7 +94,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage}, dispatch);
 }
 
 ResponseSetShowContainer.propTypes = {
@@ -103,6 +106,8 @@ ResponseSetShowContainer.propTypes = {
   fetchResponseSetUsage: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   setSteps: PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   params: PropTypes.object,
   router: PropTypes.object.isRequired,
   publishers: publishersProps

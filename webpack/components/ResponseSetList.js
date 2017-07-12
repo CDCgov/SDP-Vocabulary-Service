@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
 
 import { responseSetProps } from '../prop-types/response_set_props';

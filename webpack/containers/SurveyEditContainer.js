@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
@@ -98,7 +99,8 @@ class SurveyEditContainer extends Component {
               <div className="col-md-5">
                 <FormSearchContainer survey  ={this.props.survey}
                                      allForms={values(this.props.forms)}
-                                     currentUser={this.props.currentUser} />
+                                     currentUser={this.props.currentUser}
+                                     selectedSearchResults={this.props.selectedSearchResults} />
               </div>
               <SurveyEdit ref='survey' survey={this.props.survey}
                           action={this.props.params.action || 'new'}
@@ -123,11 +125,19 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, ownProps) {
+  const survey = state.surveys[ownProps.params.surveyId||0];
+  var selectedSearchResults = {};
+  if(survey && survey.surveyForms){
+    survey.surveyForms.map((sf)=>{
+      selectedSearchResults[sf.formId] = true;
+    });
+  }
   return {
-    survey: state.surveys[ownProps.params.surveyId||0],
+    survey: survey,
     forms:  state.forms,
     questions: state.questions,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    selectedSearchResults: selectedSearchResults
   };
 }
 
@@ -145,7 +155,8 @@ SurveyEditContainer.propTypes = {
   removeForm:  PropTypes.func,
   reorderForm: PropTypes.func,
   currentUser: currentUserProps,
-  saveDraftSurvey: PropTypes.func
+  saveDraftSurvey: PropTypes.func,
+  selectedSearchResults: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyEditContainer);

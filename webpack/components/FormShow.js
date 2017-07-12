@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 
@@ -95,6 +96,10 @@ class FormShow extends Component {
               if(confirm('Are you sure you want to delete this Form? This action cannot be undone.')){
                 this.props.deleteForm(form.id, (response) => {
                   if (response.status == 200) {
+                    let stats = Object.assign({}, this.props.stats);
+                    stats.formCount = this.props.stats.formCount - 1;
+                    stats.myFormCount = this.props.stats.myFormCount - 1;
+                    this.props.setStats(stats);
                     this.props.router.push('/');
                   }
                 });
@@ -153,6 +158,8 @@ FormShow.propTypes = {
   currentUser: currentUserProps,
   publishForm: PropTypes.func,
   deleteForm:  PropTypes.func.isRequired,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   publishers: publishersProps
 };
 

@@ -83,6 +83,7 @@ Feature: Edit Forms
     And I fill in the "search" field with "What"
     And I set search filter to "question"
     And I click on the "search-btn" button
+    And I should not see "Result Already Added"
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
     When I select the add program variable option for the Question "What is your gender?"
@@ -93,6 +94,7 @@ Feature: Edit Forms
     And I use the question search to select "What is your name?"
     And I move the Question "What is your name?" up
     And I should see "TEST VAR"
+    And I should see "Result Already Added"
     And I click on the "Save" button
     And I should see "What is your gender?"
     Then I wait 1 seconds

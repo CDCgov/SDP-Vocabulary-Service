@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import $ from 'jquery';
@@ -105,6 +106,7 @@ class App extends Component {
           surveillanceSystems={this.props.surveillanceSystems}
           surveillancePrograms={this.props.surveillancePrograms} />
         <SettingsModal update={this.updateUser}
+          disableUserUpdate={DISABLE_USER_REGISTRATION}
           show={this.state.settingsOpen}
           closer={this.closeSettingsModal}
           currentUser={this.props.currentUser}

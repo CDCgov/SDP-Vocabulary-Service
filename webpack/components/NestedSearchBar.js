@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class NestedSearchBar extends Component {
   constructor(props){
@@ -42,8 +43,8 @@ class NestedSearchBar extends Component {
 
 
 NestedSearchBar.propTypes = {
-  modelName: React.PropTypes.string,
-  onSearchTermChange: React.PropTypes.func
+  modelName: PropTypes.string,
+  onSearchTermChange: PropTypes.func
 };
 
 export default NestedSearchBar;

@@ -1,8 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchForm, publishForm, deleteForm } from '../actions/form_actions';
 import { setSteps } from '../actions/tutorial_actions';
+import { setStats } from '../actions/landing';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
 import { questionsProps } from '../prop-types/question_props';
@@ -87,6 +89,8 @@ class FormShowContainer extends Component {
                       router={this.props.router}
                       currentUser={this.props.currentUser}
                       publishForm={this.props.publishForm}
+                      stats={this.props.stats}
+                      setStats={this.props.setStats}
                       deleteForm ={this.props.deleteForm}
                       publishers ={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
@@ -103,6 +107,7 @@ function mapStateToProps(state, ownProps) {
     currentUser: state.currentUser,
     responseSets: state.responseSets,
     questions: state.questions,
+    stats: state.stats,
     form: state.forms[ownProps.params.formId],
     publishers: state.publishers
   };
@@ -110,7 +115,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchForm, publishForm, deleteForm}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchForm, publishForm, deleteForm}, dispatch);
 }
 
 FormShowContainer.propTypes = {
@@ -121,6 +126,8 @@ FormShowContainer.propTypes = {
   router: PropTypes.object.isRequired,
   currentUser: currentUserProps,
   setSteps: PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   fetchForm: PropTypes.func,
   deleteForm:  PropTypes.func,
   publishForm: PropTypes.func,
