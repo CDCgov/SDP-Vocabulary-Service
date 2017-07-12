@@ -60,7 +60,7 @@ class QuestionModalContainer extends Component {
   }
 
   closeQuestionModal(){
-    this.setState({showResponseSets: true, showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
+    this.setState({showResponseSets: false, showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
     this.props.closeQuestionModal();
   }
 
