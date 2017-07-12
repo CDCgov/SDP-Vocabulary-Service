@@ -59,6 +59,8 @@
   "devDependencies": {
     "bootstrap-sass": "^3.3.7",
     "chai": "^3.5.0",
+    "chai-spies": "",
+    "enzyme": "2.9.1",
     "chai-jquery": "^2.0.0",
     "eslint": "^3.10.2",
     "eslint-plugin-react": "^6.7.1",

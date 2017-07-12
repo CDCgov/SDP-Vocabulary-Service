@@ -106,6 +106,7 @@ class App extends Component {
           surveillanceSystems={this.props.surveillanceSystems}
           surveillancePrograms={this.props.surveillancePrograms} />
         <SettingsModal update={this.updateUser}
+          disableUserUpdate={DISABLE_USER_REGISTRATION}
           show={this.state.settingsOpen}
           closer={this.closeSettingsModal}
           currentUser={this.props.currentUser}
