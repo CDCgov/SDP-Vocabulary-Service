@@ -46,7 +46,7 @@ module SDP
       end
 
       def save!
-        s = Survey.new(name: config[:survey_name] || @file, created_by: @user)
+        s = Survey.new(name: @config[:survey_name] || @file, created_by: @user)
         s.save!
         f_position = 0
         sections do |name, elements|
