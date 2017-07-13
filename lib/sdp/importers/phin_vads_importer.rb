@@ -6,7 +6,8 @@ module SDP
       DEFAULTS = { vads_uri: 'https://phinvads.cdc.gov/vocabService/v2',
                    limit: 1000,
                    max_vs_length: 100,
-                   user_latest: true }.freeze
+                   user_latest: true ,
+                   proxy: {}}.freeze
       RS_STATUS_MAPPING = { 'Un-Published' => 'draft', 'Published' => 'published', 'Retired' => 'deprecated' }.freeze
       def initialize(args = {})
         @params = args.merge(DEFAULTS)
@@ -129,7 +130,7 @@ module SDP
       end
 
       def vads_client
-        @vads_client ||= Hessian::HessianClient.new(params[:vads_uri], params[:proxy])
+        @vads_client ||= Hessian::HessianClient.new(params[:vads_uri], params[:proxy] || {})
       end
 
       def logger
