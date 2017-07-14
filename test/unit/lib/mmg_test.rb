@@ -3,8 +3,8 @@ require 'sdp/importers/spreadsheet'
 
 class MMGTest < ActiveSupport::TestCase
   SURVEY_COUNT = 1
-  FORM_COUNT = 2
-  QUESTION_COUNT = 3
+  FORM_COUNT = 3
+  QUESTION_COUNT = 4
   RESPONSE_SET_COUNT = 2
   RESPONSE_COUNT = 6
 
@@ -28,5 +28,10 @@ class MMGTest < ActiveSupport::TestCase
     assert_equal qcount  + QUESTION_COUNT, Question.count
     assert_equal formcount + FORM_COUNT, Form.count
     assert_equal surveycount + SURVEY_COUNT, Survey.count
+
+    assert Survey.where(name: f).exists?
+    assert Form.where(name: 'Imported Form #1').exists?
+    assert_equal Form.where(name: 'Imported Form #1').first.questions.count, 1
+    assert Survey.where(name: f).first.forms.count, FORM_COUNT
   end
 end

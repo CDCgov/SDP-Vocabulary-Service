@@ -46,12 +46,14 @@ module SDP
       end
 
       def save!
-        s = Survey.new(name: @file, created_by: @user)
+        s = Survey.new(name: @config[:survey_name] || @file, created_by: @user)
         s.save!
+        f_position = 0
         sections do |name, elements|
-          f = Form.new(name: name, created_by: @user)
+          f = Form.new(name: name || "Imported Form ##{f_position + 1}", created_by: @user)
           f.save!
-          s.survey_forms.create(form: f)
+          s.survey_forms.create(form: f, position: f_position += 1)
+          q_position = 0
           elements.each do |element|
             rs = nil
             if element[:value_set_oid]
@@ -62,9 +64,12 @@ module SDP
             q = question_for(element)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
-            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs)
+            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position += 1)
+            q.index
           end
+          UpdateIndexJob.perform_now('form', f)
         end
+        UpdateIndexJob.perform_now('survey', s)
       end
 
       def parse!(verbose = false)
