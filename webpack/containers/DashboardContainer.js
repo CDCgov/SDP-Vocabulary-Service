@@ -99,12 +99,6 @@ class DashboardContainer extends Component {
             text: 'If you already have an account you can log in to unlock more features in the top right of the dashboard page.',
             selector: '.log-in-link',
             position: 'left',
-          },
-          {
-            title: 'Sign Up!',
-            text: 'Click the Get Started! button on the banner to register a new account.',
-            selector: '.cdc-promo-banner',
-            position: 'right',
           }]);
       } else {
         steps = steps.concat([
@@ -157,7 +151,6 @@ class DashboardContainer extends Component {
                         <h1 className="banner-title">CDC Vocabulary Service</h1>
                         <h2 className="banner-subtitle">Author Questions, Response Sets, Forms, and Surveys</h2>
                         <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
-                        <p><a className="btn btn-lg btn-success" href="#" tabIndex="2" role="button" onClick={this.openSignUpModal}>Get Started!</a></p>
                       </div>
                     </div>
                     <div className="col-md-4"></div>
