@@ -8,8 +8,8 @@ import currentUserProps from '../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import { fetchSearchResults } from '../actions/search_results_actions';
-import SearchResult from './SearchResult';
-import DashboardSearch from './DashboardSearch';
+import SearchResult from '../components/SearchResult';
+import DashboardSearch from '../components/DashboardSearch';
 import SearchResultList from '../components/SearchResultList';
 import { Modal, Button } from 'react-bootstrap';
 

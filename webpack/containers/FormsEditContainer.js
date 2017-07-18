@@ -6,7 +6,7 @@ import { setSteps } from '../actions/tutorial_actions';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
 import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
-import ResponseSetModal from '../components/ResponseSetModal';
+import ResponseSetModal from './ResponseSetModal';
 import QuestionModalContainer  from './QuestionModalContainer';
 import QuestionSearchContainer from './QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';

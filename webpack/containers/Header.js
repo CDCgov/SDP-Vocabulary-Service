@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import currentUserProps from '../prop-types/current_user_props';
-import NotificationDropdown from '../components/NotificationDropdown';
+import NotificationDropdown from '../containers/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
 
