@@ -125,7 +125,7 @@ export default class ResponseSetDetails extends Component {
             { responseSet.parent &&
               <div className="box-content">
                 <strong>Extended from: </strong>
-                <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
+                <Link to={`/responseSets/${responseSet.parent}`}>Link to parent{ responseSet.parent.name && responseSet.parent.name }</Link>
               </div>
             }
             { responseSet.source &&

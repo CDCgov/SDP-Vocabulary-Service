@@ -23,7 +23,6 @@ class QuestionEditContainer extends Component {
 
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
-    // this.props.fetchResponseSets();
   }
 
   componentDidMount() {
@@ -123,7 +122,6 @@ QuestionEditContainer.propTypes = {
   deleteQuestion:  PropTypes.func,
   publishQuestion: PropTypes.func,
   saveDraftQuestion:  PropTypes.func,
-  fetchResponseSets:  PropTypes.func,
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   setSteps: PropTypes.func,

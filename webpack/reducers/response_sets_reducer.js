@@ -8,12 +8,15 @@ import {
   SAVE_RESPONSE_SET_FULFILLED,
   SAVE_DRAFT_RESPONSE_SET_FULFILLED,
   PUBLISH_RESPONSE_SET_FULFILLED,
-  FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED
+  FETCH_RESPONSE_SET_FROM_MIDDLE_FULFILLED,
+  ADD_ENTITIES_FULFILLED
 } from '../actions/types';
 
 export default function responseSets(state = {}, action) {
   let responseSetClone;
   switch (action.type) {
+    case ADD_ENTITIES_FULFILLED:
+      return Object.assign({}, state, action.payload.responseSets);
     case FETCH_RESPONSE_SETS_FULFILLED:
       return helpers.fetchGroup(state, action);
     case FETCH_RESPONSE_SET_FULFILLED:
