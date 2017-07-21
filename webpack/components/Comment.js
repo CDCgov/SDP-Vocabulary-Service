@@ -2,14 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
-import { connect } from 'react-redux';
 import CommentForm from './CommentForm';
 
 class Comment extends Component {
-
-  constructor(props){
-    super(props);
-  }
 
   render() {
     return (
@@ -91,10 +86,4 @@ Comment.propTypes = {
   comments: PropTypes.array.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-    comments: state.comments
-  };
-}
-
-export default connect(mapStateToProps)(Comment);
+export default Comment;

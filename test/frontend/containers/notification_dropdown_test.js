@@ -1,5 +1,5 @@
 import { expect, renderComponent } from '../test_helper';
-import NotificationDropdown from '../../../webpack/components/NotificationDropdown';
+import NotificationDropdown from '../../../webpack/containers/NotificationDropdown';
 
 describe('NotificationDropdown', () => {
   let component;

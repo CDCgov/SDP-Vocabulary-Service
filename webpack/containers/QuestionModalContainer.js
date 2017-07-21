@@ -12,7 +12,7 @@ import { saveQuestion } from '../actions/questions_actions';
 import Errors from '../components/Errors';
 import QuestionForm from '../components/QuestionForm';
 import ResponseSetList  from '../components/ResponseSetList';
-import ResponseSetDragWidget  from '../components/ResponseSetDragWidget';
+import ResponseSetDragWidget  from './ResponseSetDragWidget';
 import { responseSetsProps }  from '../prop-types/response_set_props';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchQuestionTypes } from '../actions/question_type_actions';

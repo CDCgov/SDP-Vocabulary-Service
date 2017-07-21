@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { saveResponseSet } from '../actions/response_set_actions';
 import {Modal, Button} from 'react-bootstrap';
 import Errors from '../components/Errors';
-import ResponseSetForm from './ResponseSetForm';
+import ResponseSetForm from '../components/ResponseSetForm';
 import $ from 'jquery';
 
 class ResponseSetModal extends Component {
