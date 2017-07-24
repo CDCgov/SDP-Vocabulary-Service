@@ -114,7 +114,7 @@ export default class QuestionDetails extends Component {
             { question.parent &&
               <div className="box-content">
                 <strong>Extended from: </strong>
-                <Link to={`/questions/${question.parent.id}`}>{ question.parent.name }</Link>
+                <Link to={`/questions/${question.parent}`}>Link to parent{ question.parent.name && question.parent.name }</Link>
               </div>
             }
             { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
@@ -125,11 +125,11 @@ export default class QuestionDetails extends Component {
             }
             {question.questionType && <div className="box-content">
               <strong>Question Type: </strong>
-              {question.questionType.name}
+              {question.questionType.name && question.questionType.name}
             </div>}
             {question.responseType && <div className="box-content">
               <strong>Response Type: </strong>
-              {question.responseType.name}
+              {question.responseType.name && question.responseType.name}
             </div>}
             {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
               <strong>Other Allowed: </strong>

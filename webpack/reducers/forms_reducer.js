@@ -9,7 +9,8 @@ import {
   ADD_QUESTION,
   REMOVE_QUESTION,
   REORDER_QUESTION,
-  CREATE_FORM
+  CREATE_FORM,
+  ADD_ENTITIES_FULFILLED
 } from '../actions/types';
 import keyBy from 'lodash/keyBy';
 import * as helpers from './helpers';
@@ -17,6 +18,8 @@ import * as helpers from './helpers';
 export default function forms(state = {}, action) {
   let form, newState, newForm, question, responseSetId;
   switch (action.type) {
+    case ADD_ENTITIES_FULFILLED:
+      return Object.assign({}, state, action.payload.forms);
     case FETCH_FORMS_FULFILLED:
       return helpers.fetchGroup(state, action);
     case FETCH_FORMS_FROM_MIDDLE_FULFILLED:

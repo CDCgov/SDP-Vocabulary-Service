@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { normalize } from 'normalizr';
+import { questionSchema, questionsSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
@@ -12,7 +14,8 @@ import {
   PUBLISH_QUESTION,
   FETCH_QUESTION,
   FETCH_QUESTION_USAGE,
-  FETCH_QUESTIONS
+  FETCH_QUESTIONS,
+  ADD_ENTITIES
 } from './types';
 
 export function addQuestion(form, question) {
@@ -45,19 +48,25 @@ export function reorderQuestion(form, index, direction) {
 
 export function fetchQuestions(searchTerms) {
   return {
-    type: FETCH_QUESTIONS,
+    type: ADD_ENTITIES,
     payload: axios.get(routes.questionsPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params:  { search: searchTerms }
+    }).then((response) => {
+      const normalizedData = normalize(response.data, questionsSchema);
+      return normalizedData.entities;
     })
   };
 }
 
 export function fetchQuestion(id) {
   return {
-    type: FETCH_QUESTION,
+    type: ADD_ENTITIES,
     payload: axios.get(routes.questionPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    }).then((response) => {
+      const normalizedData = normalize(response.data, questionSchema);
+      return normalizedData.entities;
     })
   };
 }

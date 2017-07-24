@@ -7,13 +7,16 @@ import {
   ADD_FORM,
   REMOVE_FORM,
   REORDER_FORM,
-  CREATE_SURVEY
+  CREATE_SURVEY,
+  ADD_ENTITIES_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
 export default function surveys(state = {}, action) {
   let survey, newState, newSurvey, form;
   switch (action.type) {
+    case ADD_ENTITIES_FULFILLED:
+      return Object.assign({}, state, action.payload.surveys);
     case FETCH_SURVEYS_FULFILLED:
       return helpers.fetchGroup(state, action);
     case PUBLISH_SURVEY_FULFILLED:

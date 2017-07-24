@@ -92,11 +92,11 @@ class SurveyShow extends Component{
             { this.props.survey.parent &&
             <div className="box-content">
               <strong>Extended from: </strong>
-              <Link to={`/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name }</Link>
+              <Link to={`/surveys/${this.props.survey.parent}`}>Link to parent{ this.props.survey.parent.name && this.props.survey.parent.name }</Link>
             </div>
             }
           </div>
-          {this.props.forms.map((f,i ) =>
+          {this.props.forms.map((f,i) =>
             <div  key={i} className="basic-c-box panel-default survey-form">
               <div className="panel-heading">
                 <h2 className="panel-title"><Link to={`/forms/${f.id}`}>{ f.name }</Link></h2>

@@ -1,10 +1,14 @@
 import axios from 'axios';
+import { normalize } from 'normalizr';
+import { searchResultsSchema } from '../schema';
 import routes from '../routes';
+import store from '../store/configure_store';
 import {
   FETCH_SEARCH_RESULTS,
   FETCH_MORE_SEARCH_RESULTS,
   SET_LAST_SEARCH,
-  FETCH_LAST_SEARCH
+  FETCH_LAST_SEARCH,
+  ADD_ENTITIES_FULFILLED
 } from './types';
 
 export function fetchSearchResults(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false) {
@@ -14,6 +18,12 @@ export function fetchSearchResults(context, searchTerms=null, type=null, program
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
+    }).then((response) => {
+      console.log(response.data.hits.hits);
+      const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
+      console.log(normalizedData);
+      return response;
     })
   };
 }

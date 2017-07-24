@@ -18,7 +18,7 @@ import unauthenticatedResponse from '../middleware/unauthenticated_response';
 
 import rootReducer from '../reducers';
 
-export default function configureStore(initialState) {
+export function configureStore(initialState) {
   let middleware = applyMiddleware(
     promiseMiddleware(),
     createLogger(),
@@ -44,3 +44,5 @@ export default function configureStore(initialState) {
 
   return store;
 }
+
+export default configureStore();

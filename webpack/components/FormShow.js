@@ -134,7 +134,7 @@ class FormShow extends Component {
             { form.parent &&
             <div className="box-content">
               <strong>Extended from: </strong>
-              <Link to={`/forms/${form.parent.id}`}>{ form.parent.name }</Link>
+              <Link to={`/forms/${form.parent}`}>Link to parent{ form.parent.name && form.parent.name }</Link>
             </div>
             }
           </div>
