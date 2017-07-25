@@ -6,7 +6,6 @@ import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
 import {
   FETCH_SURVEYS,
-  FETCH_SURVEY,
   SAVE_SURVEY,
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,

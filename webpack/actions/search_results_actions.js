@@ -19,10 +19,8 @@ export function fetchSearchResults(context, searchTerms=null, type=null, program
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
     }).then((response) => {
-      console.log(response.data.hits.hits);
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
       store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
-      console.log(normalizedData);
       return response;
     })
   };
@@ -36,6 +34,10 @@ export function fetchLastSearch(context, searchTerms=null, type=null, programFil
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, size: querySize }
+    }).then((response) => {
+      const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
+      return response;
     })
   };
 }
@@ -47,6 +49,10 @@ export function fetchMoreSearchResults(context, searchTerms=null, type=null, pag
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: { type: type, search: searchTerms, page: page, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
+    }).then((response) => {
+      const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
+      return response;
     })
   };
 }

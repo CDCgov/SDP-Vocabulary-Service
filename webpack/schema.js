@@ -26,7 +26,7 @@ export const searchResultsSchema = new schema.Array({
   questions: questionsSchema,
   forms: formsSchema,
   surveys: surveysSchema
-}, (input, parent, key) => `${input.Type === 'response_set' ? 'responseSet' : input.Type}s`);
+}, (input) => `${input.Type === 'response_set' ? 'responseSet' : input.Type}s`);
 
 responseSetSchema.define({
   parent: responseSetSchema,
@@ -41,9 +41,9 @@ questionSchema.define({
 });
 
 formSchema.define({
-   parent: formSchema,
-   questions: [ questionSchema ],
-   responseSets: [ responseSetSchema ]
+  parent: formSchema,
+  questions: [ questionSchema ],
+  responseSets: [ responseSetSchema ]
 });
 
 surveySchema.define({

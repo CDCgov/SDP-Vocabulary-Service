@@ -5,8 +5,6 @@ import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
 import {
-  FETCH_RESPONSE_SETS,
-  FETCH_RESPONSE_SET,
   FETCH_RESPONSE_SET_USAGE,
   SAVE_RESPONSE_SET,
   SAVE_DRAFT_RESPONSE_SET,
