@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
-import { responseSetSchema, responseSetsSchema } from '../schema';
+import { responseSetSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
@@ -17,20 +17,6 @@ export function deleteResponseSet(id, callback=null) {
   return {
     type: DELETE_RESPONSE_SET,
     payload: deleteObject(routes.responseSetPath(id), callback)
-  };
-}
-
-// Possibly Unused
-export function fetchResponseSets(searchTerms) {
-  return {
-    type: ADD_ENTITIES,
-    payload: axios.get(routes.responseSetsPath(), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params: { search: searchTerms }
-    }).then((response) => {
-      const normalizedData = normalize(response.data, responseSetsSchema);
-      return normalizedData.entities;
-    })
   };
 }
 

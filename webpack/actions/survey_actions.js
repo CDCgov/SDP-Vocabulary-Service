@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
-import { surveySchema, surveysSchema } from '../schema';
+import { surveySchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
 import {
-  FETCH_SURVEYS,
   SAVE_SURVEY,
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,
@@ -25,36 +24,6 @@ export function deleteSurvey(id, callback=null) {
   return {
     type: DELETE_SURVEY,
     payload: deleteObject(routes.surveyPath(id), callback)
-  };
-}
-
-export function fetchMySurveys(searchTerms) {
-  return {
-    type: FETCH_SURVEYS,
-    payload: axios.get(routes.mySurveysPath(), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      },
-      params: { search: searchTerms }
-    })
-  };
-}
-
-// Possibly not used anymore along with fetchMy*
-export function fetchSurveys(searchTerms) {
-  return {
-    type: ADD_ENTITIES,
-    payload: axios.get(routes.surveysPath(), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      },
-      params: { search: searchTerms }
-    }).then((response) => {
-      const normalizedData = normalize(response.data, surveysSchema);
-      return normalizedData.entities;
-    })
   };
 }
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
-import { questionSchema, questionsSchema } from '../schema';
+import { questionSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
@@ -41,19 +41,6 @@ export function reorderQuestion(form, index, direction) {
   return {
     type: REORDER_QUESTION,
     payload: {form, index, direction}
-  };
-}
-
-export function fetchQuestions(searchTerms) {
-  return {
-    type: ADD_ENTITIES,
-    payload: axios.get(routes.questionsPath(), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params:  { search: searchTerms }
-    }).then((response) => {
-      const normalizedData = normalize(response.data, questionsSchema);
-      return normalizedData.entities;
-    })
   };
 }
 

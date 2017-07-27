@@ -1,6 +1,4 @@
 import {
-  FETCH_SURVEY_FULFILLED,
-  FETCH_SURVEYS_FULFILLED,
   PUBLISH_SURVEY_FULFILLED,
   SAVE_DRAFT_SURVEY_FULFILLED,
   DELETE_SURVEY_FULFILLED,
@@ -17,11 +15,8 @@ export default function surveys(state = {}, action) {
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.surveys);
-    case FETCH_SURVEYS_FULFILLED:
-      return helpers.fetchGroup(state, action);
     case PUBLISH_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:
-    case FETCH_SURVEY_FULFILLED:
       return helpers.fetchIndividual(state, action);
     case CREATE_SURVEY:
       newState = Object.assign({}, state);

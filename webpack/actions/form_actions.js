@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
-import { formSchema, formsSchema } from '../schema';
+import { formSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
@@ -47,22 +47,6 @@ export function deleteForm(id, callback=null) {
   return {
     type: DELETE_FORM,
     payload: deleteObject(routes.formPath(id), callback)
-  };
-}
-
-export function fetchForms(searchTerms) {
-  return {
-    type: ADD_ENTITIES,
-    payload: axios.get(routes.formsPath(), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      },
-      params: { search: searchTerms }
-    }).then((response) => {
-      const normalizedData = normalize(response.data, formsSchema);
-      return normalizedData.entities;
-    })
   };
 }
 

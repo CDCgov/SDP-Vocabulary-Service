@@ -1,16 +1,11 @@
-import keyBy from 'lodash/keyBy';
 import assign from 'lodash/assign';
 
 import * as helpers from './helpers';
 
 import {
   SAVE_QUESTION_FULFILLED,
-  FETCH_QUESTION_FULFILLED,
   FETCH_QUESTION_USAGE_FULFILLED,
-  FETCH_QUESTIONS_FULFILLED,
   DELETE_QUESTION_FULFILLED,
-  FETCH_QUESTION_FROM_MIDDLE_FULFILLED,
-  FETCH_QUESTIONS_FROM_MIDDLE_FULFILLED,
   ADD_ENTITIES_FULFILLED
 } from '../actions/types';
 
@@ -30,22 +25,10 @@ export default function questions(state = {}, action) {
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.questions);
-    case FETCH_QUESTIONS_FULFILLED:
-      return helpers.fetchGroup(state, action);
     case SAVE_QUESTION_FULFILLED:
-    case FETCH_QUESTION_FULFILLED:
       return addQuestionToState(action, state);
     case DELETE_QUESTION_FULFILLED:
       return helpers.deleteItem(state, action);
-    case FETCH_QUESTION_FROM_MIDDLE_FULFILLED:
-      action.payload.data['fromMiddleware'] = true;
-      return addQuestionToState(action, state);
-    case FETCH_QUESTIONS_FROM_MIDDLE_FULFILLED:
-      let newData = action.payload.data.slice();
-      newData.forEach((obj) => {
-        obj['fromMiddleware'] = true;
-      });
-      return Object.assign({}, state, keyBy(newData, 'id'));
     case FETCH_QUESTION_USAGE_FULFILLED:
       const questionsClone = Object.assign({}, state);
       if (questionsClone[action.payload.data.id] === undefined) {

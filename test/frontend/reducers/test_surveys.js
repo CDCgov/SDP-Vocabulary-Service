@@ -1,7 +1,9 @@
+import { normalize } from 'normalizr';
 import { expect } from '../test_helper';
 import surveys from '../../../webpack/reducers/surveys_reducer';
+import { surveysSchema } from '../../../webpack/schema';
 import {
-  FETCH_SURVEYS_FULFILLED,
+  ADD_ENTITIES_FULFILLED,
   DELETE_SURVEY_FULFILLED,
   ADD_FORM,
   REMOVE_FORM
@@ -15,20 +17,11 @@ describe('surveys reducer', () => {
   ];
 
   it('should fetch surveys', () => {
-    const payloadData = {data: twoSurveys};
-    const action = {type: FETCH_SURVEYS_FULFILLED, payload: payloadData};
+    const payloadData = normalize(twoSurveys, surveysSchema).entities;
+    const action = {type: ADD_ENTITIES_FULFILLED, payload: payloadData};
     const startState = {};
     const nextState = surveys(startState, action);
     expect(Object.keys(nextState).length).to.equal(2);
-  });
-
-  it('should not overwrite surveys already in store', () => {
-    const payloadData = {data: twoSurveys};
-    const action = {type: FETCH_SURVEYS_FULFILLED, payload: payloadData};
-    const preExistingSurvey = {id: 2, name:"Existing Survey", userId: "testAuthor@gmail.com", forms: []};
-    const startState = {2: preExistingSurvey};
-    const nextState = surveys(startState, action);
-    expect(Object.keys(nextState).length).to.equal(3);
   });
 
   it('should add a form', () => {
