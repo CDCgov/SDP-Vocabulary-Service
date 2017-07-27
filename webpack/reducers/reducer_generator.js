@@ -1,4 +1,5 @@
 import keyBy from 'lodash/keyBy';
+import { ADD_ENTITIES_FULFILLED } from '../actions/types';
 
 // Returns a reducer function. This function will listen for the passed in
 // successType and it it finds it will return an object where the keys are the
@@ -21,9 +22,11 @@ export function byIdReducer(successType) {
 // inserted or replaced with what was provided in payload.data. This assumes
 // that payload.data is a single object with and id property when action is
 // individualSuccessType.
-export function byIdWithIndividualReducer(batchSuccessType, individualSuccessType) {
+export function byIdWithIndividualReducer(batchSuccessType, individualSuccessType, type) {
   return (state = {}, action) => {
     switch (action.type) {
+      case ADD_ENTITIES_FULFILLED:
+        return Object.assign({}, state, action.payload[type]);
       case individualSuccessType:
         const stateClone = Object.assign({}, state);
         stateClone[action.payload.data.id] = action.payload.data;
