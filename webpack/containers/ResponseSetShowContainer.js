@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,11 +8,10 @@ import { setSteps } from '../actions/tutorial_actions';
 import { setStats } from '../actions/landing';
 import ResponseSetDetails from '../components/ResponseSetDetails';
 import { responseSetProps } from '../prop-types/response_set_props';
-import { questionProps } from '../prop-types/question_props';
+import { responseSetSchema } from '../schema';
 import CommentList from '../containers/CommentList';
 import currentUserProps from "../prop-types/current_user_props";
 import { publishersProps } from "../prop-types/publisher_props";
-import compact from 'lodash/compact';
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
@@ -84,12 +84,9 @@ class ResponseSetShowContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const props = {};
   props.currentUser = state.currentUser;
-  props.responseSet = state.responseSets[ownProps.params.rsId];
+  props.responseSet = denormalize(state.responseSets[ownProps.params.rsId], responseSetSchema, state);
   props.publishers = state.publishers;
   props.stats = state.stats;
-  if (props.responseSet && props.responseSet.questions) {
-    props.questions = compact(props.responseSet.questions.map((qId) => state.questions[qId]));
-  }
   return props;
 }
 
@@ -100,7 +97,6 @@ function mapDispatchToProps(dispatch) {
 ResponseSetShowContainer.propTypes = {
   responseSet: responseSetProps,
   currentUser: currentUserProps,
-  questions: PropTypes.arrayOf(questionProps),
   fetchResponseSet: PropTypes.func,
   publishResponseSet: PropTypes.func,
   fetchResponseSetUsage: PropTypes.func,

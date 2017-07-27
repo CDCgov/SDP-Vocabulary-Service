@@ -92,7 +92,7 @@ class SurveyShow extends Component{
             { this.props.survey.parent &&
             <div className="box-content">
               <strong>Extended from: </strong>
-              <Link to={`/surveys/${this.props.survey.parent}`}>Link to parent{ this.props.survey.parent.name && this.props.survey.parent.name }</Link>
+              <Link to={this.props.survey.parent.id && `/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name && this.props.survey.parent.name }</Link>
             </div>
             }
           </div>
