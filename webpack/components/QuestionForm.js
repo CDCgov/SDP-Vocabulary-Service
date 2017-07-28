@@ -43,6 +43,27 @@ class QuestionForm extends Component{
       let rtid = sortedRT[0] ? sortedRT[0].id : null;
       this.setState({ responseTypeId: rtid });
     }
+    console.log("next props question");
+    console.log(nextProps.question);
+    console.log(this.state.content);
+    if(this.state.content !== nextProps.question.content) {
+      console.log("Eureka a change!")
+      switch(nextProps.action) {
+        case 'revise':
+          console.log(this.stateForRevise(nextProps.question))
+          this.setState(this.stateForRevise(nextProps.question));
+          console.log(this.state)
+          break;
+        case 'extend':
+          this.setState(this.stateForExtend(nextProps.question));
+          break;
+        case 'new':
+          this.setState(this.stateForNew());
+          break;
+        default:
+          this.setState(this.stateForRevise(nextProps.question));
+      }
+    }
   }
 
   componentDidMount() {

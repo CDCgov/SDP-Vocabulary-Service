@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { denormalize } from 'normalizr';
+import { questionSchema, responseSetsSchema } from '../schema';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../actions/questions_actions';
 import QuestionForm from '../components/QuestionForm';
 import { questionProps } from '../prop-types/question_props';
@@ -98,13 +100,18 @@ class QuestionEditContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const props = {};
   if(ownProps.params.qId){
-    props.question = state.questions[ownProps.params.qId];
+    props.question = denormalize(state.questions[ownProps.params.qId], questionSchema, state);
+    if(props.question){
+      props.question.questionTypeId = props.question.questionType ? props.question.questionType.id : undefined;
+      props.question.responseTypeId = props.question.responseType ? props.question.responseType.id : undefined;
+    }
   }else{
     props.question = {version:1, concepts:[], responseSets:[]};
   }
+  console.log(props.question);
   props.questionTypes = state.questionTypes;
   props.responseTypes = state.responseTypes;
-  props.responseSets  = state.responseSets;
+  props.responseSets  = denormalize(state.responseSets, responseSetsSchema, state);
   return props;
 }
 
