@@ -43,16 +43,10 @@ class QuestionForm extends Component{
       let rtid = sortedRT[0] ? sortedRT[0].id : null;
       this.setState({ responseTypeId: rtid });
     }
-    console.log("next props question");
-    console.log(nextProps.question);
-    console.log(this.state.content);
     if(this.state.content !== nextProps.question.content) {
-      console.log("Eureka a change!")
       switch(nextProps.action) {
         case 'revise':
-          console.log(this.stateForRevise(nextProps.question))
           this.setState(this.stateForRevise(nextProps.question));
-          console.log(this.state)
           break;
         case 'extend':
           this.setState(this.stateForExtend(nextProps.question));
@@ -161,6 +155,7 @@ class QuestionForm extends Component{
   }
 
   render(){
+    console.log("re-rendering");
     const {question, questionTypes, responseSets, responseTypes} = this.props;
     const state = this.state;
     if(!question || !questionTypes || !responseTypes){
@@ -200,10 +195,10 @@ class QuestionForm extends Component{
                     </div>
                     <div className="col-md-4 question-form-group">
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
-                      <select className="input-select" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} onChange={this.handleChange('questionTypeId')} >
+                      <select className="input-select" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} value={state.questionTypeId || undefined} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
-                        {questionTypes && values(questionTypes).map((qt) => {
-                          return <option key={qt.id} value={qt.id}>{qt.name}</option>;
+                        {questionTypes && values(questionTypes).map((qt, i) => {
+                          return <option key={i} value={qt.id}>{qt.name}</option>;
                         })}
                       </select>
                     </div>
@@ -218,8 +213,8 @@ class QuestionForm extends Component{
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
-                      {this.sortedResponseTypes(this.props.responseTypes).map((rt) => {
-                        return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
+                      {this.sortedResponseTypes(this.props.responseTypes).map((rt, i) => {
+                        return (<option key={i} value={rt.id} >{rt.name} - {rt.description}</option>);
                       })}
                     </select>
                   </div>
@@ -342,6 +337,7 @@ class QuestionForm extends Component{
   }
 
   handleChange(field) {
+    console.log(this.state);
     return (event) => {
       let newState = {};
       newState[field] = event.target.value;

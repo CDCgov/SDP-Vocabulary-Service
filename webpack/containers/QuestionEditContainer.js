@@ -108,7 +108,6 @@ function mapStateToProps(state, ownProps) {
   }else{
     props.question = {version:1, concepts:[], responseSets:[]};
   }
-  console.log(props.question);
   props.questionTypes = state.questionTypes;
   props.responseTypes = state.responseTypes;
   props.responseSets  = denormalize(state.responseSets, responseSetsSchema, state);
