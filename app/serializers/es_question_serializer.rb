@@ -31,7 +31,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   end
 
   def response_type
-    { name: object.response_type.name, code: object.response_type.code } if object.response_type
+    { id: object.response_type.id, name: object.response_type.name, code: object.response_type.code } if object.response_type
   end
 
   def response_sets
@@ -45,7 +45,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   end
 
   def category
-    object.question_type.name if object.question_type
+    { id: object.question_type.id, name: object.question_type.name } if object.question_type
   end
 
   def updated_at

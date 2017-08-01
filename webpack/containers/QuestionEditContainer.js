@@ -102,6 +102,16 @@ function mapStateToProps(state, ownProps) {
   if(ownProps.params.qId){
     props.question = denormalize(state.questions[ownProps.params.qId], questionSchema, state);
     if(props.question){
+      if(props.question.name) {
+        props.question.content = props.question.name;
+      }
+      if (props.question.codes) {
+        props.question.concepts = props.question.codes;
+        props.question.concepts.map((c) => {
+          c.value = c.code;
+        });
+      }
+      props.question.questionType = props.question.category ? props.question.category : props.question.questionType;
       props.question.questionTypeId = props.question.questionType ? props.question.questionType.id : undefined;
       props.question.responseTypeId = props.question.responseType ? props.question.responseType.id : undefined;
     }

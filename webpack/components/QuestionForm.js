@@ -43,21 +43,6 @@ class QuestionForm extends Component{
       let rtid = sortedRT[0] ? sortedRT[0].id : null;
       this.setState({ responseTypeId: rtid });
     }
-    if(this.state.content !== nextProps.question.content) {
-      switch(nextProps.action) {
-        case 'revise':
-          this.setState(this.stateForRevise(nextProps.question));
-          break;
-        case 'extend':
-          this.setState(this.stateForExtend(nextProps.question));
-          break;
-        case 'new':
-          this.setState(this.stateForNew());
-          break;
-        default:
-          this.setState(this.stateForRevise(nextProps.question));
-      }
-    }
   }
 
   componentDidMount() {
@@ -105,7 +90,7 @@ class QuestionForm extends Component{
     var reviseState = {};
     forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
     reviseState.conceptsAttributes = filterConcepts(question.concepts);
-    reviseState.linkedResponseSets = question.responseSets;
+    reviseState.linkedResponseSets = question.responseSets.map((rs) => rs.id);
     if (this.props.action === 'revise') {
       reviseState.version += 1;
     }
@@ -136,7 +121,7 @@ class QuestionForm extends Component{
     var extendState = {};
     forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
     extendState.conceptsAttributes = filterConcepts(question.concepts);
-    extendState.linkedResponseSets = question.responseSets || [];
+    extendState.linkedResponseSets = question.responseSets.map((rs) => rs.id) || [];
     extendState.version = 1;
     extendState.parentId  = question.id;
     extendState.oid = '';
@@ -148,14 +133,13 @@ class QuestionForm extends Component{
 
   selectedResponseSets(linkedResponseSets, allResponseSets) {
     if(linkedResponseSets) {
-      return linkedResponseSets.map((r) => allResponseSets[r]).filter((r) => r !== undefined);
+      return linkedResponseSets.map((r) => allResponseSets[(r.id || r)]).filter((r) => r !== undefined);
     } else {
       return [];
     }
   }
 
   render(){
-    console.log("re-rendering");
     const {question, questionTypes, responseSets, responseTypes} = this.props;
     const state = this.state;
     if(!question || !questionTypes || !responseTypes){
@@ -212,7 +196,7 @@ class QuestionForm extends Component{
 
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Response Type</label>
-                    <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId :state.responseTypeId} onChange={this.handleResponseTypeChange()} >
+                    <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId : state.responseTypeId}  value={state.responseTypeId || undefined} onChange={this.handleResponseTypeChange()} >
                       {this.sortedResponseTypes(this.props.responseTypes).map((rt, i) => {
                         return (<option key={i} value={rt.id} >{rt.name} - {rt.description}</option>);
                       })}
@@ -293,7 +277,8 @@ class QuestionForm extends Component{
 
   handleResponseSetSuccess(successResponse){
     this.handleResponseSetsChange(this.state.linkedResponseSets.map((r) => {
-      return {id: r};
+      const rid = r.id || r;
+      return {id: rid};
     }).concat([successResponse.data]));
     this.setState({showResponseSetModal: false});
   }
@@ -337,7 +322,6 @@ class QuestionForm extends Component{
   }
 
   handleChange(field) {
-    console.log(this.state);
     return (event) => {
       let newState = {};
       newState[field] = event.target.value;
@@ -367,7 +351,10 @@ class QuestionForm extends Component{
   }
 
   handleResponseSetsChange(newResponseSets){
-    this.setState({linkedResponseSets: newResponseSets.map((r)=> r.id)});
+    this.setState({linkedResponseSets: newResponseSets.map((r) => {
+      const rid = r.id || r;
+      return rid;
+    })});
     this.unsavedState = true;
   }
 }
