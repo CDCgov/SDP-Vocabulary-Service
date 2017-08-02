@@ -26,8 +26,11 @@ export default function surveys(state = {}, action) {
       form = action.payload.form;
       survey = action.payload.survey;
       survey.id = survey.id || 0;
-      if(state[survey.id] && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
+      if(state[survey.id] && state[survey.id].surveyForms && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
         return state;
+      }
+      if(!survey.surveyForms) {
+        survey.surveyForms = [];
       }
       let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id, position: survey.surveyForms.length});
       newSurvey = Object.assign({}, survey);

@@ -179,10 +179,10 @@ class QuestionForm extends Component{
                     </div>
                     <div className="col-md-4 question-form-group">
                       <label className="input-label" htmlFor="questionTypeId">Category</label>
-                      <select className="input-select" name="questionTypeId" id="questionTypeId" defaultValue={state.questionTypeId} value={state.questionTypeId || undefined} onChange={this.handleChange('questionTypeId')} >
+                      <select className="input-select" name="questionTypeId" id="questionTypeId" value={state.questionTypeId || undefined} onChange={this.handleChange('questionTypeId')} >
                         <option value=""></option>
-                        {questionTypes && values(questionTypes).map((qt, i) => {
-                          return <option key={i} value={qt.id}>{qt.name}</option>;
+                        {questionTypes && values(questionTypes).map((qt) => {
+                          return <option key={qt.id} value={qt.id}>{qt.name}</option>;
                         })}
                       </select>
                     </div>
@@ -196,9 +196,9 @@ class QuestionForm extends Component{
 
                 <div className="col-md-4 question-form-group">
                   <label className="input-label" htmlFor="responseTypeId">Response Type</label>
-                    <select name="responseTypeId" id="responseTypeId" className="input-select" defaultValue={ question ? question.responseTypeId : state.responseTypeId}  value={state.responseTypeId || undefined} onChange={this.handleResponseTypeChange()} >
-                      {this.sortedResponseTypes(this.props.responseTypes).map((rt, i) => {
-                        return (<option key={i} value={rt.id} >{rt.name} - {rt.description}</option>);
+                    <select name="responseTypeId" id="responseTypeId" className="input-select" value={state.responseTypeId || undefined} onChange={this.handleResponseTypeChange()} >
+                      {this.sortedResponseTypes(this.props.responseTypes).map((rt) => {
+                        return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
                       })}
                     </select>
                   </div>

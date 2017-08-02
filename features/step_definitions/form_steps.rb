@@ -10,7 +10,7 @@ end
 
 When(/^I use the response set search modal to select "([^"]*)"$/) do |name|
   Elastictest.fake_rs_search_results
-  page.find('a', id: 'search-response-sets').click
+  page.all('a', id: 'search-response-sets')[0].click
   sleep 1
   page.all('a', id: "select-#{name}")[0].click
 end

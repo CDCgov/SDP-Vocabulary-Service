@@ -26,13 +26,16 @@ export default function forms(state = {}, action) {
       question = action.payload.question;
       form = action.payload.form;
       form.id = form.id || 0;
-      if(state[form.id] && state[form.id].formQuestions.findIndex( (s) => s.questionId == question.id) > -1){
+      if(state[form.id] && state[form.id].formQuestions && state[form.id].formQuestions.findIndex( (s) => s.questionId == question.id) > -1){
         return state;
       }
       if(question.responseSets && question.responseSets[0]){
         responseSetId = question.responseSets[0].id || question.responseSets[0];
       } else {
         responseSetId = null;
+      }
+      if(!form.formQuestions) {
+        form.formQuestions = [];
       }
       let newFormQuestion = Object.assign({}, {questionId: question.id, formId: form.id, responseSetId: responseSetId, position: form.formQuestions.length});
       newForm  = Object.assign({}, form);

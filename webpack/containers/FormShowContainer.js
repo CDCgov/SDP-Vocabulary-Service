@@ -57,7 +57,7 @@ class FormShowContainer extends Component {
   // So this function takes the form, clones it, then adds the extra data
   getCompleteForm(){
     var form = Object.assign({}, this.props.form);
-    if (form.formQuestions && form.formQuestions.length > 0) {
+    if (form.questions && form.formQuestions && form.formQuestions.length > 0) {
       form.formQuestions = this.props.form.formQuestions.map((fq) => {
         var formQuestion = Object.assign({}, form.questions.find(q => q.id === fq.questionId));
         formQuestion.programVar = fq.programVar || '';
