@@ -19,7 +19,6 @@ import { isEditable, isRevisable, isPublishable, isExtendable } from '../utiliti
 export default class QuestionDetails extends Component {
   render() {
     const {question} = this.props;
-    const {responseSets} = this.props;
     if(question === undefined || question.content === undefined){
       return (<div>Loading...</div>);
     }
@@ -33,7 +32,7 @@ export default class QuestionDetails extends Component {
           </ul>
         </div>
         {this.historyBar(question)}
-        {this.mainContent(question, responseSets)}
+        {this.mainContent(question)}
       </div>
     );
   }
@@ -56,7 +55,7 @@ export default class QuestionDetails extends Component {
     }
   }
 
-  mainContent(question, responseSets) {
+  mainContent(question) {
     return (
       <div className="col-md-9 nopadding maincontent">
         {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
@@ -114,7 +113,7 @@ export default class QuestionDetails extends Component {
             { question.parent &&
               <div className="box-content">
                 <strong>Extended from: </strong>
-                <Link to={`/questions/${question.parent.id}`}>{ question.parent.name }</Link>
+                <Link to={`/questions/${question.parent.id}`}>{ question.parent.name || question.parent.content }</Link>
               </div>
             }
             { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
@@ -125,11 +124,11 @@ export default class QuestionDetails extends Component {
             }
             {question.questionType && <div className="box-content">
               <strong>Question Type: </strong>
-              {question.questionType.name}
+              {question.questionType.name && question.questionType.name}
             </div>}
             {question.responseType && <div className="box-content">
               <strong>Response Type: </strong>
-              {question.responseType.name}
+              {question.responseType.name && question.responseType.name}
             </div>}
             {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
               <strong>Other Allowed: </strong>
@@ -146,13 +145,13 @@ export default class QuestionDetails extends Component {
                 </div>
               </div>
             </div>
-          {responseSets && responseSets.length > 0 &&
+          {question.responseSets && question.responseSets.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">Linked Response Sets</h2>
               </div>
               <div className="box-content">
-                <ResponseSetList responseSets={responseSets} />
+                <ResponseSetList responseSets={question.responseSets} />
               </div>
             </div>
           }
@@ -184,7 +183,6 @@ QuestionDetails.propTypes = {
   question:  questionProps,
   currentUser:   currentUserProps,
   router: PropTypes.object,
-  responseSets: PropTypes.array,
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
   setStats: PropTypes.func,

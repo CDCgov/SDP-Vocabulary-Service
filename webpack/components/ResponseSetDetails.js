@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { responseSetProps } from '../prop-types/response_set_props';
-import { questionProps } from '../prop-types/question_props';
 import VersionInfo from './VersionInfo';
 import { hashHistory } from 'react-router';
 import FormQuestionList from './FormQuestionList';
@@ -149,13 +148,13 @@ export default class ResponseSetDetails extends Component {
             <CodedSetTable items={responseSet.responses} itemName={'Response'} />
             </div>
           </div>
-          {this.props.questions && this.props.questions.length > 0 &&
+          {responseSet.questions && responseSet.questions.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
-                <FormQuestionList questions={this.props.questions} />
+                <FormQuestionList questions={responseSet.questions} />
               </div>
             </div>
           }
@@ -176,6 +175,5 @@ ResponseSetDetails.propTypes = {
   deleteResponseSet:  PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
-  questions: PropTypes.arrayOf(questionProps),
   publishers: publishersProps
 };

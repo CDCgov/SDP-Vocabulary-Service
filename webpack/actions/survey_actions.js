@@ -1,15 +1,16 @@
 import axios from 'axios';
+import { normalize } from 'normalizr';
+import { surveySchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
 import {
-  FETCH_SURVEYS,
-  FETCH_SURVEY,
   SAVE_SURVEY,
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,
   PUBLISH_SURVEY,
-  DELETE_SURVEY
+  DELETE_SURVEY,
+  ADD_ENTITIES
 } from './types';
 
 
@@ -26,40 +27,17 @@ export function deleteSurvey(id, callback=null) {
   };
 }
 
-export function fetchMySurveys(searchTerms) {
-  return {
-    type: FETCH_SURVEYS,
-    payload: axios.get(routes.mySurveysPath(), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      },
-      params: { search: searchTerms }
-    })
-  };
-}
-
-export function fetchSurveys(searchTerms) {
-  return {
-    type: FETCH_SURVEYS,
-    payload: axios.get(routes.surveysPath(), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      },
-      params: { search: searchTerms }
-    })
-  };
-}
-
 export function fetchSurvey(id) {
   return {
-    type: FETCH_SURVEY,
+    type: ADD_ENTITIES,
     payload: axios.get(routes.surveyPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'
       }
+    }).then((surveyResponse) => {
+      const normalizedData = normalize(surveyResponse.data, surveySchema);
+      return normalizedData.entities;
     })
   };
 }

@@ -97,6 +97,10 @@ function mapStateToProps(state, ownProps) {
   const props = {};
   if (ownProps.params.rsId) {
     props.responseSet = state.responseSets[ownProps.params.rsId];
+    if (props.responseSet && props.responseSet.codes) {
+      props.responseSet.responses = props.responseSet.codes;
+      delete props.responseSet["codes"];
+    }
   } else {
     props.responseSet = {version: 1};
   }

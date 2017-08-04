@@ -60,7 +60,15 @@
           "type": "string"
         },
         "category": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
         },
         "name": {
           "type": "string",
@@ -79,6 +87,9 @@
         "responseType": {
           "type": "object",
           "properties": {
+            "id": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
@@ -169,7 +180,15 @@
           "type": "string"
         },
         "category": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
         },
         "name": {
           "type": "string",
@@ -253,7 +272,15 @@
           "type": "string"
         },
         "category": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
         },
         "name": {
           "type": "string",
@@ -348,7 +375,15 @@
           "type": "string"
         },
         "category": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
         },
         "name": {
           "type": "string",

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,6 +8,7 @@ import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import SurveyShow from '../../components/surveys/Show';
 import { surveyProps } from '../../prop-types/survey_props';
+import { surveySchema } from '../../schema';
 import { formProps } from '../../prop-types/form_props';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -76,8 +78,8 @@ function mapStateToProps(state, ownProps) {
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
-  props.survey = state.surveys[ownProps.params.surveyId];
-  if (props.survey) {
+  props.survey = denormalize(state.surveys[ownProps.params.surveyId], surveySchema, state);
+  if (props.survey && props.survey.surveyForms) {
     props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
     props.forms = props.forms.filter((f) => f !== undefined);
     props.forms = props.forms.map((f) => {

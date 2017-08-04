@@ -1,15 +1,16 @@
 import axios from 'axios';
+import { normalize } from 'normalizr';
+import { responseSetSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
 import {
-  FETCH_RESPONSE_SETS,
-  FETCH_RESPONSE_SET,
   FETCH_RESPONSE_SET_USAGE,
   SAVE_RESPONSE_SET,
   SAVE_DRAFT_RESPONSE_SET,
   PUBLISH_RESPONSE_SET,
-  DELETE_RESPONSE_SET
+  DELETE_RESPONSE_SET,
+  ADD_ENTITIES
 } from './types';
 
 export function deleteResponseSet(id, callback=null) {
@@ -19,21 +20,14 @@ export function deleteResponseSet(id, callback=null) {
   };
 }
 
-export function fetchResponseSets(searchTerms) {
-  return {
-    type: FETCH_RESPONSE_SETS,
-    payload: axios.get(routes.responseSetsPath(), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params: { search: searchTerms }
-    })
-  };
-}
-
 export function fetchResponseSet(id) {
   return {
-    type: FETCH_RESPONSE_SET,
+    type: ADD_ENTITIES,
     payload: axios.get(routes.responseSetPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    }).then((rsResponse) => {
+      const normalizedData = normalize(rsResponse.data, responseSetSchema);
+      return normalizedData.entities;
     })
   };
 }

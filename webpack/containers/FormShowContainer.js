@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,8 +8,7 @@ import { setSteps } from '../actions/tutorial_actions';
 import { setStats } from '../actions/landing';
 import FormShow from '../components/FormShow';
 import { formProps } from '../prop-types/form_props';
-import { questionsProps } from '../prop-types/question_props';
-import { responseSetsProps } from '../prop-types/response_set_props';
+import { formSchema } from '../schema';
 import CommentList from '../containers/CommentList';
 import currentUserProps from '../prop-types/current_user_props';
 import { publishersProps } from "../prop-types/publisher_props";
@@ -57,14 +57,15 @@ class FormShowContainer extends Component {
   // So this function takes the form, clones it, then adds the extra data
   getCompleteForm(){
     var form = Object.assign({}, this.props.form);
-    if (form.formQuestions && form.formQuestions.length > 0) {
+    if (form.questions && form.formQuestions && form.formQuestions.length > 0) {
       form.formQuestions = this.props.form.formQuestions.map((fq) => {
-        var formQuestion = Object.assign({}, this.props.questions[fq.questionId]);
+        var formQuestion = Object.assign({}, form.questions.find(q => q.id === fq.questionId));
         formQuestion.programVar = fq.programVar || '';
         formQuestion.responseSets = [{name: 'None'}];
         if (fq.responseSetId) {
-          if(this.props.responseSets[fq.responseSetId]) {
-            formQuestion.responseSets = [this.props.responseSets[fq.responseSetId]];
+          var responseSet = form.responseSets.find(rs => rs.id === fq.responseSetId);
+          if(responseSet) {
+            formQuestion.responseSets = [responseSet];
           } else {
             formQuestion.responseSets = [{name: 'Loading...'}];
           }
@@ -105,10 +106,8 @@ class FormShowContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const props = {
     currentUser: state.currentUser,
-    responseSets: state.responseSets,
-    questions: state.questions,
     stats: state.stats,
-    form: state.forms[ownProps.params.formId],
+    form: denormalize(state.forms[ownProps.params.formId], formSchema, state),
     publishers: state.publishers
   };
   return props;
@@ -120,8 +119,6 @@ function mapDispatchToProps(dispatch) {
 
 FormShowContainer.propTypes = {
   form: formProps,
-  questions: questionsProps,
-  responseSets: responseSetsProps,
   params: PropTypes.object,
   router: PropTypes.object.isRequired,
   currentUser: currentUserProps,

@@ -1,9 +1,10 @@
+import { normalize } from 'normalizr';
+import { formsSchema } from '../../../webpack/schema';
 import { expect } from '../test_helper';
 import forms from '../../../webpack/reducers/forms_reducer';
 import _ from 'lodash';
 import {
-  FETCH_FORM_FULFILLED,
-  FETCH_FORMS_FULFILLED,
+  ADD_ENTITIES_FULFILLED,
   ADD_QUESTION,
   REMOVE_QUESTION
 } from '../../../webpack/actions/types';
@@ -16,20 +17,11 @@ describe('forms reducer', () => {
                    ];
 
   it('should fetch forms', () => {
-    const payloadData = {data: twoForms};
-    const action = {type: FETCH_FORMS_FULFILLED, payload: payloadData};
+    const payloadData = normalize(twoForms, formsSchema).entities;
+    const action = {type: ADD_ENTITIES_FULFILLED, payload: payloadData};
     const startState = {}
     const nextState = forms(startState, action);
     expect(Object.keys(nextState).length).to.equal(2);
-  });
-
-  it('should not overwrite forms already in store', () => {
-    const payloadData = {data: twoForms};
-    const action = {type: FETCH_FORMS_FULFILLED, payload: payloadData};
-    const preExistingForm = {id: 2, name:"Existing Form", userId: "testAuthor@gmail.com", questions: []};
-    const startState = {2: preExistingForm};
-    const nextState = forms(startState, action);
-    expect(Object.keys(nextState).length).to.equal(3);
   });
 
   it('should add a question', () => {

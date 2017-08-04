@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,8 +8,8 @@ import { setSteps } from '../actions/tutorial_actions';
 import { setStats } from '../actions/landing';
 import { questionProps } from "../prop-types/question_props";
 import QuestionDetails  from '../components/QuestionDetails';
+import { questionSchema } from '../schema';
 import CommentList from '../containers/CommentList';
-import { responseSetProps } from "../prop-types/response_set_props";
 import currentUserProps from "../prop-types/current_user_props";
 import { publishersProps } from "../prop-types/publisher_props";
 
@@ -76,7 +77,6 @@ class QuestionShowContainer extends Component {
         <div className="row basic-bg">
           <div className="col-md-12">
             <QuestionDetails question={this.props.question}
-                             responseSets={this.props.responseSets}
                              stats={this.props.stats}
                              setStats={this.props.setStats}
                              router={this.props.router}
@@ -95,13 +95,10 @@ class QuestionShowContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   const props = {};
-  props.question = state.questions[ownProps.params.qId];
+  props.question = denormalize(state.questions[ownProps.params.qId], questionSchema, state);
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
-  if (props.question && props.question.responseSets) {
-    props.responseSets = props.question.responseSets.map((rsId) => state.responseSets[rsId]);
-  }
   return props;
 }
 
@@ -115,7 +112,6 @@ QuestionShowContainer.propTypes = {
   params:   PropTypes.object,
   router:   PropTypes.object,
   currentUser:   currentUserProps,
-  responseSets:  PropTypes.arrayOf(responseSetProps),
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
   setSteps: PropTypes.func,

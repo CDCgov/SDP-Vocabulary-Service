@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { denormalize } from 'normalizr';
+import { questionSchema, responseSetsSchema } from '../schema';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../actions/questions_actions';
 import QuestionForm from '../components/QuestionForm';
 import { questionProps } from '../prop-types/question_props';
@@ -23,7 +25,6 @@ class QuestionEditContainer extends Component {
 
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
-    // this.props.fetchResponseSets();
   }
 
   componentDidMount() {
@@ -99,13 +100,27 @@ class QuestionEditContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const props = {};
   if(ownProps.params.qId){
-    props.question = state.questions[ownProps.params.qId];
+    props.question = denormalize(state.questions[ownProps.params.qId], questionSchema, state);
+    if(props.question){
+      if(props.question.name) {
+        props.question.content = props.question.name;
+      }
+      if (props.question.codes) {
+        props.question.concepts = props.question.codes;
+        props.question.concepts.map((c) => {
+          c.value = c.code;
+        });
+      }
+      props.question.questionType = props.question.category ? props.question.category : props.question.questionType;
+      props.question.questionTypeId = props.question.questionType ? props.question.questionType.id : undefined;
+      props.question.responseTypeId = props.question.responseType ? props.question.responseType.id : undefined;
+    }
   }else{
     props.question = {version:1, concepts:[], responseSets:[]};
   }
   props.questionTypes = state.questionTypes;
   props.responseTypes = state.responseTypes;
-  props.responseSets  = state.responseSets;
+  props.responseSets  = denormalize(state.responseSets, responseSetsSchema, state);
   return props;
 }
 
@@ -123,7 +138,6 @@ QuestionEditContainer.propTypes = {
   deleteQuestion:  PropTypes.func,
   publishQuestion: PropTypes.func,
   saveDraftQuestion:  PropTypes.func,
-  fetchResponseSets:  PropTypes.func,
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   setSteps: PropTypes.func,

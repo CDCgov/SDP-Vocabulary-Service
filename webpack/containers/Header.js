@@ -255,7 +255,7 @@ Header.propTypes = {
   currentUser: currentUserProps,
   steps: PropTypes.array,
   location: PropTypes.object,
-  appVersion: PropTypes.number,
+  appVersion: PropTypes.string,
   notifications: PropTypes.arrayOf(PropTypes.object),
   notificationCount: PropTypes.number,
   fetchNotifications: PropTypes.func,

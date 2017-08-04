@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { denormalize } from 'normalizr';
+import { formSchema } from '../schema';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
@@ -177,7 +179,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, ownProps) {
-  const form = state.forms[ownProps.params.formId || 0];
+  const form = denormalize(state.forms[ownProps.params.formId || 0], formSchema, state);
   var selectedSearchResults = {};
   if(form && form.formQuestions){
     form.formQuestions.map((fq)=>{

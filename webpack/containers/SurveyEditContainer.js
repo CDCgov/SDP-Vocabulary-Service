@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import capitalize from 'lodash/capitalize';
 
-import { fetchQuestions } from '../actions/questions_actions';
 import { setSteps } from '../actions/tutorial_actions';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
 import { removeForm, reorderForm } from '../actions/form_actions';
@@ -121,7 +120,7 @@ class SurveyEditContainer extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, newSurvey, removeForm, reorderForm,
-    saveSurvey, saveDraftSurvey, fetchSurvey, fetchQuestions}, dispatch);
+    saveSurvey, saveDraftSurvey, fetchSurvey}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {

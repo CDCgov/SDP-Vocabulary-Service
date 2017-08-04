@@ -1,24 +1,22 @@
 import {
-  FETCH_SURVEY_FULFILLED,
-  FETCH_SURVEYS_FULFILLED,
   PUBLISH_SURVEY_FULFILLED,
   SAVE_DRAFT_SURVEY_FULFILLED,
   DELETE_SURVEY_FULFILLED,
   ADD_FORM,
   REMOVE_FORM,
   REORDER_FORM,
-  CREATE_SURVEY
+  CREATE_SURVEY,
+  ADD_ENTITIES_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
 export default function surveys(state = {}, action) {
   let survey, newState, newSurvey, form;
   switch (action.type) {
-    case FETCH_SURVEYS_FULFILLED:
-      return helpers.fetchGroup(state, action);
+    case ADD_ENTITIES_FULFILLED:
+      return Object.assign({}, state, action.payload.surveys);
     case PUBLISH_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:
-    case FETCH_SURVEY_FULFILLED:
       return helpers.fetchIndividual(state, action);
     case CREATE_SURVEY:
       newState = Object.assign({}, state);
@@ -28,8 +26,11 @@ export default function surveys(state = {}, action) {
       form = action.payload.form;
       survey = action.payload.survey;
       survey.id = survey.id || 0;
-      if(state[survey.id] && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
+      if(state[survey.id] && state[survey.id].surveyForms && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
         return state;
+      }
+      if(!survey.surveyForms) {
+        survey.surveyForms = [];
       }
       let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id, position: survey.surveyForms.length});
       newSurvey = Object.assign({}, survey);

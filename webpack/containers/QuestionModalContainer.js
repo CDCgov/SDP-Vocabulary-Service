@@ -16,7 +16,6 @@ import ResponseSetDragWidget  from './ResponseSetDragWidget';
 import { responseSetsProps }  from '../prop-types/response_set_props';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchQuestionTypes } from '../actions/question_type_actions';
-import { fetchResponseSets }  from '../actions/response_set_actions';
 import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
 
 class QuestionModalContainer extends Component {
@@ -31,7 +30,6 @@ class QuestionModalContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchResponseSets();
     this.props.fetchQuestionTypes();
     this.props.fetchResponseTypes();
   }
@@ -177,7 +175,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestionTypes, fetchResponseTypes, fetchResponseSets, saveQuestion}, dispatch);
+  return bindActionCreators({fetchQuestionTypes, fetchResponseTypes, saveQuestion}, dispatch);
 }
 
 QuestionModalContainer.propTypes = {
@@ -188,7 +186,6 @@ QuestionModalContainer.propTypes = {
   saveQuestion: PropTypes.func,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
-  fetchResponseSets: PropTypes.func,
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   closeQuestionModal: PropTypes.func.isRequired,

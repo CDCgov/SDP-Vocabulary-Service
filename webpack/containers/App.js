@@ -122,7 +122,7 @@ App.propTypes = {
   fetchCurrentUser: PropTypes.func,
   logIn: PropTypes.func,
   location: PropTypes.object,
-  appVersion: PropTypes.number,
+  appVersion: PropTypes.string,
   signUp: PropTypes.func,
   updateUser: PropTypes.func,
   fetchSurveillanceSystems: PropTypes.func,

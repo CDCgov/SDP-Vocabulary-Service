@@ -23,9 +23,8 @@ import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
 import ErrorPage, {GenericError ,Forbidden403} from './containers/ErrorPages';
 
 
-import configureStore from './store/configure_store';
+import store from './store/configure_store';
 import {logPageViewed} from './utilities/AdobeAnalytics';
-const store = configureStore();
 ReactDOM.render(
   <Provider store={store}>
     <Router history={hashHistory} onUpdate={logPageViewed}>
