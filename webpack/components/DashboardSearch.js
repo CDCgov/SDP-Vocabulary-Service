@@ -144,9 +144,9 @@ class DashboardSearch extends Component {
       <div className="row">
         <div className="col-md-12">
           <div className="input-group search-group">
-            <input onChange={this.onInputChange} value={this.state.searchTerms} type="text" id="search" tabIndex="4" name="search" aria-label="search-bar" className="search-input" placeholder="Search..."/>
+            <input onChange={this.onInputChange} value={this.state.searchTerms} type="text" id="search" tabIndex="4" name="search" aria-label="Dashboard Search Bar" className="search-input" placeholder="Search..."/>
             <span className="input-group-btn">
-              <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="search-btn" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
+              <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="Click to submit search" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
           </div>
           <div>
