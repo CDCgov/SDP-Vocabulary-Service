@@ -1,6 +1,6 @@
-import { expect, renderComponent } from '../test_helper';
-import ResponseSetForm from '../../../webpack/components/ResponseSetForm';
-import MockRouter from '../mock_router';
+import { expect, renderComponent } from '../../test_helper';
+import ResponseSetForm from '../../../../webpack/components/response_sets/ResponseSetForm';
+import MockRouter from '../../mock_router';
 
 describe('ResponseSetForm', () => {
   let component, router, inputNode, props;

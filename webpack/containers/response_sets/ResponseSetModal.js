@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { saveResponseSet } from '../actions/response_set_actions';
+import { saveResponseSet } from '../../actions/response_set_actions';
 import {Modal, Button} from 'react-bootstrap';
-import Errors from '../components/Errors';
-import ResponseSetForm from '../components/ResponseSetForm';
+import Errors from '../../components/Errors';
+import ResponseSetForm from '../../components/response_sets/ResponseSetForm';
 import $ from 'jquery';
 
 class ResponseSetModal extends Component {

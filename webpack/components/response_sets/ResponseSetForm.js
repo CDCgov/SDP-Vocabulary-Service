@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { responseSetProps } from '../prop-types/response_set_props';
-import Errors from './Errors';
-import ModalDialog from './ModalDialog';
-import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
+import { responseSetProps } from '../../prop-types/response_set_props';
+import Errors from '../Errors';
+import ModalDialog from '../ModalDialog';
+import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 
 export default class ResponseSetForm extends Component {
   constructor(props) {

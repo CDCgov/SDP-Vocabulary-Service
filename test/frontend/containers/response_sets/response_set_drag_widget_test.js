@@ -1,5 +1,5 @@
-import { expect, renderComponent } from '../test_helper';
-import ResponseSetDragWidget from '../../../webpack/containers/ResponseSetDragWidget';
+import { expect, renderComponent } from '../../test_helper';
+import ResponseSetDragWidget from '../../../../webpack/containers/response_sets/ResponseSetDragWidget';
 
 describe('ResponseSetDragWidget', () => {
   let component, props;

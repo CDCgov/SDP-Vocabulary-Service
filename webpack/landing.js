@@ -8,10 +8,10 @@ import { Provider } from 'react-redux';
 import { hashHistory, Router, Route, IndexRoute } from 'react-router';
 
 import DashboardContainer from './containers/DashboardContainer';
-import ResponseSetShowContainer from './containers/ResponseSetShowContainer';
+import ResponseSetShowContainer from './containers/response_sets/ResponseSetShowContainer';
 import FormShowContainer from './containers/FormShowContainer';
 import QuestionShowContainer from './containers/QuestionShowContainer';
-import ResponseSetEditContainer from './containers/ResponseSetEditContainer';
+import ResponseSetEditContainer from './containers/response_sets/ResponseSetEditContainer';
 import QuestionEditContainer from './containers/QuestionEditContainer';
 import SurveyEditContainer from './containers/SurveyEditContainer';
 import FormsEditContainer from './containers/FormsEditContainer';

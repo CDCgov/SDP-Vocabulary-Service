@@ -9,8 +9,8 @@ import { responseSetsProps } from '../prop-types/response_set_props';
 
 import Errors from './Errors';
 import ModalDialog from './ModalDialog';
-import ResponseSetModal from '../containers/ResponseSetModal';
-import ResponseSetDragWidget from '../containers/ResponseSetDragWidget';
+import ResponseSetModal from '../containers/response_sets/ResponseSetModal';
+import ResponseSetDragWidget from '../containers/response_sets/ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
 
 

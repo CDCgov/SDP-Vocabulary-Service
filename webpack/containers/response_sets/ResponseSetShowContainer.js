@@ -3,15 +3,15 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage } from '../actions/response_set_actions';
-import { setSteps } from '../actions/tutorial_actions';
-import { setStats } from '../actions/landing';
-import ResponseSetDetails from '../components/ResponseSetDetails';
-import { responseSetProps } from '../prop-types/response_set_props';
-import { responseSetSchema } from '../schema';
-import CommentList from '../containers/CommentList';
-import currentUserProps from "../prop-types/current_user_props";
-import { publishersProps } from "../prop-types/publisher_props";
+import { fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
+import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
+import ResponseSetDetails from '../../components/response_sets/ResponseSetDetails';
+import { responseSetProps } from '../../prop-types/response_set_props';
+import { responseSetSchema } from '../../schema';
+import CommentList from '../../containers/CommentList';
+import currentUserProps from "../../prop-types/current_user_props";
+import { publishersProps } from "../../prop-types/publisher_props";
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {

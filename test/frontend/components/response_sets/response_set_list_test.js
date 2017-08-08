@@ -1,5 +1,5 @@
-import { expect, renderComponent } from '../test_helper';
-import ResponseSetList from '../../../webpack/components/ResponseSetList';
+import { expect, renderComponent } from '../../test_helper';
+import ResponseSetList from '../../../../webpack/components/response_sets/ResponseSetList';
 
 describe('ResponseSetList', () => {
   let component;
