@@ -1,8 +1,8 @@
 import { expect, renderComponent } from '../../test_helper';
-import ResponseSetForm from '../../../../webpack/components/response_sets/ResponseSetForm';
+import ResponseSetEdit from '../../../../webpack/components/response_sets/ResponseSetEdit';
 import MockRouter from '../../mock_router';
 
-describe('ResponseSetForm', () => {
+describe('ResponseSetEdit', () => {
   let component, router, inputNode, props;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('ResponseSetForm', () => {
       responseSetSubmitter: ()=>{},
       action: 'revise',
     };
-    component = renderComponent(ResponseSetForm, props);
+    component = renderComponent(ResponseSetEdit, props);
     inputNode = component.find("input[id='content']")[0]
   });
 

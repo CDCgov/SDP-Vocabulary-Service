@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchResponseSet, publishResponseSet, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
-import ResponseSetDetails from '../../components/response_sets/ResponseSetDetails';
+import ResponseSetShow from '../../components/response_sets/ResponseSetShow';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import { responseSetSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
@@ -71,7 +71,7 @@ class ResponseSetShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <ResponseSetDetails {...this.props} />
+            <ResponseSetShow {...this.props} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
           </div>

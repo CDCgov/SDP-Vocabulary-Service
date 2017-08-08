@@ -6,7 +6,7 @@ import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 
-export default class ResponseSetForm extends Component {
+export default class ResponseSetEdit extends Component {
   constructor(props) {
     super(props);
     this.unsavedState = false;
@@ -221,7 +221,7 @@ function filterResponses(responses=[]) {
   });
 }
 
-ResponseSetForm.propTypes = {
+ResponseSetEdit.propTypes = {
   responseSet: responseSetProps,
   responseSetSubmitter: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
