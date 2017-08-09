@@ -1,8 +1,8 @@
 import {
   expect,
   renderComponent
-} from '../test_helper';
-import QuestionShowContainer from '../../../webpack/containers/QuestionShowContainer';
+} from '../../test_helper';
+import QuestionShowContainer from '../../../../webpack/containers/questions/QuestionShowContainer';
 
 describe('QuestionShowContainer ', () => {
   it('will show a question', () => {

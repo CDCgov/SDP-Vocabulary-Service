@@ -9,7 +9,7 @@ import { formProps } from '../prop-types/form_props';
 import { responseSetsProps } from '../prop-types/response_set_props';
 import { questionsProps } from '../prop-types/question_props';
 
-import QuestionItem from '../containers/QuestionItem';
+import QuestionItem from '../containers/questions/QuestionItem';
 import ModalDialog  from './ModalDialog';
 import Errors from './Errors';
 

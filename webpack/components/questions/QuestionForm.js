@@ -4,14 +4,14 @@ import { Link } from 'react-router';
 import forOwn from 'lodash/forOwn';
 import values from 'lodash/values';
 
-import { questionProps } from '../prop-types/question_props';
-import { responseSetsProps } from '../prop-types/response_set_props';
+import { questionProps } from '../../prop-types/question_props';
+import { responseSetsProps } from '../../prop-types/response_set_props';
 
-import Errors from './Errors';
-import ModalDialog from './ModalDialog';
-import ResponseSetModal from '../containers/response_sets/ResponseSetModal';
-import ResponseSetDragWidget from '../containers/response_sets/ResponseSetDragWidget';
-import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
+import Errors from '../Errors';
+import ModalDialog from '../ModalDialog';
+import ResponseSetModal from '../../containers/response_sets/ResponseSetModal';
+import ResponseSetDragWidget from '../../containers/response_sets/ResponseSetDragWidget';
+import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 
 
 class QuestionForm extends Component{

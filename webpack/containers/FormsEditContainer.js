@@ -9,8 +9,8 @@ import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_act
 import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../actions/questions_actions';
 import FormEdit from '../components/FormEdit';
 import ResponseSetModal from './response_sets/ResponseSetModal';
-import QuestionModalContainer  from './QuestionModalContainer';
-import QuestionSearchContainer from './QuestionSearchContainer';
+import QuestionModalContainer  from './questions/QuestionModalContainer';
+import QuestionSearchContainer from './questions/QuestionSearchContainer';
 import { formProps } from '../prop-types/form_props';
 import { questionsProps } from '../prop-types/question_props';
 import { responseSetsProps } from '../prop-types/response_set_props';

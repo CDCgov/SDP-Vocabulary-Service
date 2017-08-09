@@ -3,15 +3,15 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } from '../actions/questions_actions';
-import { setSteps } from '../actions/tutorial_actions';
-import { setStats } from '../actions/landing';
-import { questionProps } from "../prop-types/question_props";
-import QuestionDetails  from '../components/QuestionDetails';
-import { questionSchema } from '../schema';
-import CommentList from '../containers/CommentList';
-import currentUserProps from "../prop-types/current_user_props";
-import { publishersProps } from "../prop-types/publisher_props";
+import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } from '../../actions/questions_actions';
+import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
+import { questionProps } from "../../prop-types/question_props";
+import QuestionDetails  from '../../components/questions/QuestionDetails';
+import { questionSchema } from '../../schema';
+import CommentList from '../../containers/CommentList';
+import currentUserProps from "../../prop-types/current_user_props";
+import { publishersProps } from "../../prop-types/publisher_props";
 
 class QuestionShowContainer extends Component {
 

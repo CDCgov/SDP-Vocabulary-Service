@@ -1,5 +1,5 @@
-import { expect, renderComponent } from '../test_helper';
-import QuestionDetails from '../../../webpack/components/QuestionDetails';
+import { expect, renderComponent } from '../../test_helper';
+import QuestionDetails from '../../../../webpack/components/questions/QuestionDetails';
 
 describe('QuestionDetails', () => {
   let component;

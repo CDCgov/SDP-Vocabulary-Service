@@ -3,9 +3,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import { expect } from '../test_helper';
-import QuestionForm from '../../../webpack/components/QuestionForm';
-import reducers from '../../../webpack/reducers';
+import { expect } from '../../test_helper';
+import QuestionForm from '../../../../webpack/components/questions/QuestionForm';
+import reducers from '../../../../webpack/reducers';
 
 describe('QuestionForm', () => {
   it('should show the others allowed when choice selected', () => {

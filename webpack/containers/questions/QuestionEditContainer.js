@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
-import { questionSchema, responseSetsSchema } from '../schema';
-import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../actions/questions_actions';
-import QuestionForm from '../components/QuestionForm';
-import { questionProps } from '../prop-types/question_props';
-import { responseSetsProps }  from '../prop-types/response_set_props';
-import { fetchResponseTypes } from '../actions/response_type_actions';
-import { fetchQuestionTypes } from '../actions/question_type_actions';
-import { setSteps } from '../actions/tutorial_actions';
+import { questionSchema, responseSetsSchema } from '../../schema';
+import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../../actions/questions_actions';
+import QuestionForm from '../../components/questions/QuestionForm';
+import { questionProps } from '../../prop-types/question_props';
+import { responseSetsProps }  from '../../prop-types/response_set_props';
+import { fetchResponseTypes } from '../../actions/response_type_actions';
+import { fetchQuestionTypes } from '../../actions/question_type_actions';
+import { setSteps } from '../../actions/tutorial_actions';
 
 class QuestionEditContainer extends Component {
   componentWillMount() {

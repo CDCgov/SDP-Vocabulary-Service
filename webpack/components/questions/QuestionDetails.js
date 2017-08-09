@@ -4,17 +4,17 @@ import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
 
-import VersionInfo from "./VersionInfo";
-import ResponseSetList from "./response_sets/ResponseSetList";
-import CodedSetTable from "./CodedSetTable";
-import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
-import PublisherLookUp from "./shared_show/PublisherLookUp";
+import VersionInfo from "../VersionInfo";
+import ResponseSetList from "../response_sets/ResponseSetList";
+import CodedSetTable from "../CodedSetTable";
+import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
+import PublisherLookUp from "../shared_show/PublisherLookUp";
 
-import { questionProps } from "../prop-types/question_props";
-import currentUserProps from "../prop-types/current_user_props";
-import { publishersProps } from "../prop-types/publisher_props";
+import { questionProps } from "../../prop-types/question_props";
+import currentUserProps from "../../prop-types/current_user_props";
+import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
 
 export default class QuestionDetails extends Component {
   render() {

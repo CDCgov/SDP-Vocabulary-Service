@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { questionProps } from "../prop-types/question_props";
-import { formProps } from "../prop-types/form_props";
+import { questionProps } from "../../prop-types/question_props";
+import { formProps } from "../../prop-types/form_props";
 import { Link } from 'react-router';
 
 export default class QuestionResults extends Component {
