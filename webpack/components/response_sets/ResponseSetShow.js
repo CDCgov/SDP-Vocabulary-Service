@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
-import { responseSetProps } from '../prop-types/response_set_props';
-import VersionInfo from './VersionInfo';
+import { responseSetProps } from '../../prop-types/response_set_props';
+import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
-import FormQuestionList from './FormQuestionList';
-import CodedSetTable from "./CodedSetTable";
-import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
-import PublisherLookUp from "./shared_show/PublisherLookUp";
-import currentUserProps from "../prop-types/current_user_props";
-import { publishersProps } from "../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
+import FormQuestionList from '../FormQuestionList';
+import CodedSetTable from "../CodedSetTable";
+import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
+import PublisherLookUp from "../shared_show/PublisherLookUp";
+import currentUserProps from "../../prop-types/current_user_props";
+import { publishersProps } from "../../prop-types/publisher_props";
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
 
-export default class ResponseSetDetails extends Component {
+export default class ResponseSetShow extends Component {
   render() {
     const {responseSet} = this.props;
     if(responseSet === undefined || responseSet.name === undefined){
@@ -167,7 +167,7 @@ export default class ResponseSetDetails extends Component {
   }
 }
 
-ResponseSetDetails.propTypes = {
+ResponseSetShow.propTypes = {
   responseSet: responseSetProps,
   router: PropTypes.object,
   currentUser: currentUserProps,

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { saveResponseSet } from '../actions/response_set_actions';
+import { saveResponseSet } from '../../actions/response_set_actions';
 import {Modal, Button} from 'react-bootstrap';
-import Errors from '../components/Errors';
-import ResponseSetForm from '../components/ResponseSetForm';
+import Errors from '../../components/Errors';
+import ResponseSetEdit from '../../components/response_sets/ResponseSetEdit';
 import $ from 'jquery';
 
 class ResponseSetModal extends Component {
@@ -33,7 +33,7 @@ class ResponseSetModal extends Component {
         </Modal.Header>
         <Errors errors={this.state.errors} />
         <Modal.Body bsStyle='response-set'>
-          <ResponseSetForm action={'new'}
+          <ResponseSetEdit action={'new'}
                            router={this.props.router}
                            responseSetSubmitter={this.saveNewResponseSet}/>
         </Modal.Body>

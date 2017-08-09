@@ -5,7 +5,7 @@ import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from "./VersionInfo";
-import ResponseSetList from "./ResponseSetList";
+import ResponseSetList from "./response_sets/ResponseSetList";
 import CodedSetTable from "./CodedSetTable";
 import ProgramsAndSystems from "./shared_show/ProgramsAndSystems";
 import PublisherLookUp from "./shared_show/PublisherLookUp";

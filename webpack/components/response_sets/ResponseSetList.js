@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
 
-import { responseSetProps } from '../prop-types/response_set_props';
-import SearchResult from './SearchResult';
+import { responseSetProps } from '../../prop-types/response_set_props';
+import SearchResult from '../SearchResult';
 
 export default class ResponseSetList extends Component {
   shouldComponentUpdate(nextProps, nextState) {

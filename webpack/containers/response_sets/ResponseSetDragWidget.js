@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Draggable, Droppable } from '../components/Draggable';
-import SearchResult from '../components/SearchResult';
-import NestedSearchBar from '../components/NestedSearchBar';
-import currentUserProps from '../prop-types/current_user_props';
-import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
-import { responseSetsProps } from '../prop-types/response_set_props';
+import { Draggable, Droppable } from '../../components/Draggable';
+import SearchResult from '../../components/SearchResult';
+import NestedSearchBar from '../../components/NestedSearchBar';
+import currentUserProps from '../../prop-types/current_user_props';
+import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
+import { responseSetsProps } from '../../prop-types/response_set_props';
 
 let setData = function(){
   return {"Text": JSON.stringify(this.props.result.Source)};

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setSteps } from '../actions/tutorial_actions';
-import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../actions/response_set_actions';
-import ResponseSetForm from '../components/ResponseSetForm';
-import { responseSetProps } from '../prop-types/response_set_props';
+import { setSteps } from '../../actions/tutorial_actions';
+import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../../actions/response_set_actions';
+import ResponseSetEdit from '../../components/response_sets/ResponseSetEdit';
+import { responseSetProps } from '../../prop-types/response_set_props';
 
 class ResponseSetEditContainer extends Component {
   constructor(props) {
@@ -83,7 +83,7 @@ class ResponseSetEditContainer extends Component {
     }
     return (
       <div className="container">
-        <ResponseSetForm responseSet={this.props.responseSet}
+        <ResponseSetEdit responseSet={this.props.responseSet}
                          responseSetSubmitter={this.state.selectedResponseSetSaver}
                          action={action}
                          route ={this.props.route}
