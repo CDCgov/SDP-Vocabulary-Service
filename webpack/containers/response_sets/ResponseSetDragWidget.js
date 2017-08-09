@@ -91,7 +91,8 @@ class ResponseSetDragWidget extends Component {
     this.props.fetchSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set');
   }
 
-  loadMore() {
+  loadMore(event) {
+    event.preventDefault();
     let searchTerms = this.state.searchTerms;
     let tempState = this.state.page + 1;
     if(this.state.searchTerms === '') {
@@ -122,7 +123,7 @@ class ResponseSetDragWidget extends Component {
                       handleSelectSearchResult={() => this.addRsButtonHandler(rs)} />;
             })}
             {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
-              <button id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</button>
+              <button id="load-more-btn" className="button button-action center-block" onClick={(event) => this.loadMore(event)}>LOAD MORE</button>
             }
           </div>
         </div>
