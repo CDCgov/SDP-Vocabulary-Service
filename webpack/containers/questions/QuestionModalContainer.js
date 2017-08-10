@@ -10,7 +10,7 @@ import $ from 'jquery';
 
 import { saveQuestion } from '../../actions/questions_actions';
 import Errors from '../../components/Errors';
-import QuestionForm from '../../components/questions/QuestionForm';
+import QuestionEdit from '../../components/questions/QuestionEdit';
 import ResponseSetList  from '../../components/response_sets/ResponseSetList';
 import ResponseSetDragWidget  from '../response_sets/ResponseSetDragWidget';
 import { responseSetsProps }  from '../../prop-types/response_set_props';
@@ -134,7 +134,7 @@ class QuestionModalContainer extends Component {
     return (
       <div className={this.state.showResponseSetWidget ? 'hidden' : ''}>
         <Modal.Body bsStyle='question'>
-          <QuestionForm action={'new'}
+          <QuestionEdit action={'new'}
                         question={{}}
                         responseSets ={this.props.responseSets}
                         questionTypes={this.props.questionTypes}

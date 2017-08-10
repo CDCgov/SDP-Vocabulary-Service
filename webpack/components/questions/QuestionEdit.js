@@ -14,7 +14,7 @@ import ResponseSetDragWidget from '../../containers/response_sets/ResponseSetDra
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 
 
-class QuestionForm extends Component{
+class QuestionEdit extends Component {
 
   constructor(props) {
     super(props);
@@ -370,7 +370,7 @@ function filterConcepts(concepts) {
   });
 }
 
-QuestionForm.propTypes = {
+QuestionEdit.propTypes = {
   id: PropTypes.string,
   route:  PropTypes.object,
   router: PropTypes.object,
@@ -384,4 +384,4 @@ QuestionForm.propTypes = {
   handleResponseTypeChange: PropTypes.func
 };
 
-export default QuestionForm;
+export default QuestionEdit;

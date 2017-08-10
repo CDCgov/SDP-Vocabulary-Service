@@ -7,7 +7,7 @@ import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } fr
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { questionProps } from "../../prop-types/question_props";
-import QuestionDetails  from '../../components/questions/QuestionDetails';
+import QuestionShow  from '../../components/questions/QuestionShow';
 import { questionSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from "../../prop-types/current_user_props";
@@ -76,7 +76,7 @@ class QuestionShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <QuestionDetails question={this.props.question}
+            <QuestionShow question={this.props.question}
                              stats={this.props.stats}
                              setStats={this.props.setStats}
                              router={this.props.router}

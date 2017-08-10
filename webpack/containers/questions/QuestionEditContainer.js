@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
 import { questionSchema, responseSetsSchema } from '../../schema';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../../actions/questions_actions';
-import QuestionForm from '../../components/questions/QuestionForm';
+import QuestionEdit from '../../components/questions/QuestionEdit';
 import { questionProps } from '../../prop-types/question_props';
 import { responseSetsProps }  from '../../prop-types/response_set_props';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
@@ -81,7 +81,7 @@ class QuestionEditContainer extends Component {
     }
     return (
       <div className="container">
-        <QuestionForm id={this.id}
+        <QuestionEdit id={this.id}
                       action={this.action}
                       question={this.props.question}
                       draftSubmitter={this.props.saveDraftQuestion}
