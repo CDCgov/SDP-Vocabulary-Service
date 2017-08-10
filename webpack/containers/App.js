@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import $ from 'jquery';
 
 import Header from './Header';
 import LogInModal from '../components/accounts/LogInModal';
@@ -76,8 +75,9 @@ class App extends Component {
       <div>
         <text className="sr-only">Welcome to the vocabulary service. Click the next link to skip navigation and go to main content.</text>
         <a href="#main-content" id="skip-nav" className="sr-only sr-only-focusable" tabIndex="1" onClick={() => {
-          $('a[tabindex=2]').attr('tabindex', '-1');
-          $('a[tabindex=1]').attr('tabindex', '-1');
+          var element = document.getElementById('main-content');
+          element.tabIndex = -1;
+          element.focus();
         }}>Skip to main content</a>
         <Header currentUser={this.props.currentUser}
                 disableUserRegistration={DISABLE_USER_REGISTRATION}

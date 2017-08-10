@@ -24,14 +24,21 @@ export default class SearchResult extends Component {
   isRevisable(source) {
     // Needs concept of source.mostRecent === source.version
     // Currently no way to do this in ES schema
-    return source.status === 'published' &&
-      (source.createdById || source.createdBy.id) === this.props.currentUser.id;
+    if (source.createdById || source.createdBy) {
+      return source.status === 'published' &&
+        (source.createdById || source.createdBy.id) === this.props.currentUser.id;
+    } else {
+      return false;
+    }
   }
 
   isEditable(source) {
-    // Needs concept of source.mostRecent === source.version
-    return source.status === 'draft' &&
-      (source.createdById || source.createdBy.id) === this.props.currentUser.id;
+    if (source.createdById || source.createdBy) {
+      return source.status === 'draft' &&
+        (source.createdById || source.createdBy.id) === this.props.currentUser.id;
+    } else {
+      return false;
+    }
   }
 
   isExtendable(source) {
