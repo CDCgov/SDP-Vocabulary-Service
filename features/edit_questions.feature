@@ -65,7 +65,8 @@ Feature: Edit Questions
     And I select the "Open Choice" option in the "Response Type" list
     And I click on the "select-Colors" link
     And I click on the "select-More colors" link
-    And I click on the "select-More colors" link
+    Then I should not see "select-More colors"
+    And I should see "Result Already Added"
     Then I should only see 1 copy of the "More colors" response set associated
 
   Scenario: Create New Question from List with Warning Modal
