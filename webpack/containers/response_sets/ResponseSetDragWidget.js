@@ -118,8 +118,10 @@ class ResponseSetDragWidget extends Component {
           <NestedSearchBar onSearchTermChange={this.search} modelName="Response Set" /><br/>
           <div className="fixed-height-list" name="linked_response_sets">
             {searchResults.hits && searchResults.hits.hits.map((rs, i) => {
+              var isSelected = this.props.selectedResponseSets.findIndex((r) => r.id == rs.Id) > -1;
               return <DraggableResponseSet key={i} type={rs.Type} result={rs}
                       currentUser={this.props.currentUser}
+                      isSelected ={isSelected}
                       handleSelectSearchResult={() => this.addRsButtonHandler(rs)} />;
             })}
             {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
