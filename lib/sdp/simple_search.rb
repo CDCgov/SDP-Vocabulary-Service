@@ -29,7 +29,7 @@ module SDP
         total += type_results[:total]
         type_results[:hits].each do |tr|
           serializer = mapping[type]
-          res_json = { '_index' => 'vocabluary',
+          res_json = { '_index' => 'vocabulary',
                        '_type' => type.to_s.underscore,
                        '_id' => tr.id,
                        '_source' => serializer.new(tr).as_json }
