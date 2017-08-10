@@ -12,7 +12,7 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
 
-class SurveyShow extends Component{
+class SurveyShow extends Component {
   historyBar() {
     return (
       <div className="col-md-3 nopadding no-print">

@@ -1,6 +1,6 @@
-import { expect, renderComponent } from '../test_helper';
-import SurveyEdit from '../../../webpack/components/SurveyEdit';
-import MockRouter from '../mock_router';
+import { expect, renderComponent } from '../../test_helper';
+import SurveyEdit from '../../../../webpack/components/surveys/SurveyEdit';
+import MockRouter from '../../mock_router';
 
 describe('SurveyEdit', () => {
   let component, router, props, inputNode;

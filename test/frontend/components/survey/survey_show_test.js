@@ -1,5 +1,5 @@
 import { expect, renderComponent } from '../../test_helper';
-import SurveyShow from '../../../../webpack/components/surveys/Show';
+import SurveyShow from '../../../../webpack/components/surveys/SurveyShow';
 
 describe('SurveyShow', () => {
   let component;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { formsProps } from "../prop-types/form_props";
-import { questionsProps } from "../prop-types/question_props";
-import SearchResult from './SearchResult';
+import { formsProps } from "../../prop-types/form_props";
+import { questionsProps } from "../../prop-types/question_props";
+import SearchResult from '../SearchResult';
 
 class SurveyFormList extends Component {
   render() {

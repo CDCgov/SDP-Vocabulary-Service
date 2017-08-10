@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchSurvey, publishSurvey, deleteSurvey } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
-import SurveyShow from '../../components/surveys/Show';
+import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
 import { formProps } from '../../prop-types/form_props';

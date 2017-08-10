@@ -5,15 +5,15 @@ import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import capitalize from 'lodash/capitalize';
 
-import { setSteps } from '../actions/tutorial_actions';
-import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../actions/survey_actions';
-import { removeForm, reorderForm } from '../actions/form_actions';
-import { formsProps }  from '../prop-types/form_props';
-import { questionsProps }  from '../prop-types/question_props';
-import { surveyProps } from '../prop-types/survey_props';
-import SurveyEdit from '../components/SurveyEdit';
-import currentUserProps from "../prop-types/current_user_props";
-import FormSearchContainer from './forms/FormSearchContainer';
+import { setSteps } from '../../actions/tutorial_actions';
+import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../../actions/survey_actions';
+import { removeForm, reorderForm } from '../../actions/form_actions';
+import { formsProps }  from '../../prop-types/form_props';
+import { questionsProps }  from '../../prop-types/question_props';
+import { surveyProps } from '../../prop-types/survey_props';
+import SurveyEdit from '../../components/surveys/SurveyEdit';
+import currentUserProps from "../../prop-types/current_user_props";
+import FormSearchContainer from '../forms/FormSearchContainer';
 
 class SurveyEditContainer extends Component {
   constructor(props) {

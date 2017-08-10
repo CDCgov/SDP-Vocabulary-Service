@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { surveyProps } from '../prop-types/survey_props';
-import { formsProps } from '../prop-types/form_props';
-import { questionsProps } from "../prop-types/question_props";
+import { surveyProps } from '../../prop-types/survey_props';
+import { formsProps } from '../../prop-types/form_props';
+import { questionsProps } from "../../prop-types/question_props";
 import SurveyFormList from './SurveyFormList';
-import Errors from './Errors';
-import ModalDialog from './ModalDialog';
+import Errors from '../Errors';
+import ModalDialog from '../ModalDialog';
 
 class SurveyEdit extends Component {
 
