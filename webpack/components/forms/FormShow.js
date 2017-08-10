@@ -63,10 +63,24 @@ class FormShow extends Component {
     this.setState({page: nextPage});
   }
 
-  questionsForPage() {
+  questionsForPage(form) {
     const startIndex = (this.state.page - 1) * PAGE_SIZE;
     const endIndex = this.state.page * PAGE_SIZE;
-    return this.props.form.formQuestions.slice(startIndex, endIndex);
+    const formQuestionPage = form.formQuestions.slice(startIndex, endIndex);
+    return formQuestionPage.map((fq) => {
+      var formQuestion = Object.assign({}, form.questions.find(q => q.id === fq.questionId));
+      formQuestion.programVar = fq.programVar || '';
+      formQuestion.responseSets = [{name: 'None'}];
+      if (fq.responseSetId) {
+        var responseSet = form.responseSets.find(rs => rs.id === fq.responseSetId);
+        if(responseSet) {
+          formQuestion.responseSets = [responseSet];
+        } else {
+          formQuestion.responseSets = [{name: 'Loading...'}];
+        }
+      }
+      return formQuestion;
+    });
   }
 
   mainContent(form) {
@@ -140,7 +154,7 @@ class FormShow extends Component {
           </div>
           {this.props.form.formQuestions && this.props.form.formQuestions.length > 0 &&
             <div>
-              <FormQuestionList questions={this.questionsForPage()} />
+              <FormQuestionList questions={this.questionsForPage(form)} />
               {this.props.form.formQuestions.length > 10 &&
               <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.form.formQuestions.length} />
               }

@@ -52,30 +52,6 @@ class FormShowContainer extends Component {
     }
   }
 
-  // this.props.form.formQuestions doesn't have all the needed data
-  // Also, if you just modify the props directly to add the data, things can break
-  // So this function takes the form, clones it, then adds the extra data
-  getCompleteForm(){
-    var form = Object.assign({}, this.props.form);
-    if (form.questions && form.formQuestions && form.formQuestions.length > 0) {
-      form.formQuestions = this.props.form.formQuestions.map((fq) => {
-        var formQuestion = Object.assign({}, form.questions.find(q => q.id === fq.questionId));
-        formQuestion.programVar = fq.programVar || '';
-        formQuestion.responseSets = [{name: 'None'}];
-        if (fq.responseSetId) {
-          var responseSet = form.responseSets.find(rs => rs.id === fq.responseSetId);
-          if(responseSet) {
-            formQuestion.responseSets = [responseSet];
-          } else {
-            formQuestion.responseSets = [{name: 'Loading...'}];
-          }
-        }
-        return formQuestion;
-      });
-    }
-    return form;
-  }
-
   render() {
     if(!this.props.form){
       return (
@@ -86,7 +62,7 @@ class FormShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <FormShow form={this.getCompleteForm()}
+            <FormShow form={this.props.form}
                       router={this.props.router}
                       currentUser={this.props.currentUser}
                       publishForm={this.props.publishForm}

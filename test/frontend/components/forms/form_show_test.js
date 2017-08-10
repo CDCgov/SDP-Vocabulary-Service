@@ -8,11 +8,13 @@ describe('FormQuestionList', () => {
   beforeEach(() => {
     const router = new MockRouter();
     const questions = [];
+    const formQuestions = [];
     for (var i = 1; i < 20; i++) {
-      questions.push({id: 1, content: `Is your favorite number ${i}?`, status: 'draft', createdById: 1});
+      questions.push({id: i, content: `Is your favorite number ${i}?`, status: 'draft', createdById: 1});
+      formQuestions.push({id: i, questionId: i});
     }
     const props  = {
-      form: {id: 6, name: "Test Form", questions: [1], versionIndependentId: "F-1", version: 1, formQuestions: questions},
+      form: {id: 6, name: "Test Form", questions: questions, versionIndependentId: "F-1", version: 1, formQuestions: formQuestions},
       publishForm: ()=>{},
       deleteForm: ()=>{},
       formSubmitter:  ()=>{},
