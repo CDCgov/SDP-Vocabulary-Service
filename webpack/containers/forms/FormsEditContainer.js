@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { denormalize } from 'normalizr';
-import { formSchema } from '../schema';
+import { Button } from 'react-bootstrap';
+import capitalize from 'lodash/capitalize';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setSteps } from '../actions/tutorial_actions';
-import { fetchForm, saveForm, newForm, saveDraftForm } from '../actions/form_actions';
-import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../actions/questions_actions';
-import FormEdit from '../components/FormEdit';
-import ResponseSetModal from './response_sets/ResponseSetModal';
-import QuestionModalContainer  from './questions/QuestionModalContainer';
-import QuestionSearchContainer from './questions/QuestionSearchContainer';
-import { formProps } from '../prop-types/form_props';
-import { questionsProps } from '../prop-types/question_props';
-import { responseSetsProps } from '../prop-types/response_set_props';
-import {Button} from 'react-bootstrap';
-import capitalize from 'lodash/capitalize';
+import { formSchema } from '../../schema';
+import { setSteps } from '../../actions/tutorial_actions';
+import { fetchForm, saveForm, newForm, saveDraftForm } from '../../actions/form_actions';
+import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../../actions/questions_actions';
+import FormEdit from '../../components/forms/FormEdit';
+import ResponseSetModal from '../response_sets/ResponseSetModal';
+import QuestionModalContainer  from '../questions/QuestionModalContainer';
+import QuestionSearchContainer from '../questions/QuestionSearchContainer';
+import { formProps } from '../../prop-types/form_props';
+import { questionsProps } from '../../prop-types/question_props';
+import { responseSetsProps } from '../../prop-types/response_set_props';
+
 
 class FormsEditContainer extends Component {
 

@@ -1,5 +1,5 @@
-import { expect, renderComponent } from '../test_helper';
-import FormQuestionList from '../../../webpack/components/FormQuestionList';
+import { expect, renderComponent } from '../../test_helper';
+import FormQuestionList from '../../../../webpack/components/forms/FormQuestionList';
 
 describe('FormQuestionList', () => {
   let component;

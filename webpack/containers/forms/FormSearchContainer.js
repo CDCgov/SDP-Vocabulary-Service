@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addForm } from '../actions/form_actions';
-import { formProps } from '../prop-types/form_props';
-import { surveyProps } from '../prop-types/survey_props';
-import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
-import SearchResult from '../components/SearchResult';
-import DashboardSearch from '../components/DashboardSearch';
-import currentUserProps from "../prop-types/current_user_props";
-import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
-import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
+import { addForm } from '../../actions/form_actions';
+import { formProps } from '../../prop-types/form_props';
+import { surveyProps } from '../../prop-types/survey_props';
+import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
+import SearchResult from '../../components/SearchResult';
+import DashboardSearch from '../../components/DashboardSearch';
+import currentUserProps from "../../prop-types/current_user_props";
+import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 
 const FORM_SEARCH_CONTEXT = 'FORM_SEARCH_CONTEXT';
 

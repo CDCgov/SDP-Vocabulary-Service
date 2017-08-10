@@ -9,12 +9,12 @@ import { hashHistory, Router, Route, IndexRoute } from 'react-router';
 
 import DashboardContainer from './containers/DashboardContainer';
 import ResponseSetShowContainer from './containers/response_sets/ResponseSetShowContainer';
-import FormShowContainer from './containers/FormShowContainer';
+import FormShowContainer from './containers/forms/FormShowContainer';
 import QuestionShowContainer from './containers/questions/QuestionShowContainer';
 import ResponseSetEditContainer from './containers/response_sets/ResponseSetEditContainer';
 import QuestionEditContainer from './containers/questions/QuestionEditContainer';
 import SurveyEditContainer from './containers/SurveyEditContainer';
-import FormsEditContainer from './containers/FormsEditContainer';
+import FormsEditContainer from './containers/forms/FormsEditContainer';
 import SurveyShowContainer from './containers/surveys/ShowContainer';
 import Privacy from './containers/Privacy';
 import Help from './containers/Help';

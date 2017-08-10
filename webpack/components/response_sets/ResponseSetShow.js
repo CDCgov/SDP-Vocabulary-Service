@@ -6,7 +6,7 @@ import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
-import FormQuestionList from '../FormQuestionList';
+import FormQuestionList from '../forms/FormQuestionList';
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";

@@ -5,13 +5,13 @@ import { Button } from 'react-bootstrap';
 import compact from 'lodash/compact';
 import union from 'lodash/union';
 
-import { formProps } from '../prop-types/form_props';
-import { responseSetsProps } from '../prop-types/response_set_props';
-import { questionsProps } from '../prop-types/question_props';
+import { formProps } from '../../prop-types/form_props';
+import { responseSetsProps } from '../../prop-types/response_set_props';
+import { questionsProps } from '../../prop-types/question_props';
 
-import QuestionItem from '../containers/questions/QuestionItem';
-import ModalDialog  from './ModalDialog';
-import Errors from './Errors';
+import QuestionItem from '../../containers/questions/QuestionItem';
+import ModalDialog  from '../ModalDialog';
+import Errors from '../Errors';
 
 
 class FormEdit extends Component {

@@ -13,7 +13,7 @@ import { questionsProps }  from '../prop-types/question_props';
 import { surveyProps } from '../prop-types/survey_props';
 import SurveyEdit from '../components/SurveyEdit';
 import currentUserProps from "../prop-types/current_user_props";
-import FormSearchContainer from './FormSearchContainer';
+import FormSearchContainer from './forms/FormSearchContainer';
 
 class SurveyEditContainer extends Component {
   constructor(props) {

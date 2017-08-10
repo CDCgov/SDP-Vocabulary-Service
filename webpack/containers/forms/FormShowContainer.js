@@ -3,15 +3,15 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchForm, publishForm, deleteForm } from '../actions/form_actions';
-import { setSteps } from '../actions/tutorial_actions';
-import { setStats } from '../actions/landing';
-import FormShow from '../components/FormShow';
-import { formProps } from '../prop-types/form_props';
-import { formSchema } from '../schema';
-import CommentList from '../containers/CommentList';
-import currentUserProps from '../prop-types/current_user_props';
-import { publishersProps } from "../prop-types/publisher_props";
+import { fetchForm, publishForm, deleteForm } from '../../actions/form_actions';
+import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
+import FormShow from '../../components/forms/FormShow';
+import { formProps } from '../../prop-types/form_props';
+import { formSchema } from '../../schema';
+import CommentList from '../../containers/CommentList';
+import currentUserProps from '../../prop-types/current_user_props';
+import { publishersProps } from "../../prop-types/publisher_props";
 
 class FormShowContainer extends Component {
   componentWillMount() {

@@ -1,6 +1,6 @@
-import { expect, renderComponent } from '../test_helper';
-import FormShow from '../../../webpack/components/FormShow';
-import MockRouter from '../mock_router';
+import { expect, renderComponent } from '../../test_helper';
+import FormShow from '../../../../webpack/components/forms/FormShow';
+import MockRouter from '../../mock_router';
 
 describe('FormQuestionList', () => {
   let component;
