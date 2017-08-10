@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchSearchResults, fetchMoreSearchResults } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
 
-import SearchResult from '../components/SearchResult';
-import DashboardSearch from '../components/DashboardSearch';
-import currentUserProps from "../prop-types/current_user_props";
-import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
-import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
+import SearchResult from '../../components/SearchResult';
+import DashboardSearch from '../../components/DashboardSearch';
+import currentUserProps from "../../prop-types/current_user_props";
+import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 
 const QUESTION_SEARCH_CONTEXT = 'QUESTION_SEARCH_CONTEXT';
 

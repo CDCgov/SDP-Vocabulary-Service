@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
 
-import { questionProps } from "../prop-types/question_props";
-import SearchResult from './SearchResult';
+import { questionProps } from "../../prop-types/question_props";
+import SearchResult from '../SearchResult';
 
 class FormQuestionList extends Component {
   shouldComponentUpdate(nextProps, nextState) {

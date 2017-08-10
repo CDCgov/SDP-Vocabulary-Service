@@ -1,6 +1,6 @@
-import { expect, renderComponent } from '../test_helper';
-import FormEdit from '../../../webpack/components/FormEdit';
-import MockRouter from '../mock_router';
+import { expect, renderComponent } from '../../test_helper';
+import FormEdit from '../../../../webpack/components/forms/FormEdit';
+import MockRouter from '../../mock_router';
 
 describe('FormEdit', () => {
   let component, router, props, inputNode;

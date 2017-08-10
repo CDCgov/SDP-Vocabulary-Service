@@ -8,15 +8,15 @@ import keys from 'lodash/keys';
 import keyBy from 'lodash/keyBy';
 import $ from 'jquery';
 
-import { saveQuestion } from '../actions/questions_actions';
-import Errors from '../components/Errors';
-import QuestionForm from '../components/QuestionForm';
-import ResponseSetList  from '../components/response_sets/ResponseSetList';
-import ResponseSetDragWidget  from './response_sets/ResponseSetDragWidget';
-import { responseSetsProps }  from '../prop-types/response_set_props';
-import { fetchResponseTypes } from '../actions/response_type_actions';
-import { fetchQuestionTypes } from '../actions/question_type_actions';
-import { getMostRecentResponseSets } from '../selectors/response_set_selectors';
+import { saveQuestion } from '../../actions/questions_actions';
+import Errors from '../../components/Errors';
+import QuestionEdit from '../../components/questions/QuestionEdit';
+import ResponseSetList  from '../../components/response_sets/ResponseSetList';
+import ResponseSetDragWidget  from '../response_sets/ResponseSetDragWidget';
+import { responseSetsProps }  from '../../prop-types/response_set_props';
+import { fetchResponseTypes } from '../../actions/response_type_actions';
+import { fetchQuestionTypes } from '../../actions/question_type_actions';
+import { getMostRecentResponseSets } from '../../selectors/response_set_selectors';
 
 class QuestionModalContainer extends Component {
 
@@ -134,7 +134,7 @@ class QuestionModalContainer extends Component {
     return (
       <div className={this.state.showResponseSetWidget ? 'hidden' : ''}>
         <Modal.Body bsStyle='question'>
-          <QuestionForm action={'new'}
+          <QuestionEdit action={'new'}
                         question={{}}
                         responseSets ={this.props.responseSets}
                         questionTypes={this.props.questionTypes}

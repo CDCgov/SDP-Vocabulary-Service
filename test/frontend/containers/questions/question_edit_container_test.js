@@ -1,9 +1,9 @@
 import {
   expect,
   renderComponent
-} from '../test_helper';
-import QuestionEditContainer from '../../../webpack/containers/QuestionEditContainer';
-import MockRouter from '../mock_router';
+} from '../../test_helper';
+import QuestionEditContainer from '../../../../webpack/containers/questions/QuestionEditContainer';
+import MockRouter from '../../mock_router';
 
 describe('QuestionEditContainer ', () => {
   it('will show question edit page', () => {

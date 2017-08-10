@@ -4,14 +4,14 @@ import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 
 import FormQuestionList from './FormQuestionList';
-import Routes from '../routes';
-import VersionInfo from './VersionInfo';
-import PublisherLookUp from "./shared_show/PublisherLookUp";
+import Routes from '../../routes';
+import VersionInfo from '../VersionInfo';
+import PublisherLookUp from "../shared_show/PublisherLookUp";
 
-import { formProps } from '../prop-types/form_props';
-import currentUserProps from '../prop-types/current_user_props';
-import { publishersProps } from "../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../utilities/componentHelpers';
+import { formProps } from '../../prop-types/form_props';
+import currentUserProps from '../../prop-types/current_user_props';
+import { publishersProps } from "../../prop-types/publisher_props";
+import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
 
 const PAGE_SIZE = 10;
 

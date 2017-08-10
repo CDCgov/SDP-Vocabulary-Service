@@ -3,11 +3,11 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import { expect } from '../test_helper';
-import QuestionForm from '../../../webpack/components/QuestionForm';
-import reducers from '../../../webpack/reducers';
+import { expect } from '../../test_helper';
+import QuestionEdit from '../../../../webpack/components/questions/QuestionEdit';
+import reducers from '../../../../webpack/reducers';
 
-describe('QuestionForm', () => {
+describe('QuestionEdit', () => {
   it('should show the others allowed when choice selected', () => {
     const props = {
       question: {id: 1, content: "Is this a question?", questionType: "", responseSets: [1], concepts: [{code:"Code 1", display:" Display Name 1", system:"Test system 1"}]},
@@ -20,9 +20,9 @@ describe('QuestionForm', () => {
         2: {id: 2, name: "Choice", description: "A choice", code: "choice"}}
     };
     const c = TestUtils.renderIntoDocument(<Provider store={createStore(reducers, {})}>
-          <QuestionForm {...props} />
+          <QuestionEdit {...props} />
     </Provider>);
-    const qf = TestUtils.findRenderedComponentWithType(c, QuestionForm);
+    const qf = TestUtils.findRenderedComponentWithType(c, QuestionEdit);
     expect(qf.otherAllowedBox()).to.equal('');
     qf.setState({responseTypeId: 2});
     expect(qf.otherAllowedBox().type).to.equal('div');
