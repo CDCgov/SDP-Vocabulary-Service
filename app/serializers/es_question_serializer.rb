@@ -41,7 +41,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   end
 
   def suggest
-    object.content
+    object.content.empty? ? 'No Suggestion' : object.content
   end
 
   def category
