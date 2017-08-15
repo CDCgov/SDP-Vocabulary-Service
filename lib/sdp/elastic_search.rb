@@ -129,42 +129,49 @@ module SDP
       sync_surveys
     end
 
-    def self.sync_forms
+    def self.sync_now
+      sync_forms('now')
+      sync_questions('now')
+      sync_response_sets('now')
+      sync_surveys('now')
+    end
+
+    def self.sync_forms(delay = 'later')
       ensure_index
       with_client do |_client|
         delete_all('form', Form.ids)
         Form.all.each do |form|
-          UpdateIndexJob.perform_later('form', form)
+          UpdateIndexJob.send("perform_#{delay}", 'form', form)
         end
       end
     end
 
-    def self.sync_questions
+    def self.sync_questions(delay = 'later')
       ensure_index
       with_client do |_client|
         delete_all('question', Question.ids)
         Question.all.each do |question|
-          UpdateIndexJob.perform_later('question', question)
+          UpdateIndexJob.send("perform_#{delay}", 'question', question)
         end
       end
     end
 
-    def self.sync_response_sets
+    def self.sync_response_sets(delay = 'later')
       ensure_index
       with_client do |_client|
         delete_all('response_set', ResponseSet.ids)
         ResponseSet.all.each do |response_set|
-          UpdateIndexJob.perform_later('response_set', response_set)
+          UpdateIndexJob.send("perform_#{delay}", 'response_set', response_set)
         end
       end
     end
 
-    def self.sync_surveys
+    def self.sync_surveys(delay = 'later')
       ensure_index
       with_client do |_client|
         delete_all('survey', Survey.ids)
         Survey.all.each do |survey|
-          UpdateIndexJob.perform_later('survey', survey)
+          UpdateIndexJob.send("perform_#{delay}", 'survey', survey)
         end
       end
     end

@@ -37,7 +37,7 @@ class ESResponseSetSerializer < ActiveModel::Serializer
   end
 
   def suggest
-    object.name
+    object.name.empty? ? 'No Suggestion' : object.name
   end
 
   def category
