@@ -29,6 +29,28 @@ class FormTest < ActiveSupport::TestCase
     assert_equal f.control_number, revision.control_number
   end
 
+  test 'Deleting a question deletes its form question and preserves position' do
+    user = users(:admin)
+    rt = ResponseType.new(name: 'choice', code: 'choice')
+    assert rt.save
+    q1 = Question.new(content: 'Test Delete', response_type: rt, created_by: user)
+    assert q1.save
+    q2 = Question.new(content: 'Test Delete 2', response_type: rt, created_by: user)
+    assert q2.save
+    q3 = Question.new(content: 'Test Delete 3', response_type: rt, created_by: user)
+    assert q3.save
+    f = Form.new(name: 'Test Delete', created_by: user)
+    f.form_questions = [FormQuestion.new(question_id: q1.id, position: 0), FormQuestion.new(question_id: q2.id, position: 1), FormQuestion.new(question_id: q3.id, position: 2)]
+    assert f.save
+    assert q2.destroy
+    f = Form.find(f.id)
+    assert_equal 2, f.form_questions.size
+    assert_equal 0, f.form_questions[0].position
+    assert_equal 1, f.form_questions[1].position
+    assert_equal q1.id, f.form_questions[0].question_id
+    assert_equal q3.id, f.form_questions[1].question_id
+  end
+
   test 'Publish also publishes questions and response sets' do
     user = users(:admin)
     rs = ResponseSet.new(name: 'Test publish', created_by: user)

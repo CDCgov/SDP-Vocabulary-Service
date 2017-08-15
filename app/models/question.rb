@@ -2,11 +2,11 @@ class Question < ApplicationRecord
   include Versionable, OidGenerator, Searchable
   acts_as_commentable
 
-  has_many :question_response_sets
+  has_many :question_response_sets, dependent: :destroy
   has_many :response_sets, through: :question_response_sets
   has_many :form_questions
   has_many :forms, through: :form_questions
-  has_many :concepts, dependent: :nullify
+  has_many :concepts, dependent: :destroy
 
   belongs_to :response_type
   belongs_to :question_type
@@ -20,8 +20,15 @@ class Question < ApplicationRecord
   validate :other_allowed_on_when_choice
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
+  after_destroy :update_forms
   after_commit :index, on: [:create, :update]
   after_commit :delete_index, on: :destroy
+
+  def update_forms
+    forms.each do |f|
+      f.remove_question(id)
+    end
+  end
 
   def index
     UpdateIndexJob.perform_later('question', self)

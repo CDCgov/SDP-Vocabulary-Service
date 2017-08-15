@@ -69,8 +69,6 @@ class FormsController < ApplicationController
   # DELETE /forms/1.json
   def destroy
     if @form.status == 'draft'
-      @form.questions.destroy_all
-      @form.surveys.destroy_all
       @form.destroy
       render json: @form
     else
