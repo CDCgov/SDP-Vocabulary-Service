@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import forOwn from 'lodash/forOwn';
 import values from 'lodash/values';
 
 import { questionProps } from '../../prop-types/question_props';
@@ -20,16 +19,16 @@ class QuestionEdit extends Component {
     super(props);
     switch(this.props.action) {
       case 'revise':
-        this.state = this.stateForRevise(this.props.question);
+        this.state = this.stateForRevise();
         break;
       case 'extend':
-        this.state = this.stateForExtend(this.props.question);
+        this.state = this.stateForExtend();
         break;
       case 'new':
         this.state = this.stateForNew();
         break;
       default:
-        this.state = this.stateForRevise(this.props.question);
+        this.state = this.stateForRevise();
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
@@ -86,21 +85,14 @@ class QuestionEdit extends Component {
     return (this.unsavedState || null);
   }
 
-  stateForRevise(question) {
-    var reviseState = {};
-    forOwn(this.stateForNew(), (v, k) => reviseState[k] = question[k] || v);
-    reviseState.conceptsAttributes = filterConcepts(question.concepts);
-    reviseState.linkedResponseSets = question.responseSets.map((rs) => rs.id);
-    if (this.props.action === 'revise') {
-      reviseState.version += 1;
-    }
-    reviseState.parentId  = question.parent ? question.parent.id : ''; // null is not allowed as a value
-    reviseState.responseTypeId = question.responseTypeId;
-    reviseState.otherAllowed = question.otherAllowed;
-    return reviseState;
+  modalInitialState() {
+    return {
+      showWarningModal: false,
+      showResponseSetModal: false
+    };
   }
 
-  stateForNew() {
+  blankQuestionState() {
     return {
       content: '',
       description: '',
@@ -110,24 +102,47 @@ class QuestionEdit extends Component {
       responseTypeId: null,
       conceptsAttributes: [],
       linkedResponseSets: [],
-      showWarningModal: false,
-      showResponseSetModal: false,
       otherAllowed: false
     };
   }
 
+  copyQuestion() {
+    let questionType = this.props.question.category ? this.props.question.category : this.props.question.questionType;
+    let questionCopy = {content: this.props.question.content,
+      description: this.props.question.description,
+      otherAllowed: this.props.question.otherAllowed,
+      questionTypeId: questionType ? questionType.id : undefined,
+      responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
+    questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
+    questionCopy.linkedResponseSets = this.props.question.responseSets.map((rs) => rs.id);
+    return questionCopy;
+  }
+
+  stateForRevise() {
+    let reviseState = this.modalInitialState();
+    Object.assign(reviseState, this.copyQuestion());
+    if (this.props.action === 'revise') {
+      reviseState.version = this.props.question.version + 1;
+    }
+    reviseState.versionIndependentId = this.props.question.versionIndependentId;
+    reviseState.parentId  = this.props.question.parent ? this.props.question.parent.id : ''; // null is not allowed as a value
+    return reviseState;
+  }
+
+  stateForNew() {
+    let state = this.modalInitialState();
+    Object.assign(state, this.blankQuestionState());
+    return state;
+  }
+
   //not working because of map => questionType
-  stateForExtend(question) {
-    var extendState = {};
-    forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
-    extendState.conceptsAttributes = filterConcepts(question.concepts);
-    extendState.linkedResponseSets = question.responseSets.map((rs) => rs.id) || [];
+  stateForExtend() {
+    let extendState = this.modalInitialState();
+    Object.assign(extendState, this.copyQuestion());
     extendState.version = 1;
-    extendState.parentId  = question.id;
+    extendState.parentId  = this.props.question.id;
     extendState.oid = '';
     extendState.versionIndependentId = null;
-    extendState.otherAllowed = question.otherAllowed;
-    extendState.responseTypeId = question.responseTypeId;
     return extendState;
   }
 
@@ -363,8 +378,8 @@ function filterConcepts(concepts) {
   if(!concepts){
     return [];
   }
-  return concepts.filter((nc)=>{
-    return (nc.value!=='' ||  nc.codeSystem !== '' || nc.displayName !=='');
+  return concepts.filter((nc) => {
+    return (nc.value !=='' ||  nc.codeSystem !== '' || nc.displayName !=='');
   }).map((nc) => {
     return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
   });
