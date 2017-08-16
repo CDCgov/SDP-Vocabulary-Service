@@ -9,7 +9,12 @@ module Api
                    else
                      Question.all.includes(:response_type, :published_by)
                    end
-      @questions = params[:limit] ? @questions.limit(params[:limit]) : @questions
+      current_user_id = current_user ? current_user.id : -1
+      @questions = if params[:limit]
+                     @questions.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
+                   else
+                     @questions.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)
+                   end
       @questions = @questions.order(version_independent_id: :asc)
       render json: @questions, each_serializer: QuestionsSerializer
     end

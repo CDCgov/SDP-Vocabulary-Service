@@ -8,7 +8,12 @@ module Api
                  else
                    Survey.includes(:published_by, survey_forms: [form: { form_questions: [:response_set, :question] }]).all
                  end
-      @surveys = params[:limit] ? @surveys.limit(params[:limit]) : @surveys
+      current_user_id = current_user ? current_user.id : -1
+      @surveys = if params[:limit]
+                   @surveys.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
+                 else
+                   @surveys.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)
+                 end
       @surveys = @surveys.order(version_independent_id: :asc)
       render json: @surveys, each_serializer: SurveySerializer
     end
