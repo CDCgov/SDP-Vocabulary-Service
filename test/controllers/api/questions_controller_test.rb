@@ -13,7 +13,8 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   test 'api should get index' do
     get api_questions_url
     res = JSON.parse response.body
-    assert_equal Question.count, res.count
+    current_user_id = @current_user ? @current_user.id : -1
+    assert_equal Question.where("(status='published' OR created_by_id= ?)", current_user_id).count, res.count
     assert_response :success
     assert_response_schema('questions/show.json')
   end

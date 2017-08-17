@@ -14,7 +14,8 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     get api_valueSets_url
     assert_response :success
     res = JSON.parse response.body
-    assert_equal ResponseSet.count, res.count
+    current_user_id = @current_user ? @current_user.id : -1
+    assert_equal ResponseSet.where("(status='published' OR created_by_id= ?)", current_user_id).count, res.count
     assert_response_schema('result_sets/show.json')
   end
 

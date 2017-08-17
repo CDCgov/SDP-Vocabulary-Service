@@ -13,7 +13,8 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
   test 'api should get index' do
     get api_surveys_url
     res = JSON.parse response.body
-    assert_equal Survey.latest_versions.count, res.count
+    current_user_id = @current_user ? @current_user.id : -1
+    assert_equal Survey.where("(status='published' OR created_by_id= ?)", current_user_id).count, res.count
     assert_response :success
     assert_response_schema('surveys/show.json')
   end

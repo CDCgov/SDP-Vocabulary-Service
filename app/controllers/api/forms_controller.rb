@@ -8,7 +8,12 @@ module Api
                else
                  Form.includes(:published_by, form_questions: [{ response_set: :responses }, :question]).all
                end
-      @forms = params[:limit] ? @forms.limit(params[:limit]) : @forms
+      current_user_id = current_user ? current_user.id : -1
+      @forms = if params[:limit]
+                 @forms.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
+               else
+                 @forms.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)
+               end
       @forms = @forms.order(version_independent_id: :asc)
       render json: @forms, each_serializer: FormSerializer
     end

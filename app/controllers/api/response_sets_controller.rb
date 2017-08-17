@@ -4,7 +4,12 @@ module Api
 
     def index
       @value_sets = params[:search] ? ResponseSet.search(params[:search]) : ResponseSet.all.includes(:responses, :published_by)
-      @value_sets = params[:limit] ? @value_sets.limit(params[:limit]) : @value_sets
+      current_user_id = current_user ? current_user.id : -1
+      @value_sets = if params[:limit]
+                      @value_sets.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
+                    else
+                      @value_sets.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)
+                    end
       @value_sets = @value_sets.order(version_independent_id: :asc)
       render json: @value_sets, each_serializer: ValueSetsSerializer
     end
