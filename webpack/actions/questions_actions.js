@@ -67,7 +67,7 @@ export function fetchQuestionUsage(id) {
 
 export function saveQuestion(question, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();
-  const linkedResponseSets = question.linkedResponseSets;
+  const linkedResponseSets = question.linkedResponseSets ? question.linkedResponseSets.map((rs) => rs.id) : [];
   delete question.linkedResponseSets;
   const postPromise = axios.post(routes.questionsPath(),
                       {question, authenticityToken, linkedResponseSets},

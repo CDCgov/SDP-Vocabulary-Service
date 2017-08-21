@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Modal, Button } from 'react-bootstrap';
-import values from 'lodash/values';
-import keys from 'lodash/keys';
-import keyBy from 'lodash/keyBy';
 import $ from 'jquery';
 
 import { saveQuestion } from '../../actions/questions_actions';
@@ -13,16 +10,14 @@ import Errors from '../../components/Errors';
 import QuestionEdit from '../../components/questions/QuestionEdit';
 import ResponseSetList  from '../../components/response_sets/ResponseSetList';
 import ResponseSetDragWidget  from '../response_sets/ResponseSetDragWidget';
-import { responseSetsProps }  from '../../prop-types/response_set_props';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
 import { fetchQuestionTypes } from '../../actions/question_type_actions';
-import { getMostRecentResponseSets } from '../../selectors/response_set_selectors';
 
 class QuestionModalContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {linkedResponseSets: {}, showResponseSetWidget: false, showResponseSets: false};
+    this.state = {linkedResponseSets: [], showResponseSetWidget: false, showResponseSets: false};
     this.saveNewQuestion = this.saveNewQuestion.bind(this);
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
@@ -36,21 +31,21 @@ class QuestionModalContainer extends Component {
 
   handleResponseSetsChange(newResponseSets){
     this.unsavedState = true;
-    this.setState({linkedResponseSets: keyBy(newResponseSets, 'id')});
+    this.setState({linkedResponseSets: newResponseSets});
   }
 
   handleResponseTypeChange(newResponseType){
     if(['Choice', 'Open Choice'].indexOf(newResponseType.name)!==-1){
       this.setState({showResponseSets: true});
     } else {
-      this.setState({showResponseSets: false, linkedResponseSets: {}});
+      this.setState({showResponseSets: false, linkedResponseSets: []});
     }
   }
 
   saveNewQuestion(newQuestion){
-    newQuestion.linkedResponseSets = values(this.state.linkedResponseSets).map((r) => r.id);
+    newQuestion.linkedResponseSets = this.state.linkedResponseSets;
     this.props.saveQuestion(newQuestion, (successResponse) => {
-      this.setState({showResponseSetWidget: false, linkedResponseSets: {}, errors: null});
+      this.setState({showResponseSetWidget: false, linkedResponseSets: [], errors: null});
       this.props.handleSaveQuestionSuccess(successResponse);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
@@ -58,7 +53,7 @@ class QuestionModalContainer extends Component {
   }
 
   closeQuestionModal(){
-    this.setState({showResponseSets: false, showResponseSetWidget:false, linkedResponseSets: {}, errors: null});
+    this.setState({showResponseSets: false, showResponseSetWidget:false, linkedResponseSets: [], errors: null});
     this.props.closeQuestionModal();
   }
 
@@ -74,8 +69,7 @@ class QuestionModalContainer extends Component {
               <h2 className="tags-table-header">Selected Response Sets</h2>
             </div>
           </div>
-          <ResponseSetDragWidget responseSets={this.props.responseSets}
-                                 selectedResponseSets={values(this.state.linkedResponseSets)}
+          <ResponseSetDragWidget selectedResponseSets={this.state.linkedResponseSets}
                                  handleResponseSetsChange={this.handleResponseSetsChange} />
         </Modal.Body>
         <Modal.Footer>
@@ -118,7 +112,7 @@ class QuestionModalContainer extends Component {
           <div className="col-md-8">
               <div className="panel panel-default">
                 <div className="panel-body">
-                  {keys(this.state.linkedResponseSets).length > 0 ? <ResponseSetList responseSets={values(this.state.linkedResponseSets)} /> : 'No Response Sets selected'}
+                  {this.state.linkedResponseSets.length > 0 ? <ResponseSetList responseSets={this.state.linkedResponseSets} /> : 'No Response Sets selected'}
                 </div>
               </div>
           </div>
@@ -136,7 +130,6 @@ class QuestionModalContainer extends Component {
         <Modal.Body bsStyle='question'>
           <QuestionEdit action={'new'}
                         question={{}}
-                        responseSets ={this.props.responseSets}
                         questionTypes={this.props.questionTypes}
                         responseTypes={this.props.responseTypes}
                         draftSubmitter ={()=>{}}
@@ -152,7 +145,7 @@ class QuestionModalContainer extends Component {
   }
 
   render() {
-    if(!this.props.questionTypes || !this.props.responseSets || !this.props.responseTypes){
+    if(!this.props.questionTypes || !this.props.responseTypes){
       return (
         <div>Loading...</div>
       );
@@ -171,7 +164,7 @@ class QuestionModalContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  return {questionTypes: state.questionTypes, responseTypes: state.responseTypes, responseSets: getMostRecentResponseSets(state)};
+  return {questionTypes: state.questionTypes, responseTypes: state.responseTypes};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -182,7 +175,6 @@ QuestionModalContainer.propTypes = {
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   showModal: PropTypes.bool.isRequired,
-  responseSets: responseSetsProps,
   saveQuestion: PropTypes.func,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
