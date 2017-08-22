@@ -7,7 +7,6 @@ import SearchResult from '../../components/SearchResult';
 import NestedSearchBar from '../../components/NestedSearchBar';
 import currentUserProps from '../../prop-types/current_user_props';
 import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
-import { responseSetsProps } from '../../prop-types/response_set_props';
 
 let setData = function(){
   return {"Text": JSON.stringify(this.props.result.Source)};
@@ -112,13 +111,14 @@ class ResponseSetDragWidget extends Component {
 
   render(){
     const searchResults = this.props.searchResults;
+    const selectedResponseSets = this.props.selectedResponseSets || [];
     return (
       <div className="row response-set-row">
         <div className="col-md-6 question-form-group">
           <NestedSearchBar onSearchTermChange={this.search} modelName="Response Set" /><br/>
           <div className="fixed-height-list" name="linked_response_sets">
             {searchResults.hits && searchResults.hits.hits.map((rs, i) => {
-              var isSelected = this.props.selectedResponseSets.findIndex((r) => r.id == rs.Id) > -1;
+              var isSelected = selectedResponseSets.findIndex((r) => r.id == rs.Id) > -1;
               return <DraggableResponseSet key={i} type={rs.Type} result={rs}
                       currentUser={this.props.currentUser}
                       isSelected ={isSelected}
@@ -130,7 +130,7 @@ class ResponseSetDragWidget extends Component {
           </div>
         </div>
         <div className="col-md-6 drop-target selected_response_sets" name="selected_response_sets">
-          <DroppableTarget handleResponseSetsChange={this.props.handleResponseSetsChange} selectedResponseSets={this.props.selectedResponseSets} />
+          <DroppableTarget handleResponseSetsChange={this.props.handleResponseSetsChange} selectedResponseSets={selectedResponseSets} />
         </div>
       </div>
     );
@@ -149,7 +149,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 ResponseSetDragWidget.propTypes = {
-  responseSets: responseSetsProps.isRequired,
   selectedResponseSets: PropTypes.array,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,

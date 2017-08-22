@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import values from 'lodash/values';
 
 import { questionProps } from '../../prop-types/question_props';
-import { responseSetsProps } from '../../prop-types/response_set_props';
 
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
@@ -32,7 +31,6 @@ class QuestionEdit extends Component {
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
-    this.selectedResponseSets = this.selectedResponseSets.bind(this);
     this.unsavedState = false;
   }
 
@@ -41,6 +39,9 @@ class QuestionEdit extends Component {
       const sortedRT = this.sortedResponseTypes(nextProps.responseTypes);
       let rtid = sortedRT[0] ? sortedRT[0].id : null;
       this.setState({ responseTypeId: rtid });
+    }
+    if(nextProps.question && nextProps.question.responseSets && !this.unsavedState && nextProps.question.responseSets !== this.state.linkedResponseSets) {
+      this.setState({ linkedResponseSets: nextProps.question.responseSets });
     }
   }
 
@@ -114,7 +115,7 @@ class QuestionEdit extends Component {
       questionTypeId: questionType ? questionType.id : undefined,
       responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
     questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
-    questionCopy.linkedResponseSets = this.props.question.responseSets.map((rs) => rs.id);
+    questionCopy.linkedResponseSets = this.props.question.responseSets || [];
     return questionCopy;
   }
 
@@ -135,7 +136,6 @@ class QuestionEdit extends Component {
     return state;
   }
 
-  //not working because of map => questionType
   stateForExtend() {
     let extendState = this.modalInitialState();
     Object.assign(extendState, this.copyQuestion());
@@ -146,16 +146,8 @@ class QuestionEdit extends Component {
     return extendState;
   }
 
-  selectedResponseSets(linkedResponseSets, allResponseSets) {
-    if(linkedResponseSets) {
-      return linkedResponseSets.map((r) => allResponseSets[(r.id || r)]).filter((r) => r !== undefined);
-    } else {
-      return [];
-    }
-  }
-
   render(){
-    const {question, questionTypes, responseSets, responseTypes} = this.props;
+    const {question, questionTypes, responseTypes} = this.props;
     const state = this.state;
     if(!question || !questionTypes || !responseTypes){
       return (<div>Loading....</div>);
@@ -240,9 +232,8 @@ class QuestionEdit extends Component {
                 </div>
                 : ''}
                 { this.isChoiceType() ?
-                  <ResponseSetDragWidget responseSets={responseSets}
-                                         handleResponseSetsChange={this.handleResponseSetsChange}
-                                         selectedResponseSets={this.selectedResponseSets(this.state.linkedResponseSets, this.props.responseSets)} />
+                  <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange}
+                                         selectedResponseSets={this.state.linkedResponseSets} />
                 : ''}
                 <div className="panel-footer">
                   <div className="actions form-group">
@@ -291,10 +282,7 @@ class QuestionEdit extends Component {
   }
 
   handleResponseSetSuccess(successResponse){
-    this.handleResponseSetsChange(this.state.linkedResponseSets.map((r) => {
-      const rid = r.id || r;
-      return {id: rid};
-    }).concat([successResponse.data]));
+    this.handleResponseSetsChange(this.state.linkedResponseSets.concat([successResponse.data]));
     this.setState({showResponseSetModal: false});
   }
 
@@ -366,10 +354,7 @@ class QuestionEdit extends Component {
   }
 
   handleResponseSetsChange(newResponseSets){
-    this.setState({linkedResponseSets: newResponseSets.map((r) => {
-      const rid = r.id || r;
-      return rid;
-    })});
+    this.setState({linkedResponseSets: newResponseSets});
     this.unsavedState = true;
   }
 }
@@ -391,7 +376,6 @@ QuestionEdit.propTypes = {
   router: PropTypes.object,
   action: PropTypes.string,
   question: questionProps,
-  responseSets:  responseSetsProps,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
   draftSubmitter: PropTypes.func.isRequired,
