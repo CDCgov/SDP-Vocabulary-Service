@@ -136,18 +136,9 @@ class QuestionEdit extends Component {
     return state;
   }
 
-  //not working because of map => questionType
-<<<<<<< HEAD
   stateForExtend() {
     let extendState = this.modalInitialState();
     Object.assign(extendState, this.copyQuestion());
-=======
-  stateForExtend(question) {
-    var extendState = {};
-    forOwn(this.stateForNew(), (v, k) => extendState[k] = question[k] || v);
-    extendState.conceptsAttributes = filterConcepts(question.concepts);
-    extendState.linkedResponseSets = question.responseSets || [];
->>>>>>> Refactored questionEdit with full RS objects
     extendState.version = 1;
     extendState.parentId  = this.props.question.id;
     extendState.oid = '';
