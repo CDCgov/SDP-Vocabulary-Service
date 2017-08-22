@@ -86,7 +86,7 @@ export function saveQuestion(question, successHandler=null, failureHandler=null)
 
 export function saveDraftQuestion(id, question, callback=null) {
   const authenticityToken  = getCSRFToken();
-  const linkedResponseSets = question.linkedResponseSets;
+  const linkedResponseSets = question.linkedResponseSets ? question.linkedResponseSets.map((rs) => rs.id) : [];
   delete question.linkedResponseSets;
   const putPromise = axios.put(routes.questions_path()+'/'+id,
                       {question, authenticityToken, linkedResponseSets},
