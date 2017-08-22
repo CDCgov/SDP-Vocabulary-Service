@@ -28,29 +28,26 @@ class Survey < ApplicationRecord
   end
 
   def index
-    UpdateIndexJob.perform_later('survey', self)
+    UpdateIndexJob.perform_later('survey', id)
   end
 
   def delete_index
     DeleteFromIndexJob.perform_later('survey', id)
   end
 
-  def remove_form(deleted_form_id)
+  def update_form_positions
     SurveyForm.transaction do
       i = 0
       survey_forms.each do |sf|
-        if sf.form_id == deleted_form_id
-          sf.destroy!
-        else
-          # Avoiding potential unecessary writes
-          if sf.position != i
-            sf.position = i
-            sf.save!
-          end
-          i += 1
+        # Avoiding potential unecessary writes
+        if sf.position != i
+          sf.position = i
+          sf.save!
         end
+        i += 1
       end
     end
+    save!
   end
 
   def publish(publisher)

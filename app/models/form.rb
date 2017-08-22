@@ -22,39 +22,37 @@ class Form < ApplicationRecord
   accepts_nested_attributes_for :questions, allow_destroy: true
 
   after_destroy :update_surveys
+
   after_commit :index, on: [:create, :update]
   after_commit :delete_index, on: :destroy
 
   def update_surveys
-    surveys.each do |s|
-      s.remove_form(id)
-    end
+    survey_array = surveys.to_a
+    survey_forms.destroy_all
+    survey_array.each(&:update_form_positions)
   end
 
   def index
-    UpdateIndexJob.perform_later('form', self)
+    UpdateIndexJob.perform_later('form', id)
   end
 
   def delete_index
     DeleteFromIndexJob.perform_later('form', id)
   end
 
-  def remove_question(deleted_question_id)
+  def update_question_positions
     FormQuestion.transaction do
       i = 0
       form_questions.each do |fq|
-        if fq.question_id == deleted_question_id
-          fq.destroy!
-        else
-          # Avoiding potential unecessary writes
-          if fq.position != i
-            fq.position = i
-            fq.save!
-          end
-          i += 1
+        # Avoiding potential unecessary writes
+        if fq.position != i
+          fq.position = i
+          fq.save!
         end
+        i += 1
       end
     end
+    save!
   end
 
   def self.owned_by(owner_id)

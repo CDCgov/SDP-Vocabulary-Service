@@ -21,17 +21,18 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :concepts, allow_destroy: true
 
   after_destroy :update_forms
+
   after_commit :index, on: [:create, :update]
   after_commit :delete_index, on: :destroy
 
   def update_forms
-    forms.each do |f|
-      f.remove_question(id)
-    end
+    form_array = forms.to_a
+    form_questions.destroy_all
+    form_array.each(&:update_question_positions)
   end
 
   def index
-    UpdateIndexJob.perform_later('question', self)
+    UpdateIndexJob.perform_later('question', id)
   end
 
   def delete_index
