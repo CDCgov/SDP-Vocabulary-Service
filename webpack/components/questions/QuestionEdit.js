@@ -42,7 +42,6 @@ class QuestionEdit extends Component {
     }
     if(nextProps.question && nextProps.question.responseSets && !this.unsavedState && nextProps.question.responseSets !== this.state.linkedResponseSets) {
       this.setState({ linkedResponseSets: nextProps.question.responseSets });
-      console.log(nextProps.question.responseSets);
     }
   }
 
