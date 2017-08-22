@@ -89,7 +89,7 @@ class FormsEditContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.params.formId != this.props.params.formId){
+    if(this.props.params.formId && prevProps.params.formId != this.props.params.formId){
       this.props.fetchForm(this.props.params.formId);
     }
     if(this.props.form && this.props.form.formQuestions) {

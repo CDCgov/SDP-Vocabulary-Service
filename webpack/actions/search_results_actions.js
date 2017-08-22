@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
 import { searchResultsSchema } from '../schema';
+import values from 'lodash/values';
 import routes from '../routes';
 import store from '../store/configure_store';
 import {
@@ -20,6 +21,7 @@ export function fetchSearchResults(context, searchTerms=null, type=null, program
       params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      unelasticsearchResults(normalizedData.entities);
       store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
       return response;
     })
@@ -36,6 +38,7 @@ export function fetchLastSearch(context, searchTerms=null, type=null, programFil
       params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, size: querySize }
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      unelasticsearchResults(normalizedData.entities);
       store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
       return response;
     })
@@ -51,6 +54,7 @@ export function fetchMoreSearchResults(context, searchTerms=null, type=null, pag
       params: { type: type, search: searchTerms, page: page, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter }
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      unelasticsearchResults(normalizedData.entities);
       store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
       return response;
     })
@@ -62,4 +66,35 @@ export function setLastSearch(searchTerms=null, type=null, programFilter=[], sys
     type: SET_LAST_SEARCH,
     payload: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, page: page }
   };
+}
+
+// Everything in elasticsearch has codes, with code and codeSystem. The models
+// expect their own thing ResponseSet.responses, Question.concepts with value
+// and codeSystem. This function will transform the elasticsearch results into
+// the structure expected by the rest of the react application.
+function unelasticsearchResults(results) {
+  if (results.responseSets) {
+    values(results.responseSets).forEach((rs) => {
+      if(rs.codes) {
+        rs.responses = rs.codes;
+        delete rs.codes;
+        rs.responses.forEach((r) => {
+          r.value = r.code;
+          delete r.code;
+        });
+      }
+    });
+  }
+  if (results.questions) {
+    values(results.questions).forEach((q) => {
+      if(q.codes) {
+        q.concepts = q.codes;
+        delete q.codes;
+        q.concepts.forEach((c) => {
+          c.value = c.code;
+          delete c.code;
+        });
+      }
+    });
+  }
 }
