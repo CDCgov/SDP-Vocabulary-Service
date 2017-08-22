@@ -40,8 +40,9 @@ class QuestionEdit extends Component {
       let rtid = sortedRT[0] ? sortedRT[0].id : null;
       this.setState({ responseTypeId: rtid });
     }
-    if(nextProps.question && nextProps.question.responseSets && nextProps.question.responseSets !== this.state.linkedResponseSets) {
+    if(nextProps.question && nextProps.question.responseSets && !this.unsavedState && nextProps.question.responseSets !== this.state.linkedResponseSets) {
       this.setState({ linkedResponseSets: nextProps.question.responseSets });
+      console.log(nextProps.question.responseSets);
     }
   }
 
