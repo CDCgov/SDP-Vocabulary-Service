@@ -7,14 +7,14 @@ class SurveyForm < ApplicationRecord
 
   def reindex
     if form
-      UpdateIndexJob.perform_later('form', form)
+      UpdateIndexJob.perform_later('form', form.id)
       unique_response_sets = []
       form.form_questions.each do |fq|
-        UpdateIndexJob.perform_later('question', fq.question)
+        UpdateIndexJob.perform_later('question', fq.question.id)
         unique_response_sets << fq.response_set if fq.response_set && !unique_response_sets.include?(fq.response_set)
       end
       unique_response_sets.each do |rs|
-        UpdateIndexJob.perform_later('response_set', rs)
+        UpdateIndexJob.perform_later('response_set', rs.id)
       end
     end
   end

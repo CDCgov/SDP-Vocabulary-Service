@@ -99,7 +99,7 @@ class QuestionsController < ApplicationController
     else
       response = { id: @question.id }
       response[:surveillance_programs] = @question.surveillance_programs.map(&:name)
-      response[:surveillance_systems] = @question.surveillance_systems.map(&:name)
+      response[:surveillance_systems]  = @question.surveillance_systems.map(&:name)
       render json: response
     end
   end
@@ -114,9 +114,6 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1.json
   def destroy
     if @question.status == 'draft'
-      @question.concepts.destroy_all
-      @question.forms.destroy_all
-      @question.response_sets.destroy_all
       @question.destroy
       render json: @question
     else

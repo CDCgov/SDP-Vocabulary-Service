@@ -2,7 +2,7 @@ class Form < ApplicationRecord
   include OidGenerator, Versionable, Searchable
   acts_as_commentable
 
-  has_many :form_questions, -> { order 'position asc' }
+  has_many :form_questions, -> { order 'position asc' }, dependent: :destroy
   has_many :questions, through: :form_questions
   has_many :response_sets, through: :form_questions
   has_many :survey_forms
@@ -21,15 +21,36 @@ class Form < ApplicationRecord
 
   accepts_nested_attributes_for :questions, allow_destroy: true
 
+  after_destroy :update_surveys
+
   after_commit :index, on: [:create, :update]
   after_commit :delete_index, on: :destroy
 
+  def update_surveys
+    survey_array = surveys.to_a
+    survey_forms.destroy_all
+    survey_array.each(&:update_form_positions)
+  end
+
   def index
-    UpdateIndexJob.perform_later('form', self)
+    UpdateIndexJob.perform_later('form', id)
   end
 
   def delete_index
     DeleteFromIndexJob.perform_later('form', id)
+  end
+
+  def update_question_positions
+    FormQuestion.transaction do
+      form_questions.each_with_index do |fq, i|
+        # Avoiding potential unecessary writes
+        if fq.position != i
+          fq.position = i
+          fq.save!
+        end
+      end
+    end
+    save!
   end
 
   def self.owned_by(owner_id)

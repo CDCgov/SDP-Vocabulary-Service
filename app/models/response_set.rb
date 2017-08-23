@@ -26,7 +26,7 @@ class ResponseSet < ApplicationRecord
   after_commit :delete_index, on: :destroy
 
   def index
-    UpdateIndexJob.perform_later('response_set', self)
+    UpdateIndexJob.perform_later('response_set', id)
   end
 
   def delete_index

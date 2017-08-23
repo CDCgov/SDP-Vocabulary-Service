@@ -141,7 +141,7 @@ module SDP
       with_client do |_client|
         delete_all('form', Form.ids)
         Form.all.each do |form|
-          UpdateIndexJob.send("perform_#{delay}", 'form', form)
+          UpdateIndexJob.send("perform_#{delay}", 'form', form.id)
         end
       end
     end
@@ -151,7 +151,7 @@ module SDP
       with_client do |_client|
         delete_all('question', Question.ids)
         Question.all.each do |question|
-          UpdateIndexJob.send("perform_#{delay}", 'question', question)
+          UpdateIndexJob.send("perform_#{delay}", 'question', question.id)
         end
       end
     end
@@ -161,7 +161,7 @@ module SDP
       with_client do |_client|
         delete_all('response_set', ResponseSet.ids)
         ResponseSet.all.each do |response_set|
-          UpdateIndexJob.send("perform_#{delay}", 'response_set', response_set)
+          UpdateIndexJob.send("perform_#{delay}", 'response_set', response_set.id)
         end
       end
     end
@@ -171,7 +171,7 @@ module SDP
       with_client do |_client|
         delete_all('survey', Survey.ids)
         Survey.all.each do |survey|
-          UpdateIndexJob.send("perform_#{delay}", 'survey', survey)
+          UpdateIndexJob.send("perform_#{delay}", 'survey', survey.id)
         end
       end
     end

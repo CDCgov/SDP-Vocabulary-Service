@@ -48,7 +48,6 @@ class SurveysController < ApplicationController
 
   def destroy
     if @survey.status == 'draft'
-      @survey.forms.destroy_all
       @survey.destroy
       render json: @survey
     else

@@ -2,13 +2,12 @@ class Survey < ApplicationRecord
   include Versionable, Searchable
   acts_as_commentable
 
-  has_many :survey_forms, -> { order 'position asc' }
+  has_many :survey_forms, -> { order 'position asc' }, dependent: :destroy
+  has_many :forms, through: :survey_forms
+
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
   belongs_to :parent, class_name: 'Survey'
-
-  has_many :forms, through: :survey_forms
-
   belongs_to :surveillance_system
   belongs_to :surveillance_program
 
@@ -29,11 +28,24 @@ class Survey < ApplicationRecord
   end
 
   def index
-    UpdateIndexJob.perform_later('survey', self)
+    UpdateIndexJob.perform_later('survey', id)
   end
 
   def delete_index
     DeleteFromIndexJob.perform_later('survey', id)
+  end
+
+  def update_form_positions
+    SurveyForm.transaction do
+      survey_forms.each_with_index do |sf, i|
+        # Avoiding potential unecessary writes
+        if sf.position != i
+          sf.position = i
+          sf.save!
+        end
+      end
+    end
+    save!
   end
 
   def publish(publisher)
