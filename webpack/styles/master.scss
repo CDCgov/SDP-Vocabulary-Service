@@ -11,7 +11,8 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
 @import '~react-joyride/lib/react-joyride';
-@import '~rc-pagination/assets/index.css';
+/* TODO Why on earth do i need to import this relatively when the above works fine? */
+@import '../../node_modules/rc-pagination/assets/index.css';
 @import "widgets/comments";
 //BASE//
 @import "base/colors";

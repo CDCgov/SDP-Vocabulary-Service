@@ -11,7 +11,8 @@
     <% end %>
     <%= csrf_meta_tags %>
 
-    <%= javascript_include_tag *webpack_asset_paths('babel-polyfill', extension: 'js') %>
+    <%= javascript_pack_tag 'babel-polyfill.js' %>
+    <%= stylesheet_pack_tag 'landing' %>
   </head>
 
   <body class="body">

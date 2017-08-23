@@ -23,11 +23,11 @@ end
 
 namespace :javascript do
   task :test do
-    sh('npm test')
+    sh('yarn test')
   end
 
   task :lint do
-    sh('npm run lint')
+    sh('yarn run lint')
   end
 end
 

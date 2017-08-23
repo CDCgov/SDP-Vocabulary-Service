@@ -20,7 +20,7 @@ This is the erb template you will use for anything you want rendered on initial 
 ```
 <div class='container' id='react-container'>
 </div>
-<%= javascript_include_tag *webpack_asset_paths([resource_name], extension: 'js') %>
+<%= javascript_pack_tag '[resource_name].js' %>
 ```
 
 This does two things, it loads the JS for the `resource_name` and provides a div for the JS to hook into. This is important since `ReactDOM.render` requires a DOM element to render into.
