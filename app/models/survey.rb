@@ -37,14 +37,12 @@ class Survey < ApplicationRecord
 
   def update_form_positions
     SurveyForm.transaction do
-      i = 0
-      survey_forms.each do |sf|
+      survey_forms.each_with_index do |sf, i|
         # Avoiding potential unecessary writes
         if sf.position != i
           sf.position = i
           sf.save!
         end
-        i += 1
       end
     end
     save!

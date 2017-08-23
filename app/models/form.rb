@@ -42,14 +42,12 @@ class Form < ApplicationRecord
 
   def update_question_positions
     FormQuestion.transaction do
-      i = 0
-      form_questions.each do |fq|
+      form_questions.each_with_index do |fq, i|
         # Avoiding potential unecessary writes
         if fq.position != i
           fq.position = i
           fq.save!
         end
-        i += 1
       end
     end
     save!
