@@ -134,6 +134,12 @@ class SurveyEdit extends Component {
     survey.linkedForms = this.state.surveyForms;
     this.props.surveySubmitter(survey, (response) => {
       this.unsavedState = false;
+      if (this.props.action === 'new') {
+        let stats = Object.assign({}, this.props.stats);
+        stats.surveyCount = this.props.stats.surveyCount + 1;
+        stats.mySurveyCount = this.props.stats.mySurveyCount + 1;
+        this.props.setStats(stats);
+      }
       this.props.router.push(`/surveys/${response.data.id}`);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
@@ -217,6 +223,8 @@ SurveyEdit.propTypes = {
   forms:  formsProps.isRequired,
   questions:  questionsProps.isRequired,
   action: PropTypes.string.isRequired,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   surveySubmitter: PropTypes.func.isRequired,
   removeForm:  PropTypes.func.isRequired,
   reorderForm: PropTypes.func.isRequired,

@@ -6,6 +6,7 @@ import values from 'lodash/values';
 import capitalize from 'lodash/capitalize';
 
 import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
 import { newSurvey, fetchSurvey, saveSurvey, saveDraftSurvey } from '../../actions/survey_actions';
 import { removeForm, reorderForm } from '../../actions/form_actions';
 import { formsProps }  from '../../prop-types/form_props';
@@ -103,6 +104,8 @@ class SurveyEditContainer extends Component {
               </div>
               <SurveyEdit ref='survey' survey={this.props.survey}
                           action={this.props.params.action || 'new'}
+                          stats={this.props.stats}
+                          setStats={this.props.setStats}
                           route ={this.props.route}
                           router={this.props.router}
                           forms ={this.props.forms}
@@ -120,7 +123,7 @@ class SurveyEditContainer extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, newSurvey, removeForm, reorderForm,
-    saveSurvey, saveDraftSurvey, fetchSurvey}, dispatch);
+    saveSurvey, saveDraftSurvey, fetchSurvey, setStats}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {
@@ -135,6 +138,7 @@ function mapStateToProps(state, ownProps) {
     survey: survey,
     forms:  state.forms,
     questions: state.questions,
+    stats: state.stats,
     currentUser: state.currentUser,
     selectedSearchResults: selectedSearchResults
   };
@@ -148,6 +152,8 @@ SurveyEditContainer.propTypes = {
   router: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
   setSteps:    PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   newSurvey:   PropTypes.func,
   saveSurvey:  PropTypes.func,
   fetchSurvey: PropTypes.func,

@@ -299,6 +299,12 @@ class QuestionEdit extends Component {
     } else {
       this.props.questionSubmitter(this.state, (successResponse) => {
         this.unsavedState = false;
+        if (this.props.action === 'new') {
+          let stats = Object.assign({}, this.props.stats);
+          stats.questionCount = this.props.stats.questionCount + 1;
+          stats.myQuestionCount = this.props.stats.myQuestionCount + 1;
+          this.props.setStats(stats);
+        }
         this.props.router.push(`/questions/${successResponse.data.id}`);
       }, (failureResponse) => {
         this.setState({errors: failureResponse.response.data});
@@ -378,6 +384,8 @@ QuestionEdit.propTypes = {
   question: questionProps,
   questionTypes: PropTypes.object,
   responseTypes: PropTypes.object,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   draftSubmitter: PropTypes.func.isRequired,
   questionSubmitter: PropTypes.func.isRequired,
   handleResponseTypeChange: PropTypes.func

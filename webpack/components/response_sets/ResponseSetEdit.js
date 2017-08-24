@@ -192,6 +192,12 @@ export default class ResponseSetEdit extends Component {
     let responseSet = Object.assign({}, this.state);
     this.props.responseSetSubmitter(responseSet, (successResponse) => {
       this.unsavedState = false;
+      if (this.props.action === 'new') {
+        let stats = Object.assign({}, this.props.stats);
+        stats.responseSetCount = this.props.stats.responseSetCount + 1;
+        stats.myResponseSetCount = this.props.stats.myResponseSetCount + 1;
+        this.props.setStats(stats);
+      }
       this.props.router.push(`/responseSets/${successResponse.data.id}`);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
@@ -225,6 +231,8 @@ ResponseSetEdit.propTypes = {
   responseSet: responseSetProps,
   responseSetSubmitter: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   route:  PropTypes.object,
   router: PropTypes.object
 };
