@@ -288,24 +288,23 @@ class QuestionEdit extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let stats = Object.assign({}, this.props.stats);
     if (this.props.action === 'edit') {
       this.props.draftSubmitter(this.props.id, this.state, (response) => {
         // TODO: Handle when the saving question fails.
         this.unsavedState = false;
         if (response.status === 200) {
-          stats.questionCount = this.props.stats.questionCount + 1;
-          stats.myQuestionCount = this.props.stats.myQuestionCount + 1;
-          this.props.setStats(stats);
           this.props.router.push(`/questions/${response.data.id}`);
         }
       });
     } else {
       this.props.questionSubmitter(this.state, (successResponse) => {
         this.unsavedState = false;
-        stats.questionCount = this.props.stats.questionCount + 1;
-        stats.myQuestionCount = this.props.stats.myQuestionCount + 1;
-        this.props.setStats(stats);
+        if (this.props.action === 'new') {
+          let stats = Object.assign({}, this.props.stats);
+          stats.questionCount = this.props.stats.questionCount + 1;
+          stats.myQuestionCount = this.props.stats.myQuestionCount + 1;
+          this.props.setStats(stats);
+        }
         this.props.router.push(`/questions/${successResponse.data.id}`);
       }, (failureResponse) => {
         this.setState({errors: failureResponse.response.data});
