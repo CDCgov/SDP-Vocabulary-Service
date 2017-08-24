@@ -152,7 +152,7 @@ class FormShow extends Component {
             </div>
             }
           </div>
-          {this.props.form.formQuestions && this.props.form.formQuestions.length > 0 &&
+          {form.formQuestions && form.formQuestions.length > 0 && form.questions && form.questions.length > 0 &&
             <div>
               <FormQuestionList questions={this.questionsForPage(form)} />
               {this.props.form.formQuestions.length > 10 &&
