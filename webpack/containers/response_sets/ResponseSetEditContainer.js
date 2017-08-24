@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
 import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../../actions/response_set_actions';
 import ResponseSetEdit from '../../components/response_sets/ResponseSetEdit';
 import { responseSetProps } from '../../prop-types/response_set_props';
@@ -86,6 +87,8 @@ class ResponseSetEditContainer extends Component {
         <ResponseSetEdit responseSet={this.props.responseSet}
                          responseSetSubmitter={this.state.selectedResponseSetSaver}
                          action={action}
+                         stats={this.props.stats}
+                         setStats={this.props.setStats}
                          route ={this.props.route}
                          router={this.props.router} />
       </div>
@@ -100,12 +103,15 @@ function mapStateToProps(state, ownProps) {
   } else {
     props.responseSet = {version: 1};
   }
+  props.stats = state.stats;
   return props;
 }
 
 ResponseSetEditContainer.propTypes = {
   responseSet: responseSetProps,
   setSteps: PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   fetchResponseSet: PropTypes.func,
   saveResponseSet: PropTypes.func,
   saveDraftResponseSet: PropTypes.func,
@@ -114,4 +120,4 @@ ResponseSetEditContainer.propTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, {setSteps, fetchResponseSet, saveResponseSet, saveDraftResponseSet})(ResponseSetEditContainer);
+export default connect(mapStateToProps, {setSteps, setStats, fetchResponseSet, saveResponseSet, saveDraftResponseSet})(ResponseSetEditContainer);

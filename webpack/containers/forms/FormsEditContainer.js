@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { formSchema } from '../../schema';
 import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
 import { fetchForm, saveForm, newForm, saveDraftForm } from '../../actions/form_actions';
 import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../../actions/questions_actions';
 import FormEdit from '../../components/forms/FormEdit';
@@ -158,6 +159,8 @@ class FormsEditContainer extends Component {
                         form={this.props.form}
                         route ={this.props.route}
                         router={this.props.router}
+                        stats={this.props.stats}
+                        setStats={this.props.setStats}
                         action={this.props.params.action || 'new'}
                         questions={this.props.questions}
                         responseSets ={this.props.responseSets}
@@ -175,7 +178,7 @@ class FormsEditContainer extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addQuestion, fetchQuestion,
-    newForm, fetchForm, removeQuestion, reorderQuestion,
+    newForm, fetchForm, removeQuestion, reorderQuestion, setStats,
     saveForm, saveDraftForm}, dispatch);
 }
 
@@ -191,6 +194,7 @@ function mapStateToProps(state, ownProps) {
     form: form,
     questions: state.questions,
     responseSets: state.responseSets,
+    stats: state.stats,
     selectedSearchResults: selectedSearchResults
   };
 }
@@ -203,6 +207,8 @@ FormsEditContainer.propTypes = {
   questions: questionsProps,
   responseSets: responseSetsProps,
   setSteps: PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   newForm:  PropTypes.func,
   saveForm: PropTypes.func,
   fetchForm: PropTypes.func,

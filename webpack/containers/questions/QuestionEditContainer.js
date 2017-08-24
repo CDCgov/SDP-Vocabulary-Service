@@ -10,6 +10,7 @@ import { questionProps } from '../../prop-types/question_props';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
 import { fetchQuestionTypes } from '../../actions/question_type_actions';
 import { setSteps } from '../../actions/tutorial_actions';
+import { setStats } from '../../actions/landing';
 
 class QuestionEditContainer extends Component {
   componentWillMount() {
@@ -83,6 +84,8 @@ class QuestionEditContainer extends Component {
         <QuestionEdit id={this.id}
                       action={this.action}
                       question={this.props.question}
+                      stats={this.props.stats}
+                      setStats={this.props.setStats}
                       draftSubmitter={this.props.saveDraftQuestion}
                       questionSubmitter={this.props.saveQuestion}
                       publishSubmitter ={this.props.publishQuestion}
@@ -109,11 +112,14 @@ function mapStateToProps(state, ownProps) {
   }
   props.questionTypes = state.questionTypes;
   props.responseTypes = state.responseTypes;
+  props.stats = state.stats;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes, setSteps}, dispatch);
+  return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion,
+    publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes,
+    setSteps, setStats}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
@@ -128,6 +134,8 @@ QuestionEditContainer.propTypes = {
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   setSteps: PropTypes.func,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   params: PropTypes.object.isRequired,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired

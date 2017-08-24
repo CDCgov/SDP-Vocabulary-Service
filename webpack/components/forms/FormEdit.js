@@ -167,9 +167,13 @@ class FormEdit extends Component {
     event.preventDefault();
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let form = Object.assign({}, this.state);
+    let stats = Object.assign({}, this.props.stats);
     form.linkedQuestions = this.state.formQuestions;
     this.props.formSubmitter(form, (response) => {
       this.unsavedState = false;
+      stats.formCount = this.props.stats.formCount + 1;
+      stats.myFormCount = this.props.stats.myFormCount + 1;
+      this.props.setStats(stats);
       this.props.router.push(`/forms/${response.data.id}`);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
@@ -351,6 +355,8 @@ class FormEdit extends Component {
 FormEdit.propTypes = {
   form:   formProps,
   action: PropTypes.string.isRequired,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   formSubmitter:   PropTypes.func.isRequired,
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion:  PropTypes.func.isRequired,

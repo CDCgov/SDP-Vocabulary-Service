@@ -131,9 +131,13 @@ class SurveyEdit extends Component {
     event.preventDefault();
     // Because of the way we have to pass the current forms in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
+    let stats = Object.assign({}, this.props.stats);
     survey.linkedForms = this.state.surveyForms;
     this.props.surveySubmitter(survey, (response) => {
       this.unsavedState = false;
+      stats.surveyCount = this.props.stats.surveyCount + 1;
+      stats.mySurveyCount = this.props.stats.mySurveyCount + 1;
+      this.props.setStats(stats);
       this.props.router.push(`/surveys/${response.data.id}`);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
@@ -217,6 +221,8 @@ SurveyEdit.propTypes = {
   forms:  formsProps.isRequired,
   questions:  questionsProps.isRequired,
   action: PropTypes.string.isRequired,
+  setStats: PropTypes.func,
+  stats: PropTypes.object,
   surveySubmitter: PropTypes.func.isRequired,
   removeForm:  PropTypes.func.isRequired,
   reorderForm: PropTypes.func.isRequired,
