@@ -8,11 +8,6 @@ class DeleteFromIndexJob < ApplicationJob
   end
 
   def perform(type, id)
-    SDP::Elasticsearch.ensure_index
-    SDP::Elasticsearch.with_client do |client|
-      if client.exists?(index: 'vocabulary', type: type.underscore, id: id)
-        client.delete index: 'vocabulary', type: type.underscore, id: id
-      end
-    end
+    SDP::Elasticsearch.delete_item(type, id)
   end
 end

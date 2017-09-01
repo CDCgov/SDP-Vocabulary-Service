@@ -115,6 +115,7 @@ class QuestionsController < ApplicationController
   def destroy
     if @question.status == 'draft'
       @question.destroy
+      SDP::Elasticsearch.delete_item('question', @question.id, true)
       render json: @question
     else
       render json: @question.errors, status: :unprocessable_entity

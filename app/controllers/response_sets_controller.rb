@@ -103,6 +103,7 @@ class ResponseSetsController < ApplicationController
   def destroy
     if @response_set.status == 'draft'
       @response_set.destroy
+      SDP::Elasticsearch.delete_item('response_set', @response_set.id, true)
       render json: @response_set
     else
       render json: @response_set.errors, status: :unprocessable_entity

@@ -70,6 +70,7 @@ class FormsController < ApplicationController
   def destroy
     if @form.status == 'draft'
       @form.destroy
+      SDP::Elasticsearch.delete_item('form', @form.id, true)
       render json: @form
     else
       render json: @form.errors, status: :unprocessable_entity

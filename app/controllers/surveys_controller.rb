@@ -49,6 +49,7 @@ class SurveysController < ApplicationController
   def destroy
     if @survey.status == 'draft'
       @survey.destroy
+      SDP::Elasticsearch.delete_item('survey', @survey.id, true)
       render json: @survey
     else
       render json: @survey.errors, status: :unprocessable_entity

@@ -122,6 +122,15 @@ module SDP
       end
     end
 
+    def self.delete_item(type, id, refresh = false)
+      ensure_index
+      with_client do |client|
+        if client.exists?(index: 'vocabulary', type: type.underscore, id: id)
+          client.delete index: 'vocabulary', type: type.underscore, id: id, refresh: refresh
+        end
+      end
+    end
+
     def self.sync
       sync_forms
       sync_questions

@@ -24,7 +24,6 @@ class Form < ApplicationRecord
   after_destroy :update_surveys
 
   after_commit :index, on: [:create, :update]
-  after_commit :delete_index, on: :destroy
 
   def update_surveys
     survey_array = surveys.to_a
@@ -34,10 +33,6 @@ class Form < ApplicationRecord
 
   def index
     UpdateIndexJob.perform_later('form', id)
-  end
-
-  def delete_index
-    DeleteFromIndexJob.perform_later('form', id)
   end
 
   def update_question_positions

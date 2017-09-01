@@ -21,7 +21,6 @@ class Survey < ApplicationRecord
   accepts_nested_attributes_for :forms, allow_destroy: true
 
   after_commit :index, on: [:create, :update]
-  after_commit :delete_index, on: :destroy
 
   def questions
     Question.joins(form_questions: { form: { survey_forms: :survey } }).where(surveys: { id: id }).all
@@ -29,10 +28,6 @@ class Survey < ApplicationRecord
 
   def index
     UpdateIndexJob.perform_later('survey', id)
-  end
-
-  def delete_index
-    DeleteFromIndexJob.perform_later('survey', id)
   end
 
   def update_form_positions
