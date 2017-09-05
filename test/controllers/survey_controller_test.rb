@@ -50,7 +50,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
         end
       end
     end
-    assert_enqueued_jobs 5
+    assert_enqueued_jobs 4
   end
 
   test 'should not publish a published survey' do

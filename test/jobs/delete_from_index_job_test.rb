@@ -8,6 +8,6 @@ class DeleteFromIndexJobTest < ActiveJob::TestCase
     DeleteFromIndexJob.perform_now('form', 1)
     req = FakeWeb.last_request
     assert_equal 'DELETE', req.method
-    assert_equal '/vocabulary/form/1', req.path
+    assert_equal '/vocabulary/form/1?refresh=false', req.path
   end
 end
