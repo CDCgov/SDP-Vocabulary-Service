@@ -47,10 +47,10 @@ Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|
   ResponseSet.create!(name: set_name, version: 1, created_by: user)
 end
 
-When(/^I click on the link to remove the Response "([^"]*)"$/) do |response_name|
+When(/^I click on the link to remove the Response "([^"]*)" in row number (.+)$/) do |response_name, row|
   node = find('input[value="' + response_name + '"]')
   tr = node.find(:xpath, '../..')
-  tr.click_on('Delete this row')
+  tr.click_on('Delete row number ' + row)
 end
 When(/^I click on the menu link for the Response Set with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Response Set', attribute, attribute_value)

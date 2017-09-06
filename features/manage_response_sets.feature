@@ -115,7 +115,7 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Revise the Response Set with the name "Gender Full"
-    And I click on the link to remove the Response "Male"
+    And I click on the link to remove the Response "Male" in row number 1
     And I click on the "Save" button
     Then I should see "Version: 2"
     And I should see "Gender Full"
