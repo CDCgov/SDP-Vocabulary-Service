@@ -182,61 +182,58 @@ class CodedSetTableEditContainer extends Component {
   }
 
   render() {
+    var tableType = this.state.childName[0].toUpperCase() + this.state.childName.slice(1);
     return (
-      <table className="set-table">
-        <caption>Add, search, and create associated {this.state.childName[0].toUpperCase() + this.state.childName.slice(1)}s:</caption>
-        {this.conceptModal()}
-        <thead>
-          <tr>
-            <td>
-              <a title="Search Codes" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.showCodeSearch();
-              }}><i className="fa fa-search fa-2x"></i><span className="sr-only">Open Search Modal</span></a>
-            </td>
-            <th scope="col" className="display-name-column" id="display-name-column">Display Name</th>
-            <th scope="col" className="code-column" id="code-column">{this.state.childName[0].toUpperCase() + this.state.childName.slice(1)} Code</th>
-            <th scope="col" className="code-system-column" id="code-system-column">Code System</th>
-            <td>
-              <a title="Add Row" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.addItemRow();
-              }}><i className="fa fa-plus fa-2x"></i><span className="sr-only">Add a row to the table</span></a>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {this.state.items.map((r, i) => {
-            if(!r) {
-              return ;
-            }
-            return (
-              <tr key={i}>
-                <td>
-                </td>
-                <td headers="display-name-column">
-                  <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
-                  <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
-                </td>
-                <td headers="code-column">
-                  <label className="hidden" htmlFor={`value_${i}`}>Value</label>
-                  <input className="input-format" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
-                </td>
-                <td headers="code-system-column">
-                  <label className="hidden" htmlFor={`codeSystem_${i}`}>Code system</label>
-                  <input className="input-format" type="text" value={r.codeSystem}  name="codeSystem" id={`codeSystem_${i}`} onChange={this.handleChange(i, 'codeSystem')}/>
-                </td>
-                <td>
-                  <a href="#" title="Delete this row" aria-label={`remove_row_number_${i+1}`} id={`remove_${i}`} onClick={(e) => {
+      <div>
+        <table className="set-table">
+          <caption>
+            Add, search, and create associated {tableType}s:
+            <a className="pull-right" title="Search Codes" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.showCodeSearch();
+            }}><i className="fa fa-search"></i> Search for {tableType}s</a>
+          </caption>
+          {this.conceptModal()}
+          <thead>
+            <tr>
+              <th scope="col" className="display-name-column" id="display-name-column">Display Name</th>
+              <th scope="col" className="code-column" id="code-column">{tableType} Code</th>
+              <th scope="col" className="code-system-column" id="code-system-column">Code System</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.items.map((r, i) => {
+              if(!r) {
+                return ;
+              }
+              return (
+                <tr key={i}>
+                  <td headers="display-name-column">
+                    <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
+                    <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
+                  </td>
+                  <td headers="code-column">
+                    <label className="hidden" htmlFor={`value_${i}`}>Value</label>
+                    <input className="input-format" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
+                  </td>
+                  <td headers="code-system-column">
+                    <label className="hidden" htmlFor={`codeSystem_${i}`}>Code system</label>
+                    <input className="input-format" type="text" value={r.codeSystem}  name="codeSystem" id={`codeSystem_${i}`} onChange={this.handleChange(i, 'codeSystem')}/>
+                  </td>
+                  <a href="#" title={`Delete row number ${i+1}`} aria-label={`Remove row number ${i+1}`} id={`remove_${i}`} onClick={(e) => {
                     e.preventDefault();
                     this.removeItemRow(i);
-                  }}><i className="fa fa-2x fa-trash"></i><span className="sr-only">Delete this row</span></a>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  }}><i className="table-row-delete fa fa-2x fa-trash"></i><span className="sr-only">{`Delete row number ${i+1}`}</span></a>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <a className="pull-right" title="Add Row" href="#" onClick={(e) => {
+          e.preventDefault();
+          this.addItemRow();
+        }}><i className="fa fa-plus"></i> Add a row to the table</a>
+      </div>
     );
   }
 }
