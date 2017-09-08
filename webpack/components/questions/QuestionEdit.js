@@ -235,11 +235,11 @@ class QuestionEdit extends Component {
                   <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange}
                                          selectedResponseSets={this.state.linkedResponseSets} />
                 : ''}
-                <div className="panel-footer">
-                  <div className="actions form-group">
-                    <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with="Save">Save</button>
-                    {this.cancelButton()}
-                  </div>
+              </div>
+              <div className="panel-footer">
+                <div className="actions form-group">
+                  <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with="Save">Save</button>
+                  {this.cancelButton()}
                 </div>
               </div>
             </div>
