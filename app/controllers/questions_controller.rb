@@ -105,7 +105,7 @@ class QuestionsController < ApplicationController
   end
 
   def update_concepts(_params)
-    @concepts = Concept.where(question_id: @question.id)
+    @concepts = Concept.where(taggable_id: @question.id, taggable_type: 'Question')
     @question.concepts.destroy_all
     @question.concepts << @concepts
   end

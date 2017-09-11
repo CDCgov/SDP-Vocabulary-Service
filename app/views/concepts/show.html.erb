@@ -5,11 +5,6 @@
     <%= @concept.value %>
   </p>
 
-  <p>
-    <strong>Question:</strong>
-    <%= link_to @concept.question.content, question_path(@concept.question) %>
-  </p>
-
   <%= link_to 'Edit', edit_concept_path(@concept) %> |
   <%= link_to 'Back', concepts_path %>
 </div>

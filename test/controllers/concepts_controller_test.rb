@@ -21,7 +21,7 @@ class ConceptsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create concept' do
     assert_difference('Concept.count') do
-      post concepts_url, params: { concept: { question_id: @question.id, value: 'one' } }
+      post concepts_url, params: { concept: { taggable_id: @question.id, taggable_type: 'Question', value: 'one' } }
     end
 
     assert_redirected_to concept_url(Concept.last)
@@ -38,7 +38,7 @@ class ConceptsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update concept' do
-    patch concept_url(@concept), params: { concept: { question_id: @question.id, value: 'one' } }
+    patch concept_url(@concept), params: { concept: { taggable_id: @question.id, taggable_type: 'Question', value: 'one' } }
     assert_redirected_to concept_url(@concept)
   end
 
