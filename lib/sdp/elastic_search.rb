@@ -10,6 +10,8 @@ module SDP
 
     def self.ping
       Vocabulary::Elasticsearch.client.ping
+    rescue
+      return false
     end
 
     def self.search(type, query_string, page, query_size = 10,

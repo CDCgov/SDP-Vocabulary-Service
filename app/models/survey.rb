@@ -1,5 +1,5 @@
 class Survey < ApplicationRecord
-  include Versionable, Searchable
+  include Versionable, Searchable, Taggable
   acts_as_commentable
 
   has_many :survey_forms, -> { order 'position asc' }, dependent: :destroy

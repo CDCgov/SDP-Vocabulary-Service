@@ -1,5 +1,5 @@
 class Form < ApplicationRecord
-  include OidGenerator, Versionable, Searchable
+  include OidGenerator, Versionable, Searchable, Taggable
   acts_as_commentable
 
   has_many :form_questions, -> { order 'position asc' }, dependent: :destroy
