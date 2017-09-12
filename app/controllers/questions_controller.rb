@@ -81,7 +81,7 @@ class QuestionsController < ApplicationController
       render json: @question.errors, status: :unprocessable_entity
     else
       update_response_sets(params)
-      update_concepts(params)
+      @question.update_concepts('Question')
       @question.updated_by = current_user
       if @question.update(question_params)
         render :show, status: :ok, location: @question
@@ -102,12 +102,6 @@ class QuestionsController < ApplicationController
       response[:surveillance_systems]  = @question.surveillance_systems.map(&:name)
       render json: response
     end
-  end
-
-  def update_concepts(_params)
-    @concepts = Concept.where(taggable_id: @question.id, taggable_type: 'Question')
-    @question.concepts.destroy_all
-    @question.concepts << @concepts
   end
 
   # DELETE /questions/1
