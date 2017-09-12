@@ -99,18 +99,25 @@ Feature: Manage Surveys
   Scenario: Edit a draft Survey
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
     And I have a Surveillance Program with the name "FoodNet"
-    And I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I have a Survey with the name "Test Survey" and the description "Survey description" and the concept "Healthcare Concept"
     And I am working the program "FoodNet" and system "National Violent Death Reporting System" logged in as test_author@gmail.com
     When I go to the list of Surveys
     And I click on the menu link for the Survey with the name "Test Survey"
     And I click on the option to Details the Survey with the name "Test Survey"
     Then I should see "Test Survey"
-    Then I should see "Survey description"
+    And I should see "Survey description"
+    And I should see "Healthcare Concept"
     When I click on the "Edit" link
     And I fill in the "survey-name" field with "Edited Survey"
+    And I click on the "Add Row" link
+    And I fill in the "value_0" field with "Test Concept 1"
+    And I fill in the "value_1" field with "Test Concept 2"
+    And I click on the "remove_0" link
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
     Then I should see "Survey description"
+    And I should see "Test Concept 2"
+    And I should not see "Test Concept 1"
     And I should not see "Publish"
     And I should see "Edit"
     And I should see "Surveillance System: National Violent Death Reporting System"
