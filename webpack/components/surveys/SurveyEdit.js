@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+
 import { surveyProps } from '../../prop-types/survey_props';
 import { formsProps } from '../../prop-types/form_props';
 import { questionsProps } from "../../prop-types/question_props";
+
 import SurveyFormList from './SurveyFormList';
+import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 
@@ -16,6 +19,7 @@ class SurveyEdit extends Component {
       name: '',
       version: 1,
       showModal: false,
+      conceptsAttributes: [],
       description: '',
       surveyForms: [],
       controlNumber: null,
@@ -43,6 +47,7 @@ class SurveyEdit extends Component {
     newState.controlNumber = survey.controlNumber;
     newState.parentId = survey.parent ? survey.parent.id : '';
     newState.versionIndependentId = survey.versionIndependentId;
+    newState.conceptsAttributes = filterConcepts(survey.concepts);
     return newState;
   }
 
@@ -92,6 +97,11 @@ class SurveyEdit extends Component {
     this.setState({ showModal: this.unsavedState });
     this.nextLocation = nextLocation;
     return !this.unsavedState;
+  }
+
+  handleConceptsChange(newConcepts) {
+    this.setState({conceptsAttributes: filterConcepts(newConcepts)});
+    this.unsavedState = true;
   }
 
   handleModalResponse(leavePage){
@@ -206,6 +216,15 @@ class SurveyEdit extends Component {
             </div>
           </div>
         </div>
+        <div className="row">
+          <div className="col-md-12">
+            <h2 className="tags-table-header"><strong>Tags</strong></h2>
+            <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
+                     initialItems={this.state.conceptsAttributes}
+                     parentName={'survey'}
+                     childName={'tag'} />
+          </div>
+        </div>
         <SurveyFormList survey={this.state}
                         forms ={this.props.forms}
                         questions  ={this.props.questions}
@@ -216,6 +235,17 @@ class SurveyEdit extends Component {
       </div>
     );
   }
+}
+
+function filterConcepts(concepts) {
+  if(!concepts){
+    return [];
+  }
+  return concepts.filter((nc) => {
+    return (nc.value !=='' ||  nc.codeSystem !== '' || nc.displayName !=='');
+  }).map((nc) => {
+    return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
+  });
 }
 
 SurveyEdit.propTypes = {

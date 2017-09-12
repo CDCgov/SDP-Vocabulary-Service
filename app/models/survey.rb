@@ -57,6 +57,9 @@ class Survey < ApplicationRecord
                               name: name, parent_id: parent_id,
                               version: version + 1, status: status,
                               created_by: created_by, control_number: control_number)
+    concepts.each do |c|
+      new_revision.concepts << c.dup
+    end
 
     new_revision
   end

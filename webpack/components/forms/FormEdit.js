@@ -10,6 +10,7 @@ import { responseSetsProps } from '../../prop-types/response_set_props';
 import { questionsProps } from '../../prop-types/question_props';
 
 import QuestionItem from '../../containers/questions/QuestionItem';
+import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import ModalDialog  from '../ModalDialog';
 import Errors from '../Errors';
 
@@ -42,8 +43,9 @@ class FormEdit extends Component {
     const controlNumber = form.controlNumber;
     const showWarningModal = false;
     const parentId = form.parent ? form.parent.id : '';
+    const conceptsAttributes = filterConcepts(form.concepts) || [];
     const linkedResponseSets = this.findLinkedResponseSets(formQuestions);
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId, linkedResponseSets};
+    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes};
   }
 
   constructor(props) {
@@ -101,6 +103,11 @@ class FormEdit extends Component {
     this.setState({ showWarningModal: this.unsavedState });
     this.nextLocation = nextLocation;
     return !this.unsavedState;
+  }
+
+  handleConceptsChange(newConcepts) {
+    this.setState({conceptsAttributes: filterConcepts(newConcepts)});
+    this.unsavedState = true;
   }
 
   handleModalResponse(){
@@ -346,12 +353,32 @@ class FormEdit extends Component {
             </div>
           </div>
         </div>
+        <div className="row">
+          <div className="col-md-12">
+            <h2 className="tags-table-header"><strong>Tags</strong></h2>
+            <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
+                     initialItems={this.state.conceptsAttributes}
+                     parentName={'form'}
+                     childName={'tag'} />
+          </div>
+        </div>
         {this.addedQuestions()}
       </form>
       </div>
       </div>
     );
   }
+}
+
+function filterConcepts(concepts) {
+  if(!concepts){
+    return [];
+  }
+  return concepts.filter((nc) => {
+    return (nc.value !=='' ||  nc.codeSystem !== '' || nc.displayName !=='');
+  }).map((nc) => {
+    return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
+  });
 }
 
 FormEdit.propTypes = {

@@ -72,6 +72,19 @@ export function setLastSearch(searchTerms=null, type=null, programFilter=[], sys
 // expect their own thing ResponseSet.responses, Question.concepts with value
 // and codeSystem. This function will transform the elasticsearch results into
 // the structure expected by the rest of the react application.
+function transformConcepts(items) {
+  values(items).forEach((i) => {
+    if(i.codes) {
+      i.concepts = i.codes;
+      delete i.codes;
+      i.concepts.forEach((c) => {
+        c.value = c.code;
+        delete c.code;
+      });
+    }
+  });
+}
+
 function unelasticsearchResults(results) {
   if (results.responseSets) {
     values(results.responseSets).forEach((rs) => {
@@ -86,15 +99,12 @@ function unelasticsearchResults(results) {
     });
   }
   if (results.questions) {
-    values(results.questions).forEach((q) => {
-      if(q.codes) {
-        q.concepts = q.codes;
-        delete q.codes;
-        q.concepts.forEach((c) => {
-          c.value = c.code;
-          delete c.code;
-        });
-      }
-    });
+    transformConcepts(results.questions);
+  }
+  if (results.forms) {
+    transformConcepts(results.forms);
+  }
+  if (results.surveys) {
+    transformConcepts(results.questions);
   }
 }

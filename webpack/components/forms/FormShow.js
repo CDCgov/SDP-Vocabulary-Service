@@ -4,6 +4,7 @@ import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 
 import FormQuestionList from './FormQuestionList';
+import CodedSetTable from "../CodedSetTable";
 import Routes from '../../routes';
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -151,6 +152,16 @@ class FormShow extends Component {
               <Link to={`/forms/${form.parent.id}`}>{ form.parent.name && form.parent.name }</Link>
             </div>
             }
+          </div>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title">Tags</h2>
+            </div>
+            <div className="box-content">
+              <div id="concepts-table">
+                <CodedSetTable items={form.concepts} itemName={'Tag'} />
+              </div>
+            </div>
           </div>
           {form.formQuestions && form.formQuestions.length > 0 && form.questions && form.questions.length > 0 &&
             <div>

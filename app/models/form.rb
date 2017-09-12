@@ -71,6 +71,9 @@ class Form < ApplicationRecord
                             description: description, parent_id: parent_id, status: status,
                             version: version + 1, name: name, oid: oid,
                             created_by: created_by, control_number: control_number)
+    concepts.each do |c|
+      new_revision.concepts << c.dup
+    end
 
     new_revision
   end
