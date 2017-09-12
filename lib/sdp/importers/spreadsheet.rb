@@ -28,7 +28,8 @@ module SDP
           'Date' => :date,
           'Coded' => :choice,
           'Numeric' => :decimal,
-          'Text' => :text
+          'Text' => :text,
+          'Date/time' => :dateTime
         }
       }.freeze
 
