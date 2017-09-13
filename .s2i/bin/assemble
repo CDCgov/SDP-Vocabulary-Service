@@ -1,12 +1,9 @@
 #!/bin/bash
-echo "Configuring NPM"
 npm config set proxy $http_proxy
 npm config set registry http://registry.npmjs.org/
-echo "executing yarn"
 pushd /tmp/src
 echo `pwd`
 echo `ls` 
 yarn install
 popd
-echo "calling default assemble script"
 /usr/libexec/s2i/assemble
