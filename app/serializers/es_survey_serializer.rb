@@ -20,7 +20,7 @@ class ESSurveySerializer < ActiveModel::Serializer
   attribute(:codes) { codes }
 
   def codes
-    [] # object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json }
   end
 
   def updated_at

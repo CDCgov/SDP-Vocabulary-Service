@@ -4,6 +4,7 @@ import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import CodedSetTable from "../CodedSetTable";
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
@@ -95,6 +96,16 @@ class SurveyShow extends Component {
               <Link to={this.props.survey.parent.id && `/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name && this.props.survey.parent.name }</Link>
             </div>
             }
+          </div>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title">Tags</h2>
+            </div>
+            <div className="box-content">
+              <div id="concepts-table">
+                <CodedSetTable items={this.props.survey.concepts} itemName={'Tag'} />
+              </div>
+            </div>
           </div>
           {this.props.forms.map((f,i) =>
             <div  key={i} className="basic-c-box panel-default survey-form">

@@ -2,18 +2,25 @@ Feature: Edit Forms
   As an author
   I want to edit Forms
   Scenario: Edit a Draft Form
-    Given I have a Form with the name "Test Form" and the description "Form description"
+    Given I have a Form with the name "Test Form" and the description "Form description" and the concept "Healthcare Concept"
     And I am logged in as test_author@gmail.com
     When I go to the list of Forms
     And I click on the menu link for the Form with the name "Test Form"
     And I click on the option to Details the Form with the name "Test Form"
     Then I should see "Test Form"
-    Then I should see "Form description"
+    And I should see "Form description"
+    And I should see "Healthcare Concept"
     When I click on the "Edit" link
     And I fill in the "form-name" field with "Edited Form"
+    And I click on the "Add Row" link
+    And I fill in the "value_0" field with "Test Concept 1"
+    And I fill in the "value_1" field with "Test Concept 2"
+    And I click on the "remove_0" link
     And I click on the "Save" button
     Then I should see "Name: Edited Form"
     Then I should see "Form description"
+    And I should see "Test Concept 2"
+    And I should not see "Test Concept 1"
     And I should not see "Publish"
     And I should see "Edit"
 

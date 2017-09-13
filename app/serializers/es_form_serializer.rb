@@ -20,7 +20,7 @@ class ESFormSerializer < ActiveModel::Serializer
   attribute :surveillance_systems
 
   def codes
-    [] # object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json }
   end
 
   def updated_at

@@ -52,6 +52,7 @@ class FormsController < ApplicationController
       update_successful = nil
       @form.transaction do
         @form.form_questions = update_form_questions
+        @form.update_concepts('Form')
         # When we assign update_successful, it is the last expression in the block
         # That means, if the form fails to update, this block will return false,
         # which will cause the transaction to rollback.
@@ -172,6 +173,7 @@ class FormsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params
     params.require(:form).permit(:name, :user_id, :search, :description, :parent_id,
-                                 :status, :version_independent_id, :control_number)
+                                 :status, :version_independent_id, :control_number,
+                                 concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

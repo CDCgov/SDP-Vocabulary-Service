@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170425171343) do
+ActiveRecord::Schema.define(version: 20170908124045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,10 +32,9 @@ ActiveRecord::Schema.define(version: 20170425171343) do
     t.integer "commentable_id"
     t.integer "user_id"
     t.string "role", default: "comments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["commentable_id"], name: "index_comments_on_commentable_id"
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["commentable_type"], name: "index_comments_on_commentable_type"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -44,10 +43,11 @@ ActiveRecord::Schema.define(version: 20170425171343) do
     t.text "value"
     t.string "code_system"
     t.string "display_name"
-    t.integer "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_concepts_on_question_id"
+    t.string "taggable_type"
+    t.bigint "taggable_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_concepts_on_taggable_type_and_taggable_id"
   end
 
   create_table "form_questions", id: :serial, force: :cascade do |t|
@@ -161,11 +161,10 @@ ActiveRecord::Schema.define(version: 20170425171343) do
     t.string "name"
     t.string "resource_type"
     t.integer "resource_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
-    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
   create_table "surveillance_programs", id: :serial, force: :cascade do |t|
@@ -236,13 +235,10 @@ ActiveRecord::Schema.define(version: 20170425171343) do
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
-    t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
-    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
   add_foreign_key "authentications", "users"
-  add_foreign_key "concepts", "questions"
   add_foreign_key "forms", "users", column: "created_by_id"
   add_foreign_key "forms", "users", column: "published_by_id"
   add_foreign_key "questions", "question_types"

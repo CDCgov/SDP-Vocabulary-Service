@@ -36,6 +36,7 @@ class SurveysController < ApplicationController
         @survey.surveillance_system  = current_user.last_system
         @survey.surveillance_program = current_user.last_program
         @survey.survey_forms = update_survey_forms
+        @survey.update_concepts('Survey')
         update_successful = @survey.update(form_params)
       end
       if update_successful
@@ -98,7 +99,8 @@ class SurveysController < ApplicationController
 
   def form_params
     params.require(:survey).permit(:name, :description, :status, :parent_id,
-                                   :control_number, :version_independent_id, :created_by_id)
+                                   :control_number, :version_independent_id, :created_by_id,
+                                   concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 
   def create_survey_forms

@@ -17,13 +17,6 @@
       <%= f.text_area :value %>
     </div>
 
-    <div class="field">
-      <%= f.label :question_id , "Question"%>
-      <%= f.select :question_id, options_for_select( Question.all.collect{|q| [q.content,q.id]}, concept.question_id), {id: 'question_id'}%>
-      </td>
-    </tr>
-    </div>
-
     <div class="actions">
       <%= f.submit %>
     </div>

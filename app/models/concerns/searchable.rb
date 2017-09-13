@@ -1,4 +1,3 @@
-
 module Searchable
   extend ActiveSupport::Concern
 
@@ -35,5 +34,3 @@ module Searchable
     end
   end
 end
-# rubocop:enable Metrics/PerceivedComplexity
-# rubocop:enable Metrics/CyclomaticComplexity

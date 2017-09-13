@@ -1,3 +1,3 @@
 class Concept < ApplicationRecord
-  belongs_to :question
+  belongs_to :taggable, polymorphic: true
 end

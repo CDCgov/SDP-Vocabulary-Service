@@ -7,7 +7,7 @@
       <tr>
         <th>ID</th>
         <th>Value</th>
-        <th>Question ID</th>
+        <th>Taggable ID</th>
         <th colspan="3"></th>
       </tr>
     </thead>
@@ -17,7 +17,7 @@
         <tr>
   	      <td>id_<%= concept.id %></td>
           <td><%= concept.value %></td>
-          <td><%= concept.question_id %></td>
+          <td><%= concept.taggable_id %></td>
           <td><%= link_to 'Show', concept %></td>
           <td><%= link_to 'Edit', edit_concept_path(concept) %></td>
           <td><%= link_to 'Destroy', concept, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -26,5 +26,5 @@
     </tbody>
   </table>
   <br>
-  <%= link_to 'New Concept', new_concept_path %> 
+  <%= link_to 'New Concept', new_concept_path %>
 </div>

@@ -1,12 +1,11 @@
 class Question < ApplicationRecord
-  include Versionable, OidGenerator, Searchable
+  include Versionable, OidGenerator, Searchable, Taggable
   acts_as_commentable
 
   has_many :question_response_sets, dependent: :destroy
   has_many :response_sets, through: :question_response_sets
   has_many :form_questions
   has_many :forms, through: :form_questions
-  has_many :concepts, dependent: :destroy
 
   belongs_to :response_type
   belongs_to :question_type
@@ -18,7 +17,6 @@ class Question < ApplicationRecord
   validates :content, presence: true
   validates :response_type, presence: true
   validate :other_allowed_on_when_choice
-  accepts_nested_attributes_for :concepts, allow_destroy: true
 
   after_destroy :update_forms
 
