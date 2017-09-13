@@ -28,7 +28,8 @@ module SDP
           'Date' => :date,
           'Coded' => :choice,
           'Numeric' => :decimal,
-          'Text' => :text
+          'Text' => :text,
+          'Date/time' => :dateTime
         }
       }.freeze
 
@@ -49,27 +50,14 @@ module SDP
         s = Survey.new(name: @config[:survey_name] || @file, created_by: @user)
         s.save!
         f_position = 0
-        sections do |name, elements|
-          f = Form.new(name: name || "Imported Form ##{f_position + 1}", created_by: @user)
-          f.save!
-          s.survey_forms.create(form: f, position: f_position += 1)
-          q_position = 0
-          elements.each do |element|
-            rs = nil
-            if element[:value_set_oid]
-              rs = response_set_for_vads(element)
-            elsif element[:value_set]
-              rs = response_set_for_local(element)
-            end
-            q = question_for(element)
-            q.save!
-            q.question_response_sets.create(response_set: rs) if rs
-            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position += 1)
-            q.index
-          end
-          UpdateIndexJob.perform_now('form', f)
-        end
-        UpdateIndexJob.perform_now('survey', s)
+        save_survey_items(s, f_position)
+      end
+
+      def append!(survey_id)
+        s = Survey.find(survey_id)
+        f_position = 0
+        f_position = s.survey_forms.last.position if s.survey_forms.present?
+        save_survey_items(s, f_position)
       end
 
       def parse!(verbose = false)
@@ -107,6 +95,30 @@ module SDP
       end
 
       private
+
+      def save_survey_items(s, f_position)
+        sections do |name, elements|
+          f = Form.new(name: name || "Imported Form ##{f_position + 1}", created_by: @user)
+          f.save!
+          s.survey_forms.create(form: f, position: f_position += 1)
+          q_position = 0
+          elements.each do |element|
+            rs = nil
+            if element[:value_set_oid]
+              rs = response_set_for_vads(element)
+            elsif element[:value_set]
+              rs = response_set_for_local(element)
+            end
+            q = question_for(element)
+            q.save!
+            q.question_response_sets.create(response_set: rs) if rs
+            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position += 1)
+            q.index
+          end
+          UpdateIndexJob.perform_now('form', f)
+        end
+        UpdateIndexJob.perform_now('survey', s)
+      end
 
       def response_type(type)
         response_type_code = @config[:response_types][type]
