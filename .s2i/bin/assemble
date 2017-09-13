@@ -4,7 +4,7 @@ npm config set proxy $http_proxy
 npm config set registry http://registry.npmjs.org/
 echo "executing yarn"
 echo `pwd`
-ls 
+echo `ls` 
 yarn install
 echo "calling default assemble script"
 /usr/libexec/s2i/assemble
