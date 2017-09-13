@@ -2,8 +2,6 @@
 npm config set proxy $http_proxy
 npm config set registry http://registry.npmjs.org/
 pushd /tmp/src
-echo `pwd`
-echo `ls` 
 yarn install
 popd
 /usr/libexec/s2i/assemble
