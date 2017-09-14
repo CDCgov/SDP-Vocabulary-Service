@@ -99,6 +99,7 @@ module SDP
       def save_survey_items(s, f_position)
         sections do |name, elements|
           f = Form.new(name: name || "Imported Form ##{f_position + 1}", created_by: @user)
+          f.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
           f.save!
           s.survey_forms.create(form: f, position: f_position += 1)
           q_position = 0

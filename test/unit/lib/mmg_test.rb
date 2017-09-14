@@ -30,8 +30,12 @@ class MMGTest < ActiveSupport::TestCase
     assert_equal surveycount + SURVEY_COUNT, Survey.count
 
     assert Survey.where(name: f).exists?
-    assert Form.where(name: 'Imported Form #1').exists?
-    assert_equal Form.where(name: 'Imported Form #1').first.questions.count, 1
+
+    form = Form.where(name: 'Imported Form #1').first
+    assert form.present?
+    assert_equal form.questions.count, 1
+    assert_equal form.concepts.count, 1
+    assert_equal form.concepts.first.value, 'Data Elements'
     assert Survey.where(name: f).first.forms.count, FORM_COUNT
   end
 end
