@@ -1,21 +1,26 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
-'use strict';
 
 /* eslint global-require: 0 */
 
-const merge = require('webpack-merge');
 const webpack = require('webpack');
-const sharedConfig = require('./shared.js');
+const merge = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
+const sharedConfig = require('./shared.js');
 
 module.exports = merge(sharedConfig, {
+  entry: {
+    // Sources are expected to live in $app_root/webpack
+    'babel-polyfill': 'babel-polyfill',
+    'landing': './webpack/landing.js'
+  },
+
   output: { filename: '[name]-[chunkhash].js' },
   devtool: 'source-map',
   stats: 'normal',
 
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      minimize:  true,
+      minimize: true,
       sourceMap: false,
 
       compress: {

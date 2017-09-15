@@ -1,10 +1,9 @@
 // Common configuration for webpacker loaded from config/webpacker.yml
-'use strict';
 
+const { join, resolve } = require('path');
 const { env } = require('process');
 const { safeLoad } = require('js-yaml');
 const { readFileSync } = require('fs');
-const { join, resolve } = require('path');
 
 const configPath = resolve('config', 'webpacker.yml');
 const loadersDir = join(__dirname, 'loaders');
@@ -28,7 +27,6 @@ const output = {
   publicPath: formatPublicPath(env.ASSET_HOST, settings.public_output_path)
 };
 
-// Setting this in development.js doesn't work for some reason?
 if (process.env.NODE_ENV !== 'production'){
   output.publicPath = 'http://' + settings.dev_server.host + ':' + settings.dev_server.port + '/webpack/';
 }

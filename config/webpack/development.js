@@ -1,5 +1,4 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
-'use strict';
 
 const merge = require('webpack-merge');
 const sharedConfig = require('./shared.js');
@@ -30,8 +29,8 @@ module.exports = merge(sharedConfig, {
   devServer: {
     clientLogLevel: 'none',
     https: settings.dev_server.https,
-    host:  settings.dev_server.host,
-    port:  settings.dev_server.port,
+    host: settings.dev_server.host,
+    port: settings.dev_server.port,
     contentBase: output.path,
     publicPath: output.publicPath,
     compress: true,
