@@ -16,11 +16,6 @@ task :create_reports_dir do
   FileUtils.mkdir('./reports') unless Dir.exist?('./reports')
 end
 
-namespace :assets do
-  task precompile: 'webpack:compile' do
-  end
-end
-
 namespace :javascript do
   task :test do
     sh('yarn test')
