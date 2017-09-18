@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { denormalize } from 'normalizr';
+import { questionSchema } from '../../schema';
 import { questionProps } from "../../prop-types/question_props";
 import { responseSetProps } from "../../prop-types/response_set_props";
 import currentUserProps from '../../prop-types/current_user_props';
@@ -175,12 +177,14 @@ class QuestionItem extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  var question = denormalize(ownProps.question, questionSchema, state);
   return {
     searchResults: state.searchResults[QUESTION_ITEM_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    question: question
   };
 }
 
