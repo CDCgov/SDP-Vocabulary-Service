@@ -100,7 +100,7 @@ class QuestionItem extends Component {
       searchTerms = null;
     }
     this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, searchType, progFilters, sysFilters);
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
   }
 
   searchModal() {

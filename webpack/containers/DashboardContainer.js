@@ -239,7 +239,7 @@ class DashboardContainer extends Component {
     }
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter);
     this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, this.state.page);
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
   }
 
   selectType(searchType, myStuffToggle=false) {
