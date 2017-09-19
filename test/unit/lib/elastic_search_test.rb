@@ -37,4 +37,11 @@ class ElasticSearchTest < ActiveSupport::TestCase
     assert_equal 'POST', req.method
     assert_equal '/vocabulary/form/_delete_by_query', req.path
   end
+
+  def find_duplicate_questions
+    SDP::Elasticsearch.find_duplicate_questions('content', 'description')
+    req = FakeWeb.last_request
+    assert_equal 'GET', req.method
+    assert_equal '/vocabulary/question/_search', req.path
+  end
 end

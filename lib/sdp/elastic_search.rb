@@ -113,6 +113,16 @@ module SDP
       end
     end
 
+    def self.find_duplicate_questions(content, description)
+      with_client do |client|
+        client.search(index: 'vocabulary', type: 'question',
+                      body: { query: { bool: {
+                        filter: { match: { status: 'published' } },
+                        should: [{ match: { name: content } }, { match: { description: description } }]
+                      } } })
+      end
+    end
+
     def self.ensure_index
       with_client do |client|
         unless client.indices.exists? index: 'vocabulary'
