@@ -86,7 +86,7 @@ class ResponseSetDragWidget extends Component {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms});
+    this.setState({searchTerms: searchTerms, page: 1});
     this.props.fetchSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set');
   }
 

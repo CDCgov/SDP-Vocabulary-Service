@@ -53,7 +53,7 @@ class QuestionSearchContainer extends Component {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
     this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', progFilters, sysFilters);
   }
 

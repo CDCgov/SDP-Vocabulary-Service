@@ -62,7 +62,7 @@ class FormSearchContainer extends Component {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
     this.props.fetchSearchResults(FORM_SEARCH_CONTEXT, searchTerms, 'form', progFilters, sysFilters);
   }
 
@@ -72,7 +72,7 @@ class FormSearchContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(searchTerms, 'form', tempState,
+    this.props.fetchMoreSearchResults(FORM_SEARCH_CONTEXT, searchTerms, 'form', tempState,
                                       this.state.progFilters,
                                       this.state.sysFilters);
     this.setState({page: tempState});
