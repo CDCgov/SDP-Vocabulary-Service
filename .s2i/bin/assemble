@@ -3,5 +3,6 @@ npm config set proxy $http_proxy
 npm config set registry http://registry.npmjs.org/
 pushd /tmp/src
 yarn install
+NODE_ENV=production bundle exec rails assets:precompile
 popd
 /usr/libexec/s2i/assemble
