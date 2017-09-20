@@ -64,6 +64,16 @@
       color: $dark-gray;
     }
   }
+  .unlinked-result-name {
+    font-size: 18px;
+    color: $dark-gray;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    .result-type {
+      color: $dark-gray;
+    }
+  }
   .result-type-wrapper {
     display: table;
     width: 100%;
