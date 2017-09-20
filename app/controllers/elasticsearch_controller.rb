@@ -25,5 +25,18 @@ class ElasticsearchController < ApplicationController
               end
     render json: results
   end
+
+  def duplicate_questions
+    results = if SDP::Elasticsearch.ping
+                content = params[:content]
+                content ||= ''
+                description = params[:description]
+                description ||= ''
+                SDP::Elasticsearch.find_duplicate_questions(content, description)
+              else
+                SDP::SimpleSearch.find_duplicate_questions(params[:content]).target!
+              end
+    render json: results
+  end
 end
 # rubocop:enable Metrics/AbcSize

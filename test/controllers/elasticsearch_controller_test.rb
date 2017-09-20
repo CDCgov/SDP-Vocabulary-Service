@@ -3,12 +3,17 @@ require 'test_helper'
 class ElasticsearchControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test 'should be able to call elastic_search test ' do
+  test 'should be able to call elastic_search' do
     get '/elasticsearch'
     assert_response :success
   end
 
-  test 'should be able to call search when ES is not running ' do
+  test 'should be able to call duplicate_questions' do
+    get '/elasticsearch/duplicate_questions'
+    assert_response :success
+  end
+
+  test 'should be able to call search when ES is not running' do
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, status: ['404', 'Not Found'])
     get '/elasticsearch'
     # reset so other tests do not fail

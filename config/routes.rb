@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :surveillance_programs, only: [:index, :show]
   get 'response_types', to: 'response_types#index', as: :response_types
   get 'elasticsearch', to: 'elasticsearch#index', as: :elasticsearch
+  get 'elasticsearch/duplicate_questions' => 'elasticsearch#duplicate_questions'
 
   get '/landing' => 'landing#index'
   get '/landing/stats' => 'landing#stats'

@@ -1,6 +1,8 @@
 # rubocop:disable Metrics/ParameterLists
 module SDP
   module SimpleSearch
+    MAX_DUPLICATE_QUESTION_SUGGESTIONS = 10
+
     def self.search(type, query_string, current_user_id = nil, limit = 10, page = 1, publisher_search = false, my_stuff_search = false)
       current_user_id = current_user_id == -1 ? nil : current_user_id
       types = [type.camelize.constantize] if type
@@ -11,6 +13,14 @@ module SDP
         count = query.count()
         results[search_type] = { total: count, hits: query.limit(limit).offset(limit * (page - 1)).to_a }
       end
+      render_results(results)
+    end
+
+    def self.find_duplicate_questions(content)
+      query = Question.search(content)
+      results = {}
+      count = query.count()
+      results[Question] = { total: count, hits: query.limit(MAX_DUPLICATE_QUESTION_SUGGESTIONS).to_a }
       render_results(results)
     end
 
