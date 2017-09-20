@@ -34,10 +34,10 @@
     "prop-types": "^15.5.10",
     "rails-erb-loader": "3.0.0",
     "rc-pagination": "^1.9.7",
-    "react": "^15.4.0",
+    "react": "^15.5.0",
     "react-addons-shallow-compare": "^15.5.2",
     "react-bootstrap": "^0.31.0",
-    "react-dom": "^15.4.0",
+    "react-dom": "^15.5.0",
     "react-joyride": "^1.10.1",
     "react-redux": "^4.4.6",
     "react-router": "^3.0.1",
@@ -60,14 +60,14 @@
   "devDependencies": {
     "bootstrap-sass": "^3.3.7",
     "chai": "^3.5.0",
+    "chai-jquery": "^2.0.0",
     "chai-spies": "",
     "enzyme": "2.9.1",
-    "chai-jquery": "^2.0.0",
     "eslint": "^3.10.2",
     "eslint-plugin-react": "^6.7.1",
     "jsdom": "^9.8.3",
     "mocha": "^3.2.0",
-    "react-addons-test-utils": "^15.4.0",
+    "react-test-renderer": "^15.6.1",
     "webpack-bundle-analyzer": "^2.8.2"
   }
 }
