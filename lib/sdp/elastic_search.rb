@@ -3,6 +3,8 @@
 # rubocop:disable Metrics/ParameterLists
 module SDP
   module Elasticsearch
+    MAX_DUPLICATE_QUESTION_SUGGESTIONS = 10
+
     def self.with_client
       client = Vocabulary::Elasticsearch.client
       yield client if client.ping
@@ -116,10 +118,16 @@ module SDP
     def self.find_duplicate_questions(content, description)
       with_client do |client|
         client.search(index: 'vocabulary', type: 'question',
-                      body: { query: { bool: {
-                        filter: { match: { status: 'published' } },
-                        should: [{ match: { name: content } }, { match: { description: description } }]
-                      } } })
+                      body: {
+                        query: {
+                          bool: {
+                            filter: { match: { status: 'published' } },
+                            should: [{ match: { name: content } }, { match: { description: description } }],
+                            minimum_should_match: '75%'
+                          }
+                        },
+                        size: MAX_DUPLICATE_QUESTION_SUGGESTIONS
+                      })
       end
     end
 

@@ -113,4 +113,10 @@ class SimpleSearchTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'users can find duplicate questions' do
+    results = SDP::SimpleSearch.find_duplicate_questions('Search Question 1')
+    results_json = JSON.parse(results.target!)
+    assert_equal 1, results_json['hits']['total']
+  end
 end
