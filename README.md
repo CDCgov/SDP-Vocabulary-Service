@@ -11,18 +11,21 @@ This service is designed as part of the SDP and other services are available thr
 
 ### Prerequisites
 
-The SDP Vocabulary Service requires: Ruby (version 2.3 or later), bundler (version 1.13.6 or later), Node.js (version 5.5 or later), Postgres (version 9.6 or later) and optionally Elasticsearch (version 5.3.1 or later), Chrome (version 59 or later), and ChromeDriver (version  2.30 or later).
+The SDP Vocabulary Service requires: Ruby (version 2.3 or later), bundler (version 1.13.6 or later), Yarn (version 0.27 or later), Node.js (version 5.5 or later), Postgres (version 9.6 or later) and optionally Elasticsearch (version 5.3.1 or later), Chrome (version 59 or later), and ChromeDriver (version  2.30 or later).
 
 #### Ruby >= 2.3
 - We recommend using rbenv to install Ruby on Linux and MacOS: [Rbenv Installation Instructions](https://github.com/rbenv/rbenv#installation)
 - Otherwise, install Ruby: [Ruby Installation Instructions](https://www.ruby-lang.org/en/documentation/installation/)
-    
+
 #### Bundler >= 1.13.6
 - The gem command should be available after installing Ruby
 
 ```
 gem install bundler
 ```
+
+#### Yarn >= 0.27.5
+- Homebrew can be used on Mac, for linux or windows the installation commands can be found [on the official yarn docs](https://yarnpkg.com/lang/en/docs/install/#linux-tab)
 
 #### Node.js >= 5.5
 - Please be careful if you are using a package manager to install Node.js on Linux, as the repositories often have versions that are too old
@@ -80,10 +83,10 @@ sudo apt-get install build-essential
 
 - If you encounter errors referencing missing PostgreSQL files, you probably need to install the PostgreSQL headers as mentioned above in the PostgreSQL section.
 
-#### Node Dependencies
+#### Dependencies
 
 ```
-npm install
+yarn install
 ```
 
 ### Set up the database
@@ -188,7 +191,7 @@ This application manages assets, such as JavaScript and CSS/SCSS with [webpack](
 To regenerate the ERD from the Rails database models, first install graphviz, then:
 
     rake generate_erd
-    
+
 ## Public Domain
 This project constitutes a work of the United States government and is not subject to domestic copyright protection under 17 USC Section 105. This project is in the public domain within the United States, and copyright related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/). All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
 
