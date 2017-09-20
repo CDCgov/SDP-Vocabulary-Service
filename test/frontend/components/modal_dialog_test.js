@@ -1,5 +1,5 @@
 import { expect, renderComponent, createComponent } from '../test_helper';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import ModalDialog from '../../../webpack/components/ModalDialog';
 
 describe('ModalDialog', () => {

@@ -109,7 +109,7 @@ In some cases you might need to access the internal state of the component. Unfo
 
 ### Simulating Interactions
 
-If your test needs to simulate interactions you can import TestUtils with `import TestUtils from 'react-addons-test-utils';` This will give you access to the Simulate object documented at https://facebook.github.io/react/docs/test-utils.html#simulate There are a handful of examples on the documentation site.
+If your test needs to simulate interactions you can import TestUtils with `import TestUtils from 'react-dom/test-utils';` This will give you access to the Simulate object documented at https://facebook.github.io/react/docs/test-utils.html#simulate There are a handful of examples on the documentation site.
 
 ### Running Tests
 
@@ -117,4 +117,4 @@ If your test needs to simulate interactions you can import TestUtils with `impor
 
 ## Linting
 
-You should run `npm run lint` before making a PR. If it shows a bunch of errors they are likely mostly minor, there's a task for automatically fixing many small errors automatically, `npm run lint-auto`. It'd be a good idea to make a commit before running this just in case. It shouldn't make many large changes but commits are cheap in git. 
+You should run `npm run lint` before making a PR. If it shows a bunch of errors they are likely mostly minor, there's a task for automatically fixing many small errors automatically, `npm run lint-auto`. It'd be a good idea to make a commit before running this just in case. It shouldn't make many large changes but commits are cheap in git.
