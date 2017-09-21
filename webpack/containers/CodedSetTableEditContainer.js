@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Modal, Checkbox, Button, ControlLabel, FormGroup, InputGroup, DropdownButton, MenuItem} from 'react-bootstrap';
+import Autocomplete from 'react-autocomplete';
+import sortBy from 'lodash/sortBy';
 import values from 'lodash/values';
 import filter from 'lodash/filter';
 import concat from 'lodash/concat';
 
 import NestedSearchBar from '../components/NestedSearchBar';
-import { fetchConcepts, fetchConceptSystems } from '../actions/concepts_actions';
+import { fetchConcepts, fetchConceptSystems, fetchTags } from '../actions/concepts_actions';
 
 
 class CodedSetTableEditContainer extends Component {
@@ -22,6 +24,7 @@ class CodedSetTableEditContainer extends Component {
 
   componentWillMount() {
     this.props.fetchConceptSystems();
+    this.props.fetchTags();
   }
 
   addItemRow(displayName='', codeSystem='', value='') {
@@ -210,7 +213,45 @@ class CodedSetTableEditContainer extends Component {
                 <tr key={i}>
                   <td headers="display-name-column">
                     <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
-                    <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
+                    <Autocomplete
+                      value={r.displayName}
+                      inputProps={{ id: `displayName_${i}`, className: 'input-format', name: 'displayName', type: 'text' }}
+                      wrapperStyle={{}}
+                      items={sortBy(this.props.tags, 'display_name')}
+                      getItemValue={(item) => item.display_name}
+                      shouldItemRender={(item, value) => {
+                        let name = item.display_name || '';
+                        let val = item.value || '';
+                        let cs = item.code_system || '';
+                        return (
+                          name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+                          val.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+                          cs.toLowerCase().indexOf(value.toLowerCase()) !== -1
+                        );
+                      }}
+                      onSelect={(value, item) => {
+                          let newItems = this.state.items;
+                          newItems[i]['displayName'] = value;
+                          newItems[i]['value'] = item.value || '';
+                          newItems[i]['codeSystem'] = item.code_system || '';
+                          this.setState({items: newItems});
+                          if (this.props.itemWatcher) {
+                            this.props.itemWatcher(newItems);
+                          }
+                      }}
+                      onChange={this.handleChange(i, 'displayName')}
+                      renderItem={(item, isHighlighted) => (
+                        <div
+                          className={`tag-item ${isHighlighted ? 'tag-item-highlighted' : ''}`}
+                          key={item.id}
+                        >{item.display_name}</div>
+                      )}
+                      renderMenu={children => (
+                        <div className="tag-item-menu">
+                          {children}
+                        </div>
+                      )}
+                    />
                   </td>
                   <td headers="code-column">
                     <label className="hidden" htmlFor={`value_${i}`}>Value</label>
@@ -239,11 +280,11 @@ class CodedSetTableEditContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  return {concepts: state.concepts, conceptSystems: state.conceptSystems};
+  return {concepts: state.concepts, conceptSystems: state.conceptSystems, tags: state.tags};
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchConcepts, fetchConceptSystems}, dispatch);
+  return bindActionCreators({fetchConcepts, fetchConceptSystems, fetchTags}, dispatch);
 }
 
 CodedSetTableEditContainer.propTypes = {
@@ -253,12 +294,14 @@ CodedSetTableEditContainer.propTypes = {
     displayName: PropTypes.string
   })),
   concepts:  PropTypes.object,
+  tags: PropTypes.array,
   childName: PropTypes.string,
   parentName:  PropTypes.string,
   itemWatcher: PropTypes.func,
   fetchConcepts:  PropTypes.func,
   conceptSystems: PropTypes.object,
-  fetchConceptSystems: PropTypes.func
+  fetchConceptSystems: PropTypes.func,
+  fetchTags: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CodedSetTableEditContainer);

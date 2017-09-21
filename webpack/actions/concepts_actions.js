@@ -2,13 +2,25 @@ import axios from 'axios';
 import routes from '../routes';
 import {
   FETCH_CONCEPT_SYSTEMS,
-  FETCH_CONCEPTS
+  FETCH_CONCEPTS,
+  FETCH_TAGS
 } from './types';
 
 export function fetchConceptSystems() {
   return {
     type: FETCH_CONCEPT_SYSTEMS,
     payload: axios.get(routes.conceptServiceSystemsPath(), {
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+  };
+}
+
+export function fetchTags() {
+  return {
+    type: FETCH_TAGS,
+    payload: axios.get(routes.conceptsPath(), {
       headers: {
         'Accept': 'application/json'
       }

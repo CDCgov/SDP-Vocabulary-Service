@@ -2734,6 +2734,11 @@
       "version": "http://registry.npmjs.org/dom-helpers/-/dom-helpers-3.2.1.tgz",
       "integrity": "sha1-MgPgf+0he9H0JLAZc1WC/Deyglo="
     },
+    "dom-scroll-into-view": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/dom-scroll-into-view/-/dom-scroll-into-view-1.0.1.tgz",
+      "integrity": "sha1-Mqu5Lw2P7KYhUWKu9D5LRJq42Zw="
+    },
     "domain-browser": {
       "version": "http://registry.npmjs.org/domain-browser/-/domain-browser-1.1.7.tgz",
       "integrity": "sha1-hnqksJP6oF8d4IwG9NeyH9+GmLw="
@@ -6755,6 +6760,15 @@
       "requires": {
         "fbjs": "http://registry.npmjs.org/fbjs/-/fbjs-0.8.14.tgz",
         "object-assign": "http://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
+      }
+    },
+    "react-autocomplete": {
+      "version": "1.7.1",
+      "resolved": "https://registry.npmjs.org/react-autocomplete/-/react-autocomplete-1.7.1.tgz",
+      "integrity": "sha1-GOHugbaoDDY6njOwes3yUCmaO1s=",
+      "requires": {
+        "dom-scroll-into-view": "1.0.1",
+        "prop-types": "15.5.10"
       }
     },
     "react-bootstrap": {
