@@ -22,7 +22,7 @@ export function fetchTags() {
     type: FETCH_TAGS,
     payload: axios.get(routes.conceptsPath(), {
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json', 'X-Key-Inflection': 'camel'
       }
     })
   };

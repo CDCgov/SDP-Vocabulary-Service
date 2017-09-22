@@ -4,9 +4,9 @@ import {
   FETCH_TAGS_FULFILLED
 } from '../actions/types';
 
-export default function tags(state = {}, action) {
+export default function tags(state = [], action) {
   if (action.type === FETCH_TAGS_FULFILLED) {
-    return uniqBy(action.payload.data, 'display_name');
+    return uniqBy(action.payload.data, 'displayName');
   }
   return state;
 }

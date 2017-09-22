@@ -217,12 +217,12 @@ class CodedSetTableEditContainer extends Component {
                       value={r.displayName}
                       inputProps={{ id: `displayName_${i}`, className: 'input-format', name: 'displayName', type: 'text' }}
                       wrapperStyle={{}}
-                      items={sortBy(this.props.tags, 'display_name')}
-                      getItemValue={(item) => item.display_name}
+                      items={sortBy(this.props.tags, 'displayName')}
+                      getItemValue={(item) => item.displayName}
                       shouldItemRender={(item, value) => {
-                        let name = item.display_name || '';
+                        let name = item.displayName || '';
                         let val = item.value || '';
-                        let cs = item.code_system || '';
+                        let cs = item.codeSystem || '';
                         return (
                           name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
                           val.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
@@ -233,7 +233,7 @@ class CodedSetTableEditContainer extends Component {
                         let newItems = this.state.items;
                         newItems[i]['displayName'] = value;
                         newItems[i]['value'] = item.value || '';
-                        newItems[i]['codeSystem'] = item.code_system || '';
+                        newItems[i]['codeSystem'] = item.codeSystem || '';
                         this.setState({items: newItems});
                         if (this.props.itemWatcher) {
                           this.props.itemWatcher(newItems);
@@ -244,7 +244,7 @@ class CodedSetTableEditContainer extends Component {
                         <div
                           className={`tag-item ${isHighlighted ? 'tag-item-highlighted' : ''}`}
                           key={item.id}
-                        >{item.display_name}</div>
+                        >{item.displayName}</div>
                       )}
                       renderMenu={children => (
                         <div className="tag-item-menu">
