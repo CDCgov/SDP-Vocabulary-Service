@@ -213,45 +213,49 @@ class CodedSetTableEditContainer extends Component {
                 <tr key={i}>
                   <td headers="display-name-column">
                     <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
-                    <Autocomplete
-                      value={r.displayName}
-                      inputProps={{ id: `displayName_${i}`, className: 'input-format', name: 'displayName', type: 'text' }}
-                      wrapperStyle={{}}
-                      items={sortBy(this.props.tags, 'displayName')}
-                      getItemValue={(item) => item.displayName}
-                      shouldItemRender={(item, value) => {
-                        let name = item.displayName || '';
-                        let val = item.value || '';
-                        let cs = item.codeSystem || '';
-                        return (
-                          name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
-                          val.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
-                          cs.toLowerCase().indexOf(value.toLowerCase()) !== -1
-                        );
-                      }}
-                      onSelect={(value, item) => {
-                        let newItems = this.state.items;
-                        newItems[i]['displayName'] = value;
-                        newItems[i]['value'] = item.value || '';
-                        newItems[i]['codeSystem'] = item.codeSystem || '';
-                        this.setState({items: newItems});
-                        if (this.props.itemWatcher) {
-                          this.props.itemWatcher(newItems);
-                        }
-                      }}
-                      onChange={this.handleChange(i, 'displayName')}
-                      renderItem={(item, isHighlighted) => (
-                        <div
-                          className={`tag-item ${isHighlighted ? 'tag-item-highlighted' : ''}`}
-                          key={item.id}
-                        >{item.displayName}</div>
-                      )}
-                      renderMenu={children => (
-                        <div className="tag-item-menu">
-                          {children}
-                        </div>
-                      )}
-                    />
+                    {tableType === 'Response' ? (
+                      <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
+                    ) : (
+                      <Autocomplete
+                        value={r.displayName}
+                        inputProps={{ id: `displayName_${i}`, className: 'input-format', name: 'displayName', type: 'text' }}
+                        wrapperStyle={{}}
+                        items={sortBy(this.props.tags, 'displayName')}
+                        getItemValue={(item) => item.displayName}
+                        shouldItemRender={(item, value) => {
+                          let name = item.displayName || '';
+                          let val = item.value || '';
+                          let cs = item.codeSystem || '';
+                          return (
+                            name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+                            val.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+                            cs.toLowerCase().indexOf(value.toLowerCase()) !== -1
+                          );
+                        }}
+                        onSelect={(value, item) => {
+                          let newItems = this.state.items;
+                          newItems[i]['displayName'] = value;
+                          newItems[i]['value'] = item.value || '';
+                          newItems[i]['codeSystem'] = item.codeSystem || '';
+                          this.setState({items: newItems});
+                          if (this.props.itemWatcher) {
+                            this.props.itemWatcher(newItems);
+                          }
+                        }}
+                        onChange={this.handleChange(i, 'displayName')}
+                        renderItem={(item, isHighlighted) => (
+                          <div
+                            className={`tag-item ${isHighlighted ? 'tag-item-highlighted' : ''}`}
+                            key={item.id}
+                          >{item.displayName}</div>
+                        )}
+                        renderMenu={children => (
+                          <div className="tag-item-menu">
+                            {children}
+                          </div>
+                        )}
+                      />
+                    )}
                   </td>
                   <td headers="code-column">
                     <label className="hidden" htmlFor={`value_${i}`}>Value</label>
