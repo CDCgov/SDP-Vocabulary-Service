@@ -1,4 +1,3 @@
-import assign from 'lodash/assign';
 import uniqBy from 'lodash/uniqBy';
 
 import {

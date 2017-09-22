@@ -168,7 +168,7 @@ class CodedSetTableEditContainer extends Component {
             <thead>
               <tr>
                 <th id="add-code-checkboxes-column" scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
-                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name</th>
+                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name / Tag Type</th>
                 <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code</th>
                 <th id="modal-code-system-column" scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
               </tr>
@@ -194,14 +194,14 @@ class CodedSetTableEditContainer extends Component {
             <a className="pull-right" title="Search Codes" href="#" onClick={(e) => {
               e.preventDefault();
               this.showCodeSearch();
-            }}><i className="fa fa-search"></i> Search for {tableType}s</a>
+            }}><i className="fa fa-search"></i> Search for coded {tableType}s</a>
           </caption>
           {this.conceptModal()}
           <thead>
             <tr>
-              <th scope="col" className="display-name-column" id="display-name-column">Display Name</th>
-              <th scope="col" className="code-column" id="code-column">{tableType} Code</th>
-              <th scope="col" className="code-system-column" id="code-system-column">Code System</th>
+              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : `${tableType} Type`}</th>
+              <th scope="col" className="code-column" id="code-column">{tableType}</th>
+              <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier (Optional)</th>
             </tr>
           </thead>
           <tbody>
@@ -230,14 +230,14 @@ class CodedSetTableEditContainer extends Component {
                         );
                       }}
                       onSelect={(value, item) => {
-                          let newItems = this.state.items;
-                          newItems[i]['displayName'] = value;
-                          newItems[i]['value'] = item.value || '';
-                          newItems[i]['codeSystem'] = item.code_system || '';
-                          this.setState({items: newItems});
-                          if (this.props.itemWatcher) {
-                            this.props.itemWatcher(newItems);
-                          }
+                        let newItems = this.state.items;
+                        newItems[i]['displayName'] = value;
+                        newItems[i]['value'] = item.value || '';
+                        newItems[i]['codeSystem'] = item.code_system || '';
+                        this.setState({items: newItems});
+                        if (this.props.itemWatcher) {
+                          this.props.itemWatcher(newItems);
+                        }
                       }}
                       onChange={this.handleChange(i, 'displayName')}
                       renderItem={(item, isHighlighted) => (
@@ -273,7 +273,7 @@ class CodedSetTableEditContainer extends Component {
         <a className="pull-right" title="Add Row" href="#" onClick={(e) => {
           e.preventDefault();
           this.addItemRow();
-        }}><i className="fa fa-plus"></i> Add a row to the table</a>
+        }}><i className="fa fa-plus"></i> {`Add a new ${tableType}`}</a>
       </div>
     );
   }

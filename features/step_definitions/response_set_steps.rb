@@ -49,7 +49,7 @@ end
 
 When(/^I click on the link to remove the Response "([^"]*)" in row number (.+)$/) do |response_name, row|
   node = find('input[value="' + response_name + '"]')
-  tr = node.find(:xpath, '../..')
+  tr = node.find(:xpath, '../../..')
   tr.click_on('Delete row number ' + row)
 end
 When(/^I click on the menu link for the Response Set with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
