@@ -291,7 +291,7 @@ export default class SearchResult extends Component {
           <div className={`u-result-details result__${type}`}>
             <div className="list-inline result-type-wrapper">
               <div className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></div>
-              <div className="result-name" aria-label="Item Name.">
+              <div className={isEditPage ? "unlinked-result-name" : "result-name"} aria-label="Item Name.">
                 {this.resultName(result, highlight, type, isEditPage)}
               </div>
             </div>
