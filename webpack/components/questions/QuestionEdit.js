@@ -4,16 +4,16 @@ import { Link } from 'react-router';
 import values from 'lodash/values';
 
 import { questionProps } from '../../prop-types/question_props';
+import currentUserProps from '../../prop-types/current_user_props';
 
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 import ResponseSetModal from '../../containers/response_sets/ResponseSetModal';
 import ResponseSetDragWidget from '../../containers/response_sets/ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
-
+import SearchResultList from '../../components/SearchResultList';
 
 class QuestionEdit extends Component {
-
   constructor(props) {
     super(props);
     switch(this.props.action) {
@@ -42,6 +42,14 @@ class QuestionEdit extends Component {
     }
     if(nextProps.question && nextProps.question.responseSets && !this.unsavedState && nextProps.question.responseSets !== this.state.linkedResponseSets) {
       this.setState({ linkedResponseSets: nextProps.question.responseSets });
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if ((this.state.content !== nextState.content ||
+        this.state.description !== nextState.description) &&
+        (nextState.content.length >= 10 || nextState.description.length >= 10)) {
+      this.props.fetchPotentialDuplicateQuestions(nextState.content, nextState.description);
     }
   }
 
@@ -237,6 +245,14 @@ class QuestionEdit extends Component {
                 : ''}
               </div>
               <div className="panel-footer">
+                <div>
+                  { this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
+                    <SearchResultList searchResults={this.props.potentialDuplicates}
+                                      isEditPage={false}
+                                      currentUser={this.props.currentUser}
+                                      title="Potential Duplicate Questions"/>
+                  }
+                </div>
                 <div className="actions form-group">
                   <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with="Save">Save</button>
                   {this.cancelButton()}
@@ -274,6 +290,7 @@ class QuestionEdit extends Component {
       return 1;
     });
   }
+
   cancelButton() {
     if (this.props.question && this.props.question.id) {
       return(<Link className="btn btn-default" to={`/questions/${this.props.question.id}`}>Cancel</Link>);
@@ -388,7 +405,10 @@ QuestionEdit.propTypes = {
   stats: PropTypes.object,
   draftSubmitter: PropTypes.func.isRequired,
   questionSubmitter: PropTypes.func.isRequired,
-  handleResponseTypeChange: PropTypes.func
+  handleResponseTypeChange: PropTypes.func,
+  fetchPotentialDuplicateQuestions: PropTypes.func,
+  potentialDuplicates: PropTypes.object,
+  currentUser: currentUserProps
 };
 
 export default QuestionEdit;

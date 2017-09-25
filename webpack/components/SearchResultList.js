@@ -9,7 +9,7 @@ export default class SearchResultList extends Component {
       <div className="search-result-list">
         {this.props.searchResults.hits &&
           <row>
-            <h1 className="search-result-heading">Search Results ({this.props.searchResults.hits && this.props.searchResults.hits.total && this.props.searchResults.hits.total})</h1>
+            <h1 className="search-result-heading">{this.title()} ({this.props.searchResults.hits && this.props.searchResults.hits.total && this.props.searchResults.hits.total})</h1>
             <hr/>
           </row>
         }
@@ -26,6 +26,14 @@ export default class SearchResultList extends Component {
       </div>
     );
   }
+
+  title() {
+    if (this.props.title) {
+      return this.props.title;
+    } else {
+      return "Search Results";
+    }
+  }
 }
 
 SearchResultList.propTypes = {
@@ -34,5 +42,6 @@ SearchResultList.propTypes = {
   isEditPage: PropTypes.bool,
   handleSelectSearchResult: PropTypes.func,
   extraActionName: PropTypes.string,
-  extraAction: PropTypes.func
+  extraAction: PropTypes.func,
+  title: PropTypes.string
 };

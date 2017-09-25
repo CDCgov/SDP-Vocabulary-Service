@@ -5,14 +5,23 @@ import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
 import { questionSchema } from '../../schema';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../../actions/questions_actions';
+import { fetchPotentialDuplicateQuestions } from '../../actions/search_results_actions';
 import QuestionEdit from '../../components/questions/QuestionEdit';
 import { questionProps } from '../../prop-types/question_props';
+import currentUserProps from '../../prop-types/current_user_props';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
 import { fetchQuestionTypes } from '../../actions/question_type_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 
+const DUPLICATE_QUESTION_CONTEXT = "DUPLICATE_QUESTION_CONTEXT";
+
 class QuestionEditContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.fetchPotentialDuplicateQuestions = this.fetchPotentialDuplicateQuestions.bind(this);
+  }
+
   componentWillMount() {
     if(this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
@@ -73,6 +82,10 @@ class QuestionEditContainer extends Component {
       }]);
   }
 
+  fetchPotentialDuplicateQuestions(content, description) {
+    this.props.fetchPotentialDuplicateQuestions(DUPLICATE_QUESTION_CONTEXT, content, description);
+  }
+
   render() {
     if(!this.props.question || !this.props.questionTypes || !this.props.responseTypes){
       return (
@@ -89,10 +102,13 @@ class QuestionEditContainer extends Component {
                       draftSubmitter={this.props.saveDraftQuestion}
                       questionSubmitter={this.props.saveQuestion}
                       publishSubmitter ={this.props.publishQuestion}
+                      fetchPotentialDuplicateQuestions={this.fetchPotentialDuplicateQuestions}
+                      potentialDuplicates={this.props.potentialDuplicates}
                       questionTypes={this.props.questionTypes}
                       responseTypes={this.props.responseTypes}
                       router={this.props.router}
-                      route ={this.props.route} />
+                      route={this.props.route}
+                      currentUser={this.props.currentUser} />
       </div>
     );
   }
@@ -112,14 +128,16 @@ function mapStateToProps(state, ownProps) {
   }
   props.questionTypes = state.questionTypes;
   props.responseTypes = state.responseTypes;
+  props.potentialDuplicates = state.searchResults[DUPLICATE_QUESTION_CONTEXT] || {};
   props.stats = state.stats;
+  props.currentUser = state.currentUser;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion,
     publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes,
-    setSteps, setStats}, dispatch);
+    setSteps, setStats, fetchPotentialDuplicateQuestions}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
@@ -128,6 +146,7 @@ QuestionEditContainer.propTypes = {
   responseTypes: PropTypes.object,
   saveQuestion:  PropTypes.func,
   fetchQuestion: PropTypes.func,
+  fetchPotentialDuplicateQuestions: PropTypes.func,
   deleteQuestion:  PropTypes.func,
   publishQuestion: PropTypes.func,
   saveDraftQuestion:  PropTypes.func,
@@ -138,7 +157,9 @@ QuestionEditContainer.propTypes = {
   stats: PropTypes.object,
   params: PropTypes.object.isRequired,
   route:  PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
+  potentialDuplicates: PropTypes.object,
+  currentUser: currentUserProps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionEditContainer);

@@ -139,3 +139,14 @@ Feature: Edit Questions
     And I click on the create "Questions" dropdown item
     And I click on the "Save" button
     And I should see "content - can't be blank"
+
+  Scenario: Suggest Duplicate Questions
+    Given I have a Question with the content "What is your favorite color?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
+    And I am logged in as test_author@gmail.com
+    When I go to the dashboard
+    And I click on the create "Questions" dropdown item
+    Then I should see "Create Question"
+    And I should not see "Potential Duplicate Questions"
+    Then I fill in the "Question" field with "What is your favorite animal?"
+    Then I should see "Potential Duplicate Questions"
+    And I should see "What is your favorite color?"
