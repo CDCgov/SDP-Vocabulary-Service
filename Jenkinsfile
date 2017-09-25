@@ -9,7 +9,6 @@ node('ruby') {
 
   stage('Install Deps') {
     sh 'yarn install'
-    sh 'bundle exec rails assets:precompile'
     sh 'bundle install'
   }
 
