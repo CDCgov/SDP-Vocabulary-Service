@@ -99,6 +99,27 @@ table.scroll-table-body{
   }
 }
 
+.tag-item-menu {
+  position: absolute;
+	z-index: 100;
+	max-height: 200px;
+	overflow-y: auto;
+  box-sizing: border-box;
+  width: 30%;
+  border: 1px solid #cccccc;
+  background-color: white;
+}
+
+.tag-item {
+  padding: 2px 6px;
+  cursor: default;
+}
+
+.tag-item-highlighted {
+  color: white;
+  background-color: #4095bf;
+}
+
 /*table.fixed-height{
    height:300px;
    display: -moz-groupbox;

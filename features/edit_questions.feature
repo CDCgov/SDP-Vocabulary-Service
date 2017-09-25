@@ -15,10 +15,13 @@ Feature: Edit Questions
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link
+    And I click on the "Add Row" link
+    And I fill in the "displayName_1" field with "New"
+    And I select tag "New Concept Name" in the tag dropdown
     And I click on the "Save" button
     And I should see "What is your favorite color?"
     And I should see "This is a revised description"
-    And I should not see "New Concept Name"
+    And I should see "New Concept Name"
     And I should see "Test Concept 2"
 
   Scenario: Extend Question

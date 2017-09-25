@@ -157,6 +157,10 @@ Then(/^I press the key (.*)$/) do |key|
   find('.body').send_keys(key)
 end
 
+Then(/^I select tag "([^"]*)" in the tag dropdown$/) do |tag|
+  page.find('.tag-item', text: tag).click
+end
+
 Then(/^I press the (.*) key (.*) times$/) do |key, iterations|
   key = key.to_sym if key.length > 1
   iterations.to_i.times do

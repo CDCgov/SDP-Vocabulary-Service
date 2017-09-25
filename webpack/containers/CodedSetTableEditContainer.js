@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Modal, Checkbox, Button, ControlLabel, FormGroup, InputGroup, DropdownButton, MenuItem} from 'react-bootstrap';
+import Autocomplete from 'react-autocomplete';
+import sortBy from 'lodash/sortBy';
 import values from 'lodash/values';
 import filter from 'lodash/filter';
 import concat from 'lodash/concat';
 
 import NestedSearchBar from '../components/NestedSearchBar';
-import { fetchConcepts, fetchConceptSystems } from '../actions/concepts_actions';
+import { fetchConcepts, fetchConceptSystems, fetchTags } from '../actions/concepts_actions';
 
 
 class CodedSetTableEditContainer extends Component {
@@ -22,6 +24,7 @@ class CodedSetTableEditContainer extends Component {
 
   componentWillMount() {
     this.props.fetchConceptSystems();
+    this.props.fetchTags();
   }
 
   addItemRow(displayName='', codeSystem='', value='') {
@@ -165,7 +168,7 @@ class CodedSetTableEditContainer extends Component {
             <thead>
               <tr>
                 <th id="add-code-checkboxes-column" scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
-                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name</th>
+                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name / Tag Type</th>
                 <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code</th>
                 <th id="modal-code-system-column" scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
               </tr>
@@ -191,14 +194,14 @@ class CodedSetTableEditContainer extends Component {
             <a className="pull-right" title="Search Codes" href="#" onClick={(e) => {
               e.preventDefault();
               this.showCodeSearch();
-            }}><i className="fa fa-search"></i> Search for {tableType}s</a>
+            }}><i className="fa fa-search"></i> Search for coded {tableType}s</a>
           </caption>
           {this.conceptModal()}
           <thead>
             <tr>
-              <th scope="col" className="display-name-column" id="display-name-column">Display Name</th>
-              <th scope="col" className="code-column" id="code-column">{tableType} Code</th>
-              <th scope="col" className="code-system-column" id="code-system-column">Code System</th>
+              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : `${tableType} Type`}</th>
+              <th scope="col" className="code-column" id="code-column">{tableType}</th>
+              <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier (Optional)</th>
             </tr>
           </thead>
           <tbody>
@@ -210,7 +213,49 @@ class CodedSetTableEditContainer extends Component {
                 <tr key={i}>
                   <td headers="display-name-column">
                     <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
-                    <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
+                    {tableType === 'Response' ? (
+                      <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
+                    ) : (
+                      <Autocomplete
+                        value={r.displayName}
+                        inputProps={{ id: `displayName_${i}`, className: 'input-format', name: 'displayName', type: 'text' }}
+                        wrapperStyle={{}}
+                        items={sortBy(this.props.tags, 'displayName')}
+                        getItemValue={(item) => item.displayName}
+                        shouldItemRender={(item, value) => {
+                          let name = item.displayName || '';
+                          let val = item.value || '';
+                          let cs = item.codeSystem || '';
+                          return (
+                            name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+                            val.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+                            cs.toLowerCase().indexOf(value.toLowerCase()) !== -1
+                          );
+                        }}
+                        onSelect={(value, item) => {
+                          let newItems = this.state.items;
+                          newItems[i]['displayName'] = value;
+                          newItems[i]['value'] = item.value || '';
+                          newItems[i]['codeSystem'] = item.codeSystem || '';
+                          this.setState({items: newItems});
+                          if (this.props.itemWatcher) {
+                            this.props.itemWatcher(newItems);
+                          }
+                        }}
+                        onChange={this.handleChange(i, 'displayName')}
+                        renderItem={(item, isHighlighted) => (
+                          <div
+                            className={`tag-item ${isHighlighted ? 'tag-item-highlighted' : ''}`}
+                            key={item.id}
+                          >{item.displayName}</div>
+                        )}
+                        renderMenu={children => (
+                          <div className="tag-item-menu">
+                            {children}
+                          </div>
+                        )}
+                      />
+                    )}
                   </td>
                   <td headers="code-column">
                     <label className="hidden" htmlFor={`value_${i}`}>Value</label>
@@ -232,18 +277,18 @@ class CodedSetTableEditContainer extends Component {
         <a className="pull-right" title="Add Row" href="#" onClick={(e) => {
           e.preventDefault();
           this.addItemRow();
-        }}><i className="fa fa-plus"></i> Add a row to the table</a>
+        }}><i className="fa fa-plus"></i> {`Add a new ${tableType}`}</a>
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {concepts: state.concepts, conceptSystems: state.conceptSystems};
+  return {concepts: state.concepts, conceptSystems: state.conceptSystems, tags: state.tags};
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchConcepts, fetchConceptSystems}, dispatch);
+  return bindActionCreators({fetchConcepts, fetchConceptSystems, fetchTags}, dispatch);
 }
 
 CodedSetTableEditContainer.propTypes = {
@@ -253,12 +298,14 @@ CodedSetTableEditContainer.propTypes = {
     displayName: PropTypes.string
   })),
   concepts:  PropTypes.object,
+  tags: PropTypes.array,
   childName: PropTypes.string,
   parentName:  PropTypes.string,
   itemWatcher: PropTypes.func,
   fetchConcepts:  PropTypes.func,
   conceptSystems: PropTypes.object,
-  fetchConceptSystems: PropTypes.func
+  fetchConceptSystems: PropTypes.func,
+  fetchTags: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CodedSetTableEditContainer);

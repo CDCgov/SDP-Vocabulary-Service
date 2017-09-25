@@ -24,6 +24,7 @@ import currentUser from './current_user_reducer';
 import notifications from './notifications';
 import searchResults from './search_results_reducer';
 import concepts from './concepts_reducer';
+import tags from './tags_reducer';
 import conceptSystems from './concept_systems_reducer';
 import surveys from './surveys_reducer';
 import tutorialSteps from './tutorial_reducer';
@@ -40,7 +41,7 @@ const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED);
 const rootReducer = combineReducers({
   questions, comments, stats, currentUser, responseSets, forms, questionTypes,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch,
-  surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps
+  surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags
 });
 
 export default rootReducer;
