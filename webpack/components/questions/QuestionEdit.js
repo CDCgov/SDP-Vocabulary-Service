@@ -244,15 +244,15 @@ class QuestionEdit extends Component {
                                          selectedResponseSets={this.state.linkedResponseSets} />
                 : ''}
               </div>
+              <div>
+                { this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
+                  <SearchResultList searchResults={this.props.potentialDuplicates}
+                                    isEditPage={false}
+                                    currentUser={this.props.currentUser}
+                                    title="Potential Duplicate Questions"/>
+                }
+              </div>
               <div className="panel-footer">
-                <div>
-                  { this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
-                    <SearchResultList searchResults={this.props.potentialDuplicates}
-                                      isEditPage={false}
-                                      currentUser={this.props.currentUser}
-                                      title="Potential Duplicate Questions"/>
-                  }
-                </div>
                 <div className="actions form-group">
                   <button type="submit" name="commit" id='submit-question-form' className="btn btn-default" data-disable-with="Save">Save</button>
                   {this.cancelButton()}
