@@ -68,6 +68,22 @@ export function setLastSearch(searchTerms=null, type=null, programFilter=[], sys
   };
 }
 
+export function fetchPotentialDuplicateQuestions(context, content, description) {
+  return {
+    type: FETCH_SEARCH_RESULTS,
+    meta: {context: context},
+    payload: axios.get(routes.elasticsearchDuplicateQuestionsPath(), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      params: { content, description }
+    }).then((response) => {
+      const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      unelasticsearchResults(normalizedData.entities);
+      store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
+      return response;
+    })
+  };
+}
+
 // Everything in elasticsearch has codes, with code and codeSystem. The models
 // expect their own thing ResponseSet.responses, Question.concepts with value
 // and codeSystem. This function will transform the elasticsearch results into

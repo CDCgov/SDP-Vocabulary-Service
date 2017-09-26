@@ -6,12 +6,16 @@ import { Modal, Button } from 'react-bootstrap';
 import $ from 'jquery';
 
 import { saveQuestion } from '../../actions/questions_actions';
+import { fetchPotentialDuplicateQuestions } from '../../actions/search_results_actions';
 import Errors from '../../components/Errors';
 import QuestionEdit from '../../components/questions/QuestionEdit';
 import ResponseSetList  from '../../components/response_sets/ResponseSetList';
 import ResponseSetDragWidget  from '../response_sets/ResponseSetDragWidget';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
 import { fetchQuestionTypes } from '../../actions/question_type_actions';
+import currentUserProps from '../../prop-types/current_user_props';
+
+const DUPLICATE_QUESTION_MODAL_CONTEXT = "DUPLICATE_QUESTION_MODAL_CONTEXT";
 
 class QuestionModalContainer extends Component {
 
@@ -22,6 +26,7 @@ class QuestionModalContainer extends Component {
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.handleResponseTypeChange = this.handleResponseTypeChange.bind(this);
+    this.fetchPotentialDuplicateQuestions = this.fetchPotentialDuplicateQuestions.bind(this);
   }
 
   componentWillMount() {
@@ -55,6 +60,10 @@ class QuestionModalContainer extends Component {
   closeQuestionModal(){
     this.setState({showResponseSets: false, showResponseSetWidget:false, linkedResponseSets: [], errors: null});
     this.props.closeQuestionModal();
+  }
+
+  fetchPotentialDuplicateQuestions(content, description) {
+    this.props.fetchPotentialDuplicateQuestions(DUPLICATE_QUESTION_MODAL_CONTEXT, content, description);
   }
 
   responseSetWidgetBody(){
@@ -135,6 +144,9 @@ class QuestionModalContainer extends Component {
                         draftSubmitter ={()=>{}}
                         deleteSubmitter={()=>{}}
                         publishSubmitter ={()=>{}}
+                        fetchPotentialDuplicateQuestions={this.fetchPotentialDuplicateQuestions}
+                        currentUser={this.props.currentUser}
+                        potentialDuplicates={this.props.potentialDuplicates}
                         questionSubmitter={this.saveNewQuestion}
                         handleResponseTypeChange={this.handleResponseTypeChange} />
           {responseSetsDiv}
@@ -164,11 +176,13 @@ class QuestionModalContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  return {questionTypes: state.questionTypes, responseTypes: state.responseTypes};
+  return {questionTypes: state.questionTypes, responseTypes: state.responseTypes,
+    currentUser: state.currentUser,
+    potentialDuplicates: state.searchResults[DUPLICATE_QUESTION_MODAL_CONTEXT] || {}};
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestionTypes, fetchResponseTypes, saveQuestion}, dispatch);
+  return bindActionCreators({fetchQuestionTypes, fetchResponseTypes, saveQuestion, fetchPotentialDuplicateQuestions}, dispatch);
 }
 
 QuestionModalContainer.propTypes = {
@@ -181,7 +195,10 @@ QuestionModalContainer.propTypes = {
   fetchQuestionTypes: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   closeQuestionModal: PropTypes.func.isRequired,
-  handleSaveQuestionSuccess: PropTypes.func.isRequired
+  handleSaveQuestionSuccess: PropTypes.func.isRequired,
+  fetchPotentialDuplicateQuestions: PropTypes.func,
+  currentUser: currentUserProps,
+  potentialDuplicates: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionModalContainer);
