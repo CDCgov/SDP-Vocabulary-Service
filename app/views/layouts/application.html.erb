@@ -9,7 +9,7 @@
     <%= csrf_meta_tags %>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
-    <%= javascript_include_tag *webpack_asset_paths('babel-polyfill', extension: 'js') %>
+    <%= javascript_pack_tag 'babel-polyfill' %>
   </head>
 
   <body class="body">

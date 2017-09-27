@@ -8,7 +8,7 @@ gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 
-gem 'webpack-rails'
+gem 'webpacker'
 gem 'olive_branch'
 
 gem 'active_model_serializers', '~> 0.10.0'

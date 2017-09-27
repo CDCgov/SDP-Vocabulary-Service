@@ -8,7 +8,7 @@ node('ruby') {
   }
 
   stage('Install Deps') {
-    sh 'npm install'
+    sh 'yarn install'
     sh 'bundle install'
   }
 
