@@ -26,7 +26,13 @@ export function byIdWithIndividualReducer(batchSuccessType, individualSuccessTyp
   return (state = {}, action) => {
     switch (action.type) {
       case ADD_ENTITIES_FULFILLED:
-        return Object.assign({}, state, action.payload[type]);
+        var newEntities = {};
+        for (var id in action.payload[type]) {
+          if (state[id] === undefined) {
+            newEntities[id] = action.payload[type][id];
+          }
+        }
+        return Object.assign({}, state, newEntities);
       case individualSuccessType:
         const stateClone = Object.assign({}, state);
         stateClone[action.payload.data.id] = action.payload.data;
