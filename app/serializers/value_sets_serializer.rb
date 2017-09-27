@@ -1,6 +1,6 @@
 class ValueSetsSerializer < ActiveModel::Serializer
   attribute :url do
-    if object.source == 'PHIN_VADS' && object.oid
+    if object.source == 'PHIN_VADS' && object.oid && object.responses.count == 0
       "https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=#{object.oid}"
     else
       Rails.application.routes.url_helpers.api_valueSet_url(object.version_independent_id, version: object.version, only_path: true)
