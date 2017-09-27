@@ -49,7 +49,7 @@ class ResponseSetTest < ActiveSupport::TestCase
   end
 
   test 'latest_versions' do
-    assert_equal 6, ResponseSet.latest_versions.count
+    assert_equal 7, ResponseSet.latest_versions.count
   end
 
   test 'build_new_revision' do
