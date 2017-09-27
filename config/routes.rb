@@ -36,7 +36,6 @@ Rails.application.routes.draw do
     put :publish, on: :member
   end
   resources :question_response_sets
-  resources :responses
   resources :concepts
   resources :questions, except: [:edit] do
     get :revise, on: :member
