@@ -35,7 +35,11 @@ class MMGTest < ActiveSupport::TestCase
     assert form.present?
     assert_equal form.questions.count, 1
     assert_equal form.concepts.count, 1
+    assert_equal form.form_questions.first.position, 0
     assert_equal form.concepts.first.value, 'Data Elements'
-    assert Survey.where(name: f).first.forms.count, FORM_COUNT
+
+    survey = Survey.where(name: f).first
+    assert survey.forms.count, FORM_COUNT
+    assert survey.survey_forms.first.position, 0
   end
 end

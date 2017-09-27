@@ -101,7 +101,8 @@ module SDP
           f = Form.new(name: name || "Imported Form ##{f_position + 1}", created_by: @user)
           f.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
           f.save!
-          s.survey_forms.create(form: f, position: f_position += 1)
+          s.survey_forms.create(form: f, position: f_position)
+          f_position += 1
           q_position = 0
           elements.each do |element|
             rs = nil
@@ -113,7 +114,8 @@ module SDP
             q = question_for(element)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
-            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position += 1)
+            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
+            q_position += 1
             q.index
           end
           UpdateIndexJob.perform_now('form', f)
