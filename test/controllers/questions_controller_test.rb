@@ -19,14 +19,6 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get my questions' do
-    get my_questions_url, xhr: true, params: nil
-    assert_response :success
-    JSON.parse(response.body).each do |f|
-      assert f['created_by_id'] == @current_user.id
-    end
-  end
-
   test 'revisions should increment version without needing a param' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     Question.last.publish(@current_user)

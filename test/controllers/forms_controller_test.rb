@@ -52,14 +52,6 @@ class FormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'should get my forms' do
-    get my_forms_url, xhr: true, params: nil
-    assert_response :success
-    JSON.parse(response.body).each do |f|
-      assert f['created_by_id'] == @current_user.id
-    end
-  end
-
   test 'should create form' do
     assert_enqueued_jobs 0
 
