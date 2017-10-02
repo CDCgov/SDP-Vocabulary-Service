@@ -64,14 +64,6 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get my response sets' do
-    get my_response_sets_url, xhr: true, params: nil
-    assert_response :success
-    JSON.parse(response.body).each do |f|
-      assert f['created_by']['id'] == @current_user.id
-    end
-  end
-
   test 'revisions should increment version without needing a param' do
     rs_json = { response_set: { version_independent_id: 'RS-1337', description: @response_set.description, name: @response_set.name, oid: '2.16.840.1.113883.3.1502.3.4' } }.to_json
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }

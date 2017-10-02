@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :surveillance_systems, only: [:index, :show]
   resources :surveillance_programs, only: [:index, :show]
   get 'response_types', to: 'response_types#index', as: :response_types
+  get 'question_types', to: 'question_types#index', as: :question_types
+  get 'concepts', to: 'concepts#index', as: :concepts
   get 'elasticsearch', to: 'elasticsearch#index', as: :elasticsearch
   get 'elasticsearch/duplicate_questions' => 'elasticsearch#duplicate_questions'
 
@@ -20,10 +22,6 @@ Rails.application.routes.draw do
 
   get '/publishers' => 'publishers#index'
 
-  get '/my_forms' => 'forms#my_forms'
-  get '/my_questions' => 'questions#my_questions'
-  get '/my_response_sets' => 'response_sets#my_response_sets'
-
   resources :form_questions
   resources :forms, except: [:edit] do # No need for edit as that is handled on the react side
     get :revise, on: :member
@@ -35,9 +33,6 @@ Rails.application.routes.draw do
     get :revise, on: :member
     put :publish, on: :member
   end
-  resources :question_response_sets
-  resources :responses
-  resources :concepts
   resources :questions, except: [:edit] do
     get :revise, on: :member
     get :usage, on: :member
@@ -46,7 +41,6 @@ Rails.application.routes.draw do
   resources :comments do
     post :reply_to, on: :member
   end
-  resources :question_types
 
   resources :response_sets, except: [:edit] do
     get :revise, on: :member

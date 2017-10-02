@@ -6,15 +6,6 @@ class QuestionsController < ApplicationController
     @questions = Question.includes(:response_sets, :response_type).all
   end
 
-  def my_questions
-    @questions = if params[:search]
-                   Question.where('created_by_id=? and content ILIKE ?', current_user.id, "%#{search}%").latest_versions
-                 else
-                   Question.where(created_by_id: current_user.id).latest_versions
-                 end
-    render action: :index, collection: @questions
-  end
-
   # GET /questions/1
   # GET /questions/1.json
   def show

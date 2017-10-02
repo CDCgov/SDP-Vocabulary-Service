@@ -8,11 +8,6 @@ class FormsController < ApplicationController
     @users = User.all
   end
 
-  def my_forms
-    @forms = params[:search] ? Form.owned_by(current_user.id).search(params[:search]).latest_versions : Form.owned_by(current_user.id).latest_versions
-    render action: :index, collection: @forms
-  end
-
   # GET /forms/1
   # GET /forms/1.json
   def show
