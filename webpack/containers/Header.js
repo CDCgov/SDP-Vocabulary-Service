@@ -226,6 +226,7 @@ class Header extends Component {
                       return this.joyride.reset(true);
                     }}>Step-by-Step Walkthrough</a></li>
                   }
+                  <li className="nav-dropdown-item"><a href="/api/" tabIndex="2" target="_blank">Swagger API</a></li>
                   <li role="separator" className="divider"></li>
                   <li className="nav-dropdown-item"><span className="version-display">Release: v{this.props.appVersion}</span></li>
                 </ul>
