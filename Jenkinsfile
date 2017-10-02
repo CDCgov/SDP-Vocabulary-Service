@@ -12,6 +12,10 @@ node('ruby') {
     sh 'bundle install'
   }
 
+  stage('Precompile Assets') {
+    sh 'NODE_ENV=production bundle exec rails assets:precompile'
+  }
+
   stage('Start Foreman') {
     sh 'foreman start webpack &'
   }
