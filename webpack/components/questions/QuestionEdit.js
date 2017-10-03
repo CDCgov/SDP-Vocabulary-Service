@@ -50,6 +50,7 @@ class QuestionEdit extends Component {
         this.state.description !== nextState.description) &&
         (nextState.content.length >= 10 || nextState.description.length >= 10)) {
       this.props.fetchPotentialDuplicateQuestions(nextState.content, nextState.description);
+      this.setState({ showPotentialDuplicates: true });
     }
   }
 
@@ -97,7 +98,8 @@ class QuestionEdit extends Component {
   modalInitialState() {
     return {
       showWarningModal: false,
-      showResponseSetModal: false
+      showResponseSetModal: false,
+      showPotentialDuplicates: false
     };
   }
 
@@ -245,7 +247,7 @@ class QuestionEdit extends Component {
                 : ''}
               </div>
               <div>
-                { this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
+                { this.state.showPotentialDuplicates && this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
                   <SearchResultList searchResults={this.props.potentialDuplicates}
                                     isEditPage={false}
                                     currentUser={this.props.currentUser}
