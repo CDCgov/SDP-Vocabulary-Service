@@ -458,6 +458,9 @@ Based on Rails routes of Vocabulary::Application
     make: function() {
       var routes;
       routes = {
+// admins => /admins(.:format)
+  // function(options)
+  admins_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admins",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // api_form => /api/forms/:id(.:format)
   // function(id, options)
   api_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

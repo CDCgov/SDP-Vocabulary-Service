@@ -122,9 +122,11 @@ export const DELETE_SURVEY_FULFILLED = 'DELETE_SURVEY_FULFILLED';
 // Current User
 export const LOG_OUT = 'LOG_OUT';
 
-// Publisher types
+// Publisher and admin types
 export const FETCH_PUBLISHERS = 'FETCH_PUBLISHERS';
 export const FETCH_PUBLISHERS_FULFILLED = 'FETCH_PUBLISHERS_FULFILLED';
+export const FETCH_ADMINS = 'FETCH_ADMINS';
+export const FETCH_ADMINS_FULFILLED = 'FETCH_ADMINS_FULFILLED';
 
 // Normalized types
 export const ADD_ENTITIES = 'ADD_ENTITIES';

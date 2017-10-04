@@ -18,8 +18,10 @@ import FormsEditContainer from './containers/forms/FormsEditContainer';
 import SurveyShowContainer from './containers/surveys/SurveyShowContainer';
 import Privacy from './containers/Privacy';
 import Help from './containers/Help';
+import AdminPanel from './containers/AdminPanel';
 import App from './containers/App';
 import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
+import AdminRoutes from './containers/AdminRoutes';
 import ErrorPage, {GenericError ,Forbidden403} from './containers/ErrorPages';
 
 
@@ -30,6 +32,9 @@ ReactDOM.render(
     <Router history={hashHistory} onUpdate={logPageViewed}>
       <Route path='/' component={App}>
         <IndexRoute component={DashboardContainer} />
+        <Route component={AdminRoutes}>
+          <Route path='/admin' component={AdminPanel} />
+        </Route>
         <Route component={AuthenticatedRoutes}>
           <Route path='/forms/new' component={FormsEditContainer} />
           <Route path='/forms/:formId/:action' component={FormsEditContainer} />

@@ -9,7 +9,8 @@ import {
   FETCH_RESPONSE_TYPE_FULFILLED,
   FETCH_SURVEILLANCE_SYSTEMS_FULFILLED,
   FETCH_SURVEILLANCE_PROGRAMS_FULFILLED,
-  FETCH_PUBLISHERS_FULFILLED
+  FETCH_PUBLISHERS_FULFILLED,
+  FETCH_ADMINS_FULFILLED
 } from '../actions/types';
 
 
@@ -37,9 +38,10 @@ const responseTypes = byIdWithIndividualReducer(FETCH_RESPONSE_TYPES_FULFILLED,
 const surveillanceSystems  = byIdReducer(FETCH_SURVEILLANCE_SYSTEMS_FULFILLED);
 const surveillancePrograms = byIdReducer(FETCH_SURVEILLANCE_PROGRAMS_FULFILLED);
 const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED);
+const admins = byIdReducer(FETCH_ADMINS_FULFILLED);
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, forms, questionTypes,
+  questions, comments, stats, currentUser, responseSets, forms, questionTypes, admins,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags
 });

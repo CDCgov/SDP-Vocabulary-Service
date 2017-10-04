@@ -62,6 +62,7 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
             settingsOpener();
             return false;
           }}>Settings</a></li>
+          {currentUser.admin && <li><Link to="/admin" tabIndex="2"><text className="sr-only">Click link to visit </text>Admin Panel</Link></li>}
           <li role="separator" className="divider"></li>
           <li>
             <a href="/users/sign_out" tabIndex="2">Logout</a>

@@ -21,6 +21,11 @@ Rails.application.routes.draw do
   resources :authentications
 
   get '/publishers' => 'publishers#index'
+  get '/admins' => 'admins#index'
+
+  namespace :admin do
+    get '/roles' => 'roles#index'
+  end
 
   resources :form_questions
   resources :forms, except: [:edit] do # No need for edit as that is handled on the react side
