@@ -16,13 +16,21 @@ export function fetchAdmins() {
   };
 }
 
-export function grantAdmin(email) {
+export function grantAdmin(email, callback=null) {
+  const putPromise = axios.put(routes.adminGrantAdminPath(), {
+    headers: {
+      'X-Key-Inflection': 'camel',
+      'Accept': 'application/json'
+    },
+    authenticityToken: getCSRFToken(),
+    email: email
+  });
+  if (callback) {
+    putPromise.then(callback);
+  }
   return {
     type: GRANT_ADMIN,
-    payload: axios.put(routes.adminGrantAdminPath(), {
-      authenticityToken: getCSRFToken(),
-      email: email
-    })
+    payload: putPromise
   };
 }
 

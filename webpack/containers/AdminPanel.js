@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import { setSteps } from '../actions/tutorial_actions';
 import { revokeAdmin } from '../actions/admin_actions';
+import { revokePublisher } from '../actions/publisher_actions';
 
 class AdminPanel extends Component {
   constructor(props){
@@ -44,9 +45,9 @@ class AdminPanel extends Component {
         <h2 id="admin-list">Admin List</h2>
         {adminList.map((admin) => {
           return (
-          <p key={admin.id}>{admin.name} - {admin.email}<button className="btn btn-default" onClick={() => {
+          <p key={admin.id}>{admin.name} ({admin.email}) <button className="btn btn-default" onClick={() => {
             this.props.revokeAdmin(admin.id);
-          }}>Remove</button>
+          }}>Remove<text className="sr-only">{`- click to remove ${admin.name} from admin list`}</text></button>
           </p>);
         })}
       </div>
@@ -59,7 +60,10 @@ class AdminPanel extends Component {
       <div className="tab-pane" id="publisher-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'publisher-list'} aria-labelledby="publisher-list-tab">
         <h2 id="publisher-list">Publisher List</h2>
         {publisherList.map((pub) => {
-          return (<p key={pub.id}>{pub.name} - {pub.email}</p>);
+          return (<p key={pub.id}>{pub.name} ({pub.email}) <button className="btn btn-default" onClick={() => {
+            this.props.revokePublisher(pub.id);
+          }}>Remove<text className="sr-only">{`- click to remove ${pub.name} from publisher list`}</text></button>
+          </p>);
         })}
       </div>
     );
@@ -109,14 +113,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, revokeAdmin}, dispatch);
+  return bindActionCreators({setSteps, revokeAdmin, revokePublisher}, dispatch);
 }
 
 AdminPanel.propTypes = {
   adminList: PropTypes.object,
   publisherList: PropTypes.object,
   setSteps: PropTypes.func,
-  revokeAdmin: PropTypes.func
+  revokeAdmin: PropTypes.func,
+  revokePublisher: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
