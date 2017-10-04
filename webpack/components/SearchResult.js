@@ -305,7 +305,7 @@ export default class SearchResult extends Component {
                 {this.resultStatus(result.status)}
                 <li className={`result-timestamp pull-right ${this.props.programVar && 'list-program-var'}`}>
                   <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
-                  <p><text className="sr-only">Item Version Number: </text>version {result.version && result.version} | <text className="sr-only">Item type: </text>{type}</p>
+                  <p><text className="sr-only">Item Version Number: </text>version {this.version(result.version, result.mostRecent)} | <text className="sr-only">Item type: </text>{type}</p>
                   {this.props.programVar && (<p><text className="sr-only">Item program defined Variable: </text>{this.props.programVar}</p>)}
                 </li>
               </ul>
@@ -334,6 +334,16 @@ export default class SearchResult extends Component {
         </li>
       </ul>
     );
+  }
+
+  version(currentVersion, mostRecent) {
+    if (currentVersion) {
+      if (mostRecent && mostRecent > currentVersion) {
+        return `${currentVersion} (version ${mostRecent} available)`;
+      } else {
+        return currentVersion;
+      }
+    }
   }
 }
 
