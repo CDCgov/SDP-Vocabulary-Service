@@ -21,10 +21,12 @@ Rails.application.routes.draw do
   resources :authentications
 
   get '/publishers' => 'publishers#index'
-  get '/admins' => 'admins#index'
+  get '/administrators' => 'administrators#index'
 
   namespace :admin do
     get '/roles' => 'roles#index'
+    put '/roles/grant_admin' => 'roles#grant_admin', as: :grant_admin
+    put '/roles/revoke_admin' => 'roles#revoke_admin', as: :revoke_admin
   end
 
   resources :form_questions

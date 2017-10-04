@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import { setSteps } from '../actions/tutorial_actions';
+import { revokeAdmin } from '../actions/admin_actions';
 
 class AdminPanel extends Component {
   constructor(props){
@@ -38,12 +39,15 @@ class AdminPanel extends Component {
 
   adminTab() {
     var adminList = values(this.props.adminList);
-    console.log(adminList);
     return(
       <div className="tab-pane active step-focus" id="admin-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'admin-list'} aria-labelledby="admin-list-tab">
         <h2 id="admin-list">Admin List</h2>
         {adminList.map((admin) => {
-          return (<p key={admin.id}>{admin.name} - {admin.email}</p>);
+          return (
+          <p key={admin.id}>{admin.name} - {admin.email}<button className="btn btn-default" onClick={() => {
+            this.props.revokeAdmin(admin.id);
+          }}>Remove</button>
+          </p>);
         })}
       </div>
     );
@@ -97,7 +101,7 @@ class AdminPanel extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   const props = {};
   props.adminList = state.admins;
   props.publisherList = state.publishers;
@@ -105,13 +109,14 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps}, dispatch);
+  return bindActionCreators({setSteps, revokeAdmin}, dispatch);
 }
 
 AdminPanel.propTypes = {
   adminList: PropTypes.object,
-  publisherListList: PropTypes.object,
-  setSteps: PropTypes.func
+  publisherList: PropTypes.object,
+  setSteps: PropTypes.func,
+  revokeAdmin: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
