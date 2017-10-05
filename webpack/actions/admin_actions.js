@@ -16,7 +16,7 @@ export function fetchAdmins() {
   };
 }
 
-export function grantAdmin(email, callback=null) {
+export function grantAdmin(email, callback=null, failureHandler=null) {
   const putPromise = axios.put(routes.adminGrantAdminPath(), {
     headers: {
       'X-Key-Inflection': 'camel',
@@ -28,13 +28,16 @@ export function grantAdmin(email, callback=null) {
   if (callback) {
     putPromise.then(callback);
   }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
+  }
   return {
     type: GRANT_ADMIN,
     payload: putPromise
   };
 }
 
-export function revokeAdmin(adminId, callback=null) {
+export function revokeAdmin(adminId, callback=null, failureHandler=null) {
   const putPromise = axios.put(routes.adminRevokeAdminPath(), {
     headers: {
       'X-Key-Inflection': 'camel',
@@ -45,6 +48,9 @@ export function revokeAdmin(adminId, callback=null) {
   });
   if (callback) {
     putPromise.then(callback);
+  }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
   }
   return {
     type: REVOKE_ADMIN,

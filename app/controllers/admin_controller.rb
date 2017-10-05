@@ -4,6 +4,6 @@ class AdminController < ApplicationController
 
   def require_admin
     admin_flag = current_user && current_user.has_role?(:admin)
-    redirect_to root_path unless admin_flag
+    render json: { msg: 'This action requires admin permissions, please refresh your application' }, status: :unprocessable_entity unless admin_flag
   end
 end

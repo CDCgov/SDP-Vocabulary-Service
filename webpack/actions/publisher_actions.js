@@ -16,7 +16,7 @@ export function fetchPublishers() {
   };
 }
 
-export function grantPublisher(email, callback=null) {
+export function grantPublisher(email, callback=null, failureHandler=null) {
   const putPromise = axios.put(routes.adminGrantPublisherPath(), {
     headers: {
       'X-Key-Inflection': 'camel',
@@ -28,13 +28,16 @@ export function grantPublisher(email, callback=null) {
   if (callback) {
     putPromise.then(callback);
   }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
+  }
   return {
     type: GRANT_PUBLISHER,
     payload: putPromise
   };
 }
 
-export function revokePublisher(pubId, callback=null) {
+export function revokePublisher(pubId, callback=null, failureHandler=null) {
   const putPromise = axios.put(routes.adminRevokePublisherPath(), {
     headers: {
       'X-Key-Inflection': 'camel',
@@ -45,6 +48,9 @@ export function revokePublisher(pubId, callback=null) {
   });
   if (callback) {
     putPromise.then(callback);
+  }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
   }
   return {
     type: REVOKE_PUBLISHER,
