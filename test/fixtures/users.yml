@@ -6,7 +6,6 @@
 #
 admin:
   email: admin@example.com
-  admin: true
   first_name: "Super"
   last_name: "Admin"
   last_system: nids
@@ -14,7 +13,6 @@ admin:
 
 publisher:
   email: publisher@example.com
-  admin: true
   first_name: "Awesome"
   last_name: "Publisher"
   last_system: nids
@@ -22,7 +20,6 @@ publisher:
 
 not_admin:
   email: not_admin@example.com
-  admin: false
   first_name: "Ordinary"
   last_name: "User"
   last_system: nids
@@ -30,7 +27,6 @@ not_admin:
 
 publisher:
   email: publisher@example.com
-  admin: false
   first_name: Publish
   last_name: McPublishFace
   roles: publisher
