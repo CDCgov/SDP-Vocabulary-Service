@@ -48,6 +48,18 @@ class Form < ApplicationRecord
     save!
   end
 
+  # Custom implementation as using the plain relationships in Rails will cause
+  # N+1 queries to figure out most recent version for each question.
+  def questions_with_most_recent
+    Question.find_by_sql(['select q.*, qmv.version as max_version
+     from questions q, form_questions fq,
+       (select version_independent_id, MAX(version) as version
+         from questions group by version_independent_id) qmv
+     where qmv.version_independent_id = q.version_independent_id
+     and fq.question_id = q.id
+     and fq.form_id = :form_id', { form_id: id }])
+  end
+
   def self.owned_by(owner_id)
     where(created_by: owner_id)
   end
