@@ -59,5 +59,7 @@ Style/GuardClause:
 Style/ClassVars:
   Exclude:
     - 'config/initializers/elastic_search.rb'
+Style/NumericPredicate:
+  Enabled: false
 #Style/HashSyntax:
 #  UseHashRocketsWithSymbolValues: true

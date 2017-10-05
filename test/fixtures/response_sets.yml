@@ -52,3 +52,14 @@ search_3:
   version: 2
   version_independent_id: RS-12
   created_by: admin
+
+phin_source:
+  name: Gender Partial
+  description: M / F
+  version: 1
+  version_independent_id: RS-1
+  created_by: admin
+  status: published
+  published_by: publisher
+  source: PHIN_VADS
+  oid: 1.2.3.4
