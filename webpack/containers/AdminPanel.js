@@ -74,7 +74,7 @@ class AdminPanel extends Component {
             <div className="input-group search-group">
               <input onChange={this.onInputChange} value={this.state.searchEmail} type="text" id="email-input" name="email" aria-label="Enter email of user to grant permissions" className="search-input" placeholder="Enter email of user to add to list.. (Format: example@gmail.com)"/>
               <span className="input-group-btn">
-                <button id="search-btn" className="search-btn search-btn-default" aria-label="Click to submit user email and grant permissions" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
+                <button id="submit-email" className="search-btn search-btn-default" aria-label="Click to submit user email and grant permissions" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
               </span>
             </div><br/>
           </div>
@@ -91,7 +91,7 @@ class AdminPanel extends Component {
         {this.emailInput()}
         {adminList.map((admin) => {
           return (
-          <p key={admin.id} className="admin-group"><strong>{admin.name}</strong> ({admin.email}) {admin.email !== this.props.currentUser.email && <button className="btn btn-default pull-right" onClick={() => {
+          <p key={admin.id} className="admin-group"><strong>{admin.name}</strong> ({admin.email}) {admin.email !== this.props.currentUser.email && <button id={`remove_${admin.email}`} className="btn btn-default pull-right" onClick={() => {
             this.props.revokeAdmin(admin.id, null, (failureResponse) => {
               this.setState({error: failureResponse.response.data});
             });
@@ -109,7 +109,7 @@ class AdminPanel extends Component {
         <h2 id="publisher-list">Publisher List</h2>
         {this.emailInput()}
         {publisherList.map((pub) => {
-          return (<p key={pub.id} className="admin-group"><strong>{pub.name}</strong> ({pub.email}) {pub.email !== this.props.currentUser.email &&<button className="btn btn-default pull-right" onClick={() => {
+          return (<p key={pub.id} className="admin-group"><strong>{pub.name}</strong> ({pub.email}) {pub.email !== this.props.currentUser.email &&<button id={`remove_${pub.email}`} className="btn btn-default pull-right" onClick={() => {
             this.props.revokePublisher(pub.id, null, (failureResponse) => {
               this.setState({error: failureResponse.response.data});
             });
