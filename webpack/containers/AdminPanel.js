@@ -4,15 +4,19 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import { setSteps } from '../actions/tutorial_actions';
-import { revokeAdmin } from '../actions/admin_actions';
-import { revokePublisher } from '../actions/publisher_actions';
+import { revokeAdmin, grantAdmin } from '../actions/admin_actions';
+import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
+import currentUserProps from '../prop-types/current_user_props';
 
 class AdminPanel extends Component {
   constructor(props){
     super(props);
     this.selectTab = this.selectTab.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit  = this.onFormSubmit.bind(this);
     this.state = {
-      selectedTab: 'admin-list'
+      selectedTab: 'admin-list',
+      searchEmail: ''
     };
   }
 
@@ -38,16 +42,47 @@ class AdminPanel extends Component {
       }]);
   }
 
+  onInputChange(event){
+    this.setState({searchEmail: event.target.value});
+  }
+
+  onFormSubmit(event){
+    event.preventDefault();
+    if (this.state.selectedTab === 'admin-list') {
+      this.props.grantAdmin(this.state.searchEmail);
+    } else {
+      this.props.grantPublisher(this.state.searchEmail);
+    }
+  }
+
+  emailInput() {
+    return(
+      <form onSubmit={this.onFormSubmit}>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="input-group search-group">
+              <input onChange={this.onInputChange} value={this.state.searchEmail} type="text" id="email-input" tabIndex="4" name="email" aria-label="Enter email of user to grant permissions" className="search-input" placeholder="Enter email of user to add to list.. (Format: example@gmail.com)"/>
+              <span className="input-group-btn">
+                <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="Click to submit user email and grant permissions" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
+              </span>
+            </div><br/>
+          </div>
+        </div>
+      </form>
+    );
+  }
+
   adminTab() {
     var adminList = values(this.props.adminList);
     return(
       <div className="tab-pane active step-focus" id="admin-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'admin-list'} aria-labelledby="admin-list-tab">
         <h2 id="admin-list">Admin List</h2>
+        {this.emailInput()}
         {adminList.map((admin) => {
           return (
-          <p key={admin.id}>{admin.name} ({admin.email}) <button className="btn btn-default" onClick={() => {
+          <p key={admin.id} className="admin-group"><strong>{admin.name}</strong> ({admin.email}) {admin.email !== this.props.currentUser.email && <button className="btn btn-default pull-right" onClick={() => {
             this.props.revokeAdmin(admin.id);
-          }}>Remove<text className="sr-only">{`- click to remove ${admin.name} from admin list`}</text></button>
+          }}><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${admin.name} from admin list`}</text></button>}
           </p>);
         })}
       </div>
@@ -59,10 +94,11 @@ class AdminPanel extends Component {
     return(
       <div className="tab-pane" id="publisher-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'publisher-list'} aria-labelledby="publisher-list-tab">
         <h2 id="publisher-list">Publisher List</h2>
+        {this.emailInput()}
         {publisherList.map((pub) => {
-          return (<p key={pub.id}>{pub.name} ({pub.email}) <button className="btn btn-default" onClick={() => {
+          return (<p key={pub.id} className="admin-group"><strong>{pub.name}</strong> ({pub.email}) {pub.email !== this.props.currentUser.email &&<button className="btn btn-default pull-right" onClick={() => {
             this.props.revokePublisher(pub.id);
-          }}>Remove<text className="sr-only">{`- click to remove ${pub.name} from publisher list`}</text></button>
+          }}><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${pub.name} from publisher list`}</text></button>}
           </p>);
         })}
       </div>
@@ -109,19 +145,23 @@ function mapStateToProps(state) {
   const props = {};
   props.adminList = state.admins;
   props.publisherList = state.publishers;
+  props.currentUser = state.currentUser;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, revokeAdmin, revokePublisher}, dispatch);
+  return bindActionCreators({setSteps, revokeAdmin, revokePublisher, grantPublisher, grantAdmin}, dispatch);
 }
 
 AdminPanel.propTypes = {
   adminList: PropTypes.object,
   publisherList: PropTypes.object,
+  currentUser: currentUserProps,
   setSteps: PropTypes.func,
   revokeAdmin: PropTypes.func,
-  revokePublisher: PropTypes.func
+  revokePublisher: PropTypes.func,
+  grantAdmin: PropTypes.func,
+  grantPublisher: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
