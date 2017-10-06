@@ -20,13 +20,13 @@ describe('SurveyShow', () => {
       ],
       deleteSurvey: ()=> {}
     };
-    const startState = {}
+    const startState = {};
     component = renderComponent(SurveyShow, props, startState);
   });
 
   it('should create a list of forms', () => {
     // Drop out of JQuery and just use draw javascript selectors
-    expect(component[0].querySelectorAll('.survey-form').length).to.equal(3);
+    expect(component[0].querySelectorAll('.survey-form .panel-heading').length).to.equal(3);
   });
 
   it('should render an empty list of forms', () => {

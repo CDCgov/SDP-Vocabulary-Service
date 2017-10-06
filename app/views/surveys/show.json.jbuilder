@@ -11,9 +11,9 @@ json.questions @survey.questions do |q|
                 :other_allowed
 end
 
-json.forms @survey.forms do |form|
+json.forms @survey.forms_with_most_recent do |form|
   json.extract! form, :id, :name, :description, :created_at, :updated_at, \
-                :version_independent_id, :version, :parent, \
+                :version_independent_id, :version, :parent, :most_recent, \
                 :form_questions, :control_number, :status, :created_by_id, :published_by_id
   json.url form_url(form, format: :json)
 end
