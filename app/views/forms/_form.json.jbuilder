@@ -4,9 +4,9 @@ json.extract! form, :id, :name, :description, :created_at, :updated_at, :concept
 json.user_id form.created_by.email if form.created_by.present?
 json.url form_url(form, format: :json)
 
-json.questions form.questions do |q|
+json.questions form.questions_with_most_recent do |q|
   json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :question_type_id, :description, :status, \
-                :version, :version_independent_id, :response_type, \
+                :version, :version_independent_id, :response_type, :most_recent, \
                 :other_allowed
 end
 

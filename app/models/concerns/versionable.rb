@@ -37,27 +37,21 @@ module Versionable
   end
 
   def most_recent
-    if other_versions.present?
-      if other_versions[0].version > version
-        other_versions[0].version
-      else
-        version
-      end
+    latest_version = nil
+    latest_version = max_version if respond_to?(:max_version)
+    if latest_version.nil? && other_versions.present?
+      latest_version = other_versions[0].version
+    end
+    latest_version ||= 1
+    if latest_version >= version
+      latest_version
     else
       version
     end
   end
 
   def most_recent?
-    if other_versions.present?
-      if other_versions[0].version > version
-        false
-      else
-        true
-      end
-    else
-      true
-    end
+    most_recent == version
   end
 
   def as_json(options = {})

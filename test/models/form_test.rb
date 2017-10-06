@@ -80,4 +80,13 @@ class FormTest < ActiveSupport::TestCase
     assert_equal q1.id, f.form_questions[0].question_id
     assert_equal q3.id, f.form_questions[1].question_id
   end
+
+  test 'Getting questions with most_recent loaded' do
+    f = forms(:one)
+    qs = f.questions_with_most_recent
+    old_question = qs.find { |q| q.content == 'What is another question example?' }
+    assert_equal 1, old_question.version
+    assert_equal 2, old_question.max_version
+    assert_equal 2, old_question.most_recent
+  end
 end
