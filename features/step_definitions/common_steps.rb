@@ -15,6 +15,23 @@ Given(/^I am the publisher (.+)$/) do |user_name|
   login_as(user, scope: :user)
 end
 
+Given(/^I am the admin (.+)$/) do |user_name|
+  user = User.create_with(password: 'password').find_or_create_by(email: user_name)
+  Ability.new(user)
+  user.add_role :admin
+  user.save
+  user.reload
+  login_as(user, scope: :user)
+end
+
+Given(/^there is an admin with the email (.+)$/) do |user_name|
+  user = User.create_with(password: 'password').find_or_create_by(email: user_name)
+  Ability.new(user)
+  user.add_role :admin
+  user.save
+  user.reload
+end
+
 Given(/^I have a publisher "(.+)" with the first name "(.+)" and last name "(.+)"$/) do |user_name, first_name, last_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name, first_name: first_name, last_name: last_name)
   Ability.new(user)

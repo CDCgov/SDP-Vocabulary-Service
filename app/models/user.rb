@@ -34,6 +34,10 @@ class User < ApplicationRecord
     fn.strip.blank? ? email : fn
   end
 
+  def admin?
+    has_role?(:admin)
+  end
+
   def publisher?
     has_role?(:publisher)
   end

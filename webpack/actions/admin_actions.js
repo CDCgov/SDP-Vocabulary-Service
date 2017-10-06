@@ -2,22 +2,22 @@ import axios from 'axios';
 import routes from '../routes';
 import { getCSRFToken } from './index';
 import {
-  FETCH_PUBLISHERS,
-  GRANT_PUBLISHER,
-  REVOKE_PUBLISHER
+  FETCH_ADMINS,
+  GRANT_ADMIN,
+  REVOKE_ADMIN
 } from './types';
 
-export function fetchPublishers() {
+export function fetchAdmins() {
   return {
-    type: FETCH_PUBLISHERS,
-    payload: axios.get(routes.publishersPath(), {
+    type: FETCH_ADMINS,
+    payload: axios.get(routes.administratorsPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };
 }
 
-export function grantPublisher(email, callback=null, failureHandler=null) {
-  const putPromise = axios.put(routes.adminGrantPublisherPath(), {
+export function grantAdmin(email, callback=null, failureHandler=null) {
+  const putPromise = axios.put(routes.adminGrantAdminPath(), {
     headers: {
       'X-Key-Inflection': 'camel',
       'Accept': 'application/json'
@@ -32,19 +32,19 @@ export function grantPublisher(email, callback=null, failureHandler=null) {
     putPromise.catch(failureHandler);
   }
   return {
-    type: GRANT_PUBLISHER,
+    type: GRANT_ADMIN,
     payload: putPromise
   };
 }
 
-export function revokePublisher(pubId, callback=null, failureHandler=null) {
-  const putPromise = axios.put(routes.adminRevokePublisherPath(), {
+export function revokeAdmin(adminId, callback=null, failureHandler=null) {
+  const putPromise = axios.put(routes.adminRevokeAdminPath(), {
     headers: {
       'X-Key-Inflection': 'camel',
       'Accept': 'application/json'
     },
     authenticityToken: getCSRFToken(),
-    pubId: pubId
+    adminId: adminId
   });
   if (callback) {
     putPromise.then(callback);
@@ -53,7 +53,7 @@ export function revokePublisher(pubId, callback=null, failureHandler=null) {
     putPromise.catch(failureHandler);
   }
   return {
-    type: REVOKE_PUBLISHER,
+    type: REVOKE_ADMIN,
     payload: putPromise
   };
 }

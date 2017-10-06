@@ -458,6 +458,21 @@ Based on Rails routes of Vocabulary::Application
     make: function() {
       var routes;
       routes = {
+// admin_grant_admin => /admin/roles/grant_admin(.:format)
+  // function(options)
+  admin_grant_admin_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_admin",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_grant_publisher => /admin/roles/grant_publisher(.:format)
+  // function(options)
+  admin_grant_publisher_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_publisher",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_revoke_admin => /admin/roles/revoke_admin(.:format)
+  // function(options)
+  admin_revoke_admin_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"revoke_admin",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_revoke_publisher => /admin/roles/revoke_publisher(.:format)
+  // function(options)
+  admin_revoke_publisher_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"revoke_publisher",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// administrators => /administrators(.:format)
+  // function(options)
+  administrators_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"administrators",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // api_form => /api/forms/:id(.:format)
   // function(id, options)
   api_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

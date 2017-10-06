@@ -38,6 +38,8 @@ module Users
 
     test 'should add and authentication to existing signed in user if one does not exist' do
       sign_in @admin
+      @admin.add_role :admin
+      @admin.save!
       auth_count = @admin.authentications.count
       get '/users/auth/openid_connect/callback'
       @admin.reload

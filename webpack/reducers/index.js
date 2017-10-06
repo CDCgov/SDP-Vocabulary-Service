@@ -9,7 +9,12 @@ import {
   FETCH_RESPONSE_TYPE_FULFILLED,
   FETCH_SURVEILLANCE_SYSTEMS_FULFILLED,
   FETCH_SURVEILLANCE_PROGRAMS_FULFILLED,
-  FETCH_PUBLISHERS_FULFILLED
+  FETCH_PUBLISHERS_FULFILLED,
+  GRANT_PUBLISHER_FULFILLED,
+  REVOKE_PUBLISHER_FULFILLED,
+  FETCH_ADMINS_FULFILLED,
+  GRANT_ADMIN_FULFILLED,
+  REVOKE_ADMIN_FULFILLED
 } from '../actions/types';
 
 
@@ -36,10 +41,11 @@ const responseTypes = byIdWithIndividualReducer(FETCH_RESPONSE_TYPES_FULFILLED,
   FETCH_RESPONSE_TYPE_FULFILLED, 'responseTypes');
 const surveillanceSystems  = byIdReducer(FETCH_SURVEILLANCE_SYSTEMS_FULFILLED);
 const surveillancePrograms = byIdReducer(FETCH_SURVEILLANCE_PROGRAMS_FULFILLED);
-const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED);
+const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED, GRANT_PUBLISHER_FULFILLED, REVOKE_PUBLISHER_FULFILLED);
+const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE_ADMIN_FULFILLED);
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, forms, questionTypes,
+  questions, comments, stats, currentUser, responseSets, forms, questionTypes, admins,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags
 });

@@ -6,9 +6,9 @@ import { ADD_ENTITIES_FULFILLED } from '../actions/types';
 // ids of objects in the payload and the value is the objects in the payload.
 // It will expect payload.data to be an array of objects that all have an id
 // property
-export function byIdReducer(successType) {
+export function byIdReducer(...successTypes) {
   return (state = {}, action) => {
-    if (action.type === successType) {
+    if (successTypes.includes(action.type)) {
       return keyBy(action.payload.data, 'id');
     } else {
       return state;

@@ -9,4 +9,5 @@ class UserSerializer < ActiveModel::Serializer
   attribute :last_program_id
   attribute :last_system_id
   attribute :publisher?, key: :publisher
+  attribute :admin?, key: :admin
 end

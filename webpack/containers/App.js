@@ -16,6 +16,7 @@ import { fetchCurrentUser, logIn, signUp, updateUser } from '../actions/current_
 import { fetchSurveillanceSystems } from '../actions/surveillance_system_actions';
 import { fetchSurveillancePrograms } from '../actions/surveillance_program_actions';
 import { fetchPublishers } from '../actions/publisher_actions';
+import { fetchAdmins } from '../actions/admin_actions';
 import { fetchStats } from '../actions/landing';
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
     this.props.fetchSurveillancePrograms();
     this.props.fetchSurveillanceSystems();
     this.props.fetchPublishers();
+    this.props.fetchAdmins();
     this.props.fetchStats();
   }
 
@@ -128,6 +130,7 @@ App.propTypes = {
   fetchSurveillanceSystems: PropTypes.func,
   fetchSurveillancePrograms: PropTypes.func,
   fetchPublishers: PropTypes.func,
+  fetchAdmins: PropTypes.func,
   fetchStats: PropTypes.func,
   children: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
@@ -145,4 +148,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {fetchCurrentUser, logIn, signUp, updateUser,
-  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers, fetchStats})(App);
+  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers, fetchAdmins, fetchStats})(App);
