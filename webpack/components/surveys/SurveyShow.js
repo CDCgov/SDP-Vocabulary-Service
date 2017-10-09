@@ -5,6 +5,7 @@ import { hashHistory, Link } from 'react-router';
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import CodedSetTable from "../CodedSetTable";
+import { displayVersion } from '../../utilities/componentHelpers';
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { formProps } from '../../prop-types/form_props';
@@ -108,7 +109,7 @@ class SurveyShow extends Component {
             </div>
           </div>
           {this.props.forms.map((f,i) =>
-            <div  key={i} className="basic-c-box panel-default survey-form">
+            <div key={i} className="basic-c-box panel-default survey-form">
               <div className="panel-heading">
                 <h2 className="panel-title"><Link to={`/forms/${f.id}`}>{ f.name }</Link></h2>
               </div>
@@ -118,6 +119,9 @@ class SurveyShow extends Component {
                     <li key={i}><Link to={`/questions/${q.id}`}>{q.content}</Link></li>
                   )}
                 </ul>
+              </div>
+              <div className="panel-footer survey-form">
+                <p>Form version: {displayVersion(f.version, f.mostRecent)}</p>
               </div>
             </div>
           )}

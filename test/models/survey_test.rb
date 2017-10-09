@@ -68,4 +68,13 @@ class SurveyTest < ActiveSupport::TestCase
     assert_equal f1.id, s.survey_forms[0].form_id
     assert_equal f3.id, s.survey_forms[1].form_id
   end
+
+  test 'Getting forms with most_recent loaded' do
+    s = surveys(:one)
+    fs = s.forms_with_most_recent
+    old_form = fs.find { |f| f.name == 'Form 2' }
+    assert_equal 1, old_form.version
+    assert_equal 2, old_form.max_version
+    assert_equal 2, old_form.most_recent
+  end
 end

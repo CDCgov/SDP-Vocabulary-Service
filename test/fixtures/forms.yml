@@ -11,7 +11,7 @@ one:
   published_by: publisher
 
 two:
-  name: MyString
+  name: Form 2
   created_by: admin
   version: 1
   status: published
@@ -49,3 +49,10 @@ search_3:
   version: 1
   status: draft
   version_independent_id: F-6
+
+newtwo:
+  name: New Form 2
+  created_by: admin
+  version: 2
+  status: published
+  version_independent_id: F-2

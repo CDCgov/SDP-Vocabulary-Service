@@ -23,3 +23,13 @@ export function isExtendable(object, currentUser) {
   return currentUser && currentUser.id &&
     object.status === 'published';
 }
+
+export function displayVersion(currentVersion, mostRecent) {
+  if (currentVersion) {
+    if (mostRecent && mostRecent > currentVersion) {
+      return `${currentVersion} (version ${mostRecent} available)`;
+    } else {
+      return currentVersion;
+    }
+  }
+}

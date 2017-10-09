@@ -52,6 +52,18 @@ class Survey < ApplicationRecord
     forms.each { |f| f.publish(publisher) }
   end
 
+  # Custom implementation as using the plain relationships in Rails will cause
+  # N+1 queries to figure out most recent version for each form.
+  def forms_with_most_recent
+    Form.find_by_sql(['select f.*, fmv.version as max_version
+     from forms f, survey_forms sf,
+       (select version_independent_id, MAX(version) as version
+         from forms group by version_independent_id) fmv
+     where fmv.version_independent_id = f.version_independent_id
+     and sf.form_id = f.id
+     and sf.survey_id = :survey_id', { survey_id: id }])
+  end
+
   def build_new_revision
     new_revision = Survey.new(version_independent_id: version_independent_id,
                               name: name, parent_id: parent_id,
