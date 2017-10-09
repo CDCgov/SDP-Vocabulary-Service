@@ -69,7 +69,7 @@ class App extends Component {
     this.props.updateUser(user, ()=>{
       this.props.fetchCurrentUser();
       successHandler();
-    }, failureHandler());
+    }, failureHandler);
   }
 
   render() {
