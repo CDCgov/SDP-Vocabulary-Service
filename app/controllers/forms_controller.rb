@@ -4,7 +4,6 @@ class FormsController < ApplicationController
   # GET /forms
   # GET /forms.json
   def index
-    @forms = Form.includes(:form_questions, :questions).all
     @users = User.all
   end
 

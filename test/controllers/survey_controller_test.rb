@@ -9,7 +9,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @current_user = users(:not_admin)
-    @survey = surveys(:one)
+    @survey = surveys(:four)
     sign_in @current_user
   end
 
@@ -54,6 +54,9 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not publish a published survey' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
     @survey = surveys(:two)
     put publish_survey_url(@survey)
     assert_response :unprocessable_entity
@@ -63,7 +66,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     sign_out @current_user
     @current_publisher = users(:publisher)
     sign_in @current_publisher
-    get survey_url(surveys(:one), format: :json)
+    get survey_url(surveys(:four), format: :json)
     assert_response :success
   end
 
@@ -71,14 +74,14 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     sign_out @current_user
     @current_publisher = users(:publisher)
     sign_in @current_publisher
-    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
+    put publish_survey_path(surveys(:four), format: :json, params: { survey: surveys(:four) })
     assert_response :success
-    assert_equal Survey.find(surveys(:one).id).status, PUBLISHED
-    assert_equal Survey.find(surveys(:one).id).published_by.id, users(:publisher).id
+    assert_equal Survey.find(surveys(:four).id).status, PUBLISHED
+    assert_equal Survey.find(surveys(:four).id).published_by.id, users(:publisher).id
   end
 
   test 'authors should not be able to publish surveys' do
-    put publish_survey_path(surveys(:one), format: :json, params: { survey: surveys(:one) })
+    put publish_survey_path(surveys(:four), format: :json, params: { survey: surveys(:four) })
     assert_response :forbidden
   end
 end

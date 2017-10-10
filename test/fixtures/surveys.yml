@@ -7,6 +7,7 @@ one:
   surveillance_program: generic
   surveillance_system: nids
   published_by: publisher
+  status: published
 two:
   name: Search Survey 1
   created_by: admin
@@ -26,5 +27,6 @@ four:
   name: Search Survey 3
   created_by: not_admin
   version: 1
-  version_independent_id: 'S-3'
-  control_number: '1111-5678'
+  version_independent_id: 'S-4'
+  control_number: '1111-5679'
+  status: draft

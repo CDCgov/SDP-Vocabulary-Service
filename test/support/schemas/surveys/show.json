@@ -23,7 +23,7 @@
         "publisher" : {"type" : "boolean"}
       }
     },
-    "forms" : { 
+    "forms" : {
       "type" : "array",
       "items": {
         "type" : "object",
@@ -32,7 +32,7 @@
           "formName" : {"type" : "string"},
           "formUri" : {"type" : "string"},
           "version" : {"type" : "number"},
-          "questions" : { 
+          "questions" : {
             "type" : "array",
             "items": {
               "type" : "object",

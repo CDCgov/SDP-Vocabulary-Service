@@ -1,13 +1,14 @@
 require 'test_helper'
 
-class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
+class ApiResponseSetsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveModelSerializers::Test::Schema
   include ActiveModelSerializers::Test::Serializer
 
   setup do
+    @current_user = users(:admin)
     @response_set = response_sets(:one)
-    sign_in users(:admin)
+    sign_in @current_user
   end
 
   test 'api should get index' do

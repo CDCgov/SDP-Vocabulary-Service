@@ -1,7 +1,6 @@
 class SurveysController < ApplicationController
-  load_and_authorize_resource except: [:create]
+  load_and_authorize_resource
   def index
-    @surveys = Survey.includes([:created_by, :survey_forms, :forms]).all
     @users = User.all
   end
 
@@ -14,7 +13,7 @@ class SurveysController < ApplicationController
   end
 
   def create
-    @survey = Survey.new(form_params)
+    @survey = Survey.new(survey_params)
     return unless can_survey_be_created?(@survey)
     @survey.created_by = current_user
     @survey.surveillance_system = current_user.last_system
@@ -37,7 +36,7 @@ class SurveysController < ApplicationController
         @survey.surveillance_program = current_user.last_program
         @survey.survey_forms = update_survey_forms
         @survey.update_concepts('Survey')
-        update_successful = @survey.update(form_params)
+        update_successful = @survey.update(survey_params)
       end
       if update_successful
         render json: @survey.to_json, status: :ok
@@ -97,7 +96,7 @@ class SurveysController < ApplicationController
     "Survey was successfully #{action}."
   end
 
-  def form_params
+  def survey_params
     params.require(:survey).permit(:name, :description, :status, :parent_id,
                                    :control_number, :version_independent_id, :created_by_id,
                                    concepts_attributes: [:id, :value, :display_name, :code_system])

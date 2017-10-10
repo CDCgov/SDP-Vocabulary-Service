@@ -1,5 +1,5 @@
 class AdministratorsController < ApplicationController
-  authorize_resource class: false
+  authorize_resource :user, parent: false
 
   def index
     render json: User.with_role(:admin).preload(:roles)
