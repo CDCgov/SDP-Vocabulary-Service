@@ -1,13 +1,14 @@
 require 'test_helper'
 
-class QuestionsControllerTest < ActionDispatch::IntegrationTest
+class ApiQuestionsControllerTest < ActionDispatch::IntegrationTest
   include ActiveModelSerializers::Test::Schema
   include ActiveModelSerializers::Test::Serializer
   include Devise::Test::IntegrationHelpers
 
   setup do
+    @current_user = users(:admin)
     @question = questions(:one)
-    sign_in users(:admin)
+    sign_in @current_user
   end
 
   test 'api should get index' do

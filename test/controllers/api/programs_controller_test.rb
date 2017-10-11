@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ProgramsControllerTest < ActionDispatch::IntegrationTest
+class ApiProgramsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveModelSerializers::Test::Schema
   include ActiveModelSerializers::Test::Serializer

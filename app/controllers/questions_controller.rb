@@ -3,7 +3,6 @@ class QuestionsController < ApplicationController
 
   # GET /questions.json
   def index
-    @questions = Question.includes(:response_sets, :response_type).all
   end
 
   # GET /questions/1

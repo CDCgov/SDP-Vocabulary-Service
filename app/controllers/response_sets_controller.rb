@@ -4,13 +4,11 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets
   # GET /response_sets.json
   def index
-    @response_sets = ResponseSet.includes(:created_by, :responses, questions: :created_by).all
   end
 
   # GET /response_sets/1
   # GET /response_sets/1.json
   def show
-    @response_set = ResponseSet.includes(:responses, :questions, :parent).find(params[:id])
   end
 
   def usage
