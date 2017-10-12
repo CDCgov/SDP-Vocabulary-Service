@@ -57,20 +57,6 @@ class AdminPanel extends Component {
     };
   }
 
-  // Combine these two functions with a switch case
-  // onFormSubmit(event){
-  //   event.preventDefault();
-  //   if (this.state.selectedTab === 'admin-list') {
-  //     this.props.grantAdmin(this.state.searchEmail, null, (failureResponse) => {
-  //       this.setState({error: failureResponse.response.data});
-  //     });
-  //   } else {
-  //     this.props.grantPublisher(this.state.searchEmail, null, (failureResponse) => {
-  //       this.setState({error: failureResponse.response.data});
-  //     });
-  //   }
-  // }
-
   onFormSubmit(event) {
     event.preventDefault();
     switch (this.state.selectedTab) {
@@ -96,19 +82,6 @@ class AdminPanel extends Component {
         break;
     }
   }
-
-  // progSysSubmit(event){
-  //   event.preventDefault();
-  //   if (this.state.selectedTab === 'program-list') {
-  //     this.props.grantAdmin(this.state.programInput, null, (failureResponse) => {
-  //       this.setState({error: failureResponse.response.data});
-  //     });
-  //   } else {
-  //     this.props.grantAdmin(this.state.systemInput, null, (failureResponse) => {
-  //       this.setState({error: failureResponse.response.data});
-  //     });
-  //   }
-  // }
 
   emailInput() {
     return(
