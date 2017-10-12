@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import { setSteps } from '../actions/tutorial_actions';
 import { revokeAdmin, grantAdmin } from '../actions/admin_actions';
+import { addProgram } from '../actions/surveillance_program_actions';
+import { addSystem } from '../actions/surveillance_system_actions';
 import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
 import currentUserProps from '../prop-types/current_user_props';
 
@@ -12,11 +14,14 @@ class AdminPanel extends Component {
   constructor(props){
     super(props);
     this.selectTab = this.selectTab.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.onFormSubmit  = this.onFormSubmit.bind(this);
     this.state = {
       selectedTab: 'admin-list',
-      searchEmail: ''
+      searchEmail: '',
+      name: '',
+      description: '',
+      acronym: ''
     };
   }
 
@@ -43,22 +48,67 @@ class AdminPanel extends Component {
       }]);
   }
 
-  onInputChange(event){
-    this.setState({searchEmail: event.target.value, error: {}});
+  handleChange(field) {
+    return (event) => {
+      let newState = {};
+      newState[field] = event.target.value;
+      newState['error'] = {};
+      this.setState(newState);
+    };
   }
 
-  onFormSubmit(event){
+  // Combine these two functions with a switch case
+  // onFormSubmit(event){
+  //   event.preventDefault();
+  //   if (this.state.selectedTab === 'admin-list') {
+  //     this.props.grantAdmin(this.state.searchEmail, null, (failureResponse) => {
+  //       this.setState({error: failureResponse.response.data});
+  //     });
+  //   } else {
+  //     this.props.grantPublisher(this.state.searchEmail, null, (failureResponse) => {
+  //       this.setState({error: failureResponse.response.data});
+  //     });
+  //   }
+  // }
+
+  onFormSubmit(event) {
     event.preventDefault();
-    if (this.state.selectedTab === 'admin-list') {
-      this.props.grantAdmin(this.state.searchEmail, null, (failureResponse) => {
-        this.setState({error: failureResponse.response.data});
-      });
-    } else {
-      this.props.grantPublisher(this.state.searchEmail, null, (failureResponse) => {
-        this.setState({error: failureResponse.response.data});
-      });
+    switch (this.state.selectedTab) {
+      case 'admin-list':
+        this.props.grantAdmin(this.state.searchEmail, null, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
+        break;
+      case 'publisher-list':
+        this.props.grantPublisher(this.state.searchEmail, null, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
+        break;
+      case 'program-list':
+        this.props.addProgram(this.state.name, this.state.description, this.state.acronym, null, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
+        break;
+      default:
+        this.props.addSystem(this.state.name, this.state.description, this.state.acronym, null, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
+        break;
     }
   }
+
+  // progSysSubmit(event){
+  //   event.preventDefault();
+  //   if (this.state.selectedTab === 'program-list') {
+  //     this.props.grantAdmin(this.state.programInput, null, (failureResponse) => {
+  //       this.setState({error: failureResponse.response.data});
+  //     });
+  //   } else {
+  //     this.props.grantAdmin(this.state.systemInput, null, (failureResponse) => {
+  //       this.setState({error: failureResponse.response.data});
+  //     });
+  //   }
+  // }
 
   emailInput() {
     return(
@@ -71,12 +121,43 @@ class AdminPanel extends Component {
               </div>
             }
             <div className="input-group search-group">
-              <input onChange={this.onInputChange} value={this.state.searchEmail} type="text" id="email-input" name="email" aria-label="Enter email of user to grant permissions" className="search-input" placeholder="Enter email of user to add to list.. (Format: example@gmail.com)"/>
+              <input onChange={this.handleChange('searchEmail')} value={this.state.searchEmail} type="text" id="email-input" name="email" aria-label="Enter email of user to grant permissions" className="search-input" placeholder="Enter email of user to add to list.. (Format: example@gmail.com)"/>
               <span className="input-group-btn">
                 <button id="submit-email" className="search-btn search-btn-default" aria-label="Click to submit user email and grant permissions" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
               </span>
             </div><br/>
           </div>
+        </div>
+      </form>
+    );
+  }
+
+  progSysForm(type) {
+    return(
+      <form onSubmit={this.onFormSubmit}>
+        <div className="row">
+          <div className="col-md-12">
+            {this.state.error && this.state.error.msg &&
+              <div className="alert alert-danger">
+                {this.state.error.msg}
+              </div>
+            }
+            <div className="input-group search-group">
+              <div className="col-md-6 question-form-group">
+                <label className="input-label" htmlFor={`${type}-name`}>Name</label>
+                <input className="input-format" type="text" value={this.state.name} name={`${type}-name`} id={`${type}-name`} aria-label={`Enter name for new ${type}`} placeholder={`Enter name of new ${type}...`} onChange={this.handleChange('name')}/>
+              </div>
+              <div className="col-md-6 question-form-group">
+                <label className="input-label" htmlFor={`${type}-description`}>Description (Optional)</label>
+                <input className="input-format" type="text" value={this.state.description} name={`${type}-description`} id={`${type}-description`} aria-label={`Enter a description for new ${type}`} placeholder={`Description...`} onChange={this.handleChange('description')}/>
+              </div>
+              <div className="col-md-3 question-form-group">
+                <label className="input-label" htmlFor={`${type}-acronym`}>Acronym (Optional)</label>
+                <input className="input-format" type="text" value={this.state.acronym} name={`${type}-acronym`} id={`${type}-acronym`} aria-label={`Enter acronym for new ${type}`} placeholder={`Ex: CDC`} onChange={this.handleChange('acronym')}/>
+              </div>
+            </div>
+            <button id="submit-prog-sys" className="btn btn-default pull-right" aria-label={`Click to add new ${type} to list`} type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new item to list</text></i> {`Add new ${type}`}</button>
+          </div><br/>
         </div>
       </form>
     );
@@ -119,6 +200,32 @@ class AdminPanel extends Component {
     );
   }
 
+  programTab() {
+    var programList = values(this.props.programList);
+    return(
+      <div className="tab-pane" id="program-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'program-list'} aria-labelledby="program-list-tab">
+        <h2 id="program-list">Program List</h2>
+        {this.progSysForm('program')}
+        {programList.map((prog) => {
+          return (<p key={prog.id} className="admin-group"><strong>{prog.name}</strong><br/>{prog.description}</p>);
+        })}
+      </div>
+    );
+  }
+
+  systemTab() {
+    var systemList = values(this.props.systemList);
+    return(
+      <div className="tab-pane" id="system-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'system-list'} aria-labelledby="system-list-tab">
+        <h2 id="system-list">System List</h2>
+        {this.progSysForm('system')}
+        {systemList.map((sys) => {
+          return (<p key={sys.id} className="admin-group"><strong>{sys.name}</strong><br/>{sys.description}</p>);
+        })}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container">
@@ -140,10 +247,18 @@ class AdminPanel extends Component {
                     <li id="publisher-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('publisher-list')} aria-selected={this.state.selectedTab === 'publisher-list'} aria-controls="publisher-list">
                       <a className="nav-link" data-toggle="tab" href="#publisher-list" role="tab">Publisher List</a>
                     </li>
+                    <li id="program-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('program-list')} aria-selected={this.state.selectedTab === 'program-list'} aria-controls="program-list">
+                      <a className="nav-link" data-toggle="tab" href="#program-list" role="tab">Program List</a>
+                    </li>
+                    <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
+                      <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
+                    </li>
                   </ul>
                   <div className="tab-content">
                     {this.adminTab()}
                     {this.publisherTab()}
+                    {this.programTab()}
+                    {this.systemTab()}
                   </div>
                 </div>
               </div>
@@ -159,19 +274,25 @@ function mapStateToProps(state) {
   const props = {};
   props.adminList = state.admins;
   props.publisherList = state.publishers;
+  props.programList = state.surveillancePrograms;
+  props.systemList = state.surveillanceSystems;
   props.currentUser = state.currentUser;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, revokeAdmin, revokePublisher, grantPublisher, grantAdmin}, dispatch);
+  return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin, revokePublisher, grantPublisher, grantAdmin}, dispatch);
 }
 
 AdminPanel.propTypes = {
   adminList: PropTypes.object,
   publisherList: PropTypes.object,
+  programList: PropTypes.object,
+  systemList: PropTypes.object,
   currentUser: currentUserProps,
   setSteps: PropTypes.func,
+  addProgram: PropTypes.func,
+  addSystem: PropTypes.func,
   revokeAdmin: PropTypes.func,
   revokePublisher: PropTypes.func,
   grantAdmin: PropTypes.func,
