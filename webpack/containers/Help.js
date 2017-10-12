@@ -255,6 +255,17 @@ class Help extends Component {
     );
   }
 
+  taggingInstructions() {
+    return(
+      <div className="tab-pane" id="tagging" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'tagging'} aria-labelledby="tagging-tab">
+        <h1 id="tagging-content">Tagging Content</h1>
+        <p>Surveys, Forms, and Response Sets may all be tagged to facilitate content discovery and reuse. Currently, a tag consists of a name, a value or code, and a code system (which is optional depending on if the tag is coded or not).</p>
+        <p>When editing content and a user starts typing in the tag column of the table a dropdown list will appear of all previously used tags. A user can use the arrow keys to navigate the list and select a tag that was previously used, or continue typing to enter a completely new tag.</p>
+        <p>If the user wants to look for tags by the code or the code system typing these values into the tag field will filter the list by the code or code system as well.</p>
+      </div>
+    );
+  }
+
   commentInstructions() {
     return(
       <div className="tab-pane" id="comment" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'comment'} aria-labelledby="comment-tab">
@@ -266,6 +277,29 @@ class Help extends Component {
         <li>To start a new comment thread fill in the box immediately under the &quot;Public Comments&quot; header</li>
         <li>To reply to someone else&#39;s comment (which will automatically notify the user of your reply) click the &quot;reply&quot; link immediately under the comment</li>
         </ul>
+      </div>
+    );
+  }
+
+  adminInstructions() {
+    return(
+      <div className="tab-pane" id="admin" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'admin'} aria-labelledby="admin-tab">
+        <h1 id="admin-panel">Admin Panel</h1>
+        <p><strong>Getting to the panel (requires administrator role):</strong></p>
+        <ul>
+        <li>When logged in to an account with administrator privileges, navigate to the account dropdown (click the email and gear-icon link in the top right of the application)</li>
+        <li>Click the Admin Panel menu item to navigate to the main administration page</li>
+        <li>The page has a number of tabs with different utilities described in detail below</li>
+        </ul>
+        <p><strong>Tabs:</strong></p>
+        <ul>
+        <li><a href="#admin-list">Admin List</a></li>
+        <li><a href="#publisher-list">Publisher List</a></li>
+        </ul>
+        <h2 className="help-section-subtitle" id="admin-list">Admin List</h2>
+        <p>This list will populate with all of the users who have administrative privileges. The admin role allows access to all content and all functionality in the application. To the right of each user name and email is a remove button that will revoke the admin role from that user. The admin role can be granted by typing in the email of a user and clicking the plus button. The user will then appear on the admin list or an error will be displayed explaining any issues with the addition.</p>
+        <h2 className="help-section-subtitle" id="publisher-list">Publisher List</h2>
+        <p>For usage instructions please see the information about the Admin List above. Adding members to this list allows them to see draft content they did not author and publish that content to make it public.</p>
       </div>
     );
   }
@@ -287,7 +321,9 @@ class Help extends Component {
             <li id="search-tab" role="tab" onClick={() => this.selectInstruction('search')} aria-selected={this.state.selectedInstruction === 'search'} aria-controls="search"><a data-toggle="tab" href="#search">Search</a></li>
             <li id="view-tab" role="tab" onClick={() => this.selectInstruction('view')} aria-selected={this.state.selectedInstruction === 'view'} aria-controls="view"><a data-toggle="tab" href="#view">View and Export Content</a></li>
             <li id="create-and-edit-tab" role="tab" onClick={() => this.selectInstruction('create-and-edit')} aria-selected={this.state.selectedInstruction === 'create-and-edit'} aria-controls="create-and-edit"><a data-toggle="tab" href="#create-and-edit">Create and Edit Content</a></li>
+            <li id="tagging-tab" role="tab" onClick={() => this.selectInstruction('tagging')} aria-selected={this.state.selectedInstruction === 'tagging'} aria-controls="tagging"><a data-toggle="tab" href="#tagging">Tagging Content</a></li>
             <li id="comment-tab" role="tab" onClick={() => this.selectInstruction('comment')} aria-selected={this.state.selectedInstruction === 'comment'} aria-controls="comment"><a data-toggle="tab" href="#comment">Comment on Content</a></li>
+            <li id="admin-tab" role="tab" onClick={() => this.selectInstruction('admin')} aria-selected={this.state.selectedInstruction === 'admin'} aria-controls="admin"><a data-toggle="tab" href="#admin">Admin Panel</a></li>
           </ul>
         </div>
         <div className="tab-content col-md-8">
@@ -296,7 +332,9 @@ class Help extends Component {
           {this.accountInstructions()}
           {this.viewInstructions()}
           {this.editInstructions()}
+          {this.taggingInstructions()}
           {this.commentInstructions()}
+          {this.adminInstructions()}
         </div>
       </div>
     );

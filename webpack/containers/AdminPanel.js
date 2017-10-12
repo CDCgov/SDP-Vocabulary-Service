@@ -66,8 +66,7 @@ class AdminPanel extends Component {
         <div className="row">
           <div className="col-md-12">
             {this.state.error && this.state.error.msg &&
-              <div className="alert alert-danger alert-dismissable">
-                <button className="close" data-dismiss="alert" aria-label="close alert box">&times;</button>
+              <div className="alert alert-danger">
                 {this.state.error.msg}
               </div>
             }
