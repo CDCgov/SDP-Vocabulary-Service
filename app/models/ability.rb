@@ -13,6 +13,7 @@ class Ability
       can :read, User
     else
       can :read, [ResponseSet, Question, Section, Survey], status: 'published'
+      can :redcap, [ResponseSet, Question, Section, Survey], status: 'published'
       can :read, User
     end
   end
