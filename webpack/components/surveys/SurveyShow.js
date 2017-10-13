@@ -72,6 +72,7 @@ class SurveyShow extends Component {
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
+          <a className="btn btn-default" href={`/surveys/${this.props.survey.id}/redcap`}>Export to Redcap</a>
         </div>
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Name:</strong> {this.props.survey.name} </h1>
