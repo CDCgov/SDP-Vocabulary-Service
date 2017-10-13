@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redcap="https://projectredcap.org" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 schema/odm/ODM1-3-1.xsd" ODMVersion="1.3.1" FileOID="000-00-0000" FileType="Snapshot" Description="test"   AsOfDateTime="<%= Time.now %>"   CreationDateTime="<%= @survey.created_at %>"   SourceSystem="SDP-Vocabulary-Service" SourceSystemVersion="0.1">
+<Study OID="Project.Test">
+<GlobalVariables>
+	<StudyName><%=@survey.name%></StudyName> <!--  -->
+	<StudyDescription><%=@survey.description %></StudyDescription>
+	<ProtocolName>Test</ProtocolName>
+	<redcap:RecordAutonumberingEnabled>1</redcap:RecordAutonumberingEnabled>
+	<redcap:CustomRecordLabel></redcap:CustomRecordLabel>
+	<redcap:SecondaryUniqueField></redcap:SecondaryUniqueField>
+	<redcap:SchedulingEnabled>0</redcap:SchedulingEnabled>
+	<redcap:Purpose>0</redcap:Purpose>
+	<redcap:PurposeOther></redcap:PurposeOther>
+	<redcap:ProjectNotes></redcap:ProjectNotes>
+</GlobalVariables>
+<MetaDataVersion OID="Metadata.Test_2016-12-15_1938" Name="test" >
+   <!-- form defs -->
+   <% @survey.forms.each do |form| %>
+
+   <FormDef OID="Form.<%= form.name.gsub(' ', '_')%>" Name="<%= form.name %>" Repeating="No" redcap:FormName="<%= form.name.underscore %>">
+     <ItemGroupRef ItemGroupOID="<%= form.name.gsub(' ', '_')%>.single_section" Mandatory="No"/>
+   </FormDef>
+
+   <% end %>
+   <% @survey.forms.each do |form| %>
+   <!-- item groups -->
+   <ItemGroupDef OID="<%= form.name.gsub(' ', '_') %>.single_section" Name="<%= form.name %>" Repeating="No">
+     <% form.form_questions.each do |fq| %>
+     <ItemRef ItemOID="question_<%=fq.id%>" Mandatory="No" redcap:Variable="<%=fq.program_var || "question_#{fq.id}"%>"/>
+     <% end %>
+   </ItemGroupDef>
+   <% end %>
+
+   <% form_questions = @survey.forms.collect {|form| form.form_questions}.flatten %>
+
+  <!-- item defs -->
+  <% form_questions.each do |fq| %>
+    <ItemDef OID="question_<%=fq.id%>" Name="question_<%=fq.id%>" DataType="text" Length="999" redcap:Variable="<%=fq.program_var || "question_#{fq.id}"%>" redcap:FieldType="<%= fq.response_set ? 'select' : 'text' %>" >
+      <Question><TranslatedText><%= fq.question.content %></TranslatedText></Question>
+      <% if fq.response_set %>
+      <CodeListRef CodeListOID="question_<%=fq.id%>.choices"/>
+      <% end %>
+    </ItemDef>
+  <% end %>
+
+
+
+  <!-- code list defs -->
+  <% form_questions.each do |fq| %>
+     <% if fq.response_set %>
+      <CodeList OID="question_<%=fq.id%>.choices" Name="question_<%=fq.id%>" DataType="text" redcap:Variable="<%=fq.program_var || "question_#{fq.id}"%>">
+        <% fq.response_set.responses.each do |response| %>
+        <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.blank? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
+        <% end %>
+      </CodeList>
+    <% end %>
+  <% end %>
+</MetaDataVersion>
+</Study>
+</ODM>

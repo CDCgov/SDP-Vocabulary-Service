@@ -84,4 +84,25 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     put publish_survey_path(surveys(:four), format: :json, params: { survey: surveys(:four) })
     assert_response :forbidden
   end
+
+  test 'should get redcap export ' do
+    get redcap_survey_url(@survey)
+    assert response.headers['Content-Disposition'].index("filename=\"#{@survey.name.underscore}_redcap.xml\"")
+    validate_redcap(response.body)
+    assert_response :success
+  end
+
+  def validate_redcap(xml)
+    doc = Nokogiri::XML::Document.parse(xml)
+    doc.root.add_namespace_definition('odm', 'http://www.cdisc.org/ns/odm/v1.3')
+    doc.root.add_namespace_definition('ds', 'http://www.w3.org/2000/09/xmldsig#')
+    doc.root.add_namespace_definition('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+    doc.root.add_namespace_definition('redcap', 'https://projectredcap.org')
+    question_count = @survey.survey_forms.collect { |sf| sf.form.form_questions.count }.sum
+    assert doc
+    assert doc.xpath('//odm:FormDef').length == @survey.survey_forms.length
+    assert doc.xpath('//odm:ItemGroupDef').length == @survey.survey_forms.length
+    assert doc.xpath('//odm:ItemDef').length == question_count
+    assert doc.xpath('//odm:ItemRef').length == question_count
+  end
 end
