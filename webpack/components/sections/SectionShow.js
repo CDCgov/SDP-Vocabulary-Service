@@ -5,7 +5,6 @@ import Pagination from 'rc-pagination';
 
 import SectionQuestionList from './SectionQuestionList';
 import CodedSetTable from "../CodedSetTable";
-import Routes from '../../routes';
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 
