@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import isEmpty from 'lodash/isEmpty';
+
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import { addComment, fetchComments} from '../actions/comment';
+import currentUserProps from '../prop-types/current_user_props';
 
 class CommentList extends Component {
   componentWillMount() {
@@ -18,19 +21,20 @@ class CommentList extends Component {
   }
 
   render() {
+    let loggedIn = !isEmpty(this.props.currentUser);
     return (
       <div className="post-comments">
-      <CommentForm commentableType={this.props.commentableType}
+      {loggedIn && <CommentForm commentableType={this.props.commentableType}
                    commentableId={this.props.commentableId}
-                   addComment={this.props.addComment}/>
+                   addComment={this.props.addComment}/>}
         <div className="comment-group">
-           {this.renderChildren()}
+          {isEmpty(this.props.comments) && !loggedIn ? (<p>No Comments Yet</p>) : (this.renderChildren(loggedIn))}
         </div>
       </div>
     );
   }
 
-  renderChildren (){
+  renderChildren(loggedIn) {
     if(this.props.comments){
       return this.props.comments.filter((c) => c.parentId==null).map((comment) => {
         // Each List Item Component needs a key attribute for uniqueness:
@@ -39,6 +43,7 @@ class CommentList extends Component {
         // the item value
         return <Comment key={comment.id}
                         comment={comment}
+                        loggedIn={loggedIn}
                         addComment={this.props.addComment}
                         comments={this.props.comments} />;
       });
@@ -52,6 +57,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, ownProps) {
   return {
+    currentUser: state.currentUser,
     comments: state.comments.filter((comment) => comment.commentableId === ownProps.commentableId)
   };
 }
@@ -62,8 +68,8 @@ CommentList.propTypes = {
   commentableId: PropTypes.number.isRequired,
   commentableType: PropTypes.string.isRequired,
   replyToComment: PropTypes.func,
+  currentUser: currentUserProps,
   fetchComments: PropTypes.func.isRequired
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

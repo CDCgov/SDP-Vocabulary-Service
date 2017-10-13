@@ -23,6 +23,7 @@ describe('Comment', () => {
     };
     component = renderComponent(Comment, {
       comment: comment,
+      loggedIn: true,
       addComment: function() {}
     });
   });

@@ -13,8 +13,7 @@ class Comment extends Component {
             <button className="btn btn-default btn-collapse btn-xs" type="button" data-toggle="collapse" data-target={"#comment_id_"+this.props.comment.id} aria-expanded="false" aria-controls={"comment_id_"+this.props.comment.id} aria-label="collapse">
               <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
             </button>
-            <span className="label label-info">{this.props.comment.id}</span>
-            {distanceInWordsToNow(parse(this.props.comment.createdAt,''), {addSuffix: true})} by {this.props.comment.userName}
+            <text> {distanceInWordsToNow(parse(this.props.comment.createdAt,''), {addSuffix: true})} by {this.props.comment.userName}</text>
           </div>
 
           <div className="panel-collapse collapse in" id={"comment_id_"+this.props.comment.id}>
@@ -28,7 +27,7 @@ class Comment extends Component {
               <p>
                 {this.props.comment.comment}
               </p>
-              <div className="comment-meta">
+              {this.props.loggedIn && <div className="comment-meta">
                 <span>
                   <a className="" ref={(input) => this.collapse = input}  role="button" data-toggle="collapse" href={"#replyComment_"+this.props.comment.id} aria-expanded="false" aria-controls={"replyComment_"+this.props.comment.id}>reply</a>
                 </span>
@@ -40,9 +39,8 @@ class Comment extends Component {
                               comments={this.props.comments}
                               addComment={this.props.addComment} />
                 </div>
-              </div>
+              </div>}
               {this.renderChildren()}
-
             </div>
           </div>
         </div>
@@ -56,12 +54,13 @@ class Comment extends Component {
         .map((comment) => {
           return <Comment key = {comment.id}
                           comment = {comment}
+                          loggedIn = {this.props.loggedIn}
                           comments={this.props.comments}
                           addComment = {this.props.addComment} />;
         });
     }
   }
-  }
+}
 
 
 
@@ -82,6 +81,7 @@ commentType.children = PropTypes.arrayOf(commentType);
 
 Comment.propTypes = {
   comment: commentType,
+  loggedIn: PropTypes.bool,
   addComment: PropTypes.func.isRequired,
   comments: PropTypes.array.isRequired
 };

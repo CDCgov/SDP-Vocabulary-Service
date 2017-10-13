@@ -30,3 +30,38 @@ Feature: Admin Panel
     And I should see "admin@gmail.com"
     When I click on the "remove_admin@gmail.com" button
     Then I should not see "admin@gmail.com"
+
+  Scenario: Add program
+    Given I am the admin test_author@gmail.com
+    And there is an admin with the email admin@gmail.com
+    When I go to the dashboard
+    And I click on the "account-dropdown" link
+    And I click on the "Admin Panel" link
+    And I click on the "Program List" link
+    And I fill in the "program-name" field with "New Program"
+    And I click on the "submit-prog-sys" button
+    And I fill in the "program-name" field with "Just clearing the text"
+    Then I should see "New Program"
+
+  Scenario: Add System
+    Given I am the admin test_author@gmail.com
+    And there is an admin with the email admin@gmail.com
+    When I go to the dashboard
+    And I click on the "account-dropdown" link
+    And I click on the "Admin Panel" link
+    And I click on the "System List" link
+    And I fill in the "system-name" field with "New System"
+    And I click on the "submit-prog-sys" button
+    And I fill in the "system-name" field with "Just clearing the text"
+    Then I should see "New System"
+
+  Scenario: Add System with name error
+    Given I am the admin test_author@gmail.com
+    And there is an admin with the email admin@gmail.com
+    When I go to the dashboard
+    And I click on the "account-dropdown" link
+    And I click on the "Admin Panel" link
+    And I click on the "System List" link
+    And I fill in the "system-description" field with "Trying to add system with no name"
+    And I click on the "submit-prog-sys" button
+    Then I should see "Error saving system - check format, name cannot be blank"
