@@ -31,8 +31,8 @@ module SDP
               "/landing#/questions/#{commentable.id}"
             when ResponseSet
               url_helper.response_set_url(commentable)
-            when Form
-              url_helper.form_url(commentable)
+            when Section
+              url_helper.section_url(commentable)
             else
               ''
             end

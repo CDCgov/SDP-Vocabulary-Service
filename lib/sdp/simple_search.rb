@@ -6,7 +6,7 @@ module SDP
     def self.search(type, query_string, current_user_id = nil, limit = 10, page = 1, publisher_search = false, my_stuff_search = false)
       current_user_id = current_user_id == -1 ? nil : current_user_id
       types = [type.camelize.constantize] if type
-      types ||= [Form, Question, ResponseSet, Survey]
+      types ||= [Section, Question, ResponseSet, Survey]
       results = {}
       types.map do |search_type|
         query = search_type.search(query_string, current_user_id, publisher_search, my_stuff_search)
@@ -27,11 +27,11 @@ module SDP
     def self.render_results(results)
       json_results = []
       total = 0
-      mapping = { Form => ESFormSerializer,
+      mapping = { Section => ESSectionSerializer,
                   Question => ESQuestionSerializer,
                   ResponseSet => ESResponseSetSerializer,
                   Survey => ESSurveySerializer }
-      types = [Question, ResponseSet, Form, Survey]
+      types = [Question, ResponseSet, Section, Survey]
       types.each do |type|
         type_results = results[type]
 

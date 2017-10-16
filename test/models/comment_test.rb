@@ -6,7 +6,7 @@ class CommentTest < ActiveSupport::TestCase
     @u = users(:not_admin)
   end
 
-  # Essentially testing that Versionable is working in Form
+  # Essentially testing that Versionable is working in Section
   test 'can add comments to a question ' do
     assert_difference('@q.comments.count') do
       @q.comments.create(comment: 'Is this a comment?', user: @u)

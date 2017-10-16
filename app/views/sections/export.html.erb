@@ -1,0 +1,25 @@
+<div class="basic-bg">
+  <div class="no-print">
+    <%= link_to 'Export', '#', onClick: 'window.print()', class:"btn btn-default" %>
+    <hr>
+  </div>
+  <!-- Add in basic-bg class -->
+
+  <!-- Start content to export -->
+  <h3>Section Name: <%= @section.name %></h3><br>
+
+  <% @section.section_questions.each do |fq| %>
+    <%= fq.question.content %>
+    <p>
+      <% if fq.response_set %>
+        <% fq.response_set.responses.each.with_index do |r, i| %>
+          <%= i+1 %>. <%= r.value %><br>
+        <% end %>
+      <% end %>
+    </p>
+  <% end %>
+
+
+  <!-- End Content to export -->
+  <br><br><br>
+</div>

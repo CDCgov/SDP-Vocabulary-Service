@@ -10,7 +10,7 @@ class SimpleSearchTest < ActiveSupport::TestCase
   end
 
   test 'can scope search by type ' do
-    %w(question form response_set survey).each do |type|
+    %w(question section response_set survey).each do |type|
       results = SDP::SimpleSearch.search(type, 'Search')
       json = JSON.parse(results.target!)
       # there is only 1 search related fixture for each type that is published
@@ -24,7 +24,7 @@ class SimpleSearchTest < ActiveSupport::TestCase
   end
 
   test 'can filter searches by user ' do
-    %w(question form response_set survey).each do |type|
+    %w(question section response_set survey).each do |type|
       admin_results = SDP::SimpleSearch.search(type, 'Search', @admin.id)
       admin_json = JSON.parse(admin_results.target!)
       user_results = SDP::SimpleSearch.search(type, 'Search', @user.id)
@@ -56,11 +56,11 @@ class SimpleSearchTest < ActiveSupport::TestCase
     # with the text  "Search" in the search fields so this should be 3
     assert_equal 4, json['hits']['total']
     assert_equal 4, json['hits']['hits'].length
-    hit_types = { 'form' => 0, 'question' => 0, 'response_set' => 0, 'survey' => 0 }
+    hit_types = { 'section' => 0, 'question' => 0, 'response_set' => 0, 'survey' => 0 }
     json['hits']['hits'].each do |hit|
       hit_types[hit['_type']] += 1
     end
-    assert_equal 1, hit_types['form']
+    assert_equal 1, hit_types['section']
     assert_equal 1, hit_types['question']
     assert_equal 1, hit_types['response_set']
     assert_equal 1, hit_types['survey']
@@ -75,20 +75,20 @@ class SimpleSearchTest < ActiveSupport::TestCase
     # be 6
     assert_equal 8, json['hits']['total']
     assert_equal 8, json['hits']['hits'].length
-    hit_types = { 'form' => 0, 'question' => 0, 'response_set' => 0, 'survey' => 0 }
+    hit_types = { 'section' => 0, 'question' => 0, 'response_set' => 0, 'survey' => 0 }
     json['hits']['hits'].each do |hit|
       hit_types[hit['_type']] += 1
       source = hit['_source']
       assert source['createdBy']['id'] == @admin.id || source['status'] == 'published'
     end
-    assert_equal 2, hit_types['form']
+    assert_equal 2, hit_types['section']
     assert_equal 2, hit_types['question']
     assert_equal 2, hit_types['response_set']
     assert_equal 2, hit_types['survey']
   end
 
   test 'publisher can search other users content ' do
-    %w(question form response_set survey).each do |type|
+    %w(question section response_set survey).each do |type|
       publisher_search = @publisher ? @publisher.has_role?(:publisher) : false
       publisher_results = SDP::SimpleSearch.search(type, 'Search', @publisher.id, 10, 1, publisher_search)
       publisher_json = JSON.parse(publisher_results.target!)

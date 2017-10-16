@@ -3,7 +3,7 @@ require 'sdp/importers/spreadsheet'
 
 class MMGTest < ActiveSupport::TestCase
   SURVEY_COUNT = 1
-  FORM_COUNT = 3
+  SECTION_COUNT = 3
   QUESTION_COUNT = 4
   RESPONSE_SET_COUNT = 2
   RESPONSE_COUNT = 6
@@ -18,7 +18,7 @@ class MMGTest < ActiveSupport::TestCase
     rscount = ResponseSet.count
     rcount = Response.count
     qcount = Question.count
-    formcount = Form.count
+    sectioncount = Section.count
     surveycount = Survey.count
 
     importer.save!
@@ -26,20 +26,20 @@ class MMGTest < ActiveSupport::TestCase
     assert_equal rcount + RESPONSE_COUNT, Response.count
     assert_equal rscount + RESPONSE_SET_COUNT, ResponseSet.count
     assert_equal qcount  + QUESTION_COUNT, Question.count
-    assert_equal formcount + FORM_COUNT, Form.count
+    assert_equal sectioncount + SECTION_COUNT, Section.count
     assert_equal surveycount + SURVEY_COUNT, Survey.count
 
     assert Survey.where(name: f).exists?
 
-    form = Form.where(name: 'Imported Form #1').first
-    assert form.present?
-    assert_equal form.questions.count, 1
-    assert_equal form.concepts.count, 1
-    assert_equal form.form_questions.first.position, 0
-    assert_equal form.concepts.first.value, 'Data Elements'
+    section = Section.where(name: 'Imported Section #1').first
+    assert section.present?
+    assert_equal section.questions.count, 1
+    assert_equal section.concepts.count, 1
+    assert_equal section.section_questions.first.position, 0
+    assert_equal section.concepts.first.value, 'Data Elements'
 
     survey = Survey.where(name: f).first
-    assert survey.forms.count, FORM_COUNT
-    assert survey.survey_forms.first.position, 0
+    assert survey.sections.count, SECTION_COUNT
+    assert survey.survey_sections.first.position, 0
   end
 end

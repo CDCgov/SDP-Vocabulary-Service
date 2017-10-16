@@ -26,11 +26,11 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
   test 'should create survey' do
     assert_enqueued_jobs 0
     assert_difference('Survey.count') do
-      post surveys_url params: { survey: { linked_forms: [{ form_id: forms(:one).id, position: 0 }], name: 'Test' } }
+      post surveys_url params: { survey: { linked_sections: [{ section_id: sections(:one).id, position: 0 }], name: 'Test' } }
     end
-    assert_enqueued_jobs 5 # 1 for the survey, 1 for the form update, 2 for questions, 1 for response set
+    assert_enqueued_jobs 5 # 1 for the survey, 1 for the section update, 2 for questions, 1 for response set
     assert_response :success
-    assert_equal 1, Survey.last.forms.length
+    assert_equal 1, Survey.last.sections.length
     assert_equal 'GSP', Survey.last.surveillance_program.acronym
   end
 
@@ -39,13 +39,13 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should destroy survey and surveyforms' do
+  test 'should destroy survey and surveysections' do
     assert_enqueued_jobs 0
-    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @survey.created_by_id, linked_questions: [nil], linked_response_sets: [nil] } }
-    post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_forms: [{ form_id: Form.last.id, position: 0 }] } }
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @survey.created_by_id, linked_questions: [nil], linked_response_sets: [nil] } }
+    post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_sections: [{ section_id: Section.last.id, position: 0 }] } }
     assert_difference('Survey.count', -1) do
-      assert_difference('SurveyForm.count', -1) do
-        assert_difference('Form.count', 0) do
+      assert_difference('SurveySection.count', -1) do
+        assert_difference('Section.count', 0) do
           delete survey_url(Survey.last)
         end
       end
@@ -98,10 +98,10 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     doc.root.add_namespace_definition('ds', 'http://www.w3.org/2000/09/xmldsig#')
     doc.root.add_namespace_definition('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
     doc.root.add_namespace_definition('redcap', 'https://projectredcap.org')
-    question_count = @survey.survey_forms.collect { |sf| sf.form.form_questions.count }.sum
+    question_count = @survey.survey_sections.collect { |sf| sf.section.section_questions.count }.sum
     assert doc
-    assert doc.xpath('//odm:FormDef').length == @survey.survey_forms.length
-    assert doc.xpath('//odm:ItemGroupDef').length == @survey.survey_forms.length
+    assert doc.xpath('//odm:SectionDef').length == @survey.survey_sections.length
+    assert doc.xpath('//odm:ItemGroupDef').length == @survey.survey_sections.length
     assert doc.xpath('//odm:ItemDef').length == question_count
     assert doc.xpath('//odm:ItemRef').length == question_count
   end

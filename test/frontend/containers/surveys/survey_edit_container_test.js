@@ -9,7 +9,7 @@ describe('SurveyEditContainer ', () => {
   it('will show survey edit page', () => {
     const props = {params:{},
       survey: {id: 1, name: 'Test Survey'},
-      forms:  {1: {id: 1, name: 'Form 1'}, 2: {id: 2, name: 'Form 2'}},
+      sections:  {1: {id: 1, name: 'Section 1'}, 2: {id: 2, name: 'Section 2'}},
       questions: {},
       route: {id: 1, name: 'test'},
       router: new MockRouter(),

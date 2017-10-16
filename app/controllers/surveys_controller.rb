@@ -18,7 +18,7 @@ class SurveysController < ApplicationController
     @survey.created_by = current_user
     @survey.surveillance_system = current_user.last_system
     @survey.surveillance_program = current_user.last_program
-    @survey.survey_forms = create_survey_forms
+    @survey.survey_sections = create_survey_sections
     if @survey.save
       render :show, status: :created, location: @survey
     else
@@ -34,7 +34,7 @@ class SurveysController < ApplicationController
       @survey.transaction do
         @survey.surveillance_system  = current_user.last_system
         @survey.surveillance_program = current_user.last_program
-        @survey.survey_forms = update_survey_forms
+        @survey.survey_sections = update_survey_sections
         @survey.update_concepts('Survey')
         update_successful = @survey.update(survey_params)
       end
@@ -96,7 +96,7 @@ class SurveysController < ApplicationController
   end
 
   def load_supporting_resources_for_editing
-    @forms = params[:search] ? Form.search(params[:search]) : Form.all
+    @sections = params[:search] ? Section.search(params[:search]) : Section.all
   end
 
   def save_message(survey)
@@ -110,40 +110,40 @@ class SurveysController < ApplicationController
                                    concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 
-  def create_survey_forms
-    survey_forms = []
-    if params[:survey][:linked_forms]
-      params[:survey][:linked_forms].each do |f|
-        survey_forms << SurveyForm.new(form_id: f[:form_id], position: f[:position])
+  def create_survey_sections
+    survey_sections = []
+    if params[:survey][:linked_sections]
+      params[:survey][:linked_sections].each do |f|
+        survey_sections << SurveySection.new(section_id: f[:section_id], position: f[:position])
       end
     end
-    survey_forms
+    survey_sections
   end
 
-  # !!! this algorithm assumes a form cannot appear twice on the same survey !!!
-  # Only update survey forms that were changed
-  def update_survey_forms
+  # !!! this algorithm assumes a section cannot appear twice on the same survey !!!
+  # Only update survey sections that were changed
+  def update_survey_sections
     updated_fs = []
-    if params[:survey][:linked_forms]
+    if params[:survey][:linked_sections]
       new_fs_hash = {}
-      params[:survey][:linked_forms].each { |q| new_fs_hash[q[:form_id]] = q }
-      # Be aware, wrapping this loop in a transaction improves performance by batching all the updates to be committed at once
-      SurveyForm.transaction do
-        @survey.survey_forms.each do |old_form|
-          if new_fs_hash.exclude? old_form.form_id
-            old_form.destroy!
+      params[:survey][:linked_sections].each { |q| new_fs_hash[q[:section_id]] = q }
+      # Be aware, wrapping this loop in a transaction improves perf by batching all the updates to be committed at once
+      SurveySection.transaction do
+        @survey.survey_sections.each do |old_section|
+          if new_fs_hash.exclude? old_section.section_id
+            old_section.destroy!
           else
-            new_form = new_fs_hash.delete(old_form.form_id)
-            if old_form.position != new_form[:position]
-              old_form.position = new_form[:position]
-              old_form.save!
+            new_section = new_fs_hash.delete(old_section.section_id)
+            if old_section.position != new_section[:position]
+              old_section.position = new_section[:position]
+              old_section.save!
             end
-            updated_fs << old_form
+            updated_fs << old_section
           end
         end
       end
-      # any new survey form still in this hash needs to be created
-      new_fs_hash.each { |_id, f| updated_fs << SurveyForm.new(form_id: f[:form_id], position: f[:position]) }
+      # any new survey section still in this hash needs to be created
+      new_fs_hash.each { |_id, f| updated_fs << SurveySection.new(section_id: f[:section_id], position: f[:position]) }
     end
     updated_fs
   end

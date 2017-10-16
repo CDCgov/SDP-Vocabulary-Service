@@ -14,27 +14,27 @@
 	<redcap:ProjectNotes></redcap:ProjectNotes>
 </GlobalVariables>
 <MetaDataVersion OID="Metadata.Test_2016-12-15_1938" Name="test" >
-   <!-- form defs -->
-   <% @survey.forms.each do |form| %>
+   <!-- section defs -->
+   <% @survey.sections.each do |section| %>
 
-   <FormDef OID="Form.<%= form.name.gsub(' ', '_')%>" Name="<%= form.name %>" Repeating="No" redcap:FormName="<%= form.name.underscore %>">
-     <ItemGroupRef ItemGroupOID="<%= form.name.gsub(' ', '_')%>.single_section" Mandatory="No"/>
-   </FormDef>
+   <SectionDef OID="Section.<%= section.name.gsub(' ', '_')%>" Name="<%= section.name %>" Repeating="No" redcap:SectionName="<%= section.name.underscore %>">
+     <ItemGroupRef ItemGroupOID="<%= section.name.gsub(' ', '_')%>.single_section" Mandatory="No"/>
+   </SectionDef>
 
    <% end %>
-   <% @survey.forms.each do |form| %>
+   <% @survey.sections.each do |section| %>
    <!-- item groups -->
-   <ItemGroupDef OID="<%= form.name.gsub(' ', '_') %>.single_section" Name="<%= form.name %>" Repeating="No">
-     <% form.form_questions.each do |fq| %>
+   <ItemGroupDef OID="<%= section.name.gsub(' ', '_') %>.single_section" Name="<%= section.name %>" Repeating="No">
+     <% section.section_questions.each do |fq| %>
      <ItemRef ItemOID="question_<%=fq.id%>" Mandatory="No" redcap:Variable="<%=fq.program_var || "question_#{fq.id}"%>"/>
      <% end %>
    </ItemGroupDef>
    <% end %>
 
-   <% form_questions = @survey.forms.collect {|form| form.form_questions}.flatten %>
+   <% section_questions = @survey.sections.collect {|section| section.section_questions}.flatten %>
 
   <!-- item defs -->
-  <% form_questions.each do |fq| %>
+  <% section_questions.each do |fq| %>
     <ItemDef OID="question_<%=fq.id%>" Name="question_<%=fq.id%>" DataType="text" Length="999" redcap:Variable="<%=fq.program_var || "question_#{fq.id}"%>" redcap:FieldType="<%= fq.response_set ? 'select' : 'text' %>" >
       <Question><TranslatedText><%= fq.question.content %></TranslatedText></Question>
       <% if fq.response_set %>
@@ -46,7 +46,7 @@
 
 
   <!-- code list defs -->
-  <% form_questions.each do |fq| %>
+  <% section_questions.each do |fq| %>
      <% if fq.response_set %>
       <CodeList OID="question_<%=fq.id%>.choices" Name="question_<%=fq.id%>" DataType="text" redcap:Variable="<%=fq.program_var || "question_#{fq.id}"%>">
         <% fq.response_set.responses.each do |response| %>

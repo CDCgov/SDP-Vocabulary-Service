@@ -30,11 +30,11 @@ class SurveySerializer < ActiveModel::Serializer
   end
   attribute :version
   attribute :published_by, serializer: UserSerializer
-  attribute :forms
+  attribute :sections
 
-  def forms
-    object.survey_forms.includes(form: { form_questions: [:response_set, { question: :concepts }] }).collect do |sf|
-      FormSerializer.new(sf.form)
+  def sections
+    object.survey_sections.includes(section: { section_questions: [:response_set, { question: :concepts }] }).collect do |sf|
+      SectionSerializer.new(sf.section)
     end
   end
 end

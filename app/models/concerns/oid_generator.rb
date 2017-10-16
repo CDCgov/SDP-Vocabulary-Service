@@ -2,7 +2,7 @@ module OidGenerator
   extend ActiveSupport::Concern
 
   if Settings.oid_prefix.blank? ||
-     Settings.oid_prefix['Form'].blank? ||
+     Settings.oid_prefix['Section'].blank? ||
      Settings.oid_prefix['Question'].blank? ||
      Settings.oid_prefix['ResponseSet'].blank?
     raise 'OID prefixes misconfigured, cannot continue. Configure these prefixes in config/settings.yml'

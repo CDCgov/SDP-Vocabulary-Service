@@ -18,24 +18,24 @@ module SDP
         response_sets = parse_response_sets
         questions = parse_questions(response_sets)
         item_groups = parse_item_groups(questions)
-        forms = parse_forms(item_groups)
-        forms
+        sections = parse_sections(item_groups)
+        sections
       end
 
-      def parse_forms(item_groups)
-        forms = {}
-        xml.xpath('//odm:FormDef').each do |f|
-          form = Form.new(name: f['Name'],
-                          created_by: user)
-          forms[f['OID']] = form
+      def parse_sections(item_groups)
+        sections = {}
+        xml.xpath('//odm:SectionDef').each do |f|
+          section = Section.new(name: f['Name'],
+                                created_by: user)
+          sections[f['OID']] = section
           f.xpath('./odm:ItemGroupRef').each do |igr|
             ig_questions = item_groups[igr['ItemGroupOID']]
             ig_questions.each_with_index do |q, i|
-              form.form_questions << FormQuestion.new(question: q, response_set: q.response_sets[0], position: i)
+              section.section_questions << SectionQuestion.new(question: q, response_set: q.response_sets[0], position: i)
             end
           end
         end
-        forms
+        sections
       end
 
       def parse_item_groups(questions)

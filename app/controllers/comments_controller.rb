@@ -48,7 +48,7 @@ class CommentsController < ApplicationController
     if commentable_id && commentable_type
       set_commentatble(commentable_type, commentable_id)
     else
-      %w(question form response_set).each do |possible|
+      %w(question section response_set).each do |possible|
         possible_value = params["#{possible}_id"]
         if possible_value
           set_commentatble(possible, possible_value)

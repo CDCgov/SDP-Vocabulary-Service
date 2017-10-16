@@ -100,15 +100,15 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal last_id, Question.last
   end
 
-  test 'should destroy a draft question and questionForms' do
+  test 'should destroy a draft question and questionSections' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', response_type_id: @question.response_type.id, question_type_id: @question.question_type.id } }
     assert_equal Question.last.status, 'draft'
     last_id = Question.last.id
     linked_question = { question_id: last_id, response_set_id: nil, position: 1, program_var: 'test' }
-    post forms_url(format: :json), params: { form: { name: 'Create test form', created_by_id: @question.created_by_id, linked_questions: [linked_question], linked_response_sets: [nil] } }
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @question.created_by_id, linked_questions: [linked_question], linked_response_sets: [nil] } }
     assert_difference('Question.count', -1) do
-      assert_difference('FormQuestion.count', -1) do
-        assert_difference('Form.count', 0) do
+      assert_difference('SectionQuestion.count', -1) do
+        assert_difference('Section.count', 0) do
           delete question_url(Question.last, format: :json)
         end
       end

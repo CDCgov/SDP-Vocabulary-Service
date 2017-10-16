@@ -14,20 +14,20 @@ namespace :cleanup do
       end
     end
 
-    FormQuestion.all.each do |fq|
-      if fq.form.nil? || fq.question.nil?
+    SectionQuestion.all.each do |fq|
+      if fq.section.nil? || fq.question.nil?
         fq.destroy!
         fq_orphan_count += 1
       end
     end
 
-    SurveyForm.all.each do |sf|
-      if sf.survey.nil? || sf.form.nil?
+    SurveySection.all.each do |sf|
+      if sf.survey.nil? || sf.section.nil?
         sf.destroy!
         sf_orphan_count += 1
       end
     end
 
-    puts "Cleaned up: #{qrs_orphan_count} QuestionResponseSets, #{fq_orphan_count} FormQuestions and #{sf_orphan_count} SurveyForms."
+    puts "Cleaned up: #{qrs_orphan_count} QuestionResponseSets, #{fq_orphan_count} SectionQuestions and #{sf_orphan_count} SurveySections."
   end
 end

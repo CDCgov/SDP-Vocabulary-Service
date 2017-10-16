@@ -7,7 +7,7 @@ import {
 describe('lastSearch reducer', () => {
 
   it('should set last search parameters', () => {
-    const lastSearchParams = { type: 'form', search: 'test', programs: ['Prog1', 'Prog2', 'Prog3'], systems: ['Sys1'], mystuff: false };
+    const lastSearchParams = { type: 'section', search: 'test', programs: ['Prog1', 'Prog2', 'Prog3'], systems: ['Sys1'], mystuff: false };
     const action = {type: SET_LAST_SEARCH, payload: lastSearchParams};
     const startState = {};
     const nextState = lastSearch(startState, action);

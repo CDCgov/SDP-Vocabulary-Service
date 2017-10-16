@@ -7,12 +7,12 @@ module Elastictest
     # Craft Response
     questions = Question.all
     response_sets = ResponseSet.all
-    forms = Form.all
+    sections = Section.all
     surveys = Survey.all
 
     fake_body = <<-EOS
-    {"took":1,"timed_out":false,"_shards":{"total":#{questions.size + response_sets.size + forms.size},"successful":5,"failed":0},
-    "hits":{"total":#{questions.size + response_sets.size + forms.size},"max_score":2.7132807,"hits":[
+    {"took":1,"timed_out":false,"_shards":{"total":#{questions.size + response_sets.size + sections.size},"successful":5,"failed":0},
+    "hits":{"total":#{questions.size + response_sets.size + sections.size},"max_score":2.7132807,"hits":[
     EOS
 
     fake_body += fake_results('question', questions)
@@ -22,9 +22,9 @@ module Elastictest
     fake_body += fake_results('response_set', response_sets)
     previous_hits ||= response_sets.any?
 
-    fake_body += previous_hits && forms.any? ? ',' : ''
-    fake_body += fake_results('form', forms)
-    previous_hits ||= forms.any?
+    fake_body += previous_hits && sections.any? ? ',' : ''
+    fake_body += fake_results('section', sections)
+    previous_hits ||= sections.any?
 
     fake_body += previous_hits && surveys.any? ? ',' : ''
     fake_body += fake_results('survey', surveys)
@@ -67,13 +67,13 @@ module Elastictest
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
 
-  def self.fake_form_search_results
-    forms = Form.all
+  def self.fake_section_search_results
+    sections = Section.all
     fake_body = <<-EOS
-    {"took":1,"timed_out":false,"_shards":{"total":#{forms.size},"successful":5,"failed":0},
-    "hits":{"total":#{forms.size},"max_score":2.7132807,"hits":[
+    {"took":1,"timed_out":false,"_shards":{"total":#{sections.size},"successful":5,"failed":0},
+    "hits":{"total":#{sections.size},"max_score":2.7132807,"hits":[
     EOS
-    fake_body += fake_results('form', forms)
+    fake_body += fake_results('section', sections)
     fake_body += ']}}'
 
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')

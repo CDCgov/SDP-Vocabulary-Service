@@ -16,7 +16,7 @@ describe('Errors', () => {
   });
 
   it('should display the correct number of errors', () => {
-    expect(component.find('h1')).to.contain('3 error(s) prohibited this form from being saved');
+    expect(component.find('h1')).to.contain('3 error(s) prohibited this section from being saved');
   });
 
   it('should an error message with the key and error', () => {

@@ -18,10 +18,10 @@ class ElasticSearchTest < ActiveSupport::TestCase
   end
 
   def test_search_on_type
-    SDP::Elasticsearch.search('form', 'Hello', 1)
+    SDP::Elasticsearch.search('section', 'Hello', 1)
     req = FakeWeb.last_request
     assert_equal 'GET', req.method
-    assert_equal '/vocabulary/form/_search', req.path
+    assert_equal '/vocabulary/section/_search', req.path
   end
 
   def test_search_all
@@ -32,10 +32,10 @@ class ElasticSearchTest < ActiveSupport::TestCase
   end
 
   def test_delete_all
-    SDP::Elasticsearch.delete_all('form', [1, 2, 3, 4])
+    SDP::Elasticsearch.delete_all('section', [1, 2, 3, 4])
     req = FakeWeb.last_request
     assert_equal 'POST', req.method
-    assert_equal '/vocabulary/form/_delete_by_query', req.path
+    assert_equal '/vocabulary/section/_delete_by_query', req.path
   end
 
   def find_duplicate_questions

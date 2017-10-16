@@ -18,9 +18,9 @@ module Users
 
     test 'should create new user and authentication if one does not exist' do
       Question.destroy_all
-      Form.destroy_all
+      Section.destroy_all
       ResponseSet.destroy_all
-      SurveyForm.destroy_all
+      SurveySection.destroy_all
       Survey.destroy_all
       User.destroy_all
 

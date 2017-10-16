@@ -15,14 +15,14 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :created_by, key: :createdBy
   attribute :response_sets, key: :responseSets
   attribute(:codes) { codes }
-  attribute :forms
+  attribute :sections
   attribute :surveillance_programs
   attribute :surveillance_systems
   attribute :response_type
 
-  def forms
-    object.form_questions.includes(:form).collect do |fq|
-      { id: fq.form.id, name: fq.form.name }
+  def sections
+    object.section_questions.includes(:section).collect do |fq|
+      { id: fq.section.id, name: fq.section.name }
     end
   end
 

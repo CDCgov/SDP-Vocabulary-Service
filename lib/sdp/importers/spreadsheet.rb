@@ -56,7 +56,7 @@ module SDP
       def append!(survey_id)
         s = Survey.find(survey_id)
         f_position = 0
-        f_position = s.survey_forms.last.position if s.survey_forms.present?
+        f_position = s.survey_sections.last.position if s.survey_sections.present?
         save_survey_items(s, f_position)
       end
 
@@ -98,10 +98,10 @@ module SDP
 
       def save_survey_items(s, f_position)
         sections do |name, elements|
-          f = Form.new(name: name || "Imported Form ##{f_position + 1}", created_by: @user)
+          f = Section.new(name: name || "Imported Section ##{f_position + 1}", created_by: @user)
           f.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
           f.save!
-          s.survey_forms.create(form: f, position: f_position)
+          s.survey_sections.create(section: f, position: f_position)
           f_position += 1
           q_position = 0
           elements.each do |element|
@@ -114,11 +114,11 @@ module SDP
             q = question_for(element)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
-            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
+            f.section_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
             q_position += 1
             q.index
           end
-          UpdateIndexJob.perform_now('form', f)
+          UpdateIndexJob.perform_now('section', f)
         end
         UpdateIndexJob.perform_now('survey', s)
       end

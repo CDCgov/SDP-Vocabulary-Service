@@ -2,8 +2,8 @@ require 'test_helper'
 require 'sdp/importers/redcap'
 
 class Redcap < ActiveSupport::TestCase
-  # Essentially testing that Versionable is working in Form
-  FORM_COUNT = 5
+  # Essentially testing that Versionable is working in Section
+  SECTION_COUNT = 5
   QUESTION_COUNT = 198
   ITEM_GROUP_COUNT = 16
   RESPONSE_SET_COUNT = 67
@@ -17,18 +17,18 @@ class Redcap < ActiveSupport::TestCase
     assert_equal  QUESTION_COUNT, questions.values.length
     item_groups = importer.parse_item_groups(questions)
     assert_equal ITEM_GROUP_COUNT, item_groups.values.length
-    forms = importer.parse_forms(item_groups)
-    assert_equal FORM_COUNT, forms.values.length
+    sections = importer.parse_sections(item_groups)
+    assert_equal SECTION_COUNT, sections.values.length
 
     rscount = ResponseSet.count
     qcount  = Question.count
-    formcount = Form.count
+    sectioncount = Section.count
 
-    forms.each_pair do |_k, v|
+    sections.each_pair do |_k, v|
       v.save
     end
     assert_equal rscount + RESPONSE_SET_COUNT, ResponseSet.count
     assert_equal qcount  + QUESTION_COUNT, Question.count
-    assert_equal formcount + FORM_COUNT, Form.count
+    assert_equal sectioncount + SECTION_COUNT, Section.count
   end
 end

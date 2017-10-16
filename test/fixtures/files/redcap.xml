@@ -14,14 +14,14 @@
 	<redcap:ProjectNotes></redcap:ProjectNotes>
 </GlobalVariables>
 <MetaDataVersion OID="Metadata.Test_2016-12-15_1938" Name="test" redcap:RecordIdField="lab_id">
-	<FormDef OID="Form.id_shipping" Name="ID Shipping" Repeating="No" redcap:FormName="id_shipping">
+	<SectionDef OID="Section.id_shipping" Name="ID Shipping" Repeating="No" redcap:SectionName="id_shipping">
 		<ItemGroupRef ItemGroupOID="id_shipping.lab_id" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.facility_name" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.secondtime_getsample" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.thirdtime_getsample" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.id_shipping_complete" Mandatory="No"/>
-	</FormDef>
-	<FormDef OID="Form.pathology_review" Name="Pathology Review" Repeating="No" redcap:FormName="pathology_review">
+	</SectionDef>
+	<SectionDef OID="Section.pathology_review" Name="Pathology Review" Repeating="No" redcap:SectionName="pathology_review">
 		<ItemGroupRef ItemGroupOID="pathology_review.tumor_origin" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.date_surgery" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_breast" Mandatory="No"/>
@@ -30,16 +30,16 @@
 		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_lung" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_others" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.pathology_review_complete" Mandatory="No"/>
-	</FormDef>
-	<FormDef OID="Form.slide_information" Name="Slide Information" Repeating="No" redcap:FormName="slide_information">
+	</SectionDef>
+	<SectionDef OID="Section.slide_information" Name="Slide Information" Repeating="No" redcap:SectionName="slide_information">
 		<ItemGroupRef ItemGroupOID="slide_information.five_um_tumor_quant" Mandatory="No"/>
-	</FormDef>
-	<FormDef OID="Form.tma_information" Name="TMA Information" Repeating="No" redcap:FormName="tma_information">
+	</SectionDef>
+	<SectionDef OID="Section.tma_information" Name="TMA Information" Repeating="No" redcap:SectionName="tma_information">
 		<ItemGroupRef ItemGroupOID="tma_information.tma_ca_pos1" Mandatory="No"/>
-	</FormDef>
-	<FormDef OID="Form.slide_tracking" Name="Slide Tracking" Repeating="No" redcap:FormName="slide_tracking">
+	</SectionDef>
+	<SectionDef OID="Section.slide_tracking" Name="Slide Tracking" Repeating="No" redcap:SectionName="slide_tracking">
 		<ItemGroupRef ItemGroupOID="slide_tracking.pulling_date1" Mandatory="No"/>
-	</FormDef>
+	</SectionDef>
 	<ItemGroupDef OID="id_shipping.lab_id" Name="IDs" Repeating="No">
 		<ItemRef ItemOID="lab_id" Mandatory="No" redcap:Variable="lab_id"/>
 		<ItemRef ItemOID="trc_id" Mandatory="No" redcap:Variable="trc_id"/>
@@ -108,7 +108,7 @@
 		<ItemRef ItemOID="returndate3" Mandatory="No" redcap:Variable="returndate3"/>
 		<ItemRef ItemOID="returntracking3" Mandatory="No" redcap:Variable="returntracking3"/>
 	</ItemGroupDef>
-	<ItemGroupDef OID="id_shipping.id_shipping_complete" Name="Form Status" Repeating="No">
+	<ItemGroupDef OID="id_shipping.id_shipping_complete" Name="Section Status" Repeating="No">
 		<ItemRef ItemOID="id_shipping_complete" Mandatory="No" redcap:Variable="id_shipping_complete"/>
 	</ItemGroupDef>
 	<ItemGroupDef OID="pathology_review.tumor_origin" Name="Tumor Origin and Location" Repeating="No">
@@ -202,7 +202,7 @@
 		<ItemRef ItemOID="tnm_stage" Mandatory="No" redcap:Variable="tnm_stage"/>
 		<ItemRef ItemOID="pathoireview_note" Mandatory="No" redcap:Variable="pathoireview_note"/>
 	</ItemGroupDef>
-	<ItemGroupDef OID="pathology_review.pathology_review_complete" Name="Form Status" Repeating="No">
+	<ItemGroupDef OID="pathology_review.pathology_review_complete" Name="Section Status" Repeating="No">
 		<ItemRef ItemOID="pathology_review_complete" Mandatory="No" redcap:Variable="pathology_review_complete"/>
 	</ItemGroupDef>
 	<ItemGroupDef OID="slide_information.five_um_tumor_quant" Name="Slide Information" Repeating="No">
@@ -462,7 +462,7 @@
 	<ItemDef OID="returntracking3" Name="returntracking3" DataType="text" Length="999" redcap:Variable="returntracking3" redcap:FieldType="text" redcap:BranchingLogic="[return_needed3] = &#039;1&#039; and [thirdtime_getsample] = &#039;1&#039;">
 		<Question><TranslatedText>ReturnTracking3</TranslatedText></Question>
 	</ItemDef>
-	<ItemDef OID="id_shipping_complete" Name="id_shipping_complete" DataType="text" Length="1" redcap:Variable="id_shipping_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+	<ItemDef OID="id_shipping_complete" Name="id_shipping_complete" DataType="text" Length="1" redcap:Variable="id_shipping_complete" redcap:FieldType="select" redcap:SectionHeader="Section Status">
 		<Question><TranslatedText>Complete?</TranslatedText></Question>
 		<CodeListRef CodeListOID="id_shipping_complete.choices"/>
 	</ItemDef>
@@ -742,7 +742,7 @@
 	<ItemDef OID="pathoireview_note" Name="pathoireview_note" DataType="text" Length="999" redcap:Variable="pathoireview_note" redcap:FieldType="textarea">
 		<Question><TranslatedText>PatholReview_Note</TranslatedText></Question>
 	</ItemDef>
-	<ItemDef OID="pathology_review_complete" Name="pathology_review_complete" DataType="text" Length="1" redcap:Variable="pathology_review_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+	<ItemDef OID="pathology_review_complete" Name="pathology_review_complete" DataType="text" Length="1" redcap:Variable="pathology_review_complete" redcap:FieldType="select" redcap:SectionHeader="Section Status">
 		<Question><TranslatedText>Complete?</TranslatedText></Question>
 		<CodeListRef CodeListOID="pathology_review_complete.choices"/>
 	</ItemDef>
@@ -867,7 +867,7 @@
 	<ItemDef OID="parapieceloc_precancer" Name="parapieceloc_precancer" DataType="text" Length="999" redcap:Variable="parapieceloc_precancer" redcap:FieldType="text" redcap:BranchingLogic="[is_there_precancer] = &#039;1&#039;">
 		<Question><TranslatedText>ParaPieceLoc_Precancer</TranslatedText></Question>
 	</ItemDef>
-	<ItemDef OID="slide_information_complete" Name="slide_information_complete" DataType="text" Length="1" redcap:Variable="slide_information_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+	<ItemDef OID="slide_information_complete" Name="slide_information_complete" DataType="text" Length="1" redcap:Variable="slide_information_complete" redcap:FieldType="select" redcap:SectionHeader="Section Status">
 		<Question><TranslatedText>Complete?</TranslatedText></Question>
 		<CodeListRef CodeListOID="slide_information_complete.choices"/>
 	</ItemDef>
@@ -911,7 +911,7 @@
 	<ItemDef OID="tma_metastatic_pos2" Name="tma_metastatic_pos2" DataType="text" Length="999" redcap:Variable="tma_metastatic_pos2" redcap:FieldType="text" redcap:BranchingLogic="[another_accnumber] = &#039;1&#039;">
 		<Question><TranslatedText>TMA Metastatic_pos2</TranslatedText></Question>
 	</ItemDef>
-	<ItemDef OID="tma_information_complete" Name="tma_information_complete" DataType="text" Length="1" redcap:Variable="tma_information_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+	<ItemDef OID="tma_information_complete" Name="tma_information_complete" DataType="text" Length="1" redcap:Variable="tma_information_complete" redcap:FieldType="select" redcap:SectionHeader="Section Status">
 		<Question><TranslatedText>Complete?</TranslatedText></Question>
 		<CodeListRef CodeListOID="tma_information_complete.choices"/>
 	</ItemDef>
@@ -927,7 +927,7 @@
 	<ItemDef OID="pulled_quant1" Name="pulled_quant1" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="pulled_quant1" redcap:FieldType="text" redcap:TextValidationType="float">
 		<Question><TranslatedText>Pulled_Quant1</TranslatedText></Question>
 	</ItemDef>
-	<ItemDef OID="slide_tracking_complete" Name="slide_tracking_complete" DataType="text" Length="1" redcap:Variable="slide_tracking_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+	<ItemDef OID="slide_tracking_complete" Name="slide_tracking_complete" DataType="text" Length="1" redcap:Variable="slide_tracking_complete" redcap:FieldType="select" redcap:SectionHeader="Section Status">
 		<Question><TranslatedText>Complete?</TranslatedText></Question>
 		<CodeListRef CodeListOID="slide_tracking_complete.choices"/>
 	</ItemDef>

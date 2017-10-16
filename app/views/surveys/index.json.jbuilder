@@ -1,5 +1,5 @@
 json.array! @surveys do |survey|
-  json.extract! survey, :id, :name, :description, :created_at, :updated_at, :survey_forms, \
+  json.extract! survey, :id, :name, :description, :created_at, :updated_at, :survey_sections, \
                 :version_independent_id, :version, :control_number, :created_by_id, :status, \
                 :published_by, :parent, :concepts
   json.user_id survey.created_by.email if survey.created_by.present?

@@ -5,15 +5,15 @@ import { surveysSchema } from '../../../webpack/schema';
 import {
   ADD_ENTITIES_FULFILLED,
   DELETE_SURVEY_FULFILLED,
-  ADD_FORM,
-  REMOVE_FORM
+  ADD_SECTION,
+  REMOVE_SECTION
 } from '../../../webpack/actions/types';
 
 describe('surveys reducer', () => {
-  const twoForms   = [{id:1,name:"Form1"},{id:2,name:"Form2"}];
+  const twoSections   = [{id:1,name:"Section1"},{id:2,name:"Section2"}];
   const twoSurveys = [
-                    {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", forms:[]},
-                    {id: 3, name: "Blue Survey", userId: "testAuthor@gmail.com", forms: twoForms}
+                    {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", sections:[]},
+                    {id: 3, name: "Blue Survey", userId: "testAuthor@gmail.com", sections: twoSections}
   ];
 
   it('should fetch surveys', () => {
@@ -24,31 +24,31 @@ describe('surveys reducer', () => {
     expect(Object.keys(nextState).length).to.equal(2);
   });
 
-  it('should add a form', () => {
-    const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveyForms:[]};
-    const form = {id: 1, content: "Is this a form?", formType: ""};
-    const action = {type: ADD_FORM, payload: {survey, form} };
+  it('should add a section', () => {
+    const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveySections:[]};
+    const section = {id: 1, content: "Is this a section?", sectionType: ""};
+    const action = {type: ADD_SECTION, payload: {survey, section} };
     const startState = {};
     const nextState = surveys(startState, action);
-    expect(nextState["1"].surveyForms[0].formId).to.equal(form.id);
+    expect(nextState["1"].surveySections[0].sectionId).to.equal(section.id);
   });
 
-  it('should not add the same form twice', () => {
-    const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveyForms:[]};
-    const form = {id: 1, content: "Is this a form?", formType: ""};
-    const action = {type: ADD_FORM, payload: {survey, form} };
+  it('should not add the same section twice', () => {
+    const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveySections:[]};
+    const section = {id: 1, content: "Is this a section?", sectionType: ""};
+    const action = {type: ADD_SECTION, payload: {survey, section} };
     const nextState  = surveys({}, action);
     const finalState = surveys(nextState, action);
-    expect(finalState["1"].surveyForms.length).to.equal(1);
+    expect(finalState["1"].surveySections.length).to.equal(1);
   });
 
-  it('should remove a form', () => {
-    const form = {id: 1, name: "Is this a form?"};
-    const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveyForms:[form]};
-    const action = {type: REMOVE_FORM, payload: {survey, index: 0} };
+  it('should remove a section', () => {
+    const section = {id: 1, name: "Is this a section?"};
+    const survey = {id: 1, name: "Red Survey",  userId: "testAuthor@gmail.com", surveySections:[section]};
+    const action = {type: REMOVE_SECTION, payload: {survey, index: 0} };
     const startState = {1: survey};
     const nextState = surveys(startState, action);
-    expect(nextState["1"].surveyForms.length).to.equal(0);
+    expect(nextState["1"].surveySections.length).to.equal(0);
   });
 
   it('should delete a survey', () => {
