@@ -1,0 +1,242 @@
+module SDP
+  module Importers
+    class Csv
+      attr_reader :errors
+
+      DEFAULT_CONFIG = {
+        de_tab_name: 'Data Elements',
+        de_coded_type: ['Coded'],
+        section_start_regex: '^START: (.*)',
+        section_end_regex: '^END: (.*)',
+        phin_vads_oid_regex: '.*oid=(.*)(&.*)*',
+        de_columns: {
+          section_name: 'PHIN Variable',
+          name: 'Data Element (DE) Name',
+          description: 'Data Element Description',
+          value_set: 'Value Set Name (VADS Hyperlink)',
+          program_var: 'Local Variable Code System',
+          data_type: 'Data Type'
+        },
+        vs_columns: {
+          code: 'Concept Code',
+          name: 'Concept Name',
+          code_system_oid: 'Code System OID',
+          code_system_name: 'Code System Name',
+          code_system_version: 'Code System Version'
+        },
+        response_types: {
+          'Date' => :date,
+          'Coded' => :choice,
+          'Numeric' => :decimal,
+          'Text' => :text,
+          'Date/time' => :dateTime
+        }
+      }.freeze
+
+      def initialize(file, user, config = {})
+        @file = file
+        @user = user
+        @errors = []
+        @section_names = []
+        @sections = {}
+        @config = DEFAULT_CONFIG.deep_merge(config)
+        @section_start = Regexp.new(@config[:section_start_regex])
+        @section_end = Regexp.new(@config[:section_end_regex])
+        @vads_oid = Regexp.new(@config[:phin_vads_oid_regex])
+        @oid_matcher = /^([\.\d]+)$/
+        @valueset_sheet = /Valueset.*/
+        @local_response_sets = {}
+      end
+
+      def save!
+        s = Survey.new(name: @config[:survey_name] || @file, created_by: @user)
+        s.save!
+        f_position = 0
+        save_survey_items(s, f_position)
+      end
+
+      def append!(survey_id)
+        s = Survey.find(survey_id)
+        f_position = 0
+        f_position = s.survey_forms.last.position if s.survey_forms.present?
+        save_survey_items(s, f_position)
+      end
+
+      def parse!(verbose = false)
+        w = Roo::Spreadsheet.open(@file)
+        @all_sheets = w.sheets
+        @all_sheets.each do |sheet|
+          headers = []
+          w.sheet(sheet).row(1).each do |header|
+            headers << header
+          end
+          if (@config[:vs_columns].values - headers).empty? ||
+             @valueset_sheet.match(sheet)
+            logger.debug "skipping sheet #{sheet} -- looks like a value set"
+            next
+          end
+          logger.debug "processing sheet #{sheet}"
+          w.sheet(sheet).each(@config[:de_columns]) do |row|
+            # skip first row
+            next if row[:name] == @config[:de_columns][:name]
+            next if row[:name].nil?
+            section_name = sheet
+            @sections[section_name] ||= { name: section_name, data_elements: [] }
+            data_element = extract_data_element(row)
+            @sections[section_name][:data_elements] << data_element unless data_element.nil? ||
+                                                                           @sections[section_name][:data_elements].include?(data_element)
+            print_data_element(data_element) if verbose
+          end
+        end
+        # Go back and extract value sets when those are included in the workbook
+        extract_value_sets(w, verbose)
+        w.close
+      end
+
+      def sections
+        @sections.each_value do |section|
+          yield section[:name], section[:data_elements]
+        end
+      end
+
+      private
+
+      def save_survey_items(s, f_position)
+        sections do |name, elements|
+          f = Form.new(name: name || "Imported Form ##{f_position + 1}", created_by: @user)
+          f.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+          f.save!
+          s.survey_forms.create(form: f, position: f_position)
+          f_position += 1
+          q_position = 0
+          elements.each do |element|
+            rs = nil
+            if element[:value_set_oid]
+              rs = response_set_for_vads(element)
+            elsif element[:value_set]
+              rs = response_set_for_local(element)
+            end
+            q = question_for(element)
+            q.save!
+            q.question_response_sets.create(response_set: rs) if rs
+            f.form_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
+            q_position += 1
+            q.index
+          end
+          UpdateIndexJob.perform_now('form', f)
+        end
+        UpdateIndexJob.perform_now('survey', s)
+      end
+
+      def response_type(type)
+        response_type_code = @config[:response_types][type]
+        rt = ResponseType.find_by(code: response_type_code)
+        raise "Unable to find response type #{response_type_code} - did response types change?" unless rt
+        rt
+      end
+
+      def question_for(element)
+        Question.new(
+          content: element[:name], description: element[:description],
+          created_by: @user, response_type: response_type(element[:data_type])
+        )
+      end
+
+      def response_set_for_vads(element)
+        # use the most recent version in the db
+        ResponseSet.where(oid: element[:value_set_oid]).order(version: :DESC).limit(1).first
+      end
+
+      def response_set_for_local(element)
+        @local_response_sets[element[:value_set_tab_name]] || create_response_set_for_local(element)
+      end
+
+      def create_response_set_for_local(element)
+        rs = ResponseSet.new(
+          created_by: @user, status: 'draft',
+          name: element[:value_set_tab_name],
+          source: 'local'
+        )
+        rs.save!
+        element[:value_set].each do |code|
+          rs.responses.create(code_system: code[:code_system_oid], display_name: code[:name], value: code[:code])
+        end
+        @local_response_sets[element[:value_set_tab_name]] = rs
+      end
+
+      def parse_value_set(sheet, name)
+        value_set = []
+        begin
+          sheet.each(@config[:vs_columns]) do |entry|
+            # skip first row
+            next if entry[:name] == @config[:vs_columns][:name]
+            # skip rows without a code
+            next if entry[:code].nil? || entry[:code].to_s.strip.empty?
+            value_set << entry
+          end
+        rescue Roo::HeaderRowNotFoundError
+          if sheet.header_line == 1
+            @errors << "Missing header row in #{name}, retrying"
+            sheet.header_line = 2
+            retry
+          else
+            @errors << "Unable to parse value set from #{name}"
+          end
+        end
+        value_set
+      end
+
+      def extract_value_sets(workbook, verbose)
+        sections do |_name, data_elements|
+          data_elements.each do |data_element|
+            next unless data_element[:value_set_tab_name]
+            sheet = workbook.sheet(data_element[:value_set_tab_name])
+            logger.info "Processing value set tab: #{data_element[:value_set_tab_name]}" if verbose
+            data_element[:value_set] = parse_value_set(sheet, data_element[:value_set_tab_name])
+            logger.info "  Codes: #{data_element[:value_set].join(', ')}" if verbose
+          end
+        end
+      end
+
+      def extract_data_element(row)
+        data_element = {
+          name: normalize(row[:name]), description: normalize(row[:description]),
+          data_type: normalize(row[:data_type]), program_var: normalize(row[:program_var])
+        }
+        if @config[:de_coded_type].include? data_element[:data_type]
+          if row[:value_set].respond_to? :to_uri
+            data_element[:value_set_url] = row[:value_set].to_uri
+            oid_matcher = @vads_oid.match(data_element[:value_set_url].to_s)
+            data_element[:value_set_oid] = oid_matcher[1] if oid_matcher
+          elsif !row[:value_set].nil?
+            tab_name = normalize(row[:value_set])
+            if @all_sheets.include? tab_name
+              # can't access a different sheet mid-parse so just save tab name for now
+              data_element[:value_set_tab_name] = normalize(row[:value_set])
+            elsif @oid_matcher.match(tab_name)
+              data_element[:value_set_oid] = tab_name
+            else
+              @errors << "Value set tab '#{tab_name}' not present"
+            end
+          end
+        end
+        data_element
+      end
+
+      def normalize(str)
+        str.strip if str
+      end
+
+      def print_data_element(data_element)
+        logger.info data_element[:name]
+        logger.info "  Type: #{data_element[:data_type]}"
+        if data_element[:value_set_url]
+          logger.info "  Value Set URL: #{data_element[:value_set_url]}"
+        end
+        if data_element[:value_set_tab_name]
+          logger.info "  Value Set Tab: #{data_element[:value_set_tab_name]}"
+        end
+      end
+    end
+  end
+end
