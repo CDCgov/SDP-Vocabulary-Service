@@ -8,7 +8,7 @@ import CodedSetTable from "../CodedSetTable";
 import { displayVersion } from '../../utilities/componentHelpers';
 
 import { surveyProps } from '../../prop-types/survey_props';
-import { formProps } from '../../prop-types/form_props';
+import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 
@@ -108,10 +108,10 @@ class SurveyShow extends Component {
               </div>
             </div>
           </div>
-          {this.props.forms.map((f,i) =>
-            <div key={i} className="basic-c-box panel-default survey-form">
+          {this.props.sections.map((f,i) =>
+            <div key={i} className="basic-c-box panel-default survey-section">
               <div className="panel-heading">
-                <h2 className="panel-title"><Link to={`/forms/${f.id}`}>{ f.name }</Link></h2>
+                <h2 className="panel-title"><Link to={`/sections/${f.id}`}>{ f.name }</Link></h2>
               </div>
               <div className="box-content">
                 <ul>
@@ -120,8 +120,8 @@ class SurveyShow extends Component {
                   )}
                 </ul>
               </div>
-              <div className="panel-footer survey-form">
-                <p>Form version: {displayVersion(f.version, f.mostRecent)}</p>
+              <div className="panel-footer survey-section">
+                <p>Section version: {displayVersion(f.version, f.mostRecent)}</p>
               </div>
             </div>
           )}
@@ -147,8 +147,8 @@ class SurveyShow extends Component {
   }
 
   render() {
-    let {survey, forms} = this.props;
-    if(!survey || !forms){
+    let {survey, sections} = this.props;
+    if(!survey || !sections){
       return (
         <div>Loading...</div>
       );
@@ -170,7 +170,7 @@ class SurveyShow extends Component {
 
 SurveyShow.propTypes = {
   survey: surveyProps,
-  forms:  PropTypes.arrayOf(formProps),
+  sections:  PropTypes.arrayOf(sectionProps),
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,

@@ -24,15 +24,16 @@ Given(/^I have a published Question with the content "([^"]*)" and the type "([^
   cq.publish(user)
 end
 
-Given(/^I have a published Form with the name "([^"]*)" and the description "([^"]*)"$/) do |name, description|
+Given(/^I have a published Section with the name "([^"]*)" and the description "([^"]*)"$/) do |name, description|
   user = get_user 'test_author@gmail.com'
-  form = Form.create!(name: name, description: description, created_by: user)
-  form.publish(user)
+  section = Section.create!(name: name, description: description, created_by: user)
+  section.publish(user)
 end
 
-Given(/^I have a Form with the name "([^"]*)" and the description "([^"]*)" and the concept "([^"]*)"$/) do |name, description, concept|
+Given(/^I have a Section with the name "([^"]*)" and the description "([^"]*)" and the concept "([^"]*)"$/) do |name, description, concept|
   user = get_user 'test_author@gmail.com'
-  Form.create!(name: name, description: description, created_by: user, concepts_attributes: [{ value: '', display_name: concept, code_system: '' }])
+  Section.create!(name: name, description: description,
+                  created_by: user, concepts_attributes: [{ value: '', display_name: concept, code_system: '' }])
 end
 
 Given(/^I have a Survey with the name "([^"]*)" and the description "([^"]*)" and the concept "([^"]*)"$/) do |name, description, concept|
@@ -40,10 +41,10 @@ Given(/^I have a Survey with the name "([^"]*)" and the description "([^"]*)" an
   Survey.create!(name: name, description: description, created_by: user, concepts_attributes: [{ value: '', display_name: concept, code_system: '' }])
 end
 
-Given(/^I have a published Form with the name "([^"]*)"$/) do |name|
+Given(/^I have a published Section with the name "([^"]*)"$/) do |name|
   user = get_user 'test_author@gmail.com'
-  form = Form.create!(name: name, created_by: user)
-  form.publish(user)
+  section = Section.create!(name: name, created_by: user)
+  section.publish(user)
 end
 
 Given(/^I have a published Response Set with the name "([^"]*)" and the description "([^"]*)" and\

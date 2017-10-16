@@ -5,7 +5,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import { questionProps } from "../../prop-types/question_props";
 import SearchResult from '../SearchResult';
 
-class FormQuestionList extends Component {
+class SectionQuestionList extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   }
@@ -26,8 +26,8 @@ class FormQuestionList extends Component {
   }
 }
 
-FormQuestionList.propTypes = {
+SectionQuestionList.propTypes = {
   questions: PropTypes.arrayOf(questionProps),
 };
 
-export default FormQuestionList;
+export default SectionQuestionList;

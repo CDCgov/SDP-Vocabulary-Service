@@ -76,16 +76,16 @@ class Help extends Component {
         <li>Click the alerts dropdown to see any new notifications about your content.</li>
         <li>Click your e-mail to see various account management options.</li>
         </ul>
-        <h3>Form Edit Page</h3>
+        <h3>Section Edit Page</h3>
         <ul>
-        <li>If you need to create a new question without leaving the the form use this button to author a new question from scratch.</li>
-        <li>Type in your search keywords here to search for questions to add to the form.</li>
+        <li>If you need to create a new question without leaving the the section use this button to author a new question from scratch.</li>
+        <li>Type in your search keywords here to search for questions to add to the section.</li>
         <li>Click Advanced to see additional filters you can apply to your search.</li>
         <li>Use these search results to find the question you want to add.</li>
-        <li>Click on the add button to select a question for the form.</li>
-        <li>Edit the various form details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.</li>
+        <li>Click on the add button to select a question for the section.</li>
+        <li>Edit the various section details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.</li>
         </ul>
-        <h3>Form Details Page</h3>
+        <h3>Section Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
@@ -123,10 +123,10 @@ class Help extends Component {
         </ul>
         <h3>Survey Edit Page</h3>
         <ul>
-        <li>Type in your search keywords here to search for forms to add to the survey</li>
+        <li>Type in your search keywords here to search for sections to add to the survey</li>
         <li>Click Advanced to see additional filters you can apply to your search</li>
-        <li>Use these search results to find the form you want to add</li>
-        <li>Click on the add button to select a form for the survey</li>
+        <li>Use these search results to find the section you want to add</li>
+        <li>Click on the add button to select a section for the survey</li>
         <li>Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content</li>
         </ul>
         <h3>Survey Details Page</h3>
@@ -175,7 +175,7 @@ class Help extends Component {
         <li><a href="#advanced-filtering">Advanced filtering</a></li>
         </ul>
         <h2 className="help-section-subtitle" id="basic-search">Basic Search</h2>
-        <p>On the dashboard there is a search bar that can be used to find questions, response sets, forms, and surveys. Typing in search terms that might be found in the name, description, author e-mail, and various other relevant fields on the items.</p>
+        <p>On the dashboard there is a search bar that can be used to find questions, response sets, sections, and surveys. Typing in search terms that might be found in the name, description, author e-mail, and various other relevant fields on the items.</p>
         <h2 className="help-section-subtitle" id="filtering-by-type">Filtering by Type</h2>
         <p>You can filter a search by the type of content by clicking on the analytics icons immediately below the search bar on the dashboard page. Clicking on any of those four squares on the top of the page will filter by the type specified in the square and highlight the square. Once a filter is applied you can click on the &#39;clear filter&#39; link that will appear under the icons on the dashboard.</p>
         <h2 className="help-section-subtitle" id="see-content-you-own">See Content You Own</h2>
@@ -199,9 +199,9 @@ class Help extends Component {
         <li>On the edit pages the name link is disabled but you can click the eyeball icon on any of the widgets to navigate to the details page.</li>
         </ul>
         <h2 className="help-section-subtitle" id="exporting">Exporting</h2>
-        <p>On the view pages for forms there is an action button that exports the current form to Redcap. To export a form and use it in redcap execute the following steps (exact wording may differ slightly based on your version of Redcap):</p>
+        <p>On the view pages for sections there is an action button that exports the current section to Redcap. To export a section and use it in redcap execute the following steps (exact wording may differ slightly based on your version of Redcap):</p>
         <ul>
-        <li>Click on the 'Export to Redcap' button on the Vocabulary service form details page (this will save a .xml file to the folder your browser directs downloads)</li>
+        <li>Click on the 'Export to Redcap' button on the Vocabulary service section details page (this will save a .xml file to the folder your browser directs downloads)</li>
         <li>Open up Redcap</li>
         <li>Choose the option to create a new project</li>
         <li>On the project creation page follow the on screen instructions to add a name and various attributes to the new projects</li>
@@ -259,7 +259,7 @@ class Help extends Component {
     return(
       <div className="tab-pane" id="tagging" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'tagging'} aria-labelledby="tagging-tab">
         <h1 id="tagging-content">Tagging Content</h1>
-        <p>Surveys, Forms, and Response Sets may all be tagged to facilitate content discovery and reuse. Currently, a tag consists of a name, a value or code, and a code system (which is optional depending on if the tag is coded or not).</p>
+        <p>Surveys, Sections, and Response Sets may all be tagged to facilitate content discovery and reuse. Currently, a tag consists of a name, a value or code, and a code system (which is optional depending on if the tag is coded or not).</p>
         <p>When editing content and a user starts typing in the tag column of the table a dropdown list will appear of all previously used tags. A user can use the arrow keys to navigate the list and select a tag that was previously used, or continue typing to enter a completely new tag.</p>
         <p>If the user wants to look for tags by the code or the code system typing these values into the tag field will filter the list by the code or code system as well.</p>
       </div>
@@ -349,7 +349,7 @@ class Help extends Component {
         <p><strong>Code System –</strong> a collection of unique codes pertaining to one or more topic areas and maintained as a unit; aka code set</p>
         <p><strong>Data Collection Instrument –</strong> a  method for collecting data from or about subjects using tests, questionnaires, inventories, interview schedules or guides, and survey plans</p>
         <p><strong>Data Collection Item –</strong> A question or data element used to indicate the name and meaning of a datum. It may be identified by a code in a code system, and it may be associated with keywords or search tags from a code system</p>
-        <p><strong>Data Collection Item Group –</strong> a set of data collection items such as questions that are used together in data collection instruments, for example as questionnaire sections, message segments, or SDV-Forms</p>
+        <p><strong>Data Collection Item Group –</strong> a set of data collection items such as questions that are used together in data collection instruments, for example as questionnaire sections, message segments, or SDV-Sections</p>
         <p><strong>Data Collection Specification -</strong> a set of data terms or questions, definitions, and data value constraints used to describe information collected manually or electronically for surveillance purposes and may also prescribe organization and collection instructions, guidelines, or logic. Examples include an HL7 V2.x  message mapping guide, and HL7 CDA implementation guide</p>
         <p><strong>Data Element –</strong> A unit of data or a variable defined for evaluating and processing. It typically is associated with a code name, a description, and a set of expected values. It may have other associated metadata.</p>
         <p><strong>Question –</strong> a data collection item that has a natural language expression used to solicit a value for  a data variable. A question may be identified by a code name that stands for the question.</p>

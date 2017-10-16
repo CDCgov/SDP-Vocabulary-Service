@@ -1,24 +1,24 @@
-.form-group {
+.section-group {
   @extend .panel-group;
   margin-top: 20px;
   text-align: left;
   margin-bottom: 20px;
 }
-.form-question-group {
+.section-question-group {
   @extend .panel-group;
   text-align: right;
   margin-bottom: 10px;
   float: right;
   width: 50%;
 }
-.form {
+.section {
   @extend .panel;
   width: 180px;
   border-radius: 0px;
   border: 1px solid $light-gray;
 
 }
-.form-container {
+.section-container {
   @extend .panel-body;
   border-bottom: 1px solid $light-gray;
   font-weight: bold;
@@ -27,7 +27,7 @@
   color: $cdc-blue;
   padding: 6px 8px 6px 10px;
 }
-.form-title {
+.section-title {
   @extend .panel-title;
   border-bottom: 1px solid $light-gray;
   padding-top: 6px;
@@ -35,14 +35,14 @@
   margin-left: 10px;
   margin-right: 8px;
 }
-.form-list-group {
+.section-list-group {
   @extend .list-group;
   display: table;
   width: 100%;
   font-size: 12px;
   margin-bottom: 0px;
 }
-.form-list-group-item {
+.section-list-group-item {
   @extend .list-group-item;
   text-align: center;
   display: table-cell;
@@ -50,17 +50,17 @@
   font-size: 12px;
   border: 0px;
 }
-.form-item-icon {
+.section-item-icon {
   color: $dark-gray;
 }
-.form-item-value {
+.section-item-value {
   font-size: 28px;
 }
-.form-item-title {
+.section-item-title {
   font-size: 14px;
   margin-top: 0px;
 }
-.form-info {
+.section-info {
   border-top: 1px solid $light-gray;
   padding-top: 6px;
   padding-bottom: 6px;

@@ -9,7 +9,7 @@ import { displayVersion } from '../utilities/componentHelpers';
 import currentUserProps from "../prop-types/current_user_props";
 import { responseSetProps } from "../prop-types/response_set_props";
 
-// Note, acceptable type strings are: response_set, question, form_question, form, survey, survey_form
+// Note, acceptable type strings are: response_set, question, section_question, section, survey, survey_section
 export default class SearchResult extends Component {
   render() {
     return (this.baseResult(this.props.type,
@@ -47,10 +47,10 @@ export default class SearchResult extends Component {
   }
 
   resultDropdownMenu(result, originalType, extraActionName, extraAction) {
-    var type = originalType.replace('_s','S').replace('form_','').replace('survey_','');
+    var type = originalType.replace('_s','S').replace('section_','').replace('survey_','');
     return (
       <ul className="dropdown-menu dropdown-menu-right">
-        {originalType === 'form_question' && <li>
+        {originalType === 'section_question' && <li>
           <a title={this.props.programVar ? 'Modify Program Variable Value' : 'Add Program Variable Value'} href="#" onClick={this.props.showProgramVarModal}>{this.props.programVar ? 'Modify' : 'Add'} Program Variable</a>
         </li>}
         {this.isRevisable(result) && <li>
@@ -175,14 +175,14 @@ export default class SearchResult extends Component {
             {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.codes && result.codes.length}</a></li>}
           </ul>
         );
-      case 'form':
-      case 'survey_form':
+      case 'section':
+      case 'survey_section':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Form details.">
+          <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Section details.">
             <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions: {result.questions && result.questions.length}</a></li>
           </ul>
         );
-      case 'form_question':
+      case 'section_question':
         if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
           return (
             <ul className="list-inline result-linked-number result-linked-item associated__responseset" aria-label="Additional Question details.">
@@ -192,9 +192,9 @@ export default class SearchResult extends Component {
         } else {
           var selectedResponseSet = this.props.responseSets.find((r) => r.id == this.props.selectedResponseSetId);
           return (
-            <div className="panel-body panel-body-form-question">
+            <div className="panel-body panel-body-section-question">
               <span className="selected-response-set" aria-label={`Selected Response set for Question ${result.content}`}>Response Set: {(selectedResponseSet && selectedResponseSet.name) || '(None)'}</span>
-              <div className="form-question-group">
+              <div className="section-question-group">
                 <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.result.id}/>
                 <select className="response-set-select" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSetId || ''} onChange={this.props.handleResponseSetChange}>
                   {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
@@ -211,8 +211,8 @@ export default class SearchResult extends Component {
         }
       case 'survey':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__form" aria-label="Additional Survey details.">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Forms: {result.forms && result.forms.length}</a></li>
+          <ul className="list-inline result-linked-number result-linked-item associated__section" aria-label="Additional Survey details.">
+            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Sections: {result.sections && result.sections.length}</a></li>
           </ul>
         );
     }
@@ -250,11 +250,11 @@ export default class SearchResult extends Component {
             }
           </div>
         );
-      case 'form':
-      case 'survey_form':
+      case 'section':
+      case 'survey_section':
         return (
           <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-${type}`}>
-            <text className="sr-only">List of links and names of questions linked to this form:</text>
+            <text className="sr-only">List of links and names of questions linked to this section:</text>
             {result.questions && result.questions.length > 0 &&
               result.questions.map((q, i) => {
                 return(
@@ -269,12 +269,12 @@ export default class SearchResult extends Component {
       case 'survey':
         return (
           <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-survey`}>
-            <text className="sr-only">List of links and names of forms on this survey</text>
-            {result.forms && result.forms.length > 0 &&
-              result.forms.map((f, i) => {
+            <text className="sr-only">List of links and names of sections on this survey</text>
+            {result.sections && result.sections.length > 0 &&
+              result.sections.map((f, i) => {
                 return(
-                  <div key={`form-${f.id}-${i}`} className="result-details-content">
-                    <Link to={`/forms/${f.id}`}>{f.name}</Link>
+                  <div key={`section-${f.id}-${i}`} className="result-details-content">
+                    <Link to={`/sections/${f.id}`}>{f.name}</Link>
                   </div>
                 );
               })
@@ -285,7 +285,7 @@ export default class SearchResult extends Component {
   }
 
   baseResult(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
-    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'form_question': 'fa-tasks', 'form': 'fa-list-alt', 'survey_form': 'fa-list-alt', 'survey': 'fa-clipboard'};
+    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'section_question': 'fa-tasks', 'section': 'fa-list-alt', 'survey_section': 'fa-list-alt', 'survey': 'fa-clipboard'};
     return (
       <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
         <li className="u-result-content-item">
@@ -315,7 +315,7 @@ export default class SearchResult extends Component {
           <div className="result-linked-details">
             {this.linkedDetails(result, type)}
           </div>
-          {(type !== "form_question") && this.detailsPanel(result, type)}
+          {(type !== "section_question") && this.detailsPanel(result, type)}
         </li>
         <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
           <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>

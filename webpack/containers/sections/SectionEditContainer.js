@@ -5,36 +5,36 @@ import { Button } from 'react-bootstrap';
 import capitalize from 'lodash/capitalize';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { formSchema } from '../../schema';
+import { sectionSchema } from '../../schema';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
-import { fetchForm, saveForm, newForm, saveDraftForm } from '../../actions/form_actions';
+import { fetchSection, saveSection, newSection, saveDraftSection } from '../../actions/section_actions';
 import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../../actions/questions_actions';
-import FormEdit from '../../components/forms/FormEdit';
+import SectionEdit from '../../components/sections/SectionEdit';
 import ResponseSetModal from '../response_sets/ResponseSetModal';
 import QuestionModalContainer  from '../questions/QuestionModalContainer';
 import QuestionSearchContainer from '../questions/QuestionSearchContainer';
-import { formProps } from '../../prop-types/form_props';
+import { sectionProps } from '../../prop-types/section_props';
 import { questionsProps } from '../../prop-types/question_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 
 
-class FormsEditContainer extends Component {
+class SectionEditContainer extends Component {
 
   constructor(props) {
     super(props);
-    let selectedFormSaver = this.props.saveForm;
-    if (this.props.params.formId) {
-      this.props.fetchForm(this.props.params.formId);
+    let selectedSectionSaver = this.props.saveSection;
+    if (this.props.params.sectionId) {
+      this.props.fetchSection(this.props.params.sectionId);
       if (this.props.params.action === 'edit') {
-        selectedFormSaver = this.props.saveDraftForm;
+        selectedSectionSaver = this.props.saveDraftSection;
       }
     } else {
-      this.props.newForm();
-      this.props.params.formId = 0;
+      this.props.newSection();
+      this.props.params.sectionId = 0;
       this.props.params.action = 'new';
     }
-    this.state = {selectedFormSaver: selectedFormSaver, showQuestionModal: false, showResponseSetModal: false};
+    this.state = {selectedSectionSaver: selectedSectionSaver, showQuestionModal: false, showResponseSetModal: false};
     this.showQuestionModal  = this.showQuestionModal.bind(this);
     this.closeQuestionModal = this.closeQuestionModal.bind(this);
     this.showResponseSetModal  = this.showResponseSetModal.bind(this);
@@ -52,14 +52,14 @@ class FormsEditContainer extends Component {
         position: 'bottom',
       },
       {
-        title: 'Author Question For Form',
-        text: 'If you need to create a new question without leaving the the form use this button to author a new question from scratch.',
+        title: 'Author Question For Section',
+        text: 'If you need to create a new question without leaving the the section use this button to author a new question from scratch.',
         selector: '.add-question',
         position: 'right',
       },
       {
         title: 'Question Search',
-        text: 'Type in your search keywords here to search for questions to add to the form.',
+        text: 'Type in your search keywords here to search for questions to add to the section.',
         selector: '.search-group',
         position: 'right',
       },
@@ -77,24 +77,24 @@ class FormsEditContainer extends Component {
       },
       {
         title: 'Add Question',
-        text: 'Click on the add button to select a question for the form.',
+        text: 'Click on the add button to select a question for the section.',
         selector: '.fa-plus-square',
         position: 'right',
       },
       {
-        title: 'Form Details',
-        text: 'Edit the various form details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.',
-        selector: '.form-edit-details',
+        title: 'Section Details',
+        text: 'Edit the various section details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.',
+        selector: '.section-edit-details',
         position: 'left',
       }]);
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.params.formId && prevProps.params.formId != this.props.params.formId){
-      this.props.fetchForm(this.props.params.formId);
+    if(this.props.params.sectionId && prevProps.params.sectionId != this.props.params.sectionId){
+      this.props.fetchSection(this.props.params.sectionId);
     }
-    if(this.props.form && this.props.form.formQuestions) {
-      this.refs.form.updateFormQuestions(this.props.form.formQuestions);
+    if(this.props.section && this.props.section.sectionQuestions) {
+      this.refs.section.updateSectionQuestions(this.props.section.sectionQuestions);
     }
   }
 
@@ -117,22 +117,22 @@ class FormsEditContainer extends Component {
   handleSaveQuestionSuccess(successResponse){
     this.setState({showQuestionModal: false});
     this.props.fetchQuestion(successResponse.data.id);
-    this.props.addQuestion(this.props.form, successResponse.data);
+    this.props.addQuestion(this.props.section, successResponse.data);
   }
 
   handleSelectSearchResult(q){
-    this.props.addQuestion(this.props.form, q);
+    this.props.addQuestion(this.props.section, q);
   }
 
   render() {
-    if(!this.props.form || !this.props.questions){
+    if(!this.props.section || !this.props.questions){
       return (
         <div>Loading...</div>
       );
     }
 
     return (
-      <div className="form-edit-container">
+      <div className="section-edit-container">
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
@@ -145,7 +145,7 @@ class FormsEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{capitalize(this.props.params.action)} Form </h1>
+              <h1 className="panel-title">{capitalize(this.props.params.action)} Section </h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">
@@ -155,8 +155,8 @@ class FormsEditContainer extends Component {
                 <QuestionSearchContainer selectedSearchResults={this.props.selectedSearchResults}
                                          handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
-              <FormEdit ref ='form'
-                        form={this.props.form}
+              <SectionEdit ref ='section'
+                        section={this.props.section}
                         route ={this.props.route}
                         router={this.props.router}
                         stats={this.props.stats}
@@ -164,7 +164,7 @@ class FormsEditContainer extends Component {
                         action={this.props.params.action || 'new'}
                         questions={this.props.questions}
                         responseSets ={this.props.responseSets}
-                        formSubmitter={this.state.selectedFormSaver}
+                        sectionSubmitter={this.state.selectedSectionSaver}
                         removeQuestion ={this.props.removeQuestion}
                         reorderQuestion={this.props.reorderQuestion}
                         showResponseSetModal={this.showResponseSetModal} />
@@ -178,20 +178,20 @@ class FormsEditContainer extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addQuestion, fetchQuestion,
-    newForm, fetchForm, removeQuestion, reorderQuestion, setStats,
-    saveForm, saveDraftForm}, dispatch);
+    newSection, fetchSection, removeQuestion, reorderQuestion, setStats,
+    saveSection, saveDraftSection}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {
-  const form = denormalize(state.forms[ownProps.params.formId || 0], formSchema, state);
+  const section = denormalize(state.sections[ownProps.params.sectionId || 0], sectionSchema, state);
   var selectedSearchResults = {};
-  if(form && form.formQuestions){
-    form.formQuestions.map((fq)=>{
+  if(section && section.sectionQuestions){
+    section.sectionQuestions.map((fq)=>{
       selectedSearchResults[fq.questionId] = true;
     });
   }
   return {
-    form: form,
+    section: section,
     questions: state.questions,
     responseSets: state.responseSets,
     stats: state.stats,
@@ -199,8 +199,8 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-FormsEditContainer.propTypes = {
-  form:  formProps,
+SectionEditContainer.propTypes = {
+  section:  sectionProps,
   route: PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
@@ -209,15 +209,15 @@ FormsEditContainer.propTypes = {
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
-  newForm:  PropTypes.func,
-  saveForm: PropTypes.func,
-  fetchForm: PropTypes.func,
+  newSection:  PropTypes.func,
+  saveSection: PropTypes.func,
+  fetchSection: PropTypes.func,
   addQuestion: PropTypes.func,
-  saveDraftForm: PropTypes.func,
+  saveDraftSection: PropTypes.func,
   fetchQuestion: PropTypes.func,
   removeQuestion: PropTypes.func,
   reorderQuestion: PropTypes.func,
   selectedSearchResults: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormsEditContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SectionEditContainer);

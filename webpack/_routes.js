@@ -473,12 +473,6 @@ Based on Rails routes of Vocabulary::Application
 // administrators => /administrators(.:format)
   // function(options)
   administrators_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"administrators",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
-// api_form => /api/forms/:id(.:format)
-  // function(id, options)
-  api_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
-// api_forms => /api/forms(.:format)
-  // function(options)
-  api_forms_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"forms",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // api_program => /api/programs/:id(.:format)
   // function(id, options)
   api_program_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"programs",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -491,6 +485,12 @@ Based on Rails routes of Vocabulary::Application
 // api_questions => /api/questions(.:format)
   // function(options)
   api_questions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"questions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// api_section => /api/sections/:id(.:format)
+  // function(id, options)
+  api_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// api_sections => /api/sections(.:format)
+  // function(options)
+  api_sections_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"sections",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // api_survey => /api/surveys/:id(.:format)
   // function(id, options)
   api_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -542,9 +542,9 @@ Based on Rails routes of Vocabulary::Application
 // edit_comment => /comments/:id/edit(.:format)
   // function(id, options)
   edit_comment_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
-// edit_form_question => /form_questions/:id/edit(.:format)
+// edit_section_question => /section_questions/:id/edit(.:format)
   // function(id, options)
-  edit_form_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"form_questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+  edit_section_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"section_questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // edit_user_password => /users/password/edit(.:format)
   // function(options)
   edit_user_password_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"password",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -557,21 +557,9 @@ Based on Rails routes of Vocabulary::Application
 // elasticsearch_duplicate_questions => /elasticsearch/duplicate_questions(.:format)
   // function(options)
   elasticsearch_duplicate_questions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"elasticsearch",false],[2,[7,"/",false],[2,[6,"duplicate_questions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// export_form => /forms/:id/export(.:format)
+// export_section => /sections/:id/export(.:format)
   // function(id, options)
-  export_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"export",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
-// form => /forms/:id(.:format)
-  // function(id, options)
-  form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// form_question => /form_questions/:id(.:format)
-  // function(id, options)
-  form_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"form_questions",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// form_questions => /form_questions(.:format)
-  // function(options)
-  form_questions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"form_questions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
-// forms => /forms(.:format)
-  // function(options)
-  forms_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"forms",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+  export_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"export",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // landing => /landing(.:format)
   // function(options)
   landing_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"landing",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
@@ -584,18 +572,18 @@ Based on Rails routes of Vocabulary::Application
 // new_comment => /comments/new(.:format)
   // function(options)
   new_comment_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// new_form => /forms/new(.:format)
-  // function(options)
-  new_form_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// new_form_question => /form_questions/new(.:format)
-  // function(options)
-  new_form_question_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"form_questions",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // new_question => /questions/new(.:format)
   // function(options)
   new_question_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // new_response_set => /response_sets/new(.:format)
   // function(options)
   new_response_set_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// new_section => /sections/new(.:format)
+  // function(options)
+  new_section_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// new_section_question => /section_questions/new(.:format)
+  // function(options)
+  new_section_question_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"section_questions",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // new_survey => /surveys/new(.:format)
   // function(options)
   new_survey_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
@@ -614,15 +602,15 @@ Based on Rails routes of Vocabulary::Application
 // notifications_mark_read => /notifications/mark_read(.:format)
   // function(options)
   notifications_mark_read_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"notifications",false],[2,[7,"/",false],[2,[6,"mark_read",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// publish_form => /forms/:id/publish(.:format)
-  // function(id, options)
-  publish_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // publish_question => /questions/:id/publish(.:format)
   // function(id, options)
   publish_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // publish_response_set => /response_sets/:id/publish(.:format)
   // function(id, options)
   publish_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// publish_section => /sections/:id/publish(.:format)
+  // function(id, options)
+  publish_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // publish_survey => /surveys/:id/publish(.:format)
   // function(id, options)
   publish_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -650,9 +638,12 @@ Based on Rails routes of Vocabulary::Application
 // rails_mailers => /rails/mailers(.:format)
   // function(options)
   rails_mailers_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"rails",false],[2,[7,"/",false],[2,[6,"mailers",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// redcap_form => /forms/:id/redcap(.:format)
+// redcap_section => /sections/:id/redcap(.:format)
   // function(id, options)
-  redcap_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"redcap",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+  redcap_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"redcap",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// redcap_survey => /surveys/:id/redcap(.:format)
+  // function(id, options)
+  redcap_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"redcap",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // reply_to_comment => /comments/:id/reply_to(.:format)
   // function(id, options)
   reply_to_comment_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"reply_to",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -665,21 +656,33 @@ Based on Rails routes of Vocabulary::Application
 // response_types => /response_types(.:format)
   // function(options)
   response_types_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"response_types",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
-// revise_form => /forms/:id/revise(.:format)
-  // function(id, options)
-  revise_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // revise_question => /questions/:id/revise(.:format)
   // function(id, options)
   revise_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // revise_response_set => /response_sets/:id/revise(.:format)
   // function(id, options)
   revise_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// revise_section => /sections/:id/revise(.:format)
+  // function(id, options)
+  revise_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // revise_survey => /surveys/:id/revise(.:format)
   // function(id, options)
   revise_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // root => /
   // function(options)
   root_path: Utils.route([], {}, [7,"/",false]),
+// section => /sections/:id(.:format)
+  // function(id, options)
+  section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// section_question => /section_questions/:id(.:format)
+  // function(id, options)
+  section_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"section_questions",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// section_questions => /section_questions(.:format)
+  // function(options)
+  section_questions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"section_questions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// sections => /sections(.:format)
+  // function(options)
+  sections_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // surveillance_programs => /surveillance_programs(.:format)
   // function(options)
   surveillance_programs_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveillance_programs",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
@@ -692,15 +695,15 @@ Based on Rails routes of Vocabulary::Application
 // surveys => /surveys(.:format)
   // function(options)
   surveys_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
-// usage_api_form => /api/forms/:id/usage(.:format)
-  // function(id, options)
-  usage_api_form_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"forms",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
 // usage_api_program => /api/programs/:id/usage(.:format)
   // function(id, options)
   usage_api_program_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"programs",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
 // usage_api_question => /api/questions/:id/usage(.:format)
   // function(id, options)
   usage_api_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
+// usage_api_section => /api/sections/:id/usage(.:format)
+  // function(id, options)
+  usage_api_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
 // usage_api_system => /api/systems/:id/usage(.:format)
   // function(id, options)
   usage_api_system_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"systems",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),

@@ -15,6 +15,6 @@ Feature: Tab Navigation and Order
     And I have a Question with the content "What is your gender 2?" and the type "MC"
     And I have a Question with the content "What is your gender 3?" and the type "MC"
     And I am on the "/" page
-    And I click on the create "Forms" dropdown item
+    And I click on the create "Sections" dropdown item
     And I press the tab key 11 times
-    Then "form-name" should be my focus
+    Then "section-name" should be my focus

@@ -158,7 +158,7 @@ class QuestionItem extends Component {
         {this.searchModal()}
         {this.programVarModal()}
         <div className="col-md-12">
-          <SearchResult type  ='form_question'
+          <SearchResult type  ='section_question'
                         index ={this.props.index}
                         result={{Source:this.props.question}}
                         isEditPage ={true}

@@ -70,8 +70,8 @@ When(/^I set search filter to "([^"]*)"$/) do |type|
     Elastictest.fake_question_search_results
   when 'response_set'
     Elastictest.fake_rs_search_results
-  when 'forms'
-    Elastictest.fake_form_search_results
+  when 'sections'
+    Elastictest.fake_section_search_results
   when 'survey'
     Elastictest.fake_survey_search_results
   else
@@ -218,8 +218,8 @@ def create_path(object_type, object_id)
     '//ul[@id="question_id_' + object_id + '"]'
   elsif object_type == 'Response Set'
     '//ul[@id="response_set_id_' + object_id + '"]'
-  elsif object_type == 'Form'
-    '//ul[@id="form_id_' + object_id + '"]'
+  elsif object_type == 'Section'
+    '//ul[@id="section_id_' + object_id + '"]'
   elsif object_type == 'Survey'
     '//ul[@id="survey_id_' + object_id + '"]'
   else
@@ -238,8 +238,8 @@ def attribute_to_id(object_type, attribute, attribute_value)
     obj = Question.find_by(attribute => attribute_value)
   elsif object_type == 'Question Type'
     obj = QuestionType.find_by(attribute => attribute_value)
-  elsif object_type == 'Form'
-    obj = Form.find_by(attribute => attribute_value)
+  elsif object_type == 'Section'
+    obj = Section.find_by(attribute => attribute_value)
   elsif object_type == 'Survey'
     obj = Survey.find_by(attribute => attribute_value)
   end

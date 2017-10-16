@@ -9,12 +9,12 @@ import { hashHistory, Router, Route, IndexRoute } from 'react-router';
 
 import DashboardContainer from './containers/DashboardContainer';
 import ResponseSetShowContainer from './containers/response_sets/ResponseSetShowContainer';
-import FormShowContainer from './containers/forms/FormShowContainer';
+import SectionShowContainer from './containers/sections/SectionShowContainer';
 import QuestionShowContainer from './containers/questions/QuestionShowContainer';
 import ResponseSetEditContainer from './containers/response_sets/ResponseSetEditContainer';
 import QuestionEditContainer from './containers/questions/QuestionEditContainer';
 import SurveyEditContainer from './containers/surveys/SurveyEditContainer';
-import FormsEditContainer from './containers/forms/FormsEditContainer';
+import SectionEditContainer from './containers/sections/SectionEditContainer';
 import SurveyShowContainer from './containers/surveys/SurveyShowContainer';
 import Privacy from './containers/Privacy';
 import Help from './containers/Help';
@@ -36,8 +36,8 @@ ReactDOM.render(
           <Route path='/admin' component={AdminPanel} />
         </Route>
         <Route component={AuthenticatedRoutes}>
-          <Route path='/forms/new' component={FormsEditContainer} />
-          <Route path='/forms/:formId/:action' component={FormsEditContainer} />
+          <Route path='/sections/new' component={SectionEditContainer} />
+          <Route path='/sections/:sectionId/:action' component={SectionEditContainer} />
           <Route path='/responseSets/new' component={ResponseSetEditContainer} />
           <Route path='/responseSets/:rsId/:action' component={ResponseSetEditContainer} />
           <Route path='/questions/new'  component={QuestionEditContainer} />
@@ -47,7 +47,7 @@ ReactDOM.render(
         </Route>
         <Route path='/privacy' component={Privacy}/>
         <Route path='/help' component={Help}/>
-        <Route path='/forms/:formId' component={FormShowContainer} />
+        <Route path='/sections/:sectionId' component={SectionShowContainer} />
         <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
         <Route path='/questions/:qId' component={QuestionShowContainer} />
         <Route path='/surveys/:surveyId' component={SurveyShowContainer} />

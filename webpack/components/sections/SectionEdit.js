@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import compact from 'lodash/compact';
 import union from 'lodash/union';
 
-import { formProps } from '../../prop-types/form_props';
+import { sectionProps } from '../../prop-types/section_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 import { questionsProps } from '../../prop-types/question_props';
 
@@ -15,57 +15,57 @@ import ModalDialog  from '../ModalDialog';
 import Errors from '../Errors';
 
 
-class FormEdit extends Component {
+class SectionEdit extends Component {
 
-  stateForRevise(form) {
-    var state = this.stateForEdit(form);
+  stateForRevise(section) {
+    var state = this.stateForEdit(section);
     state.version = state.version + 1;
     return state;
   }
 
-  stateForExtend(form) {
-    var state = this.stateForEdit(form);
+  stateForExtend(section) {
+    var state = this.stateForEdit(section);
     state.id = null;
     state.versionIndependentId = null;
     state.version = 1;
-    state.parentId = form.id;
+    state.parentId = section.id;
     state.controlNumber = '';
     return state;
   }
 
-  stateForEdit(form) {
-    const id = form.id;
-    const versionIndependentId = form.versionIndependentId;
-    const version = form.version;
-    const name = form.name || '';
-    const description = form.description || '';
-    const formQuestions = form.formQuestions || [];
-    const controlNumber = form.controlNumber;
+  stateForEdit(section) {
+    const id = section.id;
+    const versionIndependentId = section.versionIndependentId;
+    const version = section.version;
+    const name = section.name || '';
+    const description = section.description || '';
+    const sectionQuestions = section.sectionQuestions || [];
+    const controlNumber = section.controlNumber;
     const showWarningModal = false;
-    const parentId = form.parent ? form.parent.id : '';
-    const conceptsAttributes = filterConcepts(form.concepts) || [];
-    const linkedResponseSets = this.findLinkedResponseSets(formQuestions);
-    return {formQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes};
+    const parentId = section.parent ? section.parent.id : '';
+    const conceptsAttributes = filterConcepts(section.concepts) || [];
+    const linkedResponseSets = this.findLinkedResponseSets(sectionQuestions);
+    return {sectionQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes};
   }
 
   constructor(props) {
     super(props);
     switch (this.props.action) {
       case 'revise':
-        this.state = this.stateForRevise(props.form);
+        this.state = this.stateForRevise(props.section);
         break;
       case 'extend':
-        this.state = this.stateForExtend(props.form);
+        this.state = this.stateForExtend(props.section);
         break;
       case 'edit':
-        this.state = this.stateForEdit(props.form);
+        this.state = this.stateForEdit(props.section);
         break;
       default:
         this.state = this.stateForRevise({});
     }
     this.unsavedState = false;
-    this.lastQuestionCount = this.state.formQuestions.length;
-    this.addedResponseSets = compact(this.state.formQuestions.map((fq) => fq.responseSetId));
+    this.lastQuestionCount = this.state.sectionQuestions.length;
+    this.addedResponseSets = compact(this.state.sectionQuestions.map((fq) => fq.responseSetId));
 
     this.handleSubmit   = this.handleSubmit.bind(this);
     this.moveQuestionUp = this.moveQuestionUp.bind(this);
@@ -93,9 +93,9 @@ class FormEdit extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.lastQuestionCount !== prevState.formQuestions.length) {
+    if(this.lastQuestionCount !== prevState.sectionQuestions.length) {
       this.unsavedState = true;
-      this.lastQuestionCount = prevState.formQuestions.length;
+      this.lastQuestionCount = prevState.sectionQuestions.length;
     }
   }
 
@@ -112,10 +112,10 @@ class FormEdit extends Component {
 
   handleModalResponse(){
     this.setState({ showWarningModal: false });
-    let form = Object.assign({}, this.state);
-    form.linkedQuestions = this.state.formQuestions;
-    this.props.formSubmitter(form, (response) => {
-      // TODO: Handle when the saving form fails.
+    let section = Object.assign({}, this.state);
+    section.linkedQuestions = this.state.sectionQuestions;
+    this.props.sectionSubmitter(section, (response) => {
+      // TODO: Handle when the saving section fails.
       this.unsavedState = false;
       if (response.status === 201) {
         this.props.router.push(this.nextLocation.pathname);
@@ -138,15 +138,15 @@ class FormEdit extends Component {
       responseSetId = null;
     }
     let newState = Object.assign({}, this.state);
-    newState.formQuestions[questionIndex].responseSetId = responseSetId;
-    newState.linkedResponseSets = this.findLinkedResponseSets(newState.formQuestions);
+    newState.sectionQuestions[questionIndex].responseSetId = responseSetId;
+    newState.linkedResponseSets = this.findLinkedResponseSets(newState.sectionQuestions);
     this.setState(newState);
     this.unsavedState = true;
   }
 
   handleProgramVarChange(questionIndex, programVar) {
     let newState = Object.assign({}, this.state);
-    newState.formQuestions[questionIndex].programVar = programVar;
+    newState.sectionQuestions[questionIndex].programVar = programVar;
     this.setState(newState);
     this.unsavedState = true;
   }
@@ -173,25 +173,25 @@ class FormEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
-    let form = Object.assign({}, this.state);
-    form.linkedQuestions = this.state.formQuestions;
-    this.props.formSubmitter(form, (response) => {
+    let section = Object.assign({}, this.state);
+    section.linkedQuestions = this.state.sectionQuestions;
+    this.props.sectionSubmitter(section, (response) => {
       this.unsavedState = false;
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
-        stats.formCount = this.props.stats.formCount + 1;
-        stats.myFormCount = this.props.stats.myFormCount + 1;
+        stats.sectionCount = this.props.stats.sectionCount + 1;
+        stats.mySectionCount = this.props.stats.mySectionCount + 1;
         this.props.setStats(stats);
       }
-      this.props.router.push(`/forms/${response.data.id}`);
+      this.props.router.push(`/sections/${response.data.id}`);
     }, (failureResponse) => {
       this.setState({errors: failureResponse.response.data});
     });
   }
 
   cancelButton() {
-    if(this.props.form && this.props.form.id) {
-      return(<Link tabIndex="3" className="btn btn-default pull-right" to={`/forms/${this.props.form.id}`}>Cancel</Link>);
+    if(this.props.section && this.props.section.id) {
+      return(<Link tabIndex="3" className="btn btn-default pull-right" to={`/sections/${this.props.section.id}`}>Cancel</Link>);
     }
     return(<Link tabIndex="3" className="btn btn-default pull-right" to='/'>Cancel</Link>);
   }
@@ -202,24 +202,24 @@ class FormEdit extends Component {
   }
 
   addLinkedResponseSet(questionIndex, responseSet){
-    if(this.state.formQuestions[questionIndex].responseSetId == responseSet.id){
+    if(this.state.sectionQuestions[questionIndex].responseSetId == responseSet.id){
       return;
     }
     this.addedResponseSets = union(this.addedResponseSets, [responseSet.id]);
     var newState = Object.assign({}, this.state);
-    newState.formQuestions[questionIndex].responseSetId = responseSet.id;
+    newState.sectionQuestions[questionIndex].responseSetId = responseSet.id;
     this.setState(newState);
   }
 
-  updateFormQuestions(formQuestions){
-    var newState = Object.assign(this.state, {formQuestions: formQuestions, linkedResponseSets: this.findLinkedResponseSets(formQuestions)});
+  updateSectionQuestions(sectionQuestions){
+    var newState = Object.assign(this.state, {sectionQuestions: sectionQuestions, linkedResponseSets: this.findLinkedResponseSets(sectionQuestions)});
     this.setState(newState);
   }
 
-  findLinkedResponseSets(formQuestions, addedResponseSets){
+  findLinkedResponseSets(sectionQuestions, addedResponseSets){
     var linkedResponseSetMap = {};
-    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, formQuestions.map((fq) => fq.responseSetId));
-    formQuestions.map((q) => {
+    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionQuestions.map((fq) => fq.responseSetId));
+    sectionQuestions.map((q) => {
       var linkedResponseSets = [];
       var qId = q.questionId;
       if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
@@ -267,7 +267,7 @@ class FormEdit extends Component {
           </div>
         </div>
         <div className="added-question-group">
-          {this.state.formQuestions.map((q, i) =>
+          {this.state.sectionQuestions.map((q, i) =>
             <div className="row" key={q.questionId}>
               <div className="col-md-11">
                 <QuestionItem index={i}
@@ -282,19 +282,19 @@ class FormEdit extends Component {
                               handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <div className="col-md-1">
-                <div className="row form-question-controls">
+                <div className="row section-question-controls">
                   <button data-index={i} className="btn btn-small btn-default move-up" onClick={this.moveQuestionUp}>
-                    <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up question ${this.props.questions[q.questionId].content} on form`}</span>
+                    <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up question ${this.props.questions[q.questionId].content} on section`}</span>
                   </button>
                 </div>
-                <div className="row form-question-controls">
+                <div className="row section-question-controls">
                   <button data-index={i} className="btn btn-small btn-default move-down" onClick={this.moveQuestionDown}>
-                    <i data-index={i} className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down question ${this.props.questions[q.questionId].content} on form`}</span>
+                    <i data-index={i} className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down question ${this.props.questions[q.questionId].content} on section`}</span>
                   </button>
                 </div>
-                <div className="row form-question-controls">
+                <div className="row section-question-controls">
                   <button data-index={i} className="btn btn-small btn-default delete-question" onClick={this.removeQuestion}>
-                    <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove question ${this.props.questions[q.questionId].content} on form`}</span>
+                    <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove question ${this.props.questions[q.questionId].content} on section`}</span>
                   </button>
                 </div>
               </div>
@@ -312,8 +312,8 @@ class FormEdit extends Component {
       );
     }
     return (
-      <div className="col-md-7 form-edit-details">
-      <div className="" id='form-div'>
+      <div className="col-md-7 section-edit-details">
+      <div className="" id='section-div'>
       <ModalDialog show ={this.state.showWarningModal}
                    title="Warning"
                    subTitle="Unsaved Changes"
@@ -329,24 +329,24 @@ class FormEdit extends Component {
         <Errors errors={this.state.errors} />
           <div className="form-inline">
             <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
-            <input tabIndex="3" className='btn btn-default pull-right' name="Save Form" type="submit" value={`Save`}/>
+            <input tabIndex="3" className='btn btn-default pull-right' name="Save Section" type="submit" value={`Save`}/>
             <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>
         <div className="row">
           <div className="col-md-12">
             <div className="row">
-              <div className="form-group col-md-12">
-                <label htmlFor="form-name" hidden>Name</label>
-                <input tabIndex="3" className="input-format" placeholder="Name" type="text" value={this.state.name} name="form-name" id="form-name" onChange={this.handleChangeName}/>
+              <div className="section-group col-md-12">
+                <label htmlFor="section-name" hidden>Name</label>
+                <input tabIndex="3" className="input-format" placeholder="Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
               </div>
             </div>
             <div className="row">
-              <div className="form-group col-md-8">
-                <label htmlFor="form-description">Description</label>
-                <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="form-description" id="form-description" onChange={this.handleChangeDescription}/>
+              <div className="section-group col-md-8">
+                <label htmlFor="section-description">Description</label>
+                <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
               </div>
-              <div className="form-group col-md-4">
+              <div className="section-group col-md-4">
                 <label htmlFor="controlNumber">OMB Approval</label>
                 <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChangeControl}/>
               </div>
@@ -358,7 +358,7 @@ class FormEdit extends Component {
             <h2 className="tags-table-header"><strong>Tags</strong></h2>
             <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                      initialItems={this.state.conceptsAttributes}
-                     parentName={'form'}
+                     parentName={'section'}
                      childName={'tag'} />
           </div>
         </div>
@@ -381,12 +381,12 @@ function filterConcepts(concepts) {
   });
 }
 
-FormEdit.propTypes = {
-  form:   formProps,
+SectionEdit.propTypes = {
+  section: sectionProps,
   action: PropTypes.string.isRequired,
   setStats: PropTypes.func,
   stats: PropTypes.object,
-  formSubmitter:   PropTypes.func.isRequired,
+  sectionSubmitter:   PropTypes.func.isRequired,
   reorderQuestion: PropTypes.func.isRequired,
   removeQuestion:  PropTypes.func.isRequired,
   route:  PropTypes.object.isRequired,
@@ -396,4 +396,4 @@ FormEdit.propTypes = {
   showResponseSetModal: PropTypes.func.isRequired
 };
 
-export default FormEdit;
+export default SectionEdit;

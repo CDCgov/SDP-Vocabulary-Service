@@ -27,7 +27,7 @@
 //WIDGETS//
 @import "widgets/responseset";
 @import "widgets/questions";
-@import "widgets/forms";
+@import "widgets/sections";
 @import "widgets/analytics";
 @import "widgets/search";
 @import "widgets/recentitems";
@@ -37,7 +37,7 @@
 @import "widgets/searchresults";
 @import "widgets/pagination";
 @import "widgets/admin_panel";
-@import "widgets/surveyform";
+@import "widgets/surveysection";
 
 
 //LAYOUTS//
@@ -49,7 +49,7 @@
 @import "layouts/showpageheader";
 @import "layouts/contentbox";
 @import "layouts/maincontentarea";
-@import "layouts/form_edit";
+@import "layouts/section_edit";
 @import "layouts/response_set";
 @import "layouts/survey_edit";
 @import "layouts/cdcjumbotron";

@@ -1,59 +1,59 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { formsProps } from "../../prop-types/form_props";
+import { sectionsProps } from "../../prop-types/section_props";
 import { questionsProps } from "../../prop-types/question_props";
 import SearchResult from '../SearchResult';
 
-class SurveyFormList extends Component {
+class SurveySectionList extends Component {
   render() {
-    if(!this.props.forms || this.props.survey.surveyForms.length < 1){
-      return (<div className="form-group">No Forms Selected</div>);
+    if(!this.props.sections || this.props.survey.surveySections.length < 1){
+      return (<div className="section-group">No Sections Selected</div>);
     }
     var survey = this.props.survey;
     return (
-      <div className="form-group added-form-group">
-          {this.props.survey.surveyForms.map((form, i) => {
-            var f = this.props.forms[form.formId];
+      <div className="section-group added-section-group">
+          {this.props.survey.surveySections.map((section, i) => {
+            var f = this.props.sections[section.sectionId];
             if(!f) {
               return (
                 <div key={i}>Loading...</div>
               );
             } else {
               return (
-                      <div className="row survey-form" key={i}>
+                      <div className="row survey-section" key={i}>
                         <div className="col-md-11">
-                          <SearchResult type  ='survey_form'
+                          <SearchResult type  ='survey_section'
                                         result={{Source: f}}
                                         currentUser={{id: -1}}
                                         isEditPage ={true}
                                         index={i} />
                         </div>
                         <div className="col-md-1">
-                          <div className="row survey-form-controls">
+                          <div className="row survey-section-controls">
                               <button className="btn btn-small btn-default move-up"
                                    onClick={(event) => {
                                      event.preventDefault();
-                                     this.props.reorderForm(survey, i, 1);
+                                     this.props.reorderSection(survey, i, 1);
                                    }}>
-                                <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up form ${f.name} on survey`}</span>
+                                <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up section ${f.name} on survey`}</span>
                               </button>
                           </div>
-                          <div className="row survey-form-controls">
+                          <div className="row survey-section-controls">
                               <button className="btn btn-small btn-default move-down"
                                    onClick={(event) => {
                                      event.preventDefault();
-                                     this.props.reorderForm(survey, i, -1);
+                                     this.props.reorderSection(survey, i, -1);
                                    }}>
-                                <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down form ${f.name} on survey`}</span>
+                                <i className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down section ${f.name} on survey`}</span>
                               </button>
                           </div>
-                          <div className="row survey-form-controls">
-                              <button className="btn btn-small btn-default delete-form"
+                          <div className="row survey-section-controls">
+                              <button className="btn btn-small btn-default delete-section"
                                    onClick={(event) => {
                                      event.preventDefault();
-                                     this.props.removeForm(survey, i);
+                                     this.props.removeSection(survey, i);
                                    }}>
-                                <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Delete form ${f.name} on survey`}</span>
+                                <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Delete section ${f.name} on survey`}</span>
                               </button>
                           </div>
                         </div>
@@ -67,12 +67,12 @@ class SurveyFormList extends Component {
   }
 }
 
-SurveyFormList.propTypes = {
+SurveySectionList.propTypes = {
   survey: PropTypes.object,
-  forms:  formsProps,
+  sections:  sectionsProps,
   questions:  questionsProps,
-  removeForm:  PropTypes.func,
-  reorderForm: PropTypes.func
+  removeSection:  PropTypes.func,
+  reorderSection: PropTypes.func
 };
 
-export default SurveyFormList;
+export default SurveySectionList;

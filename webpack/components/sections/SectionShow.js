@@ -3,20 +3,20 @@ import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 
-import FormQuestionList from './FormQuestionList';
+import SectionQuestionList from './SectionQuestionList';
 import CodedSetTable from "../CodedSetTable";
 import Routes from '../../routes';
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 
-import { formProps } from '../../prop-types/form_props';
+import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
 
 const PAGE_SIZE = 10;
 
-class FormShow extends Component {
+class SectionShow extends Component {
   constructor(props) {
     super(props);
     this.state = {page: 1};
@@ -25,27 +25,27 @@ class FormShow extends Component {
   }
 
   render() {
-    const {form} = this.props;
-    if(!form){
+    const {section} = this.props;
+    if(!section){
       return (
         <div>Loading...</div>
       );
     }
     return (
-      <div id={"form_id_"+form.id}>
+      <div id={"section_id_"+section.id}>
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Form Details {form.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
+            <li className="showpage_title"><h1>Section Details {section.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
           </ul>
         </div>
-        {this.historyBar(form)}
-        {this.mainContent(form)}
+        {this.historyBar(section)}
+        {this.mainContent(section)}
       </div>
     );
   }
 
-  historyBar(form){
+  historyBar(section){
     return (
       <div className="col-md-3 nopadding no-print">
         <h2 className="showpage_sidenav_subtitle">
@@ -55,7 +55,7 @@ class FormShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={form} versionableType='form' />
+        <VersionInfo versionable={section} versionableType='section' />
       </div>
     );
   }
@@ -64,56 +64,56 @@ class FormShow extends Component {
     this.setState({page: nextPage});
   }
 
-  questionsForPage(form) {
+  questionsForPage(section) {
     const startIndex = (this.state.page - 1) * PAGE_SIZE;
     const endIndex = this.state.page * PAGE_SIZE;
-    const formQuestionPage = form.formQuestions.slice(startIndex, endIndex);
-    return formQuestionPage.map((fq) => {
-      var formQuestion = Object.assign({}, form.questions.find(q => q.id === fq.questionId));
-      formQuestion.programVar = fq.programVar || '';
-      formQuestion.responseSets = [{name: 'None'}];
+    const sectionQuestionPage = section.sectionQuestions.slice(startIndex, endIndex);
+    return sectionQuestionPage.map((fq) => {
+      var sectionQuestion = Object.assign({}, section.questions.find(q => q.id === fq.questionId));
+      sectionQuestion.programVar = fq.programVar || '';
+      sectionQuestion.responseSets = [{name: 'None'}];
       if (fq.responseSetId) {
-        var responseSet = form.responseSets.find(rs => rs.id === fq.responseSetId);
+        var responseSet = section.responseSets.find(rs => rs.id === fq.responseSetId);
         if(responseSet) {
-          formQuestion.responseSets = [responseSet];
+          sectionQuestion.responseSets = [responseSet];
         } else {
-          formQuestion.responseSets = [{name: 'Loading...'}];
+          sectionQuestion.responseSets = [{name: 'Loading...'}];
         }
       }
-      return formQuestion;
+      return sectionQuestion;
     });
   }
 
-  mainContent(form) {
+  mainContent(section) {
     return (
       <div className="col-md-9 nopadding maincontent">
         <div className="action_bar no-print">
-          {isEditable(form, this.props.currentUser) &&
+          {isEditable(section, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
-                           itemType="Form" />
+                           itemType="Section" />
           }
-          {isPublishable(form, this.props.currentUser) &&
+          {isPublishable(section, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                this.props.publishForm(form.id);
+                this.props.publishSection(section.id);
                 return false;
               }}>Publish</a>
           }
-          {isRevisable(form, this.props.currentUser) &&
-            <Link className="btn btn-default" to={`forms/${form.id}/revise`}>Revise</Link>
+          {isRevisable(section, this.props.currentUser) &&
+            <Link className="btn btn-default" to={`sections/${section.id}/revise`}>Revise</Link>
           }
-          {isEditable(form, this.props.currentUser) &&
-            <Link className="btn btn-default" to={`forms/${form.id}/edit`}>Edit</Link>
+          {isEditable(section, this.props.currentUser) &&
+            <Link className="btn btn-default" to={`sections/${section.id}/edit`}>Edit</Link>
           }
-          {isEditable(form, this.props.currentUser) &&
+          {isEditable(section, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              if(confirm('Are you sure you want to delete this Form? This action cannot be undone.')){
-                this.props.deleteForm(form.id, (response) => {
+              if(confirm('Are you sure you want to delete this Section? This action cannot be undone.')){
+                this.props.deleteSection(section.id, (response) => {
                   if (response.status == 200) {
                     let stats = Object.assign({}, this.props.stats);
-                    stats.formCount = this.props.stats.formCount - 1;
-                    stats.myFormCount = this.props.stats.myFormCount - 1;
+                    stats.sectionCount = this.props.stats.sectionCount - 1;
+                    stats.mySectionCount = this.props.stats.mySectionCount - 1;
                     this.props.setStats(stats);
                     this.props.router.push('/');
                   }
@@ -122,34 +122,34 @@ class FormShow extends Component {
               return false;
             }}>Delete</a>
           }
-          {isExtendable(form, this.props.currentUser) &&
-            <Link className="btn btn-default" to={`/forms/${form.id}/extend`}>Extend</Link>
+          {isExtendable(section, this.props.currentUser) &&
+            <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
           {this.props.currentUser && this.props.currentUser.id &&
-            <a className="btn btn-default" href={Routes.redcapFormPath(form)}>Export to Redcap</a>
+            <a className="btn btn-default" href={Routes.redcapSectionPath(section)}>Export to Redcap</a>
           }
         </div>
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Name:</strong> {form.name} </h1>
-          <p className="maincontent-item-info">Version: {form.version} - Author: {form.userId} </p>
+          <h1 className="maincontent-item-name"><strong>Name:</strong> {section.name} </h1>
+          <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
               <h2 className="panel-title">Description</h2>
             </div>
             <div className="box-content">
-              {form.description}
+              {section.description}
             </div>
-            { form.status === 'published' && form.publishedBy && form.publishedBy.email &&
+            { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
             <div className="box-content">
               <strong>Published By: </strong>
-              {form.publishedBy.email}
+              {section.publishedBy.email}
             </div>
             }
-            { form.parent &&
+            { section.parent &&
             <div className="box-content">
               <strong>Extended from: </strong>
-              <Link to={`/forms/${form.parent.id}`}>{ form.parent.name && form.parent.name }</Link>
+              <Link to={`/sections/${section.parent.id}`}>{ section.parent.name && section.parent.name }</Link>
             </div>
             }
           </div>
@@ -159,15 +159,15 @@ class FormShow extends Component {
             </div>
             <div className="box-content">
               <div id="concepts-table">
-                <CodedSetTable items={form.concepts} itemName={'Tag'} />
+                <CodedSetTable items={section.concepts} itemName={'Tag'} />
               </div>
             </div>
           </div>
-          {form.formQuestions && form.formQuestions.length > 0 && form.questions && form.questions.length > 0 &&
+          {section.sectionQuestions && section.sectionQuestions.length > 0 && section.questions && section.questions.length > 0 &&
             <div>
-              <FormQuestionList questions={this.questionsForPage(form)} />
-              {this.props.form.formQuestions.length > 10 &&
-              <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.form.formQuestions.length} />
+              <SectionQuestionList questions={this.questionsForPage(section)} />
+              {this.props.section.sectionQuestions.length > 10 &&
+              <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
               }
             </div>
           }
@@ -177,15 +177,15 @@ class FormShow extends Component {
   }
 }
 
-FormShow.propTypes = {
-  form: formProps,
+SectionShow.propTypes = {
+  section: sectionProps,
   router: PropTypes.object,
   currentUser: currentUserProps,
-  publishForm: PropTypes.func,
-  deleteForm:  PropTypes.func.isRequired,
+  publishSection: PropTypes.func,
+  deleteSection:  PropTypes.func.isRequired,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps
 };
 
-export default FormShow;
+export default SectionShow;

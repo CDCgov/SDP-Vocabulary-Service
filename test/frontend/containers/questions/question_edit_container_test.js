@@ -18,6 +18,6 @@ describe('QuestionEditContainer ', () => {
     const component = renderComponent(QuestionEditContainer, props);
     expect(component.find("div[class='container']").length).to.exist;
     expect(component.find("input[name='content']").length).to.exist;
-    expect(component.find("section")).to.exist;
+    expect(component.find("form")).to.exist;
   });
 });

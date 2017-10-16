@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addForm } from '../../actions/form_actions';
-import { formProps } from '../../prop-types/form_props';
+import { addSection } from '../../actions/section_actions';
+import { sectionProps } from '../../prop-types/section_props';
 import { surveyProps } from '../../prop-types/survey_props';
 import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
 import SearchResult from '../../components/SearchResult';
@@ -12,17 +12,17 @@ import currentUserProps from "../../prop-types/current_user_props";
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 
-const FORM_SEARCH_CONTEXT = 'FORM_SEARCH_CONTEXT';
+const SECTION_SEARCH_CONTEXT = 'SECTION_SEARCH_CONTEXT';
 
-class FormSearchContainer extends Component {
+class SectionSearchContainer extends Component {
   constructor(props) {
     super(props);
     this.search = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.setFiltersParent = this.setFiltersParent.bind(this);
     this.state = {
-      forms: props.allForms,
-      allForms: props.allForms,
+      sections: props.allSections,
+      allSections: props.allSections,
       searchTerms: '',
       progFilters: [],
       sysFilters: [],
@@ -35,8 +35,8 @@ class FormSearchContainer extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    if(nextProps.allForms != this.props.allForms) {
-      this.setState({forms: nextProps.allForms});
+    if(nextProps.allSections != this.props.allSections) {
+      this.setState({sections: nextProps.allSections});
     }
   }
 
@@ -50,7 +50,7 @@ class FormSearchContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(FORM_SEARCH_CONTEXT, searchTerms, 'form', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', this.state.progFilters, this.state.sysFilters);
     }
   }
 
@@ -63,7 +63,7 @@ class FormSearchContainer extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
-    this.props.fetchSearchResults(FORM_SEARCH_CONTEXT, searchTerms, 'form', progFilters, sysFilters);
+    this.props.fetchSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', progFilters, sysFilters);
   }
 
   loadMore() {
@@ -72,7 +72,7 @@ class FormSearchContainer extends Component {
     if(this.state.searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchMoreSearchResults(FORM_SEARCH_CONTEXT, searchTerms, 'form', tempState,
+    this.props.fetchMoreSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', tempState,
                                       this.state.progFilters,
                                       this.state.sysFilters);
     this.setState({page: tempState});
@@ -92,7 +92,7 @@ class FormSearchContainer extends Component {
               <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`}
               type={f.Type} result={f} currentUser={this.props.currentUser}
               isEditPage={true}
-              handleSelectSearchResult={() => this.props.addForm(this.props.survey, f.Source)}
+              handleSelectSearchResult={() => this.props.addSection(this.props.survey, f.Source)}
               isSelected={this.props.selectedSearchResults[f.Id]}
               />
             );
@@ -108,7 +108,7 @@ class FormSearchContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults[FORM_SEARCH_CONTEXT] || {},
+    searchResults: state.searchResults[SECTION_SEARCH_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
@@ -116,13 +116,13 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addForm, fetchSearchResults, fetchMoreSearchResults}, dispatch);
+  return bindActionCreators({addSection, fetchSearchResults, fetchMoreSearchResults}, dispatch);
 }
 
-FormSearchContainer.propTypes = {
+SectionSearchContainer.propTypes = {
   survey: surveyProps,
-  allForms: PropTypes.arrayOf(formProps),
-  addForm: PropTypes.func.isRequired,
+  allSections: PropTypes.arrayOf(sectionProps),
+  addSection: PropTypes.func.isRequired,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
@@ -132,4 +132,4 @@ FormSearchContainer.propTypes = {
   surveillancePrograms: surveillanceProgramsProps
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormSearchContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SectionSearchContainer);

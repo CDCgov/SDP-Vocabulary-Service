@@ -22,12 +22,12 @@ Feature: Widget Display
     When I click on the "Responses: 1" link
     Then I should see "Original Response"
 
-  Scenario: View Form Widget
-    Given I have a Form with the name "Test Form" and the description "Form description"
+  Scenario: View Section Widget
+    Given I have a Section with the name "Test Section" and the description "Section description"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Forms
-    Then I should see "Test Form"
-    And I should see "Form description"
+    When I go to the list of Sections
+    Then I should see "Test Section"
+    And I should see "Section description"
     And I should see "Questions: 0"
     And I should see "DRAFT"
     And I should not see "PUBLISHED"
@@ -38,6 +38,6 @@ Feature: Widget Display
     When I go to the list of Surveys
     Then I should see "Test Survey"
     And I should see "Survey description"
-    And I should see "Forms: 0"
+    And I should see "Sections: 0"
     And I should see "PUBLISHED"
     And I should not see "DRAFT"

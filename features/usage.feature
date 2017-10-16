@@ -15,19 +15,19 @@ Feature: Manage Usage
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
-    When I click on the create "Forms" dropdown item
-    And I fill in the "form-name" field with "Test Form"
+    When I click on the create "Sections" dropdown item
+    And I fill in the "section-name" field with "Test Section"
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I click on the "Save" button
-    Then I should see "Test Form"
+    Then I should see "Test Section"
     When I click on the "Publish" button
     And I click on the create "Surveys" dropdown item
     And I fill in the "survey-name" field with "Test Survey"
-    And I set search filter to "form"
+    And I set search filter to "section"
     And I click on the "search-btn" button
-    And I use the form search to select "Test Form"
+    And I use the section search to select "Test Section"
     And I click on the "Save" button
     Then I should see "Test Survey"
     When I click on the "Publish" button
@@ -52,20 +52,20 @@ Feature: Manage Usage
     And I click on the option to Details the Response Set with the name "Gender Full"
     Then I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
-    When I click on the create "Forms" dropdown item
-    And I fill in the "form-name" field with "Test Form"
+    When I click on the create "Sections" dropdown item
+    And I fill in the "section-name" field with "Test Section"
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Full"
     And I click on the "Save" button
-    Then I should see "Test Form"
+    Then I should see "Test Section"
     When I click on the "Publish" button
     And I click on the create "Surveys" dropdown item
     And I fill in the "survey-name" field with "Test Survey"
-    And I set search filter to "form"
+    And I set search filter to "section"
     And I click on the "search-btn" button
-    And I use the form search to select "Test Form"
+    And I use the section search to select "Test Section"
     And I click on the "Save" button
     Then I should see "Test Survey"
     When I click on the "Publish" button

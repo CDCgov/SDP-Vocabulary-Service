@@ -1,5 +1,5 @@
 import { expect, renderComponent } from '../../test_helper';
-import SectionmShow from '../../../../webpack/components/sections/SectionShow';
+import SectionShow from '../../../../webpack/components/sections/SectionShow';
 import MockRouter from '../../mock_router';
 
 describe('SectionQuestionList', () => {

@@ -14,38 +14,38 @@
     text-align: left;
     margin-bottom: 20px;
   }
-  
-  .form-group{
+
+  .section-group{
     min-height: 500px;
     max-height: 1000px;
     padding-right: 8px;
     overflow-y: auto;
     overflow-x: hidden;
   }
-  .add-form{
+  .add-section{
     padding: 15px;
     button{
       margin-right:10px;
     }
   }
 
-  .form-group-controls{
+  .section-group-controls{
     float: right;
   }
-  
-  .form-result{
+
+  .section-result{
     margin: 0px;
   }
 
-  .survey-form-controls{
+  .survey-section-controls{
     margin-bottom: 15px;
   }
 
-  .delete-form{
+  .delete-section{
     font-size: 17px;
   }
 
-  .form-container {
+  .section-container {
     @extend .panel-body;
     border-bottom: 1px solid $light-gray;
     font-weight: bold;
@@ -55,7 +55,7 @@
     padding: 6px 8px 6px 10px;
     li:first-child {
       width: 95%;
-      float: left;    
+      float: left;
     }
   }
   .response-set-header{
@@ -76,4 +76,3 @@
     }
   }
 }
-

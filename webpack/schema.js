@@ -4,8 +4,8 @@ export const commentSchema = new schema.Array('comments');
 export const conceptSystemSchema = new schema.Entity('conceptSystems');
 export const conceptSchema = new schema.Entity('concepts');
 export const currentUserSchema = new schema.Entity('currentUser');
-export const formSchema = new schema.Entity('forms');
-export const formsSchema = [ formSchema ];
+export const sectionSchema = new schema.Entity('sections');
+export const sectionsSchema = [ sectionSchema ];
 export const lastSearchSchema = new schema.Entity('lastSearch');
 export const notificationSchema = new schema.Array('notifications');
 export const publisherSchema = new schema.Entity('publishers');
@@ -24,7 +24,7 @@ export const tutorialStepSchema = new schema.Array('tutorialSteps');
 export const searchResultsSchema = new schema.Array({
   responseSets: responseSetsSchema,
   questions: questionsSchema,
-  forms: formsSchema,
+  sections: sectionsSchema,
   surveys: surveysSchema
 }, (input) => `${input.Type === 'response_set' ? 'responseSet' : input.Type}s`);
 
@@ -40,14 +40,14 @@ questionSchema.define({
   responseType: responseTypeSchema
 });
 
-formSchema.define({
-  parent: formSchema,
+sectionSchema.define({
+  parent: sectionSchema,
   questions: [ questionSchema ],
   responseSets: [ responseSetSchema ]
 });
 
 surveySchema.define({
   questions: [ questionSchema ],
-  forms: [ formSchema ],
+  sections: [ sectionSchema ],
   parent: surveySchema
 });

@@ -3,19 +3,19 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchForm, publishForm, deleteForm } from '../../actions/form_actions';
+import { fetchSection, publishSection, deleteSection } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
-import FormShow from '../../components/forms/FormShow';
-import { formProps } from '../../prop-types/form_props';
-import { formSchema } from '../../schema';
+import SectionShow from '../../components/sections/SectionShow';
+import { sectionProps } from '../../prop-types/section_props';
+import { sectionSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 
-class FormShowContainer extends Component {
+class SectionShowContainer extends Component {
   componentWillMount() {
-    this.props.fetchForm(this.props.params.formId);
+    this.props.fetchSection(this.props.params.sectionId);
   }
 
   componentDidMount() {
@@ -47,13 +47,13 @@ class FormShowContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.params.formId != this.props.params.formId){
-      this.props.fetchForm(this.props.params.formId);
+    if(prevProps.params.sectionId != this.props.params.sectionId){
+      this.props.fetchSection(this.props.params.sectionId);
     }
   }
 
   render() {
-    if(!this.props.form){
+    if(!this.props.section){
       return (
         <div>Loading..</div>
       );
@@ -62,16 +62,16 @@ class FormShowContainer extends Component {
       <div className="container">
         <div className="row basic-bg">
           <div className="col-md-12">
-            <FormShow form={this.props.form}
+            <SectionShow section={this.props.section}
                       router={this.props.router}
                       currentUser={this.props.currentUser}
-                      publishForm={this.props.publishForm}
+                      publishSection={this.props.publishSection}
                       stats={this.props.stats}
                       setStats={this.props.setStats}
-                      deleteForm ={this.props.deleteForm}
+                      deleteSection ={this.props.deleteSection}
                       publishers ={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
-            <CommentList commentableType='Form' commentableId={this.props.form.id} />
+            <CommentList commentableType='Section' commentableId={this.props.section.id} />
           </div>
         </div>
       </div>
@@ -83,28 +83,28 @@ function mapStateToProps(state, ownProps) {
   const props = {
     currentUser: state.currentUser,
     stats: state.stats,
-    form: denormalize(state.forms[ownProps.params.formId], formSchema, state),
+    section: denormalize(state.sections[ownProps.params.sectionId], sectionSchema, state),
     publishers: state.publishers
   };
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchForm, publishForm, deleteForm}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, deleteSection}, dispatch);
 }
 
-FormShowContainer.propTypes = {
-  form: formProps,
+SectionShowContainer.propTypes = {
+  section: sectionProps,
   params: PropTypes.object,
   router: PropTypes.object.isRequired,
   currentUser: currentUserProps,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
-  fetchForm: PropTypes.func,
-  deleteForm:  PropTypes.func,
-  publishForm: PropTypes.func,
+  fetchSection: PropTypes.func,
+  deleteSection:  PropTypes.func,
+  publishSection: PropTypes.func,
   publishers: publishersProps
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormShowContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SectionShowContainer);
