@@ -271,10 +271,10 @@ export default class SearchResult extends Component {
           <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-survey`}>
             <text className="sr-only">List of links and names of sections on this survey</text>
             {result.sections && result.sections.length > 0 &&
-              result.sections.map((f, i) => {
+              result.sections.map((sect, i) => {
                 return(
-                  <div key={`section-${f.id}-${i}`} className="result-details-content">
-                    <Link to={`/sections/${f.id}`}>{f.name}</Link>
+                  <div key={`section-${sect.id}-${i}`} className="result-details-content">
+                    <Link to={`/sections/${sect.id}`}>{sect.name}</Link>
                   </div>
                 );
               })

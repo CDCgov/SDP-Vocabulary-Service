@@ -87,13 +87,13 @@ class SectionSearchContainer extends Component {
                          setFiltersParent={this.setFiltersParent}
                          searchSource={this.props.searchResults.Source} />
         <div className="load-more-search">
-          {searchResults.hits && searchResults.hits.hits.map((f, i) => {
+          {searchResults.hits && searchResults.hits.hits.map((sect, i) => {
             return (
-              <SearchResult key={`${f.Source.versionIndependentId}-${f.Source.updatedAt}-${i}`}
-              type={f.Type} result={f} currentUser={this.props.currentUser}
+              <SearchResult key={`${sect.Source.versionIndependentId}-${sect.Source.updatedAt}-${i}`}
+              type={sect.Type} result={sect} currentUser={this.props.currentUser}
               isEditPage={true}
-              handleSelectSearchResult={() => this.props.addSection(this.props.survey, f.Source)}
-              isSelected={this.props.selectedSearchResults[f.Id]}
+              handleSelectSearchResult={() => this.props.addSection(this.props.survey, sect.Source)}
+              isSelected={this.props.selectedSearchResults[sect.Id]}
               />
             );
           })}

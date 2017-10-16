@@ -108,20 +108,20 @@ class SurveyShow extends Component {
               </div>
             </div>
           </div>
-          {this.props.sections.map((f,i) =>
+          {this.props.sections.map((sect,i) =>
             <div key={i} className="basic-c-box panel-default survey-section">
               <div className="panel-heading">
-                <h2 className="panel-title"><Link to={`/sections/${f.id}`}>{ f.name }</Link></h2>
+                <h2 className="panel-title"><Link to={`/sections/${sect.id}`}>{ sect.name }</Link></h2>
               </div>
               <div className="box-content">
                 <ul>
-                  {f.questions.map((q,i) =>
+                  {sect.questions.map((q,i) =>
                     <li key={i}><Link to={`/questions/${q.id}`}>{q.content}</Link></li>
                   )}
                 </ul>
               </div>
               <div className="panel-footer survey-section">
-                <p>Section version: {displayVersion(f.version, f.mostRecent)}</p>
+                <p>Section version: {displayVersion(sect.version, sect.mostRecent)}</p>
               </div>
             </div>
           )}

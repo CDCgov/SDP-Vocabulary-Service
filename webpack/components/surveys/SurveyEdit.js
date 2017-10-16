@@ -113,7 +113,7 @@ class SurveyEdit extends Component {
       let survey = Object.assign({}, this.state);
       // Because we were saving SurveySections with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
       // At some point, we can remove this code
-      survey.linkedSections = this.state.surveySections.map((f, i) => ({id: f.id, surveyId: f.surveyId, sectionId: f.sectionId, position: i}));
+      survey.linkedSections = this.state.surveySections.map((sect, i) => ({id: sect.id, surveyId: sect.surveyId, sectionId: sect.sectionId, position: i}));
       this.props.surveySubmitter(survey, (response) => {
         // TODO: Handle when the saving survey fails.
         this.unsavedState = false;
