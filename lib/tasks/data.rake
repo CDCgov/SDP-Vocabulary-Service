@@ -26,16 +26,16 @@ namespace :data do
 
     survey = Survey.new(name: '500 Question Survey', created_by: user, status: 'draft')
     ['a', 'b', 'c', 'd', 'e'].each_with_index do |section_letter, survey_position|
-      f = Section.new(name: "Section #{section_letter} - 100 questions", created_by: user, status: 'draft')
+      section = Section.new(name: "Section #{section_letter} - 100 questions", created_by: user, status: 'draft')
       100.times do |i|
         position = i + 1
         q = Question.create(content: "Is your favorite letter #{section_letter} and number #{position}?",
                             created_by: user, status: 'draft', response_type: boolean_rt)
-        fq = SectionQuestion.new(question: q, position: position)
-        f.section_questions << fq
+        sq = SectionQuestion.new(question: q, position: position)
+        section.section_questions << sq
       end
-      f.save!
-      survey.survey_sections << SurveySection.new(forsectionm: f, position: survey_position)
+      section.save!
+      survey.survey_sections << SurveySection.new(section: section, position: survey_position)
     end
     survey.save!
     #wait for the async job queue to be processed

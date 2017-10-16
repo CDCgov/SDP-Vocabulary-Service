@@ -33,8 +33,8 @@ class SurveySerializer < ActiveModel::Serializer
   attribute :sections
 
   def sections
-    object.survey_sections.includes(section: { section_questions: [:response_set, { question: :concepts }] }).collect do |sf|
-      SectionSerializer.new(sf.section)
+    object.survey_sections.includes(section: { section_questions: [:response_set, { question: :concepts }] }).collect do |ss|
+      SectionSerializer.new(ss.section)
     end
   end
 end

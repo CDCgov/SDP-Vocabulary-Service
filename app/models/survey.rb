@@ -16,7 +16,7 @@ class Survey < ApplicationRecord
   validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
                                                           message: 'must be a valid OMB Control Number' },
                              uniqueness: { message: 'sections should have different OMB Control Numbers',
-                                           unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
+                                           unless: proc { |s| s.version > 1 && s.other_versions.map(&:control_number).include?(s.control_number) } }
 
   accepts_nested_attributes_for :sections, allow_destroy: true
 
@@ -32,11 +32,11 @@ class Survey < ApplicationRecord
 
   def update_section_positions
     SurveySection.transaction do
-      survey_sections.each_with_index do |sf, i|
+      survey_sections.each_with_index do |ss, i|
         # Avoiding potential unecessary writes
-        if sf.position != i
-          sf.position = i
-          sf.save!
+        if ss.position != i
+          ss.position = i
+          ss.save!
         end
       end
     end
@@ -49,19 +49,19 @@ class Survey < ApplicationRecord
       self.published_by = publisher
       save!
     end
-    sections.each { |f| f.publish(publisher) }
+    sections.each { |s| s.publish(publisher) }
   end
 
   # Custom implementation as using the plain relationships in Rails will cause
   # N+1 queries to figure out most recent version for each section.
   def sections_with_most_recent
-    Section.find_by_sql(['select f.*, fmv.version as max_version
-     from sections f, survey_sections sf,
+    Section.find_by_sql(['select s.*, smv.version as max_version
+     from sections s, survey_sections ss,
        (select version_independent_id, MAX(version) as version
-         from sections group by version_independent_id) fmv
-     where fmv.version_independent_id = f.version_independent_id
-     and sf.section_id = f.id
-     and sf.survey_id = :survey_id', { survey_id: id }])
+         from sections group by version_independent_id) smv
+     where smv.version_independent_id = s.version_independent_id
+     and ss.section_id = s.id
+     and ss.survey_id = :survey_id', { survey_id: id }])
   end
 
   def build_new_revision

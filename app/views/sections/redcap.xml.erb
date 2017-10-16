@@ -20,26 +20,26 @@
    </SectionDef>
    <!-- item groups -->
    <ItemGroupDef OID="<%= @section.name.underscore %>.single_section" Name="Section" Repeating="No">
-     <% @section.section_questions.each do |fq| %>
-     <ItemRef ItemOID="question_<%=fq.question.id%>" Mandatory="No" redcap:Variable="<%=fq.program_var || "question_#{fq.question.id}"%>"/>
+     <% @section.section_questions.each do |sq| %>
+     <ItemRef ItemOID="question_<%=sq.question.id%>" Mandatory="No" redcap:Variable="<%=sq.program_var || "question_#{sq.question.id}"%>"/>
      <% end %>
    </ItemGroupDef>
   <!-- item defs -->
-  <% @section.section_questions.each do |fq| %>
-    <ItemDef OID="question_<%=fq.question.id%>" Name="question_<%=fq.question.id%>" DataType="text" Length="999" redcap:Variable="<%=fq.program_var || "question_#{fq.question.id}"%>" redcap:FieldType="<%= fq.response_set ? 'select' : 'text' %>" >
-      <Question><TranslatedText><%= fq.question.content %></TranslatedText></Question>
-      <% if fq.response_set %>
-      <CodeListRef CodeListOID="question_<%=fq.question.id%>.choices"/>
+  <% @section.section_questions.each do |sq| %>
+    <ItemDef OID="question_<%=sq.question.id%>" Name="question_<%=sq.question.id%>" DataType="text" Length="999" redcap:Variable="<%=sq.program_var || "question_#{sq.question.id}"%>" redcap:FieldType="<%= sq.response_set ? 'select' : 'text' %>" >
+      <Question><TranslatedText><%= sq.question.content %></TranslatedText></Question>
+      <% if sq.response_set %>
+      <CodeListRef CodeListOID="question_<%=sq.question.id%>.choices"/>
       <% end %>
     </ItemDef>
   <% end %>
 
 
   <!-- code list defs -->
-  <% @section.section_questions.each do |fq| %>
-     <% if fq.response_set %>
-      <CodeList OID="question_<%=fq.question.id%>.choices" Name="question_<%=fq.question.id%>" DataType="text" redcap:Variable="<%=fq.program_var || "question_#{fq.question.id}"%>">
-        <% fq.response_set.responses.each do |response| %>
+  <% @section.section_questions.each do |sq| %>
+     <% if sq.response_set %>
+      <CodeList OID="question_<%=sq.question.id%>.choices" Name="question_<%=sq.question.id%>" DataType="text" redcap:Variable="<%=sq.program_var || "question_#{sq.question.id}"%>">
+        <% sq.response_set.responses.each do |response| %>
         <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.blank? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
         <% end %>
       </CodeList>

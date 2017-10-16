@@ -186,8 +186,8 @@ function mapStateToProps(state, ownProps) {
   const section = denormalize(state.sections[ownProps.params.sectionId || 0], sectionSchema, state);
   var selectedSearchResults = {};
   if(section && section.sectionQuestions){
-    section.sectionQuestions.map((fq)=>{
-      selectedSearchResults[fq.questionId] = true;
+    section.sectionQuestions.map((sq)=>{
+      selectedSearchResults[sq.questionId] = true;
     });
   }
   return {

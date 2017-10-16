@@ -24,11 +24,11 @@ module SDP
 
       def parse_sections(item_groups)
         sections = {}
-        xml.xpath('//odm:SectionDef').each do |f|
-          section = Section.new(name: f['Name'],
+        xml.xpath('//odm:SectionDef').each do |s|
+          section = Section.new(name: s['Name'],
                                 created_by: user)
-          sections[f['OID']] = section
-          f.xpath('./odm:ItemGroupRef').each do |igr|
+          sections[s['OID']] = section
+          s.xpath('./odm:ItemGroupRef').each do |igr|
             ig_questions = item_groups[igr['ItemGroupOID']]
             ig_questions.each_with_index do |q, i|
               section.section_questions << SectionQuestion.new(question: q, response_set: q.response_sets[0], position: i)

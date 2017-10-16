@@ -27,11 +27,11 @@ class SurveyTest < ActiveSupport::TestCase
     q = Question.new(content: 'Test publish', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
     q.response_sets = [rs]
     assert q.save
-    f = Section.new(name: 'Test publish', created_by: user)
-    f.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
-    assert f.save
+    sect = Section.new(name: 'Test publish', created_by: user)
+    sect.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    assert sect.save
     s = Survey.new(name: 'Test publish', created_by: user)
-    s.survey_sections = [SurveySection.new(section_id: f.id, position: 0)]
+    s.survey_sections = [SurveySection.new(section_id: sect.id, position: 0)]
     assert s.save
     s.publish(user)
     assert_equal user, s.published_by
@@ -48,31 +48,31 @@ class SurveyTest < ActiveSupport::TestCase
     q = Question.new(content: 'Test Delete', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
     q.response_sets = [rs]
     assert q.save
-    f1 = Section.new(name: 'Test Delete 1', created_by: user)
-    assert f1.save
-    f2 = Section.new(name: 'Test Delete 2', created_by: user)
-    f2.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
-    assert f2.save
-    f3 = Section.new(name: 'Test Delete 3', created_by: user)
-    assert f3.save
+    sect1 = Section.new(name: 'Test Delete 1', created_by: user)
+    assert sect1.save
+    sect2 = Section.new(name: 'Test Delete 2', created_by: user)
+    sect2.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    assert sect2.save
+    sect3 = Section.new(name: 'Test Delete 3', created_by: user)
+    assert sect3.save
     s = Survey.new(name: 'Test Delete', created_by: user)
-    s.survey_sections = [SurveySection.new(section_id: f1.id, position: 0), SurveySection.new(section_id: f2.id, position: 1), SurveySection.new(section_id: f3.id, position: 2)]
+    s.survey_sections = [SurveySection.new(section_id: sect1.id, position: 0), SurveySection.new(section_id: sect2.id, position: 1), SurveySection.new(section_id: sect3.id, position: 2)]
     assert s.save
     # Need to wait for the async queue to finish its work before destroying the section, or it crashes
     sleep 5
-    assert f2.destroy
+    assert sect2.destroy
     s = Survey.find(s.id)
     assert_equal 2, s.survey_sections.size
     assert_equal 0, s.survey_sections[0].position
     assert_equal 1, s.survey_sections[1].position
-    assert_equal f1.id, s.survey_sections[0].section_id
-    assert_equal f3.id, s.survey_sections[1].section_id
+    assert_equal sect1.id, s.survey_sections[0].section_id
+    assert_equal sect3.id, s.survey_sections[1].section_id
   end
 
   test 'Getting sections with most_recent loaded' do
     s = surveys(:one)
     fs = s.sections_with_most_recent
-    old_section = fs.find { |f| f.name == 'Section 2' }
+    old_section = fs.find { |sect| sect.name == 'Section 2' }
     assert_equal 1, old_section.version
     assert_equal 2, old_section.max_version
     assert_equal 2, old_section.most_recent

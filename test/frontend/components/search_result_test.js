@@ -5,7 +5,7 @@ describe('SearchResult', () => {
   let qComponent;
   let rsComponent;
   let orsComponent;
-  let fComponent;
+  let sComponent;
 
   beforeEach(() => {
     const question = {Source: {id: 1, name: "Is this a question?", description: "This is a test question", responseSets: []}};
@@ -17,14 +17,14 @@ describe('SearchResult', () => {
     qComponent = renderComponent(SearchResult, {type: "question", currentUser: currentUser, result: question});
     rsComponent = renderComponent(SearchResult, {type: "response_set", currentUser: currentUser, result: responseSet});
     orsComponent = renderComponent(SearchResult, {type: "response_set", currentUser: currentUser, result: oldResponseSet});
-    fComponent = renderComponent(SearchResult, {type: "section", currentUser: currentUser, result: section});
+    sComponent = renderComponent(SearchResult, {type: "section", currentUser: currentUser, result: section});
 
   });
 
   it('should create multiple search results', () => {
     expect(qComponent.find("div[class='result-description']")).to.contain('test question');
     expect(rsComponent.find("div[class='result-description']")).to.contain('RS');
-    expect(fComponent.find("div[class='result-description']")).to.contain('Section');
+    expect(sComponent.find("div[class='result-description']")).to.contain('Section');
   });
 
   it('should properly display version information', () => {

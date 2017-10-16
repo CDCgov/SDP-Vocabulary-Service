@@ -5,8 +5,8 @@ class SectionQuestionTest < ActiveSupport::TestCase
   #   assert true
   # end
   test 'A section question should save with a position' do
-    fq = section_questions(:one)
-    fq.position = 1
-    assert fq.save
+    sq = section_questions(:one)
+    sq.position = 1
+    assert sq.save
   end
 end

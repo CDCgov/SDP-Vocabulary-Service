@@ -17,7 +17,7 @@ class Section < ApplicationRecord
   validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
                                                           message: 'must be a valid OMB Control Number' },
                              uniqueness: { message: 'sections should have different OMB Control Numbers',
-                                           unless: proc { |f| f.version > 1 && f.other_versions.map(&:control_number).include?(f.control_number) } }
+                                           unless: proc { |s| s.version > 1 && s.other_versions.map(&:control_number).include?(s.control_number) } }
 
   accepts_nested_attributes_for :questions, allow_destroy: true
 
@@ -37,11 +37,11 @@ class Section < ApplicationRecord
 
   def update_question_positions
     SectionQuestion.transaction do
-      section_questions.each_with_index do |fq, i|
+      section_questions.each_with_index do |sq, i|
         # Avoiding potential unecessary writes
-        if fq.position != i
-          fq.position = i
-          fq.save!
+        if sq.position != i
+          sq.position = i
+          sq.save!
         end
       end
     end
@@ -52,12 +52,12 @@ class Section < ApplicationRecord
   # N+1 queries to figure out most recent version for each question.
   def questions_with_most_recent
     Question.find_by_sql(['select q.*, qmv.version as max_version
-     from questions q, section_questions fq,
+     from questions q, section_questions sq,
        (select version_independent_id, MAX(version) as version
          from questions group by version_independent_id) qmv
      where qmv.version_independent_id = q.version_independent_id
-     and fq.question_id = q.id
-     and fq.section_id = :section_id', { section_id: id }])
+     and sq.question_id = q.id
+     and sq.section_id = :section_id', { section_id: id }])
   end
 
   def self.owned_by(owner_id)
@@ -70,9 +70,9 @@ class Section < ApplicationRecord
       self.published_by = publisher
       save!
     end
-    section_questions.each do |fq|
-      fq.question.publish(publisher)
-      fq.response_set.publish(publisher) if fq.response_set
+    section_questions.each do |sq|
+      sq.question.publish(publisher)
+      sq.response_set.publish(publisher) if sq.response_set
     end
   end
 

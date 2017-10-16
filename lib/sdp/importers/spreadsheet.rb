@@ -49,15 +49,15 @@ module SDP
       def save!
         s = Survey.new(name: @config[:survey_name] || @file, created_by: @user)
         s.save!
-        f_position = 0
-        save_survey_items(s, f_position)
+        section_position = 0
+        save_survey_items(s, section_position)
       end
 
       def append!(survey_id)
         s = Survey.find(survey_id)
-        f_position = 0
-        f_position = s.survey_sections.last.position if s.survey_sections.present?
-        save_survey_items(s, f_position)
+        section_position = 0
+        section_position = s.survey_sections.last.position if s.survey_sections.present?
+        save_survey_items(s, section_position)
       end
 
       def parse!(verbose = false)
@@ -96,13 +96,13 @@ module SDP
 
       private
 
-      def save_survey_items(s, f_position)
+      def save_survey_items(s, section_position)
         sections do |name, elements|
-          f = Section.new(name: name || "Imported Section ##{f_position + 1}", created_by: @user)
-          f.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
-          f.save!
-          s.survey_sections.create(section: f, position: f_position)
-          f_position += 1
+          section = Section.new(name: name || "Imported Section ##{section_position + 1}", created_by: @user)
+          section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+          section.save!
+          s.survey_sections.create(section: section, position: section_position)
+          section_position += 1
           q_position = 0
           elements.each do |element|
             rs = nil
@@ -114,11 +114,11 @@ module SDP
             q = question_for(element)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
-            f.section_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
+            section.section_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
             q_position += 1
             q.index
           end
-          UpdateIndexJob.perform_now('section', f)
+          UpdateIndexJob.perform_now('section', section)
         end
         UpdateIndexJob.perform_now('survey', s)
       end

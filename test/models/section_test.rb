@@ -6,27 +6,27 @@ class SectionTest < ActiveSupport::TestCase
     rs = sections(:one)
     revision = rs.build_new_revision
     assert_equal 2, revision.version
-    assert_equal 'F-1', revision.version_independent_id
+    assert_equal 'SECT-1', revision.version_independent_id
     assert_equal '2.16.840.1.113883.3.1502.1.1', revision.oid
 
     rs = sections(:two)
     revision = rs.build_new_revision
     assert_equal 2, revision.version
-    assert_equal 'F-2', revision.version_independent_id
+    assert_equal 'SECT-2', revision.version_independent_id
     assert_nil revision.oid
   end
 
   test 'make sure the OMB control number is unique' do
-    f = Section.new(name: 'Doubly Double', control_number: '1234-5678')
-    assert_not f.save
+    sect = Section.new(name: 'Doubly Double', control_number: '1234-5678')
+    assert_not sect.save
   end
 
   test 'same OMB control number is OK across versions' do
-    f = sections(:one)
-    revision = f.build_new_revision
+    sect = sections(:one)
+    revision = sect.build_new_revision
     assert_equal 2, revision.version
     assert revision.save
-    assert_equal f.control_number, revision.control_number
+    assert_equal sect.control_number, revision.control_number
   end
 
   test 'Publish also publishes questions and response sets' do
@@ -44,17 +44,17 @@ class SectionTest < ActiveSupport::TestCase
     assert q2.save
     q3 = Question.new(content: 'Test publish 3', response_type: rt, created_by: user)
     assert q3.save
-    f = Section.new(name: 'Test publish', created_by: user)
-    f.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q2.id, response_set_id: rs2.id, position: 1), SectionQuestion.new(question_id: q3.id, position: 2)]
-    assert f.save
-    f.publish(user)
-    assert_equal user, f.published_by
-    assert_equal 'published', f.status
-    assert_equal 'published', f.questions[0].status
-    assert_equal 'published', f.questions[1].status
-    assert_equal 'published', f.questions[2].status
-    assert_equal 'published', f.section_questions[0].response_set.status
-    assert_equal 'published', f.section_questions[1].response_set.status
+    sect = Section.new(name: 'Test publish', created_by: user)
+    sect.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q2.id, response_set_id: rs2.id, position: 1), SectionQuestion.new(question_id: q3.id, position: 2)]
+    assert sect.save
+    sect.publish(user)
+    assert_equal user, sect.published_by
+    assert_equal 'published', sect.status
+    assert_equal 'published', sect.questions[0].status
+    assert_equal 'published', sect.questions[1].status
+    assert_equal 'published', sect.questions[2].status
+    assert_equal 'published', sect.section_questions[0].response_set.status
+    assert_equal 'published', sect.section_questions[1].response_set.status
   end
 
   test 'Deleting a question deletes its section question and preserves position' do
@@ -67,23 +67,23 @@ class SectionTest < ActiveSupport::TestCase
     assert q2.save
     q3 = Question.new(content: 'Test Delete 3', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
     assert q3.save
-    f = Section.new(name: 'Test Delete 2', created_by: user)
-    f.section_questions = [SectionQuestion.new(question_id: q1.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q2.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q3.id, response_set_id: rs.id, position: 0)]
-    assert f.save
+    sect = Section.new(name: 'Test Delete 2', created_by: user)
+    sect.section_questions = [SectionQuestion.new(question_id: q1.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q2.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q3.id, response_set_id: rs.id, position: 0)]
+    assert sect.save
     # Need to wait for the async queue to finish its work before destroying the section, or it crashes
     sleep 5
     assert q2.destroy
-    f = Section.find(f.id)
-    assert_equal 2, f.section_questions.size
-    assert_equal 0, f.section_questions[0].position
-    assert_equal 1, f.section_questions[1].position
-    assert_equal q1.id, f.section_questions[0].question_id
-    assert_equal q3.id, f.section_questions[1].question_id
+    sect = Section.find(sect.id)
+    assert_equal 2, sect.section_questions.size
+    assert_equal 0, sect.section_questions[0].position
+    assert_equal 1, sect.section_questions[1].position
+    assert_equal q1.id, sect.section_questions[0].question_id
+    assert_equal q3.id, sect.section_questions[1].question_id
   end
 
   test 'Getting questions with most_recent loaded' do
-    f = sections(:one)
-    qs = f.questions_with_most_recent
+    sect = sections(:one)
+    qs = sect.questions_with_most_recent
     old_question = qs.find { |q| q.content == 'What is another question example?' }
     assert_equal 1, old_question.version
     assert_equal 2, old_question.max_version

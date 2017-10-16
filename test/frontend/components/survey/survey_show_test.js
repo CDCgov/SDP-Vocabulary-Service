@@ -14,9 +14,9 @@ describe('SurveyShow', () => {
         surveySections: [1,2,3]
       },
       sections: [
-        {id:1,name:"Bleep",createdBy:{email:"test_author@gmail.com"},createdAt:"2016-12-27T23:40:54.505Z",updatedAt:"2016-12-28T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]},
-        {id:2,name:"Bloop",createdBy:{email:"test_author@gmail.com"},createdAt:"2016-12-28T23:40:54.505Z",updatedAt:"2016-12-29T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]},
-        {id:3,name:"I am a robot",createdBy:{email:"test_author@gmail.com"},createdAt:"2016-12-29T23:40:54.505Z",updatedAt:"2016-12-30T23:40:54.505Z",versionIndependentId:"F-1",version:1,controlNumber:"","questions":[]}
+        {id:1,name:"Bleep",createdBy:{email:"test_author@gmail.com"},createdAt:"2016-12-27T23:40:54.505Z",updatedAt:"2016-12-28T23:40:54.505Z",versionIndependentId:"SECT-1",version:1,controlNumber:"","questions":[]},
+        {id:2,name:"Bloop",createdBy:{email:"test_author@gmail.com"},createdAt:"2016-12-28T23:40:54.505Z",updatedAt:"2016-12-29T23:40:54.505Z",versionIndependentId:"SECT-1",version:1,controlNumber:"","questions":[]},
+        {id:3,name:"I am a robot",createdBy:{email:"test_author@gmail.com"},createdAt:"2016-12-29T23:40:54.505Z",updatedAt:"2016-12-30T23:40:54.505Z",versionIndependentId:"SECT-1",version:1,controlNumber:"","questions":[]}
       ],
       deleteSurvey: ()=> {}
     };

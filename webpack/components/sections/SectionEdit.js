@@ -65,7 +65,7 @@ class SectionEdit extends Component {
     }
     this.unsavedState = false;
     this.lastQuestionCount = this.state.sectionQuestions.length;
-    this.addedResponseSets = compact(this.state.sectionQuestions.map((fq) => fq.responseSetId));
+    this.addedResponseSets = compact(this.state.sectionQuestions.map((sq) => sq.responseSetId));
 
     this.handleSubmit   = this.handleSubmit.bind(this);
     this.moveQuestionUp = this.moveQuestionUp.bind(this);
@@ -218,7 +218,7 @@ class SectionEdit extends Component {
 
   findLinkedResponseSets(sectionQuestions, addedResponseSets){
     var linkedResponseSetMap = {};
-    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionQuestions.map((fq) => fq.responseSetId));
+    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionQuestions.map((sq) => sq.responseSetId));
     sectionQuestions.map((q) => {
       var linkedResponseSets = [];
       var qId = q.questionId;

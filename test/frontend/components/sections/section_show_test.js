@@ -14,7 +14,7 @@ describe('SectionQuestionList', () => {
       sectionQuestions.push({id: i, questionId: i});
     }
     const props  = {
-      section: {id: 6, name: "Test Section", questions: questions, versionIndependentId: "F-1", version: 1, sectionQuestions: sectionQuestions},
+      section: {id: 6, name: "Test Section", questions: questions, versionIndependentId: "SECT-1", version: 1, sectionQuestions: sectionQuestions},
       publishSection: ()=>{},
       deleteSection: ()=>{},
       sectionSubmitter:  ()=>{},

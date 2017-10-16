@@ -32,19 +32,19 @@ class ESSectionSerializer < ActiveModel::Serializer
   end
 
   def questions
-    object.section_questions.includes(:response_set, question: [:concepts]).collect do |fq|
-      { id: fq.question_id,
-        name: fq.question.content,
-        codes: (fq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
-        response_set: fq.response_set.try(:name),
-        response_set_id: fq.response_set_id }
+    object.section_questions.includes(:response_set, question: [:concepts]).collect do |sq|
+      { id: sq.question_id,
+        name: sq.question.content,
+        codes: (sq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
+        response_set: sq.response_set.try(:name),
+        response_set_id: sq.response_set_id }
     end
   end
 
   def surveys
-    object.survey_sections.includes(:survey).collect do |fq|
-      { id: fq.survey_id,
-        name: fq.survey.name }
+    object.survey_sections.includes(:survey).collect do |sq|
+      { id: sq.survey_id,
+        name: sq.survey.name }
     end
   end
 

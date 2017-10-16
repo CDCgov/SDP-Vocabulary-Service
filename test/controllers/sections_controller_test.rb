@@ -20,11 +20,11 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'revisions should increment version without needing a param' do
-    section_json = { section: { name: @section.name, version_independent_id: 'F-1337' } }.to_json
+    section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     Section.last.publish(@current_user)
     v1 = Section.last
-    section_json = { section: { name: 'A revised name', version_independent_id: 'F-1337' } }.to_json
+    section_json = { section: { name: 'A revised name', version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_response :success
     v2 = Section.last
@@ -34,20 +34,20 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot revise something you do not own' do
-    section_json = { section: { name: @section.name, version_independent_id: 'F-1337' } }.to_json
+    section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     Section.last.publish(@current_user)
     sign_in users(:not_admin)
-    section_json = { section: { name: 'A Failed revision', version_independent_id: 'F-1337' } }.to_json
+    section_json = { section: { name: 'A Failed revision', version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_response :unauthorized
   end
 
   test 'cannot revise a draft' do
-    section_json = { section: { name: @section.name, version_independent_id: 'F-1337' } }.to_json
+    section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_equal DRAFT, Section.last.status
-    section_json = { section: { name: 'A Failed revision', version_independent_id: 'F-1337' } }.to_json
+    section_json = { section: { name: 'A Failed revision', version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_response :unprocessable_entity
   end

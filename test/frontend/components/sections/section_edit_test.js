@@ -8,7 +8,7 @@ describe('SectionEdit', () => {
   beforeEach(() => {
     router = new MockRouter();
     props  = {
-      section: {id: 6, name: "Test Section", questions: [1], versionIndependentId: "F-1", version: 1, sectionQuestions:[]},
+      section: {id: 6, name: "Test Section", questions: [1], versionIndependentId: "SECT-1", version: 1, sectionQuestions:[]},
       responseSets: {1: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"}},
       reorderQuestion:()=>{},
       removeQuestion: ()=>{},

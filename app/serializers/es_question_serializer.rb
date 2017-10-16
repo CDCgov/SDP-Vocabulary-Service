@@ -21,8 +21,8 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :response_type
 
   def sections
-    object.section_questions.includes(:section).collect do |fq|
-      { id: fq.section.id, name: fq.section.name }
+    object.section_questions.includes(:section).collect do |sq|
+      { id: sq.section.id, name: sq.section.name }
     end
   end
 

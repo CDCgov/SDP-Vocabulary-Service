@@ -33,21 +33,21 @@ class ESSurveySerializer < ActiveModel::Serializer
 
   def questions
     section_questions = []
-    object.survey_sections.includes(section: { section_questions: [:response_set, { question: :concepts }] }).each do |sf|
-      section_questions.concat sf.section.section_questions.to_a
+    object.survey_sections.includes(section: { section_questions: [:response_set, { question: :concepts }] }).each do |ss|
+      section_questions.concat ss.section.section_questions.to_a
     end
-    section_questions.collect do |fq|
-      { id: fq.question_id,
-        name: fq.question.content,
-        codes: (fq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
-        response_set: fq.response_set.try(:name),
-        response_set_id: fq.response_set_id }
+    section_questions.collect do |sq|
+      { id: sq.question_id,
+        name: sq.question.content,
+        codes: (sq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
+        response_set: sq.response_set.try(:name),
+        response_set_id: sq.response_set_id }
     end
   end
 
   def sections
-    object.survey_sections.includes(:section).collect do |sf|
-      { id: sf.section_id, name: sf.section.name }
+    object.survey_sections.includes(:section).collect do |ss|
+      { id: ss.section_id, name: ss.section.name }
     end
   end
 

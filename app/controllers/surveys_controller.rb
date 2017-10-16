@@ -113,8 +113,8 @@ class SurveysController < ApplicationController
   def create_survey_sections
     survey_sections = []
     if params[:survey][:linked_sections]
-      params[:survey][:linked_sections].each do |f|
-        survey_sections << SurveySection.new(section_id: f[:section_id], position: f[:position])
+      params[:survey][:linked_sections].each do |s|
+        survey_sections << SurveySection.new(section_id: s[:section_id], position: s[:position])
       end
     end
     survey_sections
@@ -123,28 +123,28 @@ class SurveysController < ApplicationController
   # !!! this algorithm assumes a section cannot appear twice on the same survey !!!
   # Only update survey sections that were changed
   def update_survey_sections
-    updated_fs = []
+    updated_ss = []
     if params[:survey][:linked_sections]
-      new_fs_hash = {}
-      params[:survey][:linked_sections].each { |q| new_fs_hash[q[:section_id]] = q }
+      new_ss_hash = {}
+      params[:survey][:linked_sections].each { |q| new_ss_hash[q[:section_id]] = q }
       # Be aware, wrapping this loop in a transaction improves perf by batching all the updates to be committed at once
       SurveySection.transaction do
         @survey.survey_sections.each do |old_section|
-          if new_fs_hash.exclude? old_section.section_id
+          if new_ss_hash.exclude? old_section.section_id
             old_section.destroy!
           else
-            new_section = new_fs_hash.delete(old_section.section_id)
+            new_section = new_ss_hash.delete(old_section.section_id)
             if old_section.position != new_section[:position]
               old_section.position = new_section[:position]
               old_section.save!
             end
-            updated_fs << old_section
+            updated_ss << old_section
           end
         end
       end
       # any new survey section still in this hash needs to be created
-      new_fs_hash.each { |_id, f| updated_fs << SurveySection.new(section_id: f[:section_id], position: f[:position]) }
+      new_ss_hash.each { |_id, f| updated_ss << SurveySection.new(section_id: f[:section_id], position: f[:position]) }
     end
-    updated_fs
+    updated_ss
   end
 end

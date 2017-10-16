@@ -81,11 +81,11 @@ function mapStateToProps(state, ownProps) {
   props.survey = denormalize(state.surveys[ownProps.params.surveyId], surveySchema, state);
   if (props.survey && props.survey.surveySections) {
     props.sections = props.survey.surveySections.map((section) => state.sections[section.sectionId]);
-    props.sections = props.sections.filter((f) => f !== undefined);
-    props.sections = props.sections.map((f) => {
-      const sectionWithQuestions = Object.assign({}, f);
+    props.sections = props.sections.filter((sect) => sect !== undefined);
+    props.sections = props.sections.map((sect) => {
+      const sectionWithQuestions = Object.assign({}, sect);
       if (sectionWithQuestions.sectionQuestions) {
-        sectionWithQuestions.questions = sectionWithQuestions.sectionQuestions.map((fq) => state.questions[fq.questionId]);
+        sectionWithQuestions.questions = sectionWithQuestions.sectionQuestions.map((sq) => state.questions[sq.questionId]);
       }
       return sectionWithQuestions;
     });

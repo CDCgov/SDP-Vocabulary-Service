@@ -3,7 +3,7 @@
 one:
   name: MyString
   version: 1
-  version_independent_id: F-1
+  version_independent_id: SECT-1
   created_by: admin
   control_number: 1234-5678
   status: published
@@ -15,44 +15,44 @@ two:
   created_by: admin
   version: 1
   status: published
-  version_independent_id: F-2
+  version_independent_id: SECT-2
 
 three:
   name: MyString
   created_by: not_admin
   version: 1
-  version_independent_id: F-3
+  version_independent_id: SECT-3
 
 draft:
   name: DraftSection
   created_by: admin
   version: 1
   status: draft
-  version_independent_id: F-4
+  version_independent_id: SECT-4
 
 search_1:
   name: Search section 1
   created_by: admin
   version: 1
   status: published
-  version_independent_id: F-5
+  version_independent_id: SECT-5
 
 search_2:
   name: Search section 2
   created_by: admin
   version: 1
-  version_independent_id: F-5
+  version_independent_id: SECT-5
 
 search_3:
   name: search section 3
   created_by: not_admin
   version: 1
   status: draft
-  version_independent_id: F-6
+  version_independent_id: SECT-6
 
 newtwo:
   name: New Section 2
   created_by: admin
   version: 2
   status: published
-  version_independent_id: F-2
+  version_independent_id: SECT-2

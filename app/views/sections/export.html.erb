@@ -8,11 +8,11 @@
   <!-- Start content to export -->
   <h3>Section Name: <%= @section.name %></h3><br>
 
-  <% @section.section_questions.each do |fq| %>
-    <%= fq.question.content %>
+  <% @section.section_questions.each do |sq| %>
+    <%= sq.question.content %>
     <p>
-      <% if fq.response_set %>
-        <% fq.response_set.responses.each.with_index do |r, i| %>
+      <% if sq.response_set %>
+        <% sq.response_set.responses.each.with_index do |r, i| %>
           <%= i+1 %>. <%= r.value %><br>
         <% end %>
       <% end %>

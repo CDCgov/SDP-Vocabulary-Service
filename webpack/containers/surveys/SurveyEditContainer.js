@@ -130,8 +130,8 @@ function mapStateToProps(state, ownProps) {
   const survey = state.surveys[ownProps.params.surveyId||0];
   var selectedSearchResults = {};
   if(survey && survey.surveySections){
-    survey.surveySections.map((sf)=>{
-      selectedSearchResults[sf.sectionId] = true;
+    survey.surveySections.map((ss)=>{
+      selectedSearchResults[ss.sectionId] = true;
     });
   }
   return {

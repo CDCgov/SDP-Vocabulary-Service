@@ -68,12 +68,12 @@ class SectionShow extends Component {
     const startIndex = (this.state.page - 1) * PAGE_SIZE;
     const endIndex = this.state.page * PAGE_SIZE;
     const sectionQuestionPage = section.sectionQuestions.slice(startIndex, endIndex);
-    return sectionQuestionPage.map((fq) => {
-      var sectionQuestion = Object.assign({}, section.questions.find(q => q.id === fq.questionId));
-      sectionQuestion.programVar = fq.programVar || '';
+    return sectionQuestionPage.map((sq) => {
+      var sectionQuestion = Object.assign({}, section.questions.find(q => q.id === sq.questionId));
+      sectionQuestion.programVar = sq.programVar || '';
       sectionQuestion.responseSets = [{name: 'None'}];
-      if (fq.responseSetId) {
-        var responseSet = section.responseSets.find(rs => rs.id === fq.responseSetId);
+      if (sq.responseSetId) {
+        var responseSet = section.responseSets.find(rs => rs.id === sq.responseSetId);
         if(responseSet) {
           sectionQuestion.responseSets = [responseSet];
         } else {
