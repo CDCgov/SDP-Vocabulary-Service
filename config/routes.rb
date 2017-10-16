@@ -83,6 +83,11 @@ Rails.application.routes.draw do
     resources :systems, only: [:index, :show] do
       get :usage, on: :member
     end
+
+    namespace :fhir do
+      resources :questionaires
+      resources :valuesets
+    end
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
