@@ -47,7 +47,7 @@ export default class ResponseSetShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={responseSet} versionableType='ResponseSet' />
+        <VersionInfo versionable={responseSet} versionableType='ResponseSet' currentUserId={this.props.currentUser.id} />
       </div>
     );
   }
@@ -154,7 +154,7 @@ export default class ResponseSetShow extends Component {
                 <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
-                <SectionQuestionList questions={responseSet.questions} />
+                <SectionQuestionList questions={responseSet.questions} currentUserId={this.props.currentUser.id} />
               </div>
             </div>
           }

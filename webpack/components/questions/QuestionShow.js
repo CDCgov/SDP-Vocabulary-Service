@@ -173,7 +173,7 @@ export default class QuestionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={question} versionableType='Question' />
+        <VersionInfo versionable={question} versionableType='Question' currentUserId={this.props.currentUser.id} />
       </div>
     );
   }
