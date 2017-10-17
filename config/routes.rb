@@ -30,8 +30,8 @@ Rails.application.routes.draw do
     put '/roles/revoke_publisher' => 'roles#revoke_publisher', as: :revoke_publisher
   end
 
-  resources :form_questions
-  resources :forms, except: [:edit] do # No need for edit as that is handled on the react side
+  resources :section_questions
+  resources :sections, except: [:edit] do # No need for edit as that is handled on the react side
     get :revise, on: :member
     get :export, on: :member
     get :redcap, on: :member
@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     resources :questions, only: [:index, :show] do
       get :usage, on: :member
     end
-    resources :forms, only: [:index, :show] do
+    resources :sections, only: [:index, :show] do
       get :usage, on: :member
     end
     resources :surveys, only: [:index, :show]

@@ -149,7 +149,7 @@ class DashboardContainer extends Component {
                     <div className="col-md-8">
                       <div className="cdc-promo-banner">
                         <h1 className="banner-title">CDC Vocabulary Service</h1>
-                        <h2 className="banner-subtitle">Author Questions, Response Sets, Forms, and Surveys</h2>
+                        <h2 className="banner-subtitle">Author Questions, Response Sets, Sections, and Surveys</h2>
                         <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
                       </div>
                     </div>
@@ -291,11 +291,11 @@ class DashboardContainer extends Component {
             <h2 className="item-title" id="response-sets-analytics-item-title">Response Sets</h2>
           </div>
           </button>
-        <button id="forms-analytics-item" tabIndex="4" className={"analytics-list-item btn" + (searchType === 'form' ? " analytics-active-item" : "")} onClick={() => this.selectType('form')}>
+        <button id="sections-analytics-item" tabIndex="4" className={"analytics-list-item btn" + (searchType === 'section' ? " analytics-active-item" : "")} onClick={() => this.selectType('section')}>
           <div>
             <i className="fa fa-list-alt fa-3x item-icon" aria-hidden="true"></i>
-            <p className="item-value" aria-describedby="forms-analytics-item-title">{this.props.formCount}</p>
-            <h2 className="item-title" id="forms-analytics-item-title">Forms</h2>
+            <p className="item-value" aria-describedby="sections-analytics-item-title">{this.props.sectionCount}</p>
+            <h2 className="item-title" id="sections-analytics-item-title">Sections</h2>
           </div>
           </button>
         <button id="surveys-analytics-item" tabIndex="4" className={"analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
@@ -326,10 +326,10 @@ class DashboardContainer extends Component {
               <text className="sr-only">Click button to filter search results by response sets you own.</text>
               <div className="recent-items-value">{this.props.myResponseSetCount} Response Sets</div>
             </button>
-            <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'form' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('form', true)}>
+            <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'section' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('section', true)}>
               <div className="recent-items-icon"><i className="fa fa-list-alt recent-items-icon" aria-hidden="true"></i></div>
-              <text className="sr-only">Click button to filter search results by forms you own.</text>
-              <div className="recent-items-value">{this.props.myFormCount} Forms</div>
+              <text className="sr-only">Click button to filter search results by sections you own.</text>
+              <div className="recent-items-value">{this.props.mySectionCount} Sections</div>
             </button>
             <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'survey' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('survey', true)}>
               <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
@@ -348,11 +348,11 @@ class DashboardContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    formCount: state.stats.formCount,
+    sectionCount: state.stats.sectionCount,
     questionCount: state.stats.questionCount,
     responseSetCount: state.stats.responseSetCount,
     surveyCount: state.stats.surveyCount,
-    myFormCount: state.stats.myFormCount,
+    mySectionCount: state.stats.mySectionCount,
     myQuestionCount: state.stats.myQuestionCount,
     myResponseSetCount: state.stats.myResponseSetCount,
     mySurveyCount: state.stats.mySurveyCount,
@@ -369,11 +369,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 DashboardContainer.propTypes = {
-  formCount: PropTypes.number,
+  sectionCount: PropTypes.number,
   questionCount: PropTypes.number,
   responseSetCount: PropTypes.number,
   surveyCount: PropTypes.number,
-  myFormCount: PropTypes.number,
+  mySectionCount: PropTypes.number,
   myQuestionCount: PropTypes.number,
   myResponseSetCount: PropTypes.number,
   mySurveyCount: PropTypes.number,

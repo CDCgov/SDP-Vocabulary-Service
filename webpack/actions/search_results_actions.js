@@ -117,8 +117,8 @@ function unelasticsearchResults(results) {
   if (results.questions) {
     transformConcepts(results.questions);
   }
-  if (results.forms) {
-    transformConcepts(results.forms);
+  if (results.sections) {
+    transformConcepts(results.sections);
   }
   if (results.surveys) {
     transformConcepts(results.questions);

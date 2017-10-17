@@ -23,14 +23,14 @@
         "publisher" : {"type" : "boolean"}
       }
     },
-    "forms" : {
+    "sections" : {
       "type" : "array",
       "items": {
         "type" : "object",
         "properties": {
-          "formId" : {"type" : "string"},
-          "formName" : {"type" : "string"},
-          "formUri" : {"type" : "string"},
+          "sectionId" : {"type" : "string"},
+          "sectionName" : {"type" : "string"},
+          "sectionUri" : {"type" : "string"},
           "version" : {"type" : "number"},
           "questions" : {
             "type" : "array",

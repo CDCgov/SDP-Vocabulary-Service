@@ -71,7 +71,7 @@ Feature: Session Management
   Scenario: Login to an existing account
     Given I am on the "/" page
     And a user "test_author@gmail.com" exists
-    Then I should see "Author Questions, Response Sets, Forms, and Surveys"
+    Then I should see "Author Questions, Response Sets, Sections, and Surveys"
     And I should not see "My Stuff"
     When I click on the "Login" link
     And I fill in the "email" field with "test_author@gmail.com"
@@ -79,7 +79,7 @@ Feature: Session Management
     And I click on the "Log In" button
     Then I should see "test_author@gmail.com"
     And I should see "My Stuff"
-    And I should not see "Author Questions, Response Sets, Forms, and Surveys"
+    And I should not see "Author Questions, Response Sets, Sections, and Surveys"
 
   Scenario: Edit an existing account
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
@@ -153,7 +153,7 @@ Feature: Session Management
     Then I should see "You are not authorized to see this content, please login."
     Given I am on the "/#/questions/new" page
     Then I should see "You are not authorized to see this content, please login."
-    Given I am on the "/#/forms/new" page
+    Given I am on the "/#/sections/new" page
     Then I should see "You are not authorized to see this content, please login."
     Given I am on the "/#/surveys/new" page
     Then I should see "You are not authorized to see this content, please login."
@@ -167,7 +167,7 @@ Feature: Session Management
     Then my session expires
     And I go to the dashboard
     Then I should not see "My Stuff"
-    And I should see "Author Questions, Response Sets, Forms, and Surveys"
+    And I should see "Author Questions, Response Sets, Sections, and Surveys"
 
   Scenario: Accessing content that belongs to another user causes a forbidden error
     Given I am logged in as test_author@gmail.com

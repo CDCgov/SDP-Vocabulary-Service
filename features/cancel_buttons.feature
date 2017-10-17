@@ -16,7 +16,7 @@ Feature: Cancel buttons
     And I should see "Comments:"
     And I should not see "Revise Question"
 
-  # Scenario: Cancel out of editing a draft form
+  # Scenario: Cancel out of editing a draft section
   # Given I am logged in as test_author@gmail.com
   # Scenario: Cancel out of editing a draft response set
   # Given I am logged in as test_author@gmail.com
@@ -35,7 +35,7 @@ Feature: Cancel buttons
     And I should see "History"
     And I should see "Comments:"
 
-  # Scenario: Cancel out of revising a form
+  # Scenario: Cancel out of revising a section
   # Given I am logged in as test_author@gmail.com
   # Scenario: Cancel out of revising a response set
   # Given I am logged in as test_author@gmail.com
@@ -48,7 +48,7 @@ Feature: Cancel buttons
     Then I should see "My Stuff"
     And I should see "Search Results"
 
-  # Scenario: Cancel out of creating a new form
+  # Scenario: Cancel out of creating a new section
   # Given I am logged in as test_author@gmail.com
   # Scenario: Cancel out of creating a new response set
   # Given I am logged in as test_author@gmail.com
@@ -71,7 +71,7 @@ Feature: Cancel buttons
     And I should see "History"
     And I should see "Comments:"
 
-  # Scenario: Cancel out of editing a draft form with modal warning
+  # Scenario: Cancel out of editing a draft section with modal warning
   # Given I am logged in as test_author@gmail.com
   # Scenario: Cancel out of editing a draft response set with modal warning
   # Given I am logged in as test_author@gmail.com
@@ -94,7 +94,7 @@ Feature: Cancel buttons
     And I should see "History"
     And I should see "Comments:"
 
-  # Scenario: Cancel out of revising a form with modal warning
+  # Scenario: Cancel out of revising a section with modal warning
   # Given I am logged in as test_author@gmail.com
   # Scenario: Cancel out of revising a response set with modal warning
   # Given I am logged in as test_author@gmail.com
@@ -111,7 +111,7 @@ Feature: Cancel buttons
     Then I should see "Search Results"
     And I should see "My Stuff"
 
-  # Scenario: Cancel out of creating a new form with modal warning
+  # Scenario: Cancel out of creating a new section with modal warning
   # Given I am logged in as test_author@gmail.com
   # Scenario: Cancel out of creating a new response set with modal warning
   # Given I am logged in as test_author@gmail.com

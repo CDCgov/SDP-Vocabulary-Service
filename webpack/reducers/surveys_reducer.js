@@ -2,16 +2,16 @@ import {
   PUBLISH_SURVEY_FULFILLED,
   SAVE_DRAFT_SURVEY_FULFILLED,
   DELETE_SURVEY_FULFILLED,
-  ADD_FORM,
-  REMOVE_FORM,
-  REORDER_FORM,
+  ADD_SECTION,
+  REMOVE_SECTION,
+  REORDER_SECTION,
   CREATE_SURVEY,
   ADD_ENTITIES_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
 export default function surveys(state = {}, action) {
-  let survey, newState, newSurvey, form;
+  let survey, newState, newSurvey, section;
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.surveys);
@@ -20,28 +20,28 @@ export default function surveys(state = {}, action) {
       return helpers.fetchIndividual(state, action);
     case CREATE_SURVEY:
       newState = Object.assign({}, state);
-      newState[0] = {surveyForms: [], forms: [], version: 1, id: 0};
+      newState[0] = {surveySections: [], sections: [], version: 1, id: 0};
       return newState;
-    case ADD_FORM:
-      form = action.payload.form;
+    case ADD_SECTION:
+      section = action.payload.section;
       survey = action.payload.survey;
       survey.id = survey.id || 0;
-      if(state[survey.id] && state[survey.id].surveyForms && state[survey.id].surveyForms.findIndex( (s) => s.formId == form.id) > -1){
+      if(state[survey.id] && state[survey.id].surveySections && state[survey.id].surveySections.findIndex( (s) => s.sectionId == section.id) > -1){
         return state;
       }
-      if(!survey.surveyForms) {
-        survey.surveyForms = [];
+      if(!survey.surveySections) {
+        survey.surveySections = [];
       }
-      let newSurveyForm = Object.assign({}, {formId: form.id, surveyId: survey.id, position: survey.surveyForms.length});
+      let newSurveySection = Object.assign({}, {sectionId: section.id, surveyId: survey.id, position: survey.surveySections.length});
       newSurvey = Object.assign({}, survey);
-      newSurvey.surveyForms.push(newSurveyForm);
+      newSurvey.surveySections.push(newSurveySection);
       newState = Object.assign({}, state);
       newState[survey.id] = newSurvey;
       return newState;
-    case REMOVE_FORM:
-      return helpers.removeNestedItem(state, action, 'survey', 'surveyForms');
-    case REORDER_FORM:
-      return helpers.reorderNestedItem(state, action, 'survey', 'surveyForms');
+    case REMOVE_SECTION:
+      return helpers.removeNestedItem(state, action, 'survey', 'surveySections');
+    case REORDER_SECTION:
+      return helpers.reorderNestedItem(state, action, 'survey', 'surveySections');
     case DELETE_SURVEY_FULFILLED:
       return helpers.deleteItem(state, action);
     default:

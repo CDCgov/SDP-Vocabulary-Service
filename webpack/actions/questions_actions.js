@@ -16,17 +16,17 @@ import {
   ADD_ENTITIES
 } from './types';
 
-export function addQuestion(form, question) {
+export function addQuestion(section, question) {
   return {
     type: ADD_QUESTION,
-    payload: {form, question}
+    payload: {section, question}
   };
 }
 
-export function removeQuestion(form, index) {
+export function removeQuestion(section, index) {
   return {
     type: REMOVE_QUESTION,
-    payload: {form, index}
+    payload: {section, index}
   };
 }
 
@@ -37,10 +37,10 @@ export function deleteQuestion(id, callback=null) {
   };
 }
 
-export function reorderQuestion(form, index, direction) {
+export function reorderQuestion(section, index, direction) {
   return {
     type: REORDER_QUESTION,
-    payload: {form, index, direction}
+    payload: {section, index, direction}
   };
 }
 

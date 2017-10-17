@@ -26,7 +26,7 @@ When(/^I go to the list of Surveys$/) do
   page.find('button[id="surveys-analytics-item"]').click
 end
 
-When(/^I use the form search to select "([^"]*)"$/) do |name|
+When(/^I use the section search to select "([^"]*)"$/) do |name|
   page.find('a', id: "select-#{name}").click
 end
 
@@ -35,21 +35,21 @@ When(/^I click on the menu link for the Survey with the (.+) "([^"]*)"$/) do |at
   page.find("#survey_#{object_id}_menu").click
 end
 
-When(/^I move the Form "([^"]*)" (up|down)$/) do |form_name, direction|
-  object_id = attribute_to_id('Form', 'name', form_name)
-  old_index = page.find_all('.survey-form').index { |el| el.has_css?("#survey_form_id_#{object_id}") }
+When(/^I move the Section "([^"]*)" (up|down)$/) do |section_name, direction|
+  object_id = attribute_to_id('Section', 'name', section_name)
+  old_index = page.find_all('.survey-section').index { |el| el.has_css?("#survey_section_id_#{object_id}") }
   page.all(".move-#{direction}")[old_index].click
-  new_index = page.find_all('.survey-form').index { |el| el.has_css?("#survey_form_id_#{object_id}") }
+  new_index = page.find_all('.survey-section').index { |el| el.has_css?("#survey_section_id_#{object_id}") }
   offset = direction.eql?('up') ? -1 : 1
   assert(old_index != new_index)
   assert(old_index + offset == new_index)
 end
 
-When(/^I click on the "([^"]*)" drop\-down option for the form "([^"]*)"$/) do |_arg1, arg2|
-  oid = attribute_to_id('Form', 'name', arg2)
-  menu = '//a[@id="form_' + oid + '_menu"]/following-sibling::ul'
+When(/^I click on the "([^"]*)" drop\-down option for the section "([^"]*)"$/) do |_arg1, arg2|
+  oid = attribute_to_id('Section', 'name', arg2)
+  menu = '//a[@id="section_' + oid + '_menu"]/following-sibling::ul'
   add_link = '#action_for_' + oid
-  page.find("#form_#{oid}_menu").click
+  page.find("#section_#{oid}_menu").click
   within(:xpath, menu) do
     page.find(add_link).click
   end

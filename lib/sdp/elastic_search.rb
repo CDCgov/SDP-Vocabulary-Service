@@ -152,25 +152,25 @@ module SDP
     end
 
     def self.sync
-      sync_forms
+      sync_sections
       sync_questions
       sync_response_sets
       sync_surveys
     end
 
     def self.sync_now
-      sync_forms('now')
+      sync_sections('now')
       sync_questions('now')
       sync_response_sets('now')
       sync_surveys('now')
     end
 
-    def self.sync_forms(delay = 'later')
+    def self.sync_sections(delay = 'later')
       ensure_index
       with_client do |_client|
-        delete_all('form', Form.ids)
-        Form.all.each do |form|
-          UpdateIndexJob.send("perform_#{delay}", 'form', form.id)
+        delete_all('section', Section.ids)
+        Section.all.each do |section|
+          UpdateIndexJob.send("perform_#{delay}", 'section', section.id)
         end
       end
     end

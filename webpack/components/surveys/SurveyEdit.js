@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import { surveyProps } from '../../prop-types/survey_props';
-import { formsProps } from '../../prop-types/form_props';
+import { sectionsProps } from '../../prop-types/section_props';
 import { questionsProps } from "../../prop-types/question_props";
 
-import SurveyFormList from './SurveyFormList';
+import SurveySectionList from './SurveySectionList';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
@@ -21,7 +21,7 @@ class SurveyEdit extends Component {
       showModal: false,
       conceptsAttributes: [],
       description: '',
-      surveyForms: [],
+      surveySections: [],
       controlNumber: null,
       versionIndependentId: null
     };
@@ -43,7 +43,7 @@ class SurveyEdit extends Component {
     newState.name = survey.name || '';
     newState.version = survey.version;
     newState.description = survey.description || '';
-    newState.surveyForms = survey.surveyForms || [];
+    newState.surveySections = survey.surveySections || [];
     newState.controlNumber = survey.controlNumber;
     newState.parentId = survey.parent ? survey.parent.id : '';
     newState.versionIndependentId = survey.versionIndependentId;
@@ -73,7 +73,7 @@ class SurveyEdit extends Component {
         this.state = this.stateForNew();
     }
     this.unsavedState = false;
-    this.lastFormCount = this.state.surveyForms.length;
+    this.lastSectionCount = this.state.surveySections.length;
   }
 
   componentDidMount() {
@@ -82,9 +82,9 @@ class SurveyEdit extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.lastFormCount !== prevState.surveyForms.length) {
+    if(this.lastSectionCount !== prevState.surveySections.length) {
       this.unsavedState  = true;
-      this.lastFormCount = prevState.surveyForms.length;
+      this.lastSectionCount = prevState.surveySections.length;
     }
   }
 
@@ -111,9 +111,9 @@ class SurveyEdit extends Component {
       this.props.router.push(this.nextLocation.pathname);
     }else{
       let survey = Object.assign({}, this.state);
-      // Because we were saving SurveyForms with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
+      // Because we were saving SurveySections with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
       // At some point, we can remove this code
-      survey.linkedForms = this.state.surveyForms.map((f, i) => ({id: f.id, surveyId: f.surveyId, formId: f.formId, position: i}));
+      survey.linkedSections = this.state.surveySections.map((sect, i) => ({id: sect.id, surveyId: sect.surveyId, sectionId: sect.sectionId, position: i}));
       this.props.surveySubmitter(survey, (response) => {
         // TODO: Handle when the saving survey fails.
         this.unsavedState = false;
@@ -139,9 +139,9 @@ class SurveyEdit extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // Because of the way we have to pass the current forms in we have to manually sync props and state for submit
+    // Because of the way we have to pass the current sections in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
-    survey.linkedForms = this.state.surveyForms;
+    survey.linkedSections = this.state.surveySections;
     this.props.surveySubmitter(survey, (response) => {
       this.unsavedState = false;
       if (this.props.action === 'new') {
@@ -164,7 +164,7 @@ class SurveyEdit extends Component {
   }
 
   render() {
-    if(!this.props.forms){
+    if(!this.props.sections){
       return ('Loading');
     }
     return (
@@ -225,11 +225,11 @@ class SurveyEdit extends Component {
                      childName={'tag'} />
           </div>
         </div>
-        <SurveyFormList survey={this.state}
-                        forms ={this.props.forms}
+        <SurveySectionList survey={this.state}
+                        sections ={this.props.sections}
                         questions  ={this.props.questions}
-                        reorderForm={this.props.reorderForm}
-                        removeForm ={this.props.removeForm} />
+                        reorderSection={this.props.reorderSection}
+                        removeSection ={this.props.removeSection} />
       </form>
       </div>
       </div>
@@ -250,14 +250,14 @@ function filterConcepts(concepts) {
 
 SurveyEdit.propTypes = {
   survey: surveyProps,
-  forms:  formsProps.isRequired,
+  sections:  sectionsProps.isRequired,
   questions:  questionsProps.isRequired,
   action: PropTypes.string.isRequired,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   surveySubmitter: PropTypes.func.isRequired,
-  removeForm:  PropTypes.func.isRequired,
-  reorderForm: PropTypes.func.isRequired,
+  removeSection:  PropTypes.func.isRequired,
+  reorderSection: PropTypes.func.isRequired,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired
 };

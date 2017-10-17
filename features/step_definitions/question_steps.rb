@@ -27,11 +27,11 @@ Given(/^I have a Question with the content "([^"]*)" linked to Surveillance Syst
   q.response_type_id = ResponseType.where(code: 'choice').first.id
   q.update_attribute(:status, 'published')
   q.save!
-  f = Form.new(name: 'test', created_by: user)
-  f.form_questions << FormQuestion.new(question: q, position: 1)
-  f.save!
+  s = Section.new(name: 'test', created_by: user)
+  s.section_questions << SectionQuestion.new(question: q, position: 1)
+  s.save!
   survey = Survey.new(name: 'test', surveillance_system: ss, created_by: user)
-  survey.survey_forms << SurveyForm.new(form: f, position: 1)
+  survey.survey_sections << SurveySection.new(section: s, position: 1)
   survey.save!
 end
 

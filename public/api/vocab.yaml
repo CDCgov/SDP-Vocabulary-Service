@@ -15,8 +15,8 @@ tags:
     name: questions
     description: Access to questions
   -
-    name: forms
-    description: Access to forms
+    name: sections
+    description: Access to sections
   -
     name: programs
     description: Access to programs
@@ -276,7 +276,7 @@ paths:
       tags:
       - surveys
       description: |
-        Get information about a Survey including its contained forms.
+        Get information about a Survey including its contained sections.
       produces:
       - application/json
       responses:
@@ -285,12 +285,12 @@ paths:
           schema:
             $ref: '#/definitions/Survey'
 
-  /forms:
+  /sections:
     get:
       tags:
-      - forms
+      - sections
       description: |
-        Get a list of forms that match the supplied search criteria.
+        Get a list of sections that match the supplied search criteria.
       produces:
       - application/json
 
@@ -299,7 +299,7 @@ paths:
           name: limit
           in: query
           description: |
-            Limits the number of returned forms, defaults to 100 if no
+            Limits the number of returned sections, defaults to 100 if no
             `search` parameter is supplied, infinity otherwise.
           required: false
           default: 100
@@ -308,7 +308,7 @@ paths:
           name: search
           in: query
           description:
-            Limits the returned forms to those that contain the supplied
+            Limits the returned sections to those that contain the supplied
             text in their name, description or tags
           required: false
           type: string
@@ -318,35 +318,35 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Form'
+              $ref: '#/definitions/Section'
 
-  /forms/{id}:
+  /sections/{id}:
     parameters:
       -
         name: id
         in: path
-        description: ID of form
+        description: ID of section
         required: true
         type: string
       -
         name: version
         in: query
-        description: Version of form
+        description: Version of section
         required: false
         type: string
     get:
       tags:
-      - forms
+      - sections
       description: |
-        Get information about a form including the questions and associated
-        response used by that form.
+        Get information about a section including the questions and associated
+        response used by that section.
       produces:
       - application/json
       responses:
         200:
           description: Successful response
           schema:
-            $ref: '#/definitions/Form'
+            $ref: '#/definitions/Section'
 
   /valueSets:
     get:
@@ -515,7 +515,7 @@ definitions:
   Usage:
     type: array
     description:
-      A set of programs and forms that use a question or response
+      A set of programs and sections that use a question or response
       value set.
     items:
       type: array
@@ -531,21 +531,21 @@ definitions:
           programUri:
             type: string
             title: Relative URI of program
-          forms:
+          sections:
             type: array
-            title: List of forms in which the question or response set is used
+            title: List of sections in which the question or response set is used
             items:
               type: object
               properties:
-                formId:
+                sectionId:
                   type: string
-                  title: Form identifier
-                formName:
+                  title: Section identifier
+                sectionName:
                   type: string
-                  title: Human readable name of the form
-                formUri:
+                  title: Human readable name of the section
+                sectionUri:
                   type: string
-                  title: Relative URI of the form
+                  title: Relative URI of the section
 
   Question:
     type: object
@@ -595,12 +595,12 @@ definitions:
         type: string
         title: Human readable description of the program
       # TODO additional metadata
-      forms:
+      sections:
         type: array
         description:
-          Array of forms used by this program.
+          Array of sections used by this program.
         items:
-          $ref: '#/definitions/Form'
+          $ref: '#/definitions/Section'
 
   System:
     type: object
@@ -659,39 +659,39 @@ definitions:
         title: User that published the survey
         $ref: '#/definitions/User'
       # TODO additional metadata
-      forms:
+      sections:
         type: array
         description:
-          Array of forms used by this program.
+          Array of sections used by this program.
         items:
-          $ref: '#/definitions/Form'
+          $ref: '#/definitions/Section'
 
-  Form:
+  Section:
     type: object
     description:
-      Details about a form.
+      Details about a section.
     properties:
-      formId:
+      sectionId:
         type: string
-        title: Form identifier
-      formName:
+        title: Section identifier
+      sectionName:
         type: string
-        title: Human readable name of the form
-      formUri:
+        title: Human readable name of the section
+      sectionUri:
         type: string
-        title: Relative URI of the form
+        title: Relative URI of the section
       version:
         type: string
-        title: Logical identifier for this version of the form
+        title: Logical identifier for this version of the section
       published_by:
         type: object
-        title: User that published the form
+        title: User that published the section
         $ref: '#/definitions/User'
       # TODO additional metadata
       questions:
         type: array
         description:
-          Array of [question, response] pairs used in this form.
+          Array of [question, response] pairs used in this section.
         items:
           type: object
           properties:

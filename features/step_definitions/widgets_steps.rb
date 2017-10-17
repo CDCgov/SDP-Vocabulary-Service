@@ -1,6 +1,6 @@
-Then(/^I should see a Form widget with the name "([^"]*)"$/) do |name_value|
-  object_id = attribute_to_id('Form', :name, name_value)
-  page.find("#form_id_#{object_id}")
+Then(/^I should see a Section widget with the name "([^"]*)"$/) do |name_value|
+  object_id = attribute_to_id('Section', :name, name_value)
+  page.find("#section_id_#{object_id}")
 end
 
 Then(/^I should see a Question widget with the content "([^"]*)"$/) do |content_value|

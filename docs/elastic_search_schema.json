@@ -162,7 +162,7 @@
         }
       }
     },
-    "form": {
+    "section": {
       "properties": {
         "suggest": {
           "type": "completion"
@@ -344,7 +344,7 @@
             }
           }
         },
-        "forms": {
+        "sections": {
           "type": "object",
           "properties": {
             "name": {

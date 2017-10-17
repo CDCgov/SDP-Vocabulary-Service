@@ -7,11 +7,11 @@ Given(/^I have a Response Set with the name "([^"]*)" linked to Surveillance Sys
   q = Question.new(content: 'test', response_type_id: rt.id, created_by: user)
   q.response_sets << rs
   q.save!
-  f = Form.new(name: 'test', created_by: user)
-  f.form_questions << FormQuestion.new(question: q, response_set: rs, position: 1)
-  f.save!
+  s = Section.new(name: 'test', created_by: user)
+  s.section_questions << SectionQuestion.new(question: q, response_set: rs, position: 1)
+  s.save!
   survey = Survey.new(name: 'test', surveillance_system: ss, created_by: user)
-  survey.survey_forms << SurveyForm.new(form: f, position: 1)
+  survey.survey_sections << SurveySection.new(section: s, position: 1)
   survey.save!
 end
 

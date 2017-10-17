@@ -91,7 +91,7 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
             <ul className="cdc-nav-dropdown">
               <li className="nav-dropdown-item"><Link to="/questions/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Questions</Link></li>
               <li className="nav-dropdown-item"><Link to="/responseSets/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Response Sets</Link></li>
-              <li className="nav-dropdown-item"><Link to="/forms/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Forms</Link></li>
+              <li className="nav-dropdown-item"><Link to="/sections/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Sections</Link></li>
               <li className="nav-dropdown-item"><Link to="/surveys/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Surveys</Link></li>
             </ul>
           </li>

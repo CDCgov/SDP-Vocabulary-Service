@@ -33,7 +33,7 @@ Feature: Manage Surveys
 
  Scenario: Revise Survey
    Given I have a published Survey with the name "Test Survey" and the description "Survey description"
-   Given I have a published Form with the name "Test Gender Form" and the description "Form description"
+   Given I have a published Section with the name "Test Gender Section" and the description "Section description"
    And I am logged in as test_author@gmail.com
    When I go to the dashboard
    And I click on the menu link for the Survey with the name "Test Survey"
@@ -42,17 +42,17 @@ Feature: Manage Surveys
    And I fill in the "survey-description" field with "Revised Description"
    And I fill in the "search" field with "Gender"
    And I click on the "search-btn" button
-   And I use the form search to select "Test Gender Form"
+   And I use the section search to select "Test Gender Section"
    And I click on the "Save" button
    Then I should see "Name: Gender Survey"
    Then I should see "Revised Description"
-   And I should see "Test Gender Form"
+   And I should see "Test Gender Section"
    And I should not see "Publish"
    And I should see "Edit"
 
   Scenario: Extend Survey
     Given I have a published Survey with the name "Test Survey" and the description "Parent description"
-    Given I have a published Form with the name "Test Gender Form" and the description "Form description"
+    Given I have a published Section with the name "Test Gender Section" and the description "Section description"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the menu link for the Survey with the name "Test Survey"
@@ -60,12 +60,12 @@ Feature: Manage Surveys
     And I fill in the "survey-name" field with "Test Survey Extended"
     And I fill in the "search" field with "Gender"
     And I click on the "search-btn" button
-    And I use the form search to select "Test Gender Form"
+    And I use the section search to select "Test Gender Section"
     And I click on the "Save" button
     Then I should see "Name: Test Survey Extended"
     Then I should see "Parent description"
     And I should see "Extended from: Test Survey"
-    And I should see "Test Gender Form"
+    And I should see "Test Gender Section"
     And I should not see "Publish"
     And I should see "Version: 1"
     And I should see "Edit"
@@ -122,30 +122,30 @@ Feature: Manage Surveys
     And I should see "Edit"
     And I should see "Surveillance System: National Violent Death Reporting System"
 
-  Scenario: Reorder forms on a Survey
+  Scenario: Reorder sections on a Survey
     Given I have a published Survey with the name "Test Survey"
-    And I have a Form with the name "Gender Form"
-    And I have a Form with the name "Demographics Form"
+    And I have a Section with the name "Gender Section"
+    And I have a Section with the name "Demographics Section"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the menu link for the Survey with the name "Test Survey"
     And I click on the option to Revise the Survey with the name "Test Survey"
-    And I fill in the "search" field with "Form"
+    And I fill in the "search" field with "Section"
     And I click on the "search-btn" button
     And I should not see "Result Already Added"
-    And I use the form search to select "Gender Form"
-    And I use the form search to select "Demographics Form"
+    And I use the section search to select "Gender Section"
+    And I use the section search to select "Demographics Section"
     And I wait 3 seconds
-    And I move the Form "Gender Form" down
-    And I move the Form "Gender Form" up
+    And I move the Section "Gender Section" down
+    And I move the Section "Gender Section" up
     And I should see "Result Already Added"
     And I click on the "Save" button
-    And I should see "Gender Form"
-    And I should see "Demographics Form"
+    And I should see "Gender Section"
+    And I should see "Demographics Section"
 
 
   Scenario: Create New Survey with warning modal
-    Given I have a Form with the name "Gender Form"
+    Given I have a Section with the name "Gender Section"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Surveys" dropdown item
@@ -153,7 +153,7 @@ Feature: Manage Surveys
     And I fill in the "controlNumber" field with "1234-1234"
     And I fill in the "search" field with "Gender"
     And I click on the "search-btn" button
-    And I use the form search to select "Gender Form"
+    And I use the section search to select "Gender Section"
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
     And I wait 1 seconds
@@ -162,7 +162,7 @@ Feature: Manage Surveys
 
 
  Scenario: Abandon New Survey with warning modal
-   Given I have a Form with the name "Gender Form"
+   Given I have a Section with the name "Gender Section"
    And I am logged in as test_author@gmail.com
    When I go to the dashboard
    And I click on the create "Surveys" dropdown item
@@ -170,7 +170,7 @@ Feature: Manage Surveys
    And I fill in the "controlNumber" field with "1234-1234"
    And I fill in the "search" field with "Gender"
    And I click on the "search-btn" button
-   And I use the form search to select "Gender Form"
+   And I use the section search to select "Gender Section"
    When I click on the "CDC Vocabulary Service" link
    And I click on the "Continue Without Saving" button
    And I wait 1 seconds
@@ -178,7 +178,7 @@ Feature: Manage Surveys
    Then I should not see "Test Survey"
 
   Scenario: An invalid control number should not allow save
-    Given I have a Form with the name "Gender Form"
+    Given I have a Section with the name "Gender Section"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Surveys" dropdown item

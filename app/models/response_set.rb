@@ -6,8 +6,8 @@ class ResponseSet < ApplicationRecord
   has_many :question_response_sets, dependent: :destroy
   has_many :questions, through: :question_response_sets
   has_many :responses, dependent: :destroy
-  has_many :form_questions, dependent: :nullify
-  has_many :forms, through: :form_questions
+  has_many :section_questions, dependent: :nullify
+  has_many :sections, through: :section_questions
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
@@ -63,14 +63,14 @@ class ResponseSet < ApplicationRecord
   end
 
   def surveillance_programs
-    SurveillanceProgram.joins(surveys: :survey_forms)
-                       .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
-                       .where('form_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
+    SurveillanceProgram.joins(surveys: :survey_sections)
+                       .joins('INNER join section_questions on section_questions.section_id = survey_sections.section_id')
+                       .where('section_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def surveillance_systems
-    SurveillanceSystem.joins(surveys: :survey_forms)
-                      .joins('INNER join form_questions on form_questions.form_id = survey_forms.form_id')
-                      .where('form_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
+    SurveillanceSystem.joins(surveys: :survey_sections)
+                      .joins('INNER join section_questions on section_questions.section_id = survey_sections.section_id')
+                      .where('section_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 end

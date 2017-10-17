@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171004152548) do
+ActiveRecord::Schema.define(version: 20171016171840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,32 +49,6 @@ ActiveRecord::Schema.define(version: 20171004152548) do
     t.string "taggable_type"
     t.bigint "taggable_id"
     t.index ["taggable_type", "taggable_id"], name: "index_concepts_on_taggable_type_and_taggable_id"
-  end
-
-  create_table "form_questions", id: :serial, force: :cascade do |t|
-    t.integer "form_id"
-    t.integer "question_id"
-    t.integer "response_set_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "position"
-    t.string "program_var"
-  end
-
-  create_table "forms", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.integer "created_by_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "version_independent_id"
-    t.integer "version", default: 1
-    t.string "control_number", limit: 9
-    t.string "oid"
-    t.text "description"
-    t.string "status", default: "draft"
-    t.integer "published_by_id"
-    t.integer "parent_id"
-    t.index ["created_by_id"], name: "index_forms_on_created_by_id"
   end
 
   create_table "notifications", id: :serial, force: :cascade do |t|
@@ -169,6 +143,32 @@ ActiveRecord::Schema.define(version: 20171004152548) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
+  create_table "section_questions", id: :serial, force: :cascade do |t|
+    t.integer "section_id"
+    t.integer "question_id"
+    t.integer "response_set_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "position"
+    t.string "program_var"
+  end
+
+  create_table "sections", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.integer "created_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "version_independent_id"
+    t.integer "version", default: 1
+    t.string "control_number", limit: 9
+    t.string "oid"
+    t.text "description"
+    t.string "status", default: "draft"
+    t.integer "published_by_id"
+    t.integer "parent_id"
+    t.index ["created_by_id"], name: "index_sections_on_created_by_id"
+  end
+
   create_table "surveillance_programs", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -187,9 +187,9 @@ ActiveRecord::Schema.define(version: 20171004152548) do
     t.index ["name"], name: "index_surveillance_systems_on_name", unique: true
   end
 
-  create_table "survey_forms", id: :serial, force: :cascade do |t|
+  create_table "survey_sections", id: :serial, force: :cascade do |t|
     t.integer "survey_id"
-    t.integer "form_id"
+    t.integer "section_id"
     t.integer "position"
   end
 
@@ -242,8 +242,6 @@ ActiveRecord::Schema.define(version: 20171004152548) do
   end
 
   add_foreign_key "authentications", "users"
-  add_foreign_key "forms", "users", column: "created_by_id"
-  add_foreign_key "forms", "users", column: "published_by_id"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
   add_foreign_key "questions", "users", column: "created_by_id"
@@ -253,6 +251,8 @@ ActiveRecord::Schema.define(version: 20171004152548) do
   add_foreign_key "response_sets", "users", column: "published_by_id"
   add_foreign_key "response_sets", "users", column: "updated_by_id"
   add_foreign_key "responses", "response_sets"
+  add_foreign_key "sections", "users", column: "created_by_id"
+  add_foreign_key "sections", "users", column: "published_by_id"
   add_foreign_key "surveys", "surveillance_programs"
   add_foreign_key "surveys", "surveillance_systems"
   add_foreign_key "surveys", "users", column: "created_by_id"

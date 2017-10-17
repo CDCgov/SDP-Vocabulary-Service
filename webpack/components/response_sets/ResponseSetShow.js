@@ -6,7 +6,7 @@ import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
-import FormQuestionList from '../forms/FormQuestionList';
+import SectionQuestionList from '../sections/SectionQuestionList';
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -154,7 +154,7 @@ export default class ResponseSetShow extends Component {
                 <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
-                <FormQuestionList questions={responseSet.questions} />
+                <SectionQuestionList questions={responseSet.questions} />
               </div>
             </div>
           }

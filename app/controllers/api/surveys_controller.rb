@@ -4,9 +4,10 @@ module Api
 
     def index
       @surveys = if params[:search]
-                   Survey.includes(:published_by, survey_forms: [form: { form_questions: [:response_set, :question] }]).search(params[:search])
+                   Survey.includes(:published_by, survey_sections:
+                                    [section: { section_questions: [:response_set, :question] }]).search(params[:search])
                  else
-                   Survey.includes(:published_by, survey_forms: [form: { form_questions: [:response_set, :question] }]).all
+                   Survey.includes(:published_by, survey_sections: [section: { section_questions: [:response_set, :question] }]).all
                  end
       current_user_id = current_user ? current_user.id : -1
       @surveys = if params[:limit]

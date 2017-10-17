@@ -23,7 +23,7 @@ import {
 import { byIdReducer, byIdWithIndividualReducer } from './reducer_generator';
 
 import questions from './questions_reducer';
-import forms from './forms_reducer';
+import sections from './sections_reducer';
 import comments from './comments';
 import stats from './stats';
 import responseSets from './response_sets_reducer';
@@ -47,7 +47,7 @@ const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED, GRANT_PUBLISHER_FULFI
 const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE_ADMIN_FULFILLED);
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, forms, questionTypes, admins,
+  questions, comments, stats, currentUser, responseSets, sections, questionTypes, admins,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags
 });

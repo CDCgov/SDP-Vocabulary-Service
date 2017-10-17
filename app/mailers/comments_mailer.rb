@@ -24,8 +24,8 @@ class CommentsMailer < ApplicationMailer
             question_url(commentable)
           when ResponseSet
             response_set_url(commentable)
-          when Form
-            form_url(commentable)
+          when Section
+            section_url(commentable)
           else
             ''
           end

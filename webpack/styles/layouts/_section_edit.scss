@@ -1,0 +1,76 @@
+.section-edit-container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 1170px;
+  .added-question-group{
+    min-height: 500px;
+    max-height: 1000px;
+    padding-right: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .add-question{
+    padding: 15px;
+    button{
+      margin-right:10px;
+    }
+  }
+  .question-result{
+    margin: 0px;
+  }
+  .response-set-header{
+    button {
+      float: right;
+    }
+  }
+  .response-set-label{
+    text-align: left;
+    vertical-align: middle;
+    margin-bottom: 0px;
+    span{
+      padding-left: 10px;
+    }
+    span.right{
+      padding-left: 70px;
+      padding-right: 5px;
+    }
+    button {
+      margin-bottom: 20px;
+    }
+  }
+  .response-set-control{
+    padding-right: 0px;
+  }
+  .response-set-search{
+    font-size: 1.5em;
+  }
+  .response-set-select{
+    width: 70%;
+    margin-right: 10px;
+  }
+  .selected-response-set{
+    margin-top: 5px;
+    padding-top: 0px !important;
+    max-width: 49%;
+    display: block;
+    float: left;
+  }
+  .panel-body-section-question{
+    padding-top: 6px;
+    padding-bottom: 0px;
+    padding-right: 5px;
+    min-height: 0px;
+  }
+  .section-question-controls{
+    margin-bottom: 15px;
+  }
+  .delete-question{
+    font-size: 17px;
+  }
+  #program-var{
+    width: 200px;
+    margin-top: 10px;
+  }
+}

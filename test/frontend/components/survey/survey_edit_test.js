@@ -9,18 +9,18 @@ describe('SurveyEdit', () => {
     router = new MockRouter();
     props  = {
       questions: {},
-      survey: {id: 6, name: "Test Form", questions: [1], versionIndependentId: "S-1", version: 1, surveyForms:[]},
+      survey: {id: 6, name: "Test Section", questions: [1], versionIndependentId: "S-1", version: 1, surveySections:[]},
       responseSets: {1: {id: 1, name: "Colors", description: "A list of colors", oid: "2.16.840.1.113883.3.1502.3.1"}},
       reorderQuestion:()=>{},
       removeQuestion: ()=>{},
       action: 'new',
       surveySubmitter:  ()=>{},
-      removeForm:  ()=>{},
-      reorderForm:  ()=>{},
+      removeSection:  ()=>{},
+      reorderSection:  ()=>{},
       showResponseSetModal:  ()=>{},
       router: router,
       route: {},
-      forms: {1: {id: 1, name: "Form 1", questionType: ""}}
+      sections: {1: {id: 1, name: "Section 1", questionType: ""}}
     };
 
     component = renderComponent(SurveyEdit, props);

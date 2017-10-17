@@ -1,0 +1,32 @@
+{
+  "properties": {
+    "sectionId" : {"type" : "string"},
+    "sectionName" : {"type" : "string"},
+    "sectionUri" : {"type" : "string"},
+    "version" : {"type" : "number"},
+    "published_by" : {
+      "type" : "object",
+      "properties:": {
+        "id" : {"type" : "string"},
+        "email" : {"type" : "string"},
+        "name" : {"type" : "string"},
+        "first_name" : {"type" : "string"},
+        "last_name" : {"type" : "string"},
+        "last_program_id" : {"type" : "string"},
+        "last_system_id" : {"type" : "string"},
+        "publisher" : {"type" : "boolean"}
+      }
+    },
+    "questions" : {
+      "type" : "array",
+      "items": {
+        "type" : "object",
+        "properties": {
+          "question": {"type": "object"},
+          "response": {"type": "object"},
+					"program_var": {"type": "string"}
+        }
+      }
+    }
+  }
+}

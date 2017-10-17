@@ -9,16 +9,16 @@ q_two:
   commentable: three (Question)
 
 f_one:
-  comment:  is this the best form comment?
+  comment:  is this the best section comment?
   user: admin
-  commentable: one (Form)
+  commentable: one (Section)
 
 f_two:
-  comment: OR is this the best form comment?
+  comment: OR is this the best section comment?
   user: admin
-  commentable: one (Form)
+  commentable: one (Section)
 
 r_one:
-  comment: OR is this the best form comment?
+  comment: OR is this the best section comment?
   user: admin
   commentable: one (ResponseSet)

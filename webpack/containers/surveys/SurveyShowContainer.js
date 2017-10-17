@@ -9,7 +9,7 @@ import { setStats } from '../../actions/landing';
 import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
-import { formProps } from '../../prop-types/form_props';
+import { sectionProps } from '../../prop-types/section_props';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
@@ -79,15 +79,15 @@ function mapStateToProps(state, ownProps) {
   props.publishers = state.publishers;
   props.stats = state.stats;
   props.survey = denormalize(state.surveys[ownProps.params.surveyId], surveySchema, state);
-  if (props.survey && props.survey.surveyForms) {
-    props.forms = props.survey.surveyForms.map((form) => state.forms[form.formId]);
-    props.forms = props.forms.filter((f) => f !== undefined);
-    props.forms = props.forms.map((f) => {
-      const formWithQuestions = Object.assign({}, f);
-      if (formWithQuestions.formQuestions) {
-        formWithQuestions.questions = formWithQuestions.formQuestions.map((fq) => state.questions[fq.questionId]);
+  if (props.survey && props.survey.surveySections) {
+    props.sections = props.survey.surveySections.map((section) => state.sections[section.sectionId]);
+    props.sections = props.sections.filter((sect) => sect !== undefined);
+    props.sections = props.sections.map((sect) => {
+      const sectionWithQuestions = Object.assign({}, sect);
+      if (sectionWithQuestions.sectionQuestions) {
+        sectionWithQuestions.questions = sectionWithQuestions.sectionQuestions.map((sq) => state.questions[sq.questionId]);
       }
-      return formWithQuestions;
+      return sectionWithQuestions;
     });
     if (props.survey.surveillanceSystemId) {
       props.survey.surveillanceSystem = state.surveillanceSystems[props.survey.surveillanceSystemId];
@@ -105,7 +105,7 @@ function mapDispatchToProps(dispatch) {
 
 SurveyShowContainer.propTypes = {
   survey: surveyProps,
-  forms: PropTypes.arrayOf(formProps),
+  sections: PropTypes.arrayOf(sectionProps),
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
   publishSurvey: PropTypes.func,

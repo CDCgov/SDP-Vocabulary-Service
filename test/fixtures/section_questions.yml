@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  section: one
+  question: one
+  response_set: one
+  position: 1
+  program_var: MyString
+
+two:
+  section: one
+  question: two
+  response_set: one
+  position: 2
+  program_var: MyString

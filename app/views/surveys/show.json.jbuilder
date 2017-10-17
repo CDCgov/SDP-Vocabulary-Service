@@ -1,4 +1,4 @@
-json.extract! @survey, :id, :name, :description, :created_at, :updated_at, :survey_forms, \
+json.extract! @survey, :id, :name, :description, :created_at, :updated_at, :survey_sections, \
               :version_independent_id, :version, :all_versions, :most_recent, :concepts, \
               :control_number, :created_by_id, :status, :published_by, :parent
 json.user_id @survey.created_by.email if @survey.created_by.present?
@@ -11,9 +11,9 @@ json.questions @survey.questions do |q|
                 :other_allowed
 end
 
-json.forms @survey.forms_with_most_recent do |form|
-  json.extract! form, :id, :name, :description, :created_at, :updated_at, \
+json.sections @survey.sections_with_most_recent do |section|
+  json.extract! section, :id, :name, :description, :created_at, :updated_at, \
                 :version_independent_id, :version, :parent, :most_recent, \
-                :form_questions, :control_number, :status, :created_by_id, :published_by_id
-  json.url form_url(form, format: :json)
+                :section_questions, :control_number, :status, :created_by_id, :published_by_id
+  json.url section_url(section, format: :json)
 end
