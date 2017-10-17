@@ -2,9 +2,11 @@
 json.resourceType 'ValueSet'
 json.id @response_set.id
 json.url	json.url api_fhir_valueset_url(@response_set)
-json.identifier	do
-  json.system 'urn:ietf:rfc:3986'
-  json.value 'urn:oid:' + @response_set.oid
+if @response_set.oid
+  json.identifier	do
+    json.system 'urn:ietf:rfc:3986'
+    json.value 'urn:oid:' + @response_set.oid
+  end
 end
 json.version	@response_set.version
 json.name	@response_set.name
@@ -19,7 +21,7 @@ json.expansion do
   json.offset 0
   json.contains do
     json.array! @response_set.responses do |code|
-      json.system code.code_system
+      json.system "urn:oid:#{code.code_system}"
       json.code code.value
       json.display code.display_name
     end
