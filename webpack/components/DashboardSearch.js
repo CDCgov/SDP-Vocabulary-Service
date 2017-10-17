@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
+import NestedSearchBar from './NestedSearchBar';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import values from 'lodash/values';
+import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
 import $ from 'jquery';
 
@@ -15,7 +17,7 @@ class DashboardSearch extends Component {
       searchTerms: '',
       progFilters: [],
       sysFilters: [],
-      showAdvSearchModal: false
+      showAdvSearchModal: false,
     };
     this.showAdvSearch = this.showAdvSearch.bind(this);
     this.hideAdvSearch = this.hideAdvSearch.bind(this);
@@ -25,6 +27,18 @@ class DashboardSearch extends Component {
     this.onFormSubmit  = this.onFormSubmit.bind(this);
     this.surveillanceProgramsSelect = this.surveillanceProgramsSelect.bind(this);
     this.surveillanceSystemsSelect = this.surveillanceSystemsSelect.bind(this);
+    this.programSearch = this.programSearch.bind(this);
+    this.systemSearch  = this.systemSearch.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (this.state.progFilters.length === 0 && this.state.sysFilters.length === 0) {
+      var surveillanceSystems  = values(nextProps.surveillanceSystems);
+      var surveillancePrograms = values(nextProps.surveillancePrograms);
+      this.setState({surveillanceSystems: surveillanceSystems,
+        surveillancePrograms: surveillancePrograms
+      });
+    }
   }
 
   componentWillMount() {
@@ -63,15 +77,32 @@ class DashboardSearch extends Component {
     return this.setState(newState);
   }
 
+  programSearch(programSearchTerm){
+    var surveillancePrograms = values(this.props.surveillancePrograms);
+    if(programSearchTerm && programSearchTerm.length > 1){
+      surveillancePrograms = filter(surveillancePrograms, (sp) => sp.name.toLowerCase().includes(programSearchTerm.toLowerCase()) || this.state.progFilters.includes(sp.id));
+    }
+    this.setState({surveillancePrograms: surveillancePrograms});
+  }
+
+  systemSearch(systemSearchTerm){
+    var surveillanceSystems = values(this.props.surveillanceSystems);
+    if(systemSearchTerm && systemSearchTerm.length > 1){
+      surveillanceSystems = filter(surveillanceSystems, (ss) => ss.name.toLowerCase().includes(systemSearchTerm.toLowerCase()) || this.state.sysFilters.includes(ss.id));
+    }
+    this.setState({surveillanceSystems: surveillanceSystems});
+  }
+
   surveillanceProgramsSelect() {
-    if (isEmpty(this.props.surveillancePrograms)) {
+    if (isEmpty(this.state.surveillancePrograms)) {
       return <p>No surveillance programs loaded in the database</p>;
     } else {
       return (
-        <div className="form-group">
+        <div className="form-group" id="search-programs">
           <label htmlFor="select-prog">Select Programs:</label>
+          <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
           <select multiple className="form-control" id="select-prog" value={this.state.progFilters} onChange={(e) => this.selectFilters(e, 'progFilters')}>
-            {this.props.surveillancePrograms && values(this.props.surveillancePrograms).map((sp) => {
+            {this.state.surveillancePrograms && values(this.state.surveillancePrograms).map((sp) => {
               return <option key={sp.id} value={sp.id}>{sp.name}</option>;
             })}
           </select>
@@ -81,14 +112,15 @@ class DashboardSearch extends Component {
   }
 
   surveillanceSystemsSelect() {
-    if (isEmpty(this.props.surveillanceSystems)) {
+    if (isEmpty(this.state.surveillanceSystems)) {
       return <p>No surveillance systems loaded in the database</p>;
     } else {
       return (
-        <div className="form-group">
+        <div className="form-group" id="search-systems">
           <label htmlFor="select-sys">Select Systems:</label>
+          <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
           <select multiple className="form-control" id="select-sys" value={this.state.sysFilters} onChange={(e) => this.selectFilters(e, 'sysFilters')}>
-            {this.props.surveillanceSystems && values(this.props.surveillanceSystems).map((ss) => {
+            {this.state.surveillanceSystems && values(this.state.surveillanceSystems).map((ss) => {
               return <option key={ss.id} value={ss.id}>{ss.name}</option>;
             })}
           </select>
