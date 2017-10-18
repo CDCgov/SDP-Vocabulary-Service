@@ -69,7 +69,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
 
     draft_section = sections(:draft)
 
-    section_json = { section: { name: draft_section.name, created_by_id: @section.created_by_id, control_number: '5678-5678' } }.to_json
+    section_json = { section: { name: draft_section.name, created_by_id: @section.created_by_id } }.to_json
     put section_url(draft_section), params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
 
     assert_enqueued_jobs 1
