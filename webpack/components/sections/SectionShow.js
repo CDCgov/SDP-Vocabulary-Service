@@ -5,7 +5,6 @@ import Pagination from 'rc-pagination';
 
 import SectionQuestionList from './SectionQuestionList';
 import CodedSetTable from "../CodedSetTable";
-import Routes from '../../routes';
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 
@@ -126,9 +125,7 @@ class SectionShow extends Component {
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
-          {this.props.currentUser && this.props.currentUser.id &&
-            <a className="btn btn-default" href={Routes.redcapSectionPath(section)}>Export to Redcap</a>
-          }
+          <a className="btn btn-default" href={`/sections/${section.id}/redcap`}>Export to Redcap</a>
         </div>
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Name:</strong> {section.name} </h1>
