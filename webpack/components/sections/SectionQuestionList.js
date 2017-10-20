@@ -19,7 +19,9 @@ class SectionQuestionList extends Component {
     return (
       <div className="question-group">
         {this.props.questions.map((q, i) => {
-          return <SearchResult key={i} type='question' result={{Source: q}} programVar={q.programVar} currentUser={{id: -1}} />;
+          if (q.status === 'published' || q.createdById === this.props.currentUserId) {
+            return <SearchResult key={i} type='question' result={{Source: q}} programVar={q.programVar} currentUser={{id: -1}} />;
+          }
         })}
       </div>
     );
@@ -28,6 +30,7 @@ class SectionQuestionList extends Component {
 
 SectionQuestionList.propTypes = {
   questions: PropTypes.arrayOf(questionProps),
+  currentUserId: PropTypes.number
 };
 
 export default SectionQuestionList;

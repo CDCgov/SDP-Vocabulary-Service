@@ -25,7 +25,7 @@ class SurveyShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={this.props.survey} versionableType='survey' />
+        <VersionInfo versionable={this.props.survey} versionableType='survey' currentUserId={this.props.currentUser.id} />
       </div>
     );
   }

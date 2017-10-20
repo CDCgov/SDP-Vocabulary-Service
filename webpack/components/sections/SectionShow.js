@@ -54,7 +54,7 @@ class SectionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={section} versionableType='section' />
+        <VersionInfo versionable={section} versionableType='section' currentUserId={this.props.currentUser.id} />
       </div>
     );
   }
@@ -162,7 +162,7 @@ class SectionShow extends Component {
           </div>
           {section.sectionQuestions && section.sectionQuestions.length > 0 && section.questions && section.questions.length > 0 &&
             <div>
-              <SectionQuestionList questions={this.questionsForPage(section)} />
+              <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
               {this.props.section.sectionQuestions.length > 10 &&
               <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
               }

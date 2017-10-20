@@ -143,10 +143,11 @@ class DashboardSearch extends Component {
             </div>
             ) : (
             <div className="adv-filter-modal-body">
-              <div className="col-md-6">
+              <div className="col-md-12 adv-filter-instr">Select programs and systems to filter by. You may hold down control (CTRL), command (CMD), or shift on your keyboard to select multiple filters.</div>
+              <div className="col-md-12">
                 {this.surveillanceProgramsSelect()}
               </div>
-              <div className="col-md-6">
+              <div className="col-md-12">
                 {this.surveillanceSystemsSelect()}
               </div>
             </div>

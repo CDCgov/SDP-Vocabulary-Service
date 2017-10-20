@@ -17,10 +17,12 @@ export default class VersionInfo extends Component {
               return (
                 <li key={v.id} role="presentation" className="active"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {versionable.version} </Link></li>
               );
-            }else{
+            }else if (v.status === 'published' || v.createdById === this.props.currentUserId){
               return (
                 <li key={v.id} role="presentation"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {v.version} </Link></li>
               );
+            }else{
+              return;
             }
           })}
         </ul>
@@ -31,5 +33,6 @@ export default class VersionInfo extends Component {
 
 VersionInfo.propTypes = {
   versionable:  PropTypes.object,
-  versionableType:  PropTypes.string
+  versionableType:  PropTypes.string,
+  currentUserId: PropTypes.number
 };
