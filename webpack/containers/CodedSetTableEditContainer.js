@@ -79,22 +79,23 @@ class CodedSetTableEditContainer extends Component {
       searchTerms = null;
     }
     this.setState({selectedConcepts: [], searchTerm: searchTerms});
-    this.props.fetchConcepts(this.state.selectedSystem, searchTerms, 1);
+    this.props.fetchConcepts(this.state.selectedSystem.oid, searchTerms, 1);
   }
 
-  searchConcepts(system){
-    if(system=='None'){
-      this.setState({selectedSystem: ''});
+  searchConcepts(oid){
+    if(!oid){
+      this.setState({selectedSystem: null });
       this.props.fetchConcepts('', this.state.searchTerm, 1);
     } else {
+      let system = this.props.conceptSystems[oid];
       this.setState({selectedSystem: system});
-      this.props.fetchConcepts(system, this.state.searchTerm, 1);
+      this.props.fetchConcepts(oid, this.state.searchTerm, 1);
     }
   }
 
   selectConcept(e,i){
     var newConcepts = [];
-    var selectedConcept = this.props.concepts[this.state.selectedSystem][i];
+    var selectedConcept = this.props.concepts[this.state.selectedSystem.oid][i];
     if(e.target.checked){
       newConcepts = concat(this.state.selectedConcepts, selectedConcept);
     }else{
@@ -125,7 +126,7 @@ class CodedSetTableEditContainer extends Component {
         <div className='table-scrolling-div'>
           <table className="table table-striped scroll-table-body">
             <tbody>
-              {values(this.props.concepts[this.state.selectedSystem]).map((c, i) => {
+              {values(this.props.concepts[this.state.selectedSystem.oid]).map((c, i) => {
                 return (
                   <tr key={i}>
                     <td headers="add-code-checkboxes-column"><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
@@ -153,11 +154,11 @@ class CodedSetTableEditContainer extends Component {
               <DropdownButton
                 componentClass={InputGroup.Button}
                 id="system-select-dropdown"
-                title={this.state.selectedSystem ? this.state.selectedSystem : 'Code System'} onSelect={(key, e) => this.searchConcepts(e.target.text)} >
+                title={this.state.selectedSystem ? this.state.selectedSystem.name : 'Code System'} onSelect={(key, e) => this.searchConcepts(e.target.attributes.value.value)} >
                 <MenuItem key={0} value={''}>None</MenuItem>
                 {values(this.props.conceptSystems).map((s, i) => {
                   if(s.name) {
-                    return <MenuItem key={i} value={s.name}>{s.name}</MenuItem>;
+                    return <MenuItem key={i} value={s.oid}>{s.name}</MenuItem>;
                   }
                 })}
               </DropdownButton>

@@ -7,7 +7,7 @@ import {
 export default function conceptSystems(state = {}, action) {
   switch (action.type) {
     case FETCH_CONCEPT_SYSTEMS_FULFILLED:
-      return keyBy(action.payload.data, 'id');
+      return keyBy(action.payload.data, 'oid');
     case FETCH_CONCEPT_SYSTEMS_REJECTED:
       return {error: 'Concept Service could not be reached, please try again later.'};
     default:
