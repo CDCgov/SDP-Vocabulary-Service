@@ -1,8 +1,6 @@
 if codes && !codes.empty?
-  json.extension do
-    json.array! [1] do
-      json.url ''
-      json.valueCodeableConcept do
+  json.meta do
+      json.tag do
         json.array! codes do |code|
           json.code code.value
           json.display code.display_name
@@ -14,5 +12,4 @@ if codes && !codes.empty?
         end
       end
     end
-  end
 end
