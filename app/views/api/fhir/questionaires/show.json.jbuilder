@@ -5,7 +5,7 @@ json.name @survey.name
 json.title @survey.name
 json.date @survey.updated_at
 json.description @survey.description
-
+json.partial! 'api/fhir/codes', codes: @survey.concepts
 json.item do
   json.array! @survey.forms do |form|
     json.linkId form.id
@@ -16,6 +16,7 @@ json.item do
         json.linkId fq.id
         json.text fq.question.content
         json.type fq.question.response_type.code
+        json.partial! 'api/fhir/codes', codes: fq.question.concepts
         if fq.response_set
           json.options do
             json.reference api_fhir_valueset_url(fq.response_set)
