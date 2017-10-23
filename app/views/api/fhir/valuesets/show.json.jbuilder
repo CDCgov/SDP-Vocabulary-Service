@@ -14,6 +14,7 @@ json.status	@response_set.status
 json.date	@response_set.updated_at
 json.publisher @response_set.source
 json.description	@response_set.description
+json.partial! 'api/fhir/codes', codes: @response_set.concepts
 json.expansion do
   json.identifier nil
   json.timestamp  nil
