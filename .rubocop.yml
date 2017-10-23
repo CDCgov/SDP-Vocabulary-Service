@@ -46,7 +46,7 @@ Metrics/AbcSize:
   Max: 35
   Exclude:
     - 'test/**/*.rb'
-    - 'lib/sdp/importers/csv.rb'
+    - 'lib/sdp/importers/spreadsheet.rb'
 Metrics/ModuleLength:
   Exclude:
 # Avoid complex methods.
