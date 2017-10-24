@@ -163,7 +163,6 @@ ActiveRecord::Schema.define(version: 20171020135709) do
     t.string "status", default: "draft"
     t.integer "published_by_id"
     t.integer "parent_id"
-    t.string "control_number", limit: 9
     t.index ["created_by_id"], name: "index_sections_on_created_by_id"
   end
 
