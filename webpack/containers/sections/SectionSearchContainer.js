@@ -50,7 +50,7 @@ class SectionSearchContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter);
     }
   }
 
@@ -58,12 +58,12 @@ class SectionSearchContainer extends Component {
     this.setState(newState);
   }
 
-  search(searchTerms, progFilters, sysFilters) {
+  search(searchTerms, progFilters, sysFilters, mostRecentFilter) {
     if(searchTerms === ''){
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
-    this.props.fetchSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', progFilters, sysFilters);
+    this.props.fetchSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', progFilters, sysFilters, mostRecentFilter);
   }
 
   loadMore() {
@@ -74,7 +74,8 @@ class SectionSearchContainer extends Component {
     }
     this.props.fetchMoreSearchResults(SECTION_SEARCH_CONTEXT, searchTerms, 'section', tempState,
                                       this.state.progFilters,
-                                      this.state.sysFilters);
+                                      this.state.sysFilters,
+                                      this.state.mostRecentFilter);
     this.setState({page: tempState});
   }
 

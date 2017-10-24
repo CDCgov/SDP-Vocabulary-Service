@@ -18,6 +18,9 @@ class DashboardSearch extends Component {
       progFilters: [],
       sysFilters: [],
       showAdvSearchModal: false,
+      mostRecentFilter: false,
+      surveillancePrograms: {},
+      surveillanceSystems: {}
     };
     this.showAdvSearch = this.showAdvSearch.bind(this);
     this.hideAdvSearch = this.hideAdvSearch.bind(this);
@@ -32,7 +35,7 @@ class DashboardSearch extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if (this.state.progFilters.length === 0 && this.state.sysFilters.length === 0) {
+    if (this.state.surveillancePrograms !== nextProps.surveillancePrograms || this.state.surveillanceSystems !== nextProps.surveillanceSystems) {
       var surveillanceSystems  = values(nextProps.surveillanceSystems);
       var surveillancePrograms = values(nextProps.surveillancePrograms);
       this.setState({surveillanceSystems: surveillanceSystems,
@@ -47,7 +50,8 @@ class DashboardSearch extends Component {
       var searchTerms = lastSearch.search || '';
       var progFilters = lastSearch.programs || [];
       var sysFilters = lastSearch.systems || [];
-      this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters});
+      var mostRecentFilter = lastSearch.mostrecent || false;
+      this.setState({searchTerms, progFilters, sysFilters, mostRecentFilter});
     }
   }
 
@@ -62,11 +66,13 @@ class DashboardSearch extends Component {
   clearAdvSearch() {
     this.props.setFiltersParent({
       progFilters: [],
-      sysFilters: []
+      sysFilters: [],
+      mostRecentFilter: false
     });
     this.setState({
       progFilters: [],
-      sysFilters: []
+      sysFilters: [],
+      mostRecentFilter: false
     });
   }
 
@@ -129,6 +135,13 @@ class DashboardSearch extends Component {
     }
   }
 
+  toggleMostRecentFilter() {
+    var newState = {mostRecentFilter: !this.state.mostRecentFilter};
+    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, !this.state.mostRecentFilter);
+    this.props.setFiltersParent(newState);
+    this.setState(newState);
+  }
+
   advSearchModal() {
     return (
       <Modal animation={false} show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
@@ -150,6 +163,11 @@ class DashboardSearch extends Component {
               <div className="col-md-12">
                 {this.surveillanceSystemsSelect()}
               </div>
+              <div className="col-md-12">
+                <h2>Additonal Filters:</h2>
+                <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
+                <label htmlFor="most-recent-filter">Most Recent Versions Only</label>
+              </div>
             </div>
           )}
         </Modal.Body>
@@ -167,7 +185,7 @@ class DashboardSearch extends Component {
 
   onFormSubmit(event){
     event.preventDefault();
-    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters);
+    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter);
   }
 
   render() {
@@ -183,10 +201,10 @@ class DashboardSearch extends Component {
             </span>
           </div>
           <div>
-            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0 || this.state.mostRecentFilter) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
-            }}>Clear Programs & Systems</a>}
+            }}>Clear Adv. Filters</a>}
             <a className="adv-search-link pull-right" title="Advanced Search" href="#" tabIndex="4" onClick={(e) => {
               e.preventDefault();
               this.showAdvSearch();
@@ -202,6 +220,9 @@ class DashboardSearch extends Component {
                 return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillanceSystems[id].name}</row>;
               })}
               </div>
+            }
+            {this.state.mostRecentFilter &&
+              <div className="adv-filter-list">Filtering by most recent version</div>
             }
           </div><br/>
         </div>

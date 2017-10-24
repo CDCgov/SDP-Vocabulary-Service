@@ -26,7 +26,8 @@ class QuestionItem extends Component {
       showSearchModal: false,
       showProgramVarModal: false,
       progFilters: [],
-      sysFilters: []
+      sysFilters: [],
+      mostRecentFilter: false
     };
     this.setFiltersParent = this.setFiltersParent.bind(this);
     this.showResponseSetSearch = this.showResponseSetSearch.bind(this);
@@ -46,7 +47,7 @@ class QuestionItem extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, 'response_set', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, 'response_set', this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter);
     }
   }
 
@@ -94,12 +95,12 @@ class QuestionItem extends Component {
     this.props.handleProgramVarChange(this.props.index, this.state.programVar);
   }
 
-  search(searchTerms, progFilters, sysFilters) {
+  search(searchTerms, progFilters, sysFilters, mostRecentFilter) {
     let searchType = 'response_set';
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, searchType, progFilters, sysFilters);
+    this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, searchType, progFilters, sysFilters, mostRecentFilter);
     this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
   }
 
