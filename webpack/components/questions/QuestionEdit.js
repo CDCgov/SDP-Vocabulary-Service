@@ -369,7 +369,7 @@ class QuestionEdit extends Component {
           <div className="col-md-8" />
           <div className="col-md-4 question-form-group">
             <label className="input-label" htmlFor="otherAllowed">Other Allowed: </label>
-            <input className="form-ckeck-input" type="checkbox" name="otherAllowed" id="otherAllowed" checked={this.state.otherAllowed} onChange={() => this.toggleOtherAllowed()} />
+            <input className="form-check-input" type="checkbox" name="otherAllowed" id="otherAllowed" checked={this.state.otherAllowed} onChange={() => this.toggleOtherAllowed()} />
           </div>
         </div>
       );

@@ -18,6 +18,11 @@ class ESSurveySerializer < ActiveModel::Serializer
   attribute :surveillance_program
   attribute :surveillance_system
   attribute(:codes) { codes }
+  attribute :most_recent
+
+  def most_recent
+    object.most_recent?
+  end
 
   def codes
     object.concepts.collect { |c| CodeSerializer.new(c).as_json }
