@@ -12,13 +12,14 @@ import {
   ADD_ENTITIES_FULFILLED
 } from './types';
 
-export function fetchSearchResults(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, mostRecentFilter=false) {
+export function fetchSearchResults(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, mostRecentFilter=false, contentSince=null) {
   return {
     type: FETCH_SEARCH_RESULTS,
     meta: {context: context},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, mostrecent: mostRecentFilter }
+      params: { type: type, search: searchTerms, programs: programFilter,
+        systems: systemFilter, mystuff: myStuffFilter, mostrecent: mostRecentFilter, contentSince }
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
       unelasticsearchResults(normalizedData.entities);

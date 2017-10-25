@@ -232,17 +232,17 @@ class DashboardContainer extends Component {
     this.setState(newState);
   }
 
-  search(searchTerms, progFilters, sysFilters, mostRecentFilter) {
+  search(searchTerms, progFilters, sysFilters, contentSince) {
     let searchType = null;
     if(this.state.searchType !== '') {
       searchType = this.state.searchType;
     }
-    if(searchTerms === ''){
+    if(searchTerms === '') {
       searchTerms = null;
     }
-    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, mostRecentFilter);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, mostRecentFilter, contentSince);
     this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, this.state.page, mostRecentFilter);
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1, mostRecentFilter: mostRecentFilter});
+    this.setState({searchTerms, progFilters, sysFilters, contentSince, page: 1, mostRecentFilter});
   }
 
   selectType(searchType, myStuffToggle=false) {

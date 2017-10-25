@@ -1,3 +1,7 @@
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -32,6 +36,7 @@ class DashboardSearch extends Component {
     this.surveillanceSystemsSelect = this.surveillanceSystemsSelect.bind(this);
     this.programSearch = this.programSearch.bind(this);
     this.systemSearch  = this.systemSearch.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -67,12 +72,14 @@ class DashboardSearch extends Component {
     this.props.setFiltersParent({
       progFilters: [],
       sysFilters: [],
-      mostRecentFilter: false
+      mostRecentFilter: false,
+      contentSince: null
     });
     this.setState({
       progFilters: [],
       sysFilters: [],
-      mostRecentFilter: false
+      mostRecentFilter: false,
+      contentSince: null
     });
   }
 
@@ -81,6 +88,13 @@ class DashboardSearch extends Component {
     newState[filterType] = $(e.target).val().map((opt) => parseInt(opt));
     this.props.setFiltersParent(newState);
     return this.setState(newState);
+  }
+
+  handleDateChange(date) {
+    this.setState({
+      contentSince: date
+    });
+    this.props.setFiltersParent({contentSince: date});
   }
 
   programSearch(programSearchTerm){
@@ -167,6 +181,7 @@ class DashboardSearch extends Component {
                 <h2>Additonal Filters:</h2>
                 <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
                 <label htmlFor="most-recent-filter">Most Recent Versions Only</label>
+                Content Changed Since: <DatePicker selected={this.state.contentSince} onChange={this.handleDateChange} />
               </div>
             </div>
           )}
@@ -185,7 +200,11 @@ class DashboardSearch extends Component {
 
   onFormSubmit(event){
     event.preventDefault();
-    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter);
+    let contentSince;
+    if (this.state.contentSince) {
+      contentSince = this.state.contentSince.format('M/D/YYYY');
+    }
+    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter, contentSince);
   }
 
   render() {
@@ -201,7 +220,7 @@ class DashboardSearch extends Component {
             </span>
           </div>
           <div>
-            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0 || this.state.mostRecentFilter) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0 || this.state.mostRecentFilter || this.state.contentSince) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -223,6 +242,11 @@ class DashboardSearch extends Component {
             }
             {this.state.mostRecentFilter &&
               <div className="adv-filter-list">Filtering by most recent version</div>
+            }
+            {this.state.contentSince &&
+              <div className="adv-filter-list">Content Since Filter:
+                <row className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')}</row>
+              </div>
             }
           </div><br/>
         </div>
