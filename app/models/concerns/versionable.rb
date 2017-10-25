@@ -55,11 +55,17 @@ module Versionable
   end
 
   def most_recent_published
-    most_recent_version = all_versions[0]
-    if most_recent_version.present? && most_recent_version.status == 'published'
-      most_recent
-    elsif most_recent_version.present? && most_recent_version.version > 1
-      most_recent - 1
+    mrv = nil
+    mrv = most_recent_version if respond_to?(:most_recent_version)
+    if mrv.nil? && other_versions.present?
+      mrv_obj = all_versions[0]
+      if mrv_obj.present? && mrv_obj.status == 'published'
+        most_recent
+      elsif mrv_obj.present? && mrv_obj.version > 1
+        most_recent
+      end
+    else
+      mrv
     end
   end
 

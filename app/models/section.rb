@@ -47,13 +47,17 @@ class Section < ApplicationRecord
   # Custom implementation as using the plain relationships in Rails will cause
   # N+1 queries to figure out most recent version for each question.
   def questions_with_most_recent
-    Question.find_by_sql(['select q.*, qmv.version as max_version
+    Question.find_by_sql(["select q.*, qmv.version as max_version, qmrv.version as most_recent_version
      from questions q, section_questions sq,
        (select version_independent_id, MAX(version) as version
-         from questions group by version_independent_id) qmv
+         from questions group by version_independent_id) qmv,
+       (select version_independent_id, MAX(version) as version
+         from questions q where q.status = 'published'
+         group by version_independent_id) qmrv
      where qmv.version_independent_id = q.version_independent_id
+     and qmrv.version_independent_id = qmrv.version_independent_id
      and sq.question_id = q.id
-     and sq.section_id = :section_id', { section_id: id }])
+     and sq.section_id = :section_id", { section_id: id }])
   end
 
   def self.owned_by(owner_id)

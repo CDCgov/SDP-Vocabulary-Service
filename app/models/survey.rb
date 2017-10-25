@@ -61,13 +61,17 @@ class Survey < ApplicationRecord
   # Custom implementation as using the plain relationships in Rails will cause
   # N+1 queries to figure out most recent version for each section.
   def sections_with_most_recent
-    Section.find_by_sql(['select s.*, smv.version as max_version
+    Section.find_by_sql(["select s.*, smv.version as max_version, smrv.version as most_recent_version
      from sections s, survey_sections ss,
        (select version_independent_id, MAX(version) as version
-         from sections group by version_independent_id) smv
+         from sections group by version_independent_id) smv,
+       (select version_independent_id, MAX(version) as version
+         from sections s where s.status = 'published'
+         group by version_independent_id) smrv
      where smv.version_independent_id = s.version_independent_id
      and ss.section_id = s.id
-     and ss.survey_id = :survey_id', { survey_id: id }])
+     and ss.survey_id = :survey_id
+     and smrv.version_independent_id = s.version_independent_id", { survey_id: id }])
   end
 
   def build_new_revision
