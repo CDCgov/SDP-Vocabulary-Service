@@ -96,6 +96,10 @@ When(/^I click on the (.*) search filter$/) do |action|
   page.find("#menu_item_#{action}").click
 end
 
+When(/^I check the "([^"]*)" checkbox$/) do |name|
+  check(name)
+end
+
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|
   fill_in(field_name, with: new_value)
 end
