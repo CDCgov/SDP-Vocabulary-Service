@@ -62,7 +62,7 @@ module Versionable
       if mrv_obj.present? && mrv_obj.status == 'published'
         most_recent
       elsif mrv_obj.present? && mrv_obj.version > 1
-        most_recent
+        most_recent - 1
       end
     else
       mrv
