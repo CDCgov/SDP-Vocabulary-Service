@@ -37,6 +37,12 @@ class Question < ApplicationRecord
       self.status = 'published'
       self.published_by = publisher
       save!
+      # Updates previous version to no longer be most_recent
+      if version > 1
+        prev_version = Question.find_by(version_independent_id: version_independent_id,
+                                        version: version - 1)
+        UpdateIndexJob.perform_later('question', prev_version.id)
+      end
     end
     response_sets.each { |rs| rs.publish(publisher) }
   end
