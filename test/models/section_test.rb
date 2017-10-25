@@ -16,19 +16,6 @@ class SectionTest < ActiveSupport::TestCase
     assert_nil revision.oid
   end
 
-  test 'make sure the OMB control number is unique' do
-    sect = Section.new(name: 'Doubly Double', control_number: '1234-5678')
-    assert_not sect.save
-  end
-
-  test 'same OMB control number is OK across versions' do
-    sect = sections(:one)
-    revision = sect.build_new_revision
-    assert_equal 2, revision.version
-    assert revision.save
-    assert_equal sect.control_number, revision.control_number
-  end
-
   test 'Publish also publishes questions and response sets' do
     user = users(:admin)
     rs = ResponseSet.new(name: 'Test publish', created_by: user)

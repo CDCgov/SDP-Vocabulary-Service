@@ -14,10 +14,6 @@ class Section < ApplicationRecord
 
   validates :name, presence: true
   validates :created_by, presence: true
-  validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
-                                                          message: 'must be a valid OMB Control Number' },
-                             uniqueness: { message: 'sections should have different OMB Control Numbers',
-                                           unless: proc { |s| s.version > 1 && s.other_versions.map(&:control_number).include?(s.control_number) } }
 
   accepts_nested_attributes_for :questions, allow_destroy: true
 
@@ -82,16 +78,12 @@ class Section < ApplicationRecord
     new_revision = Section.new(version_independent_id: version_independent_id,
                                description: description, parent_id: parent_id, status: status,
                                version: version + 1, name: name, oid: oid,
-                               created_by: created_by, control_number: control_number)
+                               created_by: created_by)
     concepts.each do |c|
       new_revision.concepts << c.dup
     end
 
     new_revision
-  end
-
-  def omb_approved?
-    control_number.present?
   end
 
   # Get the programs that the section is associated with by the surveys that the

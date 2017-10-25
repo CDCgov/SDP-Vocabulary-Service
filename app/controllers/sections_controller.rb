@@ -167,7 +167,7 @@ class SectionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def section_params
     params.require(:section).permit(:name, :user_id, :search, :description, :parent_id,
-                                    :status, :version_independent_id, :control_number,
+                                    :status, :version_independent_id,
                                     concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

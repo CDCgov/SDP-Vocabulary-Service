@@ -29,7 +29,6 @@ class SectionEdit extends Component {
     state.versionIndependentId = null;
     state.version = 1;
     state.parentId = section.id;
-    state.controlNumber = '';
     return state;
   }
 
@@ -40,12 +39,11 @@ class SectionEdit extends Component {
     const name = section.name || '';
     const description = section.description || '';
     const sectionQuestions = section.sectionQuestions || [];
-    const controlNumber = section.controlNumber;
     const showWarningModal = false;
     const parentId = section.parent ? section.parent.id : '';
     const conceptsAttributes = filterConcepts(section.concepts) || [];
     const linkedResponseSets = this.findLinkedResponseSets(sectionQuestions);
-    return {sectionQuestions, name, id, version, versionIndependentId, controlNumber, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes};
+    return {sectionQuestions, name, id, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes};
   }
 
   constructor(props) {
@@ -73,7 +71,6 @@ class SectionEdit extends Component {
     this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
     this.moveQuestionDown = this.moveQuestionDown.bind(this);
-    this.handleChangeControl = this.handleChangeControl.bind(this);
     this.handleModalResponse = this.handleModalResponse.bind(this);
     this.handleProgramVarChange   = this.handleProgramVarChange.bind(this);
     this.handleChangeDescription  = this.handleChangeDescription.bind(this);
@@ -164,10 +161,6 @@ class SectionEdit extends Component {
 
   handleChangeDescription(event){
     this.handleChange('description', event);
-  }
-
-  handleChangeControl(event){
-    this.handleChange('controlNumber', event);
   }
 
   handleSubmit(event) {
@@ -338,17 +331,13 @@ class SectionEdit extends Component {
             <div className="row">
               <div className="section-group col-md-12">
                 <label htmlFor="section-name" hidden>Name</label>
-                <input tabIndex="3" className="input-format" placeholder="Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
+                <input tabIndex="3" className="input-format" placeholder="Section Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
               </div>
             </div>
             <div className="row">
-              <div className="section-group col-md-8">
+              <div className="section-group col-md-12">
                 <label htmlFor="section-description">Description</label>
                 <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
-              </div>
-              <div className="section-group col-md-4">
-                <label htmlFor="controlNumber">OMB Approval</label>
-                <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChangeControl}/>
               </div>
             </div>
           </div>
