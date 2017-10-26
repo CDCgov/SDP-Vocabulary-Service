@@ -458,6 +458,12 @@ Based on Rails routes of Vocabulary::Application
     make: function() {
       var routes;
       routes = {
+// admin_delete_and_sync => /admin/elastic_panel/delete_and_sync(.:format)
+  // function(options)
+  admin_delete_and_sync_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"elastic_panel",false],[2,[7,"/",false],[2,[6,"delete_and_sync",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_es_sync => /admin/elastic_panel/es_sync(.:format)
+  // function(options)
+  admin_es_sync_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"elastic_panel",false],[2,[7,"/",false],[2,[6,"es_sync",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_grant_admin => /admin/roles/grant_admin(.:format)
   // function(options)
   admin_grant_admin_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_admin",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
