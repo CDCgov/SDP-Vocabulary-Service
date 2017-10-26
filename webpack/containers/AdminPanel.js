@@ -304,8 +304,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
-                             revokePublisher, grantPublisher, grantAdmin,
-                             esSync, esDeleteAndSync}, dispatch);
+    revokePublisher, grantPublisher, grantAdmin,
+    esSync, esDeleteAndSync}, dispatch);
 }
 
 AdminPanel.propTypes = {
