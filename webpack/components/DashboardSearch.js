@@ -2,11 +2,13 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import NestedSearchBar from './NestedSearchBar';
+import { AbstractSearchComponent } from './AbstractSearchComponent';
+import { SearchParameters } from '../actions/search_results_actions';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import values from 'lodash/values';
@@ -14,13 +16,13 @@ import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
 import $ from 'jquery';
 
-class DashboardSearch extends Component {
+class DashboardSearch extends AbstractSearchComponent {
   constructor(props){
     super(props);
     this.state={
       searchTerms: '',
-      progFilters: [],
-      sysFilters: [],
+      programFilter: [],
+      systemFilter: [],
       showAdvSearchModal: false,
       mostRecentFilter: false,
       surveillancePrograms: {},
@@ -51,12 +53,8 @@ class DashboardSearch extends Component {
 
   componentWillMount() {
     if(this.props.lastSearch) {
-      var lastSearch = this.props.lastSearch;
-      var searchTerms = lastSearch.search || '';
-      var progFilters = lastSearch.programs || [];
-      var sysFilters = lastSearch.systems || [];
-      var mostRecentFilter = lastSearch.mostrecent || false;
-      this.setState({searchTerms, progFilters, sysFilters, mostRecentFilter});
+      let searchParameters = new SearchParameters(this.props.lastSearch);
+      this.setState(searchParameters);
     }
   }
 
@@ -70,14 +68,14 @@ class DashboardSearch extends Component {
 
   clearAdvSearch() {
     this.props.setFiltersParent({
-      progFilters: [],
-      sysFilters: [],
+      programFilter: [],
+      systemFilter: [],
       mostRecentFilter: false,
       contentSince: null
     });
     this.setState({
-      progFilters: [],
-      sysFilters: [],
+      programFilter: [],
+      systemFilter: [],
       mostRecentFilter: false,
       contentSince: null
     });
@@ -94,14 +92,14 @@ class DashboardSearch extends Component {
     this.setState({
       contentSince: date
     });
-    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter, date);
+    this.props.search(this.currentSearchParameters());
     this.props.setFiltersParent({contentSince: date});
   }
 
   programSearch(programSearchTerm){
     var surveillancePrograms = values(this.props.surveillancePrograms);
     if(programSearchTerm && programSearchTerm.length > 1){
-      surveillancePrograms = filter(surveillancePrograms, (sp) => sp.name.toLowerCase().includes(programSearchTerm.toLowerCase()) || this.state.progFilters.includes(sp.id));
+      surveillancePrograms = filter(surveillancePrograms, (sp) => sp.name.toLowerCase().includes(programSearchTerm.toLowerCase()) || this.state.programFilter.includes(sp.id));
     }
     this.setState({surveillancePrograms: surveillancePrograms});
   }
@@ -109,7 +107,7 @@ class DashboardSearch extends Component {
   systemSearch(systemSearchTerm){
     var surveillanceSystems = values(this.props.surveillanceSystems);
     if(systemSearchTerm && systemSearchTerm.length > 1){
-      surveillanceSystems = filter(surveillanceSystems, (ss) => ss.name.toLowerCase().includes(systemSearchTerm.toLowerCase()) || this.state.sysFilters.includes(ss.id));
+      surveillanceSystems = filter(surveillanceSystems, (ss) => ss.name.toLowerCase().includes(systemSearchTerm.toLowerCase()) || this.state.systemFilter.includes(ss.id));
     }
     this.setState({surveillanceSystems: surveillanceSystems});
   }
@@ -122,7 +120,7 @@ class DashboardSearch extends Component {
         <div className="form-group" id="search-programs">
           <label htmlFor="select-prog">Select Programs:</label>
           <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
-          <select multiple className="form-control" id="select-prog" value={this.state.progFilters} onChange={(e) => this.selectFilters(e, 'progFilters')}>
+          <select multiple className="form-control" id="select-prog" value={this.state.programFilter} onChange={(e) => this.selectFilters(e, 'programFilter')}>
             {this.state.surveillancePrograms && values(this.state.surveillancePrograms).map((sp) => {
               return <option key={sp.id} value={sp.id}>{sp.name}</option>;
             })}
@@ -140,7 +138,7 @@ class DashboardSearch extends Component {
         <div className="form-group" id="search-systems">
           <label htmlFor="select-sys">Select Systems:</label>
           <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
-          <select multiple className="form-control" id="select-sys" value={this.state.sysFilters} onChange={(e) => this.selectFilters(e, 'sysFilters')}>
+          <select multiple className="form-control" id="select-sys" value={this.state.systemFilter} onChange={(e) => this.selectFilters(e, 'systemFilter')}>
             {this.state.surveillanceSystems && values(this.state.surveillanceSystems).map((ss) => {
               return <option key={ss.id} value={ss.id}>{ss.name}</option>;
             })}
@@ -151,10 +149,11 @@ class DashboardSearch extends Component {
   }
 
   toggleMostRecentFilter() {
-    var newState = {mostRecentFilter: !this.state.mostRecentFilter};
-    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, !this.state.mostRecentFilter, this.state.contentSince);
-    this.props.setFiltersParent(newState);
+    let newState = {mostRecentFilter: !this.state.mostRecentFilter};
     this.setState(newState);
+    this.props.search(this.currentSearchParameters());
+    this.props.setFiltersParent(newState);
+
   }
 
   advSearchModal() {
@@ -201,11 +200,7 @@ class DashboardSearch extends Component {
 
   onFormSubmit(event){
     event.preventDefault();
-    let contentSince;
-    if (this.state.contentSince) {
-      contentSince = this.state.contentSince.format('M/D/YYYY');
-    }
-    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter, contentSince);
+    this.props.search(this.currentSearchParameters());
   }
 
   render() {
@@ -221,7 +216,7 @@ class DashboardSearch extends Component {
             </span>
           </div>
           <div>
-            {(this.state.progFilters.length > 0 || this.state.sysFilters.length > 0 || this.state.mostRecentFilter || this.state.contentSince) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.mostRecentFilter || this.state.contentSince) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -229,14 +224,14 @@ class DashboardSearch extends Component {
               e.preventDefault();
               this.showAdvSearch();
             }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>
-            {this.state.progFilters.length > 0 &&
-              <div className="adv-filter-list">Program Filters: {this.state.progFilters.map((id, i) => {
+            {this.state.programFilter.length > 0 &&
+              <div className="adv-filter-list">Program Filters: {this.state.programFilter.map((id, i) => {
                 return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</row>;
               })}
               </div>
             }
-            {this.state.sysFilters.length > 0 &&
-              <div className="adv-filter-list">System Filters: {this.state.sysFilters.map((id, i) => {
+            {this.state.systemFilter.length > 0 &&
+              <div className="adv-filter-list">System Filters: {this.state.systemFilter.map((id, i) => {
                 return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillanceSystems[id].name}</row>;
               })}
               </div>

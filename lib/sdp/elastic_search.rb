@@ -89,7 +89,7 @@ module SDP
                   end
 
       date_terms = if content_since.present?
-                     { query: { range: { createdAt: { gte: content_since } } } }
+                     { range: { createdAt: { gte: content_since } } }
                    else
                      {}
                    end
