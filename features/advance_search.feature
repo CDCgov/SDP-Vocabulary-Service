@@ -8,12 +8,15 @@ Feature: Advanced Search
     And I have a Surveillance Program with the name "Influenza"
     And I am on the "/" page
     When I click on the "Advanced" link
+    Then I should see "Most Recent Versions Only"
     Then I should see "FoodNet"
     Then I search for the program "flu"
     Then the list "select-prog" should not contain the option "FoodNet"
     Then the list "select-prog" should contain the option "Influenza"
     When I select the "Influenza" option in the "select-prog" list
+    And I check the "most-recent-filter" checkbox
     And I click on the "Close" button
     Then I should see "Program Filters:"
     And I should see "Influenza"
-    And I should see "Clear Programs & Systems"
+    And I should see "Clear Adv. Filters"
+    And I should see "Filtering by most recent version"

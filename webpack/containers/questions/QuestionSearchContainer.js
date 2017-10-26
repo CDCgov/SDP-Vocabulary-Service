@@ -20,7 +20,8 @@ class QuestionSearchContainer extends Component {
       searchTerms: '',
       progFilters: [],
       sysFilters: [],
-      page: 1
+      page: 1,
+      mostRecentFilter: false
     };
     this.search   = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
@@ -41,7 +42,7 @@ class QuestionSearchContainer extends Component {
       if(searchTerms === ''){
         searchTerms = null;
       }
-      this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', this.state.progFilters, this.state.sysFilters);
+      this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter);
     }
   }
 
@@ -49,12 +50,12 @@ class QuestionSearchContainer extends Component {
     this.setState(newState);
   }
 
-  search(searchTerms, progFilters, sysFilters) {
+  search(searchTerms, progFilters, sysFilters, mostRecentFilter) {
     if(searchTerms === ''){
       searchTerms = null;
     }
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
-    this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', progFilters, sysFilters);
+    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1, mostRecentFilter: mostRecentFilter});
+    this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', progFilters, sysFilters, mostRecentFilter);
   }
 
   loadMore() {
@@ -65,7 +66,8 @@ class QuestionSearchContainer extends Component {
     }
     this.props.fetchMoreSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', tempState,
                                       this.state.progFilters,
-                                      this.state.sysFilters);
+                                      this.state.sysFilters,
+                                      this.state.mostRecentFilter);
     this.setState({page: tempState});
   }
 

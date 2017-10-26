@@ -16,7 +16,7 @@ Feature: Export Sections
     And I use the response set search modal to select "Gender Partial"
     And I click on the "Save" button
 
-  Scenario: Export Section to Redcap
+  Scenario: Export Section to REDCap
     Given I have a Section with the name "Test Section"
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I have a Response Set with the name "Gender Partial" and the description "Gender example" and with the Responses Male, Female
@@ -30,4 +30,4 @@ Feature: Export Sections
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
     And I click on the "Save" button
-    Then I should see the "Export to Redcap" link
+    Then I should see the "Export to REDCap" link

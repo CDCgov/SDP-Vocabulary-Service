@@ -10,7 +10,7 @@ describe('SearchResult', () => {
   beforeEach(() => {
     const question = {Source: {id: 1, name: "Is this a question?", description: "This is a test question", responseSets: []}};
     const responseSet = {Source: {id: 1, name: "Response Set Name", description: "RS Description", version: 1, questions: []}};
-    const oldResponseSet = {Source: {id: 1, name: "Response Set Name", description: "RS Description", version: 1, mostRecent: 3, questions: []}};
+    const oldResponseSet = {Source: {id: 1, name: "Response Set Name", description: "RS Description", version: 1, mostRecent: 3, mostRecentPublished: 2, questions: []}};
     const section = {Source: {id: 1, name: "Section Name", description: "Section Description", questions: []}};
     const currentUser = {id: 1, email: "fake@gmail.com", name: "Fake Test"};
 
@@ -29,6 +29,6 @@ describe('SearchResult', () => {
 
   it('should properly display version information', () => {
     expect(rsComponent.find("div[class='result-analytics']")).to.contain('version 1');
-    expect(orsComponent.find("div[class='result-analytics']")).to.contain('version 1 (version 3 available)');
+    expect(orsComponent.find("div[class='result-analytics']")).to.contain('version 1 (version 2 available)');
   });
 });
