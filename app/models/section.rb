@@ -55,9 +55,9 @@ class Section < ApplicationRecord
          from questions q where q.status = 'published'
          group by version_independent_id) qmrv
      where qmv.version_independent_id = q.version_independent_id
-     and qmrv.version_independent_id = qmrv.version_independent_id
      and sq.question_id = q.id
-     and sq.section_id = :section_id", { section_id: id }])
+     and sq.section_id = :section_id
+     and qmrv.version_independent_id = q.version_independent_id", { section_id: id }])
   end
 
   def self.owned_by(owner_id)
