@@ -147,6 +147,15 @@ module SDP
       end
     end
 
+    def self.delete_index
+      with_client do |client|
+        if client.indices.exists? index: 'vocabulary'
+          # delete the index
+          client.indices.delete index: 'vocabulary'
+        end
+      end
+    end
+
     def self.delete_item(type, id, refresh = false)
       ensure_index
       with_client do |client|
