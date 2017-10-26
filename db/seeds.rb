@@ -39,10 +39,9 @@ ResponseType.find_or_create_by code: 'reference', name: 'Reference',
 ResponseType.find_or_create_by code: 'quantity', name: 'Quantity',
                                description: 'Answer is a combination of a numeric value and unit, potentially with a comparator (<, >, etc.).'
 
-QuestionType.find_or_create_by name: 'Patient demographics'
-QuestionType.find_or_create_by name: 'Clinical signs and symptoms'
-QuestionType.find_or_create_by name: 'Past medical history/treatment'
-QuestionType.find_or_create_by name: 'Clinical outcome'
-QuestionType.find_or_create_by name: 'Laboratory information'
-QuestionType.find_or_create_by name: 'Epidemiologic information'
-QuestionType.find_or_create_by name: 'Epidemiologic exposure history (places visited, persons, household contacts, etc.)'
+QuestionType.find_or_create_by name: 'Demographics'
+QuestionType.find_or_create_by name: 'Clinical'
+QuestionType.find_or_create_by name: 'Treatment'
+QuestionType.find_or_create_by name: 'Laboratory'
+QuestionType.find_or_create_by name: 'Epidemiological'
+QuestionType.find_or_create_by name: 'Vaccine'
