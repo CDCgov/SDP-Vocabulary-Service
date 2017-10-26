@@ -29,14 +29,14 @@ export function fetchSearchResults(context, searchTerms=null, type=null, program
   };
 }
 
-export function fetchLastSearch(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, pages, mostRecentFilter=false) {
+export function fetchLastSearch(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, pages, mostRecentFilter=false, contentSince=null) {
   let querySize = pages*10;
   return {
     type: FETCH_LAST_SEARCH,
     meta: {context: context},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, size: querySize, mostrecent: mostRecentFilter }
+      params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, size: querySize, mostrecent: mostRecentFilter, contentSince }
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
       unelasticsearchResults(normalizedData.entities);

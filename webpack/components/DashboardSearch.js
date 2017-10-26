@@ -94,6 +94,7 @@ class DashboardSearch extends Component {
     this.setState({
       contentSince: date
     });
+    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter, date);
     this.props.setFiltersParent({contentSince: date});
   }
 
@@ -151,7 +152,7 @@ class DashboardSearch extends Component {
 
   toggleMostRecentFilter() {
     var newState = {mostRecentFilter: !this.state.mostRecentFilter};
-    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, !this.state.mostRecentFilter);
+    this.props.search(this.state.searchTerms, this.state.progFilters, this.state.sysFilters, !this.state.mostRecentFilter, this.state.contentSince);
     this.props.setFiltersParent(newState);
     this.setState(newState);
   }
@@ -181,7 +182,7 @@ class DashboardSearch extends Component {
                 <h2>Additonal Filters:</h2>
                 <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
                 <label htmlFor="most-recent-filter">Most Recent Versions Only</label>
-                Content Changed Since: <DatePicker selected={this.state.contentSince} onChange={this.handleDateChange} />
+                <p>Content Changed Since: <DatePicker selected={this.state.contentSince} onChange={this.handleDateChange} /></p>
               </div>
             </div>
           )}
