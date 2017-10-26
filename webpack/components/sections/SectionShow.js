@@ -125,7 +125,7 @@ class SectionShow extends Component {
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
           <button className="btn btn-default" onClick={() => window.print()}>Print</button>
-          <a className="btn btn-default" href={`/sections/${section.id}/redcap`}>Export to Redcap</a>
+          <a className="btn btn-default" href={`/sections/${section.id}/redcap`}>Export to REDCap</a>
         </div>
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Name:</strong> {section.name} </h1>

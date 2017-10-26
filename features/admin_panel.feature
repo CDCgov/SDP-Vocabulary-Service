@@ -65,3 +65,13 @@ Feature: Admin Panel
     And I fill in the "system-description" field with "Trying to add system with no name"
     And I click on the "submit-prog-sys" button
     Then I should see "Error saving system - check format, name cannot be blank"
+
+  Scenario: Sync elasticsearch success pop-up
+    Given I am the admin test_author@gmail.com
+    When I go to the dashboard
+    And I click on the "account-dropdown" link
+    And I click on the "Admin Panel" link
+    And I click on the "Elasticsearch" link
+    Then I should see "Elasticsearch Management"
+    When I click on the "elasticsearch-sync-button" button
+    Then I should see "Successfully updated Elasticsearch"

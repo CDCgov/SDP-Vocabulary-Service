@@ -199,10 +199,10 @@ class Help extends Component {
         <li>On the edit pages the name link is disabled but you can click the eyeball icon on any of the widgets to navigate to the details page.</li>
         </ul>
         <h2 className="help-section-subtitle" id="exporting">Exporting</h2>
-        <p>On the view pages for sections there is an action button that exports the current section to Redcap. To export a section and use it in redcap execute the following steps (exact wording may differ slightly based on your version of Redcap):</p>
+        <p>On the view pages for sections there is an action button that exports the current section to REDCap. To export a section and use it in REDCap execute the following steps (exact wording may differ slightly based on your version of REDCap):</p>
         <ul>
-        <li>Click on the 'Export to Redcap' button on the Vocabulary service section details page (this will save a .xml file to the folder your browser directs downloads)</li>
-        <li>Open up Redcap</li>
+        <li>Click on the 'Export to REDCap' button on the Vocabulary service section details page (this will save a .xml file to the folder your browser directs downloads)</li>
+        <li>Open up REDCap</li>
         <li>Choose the option to create a new project</li>
         <li>On the project creation page follow the on screen instructions to add a name and various attributes to the new projects</li>
         <li>Look for an option titled something similar to "Start project from scratch or begin with a template?" and choose the "Upload a REDCap project XML file" option</li>

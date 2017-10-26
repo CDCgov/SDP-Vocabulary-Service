@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import { setSteps } from '../actions/tutorial_actions';
-import { revokeAdmin, grantAdmin } from '../actions/admin_actions';
+import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync } from '../actions/admin_actions';
 import { addProgram } from '../actions/surveillance_program_actions';
 import { addSystem } from '../actions/surveillance_system_actions';
 import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
@@ -28,7 +28,9 @@ class AdminPanel extends Component {
   selectTab(tabName) {
     this.setState({
       selectedTab: tabName,
-      error: {}
+      error: {},
+      success: {},
+      warning: {}
     });
   }
 
@@ -53,6 +55,8 @@ class AdminPanel extends Component {
       let newState = {};
       newState[field] = event.target.value;
       newState['error'] = {};
+      newState['success'] = {};
+      newState['warning'] = {};
       this.setState(newState);
     };
   }
@@ -199,6 +203,47 @@ class AdminPanel extends Component {
     );
   }
 
+  elasticTab() {
+    return(
+      <div className="tab-pane" id="elasticsearch" role="tabpanel" aria-hidden={this.state.selectedTab !== 'elasticsearch'} aria-labelledby="elastic-tab">
+        <h2 id="elasticsearch-heading">Elasticsearch Management</h2>
+        {this.state.error && this.state.error.msg &&
+          <div className="alert alert-danger">
+            {this.state.error.msg}
+          </div>
+        }
+        {this.state.warning && this.state.warning.msg &&
+          <div className="alert alert-warning">
+            {this.state.warning.msg}
+          </div>
+        }
+        {this.state.success && this.state.success.msg &&
+          <div className="alert alert-success">
+            {this.state.success.msg}
+          </div>
+        }
+        <p>Click the following button to synchronize elasticsearch records with the most recent activity (useful if ES was down for some time or records are not showing up in searches):</p>
+        <button id='elasticsearch-sync-button' className="btn btn-default col-md-12" onClick={() => {
+          this.setState({warning: {msg: 'Elasticsearch sync is pending, please do not re-sync until a success message is displayed (this could take a few minutes)'}});
+          this.props.esSync((successResponse) => {
+            this.setState({success: successResponse.data, warning: {}});
+          }, (failureResponse) => {
+            this.setState({error: failureResponse.response.data, warning: {}});
+          });
+        }}><i className="fa fa-refresh search-btn-icon" aria-hidden="true"></i> Synchronize Elasticsearch Database<text className="sr-only"> - click this button to synchronize the Elasticsearch database</text></button><br/><br/><hr/>
+        <p>Click the next button if you want to delete the current index, wiping the elasticsearch database of any out of date records, and resynchronize ES with all of the most recent records (Note: This action could cause ES to be unavailable for a short time):</p>
+        <button id='elasticsearch-delete-and-sync-button' className="btn btn-default col-md-12" onClick={() => {
+          this.setState({warning: {msg: 'Elasticsearch sync is pending, please do not re-sync until a success message is displayed (this could take a few minutes)'}});
+          this.props.esDeleteAndSync((successResponse) => {
+            this.setState({success: successResponse.data, warning: {}});
+          }, (failureResponse) => {
+            this.setState({error: failureResponse.response.data, warning: {}});
+          });
+        }}><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Delete Index and Synchronize Elasticsearch Database<text className="sr-only"> - click this button to synchronize the Elasticsearch database after deleting the index and all data</text></button>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container">
@@ -226,12 +271,16 @@ class AdminPanel extends Component {
                     <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
                       <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
                     </li>
+                    <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
+                      <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
+                    </li>
                   </ul>
                   <div className="tab-content">
                     {this.adminTab()}
                     {this.publisherTab()}
                     {this.programTab()}
                     {this.systemTab()}
+                    {this.elasticTab()}
                   </div>
                 </div>
               </div>
@@ -254,7 +303,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin, revokePublisher, grantPublisher, grantAdmin}, dispatch);
+  return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
+    revokePublisher, grantPublisher, grantAdmin,
+    esSync, esDeleteAndSync}, dispatch);
 }
 
 AdminPanel.propTypes = {
@@ -269,7 +320,9 @@ AdminPanel.propTypes = {
   revokeAdmin: PropTypes.func,
   revokePublisher: PropTypes.func,
   grantAdmin: PropTypes.func,
-  grantPublisher: PropTypes.func
+  grantPublisher: PropTypes.func,
+  esSync: PropTypes.func,
+  esDeleteAndSync: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

@@ -4,7 +4,9 @@ import { getCSRFToken } from './index';
 import {
   FETCH_ADMINS,
   GRANT_ADMIN,
-  REVOKE_ADMIN
+  REVOKE_ADMIN,
+  ES_DELETE_AND_SYNC,
+  ES_SYNC
 } from './types';
 
 export function fetchAdmins() {
@@ -54,6 +56,46 @@ export function revokeAdmin(adminId, callback=null, failureHandler=null) {
   }
   return {
     type: REVOKE_ADMIN,
+    payload: putPromise
+  };
+}
+
+export function esDeleteAndSync(callback=null, failureHandler=null) {
+  const putPromise = axios.put(routes.adminDeleteAndSyncPath(), {
+    headers: {
+      'X-Key-Inflection': 'camel',
+      'Accept': 'application/json'
+    },
+    authenticityToken: getCSRFToken()
+  });
+  if (callback) {
+    putPromise.then(callback);
+  }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
+  }
+  return {
+    type: ES_DELETE_AND_SYNC,
+    payload: putPromise
+  };
+}
+
+export function esSync(callback=null, failureHandler=null) {
+  const putPromise = axios.put(routes.adminEsSyncPath(), {
+    headers: {
+      'X-Key-Inflection': 'camel',
+      'Accept': 'application/json'
+    },
+    authenticityToken: getCSRFToken()
+  });
+  if (callback) {
+    putPromise.then(callback);
+  }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
+  }
+  return {
+    type: ES_SYNC,
     payload: putPromise
   };
 }
