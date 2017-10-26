@@ -37,7 +37,7 @@ export class SearchParameters {
     });
     if (this.contentSince) {
       if (this.contentSince.format) {
-        params.contentSince = this.contentSince.format('');
+        params.contentSince = this.contentSince.format('YYYY-MM-DD');
       } else {
         params.contentSince = this.contentSince;
       }

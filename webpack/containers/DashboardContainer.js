@@ -55,7 +55,7 @@ class DashboardContainer extends AbstractSearchComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
+    if(prevState.programFilter != undefined && (prevState.programFilter !== this.state.programFilter || prevState.systemFilter !== this.state.systemFilter)) {
       this.props.fetchSearchResults(DASHBOARD_CONTEXT, this.currentSearchParameters());
       this.props.setLastSearch(this.currentSearchParameters());
     }
@@ -210,29 +210,35 @@ class DashboardContainer extends AbstractSearchComponent {
   }
 
   search(searchParameters) {
-    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchParameters);
-    this.props.setLastSearch(searchParameters);
-    searchParameters.page = 1;
-    this.setState(searchParameters);
+    let newParams = Object.assign(this.currentSearchParameters(), searchParameters);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, newParams);
+    this.props.setLastSearch(newParams);
+    newParams.page = 1;
+    this.setState(newParams);
   }
 
   selectType(searchType, myStuffToggle=false) {
+    let newState = {};
     if(myStuffToggle) {
-      if(this.state.searchType === searchType && this.state.myStuffFilter) {
-        this.setState({myStuffFilter: false});
+      if(this.state.type === searchType && this.state.myStuffFilter) {
+        newState.myStuffFilter = false;
       } else {
-        this.setState({myStuffFilter: true});
+        newState.myStuffFilter = true;
       }
     } else {
-      this.setState({myStuffFilter: false});
+      newState.myStuffFilter = false;
     }
-    if(this.state.searchType === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
-      this.setState({type: '', page: 1});
+    if(this.state.type === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
+      newState.type = '';
+      newState.page = 1;
     } else {
-      this.setState({type: searchType, page: 1});
+      newState.type = searchType;
+      newState.page = 1;
     }
-    this.props.fetchSearchResults(DASHBOARD_CONTEXT, this.currentSearchParameters());
-    this.props.setLastSearch(this.currentSearchParameters());
+    this.setState(newState);
+    let newSearchParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, newSearchParams);
+    this.props.setLastSearch(newSearchParams);
   }
 
   analyticsGroup(searchType) {

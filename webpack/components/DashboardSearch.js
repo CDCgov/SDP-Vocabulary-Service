@@ -89,11 +89,11 @@ class DashboardSearch extends AbstractSearchComponent {
   }
 
   handleDateChange(date) {
-    this.setState({
-      contentSince: date
-    });
-    this.props.search(this.currentSearchParameters());
-    this.props.setFiltersParent({contentSince: date});
+    let newState = { contentSince: date };
+    this.setState(newState);
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
+    this.props.setFiltersParent(newState);
   }
 
   programSearch(programSearchTerm){
