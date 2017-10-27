@@ -54,10 +54,13 @@ class Section < ApplicationRecord
        (select version_independent_id, MAX(version) as version
          from questions q where q.status = 'published'
          group by version_independent_id) qmrv
-     where qmv.version_independent_id = q.version_independent_id
+     where (qmv.version_independent_id = q.version_independent_id
+     and sq.question_id = q.id
+     and sq.section_id = :section_id)
+     or (qmv.version_independent_id = q.version_independent_id
      and sq.question_id = q.id
      and sq.section_id = :section_id
-     and qmrv.version_independent_id = q.version_independent_id", { section_id: id }])
+     and qmrv.version_independent_id = q.version_independent_id)", { section_id: id }])
   end
 
   def self.owned_by(owner_id)

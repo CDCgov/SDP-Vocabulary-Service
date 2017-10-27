@@ -13,11 +13,18 @@ Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*
   Question.create!(content: content, description: description, response_type_id: qt314.id, version: 1, created_by: user)
 end
 
-Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"$/) do |content, description, type|
+Given(/^I have a published Question with the content "([^"]*)" and the description "([^"]*)" and the response type "([^"]*)"$/) do |cont, desc, type|
+  user  = get_user('test_author@gmail.com')
+  qt314 = ResponseType.find_or_create_by(name: type)
+  q = Question.create!(content: cont, description: desc, response_type_id: qt314.id, version: 1, created_by: user)
+  q.publish(user)
+end
+
+Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"$/) do |cont, d, type|
   user  = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
   rt = ResponseType.where(code: 'choice').first
-  Question.create!(content: content, description: description, response_type_id: rt.id, question_type_id: qt314.id, version: 1, created_by: user)
+  Question.create!(status: 'draft', content: cont, description: d, response_type_id: rt.id, question_type_id: qt314.id, version: 1, created_by: user)
 end
 
 Given(/^I have a Question with the content "([^"]*)" linked to Surveillance System "([^"]*)"$/) do |question_content, system_name|
@@ -45,7 +52,7 @@ Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) d
   user = get_user('test_author@gmail.com')
   qt314 = QuestionType.find_or_create_by(name: type)
   rt = ResponseType.where(code: 'choice').first
-  Question.create!(content: content, question_type_id: qt314.id, response_type_id: rt.id, version: 1, created_by: user)
+  Question.create!(content: content, question_type_id: qt314.id, response_type_id: rt.id, version: 1, created_by: user, status: 'draft')
 end
 
 Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|

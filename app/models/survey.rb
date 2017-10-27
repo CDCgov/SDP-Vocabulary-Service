@@ -68,10 +68,13 @@ class Survey < ApplicationRecord
        (select version_independent_id, MAX(version) as version
          from sections s where s.status = 'published'
          group by version_independent_id) smrv
-     where smv.version_independent_id = s.version_independent_id
+     where (smv.version_independent_id = s.version_independent_id
+     and ss.section_id = s.id
+     and ss.survey_id = :survey_id)
+     or (smv.version_independent_id = s.version_independent_id
      and ss.section_id = s.id
      and ss.survey_id = :survey_id
-     and smrv.version_independent_id = s.version_independent_id", { survey_id: id }])
+     and smrv.version_independent_id = s.version_independent_id)", { survey_id: id }])
   end
 
   def build_new_revision
