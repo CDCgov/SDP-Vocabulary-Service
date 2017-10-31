@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 
 import { setSteps } from '../actions/tutorial_actions';
-import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SearchManagerComponent from '../components/SearchManagerComponent';
 import SignUpModal from '../components/accounts/SignUpModal';
@@ -157,7 +157,9 @@ class DashboardContainer extends SearchManagerComponent {
                                  surveillancePrograms={this.props.surveillancePrograms}
                                  changeFiltersCallback={this.changeFiltersCallback}
                                  searchSource={this.props.searchResults.Source}
-                                 lastSearch={this.props.lastSearch} />
+                                 lastSearch={this.props.lastSearch}
+                                 suggestions={this.props.suggestions}
+                                 fetchSuggestions={this.props.fetchSuggestions}/>
                 <div className="row">
                   <div className="col-md-12">
                     {this.analyticsGroup(this.state.type)}
@@ -309,6 +311,7 @@ function mapStateToProps(state) {
     mySurveyCount: state.stats.mySurveyCount,
     searchResults: state.searchResults[DASHBOARD_CONTEXT] || NO_SEARCH_RESULTS,
     lastSearch: state.lastSearch,
+    suggestions: state.suggestions,
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser
@@ -316,7 +319,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, signUp}, dispatch);
+  return bindActionCreators({setSteps, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -332,11 +335,13 @@ DashboardContainer.propTypes = {
   fetchSearchResults: PropTypes.func,
   setLastSearch: PropTypes.func,
   fetchLastSearch: PropTypes.func,
+  fetchSuggestions: PropTypes.func,
   lastSearch: PropTypes.object,
   fetchMoreSearchResults: PropTypes.func,
   signUp: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
+  suggestions: PropTypes.array,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps
 };

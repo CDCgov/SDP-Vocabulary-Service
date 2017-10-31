@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
+import Autocomplete from 'react-autocomplete';
 import NestedSearchBar from './NestedSearchBar';
 import SearchStateComponent from './SearchStateComponent';
 import { SearchParameters } from '../actions/search_results_actions';
@@ -206,6 +207,7 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   onInputChange(event){
+    this.props.fetchSuggestions(event.target.value);
     this.setState({searchTerms: event.target.value});
   }
 
@@ -221,7 +223,28 @@ class DashboardSearch extends SearchStateComponent {
       <div className="row">
         <div className="col-md-12">
           <div className="input-group search-group">
-            <input onChange={this.onInputChange} value={this.state.searchTerms} type="text" id="search" tabIndex="4" name="search" aria-label="Dashboard Search Bar" className="search-input" placeholder="Search..."/>
+            <Autocomplete
+              value={this.state.searchTerms}
+              inputProps={{ id: 'search', className: 'search-input', name: 'search', type: 'text', tabIndex: '4', 'aria-label': 'Dashboard Search Bar', placeholder: 'Search...' }}
+              wrapperStyle={{}}
+              items={this.props.suggestions || []}
+              getItemValue={(item) => item.text}
+              onSelect={(value) => {
+                this.setState({searchTerms: value});
+              }}
+              onChange={this.onInputChange}
+              renderItem={(item, isHighlighted) => (
+                <div
+                  className={`tag-item ${isHighlighted ? 'tag-item-highlighted' : ''}`}
+                  key={item._id}
+                >{item.text}</div>
+              )}
+              renderMenu={children => (
+                <div className="input-autocomplete-menu">
+                  {children}
+                </div>
+              )}
+            />
             <span className="input-group-btn">
               <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="Click to submit search" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
@@ -269,7 +292,9 @@ DashboardSearch.propTypes = {
   surveillancePrograms: surveillanceProgramsProps,
   changeFiltersCallback: PropTypes.func,
   searchSource: PropTypes.string,
-  lastSearch: PropTypes.object
+  lastSearch: PropTypes.object,
+  suggestions: PropTypes.array,
+  fetchSuggestions: PropTypes.func
 };
 
 export default DashboardSearch;

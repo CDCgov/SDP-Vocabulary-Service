@@ -40,5 +40,16 @@ class ElasticsearchController < ApplicationController
               end
     render json: results
   end
+
+  def suggestions
+    results = if SDP::Elasticsearch.ping
+                prefix = params[:prefix]
+                prefix ||= ''
+                SDP::Elasticsearch.find_suggestions(prefix)
+              else
+                { suggest: { search_suggest: [options: []] } }
+              end
+    render json: results
+  end
 end
 # rubocop:enable Metrics/AbcSize

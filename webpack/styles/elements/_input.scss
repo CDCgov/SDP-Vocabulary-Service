@@ -24,3 +24,13 @@
 .form-check-input {
   margin: 10px !important;
 }
+
+.input-autocomplete-menu {
+  position: absolute;
+  margin-top: 36px;
+  z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  background-color: white;
+}

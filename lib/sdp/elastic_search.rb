@@ -143,6 +143,26 @@ module SDP
       end
     end
 
+    def self.find_suggestions(prefix)
+      with_client do |client|
+        client.search(index: 'vocabulary', body: {
+                        _source: 'version',
+                        suggest: {
+                          search_suggest: {
+                            prefix: prefix,
+                            completion: {
+                              field: 'suggest',
+                              size: 10,
+                              fuzzy: {
+                                min_length: 4
+                              }
+                            }
+                          }
+                        }
+                      })
+      end
+    end
+
     def self.ensure_index
       with_client do |client|
         unless client.indices.exists? index: 'vocabulary'

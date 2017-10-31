@@ -563,6 +563,9 @@ Based on Rails routes of Vocabulary::Application
 // elasticsearch_duplicate_questions => /elasticsearch/duplicate_questions(.:format)
   // function(options)
   elasticsearch_duplicate_questions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"elasticsearch",false],[2,[7,"/",false],[2,[6,"duplicate_questions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// elasticsearch_suggestions => /elasticsearch/suggestions(.:format)
+  // function(options)
+  elasticsearch_suggestions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"elasticsearch",false],[2,[7,"/",false],[2,[6,"suggestions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // export_section => /sections/:id/export(.:format)
   // function(id, options)
   export_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"export",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
