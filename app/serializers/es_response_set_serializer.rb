@@ -17,6 +17,11 @@ class ESResponseSetSerializer < ActiveModel::Serializer
   attribute :codes
   attribute :surveillance_programs
   attribute :surveillance_systems
+  attribute :most_recent
+
+  def most_recent
+    object.most_recent?
+  end
 
   def codes
     object.responses.collect { |c| CodeSerializer.new(c).as_json }

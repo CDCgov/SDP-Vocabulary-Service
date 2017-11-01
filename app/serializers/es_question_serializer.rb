@@ -19,6 +19,11 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :surveillance_programs
   attribute :surveillance_systems
   attribute :response_type
+  attribute :most_recent
+
+  def most_recent
+    object.most_recent?
+  end
 
   def sections
     object.section_questions.includes(:section).collect do |sq|

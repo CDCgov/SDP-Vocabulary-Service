@@ -84,6 +84,9 @@
         "updatedAt": {
           "type": "date"
         },
+        "mostRecent" : {
+          "type": "boolean"
+        },
         "responseType": {
           "type": "object",
           "properties": {
@@ -204,6 +207,9 @@
         "updatedAt": {
           "type": "date"
         },
+        "mostRecent" : {
+          "type": "boolean"
+        },
         "createdBy": {
           "type": "object",
           "properties": {
@@ -295,6 +301,9 @@
         },
         "updatedAt": {
           "type": "date"
+        },
+        "mostRecent" : {
+          "type": "boolean"
         },
         "createdBy": {
           "type": "object",
@@ -398,6 +407,9 @@
         },
         "updatedAt": {
           "type": "date"
+        },
+        "mostRecent" : {
+          "type": "boolean"
         },
         "createdBy": {
           "type": "object",

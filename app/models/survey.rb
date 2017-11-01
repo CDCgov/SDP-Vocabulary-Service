@@ -48,6 +48,12 @@ class Survey < ApplicationRecord
       self.status = 'published'
       self.published_by = publisher
       save!
+      # Updates previous version to no longer be most_recent
+      if version > 1
+        prev_version = Survey.find_by(version_independent_id: version_independent_id,
+                                      version: version - 1)
+        UpdateIndexJob.perform_later('survey', prev_version.id)
+      end
     end
     sections.each { |s| s.publish(publisher) }
   end
@@ -55,13 +61,16 @@ class Survey < ApplicationRecord
   # Custom implementation as using the plain relationships in Rails will cause
   # N+1 queries to figure out most recent version for each section.
   def sections_with_most_recent
-    Section.find_by_sql(['select s.*, smv.version as max_version
+    Section.find_by_sql(["select s.*, smv.version as max_version, smrv.version as most_recent_version
      from sections s, survey_sections ss,
        (select version_independent_id, MAX(version) as version
          from sections group by version_independent_id) smv
-     where smv.version_independent_id = s.version_independent_id
+       left join (select version_independent_id, MAX(version) as version
+         from sections s where s.status = 'published'
+         group by version_independent_id) smrv USING (version_independent_id)
+     where (smv.version_independent_id = s.version_independent_id
      and ss.section_id = s.id
-     and ss.survey_id = :survey_id', { survey_id: id }])
+     and ss.survey_id = :survey_id)", { survey_id: id }])
   end
 
   def build_new_revision

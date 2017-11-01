@@ -54,6 +54,25 @@ module Versionable
     most_recent == version
   end
 
+  def most_recent_published
+    mrv = nil
+    mrv = most_recent_version if respond_to?(:most_recent_version)
+    if mrv.nil?
+      mrv_obj = all_versions[0]
+      if mrv_obj.present? && mrv_obj.status == 'published'
+        most_recent
+      elsif mrv_obj.present? && mrv_obj.version > 1
+        most_recent - 1
+      end
+    else
+      mrv
+    end
+  end
+
+  def most_recent_published?
+    most_recent_published == version
+  end
+
   def as_json(options = {})
     super((options || {}).merge(methods: [:most_recent]))
   end

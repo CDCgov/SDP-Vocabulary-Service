@@ -122,7 +122,7 @@ class SurveyShow extends Component {
                 </ul>
               </div>
               <div className="panel-footer survey-section">
-                <p>Section version: {displayVersion(sect.version, sect.mostRecent)}</p>
+                <p>Section version: {displayVersion(sect.version, sect.mostRecentPublished)}</p>
               </div>
             </div>
           )}

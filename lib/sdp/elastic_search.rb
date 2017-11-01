@@ -19,8 +19,14 @@ module SDP
     def self.search(type, query_string, page, query_size = 10,
                     current_user_id = nil, publisher_search = false,
                     my_stuff_filter = false, program_filter = [],
-                    system_filter = [])
-
+                    system_filter = [], current_version_filter = false)
+      version_filter = if current_version_filter
+                         { bool: { filter: {
+                           term: { 'most_recent': true }
+                         } } }
+                       else
+                         {}
+                       end
       filter_body = if my_stuff_filter
                       { dis_max: { queries: [
                         { term: { 'createdBy.id': current_user_id } }
@@ -81,14 +87,13 @@ module SDP
                       { 'terms': { 'surveillance_system.id': system_filter } }
                     ] } }
                   end
-
       from_index = (page - 1) * query_size
       search_body = {
         size: query_size,
         from: from_index,
         query: {
           bool: {
-            filter: { bool: { filter: filter_body, must: [prog_terms, sys_terms] } },
+            filter: { bool: { filter: [filter_body, version_filter], must: [prog_terms, sys_terms] } },
             must: must_body
           }
         },

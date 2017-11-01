@@ -80,9 +80,9 @@ Feature: Edit Sections
 
   Scenario: Reorder Questions
     Given I have a published Section with the name "Test Section"
-    And I have a Question with the content "What is your gender?" and the type "MC"
-    And I have a Question with the content "What is your name?" and the type "MC"
-    And I have a Response Set with the name "Gender Partial"
+    And I have a published Question with the content "What is your gender?" and the type "MC"
+    And I have a published Question with the content "What is your name?" and the type "MC"
+    And I have a published Response Set with the name "Gender Partial"
     And I am logged in as test_author@gmail.com
     When I go to the list of Sections
     And I click on the menu link for the Section with the name "Test Section"
@@ -111,7 +111,7 @@ Feature: Edit Sections
 
   Scenario: Create New Section from List and Create a Question using New Question Modal
     Given I have a Response Set with the name "Gender Full"
-    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I have a published Question with the content "What is your gender?" and the type "MC"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Sections" dropdown item
@@ -137,8 +137,8 @@ Feature: Edit Sections
 
   Scenario: Create New Section from List and Create a Response Set using New Response Set Modal
     Given I have a Response Set with the name "Gender Full"
-    And I have a Question with the content "What is your gender?" and the type "MC"
-    And I have a Question with the content "Do you like apples?" and the description "A simple boolean" and the response type "Boolean"
+    And I have a published Question with the content "What is your gender?" and the type "MC"
+    And I have a published Question with the content "Do you like apples?" and the description "A simple boolean" and the response type "Boolean"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Sections" dropdown item

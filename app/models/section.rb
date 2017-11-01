@@ -47,13 +47,16 @@ class Section < ApplicationRecord
   # Custom implementation as using the plain relationships in Rails will cause
   # N+1 queries to figure out most recent version for each question.
   def questions_with_most_recent
-    Question.find_by_sql(['select q.*, qmv.version as max_version
+    Question.find_by_sql(["select q.*, qmv.version as max_version, qmrv.version as most_recent_version
      from questions q, section_questions sq,
        (select version_independent_id, MAX(version) as version
          from questions group by version_independent_id) qmv
-     where qmv.version_independent_id = q.version_independent_id
+       left join (select version_independent_id, MAX(version) as version
+         from questions q where q.status = 'published'
+         group by version_independent_id) qmrv USING (version_independent_id)
+     where (qmv.version_independent_id = q.version_independent_id
      and sq.question_id = q.id
-     and sq.section_id = :section_id', { section_id: id }])
+     and sq.section_id = :section_id)", { section_id: id }])
   end
 
   def self.owned_by(owner_id)
@@ -65,6 +68,12 @@ class Section < ApplicationRecord
       self.status = 'published'
       self.published_by = publisher
       save!
+      # Updates previous version to no longer be most_recent
+      if version > 1
+        prev_version = Section.find_by(version_independent_id: version_independent_id,
+                                       version: version - 1)
+        UpdateIndexJob.perform_later('section', prev_version.id)
+      end
     end
     section_questions.each do |sq|
       sq.question.publish(publisher)
