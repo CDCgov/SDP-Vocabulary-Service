@@ -50,17 +50,13 @@ class Section < ApplicationRecord
     Question.find_by_sql(["select q.*, qmv.version as max_version, qmrv.version as most_recent_version
      from questions q, section_questions sq,
        (select version_independent_id, MAX(version) as version
-         from questions group by version_independent_id) qmv,
-       (select version_independent_id, MAX(version) as version
+         from questions group by version_independent_id) qmv
+       left join (select version_independent_id, MAX(version) as version
          from questions q where q.status = 'published'
-         group by version_independent_id) qmrv
+         group by version_independent_id) qmrv USING (version_independent_id)
      where (qmv.version_independent_id = q.version_independent_id
      and sq.question_id = q.id
-     and sq.section_id = :section_id)
-     or (qmv.version_independent_id = q.version_independent_id
-     and sq.question_id = q.id
-     and sq.section_id = :section_id
-     and qmrv.version_independent_id = q.version_independent_id)", { section_id: id }])
+     and sq.section_id = :section_id)", { section_id: id }])
   end
 
   def self.owned_by(owner_id)
