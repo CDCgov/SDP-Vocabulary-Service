@@ -9,7 +9,7 @@ class QuestionTypesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index' do
-    get question_types_url
+    get question_types_url, xhr: true, params: nil
     assert_response :success
   end
 end

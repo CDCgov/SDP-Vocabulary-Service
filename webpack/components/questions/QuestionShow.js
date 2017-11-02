@@ -126,6 +126,10 @@ export default class QuestionShow extends Component {
               <strong>Question Type: </strong>
               {question.questionType.name && question.questionType.name}
             </div>}
+            {question.subcategory && <div className="box-content">
+              <strong>Subcategory: </strong>
+              {question.subcategory.name && question.subcategory.name}
+            </div>}
             {question.responseType && <div className="box-content">
               <strong>Response Type: </strong>
               {question.responseType.name && question.responseType.name}

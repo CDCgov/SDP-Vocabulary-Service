@@ -11,6 +11,9 @@ class QuestionsSerializer < ActiveModel::Serializer
   attribute :questionType do
     object.question_type.name if object.question_type
   end
+  attribute :subcategory do
+    object.subcategory.name if object.subcategory
+  end
   attribute :responseType do
     object.response_type.name if object.response_type
   end

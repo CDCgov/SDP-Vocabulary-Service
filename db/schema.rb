@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026122938) do
+ActiveRecord::Schema.define(version: 20171101122604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,9 +89,11 @@ ActiveRecord::Schema.define(version: 20171026122938) do
     t.integer "parent_id"
     t.boolean "other_allowed"
     t.integer "published_by_id"
+    t.bigint "subcategory_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id"
     t.index ["question_type_id"], name: "index_questions_on_question_type_id"
     t.index ["response_type_id"], name: "index_questions_on_response_type_id"
+    t.index ["subcategory_id"], name: "index_questions_on_subcategory_id"
     t.index ["updated_by_id"], name: "index_questions_on_updated_by_id"
   end
 
@@ -164,6 +166,12 @@ ActiveRecord::Schema.define(version: 20171026122938) do
     t.integer "published_by_id"
     t.integer "parent_id"
     t.index ["created_by_id"], name: "index_sections_on_created_by_id"
+  end
+
+  create_table "subcategories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "question_type_id"
+    t.index ["question_type_id"], name: "index_subcategories_on_question_type_id"
   end
 
   create_table "surveillance_programs", id: :serial, force: :cascade do |t|
@@ -239,6 +247,7 @@ ActiveRecord::Schema.define(version: 20171026122938) do
   add_foreign_key "authentications", "users"
   add_foreign_key "questions", "question_types"
   add_foreign_key "questions", "response_types"
+  add_foreign_key "questions", "subcategories"
   add_foreign_key "questions", "users", column: "created_by_id"
   add_foreign_key "questions", "users", column: "published_by_id"
   add_foreign_key "questions", "users", column: "updated_by_id"
@@ -248,6 +257,7 @@ ActiveRecord::Schema.define(version: 20171026122938) do
   add_foreign_key "responses", "response_sets"
   add_foreign_key "sections", "users", column: "created_by_id"
   add_foreign_key "sections", "users", column: "published_by_id"
+  add_foreign_key "subcategories", "question_types"
   add_foreign_key "surveys", "surveillance_programs"
   add_foreign_key "surveys", "surveillance_systems"
   add_foreign_key "surveys", "users", column: "created_by_id"

@@ -108,6 +108,7 @@ class QuestionEdit extends Component {
       content: '',
       description: '',
       questionTypeId: null,
+      subcategoryId: null,
       versionIndependentId: null,
       version: 1,
       responseTypeId: null,
@@ -123,6 +124,7 @@ class QuestionEdit extends Component {
       description: this.props.question.description,
       otherAllowed: this.props.question.otherAllowed,
       questionTypeId: questionType ? questionType.id : undefined,
+      subcategoryId: this.props.question.subcategory ? this.props.question.subcategory.id : undefined,
       responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
     questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
     questionCopy.linkedResponseSets = this.props.question.responseSets || [];
@@ -204,7 +206,21 @@ class QuestionEdit extends Component {
                       </select>
                     </div>
                 </div>
-
+                {questionTypes && questionTypes[state.questionTypeId] && questionTypes[state.questionTypeId].subcategories && questionTypes[state.questionTypeId].subcategories.length > 0 &&
+                  <div className="row">
+                    <div className="col-md-8 question-form-group">
+                    </div>
+                    <div className="col-md-4 question-form-group">
+                      <label className="input-label" htmlFor="subcategoryId">Subcategory</label>
+                      <select className="input-select" name="subcategoryId" id="subcategoryId" value={state.subcategoryId || undefined} onChange={this.handleChange('subcategoryId')} >
+                        <option value=""></option>
+                        {questionTypes[state.questionTypeId].subcategories.map((s) => {
+                          return <option key={s.id} value={s.id}>{s.name}</option>;
+                        })}
+                      </select>
+                    </div>
+                  </div>
+                }
                 <div className="row ">
                   <div className="col-md-8 question-form-group">
                     <label className="input-label" htmlFor="question-description">Description</label>

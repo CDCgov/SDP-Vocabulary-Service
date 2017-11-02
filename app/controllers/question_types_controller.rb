@@ -1,5 +1,5 @@
 class QuestionTypesController < ApplicationController
   def index
-    render json: QuestionType.all
+    @question_types = QuestionType.all
   end
 end

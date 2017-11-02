@@ -43,5 +43,17 @@ QuestionType.find_or_create_by name: 'Demographics'
 QuestionType.find_or_create_by name: 'Clinical'
 QuestionType.find_or_create_by name: 'Treatment'
 QuestionType.find_or_create_by name: 'Laboratory'
-QuestionType.find_or_create_by name: 'Epidemiological'
 QuestionType.find_or_create_by name: 'Vaccine'
+epid = QuestionType.find_or_create_by name: 'Epidemiological'
+ep = QuestionType.find_or_create_by name: 'Emergency Preparedness'
+
+Subcategory.find_or_create_by name: 'Managing & Commanding', question_type: ep
+Subcategory.find_or_create_by name: 'Operations', question_type: ep
+Subcategory.find_or_create_by name: 'Planning/Intelligence', question_type: ep
+Subcategory.find_or_create_by name: 'Logistics', question_type: ep
+Subcategory.find_or_create_by name: 'Financial/Administration', question_type: ep
+
+Subcategory.find_or_create_by name: 'Travel', question_type: epid
+Subcategory.find_or_create_by name: 'Contact or Exposure', question_type: epid
+Subcategory.find_or_create_by name: 'Drug Abuse', question_type: epid
+Subcategory.find_or_create_by name: 'Sexual Behavior', question_type: epid
