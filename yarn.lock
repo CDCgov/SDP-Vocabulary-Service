@@ -4136,7 +4136,7 @@ mocha@^3.2.0:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-moment@>=1.6.0, moment@^2.17.1:
+moment@>=1.6.0:
   version "2.19.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
 
@@ -4649,10 +4649,6 @@ pkg-dir@^2.0.0:
 pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
-
-popper.js@^1.12.5:
-  version "1.12.6"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.6.tgz#91e12a97b07815258b76915d64044e8ac053d426"
 
 portfinder@^1.0.9:
   version "1.0.13"
@@ -5355,22 +5351,11 @@ react-bootstrap@^0.31.0:
     uncontrollable "^4.1.0"
     warning "^3.0.0"
 
-react-datepicker@^0.56.0:
-  version "0.56.0"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-0.56.0.tgz#2f6190043e06bf59b2cde2d8c31982b553812a52"
-  dependencies:
-    classnames "^2.2.5"
-    moment "^2.17.1"
-    prop-types "^15.5.8"
-    react-onclickoutside "^6.1.1"
-    react-popper "^0.7.2"
-
-react-dates@^13.0.6:
-  version "13.0.6"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-13.0.6.tgz#b1b98be7a2b886d1a2d47cc375dc38c10b68f539"
+react-dates@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-15.0.0.tgz#2db2207cb5fc8569b0f85be2ec3abfb4f4b78634"
   dependencies:
     airbnb-prop-types "^2.8.1"
-    classnames "^2.2.5"
     consolidated-events "^1.1.0"
     is-touch-device "^1.0.1"
     lodash "^4.1.1"
@@ -5405,10 +5390,6 @@ react-moment-proptypes@^1.5.0:
   dependencies:
     moment ">=1.6.0"
 
-react-onclickoutside@^6.1.1:
-  version "6.6.2"
-  resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.6.2.tgz#8446f665460ffda1c68b7f3aeeea3a217bfdf18f"
-
 react-overlays@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.7.0.tgz#531898ff566c7e5c7226ead2863b8cf9fbb5a981"
@@ -5418,13 +5399,6 @@ react-overlays@^0.7.0:
     prop-types "^15.5.8"
     react-prop-types "^0.4.0"
     warning "^3.0.0"
-
-react-popper@^0.7.2:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.4.tgz#8649d539837e7c6f47bc9b24c9cf57a404e199a1"
-  dependencies:
-    popper.js "^1.12.5"
-    prop-types "^15.5.10"
 
 react-portal@^3.1.0:
   version "3.2.0"
@@ -5477,8 +5451,8 @@ react-with-styles-interface-css@^3.0.0:
     global-cache "^1.2.1"
 
 react-with-styles@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-with-styles/-/react-with-styles-2.2.0.tgz#c85352d9e5951824b259bf9fad11dbcf74a15571"
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-with-styles/-/react-with-styles-2.2.1.tgz#5c78dc70472ddbcf466f2d5d4091cd2637a2eca4"
   dependencies:
     deepmerge "^1.5.2"
     global-cache "^1.2.1"

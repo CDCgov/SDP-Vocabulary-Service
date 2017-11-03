@@ -100,7 +100,7 @@ export function fetchMoreSearchResults(context, searchParameters) {
 export function setLastSearch(searchParameters) {
   return {
     type: SET_LAST_SEARCH,
-    payload: searchParameters.toSearchParameters()
+    payload: searchParameters
   };
 }
 

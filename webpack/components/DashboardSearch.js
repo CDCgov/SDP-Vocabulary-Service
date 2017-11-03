@@ -1,13 +1,10 @@
-import DatePicker from 'react-datepicker';
-
-import 'react-datepicker/dist/react-datepicker.css';
-
+import { SingleDatePicker } from 'react-dates';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import NestedSearchBar from './NestedSearchBar';
-import { AbstractSearchComponent } from './AbstractSearchComponent';
+import SearchStateComponent from './SearchStateComponent';
 import { SearchParameters } from '../actions/search_results_actions';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
@@ -16,7 +13,7 @@ import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
 import $ from 'jquery';
 
-class DashboardSearch extends AbstractSearchComponent {
+class DashboardSearch extends SearchStateComponent {
   constructor(props){
     super(props);
     this.state={
@@ -49,6 +46,11 @@ class DashboardSearch extends AbstractSearchComponent {
         surveillancePrograms: surveillancePrograms
       });
     }
+    if (nextProps.lastSearch &&
+      (nextProps.lastSearch.type !== this.state.type
+        || nextProps.lastSearch.myStuffFilter !== this.state.myStuffFilter)) {
+      this.setState({myStuffFilter: nextProps.lastSearch.myStuffFilter, type: nextProps.lastSearch.type});
+    }
   }
 
   componentWillMount() {
@@ -67,7 +69,7 @@ class DashboardSearch extends AbstractSearchComponent {
   }
 
   clearAdvSearch() {
-    this.props.setFiltersParent({
+    this.props.changeFiltersCallback({
       programFilter: [],
       systemFilter: [],
       mostRecentFilter: false,
@@ -84,7 +86,7 @@ class DashboardSearch extends AbstractSearchComponent {
   selectFilters(e, filterType) {
     var newState = {};
     newState[filterType] = $(e.target).val().map((opt) => parseInt(opt));
-    this.props.setFiltersParent(newState);
+    this.props.changeFiltersCallback(newState);
     return this.setState(newState);
   }
 
@@ -93,7 +95,7 @@ class DashboardSearch extends AbstractSearchComponent {
     this.setState(newState);
     let newParams = Object.assign(this.currentSearchParameters(), newState);
     this.props.search(newParams);
-    this.props.setFiltersParent(newState);
+    this.props.changeFiltersCallback(newState);
   }
 
   programSearch(programSearchTerm){
@@ -152,7 +154,7 @@ class DashboardSearch extends AbstractSearchComponent {
     let newState = {mostRecentFilter: !this.state.mostRecentFilter};
     this.setState(newState);
     this.props.search(this.currentSearchParameters());
-    this.props.setFiltersParent(newState);
+    this.props.changeFiltersCallback(newState);
 
   }
 
@@ -181,7 +183,14 @@ class DashboardSearch extends AbstractSearchComponent {
                 <h2>Additonal Filters:</h2>
                 <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
                 <label htmlFor="most-recent-filter">Most Recent Versions Only</label>
-                <p>Content Changed Since: <DatePicker selected={this.state.contentSince} onChange={this.handleDateChange} /></p>
+                <div>
+                  <label htmlFor='content-since'>Content Changed Since</label>
+                  <SingleDatePicker date={this.state.contentSince}
+                                    onDateChange={this.handleDateChange}
+                                    focused={this.state.focused}
+                                    onFocusChange={({ focused }) => this.setState({ focused })}
+                                    isOutsideRange={(day) => day.isAfter()}/>
+                </div>
               </div>
             </div>
           )}
@@ -256,7 +265,7 @@ DashboardSearch.propTypes = {
   search: PropTypes.func.isRequired,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps,
-  setFiltersParent: PropTypes.func,
+  changeFiltersCallback: PropTypes.func,
   searchSource: PropTypes.string,
   lastSearch: PropTypes.object
 };

@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
-import { AbstractSearchComponent } from '../components/AbstractSearchComponent';
+import SearchManagerComponent from '../components/SearchManagerComponent';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
 import currentUserProps from '../prop-types/current_user_props';
@@ -19,11 +19,11 @@ import { signUp } from '../actions/current_user_actions';
 const DASHBOARD_CONTEXT = 'DASHBOARD_CONTEXT';
 const NO_SEARCH_RESULTS = {};
 
-class DashboardContainer extends AbstractSearchComponent {
+class DashboardContainer extends SearchManagerComponent {
   constructor(props){
     super(props);
     this.search = this.search.bind(this);
-    this.setFiltersParent = this.setFiltersParent.bind(this);
+    this.changeFiltersCallback = this.changeFiltersCallback.bind(this);
     this.selectType = this.selectType.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.openSignUpModal = this.openSignUpModal.bind(this);
@@ -160,7 +160,7 @@ class DashboardContainer extends AbstractSearchComponent {
               <div className="dashboard-details">
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
                                  surveillancePrograms={this.props.surveillancePrograms}
-                                 setFiltersParent={this.setFiltersParent}
+                                 changeFiltersCallback={this.changeFiltersCallback}
                                  searchSource={this.props.searchResults.Source}
                                  lastSearch={this.props.lastSearch} />
                 <div className="row">
@@ -198,23 +198,11 @@ class DashboardContainer extends AbstractSearchComponent {
   }
 
   loadMore() {
-    let searchParameters = this.currentSearchParameters();
-    searchParameters.page = this.state.page + 1;
-    this.props.fetchMoreSearchResults(DASHBOARD_CONTEXT, searchParameters);
-    this.props.setLastSearch(searchParameters);
-    this.setState({page: searchParameters.page});
-  }
-
-  setFiltersParent(newState) {
-    this.setState(newState);
+    super.loadMore(DASHBOARD_CONTEXT, (searchParameters) => this.props.setLastSearch(searchParameters));
   }
 
   search(searchParameters) {
-    let newParams = Object.assign(this.currentSearchParameters(), searchParameters);
-    this.props.fetchSearchResults(DASHBOARD_CONTEXT, newParams);
-    this.props.setLastSearch(newParams);
-    newParams.page = 1;
-    this.setState(newParams);
+    super.search(searchParameters, DASHBOARD_CONTEXT, (searchParameters) => this.props.setLastSearch(searchParameters));
   }
 
   selectType(searchType, myStuffToggle=false) {

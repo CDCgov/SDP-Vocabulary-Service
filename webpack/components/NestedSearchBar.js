@@ -15,6 +15,7 @@ class NestedSearchBar extends Component {
             placeholder={`Search ${this.props.modelName}s...`}
             value={this.state.term}
             aria-label={`Search ${this.props.modelName}s`}
+            name={`Search${this.props.modelName}s`}
             onChange={event => this.onInputChange(event.target.value)}
             onKeyPress={event => this.onEnter(event)} />
           <span className="input-group-btn">
