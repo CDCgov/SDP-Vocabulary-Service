@@ -185,7 +185,8 @@ class DashboardSearch extends SearchStateComponent {
                 <label htmlFor="most-recent-filter">Most Recent Versions Only</label>
                 <div>
                   <label htmlFor='content-since'>Content Changed Since</label>
-                  <SingleDatePicker date={this.state.contentSince}
+                  <SingleDatePicker id="content-since"
+                                    date={this.state.contentSince}
                                     onDateChange={this.handleDateChange}
                                     focused={this.state.focused}
                                     onFocusChange={({ focused }) => this.setState({ focused })}
