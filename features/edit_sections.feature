@@ -104,7 +104,7 @@ Feature: Edit Sections
     And I should see "Result Already Added"
     And I click on the "Save" button
     And I should see "What is your gender?"
-    Then I wait 1 seconds
+    Then I wait 2 seconds
     And I should see the question "What is your name?" first
     And I should see the response set "Gender Partial" second
     And I should see "TEST VAR"

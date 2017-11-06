@@ -24,7 +24,7 @@ Feature: Advanced Search
   Scenario: Filter search by date
     And I am on the "/" page
     When I click on the "Advanced" link
-    And I fill in the "date" field with "07/29/2017"
+    And I fill in the "content-since" field with "07/29/2017"
     And I click on the "Close" button
     Then I should see "Content Since Filter:"
     And I should see "7/29/2017"

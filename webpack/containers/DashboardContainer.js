@@ -54,12 +54,7 @@ class DashboardContainer extends SearchManagerComponent {
     this.setState(searchParameters);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.programFilter != undefined && (prevState.programFilter !== this.state.programFilter || prevState.systemFilter !== this.state.systemFilter)) {
-      this.props.fetchSearchResults(DASHBOARD_CONTEXT, this.currentSearchParameters());
-      this.props.setLastSearch(this.currentSearchParameters());
-    }
-
+  componentDidUpdate(prevProps) {
     if(prevProps != this.props) {
       let steps = [
         {

@@ -153,7 +153,9 @@ class DashboardSearch extends SearchStateComponent {
   toggleMostRecentFilter() {
     let newState = {mostRecentFilter: !this.state.mostRecentFilter};
     this.setState(newState);
-    this.props.search(this.currentSearchParameters());
+    let searchParams = this.currentSearchParameters();
+    searchParams.mostRecentFilter = newState.mostRecentFilter;
+    this.props.search(searchParams);
     this.props.changeFiltersCallback(newState);
 
   }
