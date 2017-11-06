@@ -39,7 +39,7 @@ class QuestionsController < ApplicationController
     if @question.save
       render :show, status: :created, location: @question
     else
-      # @question_types = QuestionType.all
+      # @categories = Category.all
       render json: @question.errors, status: :unprocessable_entity
     end
   end
@@ -76,7 +76,7 @@ class QuestionsController < ApplicationController
       if @question.update(question_params)
         render :show, status: :ok, location: @question
       else
-        @question_types = QuestionType.all
+        @categories = Category.all
         render json: @question.errors, status: :unprocessable_entity
       end
     end
@@ -110,7 +110,7 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :question_type_id,
+    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :category_id,
                                      :version_independent_id, :description, :status, :other_allowed, :subcategory_id,
                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end

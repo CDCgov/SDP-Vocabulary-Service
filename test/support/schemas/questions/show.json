@@ -3,7 +3,7 @@
       "questionId" : {"type" : "string"},
       "questionText" : {"type" : "string"},
       "questionUri" : {"type" : "string"},
-      "questionType" : {"type" : "string"},
+      "category" : {"type" : "string"},
       "responseType" : {"type" : "string"},
       "version" : {"type" : "number"},
       "published_by" : {

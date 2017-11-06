@@ -1,15 +1,15 @@
 require 'test_helper'
 
-class QuestionTypesControllerTest < ActionDispatch::IntegrationTest
+class CategoriesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @question_type = question_types(:one)
+    @category = categories(:one)
     sign_in users(:admin)
   end
 
   test 'should get index' do
-    get question_types_url, xhr: true, params: nil
+    get categories_url, xhr: true, params: nil
     assert_response :success
   end
 end

@@ -562,9 +562,12 @@ definitions:
       questionUri:
         type: string
         title: Relative URI of the question
-      questionType:
+      category:
         type: string
         title: Type of the question
+      subcategory:
+        type: string
+        title: Sub-type of the question
       responseType:
         type: string
         title: Type of response

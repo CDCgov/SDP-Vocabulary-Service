@@ -240,8 +240,8 @@ def attribute_to_id(object_type, attribute, attribute_value)
     obj = ResponseSet.find_by(attribute => attribute_value)
   elsif object_type == 'Question'
     obj = Question.find_by(attribute => attribute_value)
-  elsif object_type == 'Question Type'
-    obj = QuestionType.find_by(attribute => attribute_value)
+  elsif object_type == 'Category'
+    obj = Category.find_by(attribute => attribute_value)
   elsif object_type == 'Section'
     obj = Section.find_by(attribute => attribute_value)
   elsif object_type == 'Survey'

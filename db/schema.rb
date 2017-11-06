@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101122604) do
+ActiveRecord::Schema.define(version: 20171103123808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,12 @@ ActiveRecord::Schema.define(version: 20171101122604) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_authentications_on_user_id"
+  end
+
+  create_table "categories", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "comments", id: :serial, force: :cascade do |t|
@@ -67,17 +73,10 @@ ActiveRecord::Schema.define(version: 20171101122604) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "question_types", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "questions", id: :serial, force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "question_type_id"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.string "version_independent_id"
@@ -90,8 +89,9 @@ ActiveRecord::Schema.define(version: 20171101122604) do
     t.boolean "other_allowed"
     t.integer "published_by_id"
     t.bigint "subcategory_id"
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id"
-    t.index ["question_type_id"], name: "index_questions_on_question_type_id"
     t.index ["response_type_id"], name: "index_questions_on_response_type_id"
     t.index ["subcategory_id"], name: "index_questions_on_subcategory_id"
     t.index ["updated_by_id"], name: "index_questions_on_updated_by_id"
@@ -170,8 +170,8 @@ ActiveRecord::Schema.define(version: 20171101122604) do
 
   create_table "subcategories", force: :cascade do |t|
     t.string "name"
-    t.bigint "question_type_id"
-    t.index ["question_type_id"], name: "index_subcategories_on_question_type_id"
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_subcategories_on_category_id"
   end
 
   create_table "surveillance_programs", id: :serial, force: :cascade do |t|
@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(version: 20171101122604) do
   end
 
   add_foreign_key "authentications", "users"
-  add_foreign_key "questions", "question_types"
+  add_foreign_key "questions", "categories"
   add_foreign_key "questions", "response_types"
   add_foreign_key "questions", "subcategories"
   add_foreign_key "questions", "users", column: "created_by_id"
@@ -257,7 +257,7 @@ ActiveRecord::Schema.define(version: 20171101122604) do
   add_foreign_key "responses", "response_sets"
   add_foreign_key "sections", "users", column: "created_by_id"
   add_foreign_key "sections", "users", column: "published_by_id"
-  add_foreign_key "subcategories", "question_types"
+  add_foreign_key "subcategories", "categories"
   add_foreign_key "surveys", "surveillance_programs"
   add_foreign_key "surveys", "surveillance_systems"
   add_foreign_key "surveys", "users", column: "created_by_id"

@@ -107,7 +107,7 @@ class QuestionEdit extends Component {
     return {
       content: '',
       description: '',
-      questionTypeId: null,
+      categoryId: null,
       subcategoryId: null,
       versionIndependentId: null,
       version: 1,
@@ -119,11 +119,11 @@ class QuestionEdit extends Component {
   }
 
   copyQuestion() {
-    let questionType = this.props.question.category ? this.props.question.category : this.props.question.questionType;
+    let category = this.props.question.category ? this.props.question.category : this.props.question.category;
     let questionCopy = {content: this.props.question.content,
       description: this.props.question.description,
       otherAllowed: this.props.question.otherAllowed,
-      questionTypeId: questionType ? questionType.id : undefined,
+      categoryId: category ? category.id : undefined,
       subcategoryId: this.props.question.subcategory ? this.props.question.subcategory.id : undefined,
       responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
     questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
@@ -159,9 +159,9 @@ class QuestionEdit extends Component {
   }
 
   render(){
-    const {question, questionTypes, responseTypes} = this.props;
+    const {question, categories, responseTypes} = this.props;
     const state = this.state;
-    if(!question || !questionTypes || !responseTypes){
+    if(!question || !categories || !responseTypes){
       return (<div>Loading....</div>);
     }
     return (
@@ -197,16 +197,16 @@ class QuestionEdit extends Component {
                       <input className="input-format" placeholder="Question text" type="text" name="content" id="content" defaultValue={state.content} onChange={this.handleChange('content')} />
                     </div>
                     <div className="col-md-4 question-form-group">
-                      <label className="input-label" htmlFor="questionTypeId">Category</label>
-                      <select className="input-select" name="questionTypeId" id="questionTypeId" value={state.questionTypeId || undefined} onChange={this.handleChange('questionTypeId')} >
+                      <label className="input-label" htmlFor="categoryId">Category</label>
+                      <select className="input-select" name="categoryId" id="categoryId" value={state.categoryId || undefined} onChange={this.handleChange('categoryId')} >
                         <option value=""></option>
-                        {questionTypes && values(questionTypes).map((qt) => {
-                          return <option key={qt.id} value={qt.id}>{qt.name}</option>;
+                        {categories && values(categories).map((ct) => {
+                          return <option key={ct.id} value={ct.id}>{ct.name}</option>;
                         })}
                       </select>
                     </div>
                 </div>
-                {questionTypes && questionTypes[state.questionTypeId] && questionTypes[state.questionTypeId].subcategories && questionTypes[state.questionTypeId].subcategories.length > 0 &&
+                {categories && categories[state.categoryId] && categories[state.categoryId].subcategories && categories[state.categoryId].subcategories.length > 0 &&
                   <div className="row">
                     <div className="col-md-8 question-form-group">
                     </div>
@@ -214,7 +214,7 @@ class QuestionEdit extends Component {
                       <label className="input-label" htmlFor="subcategoryId">Subcategory</label>
                       <select className="input-select" name="subcategoryId" id="subcategoryId" value={state.subcategoryId || undefined} onChange={this.handleChange('subcategoryId')} >
                         <option value=""></option>
-                        {questionTypes[state.questionTypeId].subcategories.map((s) => {
+                        {categories[state.categoryId].subcategories.map((s) => {
                           return <option key={s.id} value={s.id}>{s.name}</option>;
                         })}
                       </select>
@@ -417,7 +417,7 @@ QuestionEdit.propTypes = {
   router: PropTypes.object,
   action: PropTypes.string,
   question: questionProps,
-  questionTypes: PropTypes.object,
+  categories: PropTypes.object,
   responseTypes: PropTypes.object,
   setStats: PropTypes.func,
   stats: PropTypes.object,

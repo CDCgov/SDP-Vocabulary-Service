@@ -8,8 +8,8 @@ class QuestionsSerializer < ActiveModel::Serializer
   end
   attribute :version, key: :version
   attribute :published_by, serializer: UserSerializer
-  attribute :questionType do
-    object.question_type.name if object.question_type
+  attribute :category do
+    object.category.name if object.category
   end
   attribute :subcategory do
     object.subcategory.name if object.subcategory

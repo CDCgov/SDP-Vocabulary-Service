@@ -3,8 +3,8 @@ import {
 } from 'redux';
 
 import {
-  FETCH_QUESTION_TYPE_FULFILLED,
-  FETCH_QUESTION_TYPES_FULFILLED,
+  FETCH_CATEGORY_FULFILLED,
+  FETCH_CATEGORIES_FULFILLED,
   FETCH_RESPONSE_TYPES_FULFILLED,
   FETCH_RESPONSE_TYPE_FULFILLED,
   FETCH_SURVEILLANCE_SYSTEMS_FULFILLED,
@@ -38,8 +38,8 @@ import tutorialSteps from './tutorial_reducer';
 import lastSearch from './last_search_reducer';
 import suggestions from './suggestions_reducer';
 
-const questionTypes = byIdWithIndividualReducer(FETCH_QUESTION_TYPES_FULFILLED,
-  FETCH_QUESTION_TYPE_FULFILLED, 'questionTypes');
+const categories = byIdWithIndividualReducer(FETCH_CATEGORIES_FULFILLED,
+  FETCH_CATEGORY_FULFILLED, 'categories');
 const responseTypes = byIdWithIndividualReducer(FETCH_RESPONSE_TYPES_FULFILLED,
   FETCH_RESPONSE_TYPE_FULFILLED, 'responseTypes');
 const surveillanceSystems  = byIdReducer(FETCH_SURVEILLANCE_SYSTEMS_FULFILLED, ADD_SYSTEM_FULFILLED);
@@ -48,7 +48,7 @@ const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED, GRANT_PUBLISHER_FULFI
 const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE_ADMIN_FULFILLED);
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, sections, questionTypes, admins,
+  questions, comments, stats, currentUser, responseSets, sections, categories, admins,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags
 });

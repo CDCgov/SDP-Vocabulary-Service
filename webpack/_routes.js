@@ -524,6 +524,9 @@ Based on Rails routes of Vocabulary::Application
 // cancel_user_registration => /users/cancel(.:format)
   // function(options)
   cancel_user_registration_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"cancel",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// categories => /categories(.:format)
+  // function(options)
+  categories_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"categories",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // comment => /comments/:id(.:format)
   // function(id, options)
   comment_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
@@ -629,9 +632,6 @@ Based on Rails routes of Vocabulary::Application
 // question => /questions/:id(.:format)
   // function(id, options)
   question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
-// question_types => /question_types(.:format)
-  // function(options)
-  question_types_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"question_types",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // questions => /questions(.:format)
   // function(options)
   questions_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),

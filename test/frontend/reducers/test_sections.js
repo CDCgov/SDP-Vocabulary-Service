@@ -10,7 +10,7 @@ import {
 } from '../../../webpack/actions/types';
 
 describe('sections reducer', () => {
-  const twoQuestions = [{id:1,content:"M?",questionTypeId:1},{id:2,content:"F?",questionTypeId:1}];
+  const twoQuestions = [{id:1,content:"M?",categoryId:1},{id:2,content:"F?",categoryId:1}];
   const twoSections = [
                     {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", questions:[]},
                     {id: 3, name: "Blue Section", userId: "testAuthor@gmail.com", questions: twoQuestions}
@@ -26,7 +26,7 @@ describe('sections reducer', () => {
 
   it('should add a question', () => {
     const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionQuestions:[]}
-    const question = {id: 1, content: "Is this a question?", questionType: ""};
+    const question = {id: 1, content: "Is this a question?", category: ""};
     const action = {type: ADD_QUESTION, payload: {question, section} };
     const startState = {};
     const nextState = sections(startState, action);
@@ -35,7 +35,7 @@ describe('sections reducer', () => {
 
   it('should not add a question twice', () => {
     const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionQuestions:[]}
-    const question = {id: 1, content: "Is this a question?", questionType: ""};
+    const question = {id: 1, content: "Is this a question?", category: ""};
     const action = {type: ADD_QUESTION, payload: {question, section} };
     const nextState  = sections({}, action);
     const finalState = sections(nextState, action);
@@ -43,7 +43,7 @@ describe('sections reducer', () => {
   });
 
   it('should remove a question', () => {
-    const question = {id: 1, content: "Is this a question?", questionType: ""};
+    const question = {id: 1, content: "Is this a question?", category: ""};
     const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionQuestions:[question]};
     const action = {type: REMOVE_QUESTION, payload: {section, index: 0} };
     const startState = {1: section};

@@ -5,7 +5,7 @@ describe('QuestionShow', () => {
   let component;
 
   beforeEach(() => {
-    const question = {id: 1, concepts: [], content: "Is this a question?", createdBy: { email: "test@test.com" }, questionType: ""};
+    const question = {id: 1, concepts: [], content: "Is this a question?", createdBy: { email: "test@test.com" }, category: ""};
     const currentUser = {id: 1, email: "test@test.com"};
     const responseSets = [];
     component = renderComponent(QuestionShow, {question, responseSets, currentUser});

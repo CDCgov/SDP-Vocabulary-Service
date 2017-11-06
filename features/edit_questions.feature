@@ -74,7 +74,7 @@ Feature: Edit Questions
 
   Scenario: Create New Question from List with Warning Modal
     Given I have a Response Set with the name "Gender Full"
-    And I have a Question Type with the name "Multiple Choice"
+    And I have a Category with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Questions" dropdown item
@@ -93,7 +93,7 @@ Feature: Edit Questions
     And I should see "What is your favorite animal?"
 
   Scenario: Create New Question that does not use a response set
-    And I have a Question Type with the name "Multiple Choice"
+    And I have a Category with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Questions" dropdown item
@@ -105,7 +105,7 @@ Feature: Edit Questions
     And I should see "What time is it?"
 
   Scenario: Should toggle ability to see response sets based on response type selection
-    And I have a Question Type with the name "Multiple Choice"
+    And I have a Category with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Questions" dropdown item
@@ -117,7 +117,7 @@ Feature: Edit Questions
 
   Scenario: Abandon New Question with Warning Modal
     Given I have a Response Set with the name "Gender Full"
-    And I have a Question Type with the name "Multiple Choice"
+    And I have a Category with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Questions" dropdown item
@@ -133,7 +133,7 @@ Feature: Edit Questions
 
   Scenario: Reject Blank Question
     Given I have a Response Set with the name "Gender Full"
-    And I have a Question Type with the name "Multiple Choice"
+    And I have a Category with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
     When I go to the list of Questions
     And I click on the create "Questions" dropdown item

@@ -3,7 +3,7 @@ Feature: Draft, Publish, and Revise Questions
   I want to draft, edit, publish, and revise Questions
   Scenario: Create a draft Question
     Given I have a Response Set with the name "Gender Full"
-    And I have a Question Type with the name "Multiple Choice"
+    And I have a Category with the name "Multiple Choice"
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     And I click on the create "Questions" dropdown item

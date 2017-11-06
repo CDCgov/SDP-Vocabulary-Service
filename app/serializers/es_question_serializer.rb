@@ -51,7 +51,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   end
 
   def category
-    { id: object.question_type.id, name: object.question_type.name } if object.question_type
+    { id: object.category.id, name: object.category.name } if object.category
   end
 
   def subcategory
