@@ -20,3 +20,12 @@ Feature: Advanced Search
     And I should see "Influenza"
     And I should see "Clear Adv. Filters"
     And I should see "Filtering by most recent version"
+
+  Scenario: Filter search by date
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I fill in the "content-since" field with "07/29/2017"
+    And I click on the "Close" button
+    Then I should see "Content Since Filter:"
+    And I should see "7/29/2017"
+    And I should see "Clear Adv. Filters"

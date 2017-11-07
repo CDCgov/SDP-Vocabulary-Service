@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,11 +13,13 @@ import { fetchSearchResults } from '../../actions/search_results_actions';
 import SearchResult from '../../components/SearchResult';
 import DashboardSearch from '../../components/DashboardSearch';
 import SearchResultList from '../../components/SearchResultList';
+import SearchManagerComponent from '../../components/SearchManagerComponent';
+import { SearchParameters } from '../../actions/search_results_actions';
 import { Modal, Button } from 'react-bootstrap';
 
 const QUESTION_ITEM_CONTEXT = 'QUESTION_ITEM_CONTEXT';
 
-class QuestionItem extends Component {
+class QuestionItem extends SearchManagerComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,11 +27,12 @@ class QuestionItem extends Component {
       programVar: this.props.programVar,
       showSearchModal: false,
       showProgramVarModal: false,
-      progFilters: [],
-      sysFilters: [],
-      mostRecentFilter: false
+      programFilter: [],
+      systemFilter: [],
+      mostRecentFilter: false,
+      type: 'response_set'
     };
-    this.setFiltersParent = this.setFiltersParent.bind(this);
+    this.changeFiltersCallback = this.changeFiltersCallback.bind(this);
     this.showResponseSetSearch = this.showResponseSetSearch.bind(this);
     this.hideResponseSetSearch = this.hideResponseSetSearch.bind(this);
     this.updateProgramVar = this.updateProgramVar.bind(this);
@@ -42,19 +45,15 @@ class QuestionItem extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if(prevState.page === this.state.page && prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
-      let searchTerms = this.state.searchTerms;
-      if(searchTerms === ''){
-        searchTerms = null;
-      }
-      this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, 'response_set', this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter);
+    if(prevState.page === this.state.page && prevState.programFilter != undefined && (prevState.programFilter !== this.state.programFilter || prevState.systemFilter !== this.state.systemFilter)) {
+      this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, this.currentSearchParameters());
     }
   }
 
   showResponseSetSearch(e) {
     e.preventDefault();
     this.setState({ showSearchModal: true });
-    this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, '', 'response_set');
+    this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, new SearchParameters({type: 'response_set'}));
   }
 
   hideResponseSetSearch() {
@@ -81,10 +80,6 @@ class QuestionItem extends Component {
     this.props.handleResponseSetChange(this.props.index, event);
   }
 
-  setFiltersParent(newState) {
-    this.setState(newState);
-  }
-
   updateProgramVar(e){
     this.setState({programVar : e.target.value});
   }
@@ -95,13 +90,9 @@ class QuestionItem extends Component {
     this.props.handleProgramVarChange(this.props.index, this.state.programVar);
   }
 
-  search(searchTerms, progFilters, sysFilters, mostRecentFilter) {
-    let searchType = 'response_set';
-    if(searchTerms === ''){
-      searchTerms = null;
-    }
-    this.props.fetchSearchResults(QUESTION_ITEM_CONTEXT, searchTerms, searchType, progFilters, sysFilters, mostRecentFilter);
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1});
+  search(searchParameters) {
+    searchParameters.type = 'response_set';
+    super.search(searchParameters, QUESTION_ITEM_CONTEXT);
   }
 
   searchModal() {
@@ -113,7 +104,7 @@ class QuestionItem extends Component {
         <Modal.Body bsStyle='search'>
           <DashboardSearch search={this.search}
                            searchSource={this.props.searchResults.Source}
-                           setFiltersParent={this.setFiltersParent}
+                           changeFiltersCallback={this.changeFiltersCallback}
                            surveillanceSystems={this.props.surveillanceSystems}
                            surveillancePrograms={this.props.surveillancePrograms}
                           />

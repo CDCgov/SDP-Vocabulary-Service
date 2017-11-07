@@ -2,6 +2,7 @@ import axios from 'axios';
 import { normalize } from 'normalizr';
 import { searchResultsSchema } from '../schema';
 import values from 'lodash/values';
+import forEach from 'lodash/forEach';
 import routes from '../routes';
 import store from '../store/configure_store';
 import {
@@ -12,13 +13,46 @@ import {
   ADD_ENTITIES_FULFILLED
 } from './types';
 
-export function fetchSearchResults(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, mostRecentFilter=false) {
+const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter',
+  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page'];
+
+export class SearchParameters {
+  constructor(params) {
+    VALID_PARAMETERS.forEach((p) => {
+      if (params[p] !== undefined) {
+        this[p] = params[p];
+      }
+    });
+    this.toSearchParameters = this.toSearchParameters.bind(this);
+  }
+
+  toSearchParameters() {
+    const simpleMapping = {'searchTerms': 'search', 'type': 'type', 'programFilter': 'programs',
+      'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page'};
+    const params = {};
+    forEach(simpleMapping, (value, key) => {
+      if (this[key]) {
+        params[value] = this[key];
+      }
+    });
+    if (this.contentSince) {
+      if (this.contentSince.format) {
+        params.contentSince = this.contentSince.format('YYYY-MM-DD');
+      } else {
+        params.contentSince = this.contentSince;
+      }
+    }
+    return params;
+  }
+}
+
+export function fetchSearchResults(context, searchParameters) {
   return {
     type: FETCH_SEARCH_RESULTS,
     meta: {context: context},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, mostrecent: mostRecentFilter }
+      params: searchParameters.toSearchParameters()
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
       unelasticsearchResults(normalizedData.entities);
@@ -28,14 +62,16 @@ export function fetchSearchResults(context, searchTerms=null, type=null, program
   };
 }
 
-export function fetchLastSearch(context, searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, pages, mostRecentFilter=false) {
-  let querySize = pages*10;
+export function fetchLastSearch(context, searchParameters) {
+  let params = searchParameters.toSearchParameters();
+  params.size = params.page*10;
+  delete params.page;
   return {
     type: FETCH_LAST_SEARCH,
     meta: {context: context},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, size: querySize, mostrecent: mostRecentFilter }
+      params
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
       unelasticsearchResults(normalizedData.entities);
@@ -45,13 +81,13 @@ export function fetchLastSearch(context, searchTerms=null, type=null, programFil
   };
 }
 
-export function fetchMoreSearchResults(context, searchTerms=null, type=null, page, programFilter=[], systemFilter=[], myStuffFilter=false, mostRecentFilter=false) {
+export function fetchMoreSearchResults(context, searchParameters) {
   return {
     type: FETCH_MORE_SEARCH_RESULTS,
     meta: {context: context},
     payload: axios.get(routes.elasticsearchPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      params: { type: type, search: searchTerms, page: page, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, mostrecent: mostRecentFilter }
+      params: searchParameters.toSearchParameters()
     }).then((response) => {
       const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
       unelasticsearchResults(normalizedData.entities);
@@ -61,10 +97,10 @@ export function fetchMoreSearchResults(context, searchTerms=null, type=null, pag
   };
 }
 
-export function setLastSearch(searchTerms=null, type=null, programFilter=[], systemFilter=[], myStuffFilter=false, page=1, mostRecentFilter=false) {
+export function setLastSearch(searchParameters) {
   return {
     type: SET_LAST_SEARCH,
-    payload: { type: type, search: searchTerms, programs: programFilter, systems: systemFilter, mystuff: myStuffFilter, page: page, mostrecent: mostRecentFilter }
+    payload: searchParameters
   };
 }
 

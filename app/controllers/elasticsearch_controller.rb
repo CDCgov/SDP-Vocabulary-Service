@@ -14,11 +14,12 @@ class ElasticsearchController < ApplicationController
     program_filter = params[:programs] ? params[:programs] : []
     system_filter = params[:systems] ? params[:systems] : []
     current_version_filter = params[:mostrecent] == 'true'
+    content_since = params[:contentSince]
     results = if SDP::Elasticsearch.ping
                 SDP::Elasticsearch.search(type, query_string, page, query_size,
                                           current_user_id, publisher_search,
                                           my_stuff_filter, program_filter,
-                                          system_filter, current_version_filter)
+                                          system_filter, current_version_filter, content_since)
               else
                 SDP::SimpleSearch.search(type, query_string, current_user_id,
                                          query_size, page, publisher_search,

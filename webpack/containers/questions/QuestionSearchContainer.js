@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,68 +7,46 @@ import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search
 
 import SearchResult from '../../components/SearchResult';
 import DashboardSearch from '../../components/DashboardSearch';
+import SearchManagerComponent from '../../components/SearchManagerComponent';
 import currentUserProps from "../../prop-types/current_user_props";
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 
 const QUESTION_SEARCH_CONTEXT = 'QUESTION_SEARCH_CONTEXT';
 
-class QuestionSearchContainer extends Component {
+class QuestionSearchContainer extends SearchManagerComponent {
   constructor(props) {
     super(props);
     this.state = {
       searchTerms: '',
-      progFilters: [],
-      sysFilters: [],
+      programFilter: [],
+      systemFilter: [],
       page: 1,
-      mostRecentFilter: false
+      mostRecentFilter: false,
+      type: 'question'
     };
     this.search   = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.setFiltersParent = this.setFiltersParent.bind(this);
+    this.changeFiltersCallback = this.changeFiltersCallback.bind(this);
   }
 
   componentWillMount() {
-    this.search('');
+    this.search(this.currentSearchParameters());
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if(prevState.page === this.state.page && prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
-      let searchType = this.state.searchType;
-      let searchTerms = this.state.searchTerms;
-      if(searchType === '') {
-        searchType = null;
-      }
-      if(searchTerms === ''){
-        searchTerms = null;
-      }
-      this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', this.state.progFilters, this.state.sysFilters, this.state.mostRecentFilter);
+    if(prevState.page === this.state.page && prevState.programFilter != undefined && (prevState.programFilter !== this.state.programFilter || prevState.systemFilter !== this.state.systemFilter)) {
+      this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, this.currentSearchParameters());
     }
   }
 
-  setFiltersParent(newState) {
-    this.setState(newState);
-  }
-
-  search(searchTerms, progFilters, sysFilters, mostRecentFilter) {
-    if(searchTerms === ''){
-      searchTerms = null;
-    }
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1, mostRecentFilter: mostRecentFilter});
-    this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', progFilters, sysFilters, mostRecentFilter);
+  search(searchParameters) {
+    searchParameters.type = 'question';
+    super.search(searchParameters, QUESTION_SEARCH_CONTEXT);
   }
 
   loadMore() {
-    let searchTerms = this.state.searchTerms;
-    let tempState = this.state.page + 1;
-    if(this.state.searchTerms === '') {
-      searchTerms = null;
-    }
-    this.props.fetchMoreSearchResults(QUESTION_SEARCH_CONTEXT, searchTerms, 'question', tempState,
-                                      this.state.progFilters,
-                                      this.state.sysFilters,
-                                      this.state.mostRecentFilter);
-    this.setState({page: tempState});
+    super.loadMore(QUESTION_SEARCH_CONTEXT);
   }
 
   render() {
@@ -78,7 +56,7 @@ class QuestionSearchContainer extends Component {
         <DashboardSearch search={this.search}
                          surveillanceSystems={this.props.surveillanceSystems}
                          surveillancePrograms={this.props.surveillancePrograms}
-                         setFiltersParent={this.setFiltersParent}
+                         changeFiltersCallback={this.changeFiltersCallback}
                          searchSource={this.props.searchResults.Source} />
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((q, i) => {

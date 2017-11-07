@@ -26,7 +26,7 @@ Then(/^I search for the system "(.+)"$/) do |system_name|
 end
 
 Then(/^I search for the program "(.+)"$/) do |program_name|
-  page.find('#search-programs').find('input').set(program_name)
+  fill_in('SearchPrograms', with: program_name)
   page.find('#search-programs').find('button').click
 end
 

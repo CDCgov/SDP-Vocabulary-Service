@@ -6,7 +6,7 @@ import { Draggable, Droppable } from '../../components/Draggable';
 import SearchResult from '../../components/SearchResult';
 import NestedSearchBar from '../../components/NestedSearchBar';
 import currentUserProps from '../../prop-types/current_user_props';
-import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, SearchParameters } from '../../actions/search_results_actions';
 
 let setData = function(){
   return {"Text": JSON.stringify(this.props.result.Source)};
@@ -87,18 +87,17 @@ class ResponseSetDragWidget extends Component {
       searchTerms = null;
     }
     this.setState({searchTerms: searchTerms, page: 1});
-    this.props.fetchSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set');
+    let sp = new SearchParameters({searchTerms, page: 1, type: 'response_set'});
+    this.props.fetchSearchResults(DRAG_WIDGET_CONTEXT, sp);
   }
 
   loadMore(event) {
     event.preventDefault();
     let searchTerms = this.state.searchTerms;
-    let tempState = this.state.page + 1;
-    if(this.state.searchTerms === '') {
-      searchTerms = null;
-    }
-    this.props.fetchMoreSearchResults(DRAG_WIDGET_CONTEXT, searchTerms, 'response_set', tempState);
-    this.setState({page: tempState});
+    let page = this.state.page + 1;
+    let sp = new SearchParameters({searchTerms, page, type: 'response_set'});
+    this.props.fetchMoreSearchResults(DRAG_WIDGET_CONTEXT, sp);
+    this.setState({page});
   }
 
   addRsButtonHandler(rs) {

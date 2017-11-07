@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 
 import { setSteps } from '../actions/tutorial_actions';
-import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch } from '../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
+import SearchManagerComponent from '../components/SearchManagerComponent';
 import SignUpModal from '../components/accounts/SignUpModal';
 import SearchResultList from '../components/SearchResultList';
 import currentUserProps from '../prop-types/current_user_props';
@@ -18,21 +19,23 @@ import { signUp } from '../actions/current_user_actions';
 const DASHBOARD_CONTEXT = 'DASHBOARD_CONTEXT';
 const NO_SEARCH_RESULTS = {};
 
-class DashboardContainer extends Component {
+class DashboardContainer extends SearchManagerComponent {
   constructor(props){
     super(props);
     this.search = this.search.bind(this);
-    this.setFiltersParent = this.setFiltersParent.bind(this);
+    this.changeFiltersCallback = this.changeFiltersCallback.bind(this);
     this.selectType = this.selectType.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.openSignUpModal = this.openSignUpModal.bind(this);
     this.closeSignUpModal = this.closeSignUpModal.bind(this);
+    this.currentSearchParameters = this.currentSearchParameters.bind(this);
     this.state = {
-      searchType: '',
+      type: '',
       searchTerms: '',
-      progFilters: [],
-      sysFilters: [],
+      programFilter: [],
+      systemFilter: [],
       mostRecentFilter: false,
+      contentSince: null,
       signUpOpen: false,
       myStuffFilter: false,
       page: 1
@@ -40,33 +43,18 @@ class DashboardContainer extends Component {
   }
 
   componentWillMount() {
-    var lastSearch = this.props.lastSearch;
+    let lastSearch = this.props.lastSearch;
+    let searchParameters = new SearchParameters(this.props.lastSearch);
     if(lastSearch.page > 1 && lastSearch.page !== this.state.page) {
-      this.props.fetchLastSearch(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
-                                  lastSearch.programs, lastSearch.systems, lastSearch.mystuff, lastSearch.page, lastSearch.mostrecent);
+      this.props.fetchLastSearch(DASHBOARD_CONTEXT, searchParameters);
       this.setState({page: lastSearch.page});
     } else {
-      this.props.fetchSearchResults(DASHBOARD_CONTEXT, lastSearch.search, lastSearch.type,
-                                      lastSearch.programs, lastSearch.systems, lastSearch.mystuff, lastSearch.mostrecent);
+      this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchParameters);
     }
-    this.setState({searchTerms: lastSearch.search, searchType: lastSearch.type, progFilters: lastSearch.programs,
-      sysFilters: lastSearch.systems, myStuffFilter: lastSearch.mystuff, mostRecentFilter: lastSearch.mostrecent});
+    this.setState(searchParameters);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.progFilters != undefined && (prevState.progFilters !== this.state.progFilters || prevState.sysFilters !== this.state.sysFilters)) {
-      let searchType = this.state.searchType;
-      let searchTerms = this.state.searchTerms;
-      if(searchType === '') {
-        searchType = null;
-      }
-      if(searchTerms === ''){
-        searchTerms = null;
-      }
-      this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter, this.state.mostRecentFilter);
-      this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, this.state.myStuffFilter, this.state.page, this.state.mostRecentFilter);
-    }
-
+  componentDidUpdate(prevProps) {
     if(prevProps != this.props) {
       let steps = [
         {
@@ -167,12 +155,12 @@ class DashboardContainer extends Component {
               <div className="dashboard-details">
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
                                  surveillancePrograms={this.props.surveillancePrograms}
-                                 setFiltersParent={this.setFiltersParent}
+                                 changeFiltersCallback={this.changeFiltersCallback}
                                  searchSource={this.props.searchResults.Source}
                                  lastSearch={this.props.lastSearch} />
                 <div className="row">
                   <div className="col-md-12">
-                    {this.analyticsGroup(this.state.searchType)}
+                    {this.analyticsGroup(this.state.type)}
                   </div>
                 </div>
                 <div className="load-more-search">
@@ -186,7 +174,7 @@ class DashboardContainer extends Component {
             {loggedIn &&
               <div className="col-md-4">
                 <div className="dashboard-activity">
-                  {this.authorStats(this.state.searchType, this.state.myStuffFilter)}
+                  {this.authorStats(this.state.type, this.state.myStuffFilter)}
                 </div>
               </div>
             }
@@ -205,75 +193,35 @@ class DashboardContainer extends Component {
   }
 
   loadMore() {
-    let searchType = this.state.searchType;
-    let searchTerms = this.state.searchTerms;
-    let tempState = this.state.page + 1;
-    if(this.state.searchType === '') {
-      searchType = null;
-    }
-    if(this.state.searchTerms === '') {
-      searchTerms = null;
-    }
-    this.props.fetchMoreSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, tempState,
-                                      this.state.progFilters,
-                                      this.state.sysFilters,
-                                      this.state.myStuffFilter,
-                                      this.state.mostRecentFilter);
-    this.props.setLastSearch(searchTerms, searchType,
-                              this.state.progFilters,
-                              this.state.sysFilters,
-                              this.state.myStuffFilter,
-                              tempState,
-                              this.state.mostRecentFilter);
-    this.setState({page: tempState});
+    super.loadMore(DASHBOARD_CONTEXT, (searchParameters) => this.props.setLastSearch(searchParameters));
   }
 
-  setFiltersParent(newState) {
-    this.setState(newState);
-  }
-
-  search(searchTerms, progFilters, sysFilters, mostRecentFilter) {
-    let searchType = null;
-    if(this.state.searchType !== '') {
-      searchType = this.state.searchType;
-    }
-    if(searchTerms === ''){
-      searchTerms = null;
-    }
-    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, mostRecentFilter);
-    this.props.setLastSearch(searchTerms, searchType, progFilters, sysFilters, this.state.myStuffFilter, this.state.page, mostRecentFilter);
-    this.setState({searchTerms: searchTerms, progFilters: progFilters, sysFilters: sysFilters, page: 1, mostRecentFilter: mostRecentFilter});
+  search(searchParameters) {
+    super.search(searchParameters, DASHBOARD_CONTEXT, (searchParameters) => this.props.setLastSearch(searchParameters));
   }
 
   selectType(searchType, myStuffToggle=false) {
-    let searchTerms = null;
-    let myStuffFilter = false;
-    if(this.state.searchTerms !== '') {
-      searchTerms = this.state.searchTerms;
-    }
+    let newState = {};
     if(myStuffToggle) {
-      if(this.state.searchType === searchType && this.state.myStuffFilter) {
-        myStuffFilter = false;
-        this.setState({myStuffFilter: false});
+      if(this.state.type === searchType && this.state.myStuffFilter) {
+        newState.myStuffFilter = false;
       } else {
-        myStuffFilter = true;
-        this.setState({myStuffFilter: true});
+        newState.myStuffFilter = true;
       }
     } else {
-      myStuffFilter = false;
-      this.setState({myStuffFilter: false});
+      newState.myStuffFilter = false;
     }
-    if(this.state.searchType === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
-      this.setState({searchType: '', page: 1});
-      searchType = null;
+    if(this.state.type === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
+      newState.type = '';
+      newState.page = 1;
     } else {
-      this.setState({searchType: searchType, page: 1});
+      newState.type = searchType;
+      newState.page = 1;
     }
-    if(searchType === '') {
-      searchType = null;
-    }
-    this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter, this.state.mostRecentFilter);
-    this.props.setLastSearch(searchTerms, searchType, this.state.progFilters, this.state.sysFilters, myStuffFilter, this.state.page, this.state.mostRecentFilter);
+    this.setState(newState);
+    let newSearchParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, newSearchParams);
+    this.props.setLastSearch(newSearchParams);
   }
 
   analyticsGroup(searchType) {
