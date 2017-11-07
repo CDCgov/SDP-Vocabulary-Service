@@ -52,11 +52,7 @@ Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) d
   user = get_user('test_author@gmail.com')
   ct314 = Category.find_or_create_by(name: type)
   rt = ResponseType.where(code: 'choice').first
-<<<<<<< HEAD
-  Question.create!(content: content, question_type_id: qt314.id, response_type_id: rt.id, version: 1, created_by: user, status: 'draft')
-=======
-  Question.create!(content: content, category_id: ct314.id, response_type_id: rt.id, version: 1, created_by: user)
->>>>>>> Rename question_type to category
+  Question.create!(content: content, category_id: ct314.id, response_type_id: rt.id, version: 1, created_by: user, status: 'draft')
 end
 
 Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|
