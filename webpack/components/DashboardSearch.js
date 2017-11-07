@@ -69,23 +69,23 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   clearAdvSearch() {
-    this.props.changeFiltersCallback({
+    const clearedParams = {
       programFilter: [],
       systemFilter: [],
       mostRecentFilter: false,
       contentSince: null
-    });
-    this.setState({
-      programFilter: [],
-      systemFilter: [],
-      mostRecentFilter: false,
-      contentSince: null
-    });
+    };
+    let newParams = Object.assign(this.currentSearchParameters(), clearedParams);
+    this.props.search(newParams);
+    this.props.changeFiltersCallback(clearedParams);
+    this.setState(clearedParams);
   }
 
   selectFilters(e, filterType) {
     var newState = {};
     newState[filterType] = $(e.target).val().map((opt) => parseInt(opt));
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
     this.props.changeFiltersCallback(newState);
     return this.setState(newState);
   }
@@ -157,7 +157,6 @@ class DashboardSearch extends SearchStateComponent {
     searchParams.mostRecentFilter = newState.mostRecentFilter;
     this.props.search(searchParams);
     this.props.changeFiltersCallback(newState);
-
   }
 
   advSearchModal() {
