@@ -94,6 +94,27 @@ module SDP
                      {}
                    end
 
+      sort_filter = ''
+      sort_body = if sort_filter.empty?
+                    [
+                      '_score',
+                      { '_script': {
+                        'script': "doc['surveillance_systems.id'].values.size()",
+                        type: 'number',
+                        order: 'desc'
+                      } }
+                    ]
+                  else
+                    [
+                      { '_script': {
+                        'script': "doc['surveillance_systems.id'].values.size()",
+                        type: 'number',
+                        order: 'desc'
+                      } },
+                      '_score'
+                    ]
+                  end
+
       from_index = (page - 1) * query_size
       search_body = {
         size: query_size,
@@ -104,6 +125,7 @@ module SDP
             must: must_body
           }
         },
+        sort: sort_body,
         highlight: highlight_body
       }
 
