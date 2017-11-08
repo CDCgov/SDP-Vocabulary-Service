@@ -236,7 +236,7 @@ class DashboardSearch extends SearchStateComponent {
               renderItem={(item, isHighlighted) => (
                 <div
                   className={`tag-item ${isHighlighted ? 'tag-item-highlighted' : ''}`}
-                  key={item._id}
+                  key={item.text}
                 >{item.text}</div>
               )}
               renderMenu={children => (
