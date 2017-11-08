@@ -29,3 +29,11 @@ Feature: Advanced Search
     Then I should see "Content Since Filter:"
     And I should see "7/29/2017"
     And I should see "Clear Adv. Filters"
+
+  Scenario: Sort by system Usage
+    Given I am on the "/" page
+    When I click on the "Advanced" link
+    And I select the "System Usage" option in the "Sort By:" list
+    And I click on the "Close" button
+    Then I should see "Sorting results by System Usage"
+    And I should see "Clear Adv. Filters"

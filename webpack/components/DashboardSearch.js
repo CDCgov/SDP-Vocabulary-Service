@@ -192,7 +192,7 @@ class DashboardSearch extends SearchStateComponent {
                 {this.surveillanceSystemsSelect()}
               </div>
               <div className = "col-md-12">
-                <label className="input-label" htmlFor="sort-By">Sort By:</label>
+                <label className="input-label" htmlFor="sort-by">Sort By:</label>
                 <select className="input-select" name="sort-by" id="sort-by" value={this.state.sort} onChange={(e) => this.toggleSort(e)} >
                   <option value=""></option>
                   <option value="System Usage">System Usage</option>
