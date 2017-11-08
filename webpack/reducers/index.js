@@ -36,6 +36,7 @@ import conceptSystems from './concept_systems_reducer';
 import surveys from './surveys_reducer';
 import tutorialSteps from './tutorial_reducer';
 import lastSearch from './last_search_reducer';
+import suggestions from './suggestions_reducer';
 
 const questionTypes = byIdWithIndividualReducer(FETCH_QUESTION_TYPES_FULFILLED,
   FETCH_QUESTION_TYPE_FULFILLED, 'questionTypes');
@@ -48,7 +49,7 @@ const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE
 
 const rootReducer = combineReducers({
   questions, comments, stats, currentUser, responseSets, sections, questionTypes, admins,
-  responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch,
+  responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags
 });
 

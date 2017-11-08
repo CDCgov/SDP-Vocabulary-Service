@@ -13,6 +13,11 @@ class ElasticsearchControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should be able to call suggestions' do
+    get '/elasticsearch/suggestions'
+    assert_response :success
+  end
+
   test 'should be able to call search when ES is not running' do
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, status: ['404', 'Not Found'])
     get '/elasticsearch'

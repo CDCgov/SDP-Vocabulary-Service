@@ -10,6 +10,7 @@ import {
   FETCH_MORE_SEARCH_RESULTS,
   SET_LAST_SEARCH,
   FETCH_LAST_SEARCH,
+  FETCH_SUGGESTIONS,
   ADD_ENTITIES_FULFILLED
 } from './types';
 
@@ -116,6 +117,16 @@ export function fetchPotentialDuplicateQuestions(context, content, description) 
       unelasticsearchResults(normalizedData.entities);
       store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
       return response;
+    })
+  };
+}
+
+export function fetchSuggestions(prefix) {
+  return {
+    type: FETCH_SUGGESTIONS,
+    payload: axios.get(routes.elasticsearchSuggestionsPath(), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      params: { prefix }
     })
   };
 }
