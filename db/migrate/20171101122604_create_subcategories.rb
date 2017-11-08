@@ -1,3 +1,8 @@
+class QuestionType < ApplicationRecord
+  validates :name, presence: true
+  has_many :questions, dependent: :nullify
+end
+
 class CreateSubcategories < ActiveRecord::Migration[5.1]
   def change
     create_table :subcategories do |t|
