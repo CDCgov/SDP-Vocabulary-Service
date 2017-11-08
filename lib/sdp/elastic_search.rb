@@ -1,6 +1,8 @@
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
+# rubocop:disable Metrics/PerceivedComplexity
+
 module SDP
   module Elasticsearch
     MAX_DUPLICATE_QUESTION_SUGGESTIONS = 10
@@ -19,7 +21,8 @@ module SDP
     def self.search(type, query_string, page, query_size = 10,
                     current_user_id = nil, publisher_search = false,
                     my_stuff_filter = false, program_filter = [],
-                    system_filter = [], current_version_filter = false, content_since = nil)
+                    system_filter = [], current_version_filter = false,
+                    content_since = nil, sort_filter = '')
       version_filter = if current_version_filter
                          { bool: { filter: {
                            term: { 'most_recent': true }
@@ -94,8 +97,7 @@ module SDP
                      {}
                    end
 
-      sort_filter = ''
-      sort_body = if sort_filter.empty?
+      sort_body = if sort_filter.blank?
                     [
                       '_score',
                       { '_script': {

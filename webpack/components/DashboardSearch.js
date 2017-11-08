@@ -20,6 +20,7 @@ class DashboardSearch extends SearchStateComponent {
       searchTerms: '',
       programFilter: [],
       systemFilter: [],
+      sort: '',
       showAdvSearchModal: false,
       mostRecentFilter: false,
       surveillancePrograms: {},
@@ -73,7 +74,8 @@ class DashboardSearch extends SearchStateComponent {
       programFilter: [],
       systemFilter: [],
       mostRecentFilter: false,
-      contentSince: null
+      contentSince: null,
+      sort: '',
     };
     let newParams = Object.assign(this.currentSearchParameters(), clearedParams);
     this.props.search(newParams);
@@ -159,6 +161,15 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
+  toggleSort(e) {
+    let newState = {sort: e.target.value};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.sort = newState.sort;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
   advSearchModal() {
     return (
       <Modal animation={false} show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
@@ -179,6 +190,13 @@ class DashboardSearch extends SearchStateComponent {
               </div>
               <div className="col-md-12">
                 {this.surveillanceSystemsSelect()}
+              </div>
+              <div className = "col-md-12">
+                <label className="input-label" htmlFor="sort-By">Sort By:</label>
+                <select className="input-select" name="sort-by" id="sort-by" value={this.state.sort} onChange={(e) => this.toggleSort(e)} >
+                  <option value=""></option>
+                  <option value="System Usage">System Usage</option>
+                </select>
               </div>
               <div className="col-md-12">
                 <h2>Additonal Filters:</h2>
@@ -227,7 +245,7 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.mostRecentFilter || this.state.contentSince) && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.mostRecentFilter || this.state.contentSince || this.state.sort !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -254,6 +272,9 @@ class DashboardSearch extends SearchStateComponent {
               <div className="adv-filter-list">Content Since Filter:
                 <row className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')}</row>
               </div>
+            }
+            {this.state.sort !== '' &&
+              <div className="adv-filter-list">Sorting results by {this.state.sort}</div>
             }
           </div><br/>
         </div>

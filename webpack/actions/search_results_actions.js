@@ -14,7 +14,7 @@ import {
 } from './types';
 
 const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter',
-  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page'];
+  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort'];
 
 export class SearchParameters {
   constructor(params) {
@@ -27,7 +27,7 @@ export class SearchParameters {
   }
 
   toSearchParameters() {
-    const simpleMapping = {'searchTerms': 'search', 'type': 'type', 'programFilter': 'programs',
+    const simpleMapping = {'searchTerms': 'search', 'type': 'type', 'programFilter': 'programs', 'sort': 'sort',
       'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page'};
     const params = {};
     forEach(simpleMapping, (value, key) => {
