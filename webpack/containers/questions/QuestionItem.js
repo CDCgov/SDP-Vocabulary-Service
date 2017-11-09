@@ -9,7 +9,7 @@ import { responseSetProps } from "../../prop-types/response_set_props";
 import currentUserProps from '../../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
-import { fetchSearchResults } from '../../actions/search_results_actions';
+import { fetchSearchResults, fetchSuggestions } from '../../actions/search_results_actions';
 import SearchResult from '../../components/SearchResult';
 import DashboardSearch from '../../components/DashboardSearch';
 import SearchResultList from '../../components/SearchResultList';
@@ -107,6 +107,8 @@ class QuestionItem extends SearchManagerComponent {
                            changeFiltersCallback={this.changeFiltersCallback}
                            surveillanceSystems={this.props.surveillanceSystems}
                            surveillancePrograms={this.props.surveillancePrograms}
+                           suggestions={this.props.suggestions}
+                           fetchSuggestions={this.props.fetchSuggestions}
                           />
           <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} handleSelectSearchResult={this.handleSelectSearchResult} />
         </Modal.Body>
@@ -176,12 +178,13 @@ function mapStateToProps(state, ownProps) {
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser,
-    question: question
+    question: question,
+    suggestions: state.suggestions
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchSearchResults}, dispatch);
+  return bindActionCreators({fetchSearchResults, fetchSuggestions}, dispatch);
 }
 
 QuestionItem.propTypes = {
@@ -193,6 +196,8 @@ QuestionItem.propTypes = {
   handleProgramVarChange:  PropTypes.func,
   handleSelectSearchResult: PropTypes.func,
   fetchSearchResults: PropTypes.func,
+  fetchSuggestions: PropTypes.func,
+  suggestions: PropTypes.array,
   responseSetId: PropTypes.number,
   programVar: PropTypes.string,
   searchResults: PropTypes.object,

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { addSection } from '../../actions/section_actions';
 import { sectionProps } from '../../prop-types/section_props';
 import { surveyProps } from '../../prop-types/survey_props';
-import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, fetchSuggestions } from '../../actions/search_results_actions';
 import SearchResult from '../../components/SearchResult';
 import DashboardSearch from '../../components/DashboardSearch';
 import SearchManagerComponent from '../../components/SearchManagerComponent';
@@ -64,7 +64,9 @@ class SectionSearchContainer extends SearchManagerComponent {
         <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
                          surveillancePrograms={this.props.surveillancePrograms}
                          changeFiltersCallback={this.changeFiltersCallback}
-                         searchSource={this.props.searchResults.Source} />
+                         searchSource={this.props.searchResults.Source}
+                         suggestions={this.props.suggestions}
+                         fetchSuggestions={this.props.fetchSuggestions} />
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((sect, i) => {
             return (
@@ -90,12 +92,13 @@ function mapStateToProps(state) {
     searchResults: state.searchResults[SECTION_SEARCH_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    suggestions: state.suggestions
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addSection, fetchSearchResults, fetchMoreSearchResults}, dispatch);
+  return bindActionCreators({addSection, fetchSuggestions, fetchSearchResults, fetchMoreSearchResults}, dispatch);
 }
 
 SectionSearchContainer.propTypes = {
@@ -103,6 +106,8 @@ SectionSearchContainer.propTypes = {
   allSections: PropTypes.arrayOf(sectionProps),
   addSection: PropTypes.func.isRequired,
   fetchSearchResults: PropTypes.func,
+  fetchSuggestions: PropTypes.func,
+  suggestions: PropTypes.array,
   fetchMoreSearchResults: PropTypes.func,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
