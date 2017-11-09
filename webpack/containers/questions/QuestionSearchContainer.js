@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchSearchResults, fetchMoreSearchResults } from '../../actions/search_results_actions';
+import { fetchSearchResults, fetchMoreSearchResults, fetchSuggestions } from '../../actions/search_results_actions';
 
 import SearchResult from '../../components/SearchResult';
 import DashboardSearch from '../../components/DashboardSearch';
@@ -57,7 +57,9 @@ class QuestionSearchContainer extends SearchManagerComponent {
                          surveillanceSystems={this.props.surveillanceSystems}
                          surveillancePrograms={this.props.surveillancePrograms}
                          changeFiltersCallback={this.changeFiltersCallback}
-                         searchSource={this.props.searchResults.Source} />
+                         searchSource={this.props.searchResults.Source}
+                         suggestions={this.props.suggestions}
+                         fetchSuggestions={this.props.fetchSuggestions} />
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((q, i) => {
             return (
@@ -84,12 +86,13 @@ function mapStateToProps(state) {
     searchResults: state.searchResults[QUESTION_SEARCH_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    suggestions: state.suggestions
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchSearchResults, fetchMoreSearchResults}, dispatch);
+  return bindActionCreators({fetchSearchResults, fetchSuggestions, fetchMoreSearchResults}, dispatch);
 }
 
 QuestionSearchContainer.propTypes = {
@@ -97,6 +100,8 @@ QuestionSearchContainer.propTypes = {
   selectedSearchResults: PropTypes.object.isRequired,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
+  fetchSuggestions: PropTypes.func,
+  suggestions: PropTypes.array,
   currentUser: currentUserProps,
   searchResults: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
