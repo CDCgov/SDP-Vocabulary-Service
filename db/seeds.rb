@@ -39,9 +39,21 @@ ResponseType.find_or_create_by code: 'reference', name: 'Reference',
 ResponseType.find_or_create_by code: 'quantity', name: 'Quantity',
                                description: 'Answer is a combination of a numeric value and unit, potentially with a comparator (<, >, etc.).'
 
-QuestionType.find_or_create_by name: 'Demographics'
-QuestionType.find_or_create_by name: 'Clinical'
-QuestionType.find_or_create_by name: 'Treatment'
-QuestionType.find_or_create_by name: 'Laboratory'
-QuestionType.find_or_create_by name: 'Epidemiological'
-QuestionType.find_or_create_by name: 'Vaccine'
+Category.find_or_create_by name: 'Demographics'
+Category.find_or_create_by name: 'Clinical'
+Category.find_or_create_by name: 'Treatment'
+Category.find_or_create_by name: 'Laboratory'
+Category.find_or_create_by name: 'Vaccine'
+epid = Category.find_or_create_by name: 'Epidemiological'
+ep = Category.find_or_create_by name: 'Emergency Preparedness'
+
+Subcategory.find_or_create_by name: 'Managing & Commanding', category: ep
+Subcategory.find_or_create_by name: 'Operations', category: ep
+Subcategory.find_or_create_by name: 'Planning/Intelligence', category: ep
+Subcategory.find_or_create_by name: 'Logistics', category: ep
+Subcategory.find_or_create_by name: 'Financial/Administration', category: ep
+
+Subcategory.find_or_create_by name: 'Travel', category: epid
+Subcategory.find_or_create_by name: 'Contact or Exposure', category: epid
+Subcategory.find_or_create_by name: 'Drug Abuse', category: epid
+Subcategory.find_or_create_by name: 'Sexual Behavior', category: epid

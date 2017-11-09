@@ -20,7 +20,7 @@ describe('SurveyEdit', () => {
       showResponseSetModal:  ()=>{},
       router: router,
       route: {},
-      sections: {1: {id: 1, name: "Section 1", questionType: ""}}
+      sections: {1: {id: 1, name: "Section 1", category: ""}}
     };
 
     component = renderComponent(SurveyEdit, props);

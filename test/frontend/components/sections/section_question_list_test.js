@@ -5,9 +5,9 @@ describe('SectionQuestionList', () => {
   let component;
 
   beforeEach(() => {
-    const questions = [{id: 1, content: "Is this a question?", questionType: ""},
-                       {id: 2, content: "Whats your name", questionType: ""},
-                       {id: 3, content: "What is a question?", questionType: ""}];
+    const questions = [{id: 1, content: "Is this a question?", category: ""},
+                       {id: 2, content: "Whats your name", category: ""},
+                       {id: 3, content: "What is a question?", category: ""}];
     component = renderComponent(SectionQuestionList, {questions});
   });
 

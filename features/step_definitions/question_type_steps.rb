@@ -1,7 +1,7 @@
-Given(/^I have a Question Type with the name "([^"]*)"$/) do |name|
-  QuestionType.create!(name: name)
+Given(/^I have a Category with the name "([^"]*)"$/) do |name|
+  Category.create!(name: name)
 end
 
-When(/^I go to the list of Question Types$/) do
-  visit '/question_types/'
+When(/^I go to the list of Categories$/) do
+  visit '/categories/'
 end

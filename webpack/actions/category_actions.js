@@ -1,13 +1,13 @@
 import axios from 'axios';
 import routes from '../routes';
 import {
-  FETCH_QUESTION_TYPES
+  FETCH_CATEGORIES
 } from './types';
 
-export function fetchQuestionTypes() {
+export function fetchCategories() {
   return {
-    type: FETCH_QUESTION_TYPES,
-    payload: axios.get(routes.questionTypesPath(), {
+    type: FETCH_CATEGORIES,
+    payload: axios.get(routes.categoriesPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };

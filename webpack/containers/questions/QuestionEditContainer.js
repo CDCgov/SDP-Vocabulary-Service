@@ -10,7 +10,7 @@ import QuestionEdit from '../../components/questions/QuestionEdit';
 import { questionProps } from '../../prop-types/question_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
-import { fetchQuestionTypes } from '../../actions/question_type_actions';
+import { fetchCategories } from '../../actions/category_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 
@@ -32,7 +32,7 @@ class QuestionEditContainer extends Component {
       this.action = 'new';
     }
 
-    this.props.fetchQuestionTypes();
+    this.props.fetchCategories();
     this.props.fetchResponseTypes();
   }
 
@@ -87,7 +87,7 @@ class QuestionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.question || !this.props.questionTypes || !this.props.responseTypes){
+    if(!this.props.question || !this.props.categories || !this.props.responseTypes){
       return (
         <div>Loading...</div>
       );
@@ -104,7 +104,7 @@ class QuestionEditContainer extends Component {
                       publishSubmitter ={this.props.publishQuestion}
                       fetchPotentialDuplicateQuestions={this.fetchPotentialDuplicateQuestions}
                       potentialDuplicates={this.props.potentialDuplicates}
-                      questionTypes={this.props.questionTypes}
+                      categories={this.props.categories}
                       responseTypes={this.props.responseTypes}
                       router={this.props.router}
                       route={this.props.route}
@@ -126,7 +126,7 @@ function mapStateToProps(state, ownProps) {
   }else{
     props.question = {version:1, concepts:[], responseSets:[]};
   }
-  props.questionTypes = state.questionTypes;
+  props.categories = state.categories;
   props.responseTypes = state.responseTypes;
   props.potentialDuplicates = state.searchResults[DUPLICATE_QUESTION_CONTEXT] || {};
   props.stats = state.stats;
@@ -136,13 +136,13 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchQuestion, saveQuestion, saveDraftQuestion,
-    publishQuestion, deleteQuestion, fetchQuestionTypes, fetchResponseTypes,
+    publishQuestion, deleteQuestion, fetchCategories, fetchResponseTypes,
     setSteps, setStats, fetchPotentialDuplicateQuestions}, dispatch);
 }
 
 QuestionEditContainer.propTypes = {
   question: questionProps,
-  questionTypes: PropTypes.object,
+  categories: PropTypes.object,
   responseTypes: PropTypes.object,
   saveQuestion:  PropTypes.func,
   fetchQuestion: PropTypes.func,
@@ -150,7 +150,7 @@ QuestionEditContainer.propTypes = {
   deleteQuestion:  PropTypes.func,
   publishQuestion: PropTypes.func,
   saveDraftQuestion:  PropTypes.func,
-  fetchQuestionTypes: PropTypes.func,
+  fetchCategories: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,

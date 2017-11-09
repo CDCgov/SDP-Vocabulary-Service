@@ -6,8 +6,8 @@ json.surveillance_system_id @survey.surveillance_system.id if @survey.surveillan
 json.surveillance_program_id @survey.surveillance_program.id if @survey.surveillance_program.present?
 json.url survey_url(@survey, format: :json)
 json.questions @survey.questions do |q|
-  json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :question_type_id, :description, :status, \
-                :version, :version_independent_id, \
+  json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :category_id, :description, :status, \
+                :version, :version_independent_id, :subcategory_id, \
                 :other_allowed
 end
 

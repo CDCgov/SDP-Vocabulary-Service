@@ -7,6 +7,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :version
   attribute :status
   attribute :category
+  attribute :subcategory
   attribute :description
   attribute :updated_at, key: :updatedAt
   attribute :created_at, key: :createdAt
@@ -50,7 +51,11 @@ class ESQuestionSerializer < ActiveModel::Serializer
   end
 
   def category
-    { id: object.question_type.id, name: object.question_type.name } if object.question_type
+    { id: object.category.id, name: object.category.name } if object.category
+  end
+
+  def subcategory
+    { id: object.subcategory.id, name: object.subcategory.name } if object.subcategory
   end
 
   def updated_at

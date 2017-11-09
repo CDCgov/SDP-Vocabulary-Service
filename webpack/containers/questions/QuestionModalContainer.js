@@ -12,7 +12,7 @@ import QuestionEdit from '../../components/questions/QuestionEdit';
 import ResponseSetList  from '../../components/response_sets/ResponseSetList';
 import ResponseSetDragWidget  from '../response_sets/ResponseSetDragWidget';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
-import { fetchQuestionTypes } from '../../actions/question_type_actions';
+import { fetchCategories } from '../../actions/category_actions';
 import currentUserProps from '../../prop-types/current_user_props';
 
 const DUPLICATE_QUESTION_MODAL_CONTEXT = "DUPLICATE_QUESTION_MODAL_CONTEXT";
@@ -30,7 +30,7 @@ class QuestionModalContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchQuestionTypes();
+    this.props.fetchCategories();
     this.props.fetchResponseTypes();
   }
 
@@ -139,7 +139,7 @@ class QuestionModalContainer extends Component {
         <Modal.Body bsStyle='question'>
           <QuestionEdit action={'new'}
                         question={{}}
-                        questionTypes={this.props.questionTypes}
+                        categories={this.props.categories}
                         responseTypes={this.props.responseTypes}
                         draftSubmitter ={()=>{}}
                         deleteSubmitter={()=>{}}
@@ -157,7 +157,7 @@ class QuestionModalContainer extends Component {
   }
 
   render() {
-    if(!this.props.questionTypes || !this.props.responseTypes){
+    if(!this.props.categories || !this.props.responseTypes){
       return (
         <div>Loading...</div>
       );
@@ -176,13 +176,13 @@ class QuestionModalContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  return {questionTypes: state.questionTypes, responseTypes: state.responseTypes,
+  return {categories: state.categories, responseTypes: state.responseTypes,
     currentUser: state.currentUser,
     potentialDuplicates: state.searchResults[DUPLICATE_QUESTION_MODAL_CONTEXT] || {}};
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestionTypes, fetchResponseTypes, saveQuestion, fetchPotentialDuplicateQuestions}, dispatch);
+  return bindActionCreators({fetchCategories, fetchResponseTypes, saveQuestion, fetchPotentialDuplicateQuestions}, dispatch);
 }
 
 QuestionModalContainer.propTypes = {
@@ -190,9 +190,9 @@ QuestionModalContainer.propTypes = {
   router: PropTypes.object.isRequired,
   showModal: PropTypes.bool.isRequired,
   saveQuestion: PropTypes.func,
-  questionTypes: PropTypes.object,
+  categories: PropTypes.object,
   responseTypes: PropTypes.object,
-  fetchQuestionTypes: PropTypes.func,
+  fetchCategories: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   closeQuestionModal: PropTypes.func.isRequired,
   handleSaveQuestionSuccess: PropTypes.func.isRequired,

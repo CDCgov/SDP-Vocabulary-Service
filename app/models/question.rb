@@ -8,7 +8,8 @@ class Question < ApplicationRecord
   has_many :sections, through: :section_questions
 
   belongs_to :response_type
-  belongs_to :question_type
+  belongs_to :category
+  belongs_to :subcategory
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
@@ -52,7 +53,7 @@ class Question < ApplicationRecord
                                 version_independent_id: version_independent_id,
                                 version: version + 1, question_response_sets: question_response_sets,
                                 response_sets: response_sets, section_questions: section_questions, sections: sections,
-                                question_type: question_type, oid: oid, parent_id: parent_id,
+                                category: category, oid: oid, parent_id: parent_id, subcategory: subcategory,
                                 response_type: response_type)
     concepts.each do |c|
       new_revision.concepts << c.dup

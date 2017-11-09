@@ -70,6 +70,17 @@
             }
           }
         },
+        "subcategory": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
         "name": {
           "type": "string",
           "analyzer": "sdp"

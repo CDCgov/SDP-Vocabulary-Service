@@ -2,7 +2,7 @@
 one:
   content: What is your gender?
   created_by: admin
-  question_type: one
+  category: one
   response_type: one
   status: published
   version: 1
@@ -12,7 +12,7 @@ one:
 two:
   content: What is another question example?
   created_by: admin
-  question_type: one
+  category: one
   response_type: one
   version: 1
   version_independent_id: Q-2
@@ -20,7 +20,7 @@ two:
 three:
   content: What is another question example?
   created_by: admin
-  question_type: one
+  category: one
   response_type: one
   version: 1
   version_independent_id: Q-3
@@ -28,7 +28,7 @@ three:
 gfv2:
   content: What is another question example?
   created_by: admin
-  question_type: one
+  category: one
   response_type: one
   version: 2
   version_independent_id: Q-3
@@ -36,7 +36,7 @@ gfv2:
 five:
   content: Who did this?
   created_by: not_admin
-  question_type: one
+  category: one
   response_type: four
   version: 1
   version_independent_id: Q-5
@@ -44,7 +44,7 @@ five:
 search_1:
   content: Search Question 1
   created_by: admin
-  question_type: one
+  category: one
   response_type: one
   status: published
   version: 1
@@ -53,7 +53,7 @@ search_1:
 search_2:
   content: Search Question 2
   created_by: admin
-  question_type: one
+  category: one
   response_type: one
   version: 1
   version_independent_id: Q-7
@@ -61,7 +61,7 @@ search_2:
 search_3:
   content: Search question 3
   created_by: not_admin
-  question_type: one
+  category: one
   response_type: one
   version: 1
   version_independent_id: Q-8
@@ -69,7 +69,7 @@ search_3:
 new_two:
   content: What is yet another question example?
   created_by: admin
-  question_type: one
+  category: one
   response_type: one
   version: 2
   version_independent_id: Q-2

@@ -22,7 +22,7 @@ class ResponseTypeTest < ActiveSupport::TestCase
   end
 
   test 'should have a name' do
-    type = ResponseType.new(name: 'QuestionType')
-    assert_equal type.name, 'QuestionType'
+    type = ResponseType.new(name: 'ResponseType')
+    assert_equal type.name, 'ResponseType'
   end
 end

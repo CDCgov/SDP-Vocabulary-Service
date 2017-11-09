@@ -3,10 +3,10 @@ require 'test_helper'
 class QuestionTest < ActiveSupport::TestCase
   test 'Question should allow type to be set' do
     question = Question.new(content: 'content', response_type: ResponseType.new(code: 'date'))
-    type = QuestionType.new(name: 'TestName')
-    question.question_type = type
+    type = Category.new(name: 'TestName')
+    question.category = type
     assert question.save
-    assert_equal question.question_type, type
+    assert_equal question.category, type
   end
 
   test 'Question requires a type' do

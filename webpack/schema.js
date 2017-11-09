@@ -9,7 +9,7 @@ export const sectionsSchema = [ sectionSchema ];
 export const lastSearchSchema = new schema.Entity('lastSearch');
 export const notificationSchema = new schema.Array('notifications');
 export const publisherSchema = new schema.Entity('publishers');
-export const questionTypeSchema = new schema.Entity('questionTypes');
+export const categorySchema = new schema.Entity('categories');
 export const questionSchema = new schema.Entity('questions');
 export const questionsSchema = [ questionSchema ];
 export const responseSetSchema = new schema.Entity('responseSets');
@@ -35,7 +35,7 @@ responseSetSchema.define({
 
 questionSchema.define({
   parent: questionSchema,
-  questionType: questionTypeSchema,
+  category: categorySchema,
   responseSets: [ responseSetSchema ],
   responseType: responseTypeSchema
 });

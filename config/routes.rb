@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :surveillance_systems, only: [:index, :create]
   resources :surveillance_programs, only: [:index, :create]
   get 'response_types', to: 'response_types#index', as: :response_types
-  get 'question_types', to: 'question_types#index', as: :question_types
+  get 'categories', to: 'categories#index', as: :categories
   get 'concepts', to: 'concepts#index', as: :concepts
   get 'elasticsearch', to: 'elasticsearch#index', as: :elasticsearch
   get 'elasticsearch/duplicate_questions' => 'elasticsearch#duplicate_questions'

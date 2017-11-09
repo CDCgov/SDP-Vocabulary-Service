@@ -1,9 +1,9 @@
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"\
  and the concept "([^"]*)"$/) do |content, description, type, concept|
   user  = get_user('test_author@gmail.com')
-  qt314 = QuestionType.find_or_create_by(name: type)
+  ct314 = Category.find_or_create_by(name: type)
   rt = ResponseType.where(code: 'choice').first
-  Question.create!(content: content, description: description, response_type_id: rt.id, question_type_id: qt314.id, version: 1, created_by: user,\
+  Question.create!(content: content, description: description, response_type_id: rt.id, category_id: ct314.id, version: 1, created_by: user,\
                    concepts_attributes: [{ value: '', display_name: concept, code_system: '' }])
 end
 
@@ -22,9 +22,9 @@ end
 
 Given(/^I have a Question with the content "([^"]*)" and the description "([^"]*)" and the type "([^"]*)"$/) do |cont, d, type|
   user  = get_user('test_author@gmail.com')
-  qt314 = QuestionType.find_or_create_by(name: type)
+  ct314 = Category.find_or_create_by(name: type)
   rt = ResponseType.where(code: 'choice').first
-  Question.create!(status: 'draft', content: cont, description: d, response_type_id: rt.id, question_type_id: qt314.id, version: 1, created_by: user)
+  Question.create!(status: 'draft', content: cont, description: d, response_type_id: rt.id, category_id: ct314.id, version: 1, created_by: user)
 end
 
 Given(/^I have a Question with the content "([^"]*)" linked to Surveillance System "([^"]*)"$/) do |question_content, system_name|
@@ -50,9 +50,9 @@ end
 
 Given(/^I have a Question with the content "([^"]*)" and the type "([^"]*)"$/) do |content, type|
   user = get_user('test_author@gmail.com')
-  qt314 = QuestionType.find_or_create_by(name: type)
+  ct314 = Category.find_or_create_by(name: type)
   rt = ResponseType.where(code: 'choice').first
-  Question.create!(content: content, question_type_id: qt314.id, response_type_id: rt.id, version: 1, created_by: user, status: 'draft')
+  Question.create!(content: content, category_id: ct314.id, response_type_id: rt.id, version: 1, created_by: user, status: 'draft')
 end
 
 Given(/^I have a Response Type with the name "([^"]*)"$/) do |name|

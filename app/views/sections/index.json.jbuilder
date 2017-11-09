@@ -5,8 +5,8 @@ json.array! @sections do |section|
   json.url section_url(section, format: :json)
 
   json.questions section.questions do |q|
-    json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :question_type_id, :description, :status, \
-                  :version, :version_independent_id, \
+    json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :category_id, :description, :status, \
+                  :version, :version_independent_id, :subcategory_id, \
                   :other_allowed
   end
 end
