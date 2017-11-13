@@ -1,5 +1,5 @@
 require 'sdp/importers/spreadsheet'
-require 'sdp/importers/csv'
+require 'sdp/importers/mmg'
 
 # rubocop:disable Metrics/BlockLength
 namespace :spreadsheet do
