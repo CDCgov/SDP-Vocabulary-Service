@@ -1,7 +1,6 @@
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
-# rubocop:disable Metrics/PerceivedComplexity
 
 module SDP
   module Elasticsearch
@@ -22,7 +21,7 @@ module SDP
                     current_user_id = nil, publisher_search = false,
                     my_stuff_filter = false, program_filter = [],
                     system_filter = [], current_version_filter = false,
-                    content_since = nil, sort_filter = '')
+                    content_since = nil, _sort_filter = '')
       version_filter = if current_version_filter
                          { bool: { filter: {
                            term: { 'most_recent': true }
@@ -98,25 +97,26 @@ module SDP
                      {}
                    end
 
-      sort_body = if sort_filter.blank?
-                    [
-                      '_score',
-                      { '_script': {
-                        'script': "doc['surveillance_systems.id'].values.size()",
-                        type: 'number',
-                        order: 'desc'
-                      } }
-                    ]
-                  else
-                    [
-                      { '_script': {
-                        'script': "doc['surveillance_systems.id'].values.size()",
-                        type: 'number',
-                        order: 'desc'
-                      } },
-                      '_score'
-                    ]
-                  end
+      # TODO: Uncomment when we have elasticsearch deployed in all clusters
+      # sort_body = if sort_filter.blank?
+      #               [
+      #                 '_score',
+      #                 { '_script': {
+      #                   'script': "doc['surveillance_systems.id'].values.size()",
+      #                   type: 'number',
+      #                   order: 'desc'
+      #                 } }
+      #               ]
+      #             else
+      #               [
+      #                 { '_script': {
+      #                   'script': "doc['surveillance_systems.id'].values.size()",
+      #                   type: 'number',
+      #                   order: 'desc'
+      #                 } },
+      #                 '_score'
+      #               ]
+      #             end
 
       from_index = (page - 1) * query_size
       search_body = {
@@ -128,7 +128,8 @@ module SDP
             must: must_body
           }
         },
-        sort: sort_body,
+        # TODO: Uncomment when we have elasticsearch deployed in all clusters
+        # sort: sort_body,
         highlight: highlight_body
       }
 
