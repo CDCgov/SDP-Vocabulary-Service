@@ -34,7 +34,7 @@ class ChangeQuestionCategories < ActiveRecord::Migration[5.1]
       qt = QuestionType.find_by(name: oqt[:name])
       next unless qt
       qt.questions.each do |q|
-        q.question_type = QuestionType.find_by(name: oqt[:replacement])
+        q.question_type_id = QuestionType.find_by(name: oqt[:replacement]).id
         q.save!
       end
       qt.delete
