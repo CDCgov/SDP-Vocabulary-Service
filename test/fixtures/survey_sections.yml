@@ -3,12 +3,12 @@
 one:
   survey: one
   section: one
-  position: 1
+  position: 0
 
 two:
   survey: one
   section: two
-  position: 2
+  position: 1
 
 three:
   survey: two

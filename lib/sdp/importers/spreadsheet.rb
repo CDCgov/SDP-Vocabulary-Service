@@ -57,7 +57,21 @@ module SDP
         s = Survey.find(survey_id)
         section_position = 0
         section_position = s.survey_sections.last.position if s.survey_sections.present?
-        save_survey_items(s, section_position)
+        save_survey_items(s, section_position + 1)
+      end
+
+      def extend!(survey_id)
+        original = Survey.find(survey_id)
+        s = Survey.new(name: @config[:survey_name] || @file, created_by: @user, parent_id: original.id)
+        section_position = 0
+        original.survey_sections.each_with_index do |ss, i|
+          s.survey_sections << SurveySection.new(section_id: ss.section_id, position: ss.position)
+          section_position = i
+        end
+        s.surveillance_system  = @user.last_system
+        s.surveillance_program = @user.last_program
+        s.save!
+        save_survey_items(s, section_position + 1)
       end
 
       def parse!(verbose = false)
