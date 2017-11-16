@@ -458,6 +458,9 @@ Based on Rails routes of Vocabulary::Application
     make: function() {
       var routes;
       routes = {
+// admin_add_user => /admin/groups/add_user(.:format)
+  // function(options)
+  admin_add_user_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[2,[7,"/",false],[2,[6,"add_user",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_delete_and_sync => /admin/elastic_panel/delete_and_sync(.:format)
   // function(options)
   admin_delete_and_sync_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"elastic_panel",false],[2,[7,"/",false],[2,[6,"delete_and_sync",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -470,6 +473,12 @@ Based on Rails routes of Vocabulary::Application
 // admin_grant_publisher => /admin/roles/grant_publisher(.:format)
   // function(options)
   admin_grant_publisher_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_publisher",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_groups => /admin/groups(.:format)
+  // function(options)
+  admin_groups_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// admin_remove_user => /admin/groups/remove_user(.:format)
+  // function(options)
+  admin_remove_user_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[2,[7,"/",false],[2,[6,"remove_user",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_revoke_admin => /admin/roles/revoke_admin(.:format)
   // function(options)
   admin_revoke_admin_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"revoke_admin",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

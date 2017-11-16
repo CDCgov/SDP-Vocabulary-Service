@@ -259,7 +259,7 @@ class DashboardContainer extends SearchManagerComponent {
           </div>
         </button>
       </ul>
-      {(searchType !== '' && searchType !== undefined)&& <a href="#" tabIndex="4" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
+      {(searchType !== '' && searchType !== undefined && searchType !== null)&& <a href="#" tabIndex="4" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
     </div>);
   }
 

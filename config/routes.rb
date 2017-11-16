@@ -31,6 +31,9 @@ Rails.application.routes.draw do
     put '/roles/revoke_publisher' => 'roles#revoke_publisher', as: :revoke_publisher
     put '/elastic_panel/delete_and_sync' => 'elastic_panel#delete_and_sync', as: :delete_and_sync
     put '/elastic_panel/es_sync' => 'elastic_panel#es_sync', as: :es_sync
+    resources :groups, only: [:index, :create]
+    put '/groups/add_user' => 'groups#add_user', as: :add_user
+    put '/groups/remove_user' => 'groups#remove_user', as: :remove_user
   end
 
   resources :section_questions
