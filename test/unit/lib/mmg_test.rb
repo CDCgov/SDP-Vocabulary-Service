@@ -42,4 +42,24 @@ class MMGTest < ActiveSupport::TestCase
     assert survey.sections.count, SECTION_COUNT
     assert survey.survey_sections.first.position, 0
   end
+
+  test 'extend import' do
+    u = users(:admin)
+    f = './test/fixtures/files/TestMMG.xlsx'
+
+    importer = SDP::Importers::Spreadsheet.new(f, u, survey_name: 'Extended Import Test')
+    importer.parse!
+    importer.extend!(surveys(:one).id)
+
+    s = Survey.where(name: 'Extended Import Test').first
+    assert s.present?
+    assert SECTION_COUNT + 2, s.sections.count
+    first_ss = s.survey_sections.first
+    assert_equal 0, first_ss.position
+    assert_equal 'MyString', first_ss.section.name
+
+    mmg_ss = s.survey_sections[2]
+    assert_equal 2, mmg_ss.position
+    assert_equal 'Imported Section #3', mmg_ss.section.name
+  end
 end
