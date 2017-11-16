@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://hl7.org/fhir/json-schema/Dosage",
+  "$ref": "#/definitions/Dosage",
+  "description": "see http://hl7.org/fhir/json.html#schema for information about the FHIR Json Schemas",
+  "definitions": {
+    "Dosage": {
+      "allOf": [
+        {
+          "$ref": "Element#/definitions/Element"
+        },
+        {
+          "description": "Indicates how the medication is/was taken or should be taken by the patient.",
+          "properties": {
+            "sequence": {
+              "description": "Indicates the order in which the dosage instructions should be applied or interpreted.",
+              "type": "number",
+              "pattern": "-?([0]|([1-9][0-9]*))"
+            },
+            "_sequence": {
+              "description": "Extensions for sequence",
+              "$ref": "Element#/definitions/Element"
+            },
+            "text": {
+              "description": "Free text dosage instructions e.g. SIG.",
+              "type": "string"
+            },
+            "_text": {
+              "description": "Extensions for text",
+              "$ref": "Element#/definitions/Element"
+            },
+            "additionalInstruction": {
+              "description": "Supplemental instruction - e.g. \"with meals\".",
+              "type": "array",
+              "items": {
+                "$ref": "CodeableConcept#/definitions/CodeableConcept"
+              }
+            },
+            "patientInstruction": {
+              "description": "Instructions in terms that are understood by the patient or consumer.",
+              "type": "string"
+            },
+            "_patientInstruction": {
+              "description": "Extensions for patientInstruction",
+              "$ref": "Element#/definitions/Element"
+            },
+            "timing": {
+              "description": "When medication should be administered.",
+              "$ref": "Timing#/definitions/Timing"
+            },
+            "asNeededBoolean": {
+              "description": "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).",
+              "type": "boolean"
+            },
+            "_asNeededBoolean": {
+              "description": "Extensions for asNeededBoolean",
+              "$ref": "Element#/definitions/Element"
+            },
+            "asNeededCodeableConcept": {
+              "description": "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).",
+              "$ref": "CodeableConcept#/definitions/CodeableConcept"
+            },
+            "site": {
+              "description": "Body site to administer to.",
+              "$ref": "CodeableConcept#/definitions/CodeableConcept"
+            },
+            "route": {
+              "description": "How drug should enter body.",
+              "$ref": "CodeableConcept#/definitions/CodeableConcept"
+            },
+            "method": {
+              "description": "Technique for administering medication.",
+              "$ref": "CodeableConcept#/definitions/CodeableConcept"
+            },
+            "doseRange": {
+              "description": "Amount of medication per dose.",
+              "$ref": "Range#/definitions/Range"
+            },
+            "doseSimpleQuantity": {
+              "description": "Amount of medication per dose.",
+              "$ref": "Quantity#/definitions/Quantity"
+            },
+            "maxDosePerPeriod": {
+              "description": "Upper limit on medication per unit of time.",
+              "$ref": "Ratio#/definitions/Ratio"
+            },
+            "maxDosePerAdministration": {
+              "description": "Upper limit on medication per administration.",
+              "$ref": "Quantity#/definitions/Quantity"
+            },
+            "maxDosePerLifetime": {
+              "description": "Upper limit on medication per lifetime of the patient.",
+              "$ref": "Quantity#/definitions/Quantity"
+            },
+            "rateRatio": {
+              "description": "Amount of medication per unit of time.",
+              "$ref": "Ratio#/definitions/Ratio"
+            },
+            "rateRange": {
+              "description": "Amount of medication per unit of time.",
+              "$ref": "Range#/definitions/Range"
+            },
+            "rateSimpleQuantity": {
+              "description": "Amount of medication per unit of time.",
+              "$ref": "Quantity#/definitions/Quantity"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
