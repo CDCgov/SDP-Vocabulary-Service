@@ -1,1 +1,1 @@
-json.partial! 'show' , survey: @survey
+json.partial! 'show', survey: @survey

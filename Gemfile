@@ -53,6 +53,7 @@ group :development, :test do
   gem 'headless'
   gem 'overcommit'
   gem 'parallel_tests'
+  gem 'json-schema'
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-rescue'

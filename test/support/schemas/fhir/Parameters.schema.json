@@ -1,0 +1,349 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://hl7.org/fhir/json-schema/Parameters",
+  "$ref": "#/definitions/Parameters",
+  "description": "see http://hl7.org/fhir/json.html#schema for information about the FHIR Json Schemas",
+  "definitions": {
+    "Parameters": {
+      "allOf": [
+        {
+          "$ref": "Resource#/definitions/Resource"
+        },
+        {
+          "description": "This special resource type is used to represent an operation request and response (operations.html). It has no other use, and there is no RESTful endpoint associated with it.",
+          "properties": {
+            "parameter": {
+              "description": "A parameter passed to or received from the operation.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Parameters_Parameter"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Parameters_Parameter": {
+      "allOf": [
+        {
+          "$ref": "BackboneElement#/definitions/BackboneElement"
+        },
+        {
+          "description": "This special resource type is used to represent an operation request and response (operations.html). It has no other use, and there is no RESTful endpoint associated with it.",
+          "properties": {
+            "name": {
+              "description": "The name of the parameter (reference to the operation definition).",
+              "type": "string"
+            },
+            "_name": {
+              "description": "Extensions for name",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueBoolean": {
+              "description": "If the parameter is a data type.",
+              "type": "boolean"
+            },
+            "_valueBoolean": {
+              "description": "Extensions for valueBoolean",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueInteger": {
+              "description": "If the parameter is a data type.",
+              "pattern": "-?([0]|([1-9][0-9]*))",
+              "type": "number"
+            },
+            "_valueInteger": {
+              "description": "Extensions for valueInteger",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueDecimal": {
+              "description": "If the parameter is a data type.",
+              "pattern": "-?([0]|([1-9][0-9]*))(\\.[0-9]+)?",
+              "type": "number"
+            },
+            "_valueDecimal": {
+              "description": "Extensions for valueDecimal",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueBase64Binary": {
+              "description": "If the parameter is a data type.",
+              "type": "string"
+            },
+            "_valueBase64Binary": {
+              "description": "Extensions for valueBase64Binary",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueInstant": {
+              "description": "If the parameter is a data type.",
+              "type": "string"
+            },
+            "_valueInstant": {
+              "description": "Extensions for valueInstant",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueString": {
+              "description": "If the parameter is a data type.",
+              "type": "string"
+            },
+            "_valueString": {
+              "description": "Extensions for valueString",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueUri": {
+              "description": "If the parameter is a data type.",
+              "type": "string"
+            },
+            "_valueUri": {
+              "description": "Extensions for valueUri",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueDate": {
+              "description": "If the parameter is a data type.",
+              "pattern": "-?[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?)?",
+              "type": "string"
+            },
+            "_valueDate": {
+              "description": "Extensions for valueDate",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueDateTime": {
+              "description": "If the parameter is a data type.",
+              "pattern": "-?[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?",
+              "type": "string"
+            },
+            "_valueDateTime": {
+              "description": "Extensions for valueDateTime",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueTime": {
+              "description": "If the parameter is a data type.",
+              "pattern": "([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?",
+              "type": "string"
+            },
+            "_valueTime": {
+              "description": "Extensions for valueTime",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueCode": {
+              "description": "If the parameter is a data type.",
+              "pattern": "[^\\s]+([\\s]?[^\\s]+)*",
+              "type": "string"
+            },
+            "_valueCode": {
+              "description": "Extensions for valueCode",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueOid": {
+              "description": "If the parameter is a data type.",
+              "pattern": "urn:oid:(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*))*",
+              "type": "string"
+            },
+            "_valueOid": {
+              "description": "Extensions for valueOid",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueUuid": {
+              "description": "If the parameter is a data type.",
+              "pattern": "urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+              "type": "string"
+            },
+            "_valueUuid": {
+              "description": "Extensions for valueUuid",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueId": {
+              "description": "If the parameter is a data type.",
+              "pattern": "[A-Za-z0-9\\-\\.]{1,64}",
+              "type": "string"
+            },
+            "_valueId": {
+              "description": "Extensions for valueId",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueUnsignedInt": {
+              "description": "If the parameter is a data type.",
+              "pattern": "[0]|([1-9][0-9]*)",
+              "type": "number"
+            },
+            "_valueUnsignedInt": {
+              "description": "Extensions for valueUnsignedInt",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valuePositiveInt": {
+              "description": "If the parameter is a data type.",
+              "pattern": "[1-9][0-9]*",
+              "type": "number"
+            },
+            "_valuePositiveInt": {
+              "description": "Extensions for valuePositiveInt",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueMarkdown": {
+              "description": "If the parameter is a data type.",
+              "type": "string"
+            },
+            "_valueMarkdown": {
+              "description": "Extensions for valueMarkdown",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueElement": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Element#/definitions/Element"
+            },
+            "valueExtension": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Extension#/definitions/Extension"
+            },
+            "valueBackboneElement": {
+              "description": "If the parameter is a data type.",
+              "$ref": "BackboneElement#/definitions/BackboneElement"
+            },
+            "valueNarrative": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Narrative#/definitions/Narrative"
+            },
+            "valueAnnotation": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Annotation#/definitions/Annotation"
+            },
+            "valueAttachment": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Attachment#/definitions/Attachment"
+            },
+            "valueIdentifier": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Identifier#/definitions/Identifier"
+            },
+            "valueCodeableConcept": {
+              "description": "If the parameter is a data type.",
+              "$ref": "CodeableConcept#/definitions/CodeableConcept"
+            },
+            "valueCoding": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Coding#/definitions/Coding"
+            },
+            "valueQuantity": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Quantity#/definitions/Quantity"
+            },
+            "valueDuration": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Duration#/definitions/Duration"
+            },
+            "valueSimpleQuantity": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Quantity#/definitions/Quantity"
+            },
+            "valueDistance": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Distance#/definitions/Distance"
+            },
+            "valueCount": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Count#/definitions/Count"
+            },
+            "valueMoney": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Money#/definitions/Money"
+            },
+            "valueAge": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Age#/definitions/Age"
+            },
+            "valueRange": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Range#/definitions/Range"
+            },
+            "valuePeriod": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Period#/definitions/Period"
+            },
+            "valueRatio": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Ratio#/definitions/Ratio"
+            },
+            "valueReference": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Reference#/definitions/Reference"
+            },
+            "valueSampledData": {
+              "description": "If the parameter is a data type.",
+              "$ref": "SampledData#/definitions/SampledData"
+            },
+            "valueSignature": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Signature#/definitions/Signature"
+            },
+            "valueHumanName": {
+              "description": "If the parameter is a data type.",
+              "$ref": "HumanName#/definitions/HumanName"
+            },
+            "valueAddress": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Address#/definitions/Address"
+            },
+            "valueContactPoint": {
+              "description": "If the parameter is a data type.",
+              "$ref": "ContactPoint#/definitions/ContactPoint"
+            },
+            "valueTiming": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Timing#/definitions/Timing"
+            },
+            "valueMeta": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Meta#/definitions/Meta"
+            },
+            "valueElementDefinition": {
+              "description": "If the parameter is a data type.",
+              "$ref": "ElementDefinition#/definitions/ElementDefinition"
+            },
+            "valueContactDetail": {
+              "description": "If the parameter is a data type.",
+              "$ref": "ContactDetail#/definitions/ContactDetail"
+            },
+            "valueContributor": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Contributor#/definitions/Contributor"
+            },
+            "valueDosage": {
+              "description": "If the parameter is a data type.",
+              "$ref": "Dosage#/definitions/Dosage"
+            },
+            "valueRelatedArtifact": {
+              "description": "If the parameter is a data type.",
+              "$ref": "RelatedArtifact#/definitions/RelatedArtifact"
+            },
+            "valueUsageContext": {
+              "description": "If the parameter is a data type.",
+              "$ref": "UsageContext#/definitions/UsageContext"
+            },
+            "valueDataRequirement": {
+              "description": "If the parameter is a data type.",
+              "$ref": "DataRequirement#/definitions/DataRequirement"
+            },
+            "valueParameterDefinition": {
+              "description": "If the parameter is a data type.",
+              "$ref": "ParameterDefinition#/definitions/ParameterDefinition"
+            },
+            "valueTriggerDefinition": {
+              "description": "If the parameter is a data type.",
+              "$ref": "TriggerDefinition#/definitions/TriggerDefinition"
+            },
+            "resource": {
+              "description": "If the parameter is a whole resource.",
+              "$ref": "ResourceList#/definitions/ResourceList"
+            },
+            "part": {
+              "description": "A named part of a multi-part parameter.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Parameters_Parameter"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

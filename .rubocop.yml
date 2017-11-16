@@ -9,6 +9,7 @@ AllCops:
     - 'lib/tasks/data.rake'
     - 'db/schema.rb'
     - 'node_modules/**/*'
+    - 'app/views/api/fhir/**/*'
 Rails:
   Enabled: true
 Rails/HasAndBelongsToMany:
@@ -64,6 +65,7 @@ Style/GuardClause:
 Style/ClassVars:
   Exclude:
     - 'config/initializers/elastic_search.rb'
+    - 'test/support/json_schema.rb'
 Style/NumericPredicate:
   Enabled: false
 #Style/HashSyntax:
