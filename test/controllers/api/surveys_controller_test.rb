@@ -17,7 +17,7 @@ class ApiSurveysControllerTest < ActionDispatch::IntegrationTest
     current_user_id = @current_user ? @current_user.id : -1
     assert_equal Survey.where("(status='published' OR created_by_id= ?)", current_user_id).count, res.count
     assert_response :success
-    assert_response_schema('surveys/show.json')
+    assert_json_schema_response('surveys/show.json')
   end
 
   test 'api should show survey' do
@@ -26,9 +26,9 @@ class ApiSurveysControllerTest < ActionDispatch::IntegrationTest
     tags = res['tags']
     assert_response :success
     assert_serializer 'SurveySerializer'
-    assert_response_schema('surveys/show.json')
     assert tags
     assert_equal 'Generic', tags[0]['code']
+    assert_json_schema_response('surveys/show.json')
   end
 
   test 'api should show survey of specific version' do

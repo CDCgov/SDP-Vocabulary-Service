@@ -17,14 +17,14 @@ class ApiQuestionsControllerTest < ActionDispatch::IntegrationTest
     current_user_id = @current_user ? @current_user.id : -1
     assert_equal Question.where("(status='published' OR created_by_id= ?)", current_user_id).count, res.count
     assert_response :success
-    assert_response_schema('questions/show.json')
+    assert_json_schema_response('questions/show.json')
   end
 
   test 'api should show question' do
     get api_question_url(@question.version_independent_id)
     assert_response :success
     assert_serializer 'QuestionsSerializer'
-    assert_response_schema('questions/show.json')
+    assert_json_schema_response('questions/show.json')
   end
 
   test 'api should show question of specific version' do
