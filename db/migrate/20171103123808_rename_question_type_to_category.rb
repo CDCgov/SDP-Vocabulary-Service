@@ -6,13 +6,11 @@ class RenameQuestionTypeToCategory < ActiveRecord::Migration[5.1]
     add_reference :questions, :category, foreign_key: true
     subcategories = Subcategory.all
     subcategories.each do |subcat|
-      subcat.category_id = subcat.question_type_id
-      subcat.save
+      subcat.update_column('category_id', subcat.question_type_id)
     end
     questions = Question.all
     questions.each do |q|
-      q.category_id = q.question_type_id
-      q.save
+      q.update_column('category_id', q.question_type_id)
     end
     remove_reference :subcategories, :question_type, index: true
     remove_reference :questions, :question_type, index: true
@@ -25,13 +23,11 @@ class RenameQuestionTypeToCategory < ActiveRecord::Migration[5.1]
     add_reference :questions, :question_type, foreign_key: true
     subcategories = Subcategory.all
     subcategories.each do |subcat|
-      subcat.question_type_id = subcat.category_id
-      subcat.save
+      subcat.update_column('question_type_id', subcat.category_id)
     end
     questions = Question.all
     questions.each do |q|
-      q.question_type_id = q.category_id
-      q.save
+      q.update_column('question_type_id', q.category_id)
     end
     remove_reference :subcategories, :category, index: true
     remove_reference :questions, :category, index: true
