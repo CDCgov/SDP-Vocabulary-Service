@@ -4,6 +4,7 @@ module SDP
       attr_reader :errors
 
       DEFAULT_CONFIG = {
+        mmg: true,
         de_tab_name: 'Data Elements',
         de_coded_type: ['Coded'],
         section_start_regex: '^START: (.*)',
@@ -51,13 +52,12 @@ module SDP
       def save!
         s = Survey.new(name: @config[:survey_name] || @file, created_by: @user)
         s.save!
-        f_position = 0
-        save_survey_items(s, f_position)
+        section_position = 0
+        save_survey_items(s, section_position)
       end
 
       def append!(survey_id)
         s = Survey.find(survey_id)
-<<<<<<< HEAD
         section_position = 0
         section_position = s.survey_sections.last.position if s.survey_sections.present?
         save_survey_items(s, section_position + 1)
@@ -75,11 +75,6 @@ module SDP
         s.surveillance_program = @user.last_program
         s.save!
         save_survey_items(s, section_position + 1)
-=======
-        f_position = 0
-        f_position = s.survey_sections.last.position if s.survey_sections.present?
-        save_survey_items(s, f_position)
->>>>>>> rebasing and renaming importer files
       end
 
       def parse!(verbose = false)
@@ -95,17 +90,40 @@ module SDP
             logger.debug "skipping sheet #{sheet} -- looks like a value set"
             next
           end
+
           logger.debug "processing sheet #{sheet}"
-          w.sheet(sheet).each(@config[:de_columns]) do |row|
-            # skip first row
-            next if row[:name] == @config[:de_columns][:name]
-            next if row[:name].nil?
-            section_name = sheet
-            @sections[section_name] ||= { name: section_name, data_elements: [] }
-            data_element = extract_data_element(row)
-            @sections[section_name][:data_elements] << data_element unless data_element.nil? ||
-                                                                           @sections[section_name][:data_elements].include?(data_element)
-            print_data_element(data_element) if verbose
+          if @config[:mmg]
+            w.sheet(sheet).each(@config[:de_columns]) do |row|
+              # skip first row
+              next if row[:name] == @config[:de_columns][:name]
+              # section start/end
+              if row[:name].nil?
+                process_section_marker(row)
+                next
+              end
+              data_element = extract_data_element(row)
+              print_data_element(data_element) if verbose
+
+              section_name = @section_names.last
+              section_name ||= sheet
+              # initialize section if its not already there
+              @sections[section_name] ||= { name: section_name, data_elements: [] }
+              # add the data element unless a matching data element is already present
+              @sections[section_name][:data_elements] << data_element unless @sections[section_name][:data_elements].include? data_element
+            end
+          else
+            w.sheet(sheet).each(@config[:de_columns]) do |row|
+              # skip first row
+              next if row[:name] == @config[:de_columns][:name]
+              next if row[:name].nil?
+              section_name = sheet
+              @sections[section_name] ||= { name: section_name, data_elements: [] }
+              data_element = extract_data_element(row)
+              @sections[section_name][:data_elements] << data_element unless data_element.nil? ||
+                                                                             @sections[section_name][:data_elements].include?(data_element)
+              print_data_element(data_element) if verbose
+            end
+
           end
         end
         # Go back and extract value sets when those are included in the workbook
@@ -123,7 +141,7 @@ module SDP
 
       def save_survey_items(s, section_position)
         sections do |name, elements|
-          section = Section.new(name: name || "Imported Section ##{f_position + 1}", created_by: @user)
+          section = Section.new(name: name || "Imported Section ##{section_position + 1}", created_by: @user)
           section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
           section.save!
           s.survey_sections.create(section: section, position: section_position)
@@ -143,7 +161,7 @@ module SDP
             q_position += 1
             q.index
           end
-          UpdateIndexJob.perform_now('section', f)
+          UpdateIndexJob.perform_now('section', section)
         end
         UpdateIndexJob.perform_now('survey', s)
       end
@@ -163,8 +181,16 @@ module SDP
       end
 
       def response_set_for_vads(element)
-        # use the most recent version in the db
-        ResponseSet.where(oid: element[:value_set_oid]).order(version: :DESC).limit(1).first
+        rs = ResponseSet.where(oid: element[:value_set_oid]).first
+        if rs.nil?
+          rs = ResponseSet.new(
+            created_by: @user, status: 'draft',
+            name: element[:value_set_tab_name] || element[:name],
+            source: 'PHIN_VADS', oid: element[:value_set_oid]
+          )
+          rs.save!
+        end
+        rs
       end
 
       def response_set_for_local(element)
@@ -233,14 +259,26 @@ module SDP
             if @all_sheets.include? tab_name
               # can't access a different sheet mid-parse so just save tab name for now
               data_element[:value_set_tab_name] = normalize(row[:value_set])
-            elsif @oid_matcher.match(tab_name)
-              data_element[:value_set_oid] = tab_name
             else
               @errors << "Value set tab '#{tab_name}' not present"
             end
           end
         end
         data_element
+      end
+
+      def process_section_marker(row)
+        start_marker = @section_start.match(row[:section_name])
+        end_marker = @section_end.match(row[:section_name])
+        if start_marker
+          @section_names.push(start_marker[1])
+        elsif end_marker
+          section_name = end_marker[1]
+          current_section = @section_names.pop
+          if current_section != section_name
+            @errors << "Mismatched section end: expected #{current_section}, found #{section_name}"
+          end
+        end
       end
 
       def normalize(str)
@@ -256,6 +294,10 @@ module SDP
         if data_element[:value_set_tab_name]
           logger.info "  Value Set Tab: #{data_element[:value_set_tab_name]}"
         end
+      end
+
+      def logger
+        Rails.logger
       end
     end
   end

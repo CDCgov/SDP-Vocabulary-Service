@@ -18,10 +18,12 @@ Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
     - 'lib/tasks/admin.rake'
+    - 'lib/sdp/importers/mspreadsheetmg.rb'
 Metrics/LineLength:
   Max: 150
   Exclude:
     - 'test/**/*'
+    - 'lib/sdp/imports/spreadsheet.rb'
 Metrics/BlockLength:
   Exclude:
     - 'config/environments/*'
@@ -30,16 +32,19 @@ Metrics/BlockLength:
     - 'config/initializers/devise.rb'
     - 'test/**/*'
     - 'db/migrate/*'
+    - 'lib/sdp/importers/spreadsheet.rb'
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
   Max: 30
   Exclude:
     - 'db/migrate/*'
     - 'lib/sdp/simple_search.rb'
+    - 'lib/sdp/importers/spreadsheet.rb'
 Metrics/ClassLength:
   Max: 250
   Exclude:
     - 'test/**/*'
+    - 'lib/sdp/importers/spreadsheet.rb'
 Metrics/AbcSize:
   # The ABC size is a calculated magnitude, so this number can be a Fixnum or
   # a Float.
