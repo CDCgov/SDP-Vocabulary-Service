@@ -13,14 +13,14 @@ class ApiProgramsControllerTest < ActionDispatch::IntegrationTest
   test 'api should get index of programs' do
     get api_programs_url
     assert_response :success
-    assert_response_schema('programs/show.json')
+    assert_json_schema_response('programs/show.json')
   end
 
   test 'api should show program' do
     get api_program_url(@program)
     assert_response :success
     assert_serializer 'ProgramSerializer'
-    assert_response_schema('programs/show.json')
+    assert_json_schema_response('programs/show.json')
   end
 
   test 'api should 404 on program that doesnt exist' do

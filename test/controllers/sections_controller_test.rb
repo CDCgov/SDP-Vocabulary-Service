@@ -123,7 +123,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
   test 'should respond to json format' do
     get section_url(@section, format: :json)
     assert_response :success
-    assert_response_schema('sections/show_default.json')
+    assert_json_schema_response('sections/show_default.json')
   end
 
   test 'publishers should see sections from other authors' do

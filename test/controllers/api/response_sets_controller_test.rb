@@ -17,14 +17,14 @@ class ApiResponseSetsControllerTest < ActionDispatch::IntegrationTest
     res = JSON.parse response.body
     current_user_id = @current_user ? @current_user.id : -1
     assert_equal ResponseSet.where("(status='published' OR created_by_id= ?)", current_user_id).count, res.count
-    assert_response_schema('result_sets/show.json')
+    assert_json_schema_response('result_sets/show.json')
   end
 
   test 'api should show value set' do
     get api_valueSet_url(@response_set.version_independent_id)
     assert_response :success
     assert_serializer 'ValueSetsSerializer'
-    assert_response_schema('result_sets/show.json')
+    assert_json_schema_response('result_sets/show.json')
   end
 
   test 'api should show value set of specific version' do
