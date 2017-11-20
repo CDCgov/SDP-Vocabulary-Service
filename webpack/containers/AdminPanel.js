@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import { setSteps } from '../actions/tutorial_actions';
-import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync } from '../actions/admin_actions';
+import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync, fetchGroups,
+         createGroup, addUserToGroup, removeUserFromGroup } from '../actions/admin_actions';
 import { addProgram } from '../actions/surveillance_program_actions';
 import { addSystem } from '../actions/surveillance_system_actions';
 import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
@@ -18,13 +19,16 @@ class AdminPanel extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.onFormSubmit  = this.onFormSubmit.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.showModal = this.showModal.bind(this);
+    let group = this.props.groupList[0] || {};
     this.state = {
       selectedTab: 'admin-list',
       searchEmail: '',
       name: '',
       description: '',
       acronym: '',
-      groupModal : false   // temporary hack for showing/hiding group member modal dialog
+      groupModal: false,
+      selectedGroup: group
     };
   }
 
@@ -36,9 +40,12 @@ class AdminPanel extends Component {
       warning: {}
     });
   }
-/* Hack to show/hide a group member modal dialog...*/
-  showModal() {
-    this.setState({groupModal : true});
+
+  showModal(group) {
+    this.setState({
+      groupModal: true,
+      selectedGroup: group
+    });
   }
   hideModal() {
     this.setState({groupModal : false});
@@ -90,7 +97,9 @@ class AdminPanel extends Component {
         });
         break;
       case 'group-list':
-        // Handle adding a new group here...
+        this.props.createGroup(this.state.name, this.state.description, null, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
         break;
       default:
         this.props.addSystem(this.state.name, this.state.description, this.state.acronym, null, (failureResponse) => {
@@ -144,6 +153,7 @@ class AdminPanel extends Component {
       </form>
     );
   }
+
   groupForm() {
     return(
       <form onSubmit={this.onFormSubmit}>
@@ -166,6 +176,7 @@ class AdminPanel extends Component {
       </form>
     );
   }
+
   adminTab() {
     var adminList = values(this.props.adminList);
     return(
@@ -271,26 +282,18 @@ class AdminPanel extends Component {
   }
 
   groupTab() {
-    var groupList = values(this.props.groupList);
-    /* Dummy data for testing the HTML Layout of the Manage Group Members modal dialog */
-    const testgroup = {name:"Larch",description:"The Larch Group"};
-    const testmembers = [
-      {email:"mnosal@mitre.org",name:"Mike Nosal"},
-      {email:"bobd@mitre.org",name:"Rob Dingwell"},
-      {email:"andrewg@mitre.org",name:"Andrew Gregorowicz"}
-    ];
-
+    // TODO: only need values if the return matches dummy data
     return(
       <div className="tab-pane" id="group-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'group-list'} aria-labelledby="group-list-tab">
-        <GroupMembers show={this.state.groupModal} group={testgroup} members={testmembers} close={this.hideModal}/>
+        <GroupMembers show={this.state.groupModal} group={this.state.selectedGroup} close={this.hideModal} addUserToGroup={this.props.addUserToGroup} removeUserFromGroup={this.props.removeUserFromGroup} />
         <h2 id="group-list">Group List</h2>
         {this.groupForm()}
         <div>
-        {groupList.map((group) => {
-          return (
-            <p key={group.id} className="admin-group"><strong>{group.name}</strong><br/><button id={`manage_${group.id}`} className="btn btn-default pull-right" onClick={() => this.showModal(true)}><i className="fa fa-address-book" aria-hidden="true"></i> Manage Users<text className="sr-only">{`for group ${group.name}`}</text> (3)</button>{group.description}</p>
+          {this.props.groupList.map((group) => {
+            return (
+              <p key={group.id} className="admin-group"><strong>{group.name}</strong><br/><button id={`manage_${group.id}`} className="btn btn-default pull-right" onClick={() => this.showModal(group)}><i className="fa fa-address-book" aria-hidden="true"></i> Manage Users<text className="sr-only">{`for group ${group.name}`}</text> {group.members && `(${group.members.length})`}</button>{group.description}</p>
             );
-        })}
+          })}
         </div>
       </div>
     );
@@ -319,7 +322,10 @@ class AdminPanel extends Component {
             <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
               <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
             </li>
-            <li id="group-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('group-list')} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
+            <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
+                this.props.fetchGroups();
+                this.selectTab('group-list');
+              }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
               <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
             </li>
             <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
@@ -346,16 +352,15 @@ function mapStateToProps(state) {
   props.publisherList = state.publishers;
   props.programList = state.surveillancePrograms;
   props.systemList = state.surveillanceSystems;
-  // Add props for the groupList - hardcode sample data for now
-  props.groupList  = [{id:'1',name:"Birch",description:"The Birch Tree Group"},{id:'2',name:"Chestnut",description:"The Chestnut Tree Group"},{id:'3',name:"Elm",description:"The Elm Tree Group"}]; //state.groups;
+  props.groupList = state.groups;
   props.currentUser = state.currentUser;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
-    revokePublisher, grantPublisher, grantAdmin,
-    esSync, esDeleteAndSync}, dispatch);
+    revokePublisher, grantPublisher, grantAdmin, createGroup, addUserToGroup,
+    removeUserFromGroup, fetchGroups, esSync, esDeleteAndSync}, dispatch);
 }
 
 AdminPanel.propTypes = {
@@ -363,11 +368,15 @@ AdminPanel.propTypes = {
   publisherList: PropTypes.object,
   programList: PropTypes.object,
   systemList: PropTypes.object,
-  groupList: PropTypes.object,
+  groupList: PropTypes.array,
   currentUser: currentUserProps,
   setSteps: PropTypes.func,
   addProgram: PropTypes.func,
   addSystem: PropTypes.func,
+  addUserToGroup: PropTypes.func,
+  removeUserFromGroup: PropTypes.func,
+  createGroup: PropTypes.func,
+  fetchGroups: PropTypes.func,
   revokeAdmin: PropTypes.func,
   revokePublisher: PropTypes.func,
   grantAdmin: PropTypes.func,

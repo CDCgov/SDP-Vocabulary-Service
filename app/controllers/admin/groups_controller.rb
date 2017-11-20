@@ -20,7 +20,7 @@ module Admin
       group = Group.find_by(name: params[:group])
       if user && group
         group.add_user(user)
-        render json: User.with_role(:admin).preload(:roles), status: 200
+        render json: Group.all, status: 200
       else
         render json: {
           msg: "No group #{params[:group]} exists or no user found with email #{params[:email]}, check your parameters and try again"
@@ -33,7 +33,7 @@ module Admin
       group = Group.find_by(name: params[:group])
       if user && group
         group.remove_user(user)
-        render json: User.with_role(:admin).preload(:roles), status: 200
+        render json: Group.all, status: 200
       else
         render json: {
           msg: 'Error when removing user, please check email is in correct format or refresh application and try again'
@@ -44,7 +44,7 @@ module Admin
     private
 
     def group_params
-      params.permit(:name, :description)
+      params.require(:group).permit(:name, :description)
     end
   end
 end

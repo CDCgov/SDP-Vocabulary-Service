@@ -33,7 +33,7 @@ export default class ProfileEditor extends Component {
 
   render() {
     return (
-      <Modal animation={false} show={this.props.show}  onHide={this.props.closer} aria-label={this.title()}>
+      <Modal animation={false} show={this.props.show} onHide={this.props.closer} aria-label={this.title()}>
         <Modal.Header closeButton>
           <Modal.Title componentClass="h1">{this.title()}</Modal.Title>
         </Modal.Header>
@@ -67,7 +67,6 @@ export default class ProfileEditor extends Component {
   }
 
   renderUserInfo(){
-
     return(
     <div>
       <div className="form-group">
@@ -88,12 +87,21 @@ export default class ProfileEditor extends Component {
                  value={this.state.lastName} onChange={this.handleChange('lastName')}/>
         </div>
       </div>
-      <div className="form-group"><label className="control-label">Groups</label>
-      {/* display list of group names the user belongs to here... */}
-      <p>Birch, Larch, Elm, Poplar</p>
+      <div className="form-group">
+        <label className="control-label">Groups</label>
+        <p>{this.state.groups.length > 0 ? (this.state.groups.map((group, i) => {
+          if (i+1 < this.state.groups.length) {
+            return (<text key={group.id}>{group.name}, </text>);
+          } else {
+            return (<text key={group.id}>{group.name}</text>);
+          }
+        })) : (
+          <text>No groups, contact admin to be added to a group.</text>
+        )}</p>
       </div>
     </div>);
   }
+
   programSearch(programSearchTerm){
     var surveillancePrograms = values(this.props.surveillancePrograms);
     if(programSearchTerm && programSearchTerm.length > 1){

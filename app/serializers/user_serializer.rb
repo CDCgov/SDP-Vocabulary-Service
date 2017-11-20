@@ -10,4 +10,5 @@ class UserSerializer < ActiveModel::Serializer
   attribute :last_system_id
   attribute :publisher?, key: :publisher
   attribute :admin?, key: :admin
+  has_many :groups, serializer: GroupSerializer
 end

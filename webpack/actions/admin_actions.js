@@ -73,8 +73,10 @@ export function revokeAdmin(adminId, callback=null, failureHandler=null) {
   };
 }
 
-// Var group should be an object with name and optional description
-export function createGroup(group, successHandler=null, failureHandler=null) {
+export function createGroup(groupName, groupDescription, successHandler=null, failureHandler=null) {
+  let group = {};
+  group['name'] = groupName;
+  group['description'] = groupDescription;
   const authenticityToken = getCSRFToken();
   const postPromise = axios.post(routes.adminGroupsPath(),
                       {group, authenticityToken},
