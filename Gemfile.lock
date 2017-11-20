@@ -235,8 +235,8 @@ GEM
     parallel (1.12.0)
     parallel_tests (2.16.0)
       parallel
-    parser (2.4.0.0)
-      ast (~> 2.2)
+    parser (2.4.0.2)
+      ast (~> 2.3)
     pg (0.21.0)
     powerpack (0.1.1)
     pry (0.10.4)
@@ -307,8 +307,8 @@ GEM
       nokogiri
       roo (>= 2.0.0beta1, < 3)
       spreadsheet (> 0.9.0)
-    rubocop (0.44.1)
-      parser (>= 2.3.1.1, < 3.0)
+    rubocop (0.48.1)
+      parser (>= 2.3.3.1, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
@@ -436,7 +436,7 @@ DEPENDENCIES
   rolify
   roo (~> 2.4.0)
   roo-xls (~> 1.0.0)
-  rubocop (~> 0.44.1)
+  rubocop (~> 0.48.1)
   scss_lint
   selenium-webdriver (= 2.48.0)
   simplecov
@@ -445,4 +445,4 @@ DEPENDENCIES
   webpacker
 
 BUNDLED WITH
-   1.15.2
+   1.16.0
