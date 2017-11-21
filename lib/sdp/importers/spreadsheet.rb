@@ -4,6 +4,7 @@ module SDP
       attr_reader :errors
 
       DEFAULT_CONFIG = {
+        mmg: true,
         de_tab_name: 'Data Elements',
         de_coded_type: ['Coded'],
         section_start_regex: '^START: (.*)',
@@ -43,6 +44,8 @@ module SDP
         @section_start = Regexp.new(@config[:section_start_regex])
         @section_end = Regexp.new(@config[:section_end_regex])
         @vads_oid = Regexp.new(@config[:phin_vads_oid_regex])
+        @oid_matcher = /^([\.\d]+)$/
+        @valueset_sheet = /Valueset.*/
         @local_response_sets = {}
       end
 
@@ -77,26 +80,55 @@ module SDP
       def parse!(verbose = false)
         w = Roo::Spreadsheet.open(@file)
         @all_sheets = w.sheets
-        w.sheet(@config[:de_tab_name]).each(@config[:de_columns]) do |row|
-          # skip first row
-          next if row[:name] == @config[:de_columns][:name]
-
-          # section start/end
-          if row[:name].nil?
-            process_section_marker(row)
+        @all_sheets.each do |sheet|
+          headers = []
+          w.sheet(sheet).row(1).each do |header|
+            headers << header
+          end
+          if (@config[:vs_columns].values - headers).empty? ||
+             @valueset_sheet.match(sheet)
+            logger.debug "skipping sheet #{sheet} -- looks like a value set"
+            next
+          elsif !(@config[:de_columns].values - headers).empty?
+            logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
             next
           end
 
-          data_element = extract_data_element(row)
-          print_data_element(data_element) if verbose
+          logger.debug "processing sheet #{sheet}"
+          if @config[:mmg]
+            w.sheet(sheet).each(@config[:de_columns]) do |row|
+              # skip first row
+              next if row[:name] == @config[:de_columns][:name]
+              # section start/end
+              if row[:name].nil?
+                process_section_marker(row)
+                next
+              end
+              data_element = extract_data_element(row)
+              print_data_element(data_element) if verbose
 
-          section_name = @section_names.last
-          # initialize section if its not already there
-          @sections[section_name] ||= { name: section_name, data_elements: [] }
-          # add the data element unless a matching data element is already present
-          @sections[section_name][:data_elements] << data_element unless @sections[section_name][:data_elements].include? data_element
+              section_name = @section_names.last
+              section_name ||= sheet
+              # initialize section if its not already there
+              @sections[section_name] ||= { name: section_name, data_elements: [] }
+              # add the data element unless a matching data element is already present
+              @sections[section_name][:data_elements] << data_element unless @sections[section_name][:data_elements].include? data_element
+            end
+          else
+            w.sheet(sheet).each(@config[:de_columns]) do |row|
+              # skip first row
+              next if row[:name] == @config[:de_columns][:name]
+              next if row[:name].nil?
+              section_name = sheet
+              @sections[section_name] ||= { name: section_name, data_elements: [] }
+              data_element = extract_data_element(row)
+              @sections[section_name][:data_elements] << data_element unless data_element.nil? ||
+                                                                             @sections[section_name][:data_elements].include?(data_element)
+              print_data_element(data_element) if verbose
+            end
+
+          end
         end
-
         # Go back and extract value sets when those are included in the workbook
         extract_value_sets(w, verbose)
         w.close
@@ -265,6 +297,10 @@ module SDP
         if data_element[:value_set_tab_name]
           logger.info "  Value Set Tab: #{data_element[:value_set_tab_name]}"
         end
+      end
+
+      def logger
+        Rails.logger
       end
     end
   end
