@@ -34,3 +34,18 @@ seven:
   value: Female
   taggable: gfv2 (Question)
   code_system: MyString
+
+eight:
+  value: Generic
+  taggable: one (Section)
+  code_system: MMG
+
+nine:
+  value: Generic
+  taggable: one (Section)
+  code_system: MMG Tab
+
+ten:
+  value: Generic
+  taggable: one (Survey)
+  code_system: MMG

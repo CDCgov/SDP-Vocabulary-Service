@@ -22,9 +22,13 @@ class ApiSurveysControllerTest < ActionDispatch::IntegrationTest
 
   test 'api should show survey' do
     get api_survey_url(@survey.version_independent_id)
+    res = JSON.parse response.body
+    tags = res['tags']
     assert_response :success
     assert_serializer 'SurveySerializer'
     assert_response_schema('surveys/show.json')
+    assert tags
+    assert_equal 'Generic', tags[0]['code']
   end
 
   test 'api should show survey of specific version' do

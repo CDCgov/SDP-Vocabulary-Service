@@ -22,9 +22,15 @@ class ApiSectionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'api should show section' do
     get api_section_url(@section.version_independent_id)
+    res = JSON.parse response.body
+    tags = res['tags']
     assert_response :success
     assert_serializer 'SectionSerializer'
     assert_response_schema('sections/show.json')
+    assert_equal 2, tags.length
+    assert_equal 'Generic', tags[0]['code']
+    assert_equal 'Generic', tags[1]['code']
+    assert ['MMG', 'MMG Tab'], tags.collect { |t| t['code'] }
   end
 
   test 'api should show section of specific version' do
