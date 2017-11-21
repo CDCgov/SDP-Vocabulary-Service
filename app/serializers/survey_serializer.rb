@@ -31,6 +31,11 @@ class SurveySerializer < ActiveModel::Serializer
   attribute :version
   attribute :published_by, serializer: UserSerializer
   attribute :sections
+  attribute(:tags) { codes }
+
+  def codes
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
 
   def sections
     object.survey_sections.includes(section: { section_questions: [:response_set, { question: :concepts }] }).collect do |ss|

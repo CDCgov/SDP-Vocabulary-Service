@@ -2,35 +2,35 @@
 
 one:
   value: M
-  taggable: one
+  taggable: one (Question)
   code_system: MyString
 
 two:
   value: F
-  taggable: one
+  taggable: one (Question)
   code_system: MyString
 
 three:
   value: Male
-  taggable: two
+  taggable: two (Question)
   code_system: MyString
 
 four:
   value: Female
-  taggable: two
+  taggable: two (Question)
   code_system: MyString
 
 five:
   value: Prefer not to answer
-  taggable: two
+  taggable: two (Question)
   code_system: MyString
 
 six:
   value: Male
-  taggable: gfv2
+  taggable: gfv2 (Question)
   code_system: MyString
 
 seven:
   value: Female
-  taggable: gfv2
+  taggable: gfv2 (Question)
   code_system: MyString

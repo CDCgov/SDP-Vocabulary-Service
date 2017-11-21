@@ -17,6 +17,17 @@
         "publisher" : {"type" : "boolean"}
       }
     },
+    "tags" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "codeSystem" : {"type": ["string", "null"]},
+          "code" : {"type": "string"},
+          "displayName" : {"type": ["string", "null"]}
+        }
+      }
+    },
     "questions" : {
       "type" : "array",
       "items": {

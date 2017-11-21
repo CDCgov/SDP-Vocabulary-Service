@@ -10,6 +10,17 @@
     "surveyName" : {"type" : "string"},
     "surveyUri" : {"type" : "string"},
     "version" : {"type" : "number"},
+    "tags" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "codeSystem" : {"type": ["string", "null"]},
+          "code" : {"type": "string"},
+          "displayName" : {"type": ["string", "null"]}
+        }
+      }
+    },
     "published_by" : {
       "type" : "object",
       "properties:": {
