@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  description: MyString
+  name: Group1
+  description: A group description
 
 two:
-  name: MyString
-  description: MyString
+  name: Group2
+  description: Another group description

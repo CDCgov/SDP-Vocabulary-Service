@@ -10,6 +10,7 @@ admin:
   last_name: "Admin"
   last_system: nids
   last_program: generic
+  groups: one, two
 
 publisher:
   email: publisher@example.com
