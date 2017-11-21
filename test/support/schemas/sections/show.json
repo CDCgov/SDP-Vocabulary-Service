@@ -22,9 +22,9 @@
       "items" : {
         "type" : "object",
         "properties" : {
-          "codeSystem" : {"type": ["string", "null"]},
+          "system" : {"type": ["string", "null"]},
           "code" : {"type": "string"},
-          "displayName" : {"type": ["string", "null"]}
+          "display" : {"type": ["string", "null"]}
         }
       }
     },

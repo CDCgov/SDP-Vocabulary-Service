@@ -547,6 +547,17 @@ definitions:
                   type: string
                   title: Relative URI of the section
 
+  CodedValue:
+    type: object
+    description: A coded value
+    properties:
+      code:
+        type: string
+      system:
+        type: string
+      display:
+        type: string
+
   Question:
     type: object
     description:
@@ -578,6 +589,10 @@ definitions:
         type: object
         title: User that published the question
         $ref: '#/definitions/User'
+      tags:
+        type: array
+        items:
+          $ref: '#/definitions/CodedValue'
       # TODO additional metadata
 
   Program:
