@@ -282,7 +282,6 @@ class AdminPanel extends Component {
   }
 
   groupTab() {
-    // TODO: only need values if the return matches dummy data
     return(
       <div className="tab-pane" id="group-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'group-list'} aria-labelledby="group-list-tab">
         <GroupMembers show={this.state.groupModal} group={this.state.selectedGroup} close={this.hideModal} addUserToGroup={this.props.addUserToGroup} removeUserFromGroup={this.props.removeUserFromGroup} />
