@@ -18,7 +18,6 @@ Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
     - 'lib/tasks/admin.rake'
-    - 'lib/sdp/importers/mspreadsheetmg.rb'
 Metrics/LineLength:
   Max: 150
   Exclude:
