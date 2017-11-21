@@ -683,6 +683,10 @@ definitions:
           Array of sections used by this program.
         items:
           $ref: '#/definitions/Section'
+      tags:
+        type: array
+        items:
+          $ref: '#/definitions/CodedValue'
 
   Section:
     type: object
@@ -705,6 +709,10 @@ definitions:
         type: object
         title: User that published the section
         $ref: '#/definitions/User'
+      tags:
+        type: array
+        items:
+          $ref: '#/definitions/CodedValue'
       # TODO additional metadata
       questions:
         type: array
