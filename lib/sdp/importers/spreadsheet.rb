@@ -89,6 +89,9 @@ module SDP
              @valueset_sheet.match(sheet)
             logger.debug "skipping sheet #{sheet} -- looks like a value set"
             next
+          elsif !(@config[:de_columns].values - headers).empty?
+            logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
+            next
           end
 
           logger.debug "processing sheet #{sheet}"
