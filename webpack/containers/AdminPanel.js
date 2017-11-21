@@ -290,7 +290,7 @@ class AdminPanel extends Component {
         <div>
           {this.props.groupList.map((group) => {
             return (
-              <p key={group.id} className="admin-group"><strong>{group.name}</strong><br/><button id={`manage_${group.id}`} className="btn btn-default pull-right" onClick={() => this.showModal(group)}><i className="fa fa-address-book" aria-hidden="true"></i> Manage Users<text className="sr-only">{`for group ${group.name}`}</text> {group.members && `(${group.members.length})`}</button>{group.description}</p>
+              <p key={group.id} className="admin-group"><strong>{group.name}</strong><br/><button id={`manage_${group.id}`} className="btn btn-default pull-right" onClick={() => this.showModal(group)}><i className="fa fa-address-book" aria-hidden="true"></i> Manage Users<text className="sr-only">{`for group ${group.name}`}</text> {group.users && `(${group.users.length})`}</button>{group.description}</p>
             );
           })}
         </div>
@@ -322,9 +322,9 @@ class AdminPanel extends Component {
               <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
             </li>
             <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
-                this.props.fetchGroups();
-                this.selectTab('group-list');
-              }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
+              this.props.fetchGroups();
+              this.selectTab('group-list');
+            }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
               <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
             </li>
             <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">

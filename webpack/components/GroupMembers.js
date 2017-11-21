@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Modal, Button} from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 /* Quick hack to show dialog */
 class GroupMembers extends Component {
@@ -23,7 +23,9 @@ class GroupMembers extends Component {
       return (
         <p key={member.id} className="admin-group"><strong>{member.name}</strong> ({member.email})
           <button id={`remove_${member.email}`} onClick={() => this.props.removeUserFromGroup(member.email, this.state.group.name, (successResponse) => {
-            this.setState({ group: successResponse.data.find((group) => {return group.name === this.state.group.name;}) });
+            this.setState({ group: successResponse.data.find((group) => {
+              return group.name === this.state.group.name;
+            })});
           }, null)} className="btn btn-default pull-right"><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${member.name} from group`}</text></button>
         </p>);
     });
@@ -46,8 +48,11 @@ class GroupMembers extends Component {
                 <button id="submit-email" onClick={(e) => {
                   e.preventDefault();
                   this.props.addUserToGroup(this.state.email, group.name, (successResponse) => {
-                    this.setState({ group: successResponse.data.find((group) => {return group.name === this.state.group.name;}) });
-                  }, null);}} className="search-btn search-btn-default" aria-label="Click to submit user email and add to group" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
+                    this.setState({ group: successResponse.data.find((group) => {
+                      return group.name === this.state.group.name;
+                    })});
+                  }, null);
+                }} className="search-btn search-btn-default" aria-label="Click to submit user email and add to group" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
               </span>
             </div>
           </form>
@@ -67,6 +72,6 @@ GroupMembers.propTypes = {
   close: PropTypes.func,
   addUserToGroup: PropTypes.func,
   removeUserFromGroup: PropTypes.func
-}
+};
 
 export default GroupMembers;
