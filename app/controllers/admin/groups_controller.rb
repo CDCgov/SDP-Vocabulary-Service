@@ -23,7 +23,7 @@ module Admin
         render json: Group.all, status: 200
       else
         render json: {
-          msg: "No group #{params[:group]} exists or no user found with email #{params[:email]}, check your parameters and try again"
+          msg: "No user found with email #{params[:email]}, check what you entered and try again"
         }, status: :unprocessable_entity
       end
     end

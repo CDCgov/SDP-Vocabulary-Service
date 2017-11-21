@@ -14,7 +14,7 @@ class GroupMembers extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.group !== this.props.group) {
-      this.setState({ group: nextProps.group });
+      this.setState({ group: nextProps.group, error: {} });
     }
   }
 
@@ -23,10 +23,12 @@ class GroupMembers extends Component {
       return (
         <p key={member.id} className="admin-group"><strong>{member.name}</strong> ({member.email})
           <button id={`remove_${member.email}`} onClick={() => this.props.removeUserFromGroup(member.email, this.state.group.name, (successResponse) => {
-            this.setState({ group: successResponse.data.find((group) => {
+            this.setState({ error: {}, group: successResponse.data.find((group) => {
               return group.name === this.state.group.name;
             })});
-          }, null)} className="btn btn-default pull-right"><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${member.name} from group`}</text></button>
+          }, (failureResponse) => {
+            this.setState({error: failureResponse.response.data});
+          })} className="btn btn-default pull-right"><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${member.name} from group`}</text></button>
         </p>);
     });
   }
@@ -39,19 +41,26 @@ class GroupMembers extends Component {
           <Modal.Title componentClass="h1">Name: {group.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {this.state.error && this.state.error.msg &&
+            <div className="alert alert-danger">
+              {this.state.error.msg}
+            </div>
+          }
           {group.description && <p><strong>Description:</strong> {group.description}</p>}
           <p>Add users to this group by typing their email below:</p>
           <form>
             <div className="input-group search-group">
-              <input value={this.state.email}  type="text" id="email-input" name="email" aria-label="Enter email of user to add to group" className="search-input" placeholder="Enter email of user to add to group.. (Format: example@gmail.com)" onChange={(e) => this.setState({email: e.target.value})} />
+              <input value={this.state.email}  type="text" id="email-input" name="email" aria-label="Enter email of user to add to group" className="search-input" placeholder="Enter email of user to add to group.. (Format: example@gmail.com)" onChange={(e) => this.setState({error: {}, email: e.target.value})} />
               <span className="input-group-btn">
                 <button id="submit-email" onClick={(e) => {
                   e.preventDefault();
                   this.props.addUserToGroup(this.state.email, group.name, (successResponse) => {
-                    this.setState({ group: successResponse.data.find((group) => {
+                    this.setState({ error: {}, group: successResponse.data.find((group) => {
                       return group.name === this.state.group.name;
                     })});
-                  }, null);
+                  }, (failureResponse) => {
+                    this.setState({error: failureResponse.response.data});
+                  });
                 }} className="search-btn search-btn-default" aria-label="Click to submit user email and add to group" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
               </span>
             </div>
