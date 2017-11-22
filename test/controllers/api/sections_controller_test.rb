@@ -30,7 +30,7 @@ class ApiSectionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 2, tags.length
     assert_equal 'Generic', tags[0]['code']
     assert_equal 'Generic', tags[1]['code']
-    assert ['MMG', 'MMG Tab'], tags.collect { |t| t['code'] }
+    assert ['MMG', 'MMG Tab'], (tags.collect { |t| t['code'] })
   end
 
   test 'api should show section of specific version' do
