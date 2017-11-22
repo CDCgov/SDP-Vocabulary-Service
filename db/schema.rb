@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171103123808) do
+ActiveRecord::Schema.define(version: 20171114142634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 20171103123808) do
     t.string "taggable_type"
     t.bigint "taggable_id"
     t.index ["taggable_type", "taggable_id"], name: "index_concepts_on_taggable_type_and_taggable_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+  end
+
+  create_table "groups_users", id: false, force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
   end
 
   create_table "notifications", id: :serial, force: :cascade do |t|

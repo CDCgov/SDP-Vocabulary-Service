@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
 import { setSteps } from '../actions/tutorial_actions';
-import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync } from '../actions/admin_actions';
+import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync, fetchGroups,
+         createGroup, addUserToGroup, removeUserFromGroup } from '../actions/admin_actions';
 import { addProgram } from '../actions/surveillance_program_actions';
 import { addSystem } from '../actions/surveillance_system_actions';
 import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
 import currentUserProps from '../prop-types/current_user_props';
+import GroupMembers from '../components/GroupMembers';
 
 class AdminPanel extends Component {
   constructor(props){
@@ -16,12 +18,17 @@ class AdminPanel extends Component {
     this.selectTab = this.selectTab.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onFormSubmit  = this.onFormSubmit.bind(this);
+    this.hideModal = this.hideModal.bind(this);
+    this.showModal = this.showModal.bind(this);
+    let group = this.props.groupList[0] || {};
     this.state = {
       selectedTab: 'admin-list',
       searchEmail: '',
       name: '',
       description: '',
-      acronym: ''
+      acronym: '',
+      groupModal: false,
+      selectedGroup: group
     };
   }
 
@@ -32,6 +39,16 @@ class AdminPanel extends Component {
       success: {},
       warning: {}
     });
+  }
+
+  showModal(group) {
+    this.setState({
+      groupModal: true,
+      selectedGroup: group
+    });
+  }
+  hideModal() {
+    this.setState({groupModal : false});
   }
 
   componentDidMount() {
@@ -79,6 +96,11 @@ class AdminPanel extends Component {
           this.setState({error: failureResponse.response.data});
         });
         break;
+      case 'group-list':
+        this.props.createGroup(this.state.name, this.state.description, null, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
+        break;
       default:
         this.props.addSystem(this.state.name, this.state.description, this.state.acronym, null, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
@@ -90,20 +112,16 @@ class AdminPanel extends Component {
   emailInput() {
     return(
       <form onSubmit={this.onFormSubmit}>
-        <div className="row">
-          <div className="col-md-12">
-            {this.state.error && this.state.error.msg &&
-              <div className="alert alert-danger">
-                {this.state.error.msg}
-              </div>
-            }
-            <div className="input-group search-group">
-              <input onChange={this.handleChange('searchEmail')} value={this.state.searchEmail} type="text" id="email-input" name="email" aria-label="Enter email of user to grant permissions" className="search-input" placeholder="Enter email of user to add to list.. (Format: example@gmail.com)"/>
-              <span className="input-group-btn">
-                <button id="submit-email" className="search-btn search-btn-default" aria-label="Click to submit user email and grant permissions" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
-              </span>
-            </div><br/>
+        {this.state.error && this.state.error.msg &&
+          <div className="alert alert-danger">
+            {this.state.error.msg}
           </div>
+        }
+        <div className="input-group search-group">
+          <input onChange={this.handleChange('searchEmail')} value={this.state.searchEmail} type="text" id="email-input" name="email" aria-label="Enter email of user to grant permissions" className="search-input" placeholder="Enter email of user to add to list.. (Format: example@gmail.com)"/>
+          <span className="input-group-btn">
+            <button id="submit-email" className="search-btn search-btn-default" aria-label="Click to submit user email and grant permissions" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"></i></button>
+          </span>
         </div>
       </form>
     );
@@ -112,30 +130,49 @@ class AdminPanel extends Component {
   progSysForm(type) {
     return(
       <form onSubmit={this.onFormSubmit}>
-        <div className="row">
-          <div className="col-md-12">
-            {this.state.error && this.state.error.msg &&
-              <div className="alert alert-danger">
-                {this.state.error.msg}
-              </div>
-            }
-            <div className="input-group search-group">
-              <div className="col-md-6 question-form-group">
-                <label className="input-label" htmlFor={`${type}-name`}>Name</label>
-                <input className="input-format" type="text" value={this.state.name} name={`${type}-name`} id={`${type}-name`} aria-label={`Enter name for new ${type}`} placeholder={`Enter name of new ${type}...`} onChange={this.handleChange('name')}/>
-              </div>
-              <div className="col-md-6 question-form-group">
-                <label className="input-label" htmlFor={`${type}-description`}>Description (Optional)</label>
-                <input className="input-format" type="text" value={this.state.description} name={`${type}-description`} id={`${type}-description`} aria-label={`Enter a description for new ${type}`} placeholder={`Description...`} onChange={this.handleChange('description')}/>
-              </div>
-              <div className="col-md-3 question-form-group">
-                <label className="input-label" htmlFor={`${type}-acronym`}>Acronym (Optional)</label>
-                <input className="input-format" type="text" value={this.state.acronym} name={`${type}-acronym`} id={`${type}-acronym`} aria-label={`Enter acronym for new ${type}`} placeholder={`Ex: CDC`} onChange={this.handleChange('acronym')}/>
-              </div>
-            </div>
-            <button id="submit-prog-sys" className="btn btn-default pull-right" aria-label={`Click to add new ${type} to list`} type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new item to list</text></i> {`Add new ${type}`}</button>
-          </div><br/>
+        {this.state.error && this.state.error.msg &&
+          <div className="alert alert-danger">
+            {this.state.error.msg}
+          </div>
+        }
+        <div className="input-group search-group">
+          <div className="col-md-6 question-form-group">
+            <label className="input-label" htmlFor={`${type}-name`}>Name</label>
+            <input className="input-format" type="text" value={this.state.name} name={`${type}-name`} id={`${type}-name`} aria-label={`Enter name for new ${type}`} placeholder={`Enter name of new ${type}...`} onChange={this.handleChange('name')}/>
+          </div>
+          <div className="col-md-6 question-form-group">
+            <label className="input-label" htmlFor={`${type}-description`}>Description (Optional)</label>
+            <input className="input-format" type="text" value={this.state.description} name={`${type}-description`} id={`${type}-description`} aria-label={`Enter a description for new ${type}`} placeholder={`Description...`} onChange={this.handleChange('description')}/>
+          </div>
+          <div className="col-md-3 question-form-group">
+            <label className="input-label" htmlFor={`${type}-acronym`}>Acronym (Optional)</label>
+            <input className="input-format" type="text" value={this.state.acronym} name={`${type}-acronym`} id={`${type}-acronym`} aria-label={`Enter acronym for new ${type}`} placeholder={`Ex: CDC`} onChange={this.handleChange('acronym')}/>
+          </div>
         </div>
+        <button id="submit-prog-sys" className="btn btn-default pull-right" aria-label={`Click to add new ${type} to list`} type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new item to list</text></i> {`Add new ${type}`}</button>
+      </form>
+    );
+  }
+
+  groupForm() {
+    return(
+      <form onSubmit={this.onFormSubmit}>
+        {this.state.error && this.state.error.msg &&
+          <div className="alert alert-danger">
+            {this.state.error.msg}
+          </div>
+        }
+        <div className="input-group search-group">
+          <div className="col-md-6 question-form-group">
+            <label className="input-label" htmlFor="group-name">Name</label>
+            <input className="input-format" type="text" value={this.state.name} name="group-name" id="group-name" aria-label="Enter name for new group" placeholder="Enter name of new group" onChange={this.handleChange('name')}/>
+          </div>
+          <div className="col-md-6 question-form-group">
+            <label className="input-label" htmlFor="group-description">Description (Optional)</label>
+            <input className="input-format" type="text" value={this.state.description} name="group-description" id="group-description" aria-label="Enter a description for new group" placeholder={`Description...`} onChange={this.handleChange('description')}/>
+          </div>
+        </div>
+        <button id="submit-group" className="btn btn-default pull-right" aria-label="Click to add new group to list" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new group to list</text></i> Add new group</button>
       </form>
     );
   }
@@ -244,47 +281,63 @@ class AdminPanel extends Component {
     );
   }
 
+  groupTab() {
+    return(
+      <div className="tab-pane" id="group-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'group-list'} aria-labelledby="group-list-tab">
+        <GroupMembers show={this.state.groupModal} group={this.state.selectedGroup} close={this.hideModal} addUserToGroup={this.props.addUserToGroup} removeUserFromGroup={this.props.removeUserFromGroup} />
+        <h2 id="group-list">Group List</h2>
+        {this.groupForm()}
+        <div>
+          {this.props.groupList.map((group) => {
+            return (
+              <p key={group.id} className="admin-group"><strong>{group.name}</strong><br/><button id={`manage_${group.id}`} className="btn btn-default pull-right" onClick={() => this.showModal(group)}><i className="fa fa-address-book" aria-hidden="true"></i> Manage Users<text className="sr-only">{`for group ${group.name}`}</text> {group.users && `(${group.users.length})`}</button>{group.description}</p>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container">
-        <div className="row basic-bg">
-          <div className="col-md-12">
-            <div className="showpage_header_container no-print">
-              <ul className="list-inline">
-                <li className="showpage_button"><span className="fa fa-cogs fa-2x" aria-hidden="true"></span></li>
-                <li className="showpage_title"><h1>Admin Panel</h1></li>
-              </ul>
-            </div>
-            <div className="container col-md-12">
-              <div className="row">
-                <div className="col-md-12 nopadding">
-                  <ul className="nav nav-tabs" role="tablist">
-                    <li id="admin-list-tab" className="nav-item active" role="tab" onClick={() => this.selectTab('admin-list')} aria-selected={this.state.selectedTab === 'admin-list'} aria-controls="admin-list">
-                      <a className="nav-link" data-toggle="tab" href="#admin-list" role="tab">Admin List</a>
-                    </li>
-                    <li id="publisher-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('publisher-list')} aria-selected={this.state.selectedTab === 'publisher-list'} aria-controls="publisher-list">
-                      <a className="nav-link" data-toggle="tab" href="#publisher-list" role="tab">Publisher List</a>
-                    </li>
-                    <li id="program-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('program-list')} aria-selected={this.state.selectedTab === 'program-list'} aria-controls="program-list">
-                      <a className="nav-link" data-toggle="tab" href="#program-list" role="tab">Program List</a>
-                    </li>
-                    <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
-                      <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
-                    </li>
-                    <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
-                      <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
-                    </li>
-                  </ul>
-                  <div className="tab-content">
-                    {this.adminTab()}
-                    {this.publisherTab()}
-                    {this.programTab()}
-                    {this.systemTab()}
-                    {this.elasticTab()}
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="basic-bg">
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-cogs fa-2x" aria-hidden="true"></span></li>
+              <li className="showpage_title"><h1>Admin Panel</h1></li>
+            </ul>
+          </div>
+          <ul className="nav nav-tabs" role="tablist">
+            <li id="admin-list-tab" className="nav-item active" role="tab" onClick={() => this.selectTab('admin-list')} aria-selected={this.state.selectedTab === 'admin-list'} aria-controls="admin-list">
+              <a className="nav-link" data-toggle="tab" href="#admin-list" role="tab">Admin List</a>
+            </li>
+            <li id="publisher-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('publisher-list')} aria-selected={this.state.selectedTab === 'publisher-list'} aria-controls="publisher-list">
+              <a className="nav-link" data-toggle="tab" href="#publisher-list" role="tab">Publisher List</a>
+            </li>
+            <li id="program-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('program-list')} aria-selected={this.state.selectedTab === 'program-list'} aria-controls="program-list">
+              <a className="nav-link" data-toggle="tab" href="#program-list" role="tab">Program List</a>
+            </li>
+            <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
+              <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
+            </li>
+            <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
+              this.props.fetchGroups();
+              this.selectTab('group-list');
+            }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
+              <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+            </li>
+            <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
+              <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
+            </li>
+          </ul>
+          <div className="tab-content">
+            {this.adminTab()}
+            {this.publisherTab()}
+            {this.programTab()}
+            {this.systemTab()}
+            {this.groupTab()}
+            {this.elasticTab()}
           </div>
         </div>
       </div>
@@ -298,14 +351,15 @@ function mapStateToProps(state) {
   props.publisherList = state.publishers;
   props.programList = state.surveillancePrograms;
   props.systemList = state.surveillanceSystems;
+  props.groupList = state.groups;
   props.currentUser = state.currentUser;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
-    revokePublisher, grantPublisher, grantAdmin,
-    esSync, esDeleteAndSync}, dispatch);
+    revokePublisher, grantPublisher, grantAdmin, createGroup, addUserToGroup,
+    removeUserFromGroup, fetchGroups, esSync, esDeleteAndSync}, dispatch);
 }
 
 AdminPanel.propTypes = {
@@ -313,10 +367,15 @@ AdminPanel.propTypes = {
   publisherList: PropTypes.object,
   programList: PropTypes.object,
   systemList: PropTypes.object,
+  groupList: PropTypes.array,
   currentUser: currentUserProps,
   setSteps: PropTypes.func,
   addProgram: PropTypes.func,
   addSystem: PropTypes.func,
+  addUserToGroup: PropTypes.func,
+  removeUserFromGroup: PropTypes.func,
+  createGroup: PropTypes.func,
+  fetchGroups: PropTypes.func,
   revokeAdmin: PropTypes.func,
   revokePublisher: PropTypes.func,
   grantAdmin: PropTypes.func,

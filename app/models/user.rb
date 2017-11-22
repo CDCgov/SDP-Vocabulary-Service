@@ -1,3 +1,4 @@
+# rubocop:disable Rails/HasAndBelongsToMany
 class User < ApplicationRecord
   rolify
   # Include default devise modules. Others available are:
@@ -7,6 +8,7 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true, case_sensitive: false
   has_many :authentications
+  has_and_belongs_to_many :groups
 
   belongs_to :last_system, class_name: 'SurveillanceSystem'
   belongs_to :last_program, class_name: 'SurveillanceProgram'
@@ -37,3 +39,4 @@ class User < ApplicationRecord
     has_role?(:publisher)
   end
 end
+# rubocop:enable Rails/HasAndBelongsToMany

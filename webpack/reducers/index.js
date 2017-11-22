@@ -37,6 +37,7 @@ import surveys from './surveys_reducer';
 import tutorialSteps from './tutorial_reducer';
 import lastSearch from './last_search_reducer';
 import suggestions from './suggestions_reducer';
+import groups from './groups_reducer';
 
 const categories = byIdWithIndividualReducer(FETCH_CATEGORIES_FULFILLED,
   FETCH_CATEGORY_FULFILLED, 'categories');
@@ -50,7 +51,7 @@ const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE
 const rootReducer = combineReducers({
   questions, comments, stats, currentUser, responseSets, sections, categories, admins,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions,
-  surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags
+  surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags, groups
 });
 
 export default rootReducer;
