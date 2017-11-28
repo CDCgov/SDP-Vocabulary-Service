@@ -85,15 +85,15 @@ Rails.application.routes.draw do
     end
 
     namespace :fhir do
-      get 'valuesets', to: 'valuesets#index', as: :valuesets, defaults: { format: :json }
-      get 'valuesets/:id', to: 'valuesets#show',  as: :valueset, defaults: { format: :json }
-      get 'valuesets/:id/_history', to: 'valuesets#versions', as: :valueset_versions, defaults: { format: :json }
-      get 'valuesets/:id/_history/:version', to: 'valuesets#show', as: :valueset_version, defaults: { format: :json }
+      get 'Valueset', to: 'valuesets#index', as: :valuesets, defaults: { format: :json }
+      get 'Valueset/:id', to: 'valuesets#show',  as: :valueset, defaults: { format: :json }
+      get 'Valueset/:id/_history', to: 'valuesets#versions', as: :valueset_versions, defaults: { format: :json }
+      get 'Valueset/:id/_history/:version', to: 'valuesets#show', as: :valueset_version, defaults: { format: :json }
 
-      get 'questionaires', to: 'questionaires#index', as: :questionaires, defaults: { format: :json }
-      get 'questionaires/:id', to: 'questionaires#show',  as: :questionaire, defaults: { format: :json }
-      get 'questionaires/:id/_history', to: 'questionaires#versions',  as: :questionaire_versions, defaults: { format: :json }
-      get 'questionaires/:id/_history/:version', to: 'questionaires#show', as: :questionaire_version, defaults: { format: :json }
+      get 'Questionnaire', to: 'questionaires#index', as: :questionaires, defaults: { format: :json }
+      get 'Questionnaire/:id', to: 'questionaires#show',  as: :questionaire, defaults: { format: :json }
+      get 'Questionnaire/:id/_history', to: 'questionaires#versions',  as: :questionaire_versions, defaults: { format: :json }
+      get 'Questionnaire/:id/_history/:version', to: 'questionaires#show', as: :questionaire_version, defaults: { format: :json }
 
       get 'sections', to: 'sections#index', as: :sections, defaults: { format: :json }
       get 'sections/:id', to: 'sections#show',  as: :section, defaults: { format: :json }
