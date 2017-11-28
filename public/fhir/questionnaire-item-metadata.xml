@@ -1,0 +1,22 @@
+<StructureDefinition xmlns="http://hl7.org/fhir">
+  <url value="https://sdp-v.services.cdc.gov/fhir/questionnaire-item-metadata" />
+  <name value="Tags" />
+  <title value="tags for SDP-V Questionnaire" />
+  <kind value="datatype" />
+  <contextType value="datatype" />
+  <context value="Questionnaire.item" />
+  <context value="Questionnaire.item.item" />
+  <type value="Extension" />
+  <baseDefinition value="http://hl7.org.fhir/StructureDefinition/Extension" />
+  <derivation value="constraint" />
+  <differential>
+    <element>
+      <path value="Extension.value"/>
+      <min value="0" />
+      <max value="1" />
+      <type>
+         <code value="meta" />
+      </type>
+    </element>
+  </differential>
+</StructureDefinition>

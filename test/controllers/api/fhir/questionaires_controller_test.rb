@@ -25,6 +25,16 @@ module Api
         get api_fhir_questionaire_url(@survey.version_independent_id)
         assert_response :success
         assert_json_schema_response('fhir/Questionnaire.json')
+        res = JSON.parse response.body
+        meta = res['meta']
+        assert meta
+        tags = meta['tag']
+        assert tags
+        assert_equal 'Generic', tags[0]['code']
+
+        sections = res['item']
+        assert sections
+        assert_equal 2, sections.length
       end
 
       test 'api should show survey of specific version' do

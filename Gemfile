@@ -51,9 +51,9 @@ group :development, :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner.git'
   gem 'headless'
+  gem 'json-schema'
   gem 'overcommit'
   gem 'parallel_tests'
-  gem 'json-schema'
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-rescue'
