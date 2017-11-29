@@ -1,5 +1,5 @@
 if codes && !codes.empty?
-  json.url 'http://test'
+  json.url 'https://sdp-v.services.cdc.gov/fhir/questionnaire-item-meta'
   json.valueMeta do
     json.tag do
       json.array! codes do |code|
@@ -8,7 +8,7 @@ if codes && !codes.empty?
         if code.code_system
           json.system 'urn:oid:' + code.code_system
         elsif code.code_system
-          json.system 
+          json.system
         end
       end
     end
