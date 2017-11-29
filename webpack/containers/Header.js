@@ -13,7 +13,7 @@ import { fetchNotifications } from '../actions/notification_actions';
 let LoginMenu = ({disableUserRegistration, logInOpener, signUpOpener, currentUser}) => {
   let loggedIn = ! isEmpty(currentUser);
   if(!loggedIn) {
-    if(disableUserRegistration == 'true') {
+    if(disableUserRegistration) {
       return (
         <ul className="nav navbar-nav">
           <li className="log-in-link">
