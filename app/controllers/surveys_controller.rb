@@ -71,6 +71,16 @@ class SurveysController < ApplicationController
     end
   end
 
+  def add_to_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @survey.add_to_group(params[:group])
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   # GET /surveys/1/redcap
   def redcap
     xml = render_to_string 'surveys/redcap.xml', layout: false

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171114142634) do
+ActiveRecord::Schema.define(version: 20171123002205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,30 @@ ActiveRecord::Schema.define(version: 20171114142634) do
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
+  end
+
+  create_table "groups_questions", id: false, force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "question_id", null: false
+    t.index ["group_id", "question_id"], name: "index_groups_questions_on_group_id_and_question_id"
+  end
+
+  create_table "groups_response_sets", id: false, force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "response_set_id", null: false
+    t.index ["group_id", "response_set_id"], name: "index_groups_response_sets_on_group_id_and_response_set_id"
+  end
+
+  create_table "groups_sections", id: false, force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "section_id", null: false
+    t.index ["group_id", "section_id"], name: "index_groups_sections_on_group_id_and_section_id"
+  end
+
+  create_table "groups_surveys", id: false, force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "survey_id", null: false
+    t.index ["group_id", "survey_id"], name: "index_groups_surveys_on_group_id_and_survey_id"
   end
 
   create_table "groups_users", id: false, force: :cascade do |t|

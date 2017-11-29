@@ -42,16 +42,19 @@ Rails.application.routes.draw do
     get :export, on: :member
     get :redcap, on: :member
     put :publish, on: :member
+    put :add_to_group, on: :member
   end
   resources :surveys, except: [:edit], defaults: { format: :json } do
     get :revise, on: :member
     put :publish, on: :member
     get :redcap, on: :member
+    put :add_to_group, on: :member
   end
   resources :questions, except: [:edit] do
     get :revise, on: :member
     get :usage, on: :member
     put :publish, on: :member
+    put :add_to_group, on: :member
   end
   resources :comments do
     post :reply_to, on: :member
@@ -61,6 +64,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     put :publish, on: :member
+    put :add_to_group, on: :member
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications

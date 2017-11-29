@@ -64,6 +64,16 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def add_to_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @question.add_to_group(params[:group])
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update

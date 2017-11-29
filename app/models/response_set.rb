@@ -1,5 +1,5 @@
 class ResponseSet < ApplicationRecord
-  include Versionable, OidGenerator, Searchable
+  include Versionable, OidGenerator, Searchable, Groupable
   SOURCE_OPTIONS = %w(local PHIN_VADS).freeze
   acts_as_commentable
 

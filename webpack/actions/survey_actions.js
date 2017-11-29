@@ -9,6 +9,7 @@ import {
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,
   PUBLISH_SURVEY,
+  ADD_SURVEY_TO_GROUP,
   DELETE_SURVEY,
   ADD_ENTITIES
 } from './types';
@@ -48,6 +49,15 @@ export function publishSurvey(id) {
     type: PUBLISH_SURVEY,
     payload: axios.put(routes.publishSurveyPath(id),
      {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function addSurveyToGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: ADD_SURVEY_TO_GROUP,
+    payload: axios.put(routes.addToGroupSurveyPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 

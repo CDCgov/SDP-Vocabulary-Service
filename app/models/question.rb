@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  include Versionable, OidGenerator, Searchable, Taggable
+  include Versionable, OidGenerator, Searchable, Taggable, Groupable
   acts_as_commentable
 
   has_many :question_response_sets, dependent: :destroy

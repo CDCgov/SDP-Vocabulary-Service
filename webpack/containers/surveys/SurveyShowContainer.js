@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSurvey, publishSurvey, deleteSurvey } from '../../actions/survey_actions';
+import { fetchSurvey, publishSurvey, addSurveyToGroup, deleteSurvey } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import SurveyShow from '../../components/surveys/SurveyShow';
@@ -100,7 +100,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, publishSurvey, fetchSurvey, deleteSurvey}, dispatch);
+  return bindActionCreators({setSteps, setStats, publishSurvey, addSurveyToGroup, fetchSurvey, deleteSurvey}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -109,6 +109,7 @@ SurveyShowContainer.propTypes = {
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
   publishSurvey: PropTypes.func,
+  addSurveyToGroup: PropTypes.func,
   deleteSurvey: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,

@@ -6,7 +6,8 @@ import {
   REMOVE_SECTION,
   REORDER_SECTION,
   CREATE_SURVEY,
-  ADD_ENTITIES_FULFILLED
+  ADD_ENTITIES_FULFILLED,
+  ADD_SURVEY_TO_GROUP_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
@@ -17,6 +18,7 @@ export default function surveys(state = {}, action) {
       return Object.assign({}, state, action.payload.surveys);
     case PUBLISH_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:
+    case ADD_SURVEY_TO_GROUP_FULFILLED:
       return helpers.fetchIndividual(state, action);
     case CREATE_SURVEY:
       newState = Object.assign({}, state);

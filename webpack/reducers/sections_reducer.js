@@ -6,7 +6,8 @@ import {
   REMOVE_QUESTION,
   REORDER_QUESTION,
   CREATE_SECTION,
-  ADD_ENTITIES_FULFILLED
+  ADD_ENTITIES_FULFILLED,
+  ADD_SECTION_TO_GROUP_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
@@ -17,6 +18,7 @@ export default function sections(state = {}, action) {
       return Object.assign({}, state, action.payload.sections);
     case PUBLISH_SECTION_FULFILLED:
     case SAVE_DRAFT_SECTION_FULFILLED:
+    case ADD_SECTION_TO_GROUP_FULFILLED:
       return helpers.fetchIndividual(state, action);
     case CREATE_SECTION:
       newState = Object.assign({}, state);

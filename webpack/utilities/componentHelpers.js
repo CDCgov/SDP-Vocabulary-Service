@@ -19,6 +19,11 @@ export function isEditable(object, currentUser) {
     object.createdById === currentUser.id;
 }
 
+export function isGroupable(object, currentUser) {
+  return currentUser && currentUser.id && currentUser.groups &&
+    object.createdById === currentUser.id;
+}
+
 export function isExtendable(object, currentUser) {
   return currentUser && currentUser.id &&
     object.status === 'published';

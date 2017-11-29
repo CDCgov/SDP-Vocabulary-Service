@@ -7,11 +7,12 @@ import SectionQuestionList from './SectionQuestionList';
 import CodedSetTable from "../CodedSetTable";
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import GroupLookUp from "../shared_show/GroupLookUp";
 
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 const PAGE_SIZE = 10;
 
@@ -90,6 +91,9 @@ class SectionShow extends Component {
           {isEditable(section, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
                            itemType="Section" />
+          }
+          {isGroupable(section, this.props.currentUser) &&
+            <GroupLookUp item={section} addFunc={this.props.addSectionToGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(section, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -180,6 +184,7 @@ SectionShow.propTypes = {
   currentUser: currentUserProps,
   publishSection: PropTypes.func,
   deleteSection:  PropTypes.func.isRequired,
+  addSectionToGroup: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

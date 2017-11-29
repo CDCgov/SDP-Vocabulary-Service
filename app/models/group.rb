@@ -1,5 +1,9 @@
 # rubocop:disable Rails/HasAndBelongsToMany
 class Group < ApplicationRecord
+  has_and_belongs_to_many :questions
+  has_and_belongs_to_many :response_sets
+  has_and_belongs_to_many :surveys
+  has_and_belongs_to_many :sections
   has_and_belongs_to_many :users
   validates :name, presence: true, uniqueness: true, case_sensitive: false
 
