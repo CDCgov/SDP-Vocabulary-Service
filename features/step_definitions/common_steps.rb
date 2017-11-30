@@ -167,7 +167,7 @@ Then(/^I should not see the "([^"]*)" link$/) do |value|
     find('a', text: value)
     raise "Should not have found #{value} link"
   rescue
-    return true
+    true
   end
 end
 
