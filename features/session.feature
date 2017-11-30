@@ -173,3 +173,21 @@ Feature: Session Management
     Given I am logged in as test_author@gmail.com
     Then I navigate to a question created by "someone@gmail.com"
     Then I should see "You do not have access to this resource."
+
+  Scenario: Dashboard should display Registration link when user registration is not disable
+    User registration is "disabled"
+    And I am on the "/" page
+    Then I should see the "Register" link
+    And I should see the link "Login" to "#"
+
+  Scenario: Dashboard should display Registration link when user registration is disabled but display login is true
+    Given Disable user registration is "true" and display login is "true"
+    And I am on the "/" page
+    Then I should see the "Register" link
+    And I should see the link "Login" to "#"
+
+  Scenario: Dashboard should not display Registration link when user registration is disable
+    Given Disable user registration is "true" and display login is "false"
+    And I am on the "/" page
+    Then I should not see the "Register" link
+    And I should see the link "Login" to "/users/auth/openid_connect" 

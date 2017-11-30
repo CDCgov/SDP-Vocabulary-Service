@@ -55,6 +55,15 @@ Given(/^I am on the "(.+)" page$/) do |url|
   visit url
 end
 
+Given(/^Disable user registration is "(.+)" and display login is "(.+)"/) do |dur, dl|
+  Settings.display_login = dl == 'true'
+  Settings.disable_user_registration = dur == 'true'
+end
+
+Given(/^User registration is "(.+)"/) do |dur|
+  Settings.disable_user_registration = dur == 'disabled'
+end
+
 When(/^I go to the dashboard$/) do
   Elastictest.fake_all_search_results
   visit '/'
@@ -151,6 +160,19 @@ end
 
 Then(/^I should see the "([^"]*)" link$/) do |value|
   find('a', text: value)
+end
+
+Then(/^I should not see the "([^"]*)" link$/) do |value|
+  begin
+    find('a', text: value)
+    raise "Should not have found #{value} link"
+  rescue
+    return true
+  end
+end
+
+Then(/^I should see the link "(.*?)" to "(.*?)"$/) do |link, url|
+  find_link(link, href: url)
 end
 
 Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|
