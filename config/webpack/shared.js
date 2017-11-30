@@ -50,9 +50,6 @@ module.exports = {
       $: "jquery",
       jQuery: "jquery"
     }),
-    new webpack.DefinePlugin({
-      DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
-    }),
   ],
 
   resolve: {

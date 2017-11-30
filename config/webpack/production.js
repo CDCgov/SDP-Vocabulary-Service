@@ -33,7 +33,6 @@ module.exports = merge(sharedConfig, {
     }),
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: JSON.stringify('production') },
-      DISABLE_USER_REGISTRATION: JSON.stringify(process.env.DISABLE_USER_REGISTRATION || 'false')
     }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
