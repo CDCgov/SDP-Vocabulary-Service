@@ -22,7 +22,7 @@ oid_prefix:
 elasticsearch:
   log: false
 
-app_version: '1.2'
+app_version: '1.2.1'
 
 
 disable_user_registration: false
