@@ -41,6 +41,19 @@ class App extends Component {
     this.props.fetchStats();
   }
 
+  disableUserRegistration() {
+    const metas = document.getElementsByTagName('meta');
+    let dur = true;
+    for (let i = 0; i < metas.length; i++) {
+      const meta = metas[i];
+      if (meta.getAttribute('name') === 'DISABLE_LOGIN_UI') {
+        dur =  meta.getAttribute('content') == 'true';
+      }
+    }
+
+    return dur;
+  }
+
   openLogInModal() {
     this.setState({logInOpen: true});
   }
@@ -82,7 +95,7 @@ class App extends Component {
           element.focus();
         }}>Skip to main content</a>
         <Header currentUser={this.props.currentUser}
-                disableUserRegistration={DISABLE_USER_REGISTRATION}
+                disableUserRegistration={this.disableUserRegistration()}
                 location={this.props.location}
                 logInOpener={this.openLogInModal}
                 signUpOpener={this.openSignUpModal}
@@ -108,7 +121,7 @@ class App extends Component {
           surveillanceSystems={this.props.surveillanceSystems}
           surveillancePrograms={this.props.surveillancePrograms} />
         <SettingsModal update={this.updateUser}
-          disableUserUpdate={DISABLE_USER_REGISTRATION}
+          disableUserUpdate={this.disableUserRegistration()}
           show={this.state.settingsOpen}
           closer={this.closeSettingsModal}
           currentUser={this.props.currentUser}
