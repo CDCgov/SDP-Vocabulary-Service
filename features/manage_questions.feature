@@ -24,6 +24,22 @@ Feature: Manage Questions
     Then I should see "New Concept Name"
     And I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
+    And I should see "Groups"
+
+  Scenario: Manage groups on a Question
+    Given I have a Question with the content "What is your gender?" and the description "This is a question"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    Then I should see "Name: What is your gender?"
+    When I click on the "Groups" button
+    Then I should see "Group1"
+    And I should see "None"
+    When I click on the "Group1" link
+    And I click on the "Groups" button
+    Then I should see "Group1"
+    And I should not see "None"
 
   Scenario: Send a Draft Question to a Publisher
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"

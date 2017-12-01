@@ -59,7 +59,7 @@ export default class QuestionShow extends Component {
   mainContent(question) {
     return (
       <div className="col-md-9 nopadding maincontent">
-        {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
+        {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
             {isEditable(question, this.props.currentUser) &&
               <PublisherLookUp publishers={this.props.publishers}

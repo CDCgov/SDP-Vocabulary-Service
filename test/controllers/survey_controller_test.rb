@@ -10,6 +10,8 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
   setup do
     @current_user = users(:not_admin)
     @survey = surveys(:four)
+    @a_user = users(:admin)
+    @group = groups(:one)
     sign_in @current_user
   end
 
@@ -78,6 +80,33 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal Survey.find(surveys(:four).id).status, PUBLISHED
     assert_equal Survey.find(surveys(:four).id).published_by.id, users(:publisher).id
+  end
+
+  test 'can revise something you share a group with' do
+    survey_json = { survey: { name: @survey.name, version_independent_id: 'SURV-1337' } }.to_json
+    post surveys_url, params: survey_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    Survey.last.publish(@current_user)
+    Survey.last.add_to_group(@group.id, 'survey')
+    sign_in @a_user
+    @group.add_user(@a_user)
+    survey_json = { survey: { name: 'A Successful revision', version_independent_id: 'SECT-1337' } }.to_json
+    post surveys_url, params: survey_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :success
+  end
+
+  test 'should add content to group' do
+    sign_in @a_user
+    post surveys_url(format: :json), params: { survey: { name: 'Testing.' } }
+    @group.add_user(@a_user)
+    put add_to_group_survey_url(Survey.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
+  test 'should not add content to group you arent a member of or dont own' do
+    post surveys_url(format: :json), params: { survey: { name: 'Testing.' } }
+    sign_in @a_user
+    put add_to_group_survey_url(Survey.last, format: :json), params: { group: @group.id }
+    assert_response 403
   end
 
   test 'authors should not be able to publish surveys' do

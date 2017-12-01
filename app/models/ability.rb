@@ -10,6 +10,7 @@ class Ability
     elsif user
       can :manage, [ResponseSet, Question, Section, Survey], status: 'published'
       can :manage, [ResponseSet, Question, Section, Survey], status: 'draft', created_by_id: user.id
+      can :manage, [ResponseSet, Question, Section, Survey], status: 'draft', groups: { id: user.group_ids }
       can :read, User
     else
       can :read, [ResponseSet, Question, Section, Survey], status: 'published'

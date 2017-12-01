@@ -11,6 +11,8 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     @question  = questions(:one)
     @question5 = questions(:five)
     @current_user = users(:admin)
+    @na_user = users(:not_admin)
+    @group = groups(:one)
     sign_in @current_user
   end
 
@@ -37,6 +39,16 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:not_admin)
     post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
     assert_response :unauthorized
+  end
+
+  test 'can revise something you share a group with' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    Question.last.publish(@current_user)
+    Question.last.add_to_group(@group.id, 'question')
+    sign_in @na_user
+    @group.add_user(@na_user)
+    post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    assert_response :success
   end
 
   test 'cannot revise a draft' do
@@ -124,6 +136,19 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @question.id, response_json['id']
     assert response_json['surveillance_systems'].include? 'National Insignificant Digits System'
     assert response_json['surveillance_programs'].include? 'Generic Surveillance Program'
+  end
+
+  test 'should add content to group' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    put add_to_group_question_url(Question.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
+  test 'should not add content to group you arent a member of or dont own' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    sign_in @na_user
+    put add_to_group_question_url(Question.last, format: :json), params: { group: @group.id }
+    assert_response 403
   end
 
   test 'publishers should see questions from other authors' do
