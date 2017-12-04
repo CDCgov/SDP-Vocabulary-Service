@@ -156,9 +156,26 @@ export default class QuestionShow extends Component {
           {question.responseSets && question.responseSets.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h2 className="panel-title">Linked Response Sets</h2>
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Response Sets: {question.responseSets && question.responseSets.length}</a>
+                </h2>
               </div>
-              <div className="box-content">
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
+                <ResponseSetList responseSets={question.responseSets} />
+              </div>
+            </div>
+          }
+{/* This should point to the linked parent sections for this question */}
+          {question.responseSets && question.responseSets.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.responseSets && question.responseSets.length}</a>
+                </h2>
+              </div>
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
                 <ResponseSetList responseSets={question.responseSets} />
               </div>
             </div>

@@ -8,6 +8,9 @@ import GroupLookUp from "../shared_show/GroupLookUp";
 import CodedSetTable from "../CodedSetTable";
 import { displayVersion } from '../../utilities/componentHelpers';
 
+import SearchResult from '../SearchResult';
+
+
 import { surveyProps } from '../../prop-types/survey_props';
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -113,23 +116,25 @@ class SurveyShow extends Component {
               </div>
             </div>
           </div>
-          {this.props.sections.map((sect,i) =>
-            <div key={i} className="basic-c-box panel-default survey-section">
-              <div className="panel-heading">
-                <h2 className="panel-title"><Link to={`/sections/${sect.id}`}>{ sect.name }</Link></h2>
-              </div>
-              <div className="box-content">
-                <ul>
-                  {sect.questions.map((q,i) =>
-                    <li key={i}><Link to={`/questions/${q.id}`}>{q.content}</Link></li>
-                  )}
-                </ul>
-              </div>
-              <div className="panel-footer survey-section">
-                <p>Section version: {displayVersion(sect.version, sect.mostRecentPublished)}</p>
-              </div>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title">
+                <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {this.props.sections && this.props.sections.length}</a>
+              </h2>
             </div>
+            <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
+          {this.props.sections.map((sect,i) =>
+          {/* Is there a better way to construct a search result out of the section than what I did here? */}
+            <SearchResult key={`sect-${i}`}
+                          type='section' result={{Id:i,Index:'vocabulary',Source:sect,Type:'section'}} currentUser={this.props.currentUser}
+                          handleSelectSearchResult={null}
+                          extraAction={null} extraActionName={null}
+                          isEditPage={false}
+                          />
           )}
+          </div>
+          </div>
         </div>
       </div>
     );
