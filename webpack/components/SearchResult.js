@@ -318,7 +318,7 @@ export default class SearchResult extends Component {
           {(type !== "section_question") && this.detailsPanel(result, type)}
         </li>
         <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
-          <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult)

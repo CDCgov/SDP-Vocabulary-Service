@@ -165,13 +165,39 @@ class SectionShow extends Component {
             </div>
           </div>
           {section.sectionQuestions && section.sectionQuestions.length > 0 && section.questions && section.questions.length > 0 &&
-            <div>
-              <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
-              {this.props.section.sectionQuestions.length > 10 &&
-              <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
-              }
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Questions: {section.questions && section.questions.length}</a>
+                </h2>
+              </div>
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-questions">
+                <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
+                {this.props.section.sectionQuestions.length > 10 &&
+                <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
+                }
+              </div>
             </div>
           }
+{/* REPLACE THIS WITH CORRECT props for related surveys instead of questions */}          
+          {section.sectionQuestions && section.sectionQuestions.length > 0 && section.questions && section.questions.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.questions && section.questions.length}</a>
+                </h2>
+              </div>
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
+                <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
+                {this.props.section.sectionQuestions.length > 10 &&
+                <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
+                }
+              </div>
+            </div>
+          }
+          
         </div>
       </div>
     );
