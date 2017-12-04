@@ -1,7 +1,6 @@
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
-# rubocop:disable Metrics/PerceivedComplexity
 
 module SDP
   module Elasticsearch
@@ -98,16 +97,17 @@ module SDP
                      {}
                    end
 
-      sort_body = if sort_filter.blank?
+      sort_body = case sort_filter
+                  when 'Program Usage'
                     [
-                      '_score',
                       { '_script': {
-                        'script': "doc['surveillance_systems.id'].values.size()",
+                        'script': "doc['surveillance_programs.id'].values.size()",
                         type: 'number',
                         order: 'desc'
-                      } }
+                      } },
+                      '_score'
                     ]
-                  else
+                  when 'System Usage'
                     [
                       { '_script': {
                         'script': "doc['surveillance_systems.id'].values.size()",
@@ -115,6 +115,15 @@ module SDP
                         order: 'desc'
                       } },
                       '_score'
+                    ]
+                  else
+                    [
+                      '_score',
+                      { '_script': {
+                        'script': "doc['surveillance_systems.id'].values.size()",
+                        type: 'number',
+                        order: 'desc'
+                      } }
                     ]
                   end
 
@@ -283,4 +292,3 @@ end
 # rubocop:enable Metrics/ModuleLength
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ParameterLists
-# rubocop:enable Metrics/PerceivedComplexity
