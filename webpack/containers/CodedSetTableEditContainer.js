@@ -17,7 +17,7 @@ class CodedSetTableEditContainer extends Component {
   constructor(props) {
     super(props);
     var items = props.initialItems.length < 1 ? [{value: '', codeSystem: '', displayName: ''}] : props.initialItems;
-    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
+    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, showTagHelpModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
     this.search = this.search.bind(this);
     this.hideCodeSearch = this.hideCodeSearch.bind(this);
   }
@@ -142,6 +142,24 @@ class CodedSetTableEditContainer extends Component {
     }
   }
 
+  tagHelpModal(){
+    return (
+      <Modal animation={false} show={this.state.showTagHelpModal} onHide={() => this.setState({ showTagHelpModal: false })} aria-label="Tagging Info">
+        <Modal.Header closeButton bsStyle='concept'>
+          <Modal.Title componentClass="h1">Tagging Help</Modal.Title>
+        </Modal.Header>
+        <Modal.Body bsStyle='concept'>
+          <p>Surveys, Sections, and Response Sets may all be tagged to facilitate content discovery and reuse. Currently, a tag consists of a name, a value or code, and a code system (which is optional depending on if the tag is coded or not).</p>
+          <p>When editing content and a user starts typing in the tag column of the table a dropdown list will appear of all previously used tags. A user can use the arrow keys to navigate the list and select a tag that was previously used, or continue typing to enter a completely new tag.</p>
+          <p>If the user wants to look for tags by the code or the code system typing these values into the tag field will filter the list by the code or code system as well.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => this.setState({ showTagHelpModal: false })} bsStyle="primary">Cancel</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
   conceptModal(){
     return (
       <Modal animation={false} show={this.state.showConceptModal} onHide={this.hideCodeSearch} aria-label="Search Codes">
@@ -169,8 +187,8 @@ class CodedSetTableEditContainer extends Component {
             <thead>
               <tr>
                 <th id="add-code-checkboxes-column" scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
-                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name / Tag Type</th>
-                <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code</th>
+                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name / Tag Name</th>
+                <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code / Value</th>
                 <th id="modal-code-system-column" scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
               </tr>
             </thead>
@@ -191,17 +209,21 @@ class CodedSetTableEditContainer extends Component {
       <div>
         <table className="set-table">
           <caption>
-            Add, search, and create associated {tableType}s:
+            Add, search, and create associated {tableType}s <a title="See Tag Help" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.setState({ showTagHelpModal: true });
+            }}><i className="fa fa-info-circle"></i><text className='sr-only'>(Click for more info)</text></a>
             <a className="pull-right" title="Search Codes" href="#" onClick={(e) => {
               e.preventDefault();
               this.showCodeSearch();
             }}><i className="fa fa-search"></i> Search for coded {tableType}s</a>
           </caption>
           {this.conceptModal()}
+          {this.tagHelpModal()}
           <thead>
             <tr>
-              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : `${tableType} Type`}</th>
-              <th scope="col" className="code-column" id="code-column">{tableType}</th>
+              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : `${tableType} Name`}</th>
+              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : `${tableType} Value`}</th>
               <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier (Optional)</th>
             </tr>
           </thead>
@@ -213,7 +235,7 @@ class CodedSetTableEditContainer extends Component {
               return (
                 <tr key={i}>
                   <td headers="display-name-column">
-                    <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
+                    <label className="hidden" htmlFor={`displayName_${i}`}>{tableType === 'Response' ? 'Display Name' : `${tableType} Name`}</label>
                     {tableType === 'Response' ? (
                       <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                     ) : (
