@@ -197,6 +197,7 @@ class DashboardSearch extends SearchStateComponent {
                 <select className="input-select" name="sort-by" id="sort-by" value={this.state.sort} onChange={(e) => this.toggleSort(e)} >
                   <option value=""></option>
                   <option value="System Usage">System Usage</option>
+                  <option value="Program Usage">Program Usage</option>
                 </select>
               </div>
               <div className="col-md-12">
