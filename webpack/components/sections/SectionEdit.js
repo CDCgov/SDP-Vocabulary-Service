@@ -330,6 +330,11 @@ class SectionEdit extends Component {
           </div>
         <div className="row">
           <div className="col-md-12">
+            <hr />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
             <div className="row">
               <div className="section-group col-md-12">
                 <label htmlFor="section-name" hidden>Name</label>
