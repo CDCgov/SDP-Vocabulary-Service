@@ -2,7 +2,7 @@ class RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
   def create
-    if DISABLE_USER_REGISTRATION
+    if Settings.disable_user_registration
       render json: { error: 'User registration is disabled.' }, status: :unprocessable_entity
     else
       super
@@ -10,7 +10,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def new
-    if DISABLE_USER_REGISTRATION
+    if Settings.disable_user_registration
       render json: { error: 'User registration is disabled.' }, status: :unprocessable_entity
     else
       super
