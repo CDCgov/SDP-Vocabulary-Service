@@ -3,7 +3,7 @@ export function isRevisable(object, currentUser) {
     object.mostRecent === object.version &&
     object.status === 'published' &&
     (object.createdById === currentUser.id ||
-      (currentUser.groups && object.groups && currentUser.groups.filter((group) => !object.groups.map(g => g.id).includes(group.id)).length > 0)
+      (currentUser.groups && object.groups && currentUser.groups.filter((group) => object.groups.map(g => g.id).includes(group.id)).length > 0)
     );
 }
 
@@ -19,14 +19,14 @@ export function isEditable(object, currentUser) {
     object.mostRecent === object.version &&
     object.status === 'draft' &&
     (object.createdById === currentUser.id ||
-      (currentUser.groups && object.groups && currentUser.groups.filter((group) => !object.groups.map(g => g.id).includes(group.id)).length > 0)
+      (currentUser.groups && object.groups && currentUser.groups.filter((group) => object.groups.map(g => g.id).includes(group.id)).length > 0)
     );
 }
 
 export function isGroupable(object, currentUser) {
   return currentUser && currentUser.id && currentUser.groups &&
   (object.createdById === currentUser.id ||
-    (currentUser.groups && object.groups && currentUser.groups.filter((group) => !object.groups.map(g => g.id).includes(group.id)).length > 0)
+    (currentUser.groups && object.groups && currentUser.groups.filter((group) => object.groups.map(g => g.id).includes(group.id)).length > 0)
   );
 }
 
