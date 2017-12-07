@@ -4,6 +4,7 @@ import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 
 import SectionQuestionList from './SectionQuestionList';
+import SurveyList from '../surveys/SurveyList';
 import CodedSetTable from "../CodedSetTable";
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -180,24 +181,20 @@ class SectionShow extends Component {
               </div>
             </div>
           }
-{/* REPLACE THIS WITH CORRECT props for related surveys instead of questions */}          
-          {section.sectionQuestions && section.sectionQuestions.length > 0 && section.questions && section.questions.length > 0 &&
+          {section.surveys && section.surveys.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">
                   <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.questions && section.questions.length}</a>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.surveys && section.surveys.length}</a>
                 </h2>
               </div>
               <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-                <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
-                {this.props.section.sectionQuestions.length > 10 &&
-                <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
-                }
+                <SurveyList surveys={section.surveys} currentUserId={this.props.currentUser.id} />
               </div>
             </div>
           }
-          
+
         </div>
       </div>
     );

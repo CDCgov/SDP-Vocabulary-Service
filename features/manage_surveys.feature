@@ -46,9 +46,13 @@ Feature: Manage Surveys
    And I click on the "Save" button
    Then I should see "Name: Gender Survey"
    Then I should see "Revised Description"
+   When I click on the "Linked Sections" link
    And I should see "Test Gender Section"
    And I should not see "Publish"
    And I should see "Edit"
+   When I click on the "Test Gender Section" link
+   And I click on the "Linked Surveys" link
+   Then I should see "Gender Survey"
 
   Scenario: Extend Survey
     Given I have a published Survey with the name "Test Survey" and the description "Parent description"
@@ -65,6 +69,7 @@ Feature: Manage Surveys
     Then I should see "Name: Test Survey Extended"
     Then I should see "Parent description"
     And I should see "Extended from: Test Survey"
+    When I click on the "Linked Sections" link
     And I should see "Test Gender Section"
     And I should not see "Publish"
     And I should see "Version: 1"
@@ -140,7 +145,8 @@ Feature: Manage Surveys
     And I move the Section "Gender Section" up
     And I should see "Result Already Added"
     And I click on the "Save" button
-    And I should see "Gender Section"
+    And I click on the "Linked Sections" link
+    Then I should see "Gender Section"
     And I should see "Demographics Section"
 
 

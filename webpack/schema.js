@@ -37,13 +37,15 @@ questionSchema.define({
   parent: questionSchema,
   category: categorySchema,
   responseSets: [ responseSetSchema ],
-  responseType: responseTypeSchema
+  responseType: responseTypeSchema,
+  sections: [ sectionSchema ]
 });
 
 sectionSchema.define({
   parent: sectionSchema,
   questions: [ questionSchema ],
-  responseSets: [ responseSetSchema ]
+  responseSets: [ responseSetSchema ],
+  surveys: [ surveySchema ]
 });
 
 surveySchema.define({

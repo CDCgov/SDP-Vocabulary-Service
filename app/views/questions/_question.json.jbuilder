@@ -1,4 +1,4 @@
 json.extract! question, :id, :content, :created_at, :created_by, :created_by_id, :updated_at, :category_id, :concepts, :description, :status, \
               :category, :version, :all_versions, :version_independent_id, :other_versions, :most_recent, :response_sets, :response_type, \
-              :parent, :other_allowed, :published_by, :most_recent_published, :subcategory, :groups
+              :parent, :other_allowed, :published_by, :most_recent_published, :subcategory, :sections, :groups
 json.url question_url(question, format: :json)

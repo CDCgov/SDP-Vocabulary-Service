@@ -55,6 +55,7 @@ Feature: Edit Questions
     Then I should see "New Response Set"
     And I click on the "Save" button
     And I should see "What is your favorite color?"
+    When I click on the "Linked Response Sets" link
     And I should see "New Response Set"
 
   Scenario: Test rs add button doesn't allow you to add multiple of the same causing errors
