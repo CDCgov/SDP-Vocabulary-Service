@@ -35,8 +35,9 @@ Then(/^I should see the question "([^"]*)" first$/) do |name|
 end
 
 Then(/^I should see the response set "([^"]*)" second$/) do |name|
-  page.all('a', class: 'panel-toggle')[0].click
   page.all('a', class: 'panel-toggle')[1].click
+  sleep 1
+  page.all('a', class: 'panel-toggle')[2].click
   page.all('div', class: 'result-details-content')[1].has_content?(name)
 end
 
