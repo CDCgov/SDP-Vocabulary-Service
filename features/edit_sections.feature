@@ -50,6 +50,7 @@ Feature: Edit Sections
     And I click on the "Save" button
     Then I should see "Name: Gender Section"
     Then I should see "Revised Description"
+    When I click on the "Linked Questions" link
     And I should see "What is your gender?"
     And I should not see "Publish"
     And I should see "Edit"
@@ -73,6 +74,7 @@ Feature: Edit Sections
     Then I should see "Name: Test Section Extended"
     And I should see "Description from parent"
     And I should see "Extended from: Test Section"
+    When I click on the "Linked Questions" link
     And I should see "What is your gender?"
     And I should not see "Publish"
     And I should see "Version: 1"
@@ -103,8 +105,9 @@ Feature: Edit Sections
     And I should see "TEST VAR"
     And I should see "Result Already Added"
     And I click on the "Save" button
+    Then I wait 1 seconds
+    When I click on the "Linked Questions" link
     And I should see "What is your gender?"
-    Then I wait 2 seconds
     And I should see the question "What is your name?" first
     And I should see the response set "Gender Partial" second
     And I should see "TEST VAR"
@@ -132,6 +135,7 @@ Feature: Edit Sections
     And I click on the "Add Question" button
     And I click on the "Save" button
     Then I should see "Test Section"
+    When I click on the "Linked Questions" link
     And I should see "What is your gender?"
     And I should see "What is your favorite color?"
 
@@ -156,8 +160,12 @@ Feature: Edit Sections
     And I use the response set search modal to select "New Response Set"
     And I click on the "Save" button
     Then I should see "Test Section"
+    When I click on the "Linked Questions" link
     And I should see "What is your gender?"
     And I should see "Response Type: Boolean"
+    When I click on the "What is your gender?" link
+    And I click on the "Linked Sections" link
+    Then I should see "Test Section"
 
   Scenario: Show warning modal after adding question
     Given I have a Response Set with the name "Gender Full"

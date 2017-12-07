@@ -6,10 +6,8 @@ import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import CodedSetTable from "../CodedSetTable";
-import { displayVersion } from '../../utilities/componentHelpers';
 
-import SearchResult from '../SearchResult';
-
+import SectionList from "../sections/SectionList";
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { sectionProps } from '../../prop-types/section_props';
@@ -124,16 +122,8 @@ class SurveyShow extends Component {
               </h2>
             </div>
             <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-          {this.props.sections.map((sect,i) =>
-          {/* Is there a better way to construct a search result out of the section than what I did here? */}
-            <SearchResult key={`sect-${i}`}
-                          type='section' result={{Id:i,Index:'vocabulary',Source:sect,Type:'section'}} currentUser={this.props.currentUser}
-                          handleSelectSearchResult={null}
-                          extraAction={null} extraActionName={null}
-                          isEditPage={false}
-                          />
-          )}
-          </div>
+              <SectionList sections={this.props.sections} currentUserId={this.props.currentUser.id} />
+            </div>
           </div>
         </div>
       </div>

@@ -179,7 +179,7 @@ export default class SearchResult extends Component {
       case 'survey_section':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Section details.">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions: {result.questions && result.questions.length}</a></li>
+            {result.questions && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions: {result.questions && result.questions.length}</a></li>}
           </ul>
         );
       case 'section_question':
@@ -212,7 +212,7 @@ export default class SearchResult extends Component {
       case 'survey':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__section" aria-label="Additional Survey details.">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Sections: {result.sections && result.sections.length}</a></li>
+            {result.sections && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Sections: {result.sections && result.sections.length}</a></li>}
           </ul>
         );
     }

@@ -6,6 +6,7 @@ import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
+import SectionList from "../sections/SectionList";
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -166,17 +167,16 @@ export default class QuestionShow extends Component {
               </div>
             </div>
           }
-{/* This should point to the linked parent sections for this question */}
-          {question.responseSets && question.responseSets.length > 0 &&
+          {question.sections && question.sections.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">
                   <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.responseSets && question.responseSets.length}</a>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
                 </h2>
               </div>
               <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
-                <ResponseSetList responseSets={question.responseSets} />
+                <SectionList sections={question.sections} currentUserId={this.props.currentUser.id} />
               </div>
             </div>
           }
