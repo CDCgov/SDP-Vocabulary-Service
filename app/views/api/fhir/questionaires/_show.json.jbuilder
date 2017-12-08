@@ -11,7 +11,6 @@ json.item do
   json.array! survey.sections do |form|
     json.linkId form.id.to_s
     json.text form.name
-    json.uri api_fhir_section_version_url(form.version_independent_id, form.version)
     json.type 'group'
     json.extension do
       if form.concepts && !form.concepts.empty?
@@ -28,6 +27,7 @@ json.item do
         type ||= fq.response_set ? 'choice' : 'text'
         json.type type
         json.extension do
+
           if fq.question.concepts && !fq.question.concepts.empty?
             json.child! do
               json.partial! 'api/fhir/extension_tags', codes: fq.question.concepts
