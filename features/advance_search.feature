@@ -42,3 +42,12 @@ Feature: Advanced Search
     And I click on the "Close" button
     Then I should see "Sorting results by Program Usage"
     And I should see "Clear Adv. Filters"
+
+  Scenario: Filter by groups
+    Given I am logged in as test_author@gmail.com
+    And I am on the "/" page
+    When I select the "Group1" option in the "Group Select" list
+    Then I should see "Filtering by content in group: Group1"
+    And I should not see "Clear Adv. Filters"
+    When I select the "All My Groups" option in the "Group Select" list
+    Then I should see "Filtering to content owned by any of your groups"

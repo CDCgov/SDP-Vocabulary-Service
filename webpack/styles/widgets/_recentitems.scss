@@ -14,6 +14,11 @@
   border-bottom: 3px solid $light-gray;
 }
 
+.recent-items-group-heading {
+  @extend .recent-items-heading;
+  border-bottom: 0px;
+}
+
 .recent-items-body {
   @extend .panel-body;
   padding: 0px;

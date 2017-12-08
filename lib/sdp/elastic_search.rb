@@ -21,7 +21,8 @@ module SDP
                     current_user_id = nil, publisher_search = false,
                     my_stuff_filter = false, program_filter = [],
                     system_filter = [], current_version_filter = false,
-                    content_since = nil, sort_filter = '', groups = [])
+                    content_since = nil, sort_filter = '', groups = [],
+                    group_filter_id = 0)
       version_filter = if current_version_filter
                          { bool: { filter: {
                            term: { 'most_recent': true }
@@ -29,6 +30,19 @@ module SDP
                        else
                          {}
                        end
+
+      group_filter = if group_filter_id == -1
+                       { bool: { filter: {
+                         terms: { groups: groups }
+                       } } }
+                     elsif group_filter_id > 0
+                       { bool: { filter: {
+                         terms: { groups: [group_filter_id] }
+                       } } }
+                     else
+                       {}
+                     end
+
       filter_body = if my_stuff_filter
                       { dis_max: { queries: [
                         { term: { 'createdBy.id': current_user_id } }
@@ -134,7 +148,7 @@ module SDP
         from: from_index,
         query: {
           bool: {
-            filter: { bool: { filter: [filter_body, version_filter], must: [prog_terms, sys_terms, date_terms] } },
+            filter: { bool: { filter: [filter_body, version_filter, group_filter], must: [prog_terms, sys_terms, date_terms] } },
             must: must_body
           }
         },
