@@ -94,11 +94,6 @@ Rails.application.routes.draw do
       get 'Questionnaire/:id', to: 'questionaires#show',  as: :questionaire, defaults: { format: :json }
       get 'Questionnaire/:id/_history', to: 'questionaires#versions',  as: :questionaire_versions, defaults: { format: :json }
       get 'Questionnaire/:id/_history/:version', to: 'questionaires#show', as: :questionaire_version, defaults: { format: :json }
-
-      get 'sections', to: 'sections#index', as: :sections, defaults: { format: :json }
-      get 'sections/:id', to: 'sections#show',  as: :section, defaults: { format: :json }
-      get 'sections/:id/_history', to: 'sections#versions', as: :section_versions, defaults: { format: :json }
-      get 'sections/:id/_history/:version', to: 'sections#show', as: :section_version, defaults: { format: :json }
     end
   end
 
