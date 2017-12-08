@@ -27,7 +27,7 @@ class SurveyEditContainer extends Component {
     } else {
       this.props.newSurvey();
       this.props.params.surveyId = 0;
-      this.props.params.action = 'new';
+      this.props.params.action = 'create';
     }
     this.state = {selectedSurveySaver: selectedSurveySaver};
   }
