@@ -12,4 +12,5 @@
   border-bottom: 1px solid $light-gray;
   margin-left: 8px;
   margin-right: 8px;
+  &:last-child {border-bottom: none;padding-bottom:5px;}
 }
