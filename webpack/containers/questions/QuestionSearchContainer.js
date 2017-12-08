@@ -59,7 +59,8 @@ class QuestionSearchContainer extends SearchManagerComponent {
                          changeFiltersCallback={this.changeFiltersCallback}
                          searchSource={this.props.searchResults.Source}
                          suggestions={this.props.suggestions}
-                         fetchSuggestions={this.props.fetchSuggestions} />
+                         fetchSuggestions={this.props.fetchSuggestions}
+                         placeholder="Search Questions..." />
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((q, i) => {
             return (

@@ -245,7 +245,7 @@ class DashboardSearch extends SearchStateComponent {
           <div className="input-group search-group">
             <Autocomplete
               value={this.state.searchTerms}
-              inputProps={{ id: 'search', className: 'search-input', name: 'search', type: 'text', tabIndex: '4', 'aria-label': 'Dashboard Search Bar', placeholder: 'Search...' }}
+              inputProps={{ id: 'search', className: 'search-input', name: 'search', type: 'text', tabIndex: '4', 'aria-label': 'Dashboard Search Bar', placeholder: `${this.props.placeholder || "Search..."}` }}
               wrapperStyle={{}}
               autoHighlight={false}
               items={this.props.suggestions || []}
