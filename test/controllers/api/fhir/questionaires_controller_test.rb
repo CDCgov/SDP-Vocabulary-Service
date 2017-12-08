@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'pry'
 module Api
   module Fhir
     class QuestionairesControllerTest < ActionDispatch::IntegrationTest
