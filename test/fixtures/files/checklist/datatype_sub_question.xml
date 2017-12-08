@@ -1,0 +1,39 @@
+<test>
+  <question minCard="0" reportText="Clinical History" mustImplement="false" question-id="1637.100004300" sort-order="200" question-fillin="false">
+    <required>false</required>
+    <title>Hand Washing</title>
+    <fixed-list-answer allow-multiple-selection="true">
+      <fixed-list-note note-id="2051.100004300" sort-order="300" reportText="{No text}">
+        <title>What kind of soap did you use?</title>
+      </fixed-list-note>
+      <fixed-list-item>
+        <title>Foamy</title>
+        <question minCard="0">
+          <required>false</required>
+          <title />
+          <fixed-list-answer allow-multiple-selection="true">
+            <fixed-list-item>
+              <title>Scented</title>
+            </fixed-list-item>
+            <fixed-list-item>
+              <title>Non-scented</title>
+            </fixed-list-item>
+          </fixed-list-answer>
+        </question>
+      </fixed-list-item>
+      <fixed-list-item>
+        <title>Gel</title>
+      </fixed-list-item>
+      <fixed-list-item>
+        <title>Bar</title>
+      </fixed-list-item>
+      <fixed-list-item>
+        <title>Multiple Bars of Soap</title>
+        <question question-fillin="true" datatype="Integer" answer-units="%" textAfterResponse="%">
+          <required>false</required>
+          <title>Number Used</title>
+        </question>
+      </fixed-list-item>
+    </fixed-list-answer>
+  </question>
+</test>
