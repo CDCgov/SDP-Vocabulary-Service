@@ -12,6 +12,7 @@ import {
   SAVE_DRAFT_SECTION,
   CREATE_SECTION,
   PUBLISH_SECTION,
+  ADD_SECTION_TO_GROUP,
   DELETE_SECTION,
   ADD_ENTITIES
 } from './types';
@@ -71,6 +72,15 @@ export function publishSection(id) {
     type: PUBLISH_SECTION,
     payload: axios.put(routes.publishSectionPath(id),
      {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function addSectionToGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: ADD_SECTION_TO_GROUP,
+    payload: axios.put(routes.addToGroupSectionPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 

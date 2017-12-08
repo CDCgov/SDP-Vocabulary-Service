@@ -4,6 +4,7 @@ import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import GroupLookUp from "../shared_show/GroupLookUp";
 import CodedSetTable from "../CodedSetTable";
 import { displayVersion } from '../../utilities/componentHelpers';
 
@@ -12,7 +13,7 @@ import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component {
   historyBar() {
@@ -37,6 +38,9 @@ class SurveyShow extends Component {
           {isEditable(this.props.survey, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
                            itemType="Survey" />
+          }
+          {isGroupable(this.props.survey, this.props.currentUser) &&
+            <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(this.props.survey, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -177,6 +181,7 @@ SurveyShow.propTypes = {
   publishSurvey: PropTypes.func,
   deleteSurvey:  PropTypes.func,
   setStats: PropTypes.func,
+  addSurveyToGroup: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps
 };

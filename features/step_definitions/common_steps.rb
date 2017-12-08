@@ -3,6 +3,8 @@
 Given(/^I am logged in as (.+?)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  group = Group.find_or_create_by(name: 'Group1')
+  group.add_user(user)
   login_as(user, scope: :user)
 end
 

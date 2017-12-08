@@ -21,6 +21,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :surveillance_systems
   attribute :response_type
   attribute :most_recent
+  attribute :groups
 
   def most_recent
     object.most_recent?
@@ -34,6 +35,10 @@ class ESQuestionSerializer < ActiveModel::Serializer
 
   def codes
     object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
+
+  def groups
+    object.group_ids
   end
 
   def response_type

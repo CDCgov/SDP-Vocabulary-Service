@@ -10,9 +10,10 @@ import SectionQuestionList from '../sections/SectionQuestionList';
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import GroupLookUp from "../shared_show/GroupLookUp";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 export default class ResponseSetShow extends Component {
   render() {
@@ -70,6 +71,9 @@ export default class ResponseSetShow extends Component {
             {isEditable(responseSet, this.props.currentUser) &&
               <PublisherLookUp publishers={this.props.publishers}
                              itemType="Response Set" />
+            }
+            {isGroupable(responseSet, this.props.currentUser) &&
+              <GroupLookUp item={responseSet} addFunc={this.props.addResponseSetToGroup} currentUser={this.props.currentUser} />
             }
             {isRevisable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>
@@ -173,6 +177,7 @@ ResponseSetShow.propTypes = {
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
+  addResponseSetToGroup: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

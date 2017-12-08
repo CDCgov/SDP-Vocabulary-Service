@@ -12,6 +12,7 @@ import {
   SAVE_QUESTION,
   SAVE_DRAFT_QUESTION,
   PUBLISH_QUESTION,
+  ADD_QUESTION_TO_GROUP,
   FETCH_QUESTION_USAGE,
   ADD_ENTITIES
 } from './types';
@@ -112,5 +113,14 @@ export function publishQuestion(id, callback=null) {
   return {
     type: PUBLISH_QUESTION,
     payload: putPromise
+  };
+}
+
+export function addQuestionToGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: ADD_QUESTION_TO_GROUP,
+    payload: axios.put(routes.addToGroupQuestionPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }

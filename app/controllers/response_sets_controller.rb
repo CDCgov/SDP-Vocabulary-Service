@@ -28,12 +28,22 @@ class ResponseSetsController < ApplicationController
     @response_set.updated_by = current_user
   end
 
+  def add_to_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @response_set.add_to_group(params[:group], 'response_set')
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create
     @response_set = ResponseSet.new(response_set_params)
     if @response_set.all_versions.count >= 1
-      if @response_set.all_versions.last.created_by != current_user
+      if @response_set.not_owned_or_in_group?(current_user)
         render(json: @response_set.errors, status: :unauthorized) && return
       elsif @response_set.all_versions.last.status == 'draft'
         render(json: @response_set.errors, status: :unprocessable_entity) && return
@@ -104,7 +114,7 @@ class ResponseSetsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
     params.require(:response_set).permit(:name, :description, :parent_id, :oid, :author,
-                                         :version_independent_id, :status,
+                                         :version_independent_id, :status, :groups,
                                          responses_attributes: [:id, :value, :display_name, :code_system])
   end
 end

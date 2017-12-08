@@ -74,7 +74,8 @@ export default class ResponseSetEdit extends Component {
     const parentId  = responseSet.parent || ''; // Cannot use null, must use undefined or blank string
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
-    return {name, oid, description, responsesAttributes,
+    const groups = responseSet.groups || [];
+    return {name, oid, description, responsesAttributes, groups,
       version, parentId, versionIndependentId, showModal};
   }
 
@@ -109,7 +110,8 @@ export default class ResponseSetEdit extends Component {
     const parentId  = responseSet.parent || ''; // null not allowed here
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
-    return {id, name, oid, description, responsesAttributes,
+    const groups = responseSet.groups || [];
+    return {id, name, oid, description, responsesAttributes, groups,
       version, parentId, versionIndependentId, showModal};
   }
 

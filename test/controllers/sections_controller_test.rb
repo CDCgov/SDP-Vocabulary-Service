@@ -11,6 +11,8 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @section = sections(:one)
     @current_user = users(:admin)
+    @na_user = users(:not_admin)
+    @group = groups(:one)
     sign_in @current_user
   end
 
@@ -41,6 +43,31 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     section_json = { section: { name: 'A Failed revision', version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_response :unauthorized
+  end
+
+  test 'can revise something you share a group with' do
+    section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
+    post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    Section.last.publish(@current_user)
+    Section.last.add_to_group(@group.id, 'section')
+    sign_in @na_user
+    @group.add_user(@na_user)
+    section_json = { section: { name: 'A Successful revision', version_independent_id: 'SECT-1337' } }.to_json
+    post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    assert_response :success
+  end
+
+  test 'should add content to group' do
+    post sections_url(format: :json), params: { section: { name: 'Testing.' } }
+    put add_to_group_section_url(Section.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
+  test 'should not add content to group you arent a member of or dont own' do
+    post sections_url(format: :json), params: { section: { name: 'Testing.' } }
+    sign_in @na_user
+    put add_to_group_section_url(Section.last, format: :json), params: { group: @group.id }
+    assert_response 403
   end
 
   test 'cannot revise a draft' do

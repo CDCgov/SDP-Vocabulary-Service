@@ -34,6 +34,7 @@ class SurveyEdit extends Component {
     state.version = 1;
     state.parentId = survey.id;
     state.controlNumber = '';
+    state.groups = [];
     return state;
   }
 
@@ -48,6 +49,7 @@ class SurveyEdit extends Component {
     newState.parentId = survey.parent ? survey.parent.id : '';
     newState.versionIndependentId = survey.versionIndependentId;
     newState.conceptsAttributes = filterConcepts(survey.concepts);
+    newState.groups = survey.groups || [];
     return newState;
   }
 

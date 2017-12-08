@@ -13,6 +13,8 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     @resp  = responses(:one)
     @resp2 = responses(:two)
     @current_user = users(:admin)
+    @na_user = users(:not_admin)
+    @group = groups(:one)
     sign_in @current_user
   end
 
@@ -41,6 +43,29 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   test 'should not be able to delete a published rs' do
     delete response_set_url(response_sets(:one)), headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_response 422
+  end
+
+  test 'can revise something you share a group with' do
+    post response_sets_url(format: :json), params: { response_set: { name: 'This is now a thread.' } }
+    ResponseSet.last.publish(@current_user)
+    ResponseSet.last.add_to_group(@group.id, 'response_set')
+    sign_in @na_user
+    @group.add_user(@na_user)
+    post response_sets_url(format: :json), params: { response_set: { version_independent_id: ResponseSet.last.version_independent_id, name: 'This is now a revision thread.' } }
+    assert_response :success
+  end
+
+  test 'should add content to group' do
+    post response_sets_url(format: :json), params: { response_set: { name: 'Testing.' } }
+    put add_to_group_response_set_url(ResponseSet.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
+  test 'should not add content to group you arent a member of or dont own' do
+    post response_sets_url(format: :json), params: { response_set: { name: 'Testing.' } }
+    sign_in @na_user
+    put add_to_group_response_set_url(ResponseSet.last, format: :json), params: { group: @group.id }
+    assert_response 403
   end
 
   test 'should be able to update a draft rs' do

@@ -22,7 +22,7 @@ module SDP
                     current_user_id = nil, publisher_search = false,
                     my_stuff_filter = false, program_filter = [],
                     system_filter = [], current_version_filter = false,
-                    content_since = nil, sort_filter = '')
+                    content_since = nil, sort_filter = '', groups = [])
       version_filter = if current_version_filter
                          { bool: { filter: {
                            term: { 'most_recent': true }
@@ -39,7 +39,8 @@ module SDP
                     else
                       { dis_max: { queries: [
                         { term: { 'createdBy.id': current_user_id } },
-                        { match: { status: 'published' } }
+                        { match: { status: 'published' } },
+                        { terms: { groups: groups } }
                       ] } }
                     end
 

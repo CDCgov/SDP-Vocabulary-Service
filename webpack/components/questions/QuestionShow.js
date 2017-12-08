@@ -9,12 +9,13 @@ import ResponseSetList from "../response_sets/ResponseSetList";
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import GroupLookUp from "../shared_show/GroupLookUp";
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 export default class QuestionShow extends Component {
   render() {
@@ -58,11 +59,14 @@ export default class QuestionShow extends Component {
   mainContent(question) {
     return (
       <div className="col-md-9 nopadding maincontent">
-        {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
+        {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
             {isEditable(question, this.props.currentUser) &&
               <PublisherLookUp publishers={this.props.publishers}
                              itemType="Question" />
+            }
+            {isGroupable(question, this.props.currentUser) &&
+              <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} currentUser={this.props.currentUser} />
             }
             {isRevisable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
@@ -189,6 +193,7 @@ QuestionShow.propTypes = {
   router: PropTypes.object,
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
+  addQuestionToGroup: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

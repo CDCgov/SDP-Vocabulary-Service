@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSection, publishSection, deleteSection } from '../../actions/section_actions';
+import { fetchSection, publishSection, addSectionToGroup, deleteSection } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import SectionShow from '../../components/sections/SectionShow';
@@ -68,7 +68,8 @@ class SectionShowContainer extends Component {
                       publishSection={this.props.publishSection}
                       stats={this.props.stats}
                       setStats={this.props.setStats}
-                      deleteSection ={this.props.deleteSection}
+                      deleteSection={this.props.deleteSection}
+                      addSectionToGroup={this.props.addSectionToGroup}
                       publishers ={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Section' commentableId={this.props.section.id} />
@@ -90,7 +91,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, deleteSection}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, deleteSection}, dispatch);
 }
 
 SectionShowContainer.propTypes = {
@@ -103,6 +104,7 @@ SectionShowContainer.propTypes = {
   stats: PropTypes.object,
   fetchSection: PropTypes.func,
   deleteSection:  PropTypes.func,
+  addSectionToGroup: PropTypes.func,
   publishSection: PropTypes.func,
   publishers: publishersProps
 };

@@ -82,6 +82,16 @@ class SectionsController < ApplicationController
     end
   end
 
+  def add_to_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @section.add_to_group(params[:group], 'section')
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   # GET /sections/1/redcap
   def redcap
     xml = render_to_string 'sections/redcap.xml', layout: false
@@ -94,7 +104,7 @@ class SectionsController < ApplicationController
 
   def can_section_be_created?(section)
     if section.all_versions.count >= 1
-      if section.all_versions.last.created_by != current_user
+      if section.not_owned_or_in_group?(current_user)
         render(json: section.errors, status: :unauthorized)
         return false
       elsif section.all_versions.last.status == 'draft'
@@ -167,7 +177,7 @@ class SectionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def section_params
     params.require(:section).permit(:name, :user_id, :search, :description, :parent_id,
-                                    :status, :version_independent_id,
+                                    :status, :version_independent_id, :groups,
                                     concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

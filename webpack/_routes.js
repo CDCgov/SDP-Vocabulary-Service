@@ -458,6 +458,18 @@ Based on Rails routes of Vocabulary::Application
     make: function() {
       var routes;
       routes = {
+// add_to_group_question => /questions/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// add_to_group_response_set => /response_sets/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// add_to_group_section => /sections/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// add_to_group_survey => /surveys/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_add_user => /admin/groups/add_user(.:format)
   // function(options)
   admin_add_user_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[2,[7,"/",false],[2,[6,"add_user",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

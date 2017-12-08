@@ -19,6 +19,7 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :surveillance_programs
   attribute :surveillance_systems
   attribute :most_recent
+  attribute :groups
 
   def most_recent
     object.most_recent?
@@ -26,6 +27,10 @@ class ESSectionSerializer < ActiveModel::Serializer
 
   def codes
     object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
+
+  def groups
+    object.group_ids
   end
 
   def updated_at
