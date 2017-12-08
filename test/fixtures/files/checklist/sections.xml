@@ -1,0 +1,10 @@
+<test>
+  <header-group header-group-id="1" sort-order="100" minCard="0" mustImplement="false">
+    <required>false</required>
+    <title>Provider</title>
+  </header-group>
+  <header-group header-group-id="1" sort-order="200" minCard="0" mustImplement="false">
+    <required>false</required>
+    <title>Patient</title>
+  </header-group>
+</test>

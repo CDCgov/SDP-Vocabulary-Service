@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="srtemplate.xslt" ?>
+<template xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" template-id="211.100004300" template-xml-version="2.001.001.1000043" checklist-id="109.100004300" schema-version="2015_Dec_12" fileName="BreastDCIS_2.001.001_enh.xml" xmlns="http://www.cap.org/pert/2009/01/">
+  <required xmlns="">true</required>
+  <template-header xmlns="">
+    <title>Guidelines</title>
+    <category>Testing</category>
+    <generic-header>Do Before Surgery</generic-header>
+  </template-header>
+</template>
