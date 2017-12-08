@@ -500,6 +500,30 @@ Based on Rails routes of Vocabulary::Application
 // administrators => /administrators(.:format)
   // function(options)
   administrators_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"administrators",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// api_fhir_questionaire => /api/fhir/Questionnaire/:id(.:format)
+  // function(id, options)
+  api_fhir_questionaire_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
+// api_fhir_questionaire_version => /api/fhir/Questionnaire/:id/_history/:version(.:format)
+  // function(id, version, options)
+  api_fhir_questionaire_version_path: Utils.route([["id",true],["version",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[2,[7,"/",false],[2,[3,"version",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]]]),
+// api_fhir_questionaire_versions => /api/fhir/Questionnaire/:id/_history(.:format)
+  // function(id, options)
+  api_fhir_questionaire_versions_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
+// api_fhir_questionaires => /api/fhir/Questionnaire(.:format)
+  // function(options)
+  api_fhir_questionaires_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// api_fhir_valueset => /api/fhir/Valueset/:id(.:format)
+  // function(id, options)
+  api_fhir_valueset_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
+// api_fhir_valueset_version => /api/fhir/Valueset/:id/_history/:version(.:format)
+  // function(id, version, options)
+  api_fhir_valueset_version_path: Utils.route([["id",true],["version",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[2,[7,"/",false],[2,[3,"version",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]]]),
+// api_fhir_valueset_versions => /api/fhir/Valueset/:id/_history(.:format)
+  // function(id, options)
+  api_fhir_valueset_versions_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
+// api_fhir_valuesets => /api/fhir/Valueset(.:format)
+  // function(options)
+  api_fhir_valuesets_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // api_program => /api/programs/:id(.:format)
   // function(id, options)
   api_program_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"programs",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
