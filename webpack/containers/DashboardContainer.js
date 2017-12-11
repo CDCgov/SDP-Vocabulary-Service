@@ -25,6 +25,7 @@ class DashboardContainer extends SearchManagerComponent {
     this.search = this.search.bind(this);
     this.changeFiltersCallback = this.changeFiltersCallback.bind(this);
     this.selectType = this.selectType.bind(this);
+    this.selectGroup = this.selectGroup.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.openSignUpModal = this.openSignUpModal.bind(this);
     this.closeSignUpModal = this.closeSignUpModal.bind(this);
@@ -38,7 +39,8 @@ class DashboardContainer extends SearchManagerComponent {
       contentSince: null,
       signUpOpen: false,
       myStuffFilter: false,
-      page: 1
+      page: 1,
+      groupFilterId: 0
     };
   }
 
@@ -160,6 +162,12 @@ class DashboardContainer extends SearchManagerComponent {
                                  lastSearch={this.props.lastSearch}
                                  suggestions={this.props.suggestions}
                                  fetchSuggestions={this.props.fetchSuggestions}/>
+                {this.state.groupFilterId === '-1' &&
+                  <div className="adv-filter-list">Filtering to content owned by any of your groups</div>
+                }
+                {this.state.groupFilterId > 0 &&
+                  <div className="adv-filter-list">Filtering by content in group: {this.props.currentUser.groups && this.props.currentUser.groups.find((g) => g.id === parseInt(this.state.groupFilterId, 10)).name}</div>
+                }
                 <div className="row">
                   <div className="col-md-12">
                     {this.analyticsGroup(this.state.type)}
@@ -226,6 +234,15 @@ class DashboardContainer extends SearchManagerComponent {
     this.props.setLastSearch(newSearchParams);
   }
 
+  selectGroup(gid=0) {
+    let newState = {};
+    newState.groupFilterId = gid;
+    this.setState(newState);
+    let newSearchParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.fetchSearchResults(DASHBOARD_CONTEXT, newSearchParams);
+    this.props.setLastSearch(newSearchParams);
+  }
+
   analyticsGroup(searchType) {
     return (
     <div className="analytics-group" role="navigation" aria-label="Analytics">
@@ -264,6 +281,7 @@ class DashboardContainer extends SearchManagerComponent {
   }
 
   authorStats(searchType, myStuffFilter) {
+    const groups = this.props.currentUser ? this.props.currentUser.groups : [];
     return (
       <div className="recent-items-panel">
         <div className="recent-items-heading">My Stuff</div>
@@ -289,11 +307,29 @@ class DashboardContainer extends SearchManagerComponent {
               <text className="sr-only">Click button to filter search results by surveys you own.</text>
               <div className="recent-items-value">{this.props.mySurveyCount} Surveys</div>
             </button>
-            {myStuffFilter ? (<a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
-              <a href="#" tabIndex="4" className="col-md-12 text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
-            )}
           </ul>
+          {myStuffFilter ? (<a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
+            <a href="#" tabIndex="4" className="col-md-12 text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
+          )}
         </div>
+        <div className="recent-items-heading"></div>
+        {groups.length > 0 && this.props.searchResults.Source !== 'simple_search' &&
+          <div>
+            <div className="recent-items-group-heading">Filter by Group</div>
+            <div className="recent-items-body">
+              <label className="input-label" htmlFor="groupFilterId" aria-hidden='true' hidden='true'>Group Select</label>
+              <select tabIndex="4" className="input-group-select" name="groupFilterId" id="groupFilterId" value={this.state.groupFilterId} onChange={(e) => this.selectGroup(e.target.value)} >
+                <option value={0}></option>
+                {groups.map((g) => {
+                  return <option key={g.id} value={g.id}>{g.name}</option>;
+                })}
+                <option disabled>----------------------------</option>
+                <option value={-1}>All My Groups</option>
+              </select>
+              {this.state.groupFilterId !== 0 && <a href="#" tabIndex="4" className="col-md-12 text-center" onClick={() => this.selectGroup(0)}>Clear Groups Filter</a>}
+            </div>
+          </div>
+        }
       </div>
     );
   }

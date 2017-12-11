@@ -77,6 +77,7 @@ class DashboardSearch extends SearchStateComponent {
       mostRecentFilter: false,
       contentSince: null,
       sort: '',
+      groupFilterId: 0
     };
     let newParams = Object.assign(this.currentSearchParameters(), clearedParams);
     this.props.search(newParams);

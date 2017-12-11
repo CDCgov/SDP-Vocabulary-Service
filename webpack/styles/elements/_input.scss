@@ -21,6 +21,13 @@
   background-repeat: no-repeat;
 }
 
+.input-group-select {
+  @extend .input-select;
+  width: 93%;
+  margin: 0 auto;
+  margin-bottom: 5px;
+}
+
 .form-check-input {
   margin: 10px !important;
 }
