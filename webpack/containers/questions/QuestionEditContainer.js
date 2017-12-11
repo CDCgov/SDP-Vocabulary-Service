@@ -70,7 +70,7 @@ class QuestionEditContainer extends Component {
       },
       {
         title: 'Create Your Own Tags (Code)',
-        text: 'Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOWMED).',
+        text: 'Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOMED).',
         selector: '.code-system-column',
         position: 'top',
       },
