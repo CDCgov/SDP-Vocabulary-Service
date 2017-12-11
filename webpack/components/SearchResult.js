@@ -179,7 +179,7 @@ export default class SearchResult extends Component {
       case 'survey_section':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Section details.">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions: {result.questions && result.questions.length}</a></li>
+            {result.questions && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions: {result.questions && result.questions.length}</a></li>}
           </ul>
         );
       case 'section_question':
@@ -212,7 +212,7 @@ export default class SearchResult extends Component {
       case 'survey':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__section" aria-label="Additional Survey details.">
-            <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Sections: {result.sections && result.sections.length}</a></li>
+            {result.sections && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-survey`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Sections: {result.sections && result.sections.length}</a></li>}
           </ul>
         );
     }
@@ -318,7 +318,7 @@ export default class SearchResult extends Component {
           {(type !== "section_question") && this.detailsPanel(result, type)}
         </li>
         <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
-          <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`}><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div className="result-nav-item"><Link to={`/${type.replace('_s','S')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult)

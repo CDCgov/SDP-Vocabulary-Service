@@ -137,6 +137,7 @@ class QuestionEdit extends Component {
     if (this.props.action === 'revise') {
       reviseState.version = this.props.question.version + 1;
     }
+    reviseState.groups = this.props.question.groups || [];
     reviseState.versionIndependentId = this.props.question.versionIndependentId;
     reviseState.parentId  = this.props.question.parent ? this.props.question.parent.id : ''; // null is not allowed as a value
     return reviseState;

@@ -3,6 +3,8 @@
 Given(/^I am logged in as (.+?)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  group = Group.find_or_create_by(name: 'Group1')
+  group.add_user(user)
   login_as(user, scope: :user)
 end
 
@@ -53,6 +55,15 @@ end
 # TODO: This should really use url helpers so you could say 'sign in' instead of '/users/sign_in'
 Given(/^I am on the "(.+)" page$/) do |url|
   visit url
+end
+
+Given(/^Disable user registration is "(.+)" and display login is "(.+)"/) do |dur, dl|
+  Settings.display_login = dl == 'true'
+  Settings.disable_user_registration = dur == 'true'
+end
+
+Given(/^User registration is "(.+)"/) do |dur|
+  Settings.disable_user_registration = dur == 'disabled'
 end
 
 When(/^I go to the dashboard$/) do
@@ -155,6 +166,19 @@ end
 
 Then(/^I should see the "([^"]*)" link$/) do |value|
   find('a', text: value)
+end
+
+Then(/^I should not see the "([^"]*)" link$/) do |value|
+  begin
+    find('a', text: value)
+    raise "Should not have found #{value} link"
+  rescue
+    true
+  end
+end
+
+Then(/^I should see the link "(.*?)" to "(.*?)"$/) do |link, url|
+  find_link(link, href: url)
 end
 
 Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|

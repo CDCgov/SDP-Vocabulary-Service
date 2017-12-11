@@ -4,15 +4,17 @@ import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import GroupLookUp from "../shared_show/GroupLookUp";
 import CodedSetTable from "../CodedSetTable";
-import { displayVersion } from '../../utilities/componentHelpers';
+
+import SectionList from "../sections/SectionList";
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component {
   historyBar() {
@@ -37,6 +39,9 @@ class SurveyShow extends Component {
           {isEditable(this.props.survey, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
                            itemType="Survey" />
+          }
+          {isGroupable(this.props.survey, this.props.currentUser) &&
+            <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(this.props.survey, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -109,23 +114,17 @@ class SurveyShow extends Component {
               </div>
             </div>
           </div>
-          {this.props.sections.map((sect,i) =>
-            <div key={i} className="basic-c-box panel-default survey-section">
-              <div className="panel-heading">
-                <h2 className="panel-title"><Link to={`/sections/${sect.id}`}>{ sect.name }</Link></h2>
-              </div>
-              <div className="box-content">
-                <ul>
-                  {sect.questions.map((q,i) =>
-                    <li key={i}><Link to={`/questions/${q.id}`}>{q.content}</Link></li>
-                  )}
-                </ul>
-              </div>
-              <div className="panel-footer survey-section">
-                <p>Section version: {displayVersion(sect.version, sect.mostRecentPublished)}</p>
-              </div>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title">
+                <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {this.props.sections && this.props.sections.length}</a>
+              </h2>
             </div>
-          )}
+            <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
+              <SectionList sections={this.props.sections} currentUserId={this.props.currentUser.id} />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -177,6 +176,7 @@ SurveyShow.propTypes = {
   publishSurvey: PropTypes.func,
   deleteSurvey:  PropTypes.func,
   setStats: PropTypes.func,
+  addSurveyToGroup: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps
 };

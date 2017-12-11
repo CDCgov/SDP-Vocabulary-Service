@@ -71,6 +71,16 @@ class SurveysController < ApplicationController
     end
   end
 
+  def add_to_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @survey.add_to_group(params[:group], 'survey')
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   # GET /surveys/1/redcap
   def redcap
     xml = render_to_string 'surveys/redcap.xml', layout: false
@@ -83,7 +93,7 @@ class SurveysController < ApplicationController
 
   def can_survey_be_created?(survey)
     if survey.all_versions.count >= 1
-      if survey.all_versions.last.created_by != current_user
+      if survey.not_owned_or_in_group?(current_user)
         render(json: survey.errors, status: :unauthorized)
         return false
       elsif survey.all_versions.last.status == 'draft'
@@ -105,7 +115,7 @@ class SurveysController < ApplicationController
   end
 
   def survey_params
-    params.require(:survey).permit(:name, :description, :status, :parent_id,
+    params.require(:survey).permit(:name, :description, :status, :parent_id, :groups,
                                    :control_number, :version_independent_id, :created_by_id,
                                    concepts_attributes: [:id, :value, :display_name, :code_system])
   end

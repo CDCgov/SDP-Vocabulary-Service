@@ -17,4 +17,10 @@ class QuestionsSerializer < ActiveModel::Serializer
   attribute :responseType do
     object.response_type.name if object.response_type
   end
+
+  attribute(:tags) { codes }
+
+  def codes
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
 end

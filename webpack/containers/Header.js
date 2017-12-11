@@ -13,7 +13,7 @@ import { fetchNotifications } from '../actions/notification_actions';
 let LoginMenu = ({disableUserRegistration, logInOpener, signUpOpener, currentUser}) => {
   let loggedIn = ! isEmpty(currentUser);
   if(!loggedIn) {
-    if(disableUserRegistration == 'true') {
+    if(disableUserRegistration) {
       return (
         <ul className="nav navbar-nav">
           <li className="log-in-link">
@@ -58,7 +58,8 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
       <li className="dropdown">
         <a href="#" tabIndex="2" id="account-dropdown" className="dropdown-toggle account-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
         <ul className="dropdown-menu">
-          <li><a href="#" tabIndex="2" onClick={() => {
+          <li><a href="#" tabIndex="2" onClick={(e) => {
+            e.preventDefault();
             settingsOpener();
             return false;
           }}>Settings</a></li>

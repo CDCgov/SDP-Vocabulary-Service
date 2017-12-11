@@ -9,5 +9,9 @@ class SectionSerializer < ActiveModel::Serializer
   end
   attribute :version
   attribute :published_by, serializer: UserSerializer
+  attribute(:tags) { codes }
   has_many :section_questions, key: :questions, serializer: SectionQuestionsSerializer
+  def codes
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
 end

@@ -22,7 +22,8 @@ module SDP
                     current_user_id = nil, publisher_search = false,
                     my_stuff_filter = false, program_filter = [],
                     system_filter = [], current_version_filter = false,
-                    content_since = nil, sort_filter = '')
+                    content_since = nil, sort_filter = '', groups = [],
+                    group_filter_id = 0)
       version_filter = if current_version_filter
                          { bool: { filter: {
                            term: { 'most_recent': true }
@@ -30,6 +31,19 @@ module SDP
                        else
                          {}
                        end
+
+      group_filter = if group_filter_id == -1
+                       { bool: { filter: {
+                         terms: { groups: groups }
+                       } } }
+                     elsif group_filter_id > 0
+                       { bool: { filter: {
+                         terms: { groups: [group_filter_id] }
+                       } } }
+                     else
+                       {}
+                     end
+
       filter_body = if my_stuff_filter
                       { dis_max: { queries: [
                         { term: { 'createdBy.id': current_user_id } }
@@ -39,7 +53,8 @@ module SDP
                     else
                       { dis_max: { queries: [
                         { term: { 'createdBy.id': current_user_id } },
-                        { match: { status: 'published' } }
+                        { match: { status: 'published' } },
+                        { terms: { groups: groups } }
                       ] } }
                     end
 
@@ -98,16 +113,17 @@ module SDP
                      {}
                    end
 
-      sort_body = if sort_filter.blank?
+      sort_body = case sort_filter
+                  when 'Program Usage'
                     [
-                      '_score',
                       { '_script': {
-                        'script': "doc['surveillance_systems.id'].values.size()",
+                        'script': "doc['surveillance_programs.id'].values.size()",
                         type: 'number',
                         order: 'desc'
-                      } }
+                      } },
+                      '_score'
                     ]
-                  else
+                  when 'System Usage'
                     [
                       { '_script': {
                         'script': "doc['surveillance_systems.id'].values.size()",
@@ -115,6 +131,15 @@ module SDP
                         order: 'desc'
                       } },
                       '_score'
+                    ]
+                  else
+                    [
+                      '_score',
+                      { '_script': {
+                        'script': "doc['surveillance_systems.id'].values.size()",
+                        type: 'number',
+                        order: 'desc'
+                      } }
                     ]
                   end
 
@@ -124,7 +149,7 @@ module SDP
         from: from_index,
         query: {
           bool: {
-            filter: { bool: { filter: [filter_body, version_filter], must: [prog_terms, sys_terms, date_terms] } },
+            filter: { bool: { filter: [filter_body, version_filter, group_filter], must: [prog_terms, sys_terms, date_terms] } },
             must: must_body
           }
         },

@@ -12,6 +12,7 @@ export default class SettingsModal extends ProfileEditor {
       id: this.props.currentUser.id,
       firstName: this.props.currentUser.firstName || '',
       lastName:  this.props.currentUser.lastName  || '',
+      groups:  this.props.currentUser.groups  || [],
       lastProgramId: this.props.currentUser.lastProgramId || -1,
       lastSystemId:  this.props.currentUser.lastSystemId  || -1,
       defaultProgramId: this.props.currentUser.lastProgramId || -1,
@@ -26,6 +27,7 @@ export default class SettingsModal extends ProfileEditor {
         id: nextProps.currentUser.id,
         firstName: nextProps.currentUser.firstName || '',
         lastName: nextProps.currentUser.lastName || '',
+        groups:  this.props.currentUser.groups  || [],
         lastProgramId: this.props.currentUser.lastProgramId || -1,
         lastSystemId: this.props.currentUser.lastSystemId || -1
       });

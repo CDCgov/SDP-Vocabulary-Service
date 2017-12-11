@@ -173,6 +173,9 @@
               "type": "date"
             }
           }
+        },
+        "groups": {
+          "type": "string"
         }
       }
     },
@@ -268,6 +271,9 @@
               "type" : "object"
             }
           }
+        },
+        "groups": {
+          "type": "string"
         }
       }
     },
@@ -374,6 +380,9 @@
               "type": "string"
             }
           }
+        },
+        "groups": {
+          "type": "string"
         }
       }
     },
@@ -469,6 +478,9 @@
               "type": "date"
             }
           }
+        },
+        "groups": {
+          "type": "string"
         }
       }
     }

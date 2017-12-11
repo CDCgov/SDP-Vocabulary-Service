@@ -6,7 +6,8 @@ import {
   SAVE_QUESTION_FULFILLED,
   FETCH_QUESTION_USAGE_FULFILLED,
   DELETE_QUESTION_FULFILLED,
-  ADD_ENTITIES_FULFILLED
+  ADD_ENTITIES_FULFILLED,
+  ADD_QUESTION_TO_GROUP_FULFILLED
 } from '../actions/types';
 
 function addQuestionToState(action, state){
@@ -26,6 +27,7 @@ export default function questions(state = {}, action) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.questions);
     case SAVE_QUESTION_FULFILLED:
+    case ADD_QUESTION_TO_GROUP_FULFILLED:
       return addQuestionToState(action, state);
     case DELETE_QUESTION_FULFILLED:
       return helpers.deleteItem(state, action);

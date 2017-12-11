@@ -4,14 +4,16 @@ import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 
 import SectionQuestionList from './SectionQuestionList';
+import SurveyList from '../surveys/SurveyList';
 import CodedSetTable from "../CodedSetTable";
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import GroupLookUp from "../shared_show/GroupLookUp";
 
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 const PAGE_SIZE = 10;
 
@@ -91,6 +93,9 @@ class SectionShow extends Component {
             <PublisherLookUp publishers={this.props.publishers}
                            itemType="Section" />
           }
+          {isGroupable(section, this.props.currentUser) &&
+            <GroupLookUp item={section} addFunc={this.props.addSectionToGroup} currentUser={this.props.currentUser} />
+          }
           {isPublishable(section, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -161,13 +166,35 @@ class SectionShow extends Component {
             </div>
           </div>
           {section.sectionQuestions && section.sectionQuestions.length > 0 && section.questions && section.questions.length > 0 &&
-            <div>
-              <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
-              {this.props.section.sectionQuestions.length > 10 &&
-              <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
-              }
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Questions: {section.questions && section.questions.length}</a>
+                </h2>
+              </div>
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-questions">
+                <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
+                {this.props.section.sectionQuestions.length > 10 &&
+                <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
+                }
+              </div>
             </div>
           }
+          {section.surveys && section.surveys.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.surveys && section.surveys.length}</a>
+                </h2>
+              </div>
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
+                <SurveyList surveys={section.surveys} currentUserId={this.props.currentUser.id} />
+              </div>
+            </div>
+          }
+
         </div>
       </div>
     );
@@ -180,6 +207,7 @@ SectionShow.propTypes = {
   currentUser: currentUserProps,
   publishSection: PropTypes.func,
   deleteSection:  PropTypes.func.isRequired,
+  addSectionToGroup: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

@@ -17,7 +17,7 @@ class CodedSetTableEditContainer extends Component {
   constructor(props) {
     super(props);
     var items = props.initialItems.length < 1 ? [{value: '', codeSystem: '', displayName: ''}] : props.initialItems;
-    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
+    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, showTagHelpModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
     this.search = this.search.bind(this);
     this.hideCodeSearch = this.hideCodeSearch.bind(this);
   }
@@ -142,6 +142,58 @@ class CodedSetTableEditContainer extends Component {
     }
   }
 
+  tagHelpModal(){
+    return (
+      <Modal animation={false} show={this.state.showTagHelpModal} onHide={() => this.setState({ showTagHelpModal: false })} aria-label="Tagging Info">
+        <Modal.Header closeButton bsStyle='concept'>
+          <Modal.Title componentClass="h1">Tag Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body bsStyle='concept'>
+          <h2>Purpose</h2>
+          <p>The purpose of Tags is to facilitate content discovery and reuse.</p>
+          <h2>Definitions</h2>
+          <p><strong>Tag Name: </strong>Keywords from a controlled vocabulary. A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies.</p>
+          <p><strong>Tag Value: </strong>This may be a text or coded value that comes from a controlled vocabulary. Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
+          <p><strong>Code System Identifier (optional): </strong>The Code System used if you are using a coded value (e.g., LOINC, SNOMED-CT, RxNorm). Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
+          <h2>Example Tag Table</h2>
+          <table className="set-table">
+            <caption>Add, search, and create associated Tags</caption>
+            <thead>
+              <tr>
+                <th scope="col" className="display-name-column" id="display-name-column-ex">Tag Name</th>
+                <th scope="col" className="code-column" id="code-column-ex">Tag Value</th>
+                <th scope="col" className="code-system-column" id="code-system-column-ex">Code System Identifier (Optional)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="display-name-column-ex">MMG Tab Name</td>
+                <td headers="code-column-ex">Data Elements</td>
+                <td headers="code-system-column-ex"></td>
+              </tr>
+              <tr>
+                <td headers="display-name-column-ex">Genus Salmonella (organism)</td>
+                <td headers="code-column-ex">27268008</td>
+                <td headers="code-system-column-ex">SNOWMED-CT</td>
+              </tr>
+              <tr>
+                <td headers="display-name-column-ex">Genus Campylobacter (organism)</td>
+                <td headers="code-column-ex">35408001</td>
+                <td headers="code-system-column-ex">SNOWMED-CT</td>
+              </tr>
+            </tbody>
+          </table><br/>
+          <p><strong>How to Search for Previously Used Tags</strong><br/>To determine if a tag has been used before in SDP-V, start typing in the tag name column of the table. A drop-down list of all previously used tags that match the text entered in the field will appear. A user can navigate the list and select a tag that was previously used. If a tag is selected from the list, the tag value and code system identifier fields will be populated with existing values.</p>
+          <p><strong>How to Search for Coded Tags from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for coded Tags” magnifying glass icon to the right of the Tags header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the tags table by clicking the “Add” selection beside each result.</p>
+          <p><strong>How to Create a New Tag</strong><br/>A new tag may be created by simply typing a new tag name, tag value, and code system identifier (if applicable). A new tag should only be created if an existing tag does not meet a user’s needs.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => this.setState({ showTagHelpModal: false })} bsStyle="primary">Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
   conceptModal(){
     return (
       <Modal animation={false} show={this.state.showConceptModal} onHide={this.hideCodeSearch} aria-label="Search Codes">
@@ -169,8 +221,8 @@ class CodedSetTableEditContainer extends Component {
             <thead>
               <tr>
                 <th id="add-code-checkboxes-column" scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
-                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name / Tag Type</th>
-                <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code</th>
+                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name / Tag Name</th>
+                <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code / Value</th>
                 <th id="modal-code-system-column" scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
               </tr>
             </thead>
@@ -191,17 +243,21 @@ class CodedSetTableEditContainer extends Component {
       <div>
         <table className="set-table">
           <caption>
-            Add, search, and create associated {tableType}s:
+            Add, search, and create associated {tableType === 'Response' ? 'responses' : <a title="See Tag Help" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.setState({ showTagHelpModal: true });
+            }}>tags <i className="fa fa-info-circle"></i><text className='sr-only'>(Click for more info)</text></a>}
             <a className="pull-right" title="Search Codes" href="#" onClick={(e) => {
               e.preventDefault();
               this.showCodeSearch();
             }}><i className="fa fa-search"></i> Search for coded {tableType}s</a>
           </caption>
           {this.conceptModal()}
+          {this.tagHelpModal()}
           <thead>
             <tr>
-              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : `${tableType} Type`}</th>
-              <th scope="col" className="code-column" id="code-column">{tableType}</th>
+              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : `${tableType} Name`}</th>
+              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : `${tableType} Value`}</th>
               <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier (Optional)</th>
             </tr>
           </thead>
@@ -213,7 +269,7 @@ class CodedSetTableEditContainer extends Component {
               return (
                 <tr key={i}>
                   <td headers="display-name-column">
-                    <label className="hidden" htmlFor={`displayName_${i}`}>Display name</label>
+                    <label className="hidden" htmlFor={`displayName_${i}`}>{tableType === 'Response' ? 'Display Name' : `${tableType} Name`}</label>
                     {tableType === 'Response' ? (
                       <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                     ) : (

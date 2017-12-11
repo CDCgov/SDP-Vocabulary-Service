@@ -17,16 +17,21 @@ class ApiSectionsControllerTest < ActionDispatch::IntegrationTest
     current_user_id = @current_user ? @current_user.id : -1
     assert_equal Section.where("(status='published' OR created_by_id= ?)", current_user_id).count, res.count
     assert_response :success
-    assert_response_schema('sections/show.json')
+    assert_json_schema_response('sections/show.json')
   end
 
   test 'api should show section' do
     get api_section_url(@section.version_independent_id)
+    res = JSON.parse response.body
+    tags = res['tags']
     assert_response :success
     assert_serializer 'SectionSerializer'
-    assert_response_schema('sections/show.json')
+    assert_equal 2, tags.length
+    assert_equal 'Generic', tags[0]['code']
+    assert_equal 'Generic', tags[1]['code']
+    assert ['MMG', 'MMG Tab'], (tags.collect { |t| t['code'] })
+    assert_json_schema_response('sections/show.json')
   end
-
   test 'api should show section of specific version' do
     get api_section_url(@section.version_independent_id, version: 1)
     assert_response :success

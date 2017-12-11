@@ -77,6 +77,7 @@ class DashboardSearch extends SearchStateComponent {
       mostRecentFilter: false,
       contentSince: null,
       sort: '',
+      groupFilterId: 0
     };
     let newParams = Object.assign(this.currentSearchParameters(), clearedParams);
     this.props.search(newParams);
@@ -197,6 +198,7 @@ class DashboardSearch extends SearchStateComponent {
                 <select className="input-select" name="sort-by" id="sort-by" value={this.state.sort} onChange={(e) => this.toggleSort(e)} >
                   <option value=""></option>
                   <option value="System Usage">System Usage</option>
+                  <option value="Program Usage">Program Usage</option>
                 </select>
               </div>
               <div className="col-md-12">
@@ -245,6 +247,7 @@ class DashboardSearch extends SearchStateComponent {
               value={this.state.searchTerms}
               inputProps={{ id: 'search', className: 'search-input', name: 'search', type: 'text', tabIndex: '4', 'aria-label': 'Dashboard Search Bar', placeholder: 'Search...' }}
               wrapperStyle={{}}
+              autoHighlight={false}
               items={this.props.suggestions || []}
               getItemValue={(item) => item.text}
               onSelect={(value) => {

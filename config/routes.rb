@@ -31,6 +31,9 @@ Rails.application.routes.draw do
     put '/roles/revoke_publisher' => 'roles#revoke_publisher', as: :revoke_publisher
     put '/elastic_panel/delete_and_sync' => 'elastic_panel#delete_and_sync', as: :delete_and_sync
     put '/elastic_panel/es_sync' => 'elastic_panel#es_sync', as: :es_sync
+    resources :groups, only: [:index, :create]
+    put '/groups/add_user' => 'groups#add_user', as: :add_user
+    put '/groups/remove_user' => 'groups#remove_user', as: :remove_user
   end
 
   resources :section_questions
@@ -39,16 +42,19 @@ Rails.application.routes.draw do
     get :export, on: :member
     get :redcap, on: :member
     put :publish, on: :member
+    put :add_to_group, on: :member
   end
   resources :surveys, except: [:edit], defaults: { format: :json } do
     get :revise, on: :member
     put :publish, on: :member
     get :redcap, on: :member
+    put :add_to_group, on: :member
   end
   resources :questions, except: [:edit] do
     get :revise, on: :member
     get :usage, on: :member
     put :publish, on: :member
+    put :add_to_group, on: :member
   end
   resources :comments do
     post :reply_to, on: :member
@@ -58,6 +64,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     put :publish, on: :member
+    put :add_to_group, on: :member
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications
@@ -79,6 +86,18 @@ Rails.application.routes.draw do
     end
     resources :systems, only: [:index, :show] do
       get :usage, on: :member
+    end
+
+    namespace :fhir do
+      get 'Valueset', to: 'valuesets#index', as: :valuesets, defaults: { format: :json }
+      get 'Valueset/:id', to: 'valuesets#show',  as: :valueset, defaults: { format: :json }
+      get 'Valueset/:id/_history', to: 'valuesets#versions', as: :valueset_versions, defaults: { format: :json }
+      get 'Valueset/:id/_history/:version', to: 'valuesets#show', as: :valueset_version, defaults: { format: :json }
+
+      get 'Questionnaire', to: 'questionaires#index', as: :questionaires, defaults: { format: :json }
+      get 'Questionnaire/:id', to: 'questionaires#show',  as: :questionaire, defaults: { format: :json }
+      get 'Questionnaire/:id/_history', to: 'questionaires#versions',  as: :questionaire_versions, defaults: { format: :json }
+      get 'Questionnaire/:id/_history/:version', to: 'questionaires#show', as: :questionaire_version, defaults: { format: :json }
     end
   end
 

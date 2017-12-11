@@ -75,3 +75,24 @@ Feature: Admin Panel
     Then I should see "Elasticsearch Management"
     When I click on the "elasticsearch-sync-button" button
     Then I should see "Successfully updated Elasticsearch"
+
+  Scenario: Add a group and a user
+    Given I am the admin test_author@gmail.com
+    When I go to the dashboard
+    And I click on the "account-dropdown" link
+    And I click on the "Admin Panel" link
+    And I click on the "Group List" link
+    Then I should see "Description (Optional)"
+    And I fill in the "group-name" field with "New Group"
+    And I fill in the "group-description" field with "Test Description"
+    And I click on the "submit-group" button
+    And I fill in the "group-name" field with " "
+    And I fill in the "group-description" field with " "
+    Then I should see "New Group"
+    And I should see "Test Description"
+    And I click on the "Manage Users" button
+    And I fill in the "email-input" field with "test_author@gmail.com"
+    And I click on the "submit-email" button
+    And I fill in the "email-input" field with " "
+    Then I should see "Remove"
+    And I should see "test_author@gmail.com"

@@ -8,7 +8,9 @@ class ElasticsearchController < ApplicationController
     query_string = params[:search] ? params[:search] : nil
     query_size = params[:size] ? params[:size].to_i : 10
     page = params[:page] ? params[:page].to_i : 1
-    current_user_id  = current_user ? current_user.id : -1
+    current_user_id = current_user ? current_user.id : -1
+    groups = current_user ? current_user.groups : []
+    groups_filter_id = params[:groups] ? params[:groups].to_i : 0
     publisher_search = current_user ? current_user.publisher? : false
     my_stuff_filter = params[:mystuff] == 'true'
     program_filter = params[:programs] ? params[:programs] : []
@@ -21,7 +23,7 @@ class ElasticsearchController < ApplicationController
                                           current_user_id, publisher_search,
                                           my_stuff_filter, program_filter,
                                           system_filter, current_version_filter,
-                                          content_since, sort)
+                                          content_since, sort, groups, groups_filter_id)
               else
                 SDP::SimpleSearch.search(type, query_string, current_user_id,
                                          query_size, page, publisher_search,

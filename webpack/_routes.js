@@ -458,6 +458,21 @@ Based on Rails routes of Vocabulary::Application
     make: function() {
       var routes;
       routes = {
+// add_to_group_question => /questions/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// add_to_group_response_set => /response_sets/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// add_to_group_section => /sections/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// add_to_group_survey => /surveys/:id/add_to_group(.:format)
+  // function(id, options)
+  add_to_group_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_add_user => /admin/groups/add_user(.:format)
+  // function(options)
+  admin_add_user_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[2,[7,"/",false],[2,[6,"add_user",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_delete_and_sync => /admin/elastic_panel/delete_and_sync(.:format)
   // function(options)
   admin_delete_and_sync_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"elastic_panel",false],[2,[7,"/",false],[2,[6,"delete_and_sync",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -470,6 +485,12 @@ Based on Rails routes of Vocabulary::Application
 // admin_grant_publisher => /admin/roles/grant_publisher(.:format)
   // function(options)
   admin_grant_publisher_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_publisher",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_groups => /admin/groups(.:format)
+  // function(options)
+  admin_groups_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// admin_remove_user => /admin/groups/remove_user(.:format)
+  // function(options)
+  admin_remove_user_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[2,[7,"/",false],[2,[6,"remove_user",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_revoke_admin => /admin/roles/revoke_admin(.:format)
   // function(options)
   admin_revoke_admin_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"revoke_admin",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -479,6 +500,30 @@ Based on Rails routes of Vocabulary::Application
 // administrators => /administrators(.:format)
   // function(options)
   administrators_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"administrators",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// api_fhir_questionaire => /api/fhir/Questionnaire/:id(.:format)
+  // function(id, options)
+  api_fhir_questionaire_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
+// api_fhir_questionaire_version => /api/fhir/Questionnaire/:id/_history/:version(.:format)
+  // function(id, version, options)
+  api_fhir_questionaire_version_path: Utils.route([["id",true],["version",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[2,[7,"/",false],[2,[3,"version",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]]]),
+// api_fhir_questionaire_versions => /api/fhir/Questionnaire/:id/_history(.:format)
+  // function(id, options)
+  api_fhir_questionaire_versions_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
+// api_fhir_questionaires => /api/fhir/Questionnaire(.:format)
+  // function(options)
+  api_fhir_questionaires_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// api_fhir_valueset => /api/fhir/Valueset/:id(.:format)
+  // function(id, options)
+  api_fhir_valueset_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
+// api_fhir_valueset_version => /api/fhir/Valueset/:id/_history/:version(.:format)
+  // function(id, version, options)
+  api_fhir_valueset_version_path: Utils.route([["id",true],["version",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[2,[7,"/",false],[2,[3,"version",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]]]),
+// api_fhir_valueset_versions => /api/fhir/Valueset/:id/_history(.:format)
+  // function(id, options)
+  api_fhir_valueset_versions_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"_history",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
+// api_fhir_valuesets => /api/fhir/Valueset(.:format)
+  // function(options)
+  api_fhir_valuesets_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // api_program => /api/programs/:id(.:format)
   // function(id, options)
   api_program_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"programs",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

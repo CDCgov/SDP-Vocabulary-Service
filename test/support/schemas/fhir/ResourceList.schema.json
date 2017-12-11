@@ -1,0 +1,372 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://hl7.org/fhir/json-schema/ResourceList",
+  "$ref": "#/definitions/ResourceList",
+  "description": "see http://hl7.org/fhir/json.html#schema for information about the FHIR Json Schemas",
+  "definitions": {
+    "ResourceList": {
+      "oneOf": [
+        {
+          "$ref": "Account#/definitions/Account"
+        },
+        {
+          "$ref": "ActivityDefinition#/definitions/ActivityDefinition"
+        },
+        {
+          "$ref": "AdverseEvent#/definitions/AdverseEvent"
+        },
+        {
+          "$ref": "AllergyIntolerance#/definitions/AllergyIntolerance"
+        },
+        {
+          "$ref": "Appointment#/definitions/Appointment"
+        },
+        {
+          "$ref": "AppointmentResponse#/definitions/AppointmentResponse"
+        },
+        {
+          "$ref": "AuditEvent#/definitions/AuditEvent"
+        },
+        {
+          "$ref": "Basic#/definitions/Basic"
+        },
+        {
+          "$ref": "Binary#/definitions/Binary"
+        },
+        {
+          "$ref": "BodySite#/definitions/BodySite"
+        },
+        {
+          "$ref": "Bundle#/definitions/Bundle"
+        },
+        {
+          "$ref": "CapabilityStatement#/definitions/CapabilityStatement"
+        },
+        {
+          "$ref": "CarePlan#/definitions/CarePlan"
+        },
+        {
+          "$ref": "CareTeam#/definitions/CareTeam"
+        },
+        {
+          "$ref": "ChargeItem#/definitions/ChargeItem"
+        },
+        {
+          "$ref": "Claim#/definitions/Claim"
+        },
+        {
+          "$ref": "ClaimResponse#/definitions/ClaimResponse"
+        },
+        {
+          "$ref": "ClinicalImpression#/definitions/ClinicalImpression"
+        },
+        {
+          "$ref": "CodeSystem#/definitions/CodeSystem"
+        },
+        {
+          "$ref": "Communication#/definitions/Communication"
+        },
+        {
+          "$ref": "CommunicationRequest#/definitions/CommunicationRequest"
+        },
+        {
+          "$ref": "CompartmentDefinition#/definitions/CompartmentDefinition"
+        },
+        {
+          "$ref": "Composition#/definitions/Composition"
+        },
+        {
+          "$ref": "ConceptMap#/definitions/ConceptMap"
+        },
+        {
+          "$ref": "Condition#/definitions/Condition"
+        },
+        {
+          "$ref": "Consent#/definitions/Consent"
+        },
+        {
+          "$ref": "Contract#/definitions/Contract"
+        },
+        {
+          "$ref": "Coverage#/definitions/Coverage"
+        },
+        {
+          "$ref": "DataElement#/definitions/DataElement"
+        },
+        {
+          "$ref": "DetectedIssue#/definitions/DetectedIssue"
+        },
+        {
+          "$ref": "Device#/definitions/Device"
+        },
+        {
+          "$ref": "DeviceComponent#/definitions/DeviceComponent"
+        },
+        {
+          "$ref": "DeviceMetric#/definitions/DeviceMetric"
+        },
+        {
+          "$ref": "DeviceRequest#/definitions/DeviceRequest"
+        },
+        {
+          "$ref": "DeviceUseStatement#/definitions/DeviceUseStatement"
+        },
+        {
+          "$ref": "DiagnosticReport#/definitions/DiagnosticReport"
+        },
+        {
+          "$ref": "DocumentManifest#/definitions/DocumentManifest"
+        },
+        {
+          "$ref": "DocumentReference#/definitions/DocumentReference"
+        },
+        {
+          "$ref": "DomainResource#/definitions/DomainResource"
+        },
+        {
+          "$ref": "EligibilityRequest#/definitions/EligibilityRequest"
+        },
+        {
+          "$ref": "EligibilityResponse#/definitions/EligibilityResponse"
+        },
+        {
+          "$ref": "Encounter#/definitions/Encounter"
+        },
+        {
+          "$ref": "Endpoint#/definitions/Endpoint"
+        },
+        {
+          "$ref": "EnrollmentRequest#/definitions/EnrollmentRequest"
+        },
+        {
+          "$ref": "EnrollmentResponse#/definitions/EnrollmentResponse"
+        },
+        {
+          "$ref": "EpisodeOfCare#/definitions/EpisodeOfCare"
+        },
+        {
+          "$ref": "ExpansionProfile#/definitions/ExpansionProfile"
+        },
+        {
+          "$ref": "ExplanationOfBenefit#/definitions/ExplanationOfBenefit"
+        },
+        {
+          "$ref": "FamilyMemberHistory#/definitions/FamilyMemberHistory"
+        },
+        {
+          "$ref": "Flag#/definitions/Flag"
+        },
+        {
+          "$ref": "Goal#/definitions/Goal"
+        },
+        {
+          "$ref": "GraphDefinition#/definitions/GraphDefinition"
+        },
+        {
+          "$ref": "Group#/definitions/Group"
+        },
+        {
+          "$ref": "GuidanceResponse#/definitions/GuidanceResponse"
+        },
+        {
+          "$ref": "HealthcareService#/definitions/HealthcareService"
+        },
+        {
+          "$ref": "ImagingManifest#/definitions/ImagingManifest"
+        },
+        {
+          "$ref": "ImagingStudy#/definitions/ImagingStudy"
+        },
+        {
+          "$ref": "Immunization#/definitions/Immunization"
+        },
+        {
+          "$ref": "ImmunizationRecommendation#/definitions/ImmunizationRecommendation"
+        },
+        {
+          "$ref": "ImplementationGuide#/definitions/ImplementationGuide"
+        },
+        {
+          "$ref": "Library#/definitions/Library"
+        },
+        {
+          "$ref": "Linkage#/definitions/Linkage"
+        },
+        {
+          "$ref": "List#/definitions/List"
+        },
+        {
+          "$ref": "Location#/definitions/Location"
+        },
+        {
+          "$ref": "Measure#/definitions/Measure"
+        },
+        {
+          "$ref": "MeasureReport#/definitions/MeasureReport"
+        },
+        {
+          "$ref": "Media#/definitions/Media"
+        },
+        {
+          "$ref": "Medication#/definitions/Medication"
+        },
+        {
+          "$ref": "MedicationAdministration#/definitions/MedicationAdministration"
+        },
+        {
+          "$ref": "MedicationDispense#/definitions/MedicationDispense"
+        },
+        {
+          "$ref": "MedicationRequest#/definitions/MedicationRequest"
+        },
+        {
+          "$ref": "MedicationStatement#/definitions/MedicationStatement"
+        },
+        {
+          "$ref": "MessageDefinition#/definitions/MessageDefinition"
+        },
+        {
+          "$ref": "MessageHeader#/definitions/MessageHeader"
+        },
+        {
+          "$ref": "NamingSystem#/definitions/NamingSystem"
+        },
+        {
+          "$ref": "NutritionOrder#/definitions/NutritionOrder"
+        },
+        {
+          "$ref": "Observation#/definitions/Observation"
+        },
+        {
+          "$ref": "OperationDefinition#/definitions/OperationDefinition"
+        },
+        {
+          "$ref": "OperationOutcome#/definitions/OperationOutcome"
+        },
+        {
+          "$ref": "Organization#/definitions/Organization"
+        },
+        {
+          "$ref": "Parameters#/definitions/Parameters"
+        },
+        {
+          "$ref": "Parameters#/definitions/Parameters"
+        },
+        {
+          "$ref": "Patient#/definitions/Patient"
+        },
+        {
+          "$ref": "PaymentNotice#/definitions/PaymentNotice"
+        },
+        {
+          "$ref": "PaymentReconciliation#/definitions/PaymentReconciliation"
+        },
+        {
+          "$ref": "Person#/definitions/Person"
+        },
+        {
+          "$ref": "PlanDefinition#/definitions/PlanDefinition"
+        },
+        {
+          "$ref": "Practitioner#/definitions/Practitioner"
+        },
+        {
+          "$ref": "PractitionerRole#/definitions/PractitionerRole"
+        },
+        {
+          "$ref": "Procedure#/definitions/Procedure"
+        },
+        {
+          "$ref": "ProcedureRequest#/definitions/ProcedureRequest"
+        },
+        {
+          "$ref": "ProcessRequest#/definitions/ProcessRequest"
+        },
+        {
+          "$ref": "ProcessResponse#/definitions/ProcessResponse"
+        },
+        {
+          "$ref": "Provenance#/definitions/Provenance"
+        },
+        {
+          "$ref": "Questionnaire#/definitions/Questionnaire"
+        },
+        {
+          "$ref": "QuestionnaireResponse#/definitions/QuestionnaireResponse"
+        },
+        {
+          "$ref": "ReferralRequest#/definitions/ReferralRequest"
+        },
+        {
+          "$ref": "RelatedPerson#/definitions/RelatedPerson"
+        },
+        {
+          "$ref": "RequestGroup#/definitions/RequestGroup"
+        },
+        {
+          "$ref": "ResearchStudy#/definitions/ResearchStudy"
+        },
+        {
+          "$ref": "ResearchSubject#/definitions/ResearchSubject"
+        },
+        {
+          "$ref": "Resource#/definitions/Resource"
+        },
+        {
+          "$ref": "RiskAssessment#/definitions/RiskAssessment"
+        },
+        {
+          "$ref": "Schedule#/definitions/Schedule"
+        },
+        {
+          "$ref": "SearchParameter#/definitions/SearchParameter"
+        },
+        {
+          "$ref": "Sequence#/definitions/Sequence"
+        },
+        {
+          "$ref": "ServiceDefinition#/definitions/ServiceDefinition"
+        },
+        {
+          "$ref": "Slot#/definitions/Slot"
+        },
+        {
+          "$ref": "Specimen#/definitions/Specimen"
+        },
+        {
+          "$ref": "StructureDefinition#/definitions/StructureDefinition"
+        },
+        {
+          "$ref": "StructureMap#/definitions/StructureMap"
+        },
+        {
+          "$ref": "Subscription#/definitions/Subscription"
+        },
+        {
+          "$ref": "Substance#/definitions/Substance"
+        },
+        {
+          "$ref": "SupplyDelivery#/definitions/SupplyDelivery"
+        },
+        {
+          "$ref": "SupplyRequest#/definitions/SupplyRequest"
+        },
+        {
+          "$ref": "Task#/definitions/Task"
+        },
+        {
+          "$ref": "TestReport#/definitions/TestReport"
+        },
+        {
+          "$ref": "TestScript#/definitions/TestScript"
+        },
+        {
+          "$ref": "ValueSet#/definitions/ValueSet"
+        },
+        {
+          "$ref": "VisionPrescription#/definitions/VisionPrescription"
+        }
+      ]
+    }
+  }
+}

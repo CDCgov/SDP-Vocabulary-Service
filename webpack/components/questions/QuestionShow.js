@@ -6,15 +6,17 @@ import { hashHistory, Link } from 'react-router';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
+import SectionList from "../sections/SectionList";
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import GroupLookUp from "../shared_show/GroupLookUp";
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 export default class QuestionShow extends Component {
   render() {
@@ -58,11 +60,14 @@ export default class QuestionShow extends Component {
   mainContent(question) {
     return (
       <div className="col-md-9 nopadding maincontent">
-        {this.props.currentUser && this.props.currentUser.id && question.mostRecent == question.version &&
+        {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
             {isEditable(question, this.props.currentUser) &&
               <PublisherLookUp publishers={this.props.publishers}
                              itemType="Question" />
+            }
+            {isGroupable(question, this.props.currentUser) &&
+              <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} currentUser={this.props.currentUser} />
             }
             {isRevisable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
@@ -152,10 +157,26 @@ export default class QuestionShow extends Component {
           {question.responseSets && question.responseSets.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h2 className="panel-title">Linked Response Sets</h2>
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Response Sets: {question.responseSets && question.responseSets.length}</a>
+                </h2>
               </div>
-              <div className="box-content">
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
                 <ResponseSetList responseSets={question.responseSets} />
+              </div>
+            </div>
+          }
+          {question.sections && question.sections.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
+                </h2>
+              </div>
+              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
+                <SectionList sections={question.sections} currentUserId={this.props.currentUser.id} />
               </div>
             </div>
           }
@@ -189,6 +210,7 @@ QuestionShow.propTypes = {
   router: PropTypes.object,
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
+  addQuestionToGroup: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

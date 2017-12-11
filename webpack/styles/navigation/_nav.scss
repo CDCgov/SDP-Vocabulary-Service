@@ -108,12 +108,21 @@ a.cdc-brand:focus {
   margin-left: 0px;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .notification-menu-item:hover {
   background-color: #e4e4e4;
+}
+
+.current-group-menu-item {
+  list-style-type: none;
+  margin-left: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .cdc-nav-dropdown {

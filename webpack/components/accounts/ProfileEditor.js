@@ -33,7 +33,7 @@ export default class ProfileEditor extends Component {
 
   render() {
     return (
-      <Modal animation={false} show={this.props.show}  onHide={this.props.closer} aria-label={this.title()}>
+      <Modal animation={false} show={this.props.show} onHide={this.props.closer} aria-label={this.title()}>
         <Modal.Header closeButton>
           <Modal.Title componentClass="h1">{this.title()}</Modal.Title>
         </Modal.Header>
@@ -67,28 +67,41 @@ export default class ProfileEditor extends Component {
   }
 
   renderUserInfo(){
-
-    return(<div>
-    <div className="control-group">
-      <label className="control-label" htmlFor="email">E-mail</label>
-      <div className="controls">
-        <input autoFocus="autofocus" placeholder="" className="form-control input-lg" type="email"
-               value={this.state.email} name="email" id="email" onChange={this.handleChange('email')} />
-        <p className="help-block">Please provide your E-mail</p>
+    return(
+    <div>
+      <div className="form-group">
+        <label className="control-label" htmlFor="email">E-mail</label>
+          <input autoFocus="autofocus" placeholder="" className="form-control" type="email"
+                 value={this.state.email} name="email" id="email" onChange={this.handleChange('email')} />
+          <span className="help-block">Please provide your E-mail</span>
       </div>
-    </div>
-    <div className="field">
-      <label className="control-label" htmlFor="firstName">First name</label>
-      <input className="form-control input-lg" type="text" name="firstName" id="firstName"
-             value={this.state.firstName} onChange={this.handleChange('firstName')}/>
-    </div>
-    <div className="field">
-      <label className="control-label" htmlFor="lastName">Last name</label>
-      <input className="form-control input-lg" type="text" name="lastName" id="lastName"
-             value={this.state.lastName} onChange={this.handleChange('lastName')}/>
-    </div>
+      <div className="row">
+        <div className="form-group col-sm-6">
+          <label className="control-label" htmlFor="firstName">First name</label>
+          <input className="form-control" type="text" name="firstName" id="firstName"
+                 value={this.state.firstName} onChange={this.handleChange('firstName')}/>
+        </div>
+        <div className="form-group col-sm-6">
+          <label className="control-label" htmlFor="lastName">Last name</label>
+          <input className="form-control" type="text" name="lastName" id="lastName"
+                 value={this.state.lastName} onChange={this.handleChange('lastName')}/>
+        </div>
+      </div>
+      <div className="form-group">
+        <label className="control-label">Groups</label>
+        <p>{this.state.groups.length > 0 ? (this.state.groups.map((group, i) => {
+          if (i+1 < this.state.groups.length) {
+            return (<text key={group.id}>{group.name}, </text>);
+          } else {
+            return (<text key={group.id}>{group.name}</text>);
+          }
+        })) : (
+          <text>No groups, contact admin to be added to a group.</text>
+        )}</p>
+      </div>
     </div>);
   }
+
   programSearch(programSearchTerm){
     var surveillancePrograms = values(this.props.surveillancePrograms);
     if(programSearchTerm && programSearchTerm.length > 1){

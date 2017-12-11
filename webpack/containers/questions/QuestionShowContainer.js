@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, publishQuestion, deleteQuestion, fetchQuestionUsage } from '../../actions/questions_actions';
+import { fetchQuestion, publishQuestion, addQuestionToGroup, deleteQuestion, fetchQuestionUsage } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { questionProps } from "../../prop-types/question_props";
@@ -83,6 +83,7 @@ class QuestionShowContainer extends Component {
                              currentUser={this.props.currentUser}
                              handlePublish={this.handlePublish.bind(this)}
                              deleteQuestion={this.props.deleteQuestion}
+                             addQuestionToGroup={this.props.addQuestionToGroup}
                              publishers={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
@@ -103,7 +104,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, fetchQuestionUsage, setSteps, setStats}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, fetchQuestionUsage, setSteps, setStats}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -118,6 +119,7 @@ QuestionShowContainer.propTypes = {
   setStats: PropTypes.func,
   stats: PropTypes.object,
   deleteQuestion: PropTypes.func,
+  addQuestionToGroup: PropTypes.func,
   publishers: publishersProps
 };
 

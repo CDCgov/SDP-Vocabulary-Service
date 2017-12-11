@@ -1,5 +1,5 @@
 class Section < ApplicationRecord
-  include OidGenerator, Versionable, Searchable, Taggable
+  include OidGenerator, Versionable, Searchable, Taggable, Groupable
   acts_as_commentable
 
   has_many :section_questions, -> { order 'position asc' }, dependent: :destroy

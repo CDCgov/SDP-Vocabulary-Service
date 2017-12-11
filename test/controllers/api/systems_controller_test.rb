@@ -13,14 +13,14 @@ class ApiSystemsControllerTest < ActionDispatch::IntegrationTest
   test 'api should get index of systems' do
     get api_systems_url
     assert_response :success
-    assert_response_schema('systems/show.json')
+    assert_json_schema_response('systems/show.json')
   end
 
   test 'api should show system' do
     get api_system_url(@system)
     assert_response :success
     assert_serializer 'SystemSerializer'
-    assert_response_schema('systems/show.json')
+    assert_json_schema_response('systems/show.json')
   end
 
   test 'api should 404 on system that doesnt exist' do

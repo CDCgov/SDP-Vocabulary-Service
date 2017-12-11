@@ -29,6 +29,7 @@ class SectionEdit extends Component {
     state.versionIndependentId = null;
     state.version = 1;
     state.parentId = section.id;
+    state.groups = [];
     return state;
   }
 
@@ -43,7 +44,8 @@ class SectionEdit extends Component {
     const parentId = section.parent ? section.parent.id : '';
     const conceptsAttributes = filterConcepts(section.concepts) || [];
     const linkedResponseSets = this.findLinkedResponseSets(sectionQuestions);
-    return {sectionQuestions, name, id, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes};
+    const groups = section.groups || [];
+    return {sectionQuestions, name, id, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, groups};
   }
 
   constructor(props) {
@@ -326,6 +328,11 @@ class SectionEdit extends Component {
             <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>
+        <div className="row">
+          <div className="col-md-12">
+            <hr />
+          </div>
+        </div>
         <div className="row">
           <div className="col-md-12">
             <div className="row">
