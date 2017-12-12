@@ -97,7 +97,7 @@ class Help extends Component {
         <li>Click the search icon to search for and add tags to the question</li>
         <li>Alternatively, you can manually add a tag - click the plus sign to add additional tags to associate with the question</li>
         <li>The Display Name field is what the user will see on the page</li>
-        <li>Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOWMED)</li>
+        <li>Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
         <li>Click save to save a draft of the edited content</li>
         </ul>
         <h3>Question Details Page</h3>
@@ -112,7 +112,7 @@ class Help extends Component {
         <li>Click the search icon to search for and add coded responses to the response set</li>
         <li>Alternatively, you can manually add a response - click the plus sign to add additional responses to associate with the response set</li>
         <li>The Display Name field is what the user will see on the page</li>
-        <li>Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOWMED)</li>
+        <li>Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
         <li>Click save to save a draft of the edited content</li>
         </ul>
         <h3>Response Set Details Page</h3>

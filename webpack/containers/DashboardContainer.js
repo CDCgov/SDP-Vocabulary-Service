@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
+import debounce from 'lodash/debounce';
 
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
@@ -125,6 +126,7 @@ class DashboardContainer extends SearchManagerComponent {
   render() {
     let loggedIn = ! isEmpty(this.props.currentUser);
     const searchResults = this.props.searchResults;
+    const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     return (
       <div className="container-fluid">
         {!loggedIn &&
@@ -161,7 +163,7 @@ class DashboardContainer extends SearchManagerComponent {
                                  searchSource={this.props.searchResults.Source}
                                  lastSearch={this.props.lastSearch}
                                  suggestions={this.props.suggestions}
-                                 fetchSuggestions={this.props.fetchSuggestions}/>
+                                 fetchSuggestions={fetchSuggestions}/>
                 {this.state.groupFilterId === '-1' &&
                   <div className="adv-filter-list">Filtering to content owned by any of your groups</div>
                 }
