@@ -104,6 +104,14 @@ class SurveysController < ApplicationController
                    status: 200)
   end
 
+  # GET /surveys/1/redcap
+  def epi_info
+    xml = render_to_string 'surveys/epi_info.xml', layout: false
+    send_data(xml, filename: "#{@survey.name.underscore}_epi_info.xml",
+                   type: 'application/xml',
+                   status: 200)
+  end
+
   private
 
   def can_survey_be_created?(survey)

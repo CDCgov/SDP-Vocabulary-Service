@@ -133,6 +133,14 @@ class SectionsController < ApplicationController
                    status: 200)
   end
 
+  # GET /sections/1/redcap
+  def epi_info
+    xml = render_to_string 'sections/epi_info.xml', layout: false
+    send_data(xml, filename: "#{@section.name.underscore}_epi_info.xml",
+                   type: 'application/xml',
+                   status: 200)
+  end
+
   private
 
   def can_section_be_created?(section)

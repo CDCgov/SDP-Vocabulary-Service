@@ -1,0 +1,18 @@
+<Template Level="Page">
+  <Project>
+    <View CheckCode="">
+      <%= render partial: "_epi_info_section.xml",
+        locals: {section: @section, page_id:1, view_id: 1, postion: 1} %>
+    </View>
+  </Project>
+
+     questions = @section.collect{|ss| ss.survey_questions}
+     response_sets = questions.collect{|q| q.response_set}.compact
+     response_sets.each do |rs|
+  <SourceTable TableName="<%=rs.id%>">
+    <% rs.responses.each do |resp| %>
+      <Item code="<%= resp.value %>" codeSystem="<%= resp.code_system %>" displayName="<%= resp.display_name %>"/>
+    <% end %>
+  </SourceTable>
+  <% end %>
+</Template>

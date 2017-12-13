@@ -1,0 +1,20 @@
+<Template Level="Page">
+  <Project>
+    <View CheckCode="">
+      <% survey.survey_sections.each do |ss| %>
+      <%= render partial: "section/_epi_info_section.xml",
+        locals: {section: ss.section, page_id: ss.postion, view_id: 1, postion: ss.postion} %>
+      <% end %>
+    </View>
+  </Project>
+  <%
+     questions = survey.survey_sections.collect{|ss| ss.survey_questions}.flatten
+     response_sets = questions.collect{|q| q.response_set}.compact
+     response_sets.each do |rs| %>
+  <SourceTable TableName="<%=rs.id%>">
+    <% rs.responses.each do |resp| %>
+      <Item code="<%= resp.value %>" codeSystem="<%= resp.code_system %>" displayName="<%= resp.display_name %>"/>
+    <% end %>
+  </SourceTable>
+  <% end %>
+</Template>
