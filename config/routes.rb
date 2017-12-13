@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :export, on: :member
     get :redcap, on: :member
+    get :epi_info, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     put :publish, on: :member
     get :redcap, on: :member
+    get :epi_info, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :update_tags, on: :member
