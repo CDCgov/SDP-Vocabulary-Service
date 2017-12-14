@@ -49,7 +49,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     Section.last.publish(@current_user)
-    Section.last.add_to_group(@group.id, 'section')
+    Section.last.add_to_group(@group.id)
     sign_in @na_user
     @group.add_user(@na_user)
     section_json = { section: { name: 'A Successful revision', version_independent_id: 'SECT-1337' } }.to_json

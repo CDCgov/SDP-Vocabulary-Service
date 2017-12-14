@@ -85,7 +85,7 @@ class SectionsController < ApplicationController
   def add_to_group
     group = Group.find(params[:group])
     if current_user.groups.include?(group)
-      @section.add_to_group(params[:group], 'section')
+      @section.add_to_group(params[:group])
       render :show
     else
       render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity

@@ -28,20 +28,6 @@ class ResponseSet < ApplicationRecord
     UpdateIndexJob.perform_later('response_set', id)
   end
 
-  def publish(publisher)
-    if status == 'draft'
-      self.status = 'published'
-      self.published_by = publisher
-      save!
-      # Updates previous version to no longer be most_recent
-      if version > 1
-        prev_version = ResponseSet.find_by(version_independent_id: version_independent_id,
-                                           version: version - 1)
-        UpdateIndexJob.perform_later('response_set', prev_version.id)
-      end
-    end
-  end
-
   # Builds a new ResponseSet object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
@@ -54,6 +40,10 @@ class ResponseSet < ApplicationRecord
     end
 
     new_revision
+  end
+
+  def cascading_action
+    yield self
   end
 
   def extend_from

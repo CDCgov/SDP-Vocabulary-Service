@@ -73,6 +73,21 @@ module Versionable
     most_recent_published == version
   end
 
+  def publish(publisher)
+    cascading_action do |element|
+      if element.status == 'draft'
+        element.status = 'published'
+        element.published_by = publisher
+        element.save!
+        if element.version > 1
+          prev_version = element.class.find_by(version_independent_id: element.version_independent_id,
+                                               version: element.version - 1)
+          UpdateIndexJob.perform_later(element.class.to_s.downcase, prev_version.id)
+        end
+      end
+    end
+  end
+
   def as_json(options = {})
     super((options || {}).merge(methods: [:most_recent]))
   end

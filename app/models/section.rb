@@ -63,24 +63,6 @@ class Section < ApplicationRecord
     where(created_by: owner_id)
   end
 
-  def publish(publisher)
-    if status == 'draft'
-      self.status = 'published'
-      self.published_by = publisher
-      save!
-      # Updates previous version to no longer be most_recent
-      if version > 1
-        prev_version = Section.find_by(version_independent_id: version_independent_id,
-                                       version: version - 1)
-        UpdateIndexJob.perform_later('section', prev_version.id)
-      end
-    end
-    section_questions.each do |sq|
-      sq.question.publish(publisher)
-      sq.response_set.publish(publisher) if sq.response_set
-    end
-  end
-
   # Builds a new section object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
@@ -93,6 +75,14 @@ class Section < ApplicationRecord
     end
 
     new_revision
+  end
+
+  def cascading_action(&block)
+    yield self
+    section_questions.each do |sq|
+      sq.question.cascading_action(&block)
+      sq.response_set.cascading_action(&block) if sq.response_set
+    end
   end
 
   # Get the programs that the section is associated with by the surveys that the
