@@ -10,9 +10,11 @@ module Groupable
     all_versions.last.created_by != current_user && (all_versions.last.group_ids & current_user.group_ids).empty?
   end
 
-  def add_to_group(gid, obj_type)
-    groups << Group.find(gid)
-    UpdateIndexJob.perform_later(obj_type, id)
+  def add_to_group(gid)
+    cascading_action do |element|
+      element.groups << Group.find(gid)
+      UpdateIndexJob.perform_later(element.class.to_s.downcase, id)
+    end
   end
 end
 # rubocop:enable Rails/HasAndBelongsToMany

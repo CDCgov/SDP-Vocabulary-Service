@@ -44,7 +44,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   test 'can revise something you share a group with' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
     Question.last.publish(@current_user)
-    Question.last.add_to_group(@group.id, 'question')
+    Question.last.add_to_group(@group.id)
     sign_in @na_user
     @group.add_user(@na_user)
     post questions_url(format: :json), params: { question: { version_independent_id: Question.last.version_independent_id, content: 'This is now a revision thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }

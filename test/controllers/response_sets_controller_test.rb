@@ -48,7 +48,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
   test 'can revise something you share a group with' do
     post response_sets_url(format: :json), params: { response_set: { name: 'This is now a thread.' } }
     ResponseSet.last.publish(@current_user)
-    ResponseSet.last.add_to_group(@group.id, 'response_set')
+    ResponseSet.last.add_to_group(@group.id)
     sign_in @na_user
     @group.add_user(@na_user)
     post response_sets_url(format: :json), params: { response_set: { version_independent_id: ResponseSet.last.version_independent_id, name: 'This is now a revision thread.' } }
