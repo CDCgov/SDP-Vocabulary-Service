@@ -58,10 +58,10 @@ class Help extends Component {
         <h1 id="general">General</h1>
         <p><strong>Navigation and Help Basics:</strong></p>
         <ul>
-        <li>Use the top bar to log-in, sign-up, or navigate to various pages.</li>
+        <li>Use the top bar to log-in or navigate to various pages.</li>
         <li>Clicking the CDC logo in the top left will return you to the landing page at any time.</li>
         <li>The footer contains useful links to pages with additional information about the site, including the application version. Please reference this version number in any bug reports.</li>
-        <li>On most pages the top right navigation bar gives a &quot;Help&quot; option. Click on this option to view documentation for various actions or see step-by-step walk throughs on some pages. The step by step walkthroughs are also available below in plain text format.</li>
+        <li>On most pages the top right navigation bar gives a &quot;Help&quot; option. Click on this option to view documentation for various actions or see step-by-step walk throughs on some pages. The step by step walkthroughs are also available below in accessible plain text format.</li>
         </ul>
         <h2 id="step-by-step">Step-by-Step Walkthroughs by Page</h2>
         <h3>Dashboard</h3>
@@ -70,8 +70,8 @@ class Help extends Component {
         <li>Click on any of the type boxes to highlight them and toggle on filtering by that single item type.</li>
         <li>Click Advanced Link to see additional filters you can apply to your search.</li>
         <li>If you already have an account you can log in to unlock more features in the top right of the dashboard page.</li>
-        <li>Click the Get Started! button on the banner to register a new account.</li>
         <li>Click on any of the rows in the My Stuff Analytics panel to filter by items you authored.</li>
+        <li>If you belong to a group you may use the dropdown in the right panel to select a group, this will filter all search results limiting to content owned by that group.</li>
         <li>Click the create menu and then select an item type to author a new item.</li>
         <li>Click the alerts dropdown to see any new notifications about your content.</li>
         <li>Click your e-mail to see various account management options.</li>
@@ -79,11 +79,11 @@ class Help extends Component {
         <h3>Section Edit Page</h3>
         <ul>
         <li>If you need to create a new question without leaving the the section use this button to author a new question from scratch.</li>
-        <li>Type in your search keywords here to search for questions to add to the section.</li>
+        <li>Type in your search keywords in the top left search bar to search for questions to add to the section.</li>
         <li>Click Advanced to see additional filters you can apply to your search.</li>
         <li>Use these search results to find the question you want to add.</li>
-        <li>Click on the add button to select a question for the section.</li>
-        <li>Edit the various section details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.</li>
+        <li>Click on the add (+) button to select a question for the section.</li>
+        <li>Edit the various section details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published).</li>
         </ul>
         <h3>Section Details Page</h3>
         <ul>
@@ -94,9 +94,9 @@ class Help extends Component {
         <h3>Question Edit Page</h3>
         <ul>
         <li>Use the input fields to edit content of the question. If the response type is open choice this panel will also give you the option to associate response sets with this quesiton at creation time</li>
-        <li>Click the search icon to search for and add tags to the question</li>
+        <li>Click the search icon to search for and add coded tags to the question</li>
         <li>Alternatively, you can manually add a tag - click the plus sign to add additional tags to associate with the question</li>
-        <li>The Display Name field is what the user will see on the page</li>
+        <li>The Tag Name field is what the user will see on the page</li>
         <li>Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
         <li>Click save to save a draft of the edited content</li>
         </ul>
@@ -113,7 +113,7 @@ class Help extends Component {
         <li>Alternatively, you can manually add a response - click the plus sign to add additional responses to associate with the response set</li>
         <li>The Display Name field is what the user will see on the page</li>
         <li>Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
-        <li>Click save to save a draft of the edited content</li>
+        <li>Click save to save a draft of the edited content (this content will not be public until it is published)</li>
         </ul>
         <h3>Response Set Details Page</h3>
         <ul>
@@ -127,7 +127,7 @@ class Help extends Component {
         <li>Click Advanced to see additional filters you can apply to your search</li>
         <li>Use these search results to find the section you want to add</li>
         <li>Click on the add button to select a section for the survey</li>
-        <li>Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content</li>
+        <li>Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published)</li>
         </ul>
         <h3>Survey Details Page</h3>
         <ul>
@@ -139,6 +139,10 @@ class Help extends Component {
         <ul>
         <li>Click any item in the left side bar to see instructions on how to perform any of the specified activities</li>
         </ul>
+        <h3>Tags Tables on Edit Pages</h3>
+        <ul>
+        <li>The purpose of Tags is to facilitate content discovery and reuse. Click the info (i) icon, or go to the Tagging Content tab in the help documentation to see more information and examples on how to get the most out of tags.</li>
+        </ul>
       </div>
     );
   }
@@ -149,12 +153,9 @@ class Help extends Component {
         <h1 id="account-management">Account Management</h1>
         <p><strong>Options:</strong></p>
         <ul>
-        <li><a href="#sign-up">Sign Up</a></li>
         <li><a href="#logging-in">Logging In</a></li>
         <li><a href="#logging-out">Logging Out</a></li>
         </ul>
-        <h2 className="help-section-subtitle" id="sign-up">Sign Up</h2>
-        <p>When you navigate to the page and you have not yet logged in there will be a sign up button at the top right corner of the screen. You can also click the &quot;Get Started!&quot; button on the landing page banner. A window will pop up asking for your information. Fill out as much information as possible and save. You should now see your e-mail with a gear icon in the navigation bar in the top right.</p>
         <h2 className="help-section-subtitle" id="logging-in">Logging In</h2>
         <p>If you already have an account simply click the log-in link in the blue navigation bar in the top right of the screen. If you do not see a log-in button the browser may be logged in from a previous session. In that case see how to log out below.</p>
         <h2 className="help-section-subtitle" id="logging-out">Logging Out</h2>
@@ -179,7 +180,9 @@ class Help extends Component {
         <h2 className="help-section-subtitle" id="filtering-by-type">Filtering by Type</h2>
         <p>You can filter a search by the type of content by clicking on the analytics icons immediately below the search bar on the dashboard page. Clicking on any of those four squares on the top of the page will filter by the type specified in the square and highlight the square. Once a filter is applied you can click on the &#39;clear filter&#39; link that will appear under the icons on the dashboard.</p>
         <h2 className="help-section-subtitle" id="see-content-you-own">See Content You Own</h2>
-        <p>Similar to searching by type (described above) when you are logged in to an account the dashboard will have a &quot;My Stuff&quot; section displayed on the right side of the dashboard. Clicking on any of the icons or the filter link in that panel will highlight the filter applied in blue and filter any searches done to only return drafts and published content that you own.</p>
+        <p>Similar to searching by type (described above) when you are logged in to an account the dashboard will have a &quot;My Stuff&quot; section displayed on the right side of the dashboard. Clicking on any of the icons or the filter link in that panel will highlight the filter applied in blue and filter any searches down to only return drafts and published content that you own.</p>
+        <h2 className="help-section-subtitle" id="see-content-your-groups-own">See Content Your Groups Own</h2>
+        <p>Similar to searching by content you own, when you are logged in to an account that is part of an authoring group, the dashboard will have a &quot;Filter by Group&quot; section displayed on the right side of the dashboard. Selecting any of the group names from the dropdown in that panel will filter any searches down to only return content that is assigned to the specified group.</p>
         <h2 className="help-section-subtitle" id="advanced-filtering">Advanced Filtering</h2>
         <p>Under the search bars seen across the app there is an &#39;Advanced&#39; link. If you click that link it will pop up a window with additional filters that you can apply. Any filters you select will limit your searches by the selected filters. The window also has a clear filters buttons that will reset back to the default search.</p>
         <p>If a warning symbol appears next to the Advanced link or you see an error message in the advanced search pop-up, the advanced search server (Elasticsearch) is likely down. Please check back later or contact your system administrator if the issue is persistent.</p>
@@ -199,7 +202,7 @@ class Help extends Component {
         <li>On the edit pages the name link is disabled but you can click the eyeball icon on any of the widgets to navigate to the details page.</li>
         </ul>
         <h2 className="help-section-subtitle" id="exporting">Exporting</h2>
-        <p>On the view pages for sections there is an action button that exports the current section to REDCap. To export a section and use it in REDCap execute the following steps (exact wording may differ slightly based on your version of REDCap):</p>
+        <p>On the view pages for surveys and sections there is an action button that exports the current section to REDCap. To export a survey or section and use it in REDCap execute the following steps (exact wording may differ slightly based on your version of REDCap):</p>
         <ul>
         <li>Click on the 'Export to REDCap' button on the Vocabulary service section details page (this will save a .xml file to the folder your browser directs downloads)</li>
         <li>Open up REDCap</li>
@@ -231,24 +234,24 @@ class Help extends Component {
         <li>If you try to navigate away before saving the changes a prompt will ask if you want to navigate away without saving or save before you leave.</li>
         </ul>
         <h2 className="help-section-subtitle" id="edit-content">Edit Content</h2>
-        <p><strong>Note:</strong> You can only edit your own draft content - once content is published you will be given the option to create a new revision of the content.</p>
+        <p><strong>Note:</strong> You can only edit your own draft content, or content that belongs to a group where you are a member - once your content is published you will be given the option to create a new revision or extension (a copy with a separate version history) of the content.</p>
         <ul>
         <li>When looking at the search result for the item you want to edit click on the menu button in the bottom right and select edit.</li>
         <li>When on the details page of an item the edit or revise button should appear in the top right above the item information.</li>
         <li>On the edit page change any fields that need to be updated and press save - this overwrites the previous draft with the changes made and does not keep a history of the previous draft.</li>
         </ul>
         <h2 className="help-section-subtitle" id="revise-content">Revise Content</h2>
-        <p><strong>Note:</strong> You can only revise your own published content. Saving a revision will save a draft of that revision until you publish the new version.</p>
+        <p><strong>Note:</strong> You can only revise your own published content, or published content that belongs to a group where you are a member. Saving a revision will save a draft of that revision until you publish the new version.</p>
         <ul>
         <li>When looking at the search result for the item you want to revise click on the menu button in the bottom right and select revise</li>
         <li>When on the details page of an item the edit or revise button should appear in the top right above the item information</li>
         <li>On the revision editing page change any fields that need to be updated and press save - this saves a draft of the new version that will need to get published by a publisher before it will be visible to others.</li>
         </ul>
         <h2 className="help-section-subtitle" id="extend-content">Extend Content</h2>
-        <p><strong>Note:</strong> You can only extend published content. Unlike revising, you do not need to be the original author of something to extend it (use it as a template with its own version history). Saving an extension will save a draft that is the first version (new revision history) with a link to the content it was extended from.</p>
+        <p><strong>Note:</strong> You can only extend published content. Unlike revising, you do not need to own or be part of a group that owns content in order to create an extension (use it as a template with its own version history). Saving an extension will save a draft that is the first version (new revision history) with a link to the content it was extended from (shown as the parent of the item).</p>
         <ul>
-        <li>When looking at the search result for the item you want to revise click on the menu button in the bottom right and select revise</li>
-        <li>When on the details page of an item the edit or revise button should appear in the top right above the item information</li>
+        <li>When looking at the search result for the item you want to extend click on the menu button in the bottom right and select extend</li>
+        <li>When on the details page of a published item the extend button should appear in the top right above the item information</li>
         <li>On the extension editing page change any fields that need to be updated and press save - this saves a draft of the first version of the extended item that will need to get published by a publisher before it will be visible to others.</li>
         </ul>
       </div>
@@ -259,9 +262,43 @@ class Help extends Component {
     return(
       <div className="tab-pane" id="tagging" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'tagging'} aria-labelledby="tagging-tab">
         <h1 id="tagging-content">Tagging Content</h1>
-        <p>Surveys, Sections, and Response Sets may all be tagged to facilitate content discovery and reuse. Currently, a tag consists of a name, a value or code, and a code system (which is optional depending on if the tag is coded or not).</p>
-        <p>When editing content and a user starts typing in the tag column of the table a dropdown list will appear of all previously used tags. A user can use the arrow keys to navigate the list and select a tag that was previously used, or continue typing to enter a completely new tag.</p>
-        <p>If the user wants to look for tags by the code or the code system typing these values into the tag field will filter the list by the code or code system as well.</p>
+          <h2>Purpose</h2>
+          <p>The purpose of Tags is to facilitate content discovery and reuse.</p>
+          <h2>Definitions</h2>
+          <p><strong>Tag Name: </strong>Keywords from a controlled vocabulary. A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies.</p>
+          <p><strong>Tag Value: </strong>This may be a text or coded value that comes from a controlled vocabulary. Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
+          <p><strong>Code System Identifier (optional): </strong>The Code System used if you are using a coded value (e.g., LOINC, SNOMED-CT, RxNorm). Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
+          <h2>Example Tag Table</h2>
+          <table className="set-table">
+            <caption>Add, search, and create associated Tags</caption>
+            <thead>
+              <tr>
+                <th scope="col" className="display-name-column" id="display-name-column-ex">Tag Name</th>
+                <th scope="col" className="code-column" id="code-column-ex">Tag Value</th>
+                <th scope="col" className="code-system-column" id="code-system-column-ex">Code System Identifier (Optional)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="display-name-column-ex">MMG Tab Name</td>
+                <td headers="code-column-ex">Data Elements</td>
+                <td headers="code-system-column-ex"></td>
+              </tr>
+              <tr>
+                <td headers="display-name-column-ex">Genus Salmonella (organism)</td>
+                <td headers="code-column-ex">27268008</td>
+                <td headers="code-system-column-ex">SNOMED-CT</td>
+              </tr>
+              <tr>
+                <td headers="display-name-column-ex">Genus Campylobacter (organism)</td>
+                <td headers="code-column-ex">35408001</td>
+                <td headers="code-system-column-ex">SNOMED-CT</td>
+              </tr>
+            </tbody>
+          </table><br/>
+          <p><strong>How to Search for Previously Used Tags</strong><br/>To determine if a tag has been used before in SDP-V, start typing in the tag name column of the table. A drop-down list of all previously used tags that match the text entered in the field will appear. A user can navigate the list and select a tag that was previously used. If a tag is selected from the list, the tag value and code system identifier fields will be populated with existing values.</p>
+          <p><strong>How to Search for Coded Tags from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for coded Tags” magnifying glass icon to the right of the Tags header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the tags table by clicking the “Add” selection beside each result.</p>
+          <p><strong>How to Create a New Tag</strong><br/>A new tag may be created by simply typing a new tag name, tag value, and code system identifier (if applicable). A new tag should only be created if an existing tag does not meet a user’s needs.</p>
       </div>
     );
   }
@@ -295,11 +332,20 @@ class Help extends Component {
         <ul>
         <li><a href="#admin-list">Admin List</a></li>
         <li><a href="#publisher-list">Publisher List</a></li>
+        <li><a href="#prog-sys-list">Program and System Lists</a></li>
+        <li><a href="#group-list">Group List</a></li>
+        <li><a href="#elasticsearch-admin-tab">Elasticsearch</a></li>
         </ul>
         <h2 className="help-section-subtitle" id="admin-list">Admin List</h2>
         <p>This list will populate with all of the users who have administrative privileges. The admin role allows access to all content and all functionality in the application. To the right of each user name and email is a remove button that will revoke the admin role from that user. The admin role can be granted by typing in the email of a user and clicking the plus button. The user will then appear on the admin list or an error will be displayed explaining any issues with the addition.</p>
         <h2 className="help-section-subtitle" id="publisher-list">Publisher List</h2>
         <p>For usage instructions please see the information about the Admin List above. Adding members to this list allows them to see draft content they did not author and publish that content to make it public.</p>
+        <h2 className="help-section-subtitle" id="prog-sys-list">Program and System Lists</h2>
+        <p>On the Program List and System List tabs an administrator can see a current list of all surveillance programs and systems currently available for users to work under. The admin can use the input fields and click the add button to make another program / system available for in the users profile drop down.</p>
+        <h2 className="help-section-subtitle" id="group-list">Group List</h2>
+        <p>On the group list tab an administrator can add new groups and curate the user membership lists for any of the groups in the application. For any group click on the Manage Users button in the right column to see a list of current users and add or remove users by email.</p>
+        <h2 className="help-section-subtitle" id="elasticsearch-admin-tab">Elasticsearch</h2>
+        <p>The Elasticsearch tab is used to synchronize the Elasticsearch database with any activity stored in the Vocabulary service database while Elasticsearch may have been down. This page should only be used according to the instructions given on the page by an experienced administrator. Actions on this page could cause Elasticsearch to become temporarily unavailable.</p>
       </div>
     );
   }
