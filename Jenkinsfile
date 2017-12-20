@@ -12,8 +12,8 @@ pipeline {
 
       steps {
         script {
-          env.svcname = sh returnStdout: true, script: 'echo "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24'
-          env.tdbname = sh returnStdout: true, script: 'echo "${svcname}" | tr "-" "_"'
+          env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24'
+          env.tdbname = sh returnStdout: true, script: 'echo -n "${svcname}" | tr "-" "_"'
         }
         echo "svc: ${svcname}, tdbname: ${tdbname}"
 
@@ -34,7 +34,7 @@ pipeline {
           sh 'oc process openshift//postgresql-ephemeral -l testdb=${svcname} DATABASE_SERVICE_NAME=${svcname} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=${tdbname} | oc create -f -'
           waitUntil {
             script {
-              sleep time: 5, unit: 'SECONDS'
+              sleep time: 15, unit: 'SECONDS'
               def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
               return (r == "true")
             }
