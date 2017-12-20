@@ -12,7 +12,7 @@ pipeline {
 
       steps {
         script {
-          env.svcname = sh returnStdout: true, script: 'set +x; echo "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24'
+          env.svcname = sh returnStdout: true, script: 'echo "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24'
           env.tdbname = sh returnStdout: true, script: 'echo "${svcname}" | tr "-" "_"'
         }
         echo "svc: ${svcname}, tdbname: ${tdbname}"
