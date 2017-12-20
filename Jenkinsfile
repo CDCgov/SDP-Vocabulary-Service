@@ -65,5 +65,16 @@ pipeline {
         }
       }
     }
+
+    stage('Build for Dev Env') {
+      agent any
+      when {
+        branch 'development'
+      }
+      echo "Triggering new build for development environment..."
+      openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
+        checkForTriggeredDeployments: 'true',
+        waitTime: '10', waitUnit: 'MINUTES'
+    }
   }
 }
