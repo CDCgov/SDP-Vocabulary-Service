@@ -35,6 +35,7 @@ pipeline {
           waitUntil {
             script {
               def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
+              sleep time: '500', unit: 'MILLISECONDS'
               return (r == "true")
             }
           }
