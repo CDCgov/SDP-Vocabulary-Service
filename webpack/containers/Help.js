@@ -155,9 +155,11 @@ class Help extends Component {
         <ul>
         <li><a href="#logging-in">Logging In</a></li>
         <li><a href="#logging-out">Logging Out</a></li>
+        <li><a href="#trouble">Trouble Logging In</a></li>
         </ul>
         <h2 className="help-section-subtitle" id="logging-in">Logging In</h2>
-        <p>If you already have an account simply click the log-in link in the blue navigation bar in the top right of the screen. If you do not see a log-in button the browser may be logged in from a previous session. In that case see how to log out below.</p>
+        <p>If you already have an account simply click the log-in link in the blue navigation bar in the top right of the screen. You should then be redirected to SAMS to login* with your credentials. If you do not see a log-in button the browser may be logged in from a previous session. In that case see how to log out below.</p>
+        <p id="trouble"><strong>*Trouble logging in:</strong> If you receive an error message after entering your credentials into SAMS, please email surveillanceplatform@cdc.gov to request Surveillance Data Platform Vocabulary Service SAMS Activity Group membership.</p>
         <h2 className="help-section-subtitle" id="logging-out">Logging Out</h2>
         <p>On any page you should be able to log-out by first clicking the e-mail in the top-right corner of the navigation bar, then selecting log-out from the drop-down menu that will appear. The page should refresh automatically.</p>
       </div>
