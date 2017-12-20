@@ -34,7 +34,7 @@ pipeline {
           sh 'oc process openshift//postgresql-ephemeral -l testdb=${svcname} DATABASE_SERVICE_NAME=${svcname} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=${tdbname} | oc create -f -'
           waitUntil {
             script {
-              sleep time: '500', unit: 'MILLISECONDS'
+              sleep time: 500, unit: 'MILLISECONDS'
               def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
               return (r == "true")
             }
