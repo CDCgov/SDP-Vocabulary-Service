@@ -44,31 +44,37 @@ class SurveyEditContainer extends Component {
       {
         title: 'Section Search',
         text: 'Type in your search keywords here to search for sections to add to the survey.',
-        selector: '.search-group',
-        position: 'right',
+        selector: '.search-input',
+        position: 'bottom',
       },
       {
         title: 'Advanced Search Filters',
         text: 'Click Advanced to see additional filters you can apply to your search.',
-        selector: '.adv-search-link',
+        selector: '.search-group',
         position: 'right',
       },
       {
-        title: 'Section Result',
+        title: 'Section Search Result',
         text: 'Use these search results to find the section you want to add.',
         selector: '.u-result',
         position: 'right',
       },
       {
         title: 'Add Section',
-        text: 'Click on the add button to select a section for the survey.',
+        text: 'Click on the add (+) button to select a section for the survey.',
         selector: '.fa-plus-square',
-        position: 'right',
+        position: 'bottom',
       },
       {
         title: 'Survey Details',
-        text: 'Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content.',
+        text: 'Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published).',
         selector: '.survey-edit-details',
+        position: 'left',
+      },
+      {
+        title: 'Tags Table',
+        text: 'The purpose of Tags is to facilitate content discovery and reuse. Click the info (i) icon, or <a class="tutorial-link" href="#help">go to the full help documentation</a> to see more information and examples on how to get the most out of tags.',
+        selector: '.tags-table-header',
         position: 'left',
       }]);
   }

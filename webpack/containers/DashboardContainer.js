@@ -69,8 +69,8 @@ class DashboardContainer extends SearchManagerComponent {
         {
           title: 'Dashboard Search',
           text: 'Type in your search term and search across all items by default. Results include items you own and published items.',
-          selector: '.search-group',
-          position: 'right',
+          selector: '.search-input',
+          position: 'bottom',
         },
         {
           title: 'Type Filters',
@@ -81,14 +81,14 @@ class DashboardContainer extends SearchManagerComponent {
         {
           title: 'Advanced Search Filters',
           text: 'Click Advanced Link to see additional filters you can apply to your search.',
-          selector: '.adv-search-link',
+          selector: '.search-group',
           position: 'right',
         }];
       if(isEmpty(this.props.currentUser)) {
         steps = steps.concat([
           {
             title: 'Log In',
-            text: 'If you already have an account you can log in to unlock more features in the top right of the dashboard page.',
+            text: 'If you already have an account you can log in to unlock more features by clicking the log in link in the top right of the dashboard page.',
             selector: '.log-in-link',
             position: 'left',
           }]);
@@ -98,6 +98,12 @@ class DashboardContainer extends SearchManagerComponent {
             title: 'My Stuff Filtering',
             text: 'Click on any of the rows in the My Stuff Analytics panel to filter by items you authored.',
             selector: '.recent-items-body',
+            position: 'left',
+          },
+          {
+            title: 'Group Filtering',
+            text: 'If you belong to a group you may use the dropdown in the right panel to select a group, this will filter all search results limiting to content owned by that group.',
+            selector: '.recent-items-group-heading',
             position: 'left',
           },
           {
