@@ -3,7 +3,7 @@ pipeline {
   agent none
 
   options {
-    timeout(time: 5, unit: 'MINUTES')
+    timeout(time: 1, unit: 'HOUR')
   }
 
   stages {
@@ -58,12 +58,12 @@ pipeline {
         }
       }
 
-/*      post {
+      post {
         always {
           echo "Destroying test database..."
           sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
         }
-      } */
+      }
     }
   }
 }
