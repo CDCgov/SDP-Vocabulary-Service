@@ -58,12 +58,12 @@ pipeline {
         }
       }
 
-#      post {
-#        always {
-#          echo "Destroying test database..."
-#          sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
-#        }
-#      }
+/*      post {
+        always {
+          echo "Destroying test database..."
+          sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
+        }
+      } */
     }
   }
 }
