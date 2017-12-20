@@ -71,7 +71,7 @@ pipeline {
       when {
         branch 'development'
       }
-      steps {}
+      steps {
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
           checkForTriggeredDeployments: 'true',
