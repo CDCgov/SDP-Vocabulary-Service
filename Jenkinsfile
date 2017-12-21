@@ -63,6 +63,9 @@ pipeline {
         always {
           echo "Destroying test database..."
           sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
+          echo "Archiving test artifacts..."
+          archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
+            fingerprint: true
         }
       }
     }
