@@ -137,9 +137,9 @@ class SectionShow extends Component {
           <a className="btn btn-default" href={`/sections/${section.id}/redcap`}>Export to REDCap</a>
         </div>
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Name:</strong> {section.name} </h1>
+          <h1 className="maincontent-item-name"><strong>Section Name:</strong> {section.name} </h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
-          <div className="basic-c-box panel-default">
+          <div className="basic-c-box panel-default section-type">
             <div className="panel-heading">
               <h2 className="panel-title">Description</h2>
             </div>

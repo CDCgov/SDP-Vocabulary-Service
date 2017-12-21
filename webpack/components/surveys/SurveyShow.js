@@ -86,11 +86,11 @@ class SurveyShow extends Component {
           <a className="btn btn-default" href={`/surveys/${this.props.survey.id}/redcap`}>Export to REDCap</a>
         </div>
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Name:</strong> {this.props.survey.name} </h1>
+          <h1 className="maincontent-item-name"><strong>Survey Name:</strong> {this.props.survey.name} </h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
-          <div className="basic-c-box panel-default">
+          <div className="basic-c-box panel-default survey-type">
             <div className="panel-heading">
               <h2 className="panel-title">Description</h2>
             </div>
