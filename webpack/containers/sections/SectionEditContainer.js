@@ -32,7 +32,7 @@ class SectionEditContainer extends Component {
     } else {
       this.props.newSection();
       this.props.params.sectionId = 0;
-      this.props.params.action = 'create';
+      this.props.params.action = 'new';
     }
     this.state = {selectedSectionSaver: selectedSectionSaver, showQuestionModal: false, showResponseSetModal: false};
     this.showQuestionModal  = this.showQuestionModal.bind(this);
@@ -130,6 +130,11 @@ class SectionEditContainer extends Component {
     this.props.addQuestion(this.props.section, q);
   }
 
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit'};
+    return wordMap[this.props.params.action];
+  }
+
   render() {
     if(!this.props.section || !this.props.questions){
       return (
@@ -151,7 +156,7 @@ class SectionEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{capitalize(this.props.params.action)} Section </h1>
+              <h1 className="panel-title">{`${this.actionWord()} Section`}</h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">
@@ -167,7 +172,7 @@ class SectionEditContainer extends Component {
                         router={this.props.router}
                         stats={this.props.stats}
                         setStats={this.props.setStats}
-                        action={this.props.params.action || 'create'}
+                        action={this.props.params.action || 'new'}
                         questions={this.props.questions}
                         responseSets ={this.props.responseSets}
                         sectionSubmitter={this.state.selectedSectionSaver}
