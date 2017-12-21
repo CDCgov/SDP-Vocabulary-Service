@@ -328,6 +328,7 @@ class SectionEdit extends Component {
             <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>
+          <hr />
           <div className="section-group">
             <label htmlFor="section-name" hidden>Name</label>
             <input tabIndex="3" className="input-format" placeholder="Section Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
