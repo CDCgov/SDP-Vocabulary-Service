@@ -332,12 +332,10 @@ class SectionEdit extends Component {
             <label htmlFor="section-name" hidden>Name</label>
             <input tabIndex="3" className="input-format" placeholder="Section Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
           </div>
-          
           <div className="section-group">
             <label htmlFor="section-description">Description</label>
             <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
           </div>
-          
           <div className="section-group">
             <h2 className="tags-table-header"><strong>Tags</strong></h2>
             <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}

@@ -28,7 +28,7 @@ class SurveyEditContainer extends Component {
     } else {
       this.props.newSurvey();
       this.props.params.surveyId = 0;
-      this.props.params.action = 'create';
+      this.props.params.action = 'new';
     }
     this.state = {selectedSurveySaver: selectedSurveySaver};
   }
@@ -78,7 +78,12 @@ class SurveyEditContainer extends Component {
         position: 'left',
       }]);
   }
-
+  
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit'};
+    return wordMap[this.props.params.action];
+  }
+  
   componentDidUpdate(prevProps) {
     if(prevProps.params.surveyId != this.props.params.surveyId){
       this.props.fetchSurvey(this.props.params.surveyId);
@@ -99,7 +104,7 @@ class SurveyEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{capitalize(this.props.params.action)} Survey </h1>
+              <h1 className="panel-title">{`${this.actionWord()} Survey`}</h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">
