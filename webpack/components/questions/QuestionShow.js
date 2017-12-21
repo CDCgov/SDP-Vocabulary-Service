@@ -101,9 +101,9 @@ export default class QuestionShow extends Component {
           </div>
         }
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Name:</strong> {question.content} </h1>
+          <h1 className="maincontent-item-name"><strong>Question Name:</strong> {question.content} </h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
-          <div className="basic-c-box panel-default">
+          <div className="basic-c-box panel-default question-type">
             <div className="panel-heading">
               <h2 className="panel-title">Details</h2>
             </div>
