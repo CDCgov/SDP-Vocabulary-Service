@@ -132,7 +132,7 @@ class SectionEditContainer extends Component {
 
   actionWord() {
     const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit'};
-    return wordMap[this.props.params.action];
+    return wordMap[this.props.params.action || 'new'];
   }
 
   render() {
