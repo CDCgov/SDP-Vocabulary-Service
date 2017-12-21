@@ -31,7 +31,7 @@ class SectionEditContainer extends Component {
     } else {
       this.props.newSection();
       this.props.params.sectionId = 0;
-      this.props.params.action = 'create';
+      this.props.params.action = 'new';
     }
     this.state = {selectedSectionSaver: selectedSectionSaver, showQuestionModal: false, showResponseSetModal: false};
     this.showQuestionModal  = this.showQuestionModal.bind(this);
@@ -171,7 +171,7 @@ class SectionEditContainer extends Component {
                         router={this.props.router}
                         stats={this.props.stats}
                         setStats={this.props.setStats}
-                        action={this.props.params.action || 'create'}
+                        action={this.props.params.action || 'new'}
                         questions={this.props.questions}
                         responseSets ={this.props.responseSets}
                         sectionSubmitter={this.state.selectedSectionSaver}
