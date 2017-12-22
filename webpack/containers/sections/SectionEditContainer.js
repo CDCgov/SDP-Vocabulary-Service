@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { denormalize } from 'normalizr';
 import { Button } from 'react-bootstrap';
-import capitalize from 'lodash/capitalize';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sectionSchema } from '../../schema';
