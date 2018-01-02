@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';
+import { Modal, Button } from 'react-bootstrap';
 
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
@@ -39,6 +40,7 @@ class DashboardContainer extends SearchManagerComponent {
       mostRecentFilter: false,
       contentSince: null,
       signUpOpen: false,
+      firstTimeOpen: false,
       myStuffFilter: false,
       page: 1,
       groupFilterId: 0
@@ -141,6 +143,7 @@ class DashboardContainer extends SearchManagerComponent {
               closer={() => this.closeSignUpModal()}
               surveillanceSystems={this.props.surveillanceSystems}
               surveillancePrograms={this.props.surveillancePrograms} />
+            {this.firstTimeModal()}
             <div className="cdc-jumbotron">
               <div className="container">
                 <div className="row">
@@ -150,6 +153,7 @@ class DashboardContainer extends SearchManagerComponent {
                         <h1 className="banner-title">CDC Vocabulary Service</h1>
                         <h2 className="banner-subtitle">Author Questions, Response Sets, Sections, and Surveys</h2>
                         <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
+                        <p><a className="btn btn-lg btn-success" href="#" tabIndex="2" role="button" onClick={() => this.setState({firstTimeOpen: true})}>First Time Login</a></p>
                       </div>
                     </div>
                     <div className="col-md-4"></div>
@@ -240,6 +244,25 @@ class DashboardContainer extends SearchManagerComponent {
     let newSearchParams = Object.assign(this.currentSearchParameters(), newState);
     this.props.fetchSearchResults(DASHBOARD_CONTEXT, newSearchParams);
     this.props.setLastSearch(newSearchParams);
+  }
+
+  firstTimeModal() {
+    return (
+      <Modal animation={false} show={this.state.firstTimeOpen} onHide={() => this.setState({ firstTimeOpen: false })} aria-label="First time login information">
+        <Modal.Header closeButton bsStyle='concept'>
+          <Modal.Title componentClass="h1"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> New Users</Modal.Title>
+        </Modal.Header>
+        <Modal.Body bsStyle='concept'>
+          <h2 className="help-section-subtitle" id="logging-in">Logging In</h2>
+          <p>The SDP Vocabulary Service uses SAMS for authentication. If you already have an account that has been added to the Surveillance Data Platform Vocabulary Service SAMS Activity Group, simply click the "Continue to SAMS" button below and you should then be redirected to login* with your credentials.</p>
+          <p id="trouble"><strong>*Trouble logging in:</strong> If you receive an error message after entering your credentials into SAMS, please email <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a> to request Surveillance Data Platform Vocabulary Service SAMS Activity Group membership.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <a className="btn btn-success" role="button" href="/users/auth/openid_connect">Continue to SAMS</a>
+          <Button onClick={() => this.setState({ firstTimeOpen: false })} bsStyle="default">Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
   }
 
   selectGroup(gid=0) {
