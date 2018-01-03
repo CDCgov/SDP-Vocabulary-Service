@@ -254,7 +254,7 @@ class DashboardContainer extends SearchManagerComponent {
         </Modal.Header>
         <Modal.Body bsStyle='concept'>
           <h2 className="help-section-subtitle" id="logging-in">Logging In</h2>
-          <p>The CDC Surveillance Data Platform (SDP) Vocabulary Service uses SAMS for authentication. If you already have an account that has been added to the CDC SDP Vocabulary Service SAMS Activity Group, simply click the "Continue to SAMS" button below and you should then be redirected to login* with your credentials.</p>
+          <p>The CDC Surveillance Data Platform (SDP) Vocabulary Service uses Secure Access Management Services (SAMS) for authentication. If you already have an account that has been added to the CDC SDP Vocabulary Service SAMS Activity Group, simply click the "Continue to SAMS" button below and you should then be redirected to login* with your credentials.</p>
           <p id="trouble"><strong>*Trouble logging in:</strong> If you receive an error message after entering your credentials into SAMS, please email <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a> to request Surveillance Data Platform Vocabulary Service SAMS Activity Group membership.</p>
         </Modal.Body>
         <Modal.Footer>
