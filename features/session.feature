@@ -133,6 +133,13 @@ Feature: Session Management
     Given I am on the "/" page
     Then I should not see a "Create" link
 
+  Scenario: First time users should see modal with instructions
+    Given I am on the "/" page
+    Then I should see the "First Time Login" link
+    When I click on the "First Time Login" link
+    Then I should see "Trouble logging in:"
+    And I should see "Continue to SAMS"
+
   Scenario: On login page should update and users should see their My Stuff content
     Given I am on the "/" page
     And a user "test_author@gmail.com" exists
@@ -190,4 +197,4 @@ Feature: Session Management
     Given Disable user registration is "true" and display login is "false"
     And I am on the "/" page
     Then I should not see the "Register" link
-    And I should see the link "Login" to "/users/auth/openid_connect" 
+    And I should see the link "Login" to "/users/auth/openid_connect"
