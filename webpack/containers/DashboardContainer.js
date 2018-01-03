@@ -153,7 +153,7 @@ class DashboardContainer extends SearchManagerComponent {
                         <h1 className="banner-title">CDC Vocabulary Service</h1>
                         <h2 className="banner-subtitle">Author Questions, Response Sets, Sections, and Surveys</h2>
                         <p className="lead">The Vocabulary Service allows users to author their own questions and response sets, and to reuse others’ wording for their new data collection needs when applicable. A goal of this service is to increase consistency by reducing the number of different ways that CDC asks for similar information, lowering the reporting burden on partners.</p>
-                        <p><a className="btn btn-lg btn-success" href="#" tabIndex="2" role="button" onClick={() => this.setState({firstTimeOpen: true})}>First Time Login</a></p>
+                        <p><a className="btn btn-lg button-submit" href="#" tabIndex="2" role="button" onClick={() => this.setState({firstTimeOpen: true})}>First Time Login</a></p>
                       </div>
                     </div>
                     <div className="col-md-4"></div>
@@ -258,7 +258,7 @@ class DashboardContainer extends SearchManagerComponent {
           <p id="trouble"><strong>*Trouble logging in:</strong> If you receive an error message after entering your credentials into SAMS, please email <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a> to request Surveillance Data Platform Vocabulary Service SAMS Activity Group membership.</p>
         </Modal.Body>
         <Modal.Footer>
-          <a className="btn btn-success" role="button" href="/users/auth/openid_connect">Continue to SAMS</a>
+          <a className="btn button-submit" role="button" href="/users/auth/openid_connect">Continue to SAMS</a>
           <Button onClick={() => this.setState({ firstTimeOpen: false })} bsStyle="default">Close</Button>
         </Modal.Footer>
       </Modal>
