@@ -155,8 +155,17 @@ export default class QuestionShow extends Component {
                 <h2 className="panel-title">
                   Tags
                   {isGroupable(question, this.props.currentUser) &&
-                    <a className="pull-right tag-modal-link" href="#" onClick={(e) => {e.preventDefault(); this.setState({ tagModalOpen: true });}}>
-                      <TagModal show={this.state.tagModalOpen || false} cancelButtonAction={() => this.setState({ tagModalOpen: false })} concepts={question.concepts} />
+                    <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>
+                      <TagModal show={this.state.tagModalOpen || false}
+                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                        concepts={question.concepts}
+                        saveButtonAction={(conceptsAttributes) => {
+                          this.props.updateQuestionTags(question.id, conceptsAttributes);
+                          this.setState({ tagModalOpen: false });
+                        }} />
                       <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                     </a>
                   }
@@ -225,6 +234,7 @@ QuestionShow.propTypes = {
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
+  updateQuestionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, publishQuestion, addQuestionToGroup, deleteQuestion, fetchQuestionUsage } from '../../actions/questions_actions';
+import { fetchQuestion, publishQuestion, addQuestionToGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { questionProps } from "../../prop-types/question_props";
@@ -84,6 +84,7 @@ class QuestionShowContainer extends Component {
                              handlePublish={this.handlePublish.bind(this)}
                              deleteQuestion={this.props.deleteQuestion}
                              addQuestionToGroup={this.props.addQuestionToGroup}
+                             updateQuestionTags={this.props.updateQuestionTags}
                              publishers={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Question' commentableId={this.props.question.id} />
@@ -104,7 +105,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, fetchQuestionUsage, setSteps, setStats}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -115,6 +116,7 @@ QuestionShowContainer.propTypes = {
   currentUser:   currentUserProps,
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
+  updateQuestionTags: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

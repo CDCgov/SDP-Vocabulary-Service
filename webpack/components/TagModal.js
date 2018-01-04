@@ -27,7 +27,7 @@ class TagModal extends Component{
           <br/>
           <br/>
           <Modal.Footer>
-            <Button bsStyle="primary">Save</Button>
+            <Button onClick={() => this.props.saveButtonAction(this.state.conceptsAttributes)} bsStyle="primary">Save</Button>
             <Button onClick={this.props.cancelButtonAction} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
@@ -52,8 +52,9 @@ function filterConcepts(concepts) {
 }
 
 TagModal.propTypes = {
-  show:  PropTypes.bool,
-  cancelButtonAction:   PropTypes.func,
+  show: PropTypes.bool,
+  cancelButtonAction: PropTypes.func,
+  saveButtonAction: PropTypes.func,
   concepts: PropTypes.object
 };
 

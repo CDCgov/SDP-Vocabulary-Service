@@ -92,6 +92,21 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def update_tags
+    tag_params = params.permit(:concepts_attributes, concepts_attributes: [:value, :display_name, :code_system])
+    @question.concepts.destroy_all
+    tag_params[:concepts_attributes].each do |c|
+      concept = Concept.new(c)
+      concept.save!
+      @question.concepts << concept
+    end
+    if @question.save!
+      render :show, status: :ok, location: @question
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   def usage
     @question = Question.find(params[:id])
     if @question.status != 'published'

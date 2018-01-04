@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     get :usage, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
+    put :update_tags, on: :member
   end
   resources :comments do
     post :reply_to, on: :member
