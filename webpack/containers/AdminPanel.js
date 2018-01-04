@@ -61,9 +61,9 @@ class AdminPanel extends Component {
       },
       {
         title: 'Tabs',
-        text: 'Select a tab to view various administrator functionality.',
-        selector: '.step-focus',
-        position: 'right',
+        text: 'Select a tab to view various administrator functionality including: adding users to list of publishers and administrators, groups management, program and system creation, and elasticsearch management.',
+        selector: '.nav-tabs',
+        position: 'bottom',
       }]);
   }
 

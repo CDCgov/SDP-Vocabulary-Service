@@ -43,21 +43,6 @@ class Survey < ApplicationRecord
     save!
   end
 
-  def publish(publisher)
-    if status == 'draft'
-      self.status = 'published'
-      self.published_by = publisher
-      save!
-      # Updates previous version to no longer be most_recent
-      if version > 1
-        prev_version = Survey.find_by(version_independent_id: version_independent_id,
-                                      version: version - 1)
-        UpdateIndexJob.perform_later('survey', prev_version.id)
-      end
-    end
-    sections.each { |s| s.publish(publisher) }
-  end
-
   # Custom implementation as using the plain relationships in Rails will cause
   # N+1 queries to figure out most recent version for each section.
   def sections_with_most_recent
@@ -83,5 +68,10 @@ class Survey < ApplicationRecord
     end
 
     new_revision
+  end
+
+  def cascading_action(&block)
+    yield self
+    sections.each { |s| s.cascading_action(&block) }
   end
 end

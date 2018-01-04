@@ -86,7 +86,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     survey_json = { survey: { name: @survey.name, version_independent_id: 'SURV-1337' } }.to_json
     post surveys_url, params: survey_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     Survey.last.publish(@current_user)
-    Survey.last.add_to_group(@group.id, 'survey')
+    Survey.last.add_to_group(@group.id)
     sign_in @a_user
     @group.add_user(@a_user)
     survey_json = { survey: { name: 'A Successful revision', version_independent_id: 'SECT-1337' } }.to_json

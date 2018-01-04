@@ -41,6 +41,27 @@ class SurveyTest < ActiveSupport::TestCase
     assert_equal 'published', s.sections.first.questions.first.response_sets.first.status
   end
 
+  test 'Add to group also adds sections, questions, and response sets' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test group rs', created_by: user)
+    assert rs.save
+    q = Question.new(content: 'Test group q', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
+    q.response_sets = [rs]
+    assert q.save
+    sect = Section.new(name: 'Test group sect', created_by: user)
+    sect.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    assert sect.save
+    s = Survey.new(name: 'Test group surv', created_by: user)
+    s.survey_sections = [SurveySection.new(section_id: sect.id, position: 0)]
+    assert s.save
+    group = groups(:one)
+    s.add_to_group(group.id)
+    assert s.groups.include?(group)
+    assert s.sections.first.groups.include?(group)
+    assert s.sections.first.questions.first.groups.include?(group)
+    assert s.sections.first.questions.first.response_sets.first.groups.include?(group)
+  end
+
   test 'Deleting a section deletes its survey section and preserves position' do
     user = users(:admin)
     rs = ResponseSet.new(name: 'Test Delete', created_by: user)

@@ -174,12 +174,12 @@ class CodedSetTableEditContainer extends Component {
               <tr>
                 <td headers="display-name-column-ex">Genus Salmonella (organism)</td>
                 <td headers="code-column-ex">27268008</td>
-                <td headers="code-system-column-ex">SNOWMED-CT</td>
+                <td headers="code-system-column-ex">SNOMED-CT</td>
               </tr>
               <tr>
                 <td headers="display-name-column-ex">Genus Campylobacter (organism)</td>
                 <td headers="code-column-ex">35408001</td>
-                <td headers="code-system-column-ex">SNOWMED-CT</td>
+                <td headers="code-system-column-ex">SNOMED-CT</td>
               </tr>
             </tbody>
           </table><br/>

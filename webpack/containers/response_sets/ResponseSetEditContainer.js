@@ -31,7 +31,7 @@ class ResponseSetEditContainer extends Component {
       {
         title: 'Response Set Details',
         text: 'Use the input fields to edit content of the response set.',
-        selector: '.panel-default',
+        selector: '.panel-title',
         position: 'right',
       },
       {
@@ -53,14 +53,14 @@ class ResponseSetEditContainer extends Component {
         position: 'top',
       },
       {
-        title: 'Create Your Own Responses (Code)',
-        text: 'Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOWMED).',
+        title: 'Create Your Own Responses (Response / Code)',
+        text: 'Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOMED).',
         selector: '.code-system-column',
         position: 'top',
       },
       {
         title: 'Action Buttons',
-        text: 'Click save to save a draft of the edited content.',
+        text: 'Click save to save a draft of the edited content (this content will not be public until it is published).',
         selector: '.panel-footer',
         position: 'top',
       }]);

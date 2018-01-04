@@ -47,12 +47,18 @@ class QuestionEditContainer extends Component {
       {
         title: 'Question Details',
         text: 'Use the input fields to edit content of the question. If the response type is open choice this panel will also give you the option to associate response sets with this quesiton at creation time.',
-        selector: '.panel-default',
+        selector: '.panel-title',
         position: 'right',
       },
       {
+        title: 'Tags Table',
+        text: 'The purpose of Tags is to facilitate content discovery and reuse. Click the info (i) icon, or <a class="tutorial-link" href="#help">go to the full help documentation</a> to see more information and examples on how to get the most out of tags.',
+        selector: '.tags-table-header',
+        position: 'left',
+      },
+      {
         title: 'Find Tags',
-        text: 'Click the search icon to search for and add tags to the question.',
+        text: 'Click the search icon to search for and add coded tags to the question.',
         selector: '.fa-search',
         position: 'right',
       },
@@ -64,19 +70,19 @@ class QuestionEditContainer extends Component {
       },
       {
         title: 'Create Your Own Tags (Name)',
-        text: 'The Display Name field is what the user will see on the page.',
+        text: 'The Tag Name field is what the user will see on the page.',
         selector: '.display-name-column',
         position: 'top',
       },
       {
-        title: 'Create Your Own Tags (Code)',
-        text: 'Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOWMED).',
+        title: 'Create Your Own Tags (Value / Code System)',
+        text: 'Enter the code or value for the tag to be associated with that tags name (for examples see tags info popup or help documentation page). Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOMED).',
         selector: '.code-system-column',
         position: 'top',
       },
       {
         title: 'Action Buttons',
-        text: 'Click save to save a draft of the edited content.',
+        text: 'Click save to save a draft of the edited content (this content will not be public until it is published).',
         selector: '.panel-footer',
         position: 'top',
       }]);

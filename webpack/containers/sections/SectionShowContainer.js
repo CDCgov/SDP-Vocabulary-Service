@@ -35,7 +35,7 @@ class SectionShowContainer extends Component {
       {
         title: 'View Details',
         text: 'See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a class="tutorial-link" href="#help">Help Documentation (linked here).</a>',
-        selector: '.maincontent',
+        selector: '.action_bar',
         position: 'left',
       },
       {
