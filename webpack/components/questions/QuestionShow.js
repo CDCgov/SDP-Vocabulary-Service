@@ -11,6 +11,7 @@ import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
+import TagModal from "../TagModal";
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
@@ -19,6 +20,11 @@ import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 export default class QuestionShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { tagModalOpen: false };
+  }
+
   render() {
     const {question} = this.props;
     if(question === undefined || question.content === undefined){
@@ -146,7 +152,15 @@ export default class QuestionShow extends Component {
           </div>
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h2 className="panel-title">Tags</h2>
+                <h2 className="panel-title">
+                  Tags
+                  {isGroupable(question, this.props.currentUser) &&
+                    <a className="pull-right tag-modal-link" href="#" onClick={(e) => {e.preventDefault(); this.setState({ tagModalOpen: true });}}>
+                      <TagModal show={this.state.tagModalOpen || false} cancelButtonAction={() => this.setState({ tagModalOpen: false })} concepts={question.concepts} />
+                      <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                    </a>
+                  }
+                </h2>
               </div>
               <div className="box-content">
                 <div id="concepts-table">
