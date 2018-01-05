@@ -752,6 +752,12 @@ Based on Rails routes of Vocabulary::Application
 // update_tags_question => /questions/:id/update_tags(.:format)
   // function(id, options)
   update_tags_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_tags",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// update_tags_section => /sections/:id/update_tags(.:format)
+  // function(id, options)
+  update_tags_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_tags",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// update_tags_survey => /surveys/:id/update_tags(.:format)
+  // function(id, options)
+  update_tags_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_tags",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // usage_api_program => /api/programs/:id/usage(.:format)
   // function(id, options)
   usage_api_program_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"programs",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),

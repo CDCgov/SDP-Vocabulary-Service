@@ -81,6 +81,21 @@ class SurveysController < ApplicationController
     end
   end
 
+  def update_tags
+    tag_params = params.permit(:concepts_attributes, concepts_attributes: [:value, :display_name, :code_system])
+    @survey.concepts.destroy_all
+    tag_params[:concepts_attributes].each do |c|
+      concept = Concept.new(c)
+      concept.save!
+      @survey.concepts << concept
+    end
+    if @survey.save!
+      render :show, status: :ok, location: @survey
+    else
+      render json: @survey.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /surveys/1/redcap
   def redcap
     xml = render_to_string 'surveys/redcap.xml', layout: false

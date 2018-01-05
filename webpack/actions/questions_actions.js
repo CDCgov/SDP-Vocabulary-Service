@@ -102,14 +102,11 @@ export function saveDraftQuestion(id, question, callback=null) {
   };
 }
 
-export function updateQuestionTags(id, conceptsAttributes, callback=null) {
+export function updateQuestionTags(id, conceptsAttributes) {
   const authenticityToken  = getCSRFToken();
   const putPromise = axios.put(routes.update_tags_question_path(id),
                       {id, authenticityToken, conceptsAttributes},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
-  if (callback) {
-    putPromise.then(callback);
-  }
   return {
     type: UPDATE_QUESTION_TAGS,
     payload: putPromise

@@ -92,6 +92,21 @@ class SectionsController < ApplicationController
     end
   end
 
+  def update_tags
+    tag_params = params.permit(:concepts_attributes, concepts_attributes: [:value, :display_name, :code_system])
+    @section.concepts.destroy_all
+    tag_params[:concepts_attributes].each do |c|
+      concept = Concept.new(c)
+      concept.save!
+      @section.concepts << concept
+    end
+    if @section.save!
+      render :show, status: :ok, location: @section
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /sections/1/redcap
   def redcap
     xml = render_to_string 'sections/redcap.xml', layout: false
