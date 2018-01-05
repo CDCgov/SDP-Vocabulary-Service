@@ -172,7 +172,7 @@ class SectionShow extends Component {
                         this.props.updateSectionTags(section.id, conceptsAttributes);
                         this.setState({ tagModalOpen: false });
                       }} />
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
                   </a>
                 }
               </h2>

@@ -48,8 +48,8 @@ Feature: Manage Questions
     And I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Name: What is your gender?"
-    And I should see "Edit"
-    When I click on the "Edit" link
+    And I should see "Update"
+    When I click on the "Update" link
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link

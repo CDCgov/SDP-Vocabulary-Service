@@ -166,7 +166,7 @@ export default class QuestionShow extends Component {
                           this.props.updateQuestionTags(question.id, conceptsAttributes);
                           this.setState({ tagModalOpen: false });
                         }} />
-                      <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                      <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
                     </a>
                   }
                 </h2>

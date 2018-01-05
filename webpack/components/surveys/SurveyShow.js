@@ -126,7 +126,7 @@ class SurveyShow extends Component {
                         this.props.updateSurveyTags(this.props.survey.id, conceptsAttributes);
                         this.setState({ tagModalOpen: false });
                       }} />
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
                   </a>
                 }
               </h2>
