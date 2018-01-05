@@ -14,7 +14,8 @@ import {
   PUBLISH_QUESTION,
   ADD_QUESTION_TO_GROUP,
   FETCH_QUESTION_USAGE,
-  ADD_ENTITIES
+  ADD_ENTITIES,
+  UPDATE_QUESTION_TAGS
 } from './types';
 
 export function addQuestion(section, question) {
@@ -97,6 +98,17 @@ export function saveDraftQuestion(id, question, callback=null) {
   }
   return {
     type: SAVE_DRAFT_QUESTION,
+    payload: putPromise
+  };
+}
+
+export function updateQuestionTags(id, conceptsAttributes) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_tags_question_path(id),
+                      {id, authenticityToken, conceptsAttributes},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_QUESTION_TAGS,
     payload: putPromise
   };
 }

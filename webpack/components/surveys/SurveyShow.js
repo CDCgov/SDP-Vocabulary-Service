@@ -6,6 +6,7 @@ import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import CodedSetTable from "../CodedSetTable";
+import TagModal from "../TagModal";
 
 import SectionList from "../sections/SectionList";
 
@@ -17,6 +18,11 @@ import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { tagModalOpen: false };
+  }
+
   historyBar() {
     return (
       <div className="col-md-3 nopadding no-print">
@@ -106,7 +112,24 @@ class SurveyShow extends Component {
           </div>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h2 className="panel-title">Tags</h2>
+              <h2 className="panel-title">
+                Tags
+                {isGroupable(this.props.survey, this.props.currentUser) &&
+                  <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                    e.preventDefault();
+                    this.setState({ tagModalOpen: true });
+                  }}>
+                    <TagModal show={this.state.tagModalOpen || false}
+                      cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                      concepts={this.props.survey.concepts}
+                      saveButtonAction={(conceptsAttributes) => {
+                        this.props.updateSurveyTags(this.props.survey.id, conceptsAttributes);
+                        this.setState({ tagModalOpen: false });
+                      }} />
+                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+                  </a>
+                }
+              </h2>
             </div>
             <div className="box-content">
               <div id="concepts-table">
@@ -177,6 +200,7 @@ SurveyShow.propTypes = {
   deleteSurvey:  PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
+  updateSurveyTags: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps
 };

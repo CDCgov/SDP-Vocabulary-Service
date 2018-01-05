@@ -14,7 +14,8 @@ import {
   PUBLISH_SECTION,
   ADD_SECTION_TO_GROUP,
   DELETE_SECTION,
-  ADD_ENTITIES
+  ADD_ENTITIES,
+  UPDATE_SECTION_TAGS
 } from './types';
 
 export function newSection() {
@@ -99,6 +100,17 @@ export function saveDraftSection(section, successHandler=null, failureHandler=nu
   return {
     type: SAVE_DRAFT_SECTION,
     payload: postPromise
+  };
+}
+
+export function updateSectionTags(id, conceptsAttributes) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_tags_section_path(id),
+                      {id, authenticityToken, conceptsAttributes},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_SECTION_TAGS,
+    payload: putPromise
   };
 }
 

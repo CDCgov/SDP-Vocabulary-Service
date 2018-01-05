@@ -92,6 +92,15 @@ class SectionsController < ApplicationController
     end
   end
 
+  def update_tags
+    @section.add_tags(params)
+    if @section.save!
+      render :show, status: :ok, location: @section
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /sections/1/redcap
   def redcap
     xml = render_to_string 'sections/redcap.xml', layout: false
