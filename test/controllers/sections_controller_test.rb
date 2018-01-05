@@ -45,6 +45,34 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
+  test 'cannot edit tags on something you do not own' do
+    section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
+    post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    sign_in users(:not_admin)
+    section_json = { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] }
+    put update_tags_section_path(Section.last, format: :json, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' })
+    assert_response :forbidden
+  end
+
+  test 'can edit tags on something you do own' do
+    section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
+    post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    section_json = { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] }
+    put update_tags_section_path(Section.last, format: :json, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' })
+    assert_response :success
+  end
+
+  test 'can edit tags on something you are in a group with' do
+    section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
+    post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
+    Section.last.add_to_group(@group.id)
+    sign_in @na_user
+    @group.add_user(@na_user)
+    section_json = { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] }
+    put update_tags_section_path(Section.last, format: :json, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' })
+    assert_response :success
+  end
+
   test 'can revise something you share a group with' do
     section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
