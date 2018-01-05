@@ -82,13 +82,7 @@ class SurveysController < ApplicationController
   end
 
   def update_tags
-    tag_params = params.permit(:concepts_attributes, concepts_attributes: [:value, :display_name, :code_system])
-    @survey.concepts.destroy_all
-    tag_params[:concepts_attributes].each do |c|
-      concept = Concept.new(c)
-      concept.save!
-      @survey.concepts << concept
-    end
+    @survey.add_tags(params)
     if @survey.save!
       render :show, status: :ok, location: @survey
     else
