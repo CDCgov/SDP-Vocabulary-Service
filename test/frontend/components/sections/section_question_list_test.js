@@ -5,10 +5,11 @@ describe('SectionQuestionList', () => {
   let component;
 
   beforeEach(() => {
-    const questions = [{id: 1, content: "Is this a question?", category: ""},
-                       {id: 2, content: "Whats your name", category: ""},
-                       {id: 3, content: "What is a question?", category: ""}];
-    component = renderComponent(SectionQuestionList, {questions});
+    const questions = [{id: 1, content: "Is this a question?", category: "", createdById: 1},
+                       {id: 2, content: "Whats your name", category: "", createdById: 1},
+                       {id: 3, content: "What is a question?", category: "", createdById: 1}];
+    const currentUser = {id: 1};
+    component = renderComponent(SectionQuestionList, {questions, currentUser});
   });
 
   it('should create list of questions', () => {

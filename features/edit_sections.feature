@@ -55,6 +55,10 @@ Feature: Edit Sections
     And I should not see "Publish"
     And I should see "Edit"
     And I should see "TEST VAR EDIT"
+    When I click on the "Item program defined variable: Test Var Edit" link
+    And I fill in the "program-defined-variable" field with "Edit on show page"
+    And I click on the "Save" link
+    Then I should see "EDIT ON SHOW PAGE"
 
   Scenario: Extend Section
     Given I have a published Section with the name "Test Section" and the description "Description from parent"

@@ -14,7 +14,7 @@ import TagModal from "../TagModal";
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 const PAGE_SIZE = 10;
 
@@ -75,6 +75,7 @@ class SectionShow extends Component {
       sectionQuestion.programVar = sq.programVar || '';
       sectionQuestion.sqId = sq.id;
       sectionQuestion.sectionId = section.id;
+      sectionQuestion.groups = section.groups;
       sectionQuestion.responseSets = [{name: 'None'}];
       if (sq.responseSetId) {
         var responseSet = section.responseSets.find(rs => rs.id === sq.responseSetId);
@@ -162,7 +163,7 @@ class SectionShow extends Component {
             <div className="panel-heading">
               <h2 className="panel-title">
                 Tags
-                {isGroupable(section, this.props.currentUser) &&
+                {isSimpleEditable(section, this.props.currentUser) &&
                   <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
                     e.preventDefault();
                     this.setState({ tagModalOpen: true });
@@ -194,7 +195,7 @@ class SectionShow extends Component {
                 </h2>
               </div>
               <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-questions">
-                <SectionQuestionList questions={this.questionsForPage(section)} currentUserId={this.props.currentUser.id} />
+                <SectionQuestionList questions={this.questionsForPage(section)} currentUser={this.props.currentUser} />
                 {this.props.section.sectionQuestions.length > 10 &&
                 <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionQuestions.length} />
                 }

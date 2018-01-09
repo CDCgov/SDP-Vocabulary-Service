@@ -17,7 +17,7 @@ import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 export default class QuestionShow extends Component {
   constructor(props) {
@@ -154,7 +154,7 @@ export default class QuestionShow extends Component {
               <div className="panel-heading">
                 <h2 className="panel-title">
                   Tags
-                  {isGroupable(question, this.props.currentUser) &&
+                  {isSimpleEditable(question, this.props.currentUser) &&
                     <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
                       e.preventDefault();
                       this.setState({ tagModalOpen: true });

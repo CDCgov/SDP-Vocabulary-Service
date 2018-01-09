@@ -158,7 +158,7 @@ export default class ResponseSetShow extends Component {
                 <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
-                <SectionQuestionList questions={responseSet.questions} currentUserId={this.props.currentUser.id} />
+                <SectionQuestionList questions={responseSet.questions} currentUser={this.props.currentUser} />
               </div>
             </div>
           }

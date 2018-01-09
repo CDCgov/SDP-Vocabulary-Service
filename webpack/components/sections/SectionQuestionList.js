@@ -19,11 +19,12 @@ class SectionQuestionList extends Component {
         <div>Loading...</div>
       );
     }
+    let currentUserId = this.props.currentUser ? this.props.currentUser.id : -1;
     return (
       <div className="question-group">
         {this.props.questions.map((q, i) => {
-          if (q.status === 'published' || q.createdById === this.props.currentUserId) {
-            return <SearchResult key={i} type='question' result={{Source: q}} programVar={q.programVar} currentUser={{id: this.props.currentUserId}} updatePDV={this.props.updatePDV}/>;
+          if (q.status === 'published' || q.createdById === currentUserId) {
+            return <SearchResult key={i} type='question' result={{Source: q}} programVar={q.programVar} currentUser={this.props.currentUser} updatePDV={this.props.updatePDV}/>;
           }
         })}
       </div>
@@ -38,7 +39,7 @@ function mapDispatchToProps(dispatch) {
 SectionQuestionList.propTypes = {
   questions: PropTypes.arrayOf(questionProps),
   updatePDV: PropTypes.func,
-  currentUserId: PropTypes.number
+  currentUser: PropTypes.object
 };
 
 export default connect(null, mapDispatchToProps)(SectionQuestionList);
