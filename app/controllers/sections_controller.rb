@@ -101,6 +101,20 @@ class SectionsController < ApplicationController
     end
   end
 
+  def update_pdv
+    if @section.section_question_ids.include?(params[:sq_id])
+      sq = SectionQuestion.find(params[:sq_id])
+      sq.program_var = params[:pdv]
+      if sq.save!
+        render :show, status: :ok, location: @survey
+      else
+        render json: @section.errors, status: :unprocessable_entity
+      end
+    else
+      render json: @section.errors, status: :unauthorized
+    end
+  end
+
   # GET /sections/1/redcap
   def redcap
     xml = render_to_string 'sections/redcap.xml', layout: false

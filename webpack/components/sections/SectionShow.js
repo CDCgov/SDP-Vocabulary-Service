@@ -73,6 +73,8 @@ class SectionShow extends Component {
     return sectionQuestionPage.map((sq) => {
       var sectionQuestion = Object.assign({}, section.questions.find(q => q.id === sq.questionId));
       sectionQuestion.programVar = sq.programVar || '';
+      sectionQuestion.sqId = sq.id;
+      sectionQuestion.sectionId = section.id;
       sectionQuestion.responseSets = [{name: 'None'}];
       if (sq.responseSetId) {
         var responseSet = section.responseSets.find(rs => rs.id === sq.responseSetId);
