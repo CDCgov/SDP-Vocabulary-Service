@@ -240,7 +240,7 @@ class CodedSetTableEditContainer extends Component {
   render() {
     var tableType = this.state.childName[0].toUpperCase() + this.state.childName.slice(1);
     return (
-      <div>
+      <div className="row">
         <table className="set-table">
           <caption>
             Add, search, and create associated {tableType === 'Response' ? 'responses' : <a title="See Tag Help" href="#" onClick={(e) => {
