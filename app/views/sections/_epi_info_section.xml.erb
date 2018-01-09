@@ -1,11 +1,13 @@
 <Page PageId="<%= page_id %>" Name="<%= section.name %>" Position="<%= position %>"  ViewId="<%= view_id %>">
-  <% section.section_questions.each do |section_question| %>
+  <% section.section_questions.each do |section_question|
+     question = section_question.question
+    %>
       <Field
         Name="<%= section_question.question.content %>"
         PageId="<%= page_id %>"
         FieldId="<%= section_question.id %>"
         UniqueId=""
-        FieldTypeId="18"
+        FieldTypeId="<%= epi_info_field_type(question.response_type.code) %>"
         ControlAfterCheckCode=""
         ControlBeforeCheckCode=""
         PageName="<%= section.name %>"
@@ -41,8 +43,8 @@
         RelatedViewId=""
         List=""
         SourceTableName="<%= section_question.response_set.nil? ? '' : section_question.response_set.id %>"
-        CodeColumnName=""
-        TextColumnName=""
+        CodeColumnName="code"
+        TextColumnName="displayName"
         BackgroundColor=""
         Sort="True"
         IsExclusiveTable="False"
