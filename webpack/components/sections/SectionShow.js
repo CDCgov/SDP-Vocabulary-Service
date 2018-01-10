@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 
-import SectionQuestionList from './SectionQuestionList';
+import SectionQuestionList from '../../containers/sections/SectionQuestionList';
 import SurveyList from '../surveys/SurveyList';
 import CodedSetTable from "../CodedSetTable";
 import VersionInfo from '../VersionInfo';

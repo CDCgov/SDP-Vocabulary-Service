@@ -1,5 +1,5 @@
 import { expect, renderComponent } from '../../test_helper';
-import SectionQuestionList from '../../../../webpack/components/sections/SectionQuestionList';
+import SectionQuestionList from '../../../../webpack/containers/sections/SectionQuestionList';
 
 describe('SectionQuestionList', () => {
   let component;

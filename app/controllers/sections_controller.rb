@@ -111,7 +111,7 @@ class SectionsController < ApplicationController
         render json: @section.errors, status: :unprocessable_entity
       end
     else
-      render json: @section.errors, status: :unauthorized
+      render json: @section.errors, status: :unprocessable_entity
     end
   end
 

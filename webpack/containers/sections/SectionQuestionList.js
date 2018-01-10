@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
 
 import { questionProps } from "../../prop-types/question_props";
-import SearchResult from '../SearchResult';
+import SearchResult from '../../components/SearchResult';
 import { updatePDV } from "../../actions/section_actions";
 
 class SectionQuestionList extends Component {

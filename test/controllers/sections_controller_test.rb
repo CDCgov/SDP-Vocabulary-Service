@@ -79,7 +79,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     sign_in @na_user
     pdv_json = { pdv: 'Test', sq_id: @sq.id }
     put update_pdv_section_path(@section, format: :json, params: pdv_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' })
-    assert_response :unauthorized
+    assert_response :unprocessable_entity
   end
 
   test 'can revise something you share a group with' do
