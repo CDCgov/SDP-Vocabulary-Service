@@ -1,4 +1,4 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   include ActsAsCommentable::Comment
   acts_as_tree
 

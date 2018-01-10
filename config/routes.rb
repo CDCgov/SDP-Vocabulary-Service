@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     put :publish, on: :member
     put :add_to_group, on: :member
     put :update_tags, on: :member
+    put :update_pdv, on: :member
   end
   resources :surveys, except: [:edit], defaults: { format: :json } do
     get :revise, on: :member

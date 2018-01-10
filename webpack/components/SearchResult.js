@@ -5,12 +5,18 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
-import { displayVersion } from '../utilities/componentHelpers';
+import { displayVersion, isSimpleEditable } from '../utilities/componentHelpers';
+import PDVModal from "../components/PDVModal";
 import currentUserProps from "../prop-types/current_user_props";
 import { responseSetProps } from "../prop-types/response_set_props";
 
 // Note, acceptable type strings are: response_set, question, section_question, section, survey, survey_section
 export default class SearchResult extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { pdvModalOpen: false };
+  }
+
   render() {
     return (this.baseResult(this.props.type,
                             this.props.result.Source,
@@ -304,10 +310,29 @@ export default class SearchResult extends Component {
                 {result.surveillancePrograms && this.programsInfo(result)}
                 {result.surveillanceSystems && this.systemsInfo(result)}
                 {this.resultStatus(result.status)}
-                <li className={`result-timestamp pull-right ${this.props.programVar && 'list-program-var'}`}>
+                <li className={`result-timestamp pull-right ${(this.props.programVar || isSimpleEditable(result, this.props.currentUser)) && 'list-program-var'}`}>
                   <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
                   <p><text className="sr-only">Item Version Number: </text>version {displayVersion(result.version, result.mostRecentPublished)} | <text className="sr-only">Item type: </text>{type}</p>
-                  {this.props.programVar && (<p><text className="sr-only">Item program defined Variable: </text>{this.props.programVar}</p>)}
+                  {isSimpleEditable(result, this.props.currentUser) ? (
+                    <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ pdvModalOpen: true });
+                    }}>
+                      <PDVModal show={this.state.pdvModalOpen || false}
+                        cancelButtonAction={() => this.setState({ pdvModalOpen: false })}
+                        pdv={this.props.programVar || ''}
+                        saveButtonAction={(pdv) => {
+                          this.props.updatePDV(result.sectionId, result.sqId, pdv);
+                          this.setState({ pdvModalOpen: false });
+                        }} />
+                      <text className="sr-only">Item program defined variable: </text>{this.props.programVar ? this.props.programVar : 'Add Variable'} {'\u00A0'}
+                      <i className="fa fa-pencil-square-o" aria-hidden="true"><text className="sr-only">Click to edit program defined variable</text></i>
+                    </a>
+                  ) : ( this.props.programVar &&
+                    <p>
+                      <text className="sr-only">Item program defined variable: </text>{this.props.programVar}
+                    </p>
+                  )}
                 </li>
               </ul>
             </div>
@@ -353,5 +378,6 @@ SearchResult.propTypes = {
   showResponseSetSearch: PropTypes.func,
   handleResponseSetChange:  PropTypes.func,
   handleSelectSearchResult: PropTypes.func,
+  updatePDV: PropTypes.func,
   isSelected: PropTypes.bool
 };

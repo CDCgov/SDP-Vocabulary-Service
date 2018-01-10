@@ -30,6 +30,13 @@ export function isGroupable(object, currentUser) {
   );
 }
 
+export function isSimpleEditable(object, currentUser) {
+  return currentUser && currentUser.id &&
+  (object.createdById === currentUser.id ||
+    (currentUser.groups && object.groups && currentUser.groups.filter((group) => object.groups.map(g => g.id).includes(group.id)).length > 0)
+  );
+}
+
 export function isExtendable(object, currentUser) {
   return currentUser && currentUser.id &&
     object.status === 'published';

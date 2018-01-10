@@ -15,7 +15,8 @@ import {
   ADD_SECTION_TO_GROUP,
   DELETE_SECTION,
   ADD_ENTITIES,
-  UPDATE_SECTION_TAGS
+  UPDATE_SECTION_TAGS,
+  UPDATE_PDV
 } from './types';
 
 export function newSection() {
@@ -110,6 +111,17 @@ export function updateSectionTags(id, conceptsAttributes) {
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: UPDATE_SECTION_TAGS,
+    payload: putPromise
+  };
+}
+
+export function updatePDV(id, sqId, pdv) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_pdv_section_path(id),
+                      {sqId, pdv, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_PDV,
     payload: putPromise
   };
 }

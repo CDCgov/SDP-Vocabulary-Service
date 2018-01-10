@@ -10,6 +10,8 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @section = sections(:one)
+    @question = questions(:one)
+    @sq = section_questions(:one)
     @current_user = users(:admin)
     @na_user = users(:not_admin)
     @group = groups(:one)
@@ -71,6 +73,13 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     section_json = { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] }
     put update_tags_section_path(Section.last, format: :json, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' })
     assert_response :success
+  end
+
+  test 'cannot edit pdv on something you do not own' do
+    sign_in @na_user
+    pdv_json = { pdv: 'Test', sq_id: @sq.id }
+    put update_pdv_section_path(@section, format: :json, params: pdv_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' })
+    assert_response :unprocessable_entity
   end
 
   test 'can revise something you share a group with' do
