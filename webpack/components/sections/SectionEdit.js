@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import compact from 'lodash/compact';
 import union from 'lodash/union';
 
-import { sectionProps } from '../../prop-types/section_props';
+import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 import { questionsProps } from '../../prop-types/question_props';
 
@@ -214,14 +214,14 @@ class SectionEdit extends Component {
   findLinkedResponseSets(sectionQuestions, addedResponseSets){
     var linkedResponseSetMap = {};
     var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionQuestions.map((sq) => sq.responseSetId));
-    sectionQuestions.map((q) => {
+    sectionQuestions.map((sq) => {
       var linkedResponseSets = [];
-      var qId = q.questionId;
+      var qId = sq.questionId || -1;
       if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
         linkedResponseSets = this.props.questions[qId].responseSets || [];
       }
       linkedResponseSets = union(linkedResponseSets, otherResponseSets);
-      linkedResponseSetMap[q.questionId] = compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
+      linkedResponseSetMap[sq.questionId] = compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
     });
     return linkedResponseSetMap;
   }
@@ -252,26 +252,27 @@ class SectionEdit extends Component {
 
   addedQuestions() {
     return (
-      <div id="added-questions" aria-label="Added">
+      <div id="added-questions" aria-label="Added sections and questions">
         <div className="row">
           <div className="response-set-header">
-            <div className="col-md-5 response-set-label"><span><b>Questions</b></span></div>
+            <div className="col-md-5 response-set-label"><span><b>Questions & Sections</b></span></div>
             <div className="col-md-7 response-set-label">
               <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
             </div>
           </div>
         </div>
         <div className="added-question-group">
-          {this.state.sectionQuestions.map((q, i) =>
-            <div className="row" key={q.questionId}>
+          {this.state.sectionQuestions.map((sq, i) =>
+            <div className="row" key={sq.questionId || sq.nestedSectionId}>
               <div className="col-md-11">
                 <QuestionItem index={i}
-                              question={this.props.questions[q.questionId]}
-                              programVar={q.programVar}
-                              responseSets={this.state.linkedResponseSets[q.questionId] || []}
+                              item={sq.questionId ? this.props.questions[sq.questionId] : this.props.sections[sq.nestedSectionId]}
+                              itemType={sq.questionId ? 'question' : 'section'}
+                              programVar={sq.programVar}
+                              responseSets={this.state.linkedResponseSets[sq.questionId] || []}
                               removeQuestion ={this.props.removeQuestion}
                               reorderQuestion={this.props.reorderQuestion}
-                              selectedResponseSet={q.responseSetId}
+                              selectedResponseSet={sq.responseSetId}
                               handleProgramVarChange={this.handleProgramVarChange}
                               handleResponseSetChange ={this.handleResponseSetChangeEvent}
                               handleSelectSearchResult={this.handleSelectSearchResult} />
@@ -279,21 +280,21 @@ class SectionEdit extends Component {
               <div className="col-md-1">
                 <div className="row section-question-controls">
                   <button data-index={i} className="btn btn-small btn-default move-up" onClick={this.moveQuestionUp}>
-                    <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up question ${this.props.questions[q.questionId].content} on section`}</span>
+                    <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up item on section`}</span>
                   </button>
                 </div>
                 <div className="row section-question-controls">
                   <button data-index={i} className="btn btn-small btn-default move-down" onClick={this.moveQuestionDown}>
-                    <i data-index={i} className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down question ${this.props.questions[q.questionId].content} on section`}</span>
+                    <i data-index={i} className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down item on section`}</span>
                   </button>
                 </div>
                 <div className="row section-question-controls">
                   <button data-index={i} className="btn btn-small btn-default delete-question" onClick={this.removeQuestion}>
-                    <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove question ${this.props.questions[q.questionId].content} on section`}</span>
+                    <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove item from section`}</span>
                   </button>
                 </div>
               </div>
-              </div>
+            </div>
           )}
         </div>
       </div>
@@ -301,7 +302,7 @@ class SectionEdit extends Component {
   }
 
   render() {
-    if(!this.props.questions || !this.props.responseSets){
+    if(!this.props.questions || !this.props.responseSets || !this.props.sections){
       return (
         <div>Loading...</div>
       );
@@ -375,6 +376,7 @@ SectionEdit.propTypes = {
   router: PropTypes.object.isRequired,
   responseSets: responseSetsProps,
   questions: questionsProps.isRequired,
+  sections: sectionsProps,
   showResponseSetModal: PropTypes.func.isRequired
 };
 

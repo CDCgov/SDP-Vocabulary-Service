@@ -18,10 +18,10 @@ import {
   UPDATE_QUESTION_TAGS
 } from './types';
 
-export function addQuestion(section, question) {
+export function addQuestion(section, question, type='question') {
   return {
     type: ADD_QUESTION,
-    payload: {section, question}
+    payload: {section, question, type}
   };
 }
 

@@ -23,8 +23,9 @@ class SectionQuestionList extends Component {
     return (
       <div className="question-group">
         {this.props.questions.map((q, i) => {
+          let sqType = q.content ? 'question' : 'section';
           if (q.status === 'published' || q.createdById === currentUserId) {
-            return <SearchResult key={i} type='question' result={{Source: q}} programVar={q.programVar} currentUser={this.props.currentUser} updatePDV={this.props.updatePDV}/>;
+            return <SearchResult key={i} type={sqType} result={{Source: q}} programVar={q.programVar} currentUser={this.props.currentUser} updatePDV={this.props.updatePDV}/>;
           }
         })}
       </div>

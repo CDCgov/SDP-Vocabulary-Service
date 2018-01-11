@@ -71,18 +71,24 @@ class SectionShow extends Component {
     const endIndex = this.state.page * PAGE_SIZE;
     const sectionQuestionPage = section.sectionQuestions.slice(startIndex, endIndex);
     return sectionQuestionPage.map((sq) => {
-      var sectionQuestion = Object.assign({}, section.questions.find(q => q.id === sq.questionId));
-      sectionQuestion.programVar = sq.programVar || '';
-      sectionQuestion.sqId = sq.id;
-      sectionQuestion.sectionId = section.id;
-      sectionQuestion.groups = section.groups;
-      sectionQuestion.responseSets = [{name: 'None'}];
-      if (sq.responseSetId) {
-        var responseSet = section.responseSets.find(rs => rs.id === sq.responseSetId);
-        if(responseSet) {
-          sectionQuestion.responseSets = [responseSet];
-        } else {
-          sectionQuestion.responseSets = [{name: 'Loading...'}];
+      var sectionQuestion = {};
+      if (sq.nestedSectionId) {
+        sectionQuestion = Object.assign({}, section.nestedSections.find(s => s.id === sq.nestedSectionId));
+        sectionQuestion.programVar = sq.programVar || '';
+      } else {
+        sectionQuestion = Object.assign({}, section.questions.find(q => q.id === sq.questionId));
+        sectionQuestion.programVar = sq.programVar || '';
+        sectionQuestion.sqId = sq.id;
+        sectionQuestion.sectionId = section.id;
+        sectionQuestion.groups = section.groups;
+        sectionQuestion.responseSets = [{name: 'None'}];
+        if (sq.responseSetId) {
+          var responseSet = section.responseSets.find(rs => rs.id === sq.responseSetId);
+          if(responseSet) {
+            sectionQuestion.responseSets = [responseSet];
+          } else {
+            sectionQuestion.responseSets = [{name: 'Loading...'}];
+          }
         }
       }
       return sectionQuestion;
@@ -186,12 +192,12 @@ class SectionShow extends Component {
               </div>
             </div>
           </div>
-          {section.sectionQuestions && section.sectionQuestions.length > 0 && section.questions && section.questions.length > 0 &&
+          {section.sectionQuestions && section.sectionQuestions.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">
                   <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Questions: {section.questions && section.questions.length}</a>
+                  <text className="sr-only">Click link to expand information about linked </text>Linked Questions and Sections: {section.sectionQuestions && section.sectionQuestions.length}</a>
                 </h2>
               </div>
               <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-questions">

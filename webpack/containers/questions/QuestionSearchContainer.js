@@ -19,6 +19,7 @@ class QuestionSearchContainer extends SearchManagerComponent {
     super(props);
     this.state = {
       searchTerms: '',
+      searchType: 'question',
       programFilter: [],
       systemFilter: [],
       page: 1,
@@ -28,6 +29,7 @@ class QuestionSearchContainer extends SearchManagerComponent {
     this.search   = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.changeFiltersCallback = this.changeFiltersCallback.bind(this);
+    this.selectType = this.selectType.bind(this);
   }
 
   componentWillMount() {
@@ -41,12 +43,19 @@ class QuestionSearchContainer extends SearchManagerComponent {
   }
 
   search(searchParameters) {
-    searchParameters.type = 'question';
+    searchParameters.type = this.state.searchType;
     super.search(searchParameters, QUESTION_SEARCH_CONTEXT);
   }
 
   loadMore() {
     super.loadMore(QUESTION_SEARCH_CONTEXT);
+  }
+
+  selectType(type) {
+    this.setState({ searchType: type });
+    let searchParameters = this.currentSearchParameters();
+    searchParameters.type = type;
+    super.search(searchParameters, QUESTION_SEARCH_CONTEXT);
   }
 
   render() {
@@ -61,16 +70,23 @@ class QuestionSearchContainer extends SearchManagerComponent {
                          suggestions={this.props.suggestions}
                          fetchSuggestions={this.props.fetchSuggestions}
                          placeholder="Search Questions..." />
+        <button id="questions-filter-button" className={"question-search-filter btn" + (this.state.searchType === 'question' ? " question-search-filter-active-item" : "")} onClick={() => this.selectType('question')}>
+          <h2 className="item-title" id="question-analytics-item-title"><i className="fa fa-tasks" aria-hidden="true"></i> Questions</h2>
+        </button>
+        <button id="sections-filter-button" className={"question-search-filter btn" + (this.state.searchType === 'section' ? " question-search-filter-active-item" : "")} onClick={() => this.selectType('section')}>
+          <h2 className="item-title" id="sections-analytics-item-title"><i className="fa fa-list-alt" aria-hidden="true"></i> Sections</h2>
+        </button><br/><br/>
         <div className="load-more-search">
-          {searchResults.hits && searchResults.hits.hits.map((q, i) => {
+          {searchResults.hits && searchResults.hits.hits.map((sr, i) => {
+            let isSelected = this.state.searchType === 'section' ? this.props.selectedSections[sr.Id] : this.props.selectedQuestions[sr.Id];
             return (
-              <SearchResult key={`${q.Source.versionIndependentId}-${q.Source.updatedAt}-${i}`}
-                            type={q.Type}
-                            result={q}
+              <SearchResult key={`${sr.Source.versionIndependentId}-${sr.Source.updatedAt}-${i}`}
+                            type={sr.Type}
+                            result={sr}
                             isEditPage={true}
                             currentUser={this.props.currentUser}
                             handleSelectSearchResult={this.props.handleSelectSearchResult}
-                            isSelected={this.props.selectedSearchResults[q.Id]} />
+                            isSelected={isSelected} />
             );
           })}
           {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
@@ -98,7 +114,8 @@ function mapDispatchToProps(dispatch) {
 
 QuestionSearchContainer.propTypes = {
   handleSelectSearchResult: PropTypes.func.isRequired,
-  selectedSearchResults: PropTypes.object.isRequired,
+  selectedQuestions: PropTypes.object.isRequired,
+  selectedSections: PropTypes.object.isRequired,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   fetchSuggestions: PropTypes.func,

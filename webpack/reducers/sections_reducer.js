@@ -14,7 +14,7 @@ import {
 import * as helpers from './helpers';
 
 export default function sections(state = {}, action) {
-  let section, newState, newSection, question, responseSetId;
+  let section, newState, newSection, question, responseSetId, sqItem, sqItemType, qid, nsid;
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.sections);
@@ -29,21 +29,31 @@ export default function sections(state = {}, action) {
       newState[0] = {sectionQuestions: [], questions: [], version: 1, id: 0};
       return newState;
     case ADD_QUESTION:
-      question = action.payload.question;
+      sqItem = action.payload.question;
+      sqItemType = action.payload.type;
       section = action.payload.section;
       section.id = section.id || 0;
-      if(state[section.id] && state[section.id].sectionQuestions && state[section.id].sectionQuestions.findIndex( (s) => s.questionId == question.id) > -1){
+      if(sqItemType === 'question' && state[section.id] && state[section.id].sectionQuestions && state[section.id].sectionQuestions.findIndex( (s) => s.questionId == sqItem.id) > -1){
+        return state;
+      } else if (sqItemType === 'section' && state[section.id] && state[section.id].sectionQuestions && state[section.id].sectionQuestions.findIndex( (s) => s.nestedSectionId == sqItem.id) > -1) {
         return state;
       }
-      if(question.responseSets && question.responseSets[0]){
-        responseSetId = question.responseSets[0].id || question.responseSets[0];
+      if(sqItem.responseSets && sqItem.responseSets[0]){
+        responseSetId = sqItem.responseSets[0].id || sqItem.responseSets[0];
       } else {
         responseSetId = null;
       }
       if(!section.sectionQuestions) {
         section.sectionQuestions = [];
       }
-      let newSectionQuestion = Object.assign({}, {questionId: question.id, sectionId: section.id, responseSetId: responseSetId, position: section.sectionQuestions.length});
+      if(sqItemType === 'question') {
+        qid = sqItem.id;
+        nsid = null;
+      } else {
+        nsid = sqItem.id;
+        qid = null;
+      }
+      let newSectionQuestion = Object.assign({}, {questionId: qid, nestedSectionId: nsid, sectionId: section.id, responseSetId: responseSetId, position: section.sectionQuestions.length});
       newSection  = Object.assign({}, section);
       newSection.sectionQuestions.push(newSectionQuestion);
       newState = Object.assign({}, state);
