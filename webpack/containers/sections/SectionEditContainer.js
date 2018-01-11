@@ -13,7 +13,7 @@ import SectionEdit from '../../components/sections/SectionEdit';
 import ResponseSetModal from '../response_sets/ResponseSetModal';
 import QuestionModalContainer  from '../questions/QuestionModalContainer';
 import QuestionSearchContainer from '../questions/QuestionSearchContainer';
-import { sectionProps } from '../../prop-types/section_props';
+import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { questionsProps } from '../../prop-types/question_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 
@@ -125,8 +125,8 @@ class SectionEditContainer extends Component {
     this.props.addQuestion(this.props.section, successResponse.data);
   }
 
-  handleSelectSearchResult(q){
-    this.props.addQuestion(this.props.section, q);
+  handleSelectSearchResult(sq, type){
+    this.props.addQuestion(this.props.section, sq, type);
   }
 
   actionWord() {
@@ -135,7 +135,7 @@ class SectionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.section || !this.props.questions){
+    if(!this.props.section || !this.props.questions || !this.props.sections){
       return (
         <div>Loading...</div>
       );
@@ -162,7 +162,8 @@ class SectionEditContainer extends Component {
                 <div className="row add-question">
                   <Button tabIndex="4" onClick={this.showQuestionModal} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer selectedSearchResults={this.props.selectedSearchResults}
+                <QuestionSearchContainer selectedQuestions={this.props.selectedQuestions}
+                                         selectedSections={this.props.selectedSections}
                                          handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <SectionEdit ref ='section'
@@ -174,6 +175,7 @@ class SectionEditContainer extends Component {
                         action={this.props.params.action || 'new'}
                         questions={this.props.questions}
                         responseSets ={this.props.responseSets}
+                        sections={this.props.sections}
                         sectionSubmitter={this.state.selectedSectionSaver}
                         removeQuestion ={this.props.removeQuestion}
                         reorderQuestion={this.props.reorderQuestion}
@@ -194,18 +196,25 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, ownProps) {
   const section = denormalize(state.sections[ownProps.params.sectionId || 0], sectionSchema, state);
-  var selectedSearchResults = {};
+  var selectedQuestions = {};
+  var selectedSections = {};
   if(section && section.sectionQuestions){
     section.sectionQuestions.map((sq)=>{
-      selectedSearchResults[sq.questionId] = true;
+      if (sq.questionId) {
+        selectedQuestions[sq.questionId] = true;
+      } else {
+        selectedSections[sq.nestedSectionId] = true;
+      }
     });
   }
   return {
     section: section,
     questions: state.questions,
     responseSets: state.responseSets,
+    sections: state.sections,
     stats: state.stats,
-    selectedSearchResults: selectedSearchResults
+    selectedQuestions: selectedQuestions,
+    selectedSections: selectedSections
   };
 }
 
@@ -216,6 +225,7 @@ SectionEditContainer.propTypes = {
   params: PropTypes.object.isRequired,
   questions: questionsProps,
   responseSets: responseSetsProps,
+  sections: sectionsProps,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
@@ -227,7 +237,8 @@ SectionEditContainer.propTypes = {
   fetchQuestion: PropTypes.func,
   removeQuestion: PropTypes.func,
   reorderQuestion: PropTypes.func,
-  selectedSearchResults: PropTypes.object
+  selectedQuestions: PropTypes.object,
+  selectedSections: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SectionEditContainer);

@@ -3,6 +3,7 @@ class Section < ApplicationRecord
   acts_as_commentable
 
   has_many :section_questions, -> { order 'position asc' }, dependent: :destroy
+  has_many :nested_sections, through: :section_questions
   has_many :questions, through: :section_questions
   has_many :response_sets, through: :section_questions
   has_many :survey_sections
