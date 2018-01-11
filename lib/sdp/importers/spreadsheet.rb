@@ -13,9 +13,10 @@ module SDP
         de_columns: {
           section_name: 'PHIN Variable',
           name: 'Data Element (DE) Name',
+          de_id: 'DE Identifier Sent in HL7 Message',
           description: 'Data Element Description',
           value_set: 'Value Set Name (VADS Hyperlink)',
-          program_var: 'Local Variable Code System',
+          program_var: /(PHIN|Local) Variable Code System/,
           data_type: 'Data Type'
         },
         vs_columns: {
@@ -89,14 +90,14 @@ module SDP
              @valueset_sheet.match(sheet)
             logger.debug "skipping sheet #{sheet} -- looks like a value set"
             next
-          elsif !(@config[:de_columns].values - headers).empty?
+          elsif !de_sheet?(headers)
             logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
             next
           end
 
           logger.debug "processing sheet #{sheet}"
           if @config[:mmg]
-            w.sheet(sheet).each(@config[:de_columns]) do |row|
+            w.sheet(sheet).parse(@config[:de_columns]).each do |row|
               # skip first row
               next if row[:name] == @config[:de_columns][:name]
               # section start/end
@@ -115,7 +116,7 @@ module SDP
               @sections[section_name][:data_elements] << data_element unless @sections[section_name][:data_elements].include? data_element
             end
           else
-            w.sheet(sheet).each(@config[:de_columns]) do |row|
+            w.sheet(sheet).parse(@config[:de_columns]).each do |row|
               # skip first row
               next if row[:name] == @config[:de_columns][:name]
               next if row[:name].nil?
@@ -172,15 +173,17 @@ module SDP
       def response_type(type)
         response_type_code = @config[:response_types][type]
         rt = ResponseType.find_by(code: response_type_code)
-        raise "Unable to find response type #{response_type_code} - did response types change?" unless rt
+        raise "Unable to find response type #{type} - did response types change?" unless rt
         rt
       end
 
       def question_for(element)
-        Question.new(
+        q = Question.new(
           content: element[:name], description: element[:description],
           created_by: @user, response_type: response_type(element[:data_type])
         )
+        q.concepts << Concept.new(value: element[:de_id], display_name: 'Data Element Identifier') if element[:de_id].present?
+        q
       end
 
       def response_set_for_vads(element)
@@ -250,7 +253,8 @@ module SDP
       def extract_data_element(row)
         data_element = {
           name: normalize(row[:name]), description: normalize(row[:description]),
-          data_type: normalize(row[:data_type]), program_var: normalize(row[:program_var])
+          data_type: normalize(row[:data_type]), program_var: normalize(row[:program_var]),
+          de_id: normalize(row[:de_id])
         }
         if @config[:de_coded_type].include? data_element[:data_type]
           if row[:value_set].respond_to? :to_uri
@@ -285,7 +289,7 @@ module SDP
       end
 
       def normalize(str)
-        str.strip if str
+        str.strip if str.respond_to?(:strip)
       end
 
       def print_data_element(data_element)
@@ -301,6 +305,16 @@ module SDP
 
       def logger
         Rails.logger
+      end
+
+      def de_sheet?(headers)
+        @config[:de_columns].values.all? do |column_name|
+          if column_name.is_a?(Regexp)
+            headers.any? { |h| column_name.match?(h) }
+          else
+            headers.include?(column_name)
+          end
+        end
       end
     end
   end
