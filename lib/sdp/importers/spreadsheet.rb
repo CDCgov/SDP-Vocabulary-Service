@@ -173,7 +173,7 @@ module SDP
       def response_type(type)
         response_type_code = @config[:response_types][type]
         rt = ResponseType.find_by(code: response_type_code)
-        raise "Unable to find response type #{response_type_code} - did response types change?" unless rt
+        raise "Unable to find response type #{type} - did response types change?" unless rt
         rt
       end
 
@@ -289,7 +289,7 @@ module SDP
       end
 
       def normalize(str)
-        str.strip if str
+        str.strip if str.respond_to?(:strip)
       end
 
       def print_data_element(data_element)
