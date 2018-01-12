@@ -14,7 +14,7 @@ import {
 import * as helpers from './helpers';
 
 export default function sections(state = {}, action) {
-  let section, newState, newSection, question, responseSetId, sqItem, sqItemType, qid, nsid;
+  let section, newState, newSection, responseSetId, sqItem, sqItemType, qid, nsid;
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.sections);

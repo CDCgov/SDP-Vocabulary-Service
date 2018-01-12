@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
 import { questionSchema, sectionSchema } from '../../schema';
-import { questionProps } from "../../prop-types/question_props";
 import { responseSetProps } from "../../prop-types/response_set_props";
 import currentUserProps from '../../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
