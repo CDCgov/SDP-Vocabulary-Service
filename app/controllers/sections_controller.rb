@@ -160,41 +160,13 @@ class SectionsController < ApplicationController
     section_questions
   end
 
-  # old_q is a SectionQuestion, new_q is hash representing a new section question from the request params
-  def update_section_question(old_q, new_q)
-    old_q.position = new_q[:position]
-    old_q.program_var = new_q[:program_var]
-    old_q.question_id = new_q[:question_id]
-    old_q.response_set_id = new_q[:response_set_id]
-    # While this seems unecessary, checking changed? here improves
-    old_q.save! if old_q.changed?
-    old_q
-  end
-
   # !!! this algorithm assumes a question cannot appear twice on the same section !!!
   # Only update section questions that were changed
   def update_section_questions
-    updated_qs = []
-    if params[:section][:linked_questions]
-      new_qs_hash = {}
-      params[:section][:linked_questions].each { |q| new_qs_hash[q[:question_id]] = q }
-      # Be aware, wrapping this loop in a transaction improves perf by batching all the updates to be committed at once
-      SectionQuestion.transaction do
-        @section.section_questions.each do |q|
-          if new_qs_hash.include? q.question_id
-            updated_qs << update_section_question(q, new_qs_hash.delete(q.question_id))
-          else
-            q.destroy!
-          end
-        end
-      end
-      # any new section question still in this hash needs to be created
-      new_qs_hash.each do |_id, q|
-        updated_qs << SectionQuestion.new(question_id: q[:question_id], response_set_id: q[:response_set_id],\
-                                          position: q[:position], program_var: q[:program_var])
-      end
-    end
-    updated_qs
+    sqs = params[:section][:linked_questions]
+    updated_sqs = []
+    updated_sqs = @section.update_sqs(sqs) if sqs
+    updated_sqs
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

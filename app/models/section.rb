@@ -78,6 +78,40 @@ class Section < ApplicationRecord
     new_revision
   end
 
+  def update_sqs(sqs)
+    new_qs_hash = {}
+    new_ns_hash = {}
+    updated_sqs = []
+    sqs.each do |sq|
+      if sq[:question_id]
+        new_qs_hash[sq[:question_id]] = sq
+      else
+        new_ns_hash[sq[:nested_section_id]] = sq
+      end
+    end
+    # Be aware, wrapping this loop in a transaction improves perf by batching all the updates to be committed at once
+    SectionQuestion.transaction do
+      section_questions.each do |sq|
+        if new_qs_hash.include? sq.question_id
+          updated_sqs << sq.update_section_question(sq, new_qs_hash.delete(sq.question_id))
+        elsif new_ns_hash.include? sq.nested_section_id
+          updated_sqs << sq.update_section_question(sq, new_ns_hash.delete(sq.nested_section_id))
+        else
+          sq.destroy!
+        end
+      end
+    end
+    # any new section question still in this hash needs to be created
+    new_qs_hash.each do |_id, sq|
+      updated_sqs << SectionQuestion.new(question_id: sq[:question_id], response_set_id: sq[:response_set_id],\
+                                         position: sq[:position], program_var: sq[:program_var])
+    end
+    new_ns_hash.each do |_id, sq|
+      updated_sqs << SectionQuestion.new(nested_section_id: sq[:nested_section_id], position: sq[:position], program_var: sq[:program_var])
+    end
+    updated_sqs
+  end
+
   def cascading_action(&block)
     yield self
     section_questions.each do |sq|
