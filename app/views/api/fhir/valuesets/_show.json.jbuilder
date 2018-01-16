@@ -1,6 +1,6 @@
 json.resourceType 'ValueSet'
 json.id value_set.id.to_s
-json.url api_fhir_valueset_url(value_set)
+json.url api_fhir_valueset_version_url(value_set.version_independent_id, value_set.version)
 if value_set.oid
   json.identifier	do
     json.child! do
@@ -9,12 +9,12 @@ if value_set.oid
     end
   end
 end
-json.version	value_set.version.to_s
-json.name	value_set.name
-json.status	'active' # value_set.status
-json.date	value_set.updated_at
+json.version value_set.version.to_s
+json.name value_set.name
+json.status 'active' # value_set.status
+json.date value_set.updated_at
 json.publisher value_set.source
-json.description	value_set.description
+json.description value_set.description
 json.expansion do
   json.identifier "urn:uuid:#{SecureRandom.uuid}"
   json.timestamp  Time.now
