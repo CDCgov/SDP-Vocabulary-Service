@@ -22,6 +22,18 @@ class SectionQuestion < ApplicationRecord
     end
   end
 
+  # old_q is a SectionQuestion, new_q is hash representing a new section question from the request params
+  def update_section_question(old_q, new_q)
+    old_q.position = new_q[:position]
+    old_q.program_var = new_q[:program_var]
+    old_q.question_id = new_q[:question_id]
+    old_q.nested_section_id = new_q[:nested_section_id]
+    old_q.response_set_id = new_q[:response_set_id]
+    # While this seems unecessary, checking changed? here improves
+    old_q.save! if old_q.changed?
+    old_q
+  end
+
   def reindex
     UpdateIndexJob.perform_later('question', question.id) if previous_changes[:question_id]
     UpdateIndexJob.perform_later('response_set', response_set.id) if response_set
