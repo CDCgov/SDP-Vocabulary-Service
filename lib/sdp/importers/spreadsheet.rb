@@ -187,7 +187,7 @@ module SDP
       end
 
       def response_set_for_vads(element)
-        rs = ResponseSet.where(oid: element[:value_set_oid]).first
+        rs = ResponseSet.most_recent_for_oid(element[:value_set_oid])
         if rs.nil?
           rs = ResponseSet.new(
             created_by: @user, status: 'draft',

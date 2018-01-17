@@ -24,6 +24,10 @@ class ResponseSet < ApplicationRecord
 
   after_commit :index, on: [:create, :update]
 
+  def self.most_recent_for_oid(oid)
+    where(oid: oid).order(version: :desc).first
+  end
+
   def index
     UpdateIndexJob.perform_later('response_set', id)
   end
