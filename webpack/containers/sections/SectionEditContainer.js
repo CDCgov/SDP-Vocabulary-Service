@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { denormalize } from 'normalizr';
 import { Button } from 'react-bootstrap';
-import capitalize from 'lodash/capitalize';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sectionSchema } from '../../schema';
@@ -130,6 +129,11 @@ class SectionEditContainer extends Component {
     this.props.addQuestion(this.props.section, q);
   }
 
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit'};
+    return wordMap[this.props.params.action || 'new'];
+  }
+
   render() {
     if(!this.props.section || !this.props.questions){
       return (
@@ -151,7 +155,7 @@ class SectionEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{capitalize(this.props.params.action)} Section </h1>
+              <h1 className="panel-title">{`${this.actionWord()} Section`}</h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">

@@ -171,69 +171,55 @@ class SurveyEdit extends Component {
     }
     return (
       <div className="col-md-7 survey-edit-details">
-      <div className="" id='survey-div'>
-      <ModalDialog  show ={this.state.showModal}
-                    title="Warning"
-                    subTitle="Unsaved Changes"
-                    warning ={true}
-                    message ="You are about to leave a page with unsaved changes. How would you like to proceed?"
-                    secondaryButtonMessage="Continue Without Saving"
-                    primaryButtonMessage="Save & Leave"
-                    cancelButtonMessage="Cancel"
-                    primaryButtonAction={() => this.handleModalResponse(false)}
-                    cancelButtonAction ={() => {
-                      this.props.router.push(this.props.route.path);
-                      this.setState({ showModal: false });
-                    }}
-                    secondaryButtonAction={() => this.handleModalResponse(true)} />
-      <form onSubmit={(e) => this.handleSubmit(e)}>
-        <Errors errors={this.state.errors} />
-          <div className="survey-inline">
-            <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
-            <input tabIndex="3" className='btn btn-default pull-right' name="Save Survey" type="submit" value={`Save`}/>
-            {this.cancelButton()}
-          </div>
-        <div className="row">
-          <div className="col-md-12">
-            <hr />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="row">
-              <div className="survey-group col-md-12">
-                <label htmlFor="survey-name" hidden>Name</label>
-                <input tabIndex="3" className="input-format" placeholder="Survey Name" type="text" value={this.state.name} name="survey-name" id="survey-name" onChange={this.handleChange('name')}/>
-              </div>
+        <div id='survey-div'>
+        <ModalDialog  show ={this.state.showModal}
+                      title="Warning"
+                      subTitle="Unsaved Changes"
+                      warning ={true}
+                      message ="You are about to leave a page with unsaved changes. How would you like to proceed?"
+                      secondaryButtonMessage="Continue Without Saving"
+                      primaryButtonMessage="Save & Leave"
+                      cancelButtonMessage="Cancel"
+                      primaryButtonAction={() => this.handleModalResponse(false)}
+                      cancelButtonAction ={() => {
+                        this.props.router.push(this.props.route.path);
+                        this.setState({ showModal: false });
+                      }}
+                      secondaryButtonAction={() => this.handleModalResponse(true)} />
+        <form onSubmit={(e) => this.handleSubmit(e)}>
+          <Errors errors={this.state.errors} />
+            <div className="survey-inline">
+              <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
+              <input tabIndex="3" className='btn btn-default pull-right' name="Save Survey" type="submit" value={`Save`}/>
+              {this.cancelButton()}
             </div>
-            <div className="row">
-              <div className="survey-group col-md-8">
-                <label htmlFor="survey-description">Description</label>
-                <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="survey-description" id="survey-description" onChange={this.handleChange('description')}/>
-              </div>
-              <div className="survey-group col-md-4">
-                <label htmlFor="controlNumber">OMB Approval</label>
-                <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
-              </div>
+          <hr />
+          <div className="survey-group">
+            <label htmlFor="survey-name" hidden>Name</label>
+            <input tabIndex="3" className="input-format" placeholder="Survey Name" type="text" value={this.state.name} name="survey-name" id="survey-name" onChange={this.handleChange('name')}/>
+          </div>
+          <div className="row">
+            <div className="survey-group col-md-8">
+              <label htmlFor="survey-description">Description</label>
+              <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="survey-description" id="survey-description" onChange={this.handleChange('description')}/>
+            </div>
+            <div className="survey-group col-md-4">
+              <label htmlFor="controlNumber">OMB Approval</label>
+              <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
             </div>
           </div>
+          <h2 className="tags-table-header"><strong>Tags</strong></h2>
+          <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
+                   initialItems={this.state.conceptsAttributes}
+                   parentName={'survey'}
+                   childName={'tag'} />
+          <SurveySectionList survey={this.state}
+                          sections ={this.props.sections}
+                          questions  ={this.props.questions}
+                          reorderSection={this.props.reorderSection}
+                          removeSection ={this.props.removeSection} />
+        </form>
         </div>
-        <div className="row">
-          <div className="col-md-12">
-            <h2 className="tags-table-header"><strong>Tags</strong></h2>
-            <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
-                     initialItems={this.state.conceptsAttributes}
-                     parentName={'survey'}
-                     childName={'tag'} />
-          </div>
-        </div>
-        <SurveySectionList survey={this.state}
-                        sections ={this.props.sections}
-                        questions  ={this.props.questions}
-                        reorderSection={this.props.reorderSection}
-                        removeSection ={this.props.removeSection} />
-      </form>
-      </div>
       </div>
     );
   }
