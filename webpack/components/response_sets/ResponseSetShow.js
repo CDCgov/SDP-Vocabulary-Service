@@ -113,7 +113,7 @@ export default class ResponseSetShow extends Component {
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Response Set Name:</strong> {responseSet.name} </h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
-          <div className="basic-c-box panel-default response-set-type">
+          <div className="basic-c-box panel-default response_set-type">
             <div className="panel-heading">
               <h2 className="panel-title">Details</h2>
             </div>
