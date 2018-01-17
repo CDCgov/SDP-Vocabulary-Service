@@ -1,6 +1,6 @@
 json.resourceType 'Questionnaire'
 json.url api_fhir_questionaire_url(survey.version_independent_id)
-json.status	'active'
+json.status 'active'
 json.version survey.version.to_s
 json.name survey.name.to_s
 json.title survey.name.to_s

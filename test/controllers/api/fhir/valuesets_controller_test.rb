@@ -25,6 +25,13 @@ class ApiFhirValueSetsControllerTest < ActionDispatch::IntegrationTest
     assert_json_schema_response('fhir/ValueSet.schema.json')
   end
 
+  test 'api value set should have the correct url' do
+    get api_fhir_valueset_url(@response_set.version_independent_id)
+    assert_response :success
+    res = JSON.parse response.body
+    assert_equal api_fhir_valueset_version_url(@response_set.version_independent_id, @response_set.version), res['url']
+  end
+
   test 'api should show value set of specific version' do
     get api_fhir_valueset_url(@response_set.version_independent_id, version: 1)
     assert_response :success
