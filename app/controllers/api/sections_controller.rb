@@ -4,9 +4,9 @@ module Api
 
     def index
       @sections = if params[:search]
-                    Section.includes(:published_by, section_questions: [{ response_set: :responses }, :question]).search(params[:search])
+                    Section.includes(:published_by, section_nested_items: [{ response_set: :responses }, :question, :nested_section]).search(params[:search])
                   else
-                    Section.includes(:published_by, section_questions: [{ response_set: :responses }, :question]).all
+                    Section.includes(:published_by, section_nested_items: [{ response_set: :responses }, :question, :nested_section]).all
                   end
       current_user_id = current_user ? current_user.id : -1
       @sections = if params[:limit]
@@ -19,8 +19,8 @@ module Api
     end
 
     def show
-      @section = Section.includes(:published_by, section_questions: [{ response_set: :responses },
-                                                                     :question]).by_id_and_version(params[:id], params[:version])
+      @section = Section.includes(:published_by, section_nested_items: [{ response_set: :responses },
+                                                                        :question, :nested_section]).by_id_and_version(params[:id], params[:version])
       if @section.nil?
         not_found
         return

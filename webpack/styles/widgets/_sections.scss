@@ -2,7 +2,7 @@
   @extend .panel-group;
   text-align: left;
 }
-.section-question-group {
+.section-nested-item-group {
   @extend .panel-group;
   text-align: right;
   margin-bottom: 10px;
@@ -107,13 +107,13 @@
   }
 }
 
-.question-search-filters-heading {
+.section-edit-search-filters-heading {
   margin-top: 0px;
   margin-bottom: 5px;
   font-size: 18px;
 }
 
-.question-search-filter {
+.section-edit-search-filter {
   @extend .list-group-item;
   display: table-cell !important;
   width: 50% !important;
@@ -130,6 +130,6 @@
   }
 }
 
-.question-search-filter-active-item {
+.section-edit-search-filter-active-item {
   background-color: $analytics-hover-blue !important;
 }

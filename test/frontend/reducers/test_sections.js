@@ -5,8 +5,8 @@ import sections from '../../../webpack/reducers/sections_reducer';
 import _ from 'lodash';
 import {
   ADD_ENTITIES_FULFILLED,
-  ADD_QUESTION,
-  REMOVE_QUESTION
+  ADD_NESTED_ITEM,
+  REMOVE_NESTED_ITEM
 } from '../../../webpack/actions/types';
 
 describe('sections reducer', () => {
@@ -25,29 +25,29 @@ describe('sections reducer', () => {
   });
 
   it('should add a question', () => {
-    const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionQuestions:[]}
-    const question = {id: 1, content: "Is this a question?", category: ""};
-    const action = {type: ADD_QUESTION, payload: {question, section, type: 'question'} };
+    const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionNestedItems:[]}
+    const nestedItem = {id: 1, content: "Is this a question?", category: ""};
+    const action = {type: ADD_NESTED_ITEM, payload: {nestedItem, section, type: 'question'} };
     const startState = {};
     const nextState = sections(startState, action);
-    expect(nextState["1"].sectionQuestions[0].questionId).to.equal(question.id);
+    expect(nextState["1"].sectionNestedItems[0].questionId).to.equal(nestedItem.id);
   });
 
   it('should not add a question twice', () => {
-    const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionQuestions:[]}
-    const question = {id: 1, content: "Is this a question?", category: ""};
-    const action = {type: ADD_QUESTION, payload: {question, section, type: 'question'} };
+    const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionNestedItems:[]}
+    const nestedItem = {id: 1, content: "Is this a question?", category: ""};
+    const action = {type: ADD_NESTED_ITEM, payload: {nestedItem, section, type: 'question'} };
     const nextState  = sections({}, action);
     const finalState = sections(nextState, action);
-    expect(finalState["1"].sectionQuestions.length).to.equal(1);
+    expect(finalState["1"].sectionNestedItems.length).to.equal(1);
   });
 
   it('should remove a question', () => {
     const question = {id: 1, content: "Is this a question?", category: ""};
-    const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionQuestions:[question]};
-    const action = {type: REMOVE_QUESTION, payload: {section, index: 0} };
+    const section = {id: 1, name: "Red Section",  userId: "testAuthor@gmail.com", sectionNestedItems:[question]};
+    const action = {type: REMOVE_NESTED_ITEM, payload: {section, index: 0} };
     const startState = {1: section};
     const nextState = sections(startState, action);
-    expect(nextState["1"].sectionQuestions.length).to.equal(0);
+    expect(nextState["1"].sectionNestedItems.length).to.equal(0);
   });
 });

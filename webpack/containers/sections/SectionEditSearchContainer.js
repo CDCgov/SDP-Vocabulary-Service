@@ -12,9 +12,9 @@ import currentUserProps from "../../prop-types/current_user_props";
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 
-const QUESTION_SEARCH_CONTEXT = 'QUESTION_SEARCH_CONTEXT';
+const SECTION_EDIT_SEARCH_CONTEXT = 'SECTION_EDIT_SEARCH_CONTEXT';
 
-class QuestionSearchContainer extends SearchManagerComponent {
+class SectionEditSearchContainer extends SearchManagerComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,8 +23,7 @@ class QuestionSearchContainer extends SearchManagerComponent {
       programFilter: [],
       systemFilter: [],
       page: 1,
-      mostRecentFilter: false,
-      type: 'question'
+      mostRecentFilter: false
     };
     this.search   = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
@@ -38,24 +37,24 @@ class QuestionSearchContainer extends SearchManagerComponent {
 
   componentDidUpdate(_prevProps, prevState) {
     if(prevState.page === this.state.page && prevState.programFilter != undefined && (prevState.programFilter !== this.state.programFilter || prevState.systemFilter !== this.state.systemFilter)) {
-      this.props.fetchSearchResults(QUESTION_SEARCH_CONTEXT, this.currentSearchParameters());
+      this.props.fetchSearchResults(SECTION_EDIT_SEARCH_CONTEXT, this.currentSearchParameters());
     }
   }
 
   search(searchParameters) {
     searchParameters.type = this.state.searchType;
-    super.search(searchParameters, QUESTION_SEARCH_CONTEXT);
+    super.search(searchParameters, SECTION_EDIT_SEARCH_CONTEXT);
   }
 
   loadMore() {
-    super.loadMore(QUESTION_SEARCH_CONTEXT);
+    super.loadMore(SECTION_EDIT_SEARCH_CONTEXT);
   }
 
   selectType(type) {
     this.setState({ searchType: type });
     let searchParameters = this.currentSearchParameters();
     searchParameters.type = type;
-    super.search(searchParameters, QUESTION_SEARCH_CONTEXT);
+    super.search(searchParameters, SECTION_EDIT_SEARCH_CONTEXT);
   }
 
   render() {
@@ -70,10 +69,10 @@ class QuestionSearchContainer extends SearchManagerComponent {
                          suggestions={this.props.suggestions}
                          fetchSuggestions={this.props.fetchSuggestions}
                          placeholder="Search Questions..." />
-        <button id="questions-filter-button" className={"question-search-filter btn" + (this.state.searchType === 'question' ? " question-search-filter-active-item" : "")} onClick={() => this.selectType('question')}>
+        <button id="questions-filter-button" className={"section-edit-search-filter btn" + (this.state.searchType === 'question' ? " section-edit-search-filter-active-item" : "")} onClick={() => this.selectType('question')}>
           <h2 className="item-title" id="question-analytics-item-title"><i className="fa fa-tasks" aria-hidden="true"></i> Questions</h2>
         </button>
-        <button id="sections-filter-button" className={"question-search-filter btn" + (this.state.searchType === 'section' ? " question-search-filter-active-item" : "")} onClick={() => this.selectType('section')}>
+        <button id="sections-filter-button" className={"section-edit-search-filter btn" + (this.state.searchType === 'section' ? " section-edit-search-filter-active-item" : "")} onClick={() => this.selectType('section')}>
           <h2 className="item-title" id="sections-analytics-item-title"><i className="fa fa-list-alt" aria-hidden="true"></i> Sections</h2>
         </button><br/><br/>
         <div className="load-more-search">
@@ -100,7 +99,7 @@ class QuestionSearchContainer extends SearchManagerComponent {
 
 function mapStateToProps(state) {
   return {
-    searchResults: state.searchResults[QUESTION_SEARCH_CONTEXT] || {},
+    searchResults: state.searchResults[SECTION_EDIT_SEARCH_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser,
@@ -112,7 +111,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchSearchResults, fetchSuggestions, fetchMoreSearchResults}, dispatch);
 }
 
-QuestionSearchContainer.propTypes = {
+SectionEditSearchContainer.propTypes = {
   handleSelectSearchResult: PropTypes.func.isRequired,
   selectedQuestions: PropTypes.object.isRequired,
   selectedSections: PropTypes.object.isRequired,
@@ -126,4 +125,4 @@ QuestionSearchContainer.propTypes = {
   surveillancePrograms: surveillanceProgramsProps
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionSearchContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SectionEditSearchContainer);

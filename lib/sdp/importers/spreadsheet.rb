@@ -161,7 +161,7 @@ module SDP
             q = question_for(element)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
-            section.section_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
+            section.section_nested_items.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
             q_position += 1
             q.index
           end

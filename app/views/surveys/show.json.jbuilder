@@ -14,6 +14,6 @@ end
 json.sections @survey.sections_with_most_recent do |section|
   json.extract! section, :id, :name, :description, :created_at, :updated_at, \
                 :version_independent_id, :version, :parent, :most_recent, :most_recent_published, \
-                :section_questions, :status, :created_by_id, :published_by_id
+                :section_nested_items, :status, :created_by_id, :published_by_id
   json.url section_url(section, format: :json)
 end

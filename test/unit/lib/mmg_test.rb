@@ -35,7 +35,7 @@ class MMGTest < ActiveSupport::TestCase
     assert section.present?
     assert_equal section.questions.count, 1
     assert_equal section.concepts.count, 1
-    assert_equal section.section_questions.first.position, 0
+    assert_equal section.section_nested_items.first.position, 0
     assert_equal section.concepts.first.value, 'Data Elements'
     section = Section.where(name: 'Form Completion Metadata').first
     assert section.present?
@@ -93,7 +93,7 @@ class MMGTest < ActiveSupport::TestCase
     assert section.present?
     assert_equal section.questions.count, 4
     assert_equal section.concepts.count, 1
-    assert_equal section.section_questions.first.position, 0
+    assert_equal section.section_nested_items.first.position, 0
     assert_equal section.concepts.first.value, 'Data Elements'
 
     survey = Survey.where(name: f).first

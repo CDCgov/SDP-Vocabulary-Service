@@ -15,10 +15,10 @@ class PDVModal extends Component {
       <div className="static-modal">
         <Modal animation={false} show={this.props.show} onHide={this.props.cancelButtonAction} role="dialog" aria-label="Program Defined Variable Editing Modal">
           <Modal.Header>
-            <Modal.Title componentClass="h2">Update Program Defined Variable</Modal.Title>
+            <Modal.Title componentClass="h2">Update Program Defined Variable Name</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <input className="input-format" type="text" value={this.state.pdv} name="program-defined-variable" id="program-defined-variable" aria-label="Enter program defined variable" placeholder="Enter program defined variable" onChange={(e) => this.setState({ pdv: e.target.value })} />
+            <input className="input-format" type="text" value={this.state.pdv} name="program-defined-variable" id="program-defined-variable" aria-label="Enter program defined variable name" placeholder="Enter program defined variable name..." onChange={(e) => this.setState({ pdv: e.target.value })} />
           </Modal.Body>
           <br/>
           <Modal.Footer>

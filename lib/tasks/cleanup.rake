@@ -4,7 +4,7 @@ namespace :cleanup do
   desc 'This will delete any orphaned relationships between items'
   task relationships: :environment do
     qrs_orphan_count = 0
-    sq_orphan_count = 0
+    sni_orphan_count = 0
     ss_orphan_count = 0
 
     QuestionResponseSet.all.each do |qrs|
@@ -14,10 +14,10 @@ namespace :cleanup do
       end
     end
 
-    SectionQuestion.all.each do |sq|
-      if sq.section.nil? || sq.question.nil?
-        sq.destroy!
-        sq_orphan_count += 1
+    SectionNestedItem.all.each do |sni|
+      if sni.section.nil? || (sni.question.nil? && sni.nested_section.nil?)
+        sni.destroy!
+        sni_orphan_count += 1
       end
     end
 
@@ -28,6 +28,6 @@ namespace :cleanup do
       end
     end
 
-    puts "Cleaned up: #{qrs_orphan_count} QuestionResponseSets, #{sq_orphan_count} SectionQuestions and #{ss_orphan_count} SurveySections."
+    puts "Cleaned up: #{qrs_orphan_count} QuestionResponseSets, #{sni_orphan_count} SectionNestedItems and #{ss_orphan_count} SurveySections."
   end
 end

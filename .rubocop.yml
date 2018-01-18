@@ -20,7 +20,7 @@ Metrics/BlockLength:
     - 'config/routes.rb'
     - 'lib/tasks/admin.rake'
 Metrics/LineLength:
-  Max: 150
+  Max: 160
   Exclude:
     - 'test/**/*'
     - 'lib/sdp/imports/spreadsheet.rb'

@@ -31,7 +31,7 @@ module SDP
           s.xpath('./odm:ItemGroupRef').each do |igr|
             ig_questions = item_groups[igr['ItemGroupOID']]
             ig_questions.each_with_index do |q, i|
-              section.section_questions << SectionQuestion.new(question: q, response_set: q.response_sets[0], position: i)
+              section.section_nested_items << SectionNestedItem.new(question: q, response_set: q.response_sets[0], position: i)
             end
           end
         end

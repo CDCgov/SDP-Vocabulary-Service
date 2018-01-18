@@ -16,7 +16,10 @@ import {
   DELETE_SECTION,
   ADD_ENTITIES,
   UPDATE_SECTION_TAGS,
-  UPDATE_PDV
+  UPDATE_PDV,
+  ADD_NESTED_ITEM,
+  REORDER_NESTED_ITEM,
+  REMOVE_NESTED_ITEM
 } from './types';
 
 export function newSection() {
@@ -115,10 +118,31 @@ export function updateSectionTags(id, conceptsAttributes) {
   };
 }
 
-export function updatePDV(id, sqId, pdv) {
+export function addNestedItem(section, nestedItem, type='question') {
+  return {
+    type: ADD_NESTED_ITEM,
+    payload: {section, nestedItem, type}
+  };
+}
+
+export function removeNestedItem(section, index) {
+  return {
+    type: REMOVE_NESTED_ITEM,
+    payload: {section, index}
+  };
+}
+
+export function reorderNestedItem(section, index, direction) {
+  return {
+    type: REORDER_NESTED_ITEM,
+    payload: {section, index, direction}
+  };
+}
+
+export function updatePDV(id, sniId, pdv) {
   const authenticityToken  = getCSRFToken();
   const putPromise = axios.put(routes.update_pdv_section_path(id),
-                      {sqId, pdv, authenticityToken},
+                      {sniId, pdv, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: UPDATE_PDV,

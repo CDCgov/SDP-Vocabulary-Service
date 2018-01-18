@@ -2,10 +2,10 @@ class Section < ApplicationRecord
   include OidGenerator, Versionable, Searchable, Taggable, Groupable
   acts_as_commentable
 
-  has_many :section_questions, -> { order 'position asc' }, dependent: :destroy
-  has_many :nested_sections, through: :section_questions
-  has_many :questions, through: :section_questions
-  has_many :response_sets, through: :section_questions
+  has_many :section_nested_items, -> { order 'position asc' }, dependent: :destroy
+  has_many :nested_sections, through: :section_nested_items
+  has_many :questions, through: :section_nested_items
+  has_many :response_sets, through: :section_nested_items
   has_many :survey_sections
   has_many :surveys, through: :survey_sections
 
@@ -19,6 +19,7 @@ class Section < ApplicationRecord
   accepts_nested_attributes_for :questions, allow_destroy: true
 
   after_destroy :update_surveys
+  after_destroy :update_nested_sections
 
   after_commit :index, on: [:create, :update]
 
@@ -28,17 +29,23 @@ class Section < ApplicationRecord
     survey_array.each(&:update_section_positions)
   end
 
+  def update_nested_sections
+    section_array = nested_sections.to_a
+    section_nested_items.destroy_all
+    section_array.each(&:update_item_positions)
+  end
+
   def index
     UpdateIndexJob.perform_later('section', id)
   end
 
-  def update_question_positions
-    SectionQuestion.transaction do
-      section_questions.each_with_index do |sq, i|
+  def update_item_positions
+    SectionNestedItem.transaction do
+      section_nested_items.each_with_index do |sni, i|
         # Avoiding potential unecessary writes
-        if sq.position != i
-          sq.position = i
-          sq.save!
+        if sni.position != i
+          sni.position = i
+          sni.save!
         end
       end
     end
@@ -49,15 +56,15 @@ class Section < ApplicationRecord
   # N+1 queries to figure out most recent version for each question.
   def questions_with_most_recent
     Question.find_by_sql(["select q.*, qmv.version as max_version, qmrv.version as most_recent_version
-     from questions q, section_questions sq,
+     from questions q, section_nested_items sni,
        (select version_independent_id, MAX(version) as version
          from questions group by version_independent_id) qmv
        left join (select version_independent_id, MAX(version) as version
          from questions q where q.status = 'published'
          group by version_independent_id) qmrv USING (version_independent_id)
      where (qmv.version_independent_id = q.version_independent_id
-     and sq.question_id = q.id
-     and sq.section_id = :section_id)", { section_id: id }])
+     and sni.question_id = q.id
+     and sni.section_id = :section_id)", { section_id: id }])
   end
 
   def self.owned_by(owner_id)
@@ -78,45 +85,46 @@ class Section < ApplicationRecord
     new_revision
   end
 
-  def update_sqs(sqs)
+  def update_snis(snis)
     new_qs_hash = {}
     new_ns_hash = {}
-    updated_sqs = []
-    sqs.each do |sq|
-      if sq[:question_id]
-        new_qs_hash[sq[:question_id]] = sq
+    updated_snis = []
+    snis.each do |sni|
+      if sni[:question_id]
+        new_qs_hash[sni[:question_id]] = sni
       else
-        new_ns_hash[sq[:nested_section_id]] = sq
+        new_ns_hash[sni[:nested_section_id]] = sni
       end
     end
     # Be aware, wrapping this loop in a transaction improves perf by batching all the updates to be committed at once
-    SectionQuestion.transaction do
-      section_questions.each do |sq|
-        if new_qs_hash.include? sq.question_id
-          updated_sqs << sq.update_section_question(sq, new_qs_hash.delete(sq.question_id))
-        elsif new_ns_hash.include? sq.nested_section_id
-          updated_sqs << sq.update_section_question(sq, new_ns_hash.delete(sq.nested_section_id))
+    SectionNestedItem.transaction do
+      section_nested_items.each do |sni|
+        if new_qs_hash.include? sni.question_id
+          updated_snis << sni.update_section_nested_item(sni, new_qs_hash.delete(sni.question_id))
+        elsif new_ns_hash.include? sni.nested_section_id
+          updated_snis << sni.update_section_nested_item(sni, new_ns_hash.delete(sni.nested_section_id))
         else
-          sq.destroy!
+          sni.destroy!
         end
       end
     end
-    # any new section question still in this hash needs to be created
-    new_qs_hash.each do |_id, sq|
-      updated_sqs << SectionQuestion.new(question_id: sq[:question_id], response_set_id: sq[:response_set_id],\
-                                         position: sq[:position], program_var: sq[:program_var])
+    # any new section nested item still in this hash needs to be created
+    new_qs_hash.each do |_id, sni|
+      updated_snis << SectionNestedItem.new(question_id: sni[:question_id], response_set_id: sni[:response_set_id],\
+                                            position: sni[:position], program_var: sni[:program_var])
     end
-    new_ns_hash.each do |_id, sq|
-      updated_sqs << SectionQuestion.new(nested_section_id: sq[:nested_section_id], position: sq[:position], program_var: sq[:program_var])
+    new_ns_hash.each do |_id, sni|
+      updated_snis << SectionNestedItem.new(nested_section_id: sni[:nested_section_id], position: sni[:position], program_var: sni[:program_var])
     end
-    updated_sqs
+    updated_snis
   end
 
   def cascading_action(&block)
     yield self
-    section_questions.each do |sq|
-      sq.question.cascading_action(&block)
-      sq.response_set.cascading_action(&block) if sq.response_set
+    section_nested_items.each do |sni|
+      sni.nested_section.cascading_action(&block) if sni.nested_section
+      sni.question.cascading_action(&block) if sni.question
+      sni.response_set.cascading_action(&block) if sni.response_set
     end
   end
 

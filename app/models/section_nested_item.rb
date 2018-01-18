@@ -1,4 +1,4 @@
-class SectionQuestion < ApplicationRecord
+class SectionNestedItem < ApplicationRecord
   belongs_to :section
   belongs_to :question
   belongs_to :response_set
@@ -22,16 +22,16 @@ class SectionQuestion < ApplicationRecord
     end
   end
 
-  # old_q is a SectionQuestion, new_q is hash representing a new section question from the request params
-  def update_section_question(old_q, new_q)
-    old_q.position = new_q[:position]
-    old_q.program_var = new_q[:program_var]
-    old_q.question_id = new_q[:question_id]
-    old_q.nested_section_id = new_q[:nested_section_id]
-    old_q.response_set_id = new_q[:response_set_id]
+  # old_sni is a SectionNestedItem, new_sni is hash representing a new section nested item from the request params
+  def update_section_nested_item(old_sni, new_sni)
+    old_sni.position = new_sni[:position]
+    old_sni.program_var = new_sni[:program_var]
+    old_sni.question_id = new_sni[:question_id]
+    old_sni.nested_section_id = new_sni[:nested_section_id]
+    old_sni.response_set_id = new_sni[:response_set_id]
     # While this seems unecessary, checking changed? here improves
-    old_q.save! if old_q.changed?
-    old_q
+    old_sni.save! if old_sni.changed?
+    old_sni
   end
 
   def reindex

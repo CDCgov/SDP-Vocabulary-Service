@@ -1,15 +1,15 @@
 import { expect, renderComponent } from '../../test_helper';
-import SectionQuestionList from '../../../../webpack/containers/sections/SectionQuestionList';
+import SectionNestedItemList from '../../../../webpack/containers/sections/SectionNestedItemList';
 
-describe('SectionQuestionList', () => {
+describe('SectionNestedItemList', () => {
   let component;
 
   beforeEach(() => {
-    const questions = [{id: 1, content: "Is this a question?", category: "", createdById: 1},
+    const items = [{id: 1, content: "Is this a question?", category: "", createdById: 1},
                        {id: 2, content: "Whats your name", category: "", createdById: 1},
                        {id: 3, content: "What is a question?", category: "", createdById: 1}];
     const currentUser = {id: 1};
-    component = renderComponent(SectionQuestionList, {questions, currentUser});
+    component = renderComponent(SectionNestedItemList, {items, currentUser});
   });
 
   it('should create list of questions', () => {

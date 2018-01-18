@@ -18,7 +18,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 const QUESTION_ITEM_CONTEXT = 'QUESTION_ITEM_CONTEXT';
 
-class QuestionItem extends SearchManagerComponent {
+class AddedNestedItem extends SearchManagerComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -147,7 +147,7 @@ class QuestionItem extends SearchManagerComponent {
     if (!this.props.item) {
       return (<div>Loading...</div>);
     }
-    let srType = this.props.itemType === 'question' ? 'section_question' : 'nested_section';
+    let srType = this.props.itemType === 'question' ? 'section_nested_item' : 'nested_section';
     return (
       <div className='question-item'>
         {this.searchModal()}
@@ -163,7 +163,6 @@ class QuestionItem extends SearchManagerComponent {
                         showProgramVarModal={this.showProgramVarModal}
                         selectedResponseSetId={this.props.selectedResponseSet}
                         showResponseSetSearch={this.showResponseSetSearch}
-                        handleProgramVarChange ={this.props.handleProgramVarChange}
                         handleResponseSetChange={this.handleResponseSetChangeEvent}
                         />
         </div>
@@ -189,7 +188,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchSearchResults, fetchSuggestions}, dispatch);
 }
 
-QuestionItem.propTypes = {
+AddedNestedItem.propTypes = {
   item: PropTypes.object,
   itemType: PropTypes.string,
   responseSets: PropTypes.arrayOf(responseSetProps),
@@ -209,4 +208,4 @@ QuestionItem.propTypes = {
   surveillancePrograms: surveillanceProgramsProps
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionItem);
+export default connect(mapStateToProps, mapDispatchToProps)(AddedNestedItem);

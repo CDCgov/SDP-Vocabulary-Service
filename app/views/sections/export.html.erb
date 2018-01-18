@@ -8,11 +8,15 @@
   <!-- Start content to export -->
   <h3>Section Name: <%= @section.name %></h3><br>
 
-  <% @section.section_questions.each do |sq| %>
-    <%= sq.question.content %>
+  <% @section.section_nested_items.each do |sni| %>
+    <% if sni.question %>
+      <%= sni.question.content %>
+    <% elsif sni.nested_section %>
+      <%= sni.nested_section.name %>
+    <% end %>
     <p>
-      <% if sq.response_set %>
-        <% sq.response_set.responses.each.with_index do |r, i| %>
+      <% if sni.response_set %>
+        <% sni.response_set.responses.each.with_index do |r, i| %>
           <%= i+1 %>. <%= r.value %><br>
         <% end %>
       <% end %>

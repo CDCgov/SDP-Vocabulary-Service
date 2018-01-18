@@ -2,19 +2,19 @@ import { expect, renderComponent } from '../../test_helper';
 import SectionShow from '../../../../webpack/components/sections/SectionShow';
 import MockRouter from '../../mock_router';
 
-describe('SectionQuestionList', () => {
+describe('SectionNestedItemList', () => {
   let component;
 
   beforeEach(() => {
     const router = new MockRouter();
     const questions = [];
-    const sectionQuestions = [];
+    const sectionNestedItems = [];
     for (var i = 1; i < 20; i++) {
       questions.push({id: i, content: `Is your favorite number ${i}?`, status: 'draft', createdById: 1});
-      sectionQuestions.push({id: i, questionId: i});
+      sectionNestedItems.push({id: i, questionId: i});
     }
     const props  = {
-      section: {id: 6, name: "Test Section", questions: questions, versionIndependentId: "SECT-1", version: 1, sectionQuestions: sectionQuestions},
+      section: {id: 6, name: "Test Section", questions: questions, versionIndependentId: "SECT-1", version: 1, sectionNestedItems: sectionNestedItems},
       publishSection: ()=>{},
       deleteSection: ()=>{},
       sectionSubmitter:  ()=>{},

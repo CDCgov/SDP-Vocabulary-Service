@@ -11,7 +11,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @section = sections(:one)
     @question = questions(:one)
-    @sq = section_questions(:one)
+    @sni = section_nested_items(:one)
     @current_user = users(:admin)
     @na_user = users(:not_admin)
     @group = groups(:one)
@@ -77,7 +77,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'cannot edit pdv on something you do not own' do
     sign_in @na_user
-    pdv_json = { pdv: 'Test', sq_id: @sq.id }
+    pdv_json = { pdv: 'Test', sni_id: @sni.id }
     put update_pdv_section_path(@section, format: :json, params: pdv_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' })
     assert_response :unprocessable_entity
   end
@@ -168,13 +168,13 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should destroy a draft section and sectionQuestions' do
+  test 'should destroy a draft section and sectionNestedItems' do
     post questions_url(format: :json), params: { question: { status: 'draft', content: 'TBD content' } }
     last_id = Section.last.id
     linked_question = { question_id: Question.last.id, response_set_id: nil, position: 1, program_var: 'test' }
-    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @section.created_by_id, linked_questions: [linked_question] } }
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @section.created_by_id, linked_items: [linked_question] } }
     assert_difference('Question.count', 0) do
-      assert_difference('SectionQuestion.count', -1) do
+      assert_difference('SectionNestedItem.count', -1) do
         assert_difference('Section.count', -1) do
           delete section_url(Section.last, format: :json)
         end
