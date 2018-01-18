@@ -29,7 +29,7 @@ class SectionsController < ApplicationController
     @section = Section.new(section_params)
     return unless can_section_be_created?(@section)
     @section.created_by = current_user
-    @section.section_questions = create_section_questions
+    @section.section_nested_items = create_section_nested_items
     if @section.save
       render :show, status: :created, location: @section
     else
@@ -45,7 +45,7 @@ class SectionsController < ApplicationController
     else
       update_successful = nil
       @section.transaction do
-        @section.section_questions = update_section_questions
+        @section.section_nested_items = update_section_nested_items
         @section.update_concepts('Section')
         # When we assign update_successful, it is the last expression in the block
         # That means, if the section fails to update, this block will return false,
@@ -102,11 +102,11 @@ class SectionsController < ApplicationController
   end
 
   def update_pdv
-    if @section.section_question_ids.include?(params[:sq_id])
-      sq = SectionQuestion.find(params[:sq_id])
-      sq.program_var = params[:pdv]
-      if sq.save!
-        render :show, status: :ok, location: @survey
+    if @section.section_nested_item_ids.include?(params[:sni_id])
+      sni = SectionNestedItem.find(params[:sni_id])
+      sni.program_var = params[:pdv]
+      if sni.save!
+        render :show, status: :ok, location: @section
       else
         render json: @section.errors, status: :unprocessable_entity
       end
@@ -149,24 +149,24 @@ class SectionsController < ApplicationController
     "Section was successfully #{action}."
   end
 
-  def create_section_questions
-    section_questions = []
-    if params[:section][:linked_questions]
-      params[:section][:linked_questions].each do |q|
-        section_questions << SectionQuestion.new(question_id: q[:question_id], response_set_id: q[:response_set_id],\
-                                                 position: q[:position], program_var: q[:program_var])
+  def create_section_nested_items
+    section_nested_items = []
+    if params[:section][:linked_items]
+      params[:section][:linked_items].each do |sni|
+        section_nested_items << SectionNestedItem.new(question_id: sni[:question_id], response_set_id: sni[:response_set_id],\
+                                                      position: sni[:position], program_var: sni[:program_var])
       end
     end
-    section_questions
+    section_nested_items
   end
 
   # !!! this algorithm assumes a question cannot appear twice on the same section !!!
   # Only update section questions that were changed
-  def update_section_questions
-    sqs = params[:section][:linked_questions]
-    updated_sqs = []
-    updated_sqs = @section.update_sqs(sqs) if sqs
-    updated_sqs
+  def update_section_nested_items
+    snis = params[:section][:linked_items]
+    updated_snis = []
+    updated_snis = @section.update_snis(snis) if snis
+    updated_snis
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -23,7 +23,7 @@ class Survey < ApplicationRecord
   after_commit :index, on: [:create, :update]
 
   def questions
-    Question.joins(section_questions: { section: { survey_sections: :survey } }).where(surveys: { id: id }).all
+    Question.joins(section_nested_items: { section: { survey_sections: :survey } }).where(surveys: { id: id }).all
   end
 
   def index

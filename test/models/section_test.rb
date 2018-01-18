@@ -32,7 +32,7 @@ class SectionTest < ActiveSupport::TestCase
     q3 = Question.new(content: 'Test publish 3', response_type: rt, created_by: user)
     assert q3.save
     sect = Section.new(name: 'Test publish', created_by: user)
-    sect.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q2.id, response_set_id: rs2.id, position: 1), SectionQuestion.new(question_id: q3.id, position: 2)]
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q.id, response_set_id: rs.id, position: 0), SectionNestedItem.new(question_id: q2.id, response_set_id: rs2.id, position: 1), SectionNestedItem.new(question_id: q3.id, position: 2)]
     assert sect.save
     sect.publish(user)
     assert_equal user, sect.published_by
@@ -40,8 +40,8 @@ class SectionTest < ActiveSupport::TestCase
     assert_equal 'published', sect.questions[0].status
     assert_equal 'published', sect.questions[1].status
     assert_equal 'published', sect.questions[2].status
-    assert_equal 'published', sect.section_questions[0].response_set.status
-    assert_equal 'published', sect.section_questions[1].response_set.status
+    assert_equal 'published', sect.section_nested_items[0].response_set.status
+    assert_equal 'published', sect.section_nested_items[1].response_set.status
   end
 
   test 'Deleting a question deletes its section question and preserves position' do
@@ -55,17 +55,17 @@ class SectionTest < ActiveSupport::TestCase
     q3 = Question.new(content: 'Test Delete 3', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
     assert q3.save
     sect = Section.new(name: 'Test Delete 2', created_by: user)
-    sect.section_questions = [SectionQuestion.new(question_id: q1.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q2.id, response_set_id: rs.id, position: 0), SectionQuestion.new(question_id: q3.id, response_set_id: rs.id, position: 0)]
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q1.id, response_set_id: rs.id, position: 0), SectionNestedItem.new(question_id: q2.id, response_set_id: rs.id, position: 0), SectionNestedItem.new(question_id: q3.id, response_set_id: rs.id, position: 0)]
     assert sect.save
     # Need to wait for the async queue to finish its work before destroying the section, or it crashes
     sleep 5
     assert q2.destroy
     sect = Section.find(sect.id)
-    assert_equal 2, sect.section_questions.size
-    assert_equal 0, sect.section_questions[0].position
-    assert_equal 1, sect.section_questions[1].position
-    assert_equal q1.id, sect.section_questions[0].question_id
-    assert_equal q3.id, sect.section_questions[1].question_id
+    assert_equal 2, sect.section_nested_items.size
+    assert_equal 0, sect.section_nested_items[0].position
+    assert_equal 1, sect.section_nested_items[1].position
+    assert_equal q1.id, sect.section_nested_items[0].question_id
+    assert_equal q3.id, sect.section_nested_items[1].question_id
   end
 
   test 'Getting questions with most_recent loaded' do

@@ -4,7 +4,7 @@
     padding-left: 15px;
     padding-right: 15px;
     width: 1170px;
-  .added-question-group{
+  .added-nested-item-group{
     min-height: 500px;
     max-height: 1000px;
     padding-right: 8px;
@@ -57,13 +57,13 @@
     display: block;
     float: left;
   }
-  .panel-body-section-question{
+  .panel-body-section-nested-item{
     padding-top: 6px;
     padding-bottom: 0px;
     padding-right: 5px;
     min-height: 0px;
   }
-  .section-question-controls{
+  .section-nested-item-controls{
     margin-bottom: 15px;
   }
   .delete-question{

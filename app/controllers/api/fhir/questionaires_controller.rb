@@ -3,7 +3,7 @@ module Api
     class QuestionairesController < ApplicationController
       def index
         @surveys = Survey.includes(:published_by, survey_sections:
-                         [section: { section_questions: [:response_set, :question] }]).where("status='published'")
+                         [section: { section_nested_items: [:response_set, :question, :nested_section] }]).where("status='published'")
         @surveys = @surveys.search(params[:_content]) if params[:_content]
         limit =  params[:limit] ? params[:limit] : 100
         @surveys = @surveys.limit(limit).order(version_independent_id: :asc)

@@ -5,10 +5,7 @@ import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
 import {
-  ADD_QUESTION,
-  REMOVE_QUESTION,
   DELETE_QUESTION,
-  REORDER_QUESTION,
   SAVE_QUESTION,
   SAVE_DRAFT_QUESTION,
   PUBLISH_QUESTION,
@@ -18,31 +15,10 @@ import {
   UPDATE_QUESTION_TAGS
 } from './types';
 
-export function addQuestion(section, question, type='question') {
-  return {
-    type: ADD_QUESTION,
-    payload: {section, question, type}
-  };
-}
-
-export function removeQuestion(section, index) {
-  return {
-    type: REMOVE_QUESTION,
-    payload: {section, index}
-  };
-}
-
 export function deleteQuestion(id, callback=null) {
   return {
     type: DELETE_QUESTION,
     payload: deleteObject(routes.question_path(id), callback)
-  };
-}
-
-export function reorderQuestion(section, index, direction) {
-  return {
-    type: REORDER_QUESTION,
-    payload: {section, index, direction}
   };
 }
 

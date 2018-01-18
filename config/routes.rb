@@ -36,7 +36,6 @@ Rails.application.routes.draw do
     put '/groups/remove_user' => 'groups#remove_user', as: :remove_user
   end
 
-  resources :section_questions
   resources :sections, except: [:edit] do # No need for edit as that is handled on the react side
     get :revise, on: :member
     get :export, on: :member

@@ -10,7 +10,7 @@ import PDVModal from "../components/PDVModal";
 import currentUserProps from "../prop-types/current_user_props";
 import { responseSetProps } from "../prop-types/response_set_props";
 
-// Note, acceptable type strings are: response_set, question, section_question, section, survey, survey_section, nested_section
+// Note, acceptable type strings are: response_set, question, section_nested_item, section, survey, survey_section, nested_section
 export default class SearchResult extends Component {
   constructor(props) {
     super(props);
@@ -56,7 +56,7 @@ export default class SearchResult extends Component {
     var type = originalType.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','');
     return (
       <ul className="dropdown-menu dropdown-menu-right">
-        {(originalType === 'section_question' || originalType == 'nested_section') && <li>
+        {(originalType === 'section_nested_item' || originalType == 'nested_section') && <li>
           <a title={this.props.programVar ? 'Modify Program Variable Value' : 'Add Program Variable Value'} href="#" onClick={this.props.showProgramVarModal}>{this.props.programVar ? 'Modify' : 'Add'} Program Variable</a>
         </li>}
         {this.isRevisable(result) && <li>
@@ -186,10 +186,10 @@ export default class SearchResult extends Component {
       case 'survey_section':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Section details.">
-            {result.questions && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions: {result.questions && result.questions.length}</a></li>}
+            {result.questions && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions and Nested Sections: {result.questions && result.questions.length}</a></li>}
           </ul>
         );
-      case 'section_question':
+      case 'section_nested_item':
         if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
           return (
             <ul className="list-inline result-linked-number result-linked-item associated__responseset" aria-label="Additional Question details.">
@@ -199,9 +199,9 @@ export default class SearchResult extends Component {
         } else {
           var selectedResponseSet = this.props.responseSets.find((r) => r.id == this.props.selectedResponseSetId);
           return (
-            <div className="panel-body panel-body-section-question associated__responseset">
+            <div className="panel-body panel-body-section-nested-item associated__responseset">
               <span className="selected-response-set" aria-label={`Selected Response set for Question ${result.content}`}>Response Set: {(selectedResponseSet && selectedResponseSet.name) || '(None)'}</span>
-              <div className="section-question-group">
+              <div className="section-nested-item-group">
                 <input aria-label="Question IDs" type="hidden" name="question_ids[]" value={this.props.result.id}/>
                 <select className="response-set-select" aria-label="Response Set IDs" name='responseSet' data-question={this.props.index} value={this.props.selectedResponseSetId || ''} onChange={this.props.handleResponseSetChange}>
                   {this.props.responseSets.length > 0 && this.props.responseSets.map((r, i) => {
@@ -262,7 +262,7 @@ export default class SearchResult extends Component {
       case 'survey_section':
         return (
           <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-${type}`}>
-            <text className="sr-only">List of links and names of questions linked to this section:</text>
+            <text className="sr-only">List of links and names of questions and nested sections linked to this section:</text>
             {result.questions && result.questions.length > 0 &&
               result.questions.map((q, i) => {
                 return(
@@ -293,7 +293,7 @@ export default class SearchResult extends Component {
   }
 
   baseResult(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
-    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'section_question': 'fa-tasks', 'section': 'fa-list-alt', 'nested_section': 'fa-list-alt', 'survey_section': 'fa-list-alt', 'survey': 'fa-clipboard'};
+    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'section_nested_item': 'fa-tasks', 'section': 'fa-list-alt', 'nested_section': 'fa-list-alt', 'survey_section': 'fa-list-alt', 'survey': 'fa-clipboard'};
     return (
       <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
         <li className="u-result-content-item">
@@ -324,7 +324,7 @@ export default class SearchResult extends Component {
                         cancelButtonAction={() => this.setState({ pdvModalOpen: false })}
                         pdv={this.props.programVar || ''}
                         saveButtonAction={(pdv) => {
-                          this.props.updatePDV(result.sectionId, result.sqId, pdv);
+                          this.props.updatePDV(result.sectionId, result.sniId, pdv);
                           this.setState({ pdvModalOpen: false });
                         }} />
                       <text className="sr-only">Item program defined variable: </text>{this.props.programVar ? this.props.programVar : 'Add Variable'} {'\u00A0'}
@@ -342,7 +342,7 @@ export default class SearchResult extends Component {
           <div className="result-linked-details">
             {this.linkedDetails(result, type)}
           </div>
-          {(type !== "section_question") && this.detailsPanel(result, type)}
+          {(type !== "section_nested_item") && this.detailsPanel(result, type)}
         </li>
         <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
           <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>

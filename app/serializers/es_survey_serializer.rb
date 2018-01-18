@@ -42,16 +42,17 @@ class ESSurveySerializer < ActiveModel::Serializer
   end
 
   def questions
-    section_questions = []
-    object.survey_sections.includes(section: { section_questions: [:response_set, { question: :concepts }] }).each do |ss|
-      section_questions.concat ss.section.section_questions.to_a
+    section_nested_items = []
+    object.survey_sections.includes(section: { section_nested_items: [:response_set, { question: :concepts }, { nested_section: :concepts }] }).each do |ss|
+      section_nested_items.concat ss.section.section_nested_items.to_a
     end
-    section_questions.collect do |sq|
-      { id: sq.question_id,
-        name: sq.question.content,
-        codes: (sq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
-        response_set: sq.response_set.try(:name),
-        response_set_id: sq.response_set_id }
+    section_nested_items.collect do |sni|
+      next unless sni.question
+      { id: sni.question_id,
+        name: sni.question.content,
+        codes: (sni.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
+        response_set: sni.response_set.try(:name),
+        response_set_id: sni.response_set_id }
     end
   end
 

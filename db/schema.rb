@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 20180109185938) do
     t.index ["name"], name: "index_roles_on_name"
   end
 
-  create_table "section_questions", id: :serial, force: :cascade do |t|
+  create_table "section_nested_items", id: :serial, force: :cascade do |t|
     t.integer "section_id"
     t.integer "question_id"
     t.integer "response_set_id"
@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(version: 20180109185938) do
     t.integer "position"
     t.string "program_var"
     t.bigint "nested_section_id"
-    t.index ["nested_section_id"], name: "index_section_questions_on_nested_section_id"
+    t.index ["nested_section_id"], name: "index_section_nested_items_on_nested_section_id"
   end
 
   create_table "sections", id: :serial, force: :cascade do |t|
