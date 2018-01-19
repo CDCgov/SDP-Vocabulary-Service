@@ -36,6 +36,18 @@ module Api
         assert_equal 2, sections.length
       end
 
+      test 'api should provide program variables' do
+        get api_fhir_questionaire_url(@survey.version_independent_id)
+        assert_response :success
+        assert_json_schema_response('fhir/Questionnaire.json')
+        res = JSON.parse response.body
+        extension = res['item'][0]['item'][0]['extension']
+        assert extension
+        program_var = extension.find { |e| e['url'] == 'https://sdp-v.services.cdc.gov/fhir/questionnaire-item-program-var' }
+        assert program_var
+        assert_equal 'MyString', program_var['valueString']
+      end
+
       test 'api should show survey of specific version' do
         get api_fhir_questionaire_url(@survey.version_independent_id, version: 1)
         assert_response :success
