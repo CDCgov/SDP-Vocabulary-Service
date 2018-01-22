@@ -252,16 +252,16 @@
             }
           }
         },
-        "questions": {
+        "sectionNestedItems": {
           "type": "object",
           "properties": {
+            "id": {
+              "type": "string"
+            },
             "name": {
               "type": "string"
             },
             "responseSet": {
-              "type": "string"
-            },
-            "id": {
               "type": "string"
             },
             "responseSetID": {

@@ -186,7 +186,7 @@ export default class SearchResult extends Component {
       case 'survey_section':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Section details.">
-            {result.questions && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions and Nested Sections: {result.questions && result.questions.length}</a></li>}
+            {result.sectionNestedItems && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-${type}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Questions and Nested Sections: {result.sectionNestedItems && result.sectionNestedItems.length}</a></li>}
           </ul>
         );
       case 'section_nested_item':
@@ -263,11 +263,11 @@ export default class SearchResult extends Component {
         return (
           <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-${type}`}>
             <text className="sr-only">List of links and names of questions and nested sections linked to this section:</text>
-            {result.questions && result.questions.length > 0 &&
-              result.questions.map((q, i) => {
+            {result.sectionNestedItems && result.sectionNestedItems.length > 0 &&
+              result.sectionNestedItems.map((ni, i) => {
                 return(
-                  <div key={`question-${q.id}-${i}`} className="result-details-content">
-                    <Link to={`/questions/${q.id}`}> {q.name || q.content}</Link>
+                  <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
+                    <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
                   </div>
                 );
               })

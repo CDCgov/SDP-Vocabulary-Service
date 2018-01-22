@@ -61,6 +61,14 @@ class SectionEditSearchContainer extends SearchManagerComponent {
     const searchResults = this.props.searchResults;
     return (
       <div>
+        <ul className="nav nav-tabs" role="tablist">
+          <li id="question-search-tab" className={`nav-item ${this.state.searchType === 'question' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('question')} aria-selected={this.state.searchType === 'question'} aria-controls="question-search">
+            <a className="nav-link" data-toggle="tab" href="#" role="tab"><i className="fa fa-tasks" aria-hidden="true"><text className='sr-only'>Click to filter search by</text></i> Questions</a>
+          </li>
+          <li id="section-search-tab" className={`nav-item ${this.state.searchType === 'section' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('section')} aria-selected={this.state.searchType === 'section'} aria-controls="section-search">
+            <a className="nav-link" data-toggle="tab" href="#" role="tab"><i className="fa fa-list-alt" aria-hidden="true"><text className='sr-only'>Click to filter search by</text></i> Sections</a>
+          </li>
+        </ul>
         <DashboardSearch search={this.search}
                          surveillanceSystems={this.props.surveillanceSystems}
                          surveillancePrograms={this.props.surveillancePrograms}
@@ -69,12 +77,7 @@ class SectionEditSearchContainer extends SearchManagerComponent {
                          suggestions={this.props.suggestions}
                          fetchSuggestions={this.props.fetchSuggestions}
                          placeholder="Search Questions..." />
-        <button id="questions-filter-button" className={"section-edit-search-filter btn" + (this.state.searchType === 'question' ? " section-edit-search-filter-active-item" : "")} onClick={() => this.selectType('question')}>
-          <h2 className="item-title" id="question-analytics-item-title"><i className="fa fa-tasks" aria-hidden="true"></i> Questions</h2>
-        </button>
-        <button id="sections-filter-button" className={"section-edit-search-filter btn" + (this.state.searchType === 'section' ? " section-edit-search-filter-active-item" : "")} onClick={() => this.selectType('section')}>
-          <h2 className="item-title" id="sections-analytics-item-title"><i className="fa fa-list-alt" aria-hidden="true"></i> Sections</h2>
-        </button><br/><br/>
+        <br/>
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((sr, i) => {
             let isSelected = this.state.searchType === 'section' ? this.props.selectedSections[sr.Id] : this.props.selectedQuestions[sr.Id];

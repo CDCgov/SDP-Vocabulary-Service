@@ -67,7 +67,5 @@ questionSearchSchema.define({
 });
 
 sectionSearchSchema.define({
-  parent: sectionSearchSchema,
-  questions: [ questionSchema ],
-  responseSets: [ responseSetSchema ]
+  parent: sectionSearchSchema
 });
