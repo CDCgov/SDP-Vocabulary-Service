@@ -5,7 +5,7 @@ class SectionNestedItem < ApplicationRecord
   belongs_to :nested_section, class_name: 'Section'
   validates :position, presence: true
   validates_associated :section
-  validate :must_have_nested_section_or_question, :not_nested_section_and_question
+  validate :must_have_nested_section_or_question, :not_nested_section_and_question, :no_nested_self
 
   after_commit :reindex, on: [:create, :destroy]
   after_commit :reindex_on_update, on: [:update]
@@ -19,6 +19,12 @@ class SectionNestedItem < ApplicationRecord
   def not_nested_section_and_question
     if nested_section_id.present? && question_id.present?
       errors.add(:question, 'Cannot be associated with both a question and a nested section')
+    end
+  end
+
+  def no_nested_self
+    if nested_section_id.present? && nested_section_id == section_id
+      errors.add(:section, 'Section cannot contain itself as a nested section')
     end
   end
 
