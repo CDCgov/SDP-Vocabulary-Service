@@ -85,7 +85,18 @@ function mapStateToProps(state, ownProps) {
     props.sections = props.sections.map((sect) => {
       const sectionWithNestedItems = Object.assign({}, sect);
       if (sectionWithNestedItems.sectionNestedItems) {
-        sectionWithNestedItems.questions = sectionWithNestedItems.sectionNestedItems.map((sni) => state.questions[sni.questionId]);
+        sectionWithNestedItems.sectionNestedItems = sectionWithNestedItems.sectionNestedItems.map((sni) => {
+          let fullNestedItem = {};
+          if (sni.questionId) {
+            fullNestedItem = state.questions[sni.questionId];
+            fullNestedItem.type = 'question';
+            return fullNestedItem;
+          } else if (sni.sectionId) {
+            fullNestedItem = state.sections[sni.sectionId];
+            fullNestedItem.type = 'section';
+            return fullNestedItem;
+          }
+        });
       }
       return sectionWithNestedItems;
     });

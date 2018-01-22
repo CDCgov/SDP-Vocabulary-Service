@@ -154,7 +154,8 @@ class SectionsController < ApplicationController
     if params[:section][:linked_items]
       params[:section][:linked_items].each do |sni|
         section_nested_items << SectionNestedItem.new(question_id: sni[:question_id], response_set_id: sni[:response_set_id],\
-                                                      position: sni[:position], program_var: sni[:program_var])
+                                                      position: sni[:position], program_var: sni[:program_var],\
+                                                      nested_section_id: sni[:nested_section_id])
       end
     end
     section_nested_items
