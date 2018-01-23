@@ -20,23 +20,28 @@ json.item do
       end
     end
     json.item do
-      json.array! form.section_questions.each do |fq|
-        json.linkId fq.id.to_s
-        json.text fq.question.content
-        type = fq.question.response_type.code
-        type ||= fq.response_set ? 'choice' : 'text'
+      json.array! form.section_questions.each do |sq|
+        json.linkId sq.id.to_s
+        json.text sq.question.content
+        type = sq.question.response_type.code
+        type ||= sq.response_set ? 'choice' : 'text'
         json.type type
         json.extension do
-
-          if fq.question.concepts && !fq.question.concepts.empty?
+          if sq.question.concepts && !sq.question.concepts.empty?
             json.child! do
-              json.partial! 'api/fhir/extension_tags', codes: fq.question.concepts
+              json.partial! 'api/fhir/extension_tags', codes: sq.question.concepts
+            end
+          end
+          if sq.program_var.present?
+            json.child! do
+              json.url 'https://sdp-v.services.cdc.gov/fhir/questionnaire-item-program-var'
+              json.valueString sq.program_var
             end
           end
         end
-        if fq.response_set
+        if sq.response_set
           json.options do
-            json.reference api_fhir_valueset_version_url(fq.response_set.version_independent_id, fq.response_set.version)
+            json.reference api_fhir_valueset_version_url(sq.response_set.version_independent_id, sq.response_set.version)
           end
         end
       end
