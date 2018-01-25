@@ -14,14 +14,14 @@
 	<redcap:ProjectNotes></redcap:ProjectNotes>
 </GlobalVariables>
 <MetaDataVersion OID="Metadata.Test_2016-12-15_1938" Name="test" redcap:RecordIdField="lab_id">
-	<SectionDef OID="Section.id_shipping" Name="ID Shipping" Repeating="No" redcap:SectionName="id_shipping">
+	<FormDef OID="Form.id_shipping" Name="ID Shipping" Repeating="No" redcap:FormName="id_shipping">
 		<ItemGroupRef ItemGroupOID="id_shipping.lab_id" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.facility_name" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.secondtime_getsample" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.thirdtime_getsample" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="id_shipping.id_shipping_complete" Mandatory="No"/>
-	</SectionDef>
-	<SectionDef OID="Section.pathology_review" Name="Pathology Review" Repeating="No" redcap:SectionName="pathology_review">
+	</FormDef>
+	<FormDef OID="Form.pathology_review" Name="Pathology Review" Repeating="No" redcap:FormName="pathology_review">
 		<ItemGroupRef ItemGroupOID="pathology_review.tumor_origin" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.date_surgery" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_breast" Mandatory="No"/>
@@ -30,16 +30,16 @@
 		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_lung" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.clin_diagn_others" Mandatory="No"/>
 		<ItemGroupRef ItemGroupOID="pathology_review.pathology_review_complete" Mandatory="No"/>
-	</SectionDef>
-	<SectionDef OID="Section.slide_information" Name="Slide Information" Repeating="No" redcap:SectionName="slide_information">
+	</FormDef>
+	<FormDef OID="Form.slide_information" Name="Slide Information" Repeating="No" redcap:FormName="slide_information">
 		<ItemGroupRef ItemGroupOID="slide_information.five_um_tumor_quant" Mandatory="No"/>
-	</SectionDef>
-	<SectionDef OID="Section.tma_information" Name="TMA Information" Repeating="No" redcap:SectionName="tma_information">
+	</FormDef>
+	<FormDef OID="Form.tma_information" Name="TMA Information" Repeating="No" redcap:FormName="tma_information">
 		<ItemGroupRef ItemGroupOID="tma_information.tma_ca_pos1" Mandatory="No"/>
-	</SectionDef>
-	<SectionDef OID="Section.slide_tracking" Name="Slide Tracking" Repeating="No" redcap:SectionName="slide_tracking">
+	</FormDef>
+	<FormDef OID="Form.slide_tracking" Name="Slide Tracking" Repeating="No" redcap:FormName="slide_tracking">
 		<ItemGroupRef ItemGroupOID="slide_tracking.pulling_date1" Mandatory="No"/>
-	</SectionDef>
+	</FormDef>
 	<ItemGroupDef OID="id_shipping.lab_id" Name="IDs" Repeating="No">
 		<ItemRef ItemOID="lab_id" Mandatory="No" redcap:Variable="lab_id"/>
 		<ItemRef ItemOID="trc_id" Mandatory="No" redcap:Variable="trc_id"/>

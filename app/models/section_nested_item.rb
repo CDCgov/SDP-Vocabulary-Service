@@ -10,8 +10,22 @@ class SectionNestedItem < ApplicationRecord
   after_commit :reindex, on: [:create, :destroy]
   after_commit :reindex_on_update, on: [:update]
 
+  def all_questions
+    all_qs = []
+    nested_section.section_nested_items.each do |sni|
+      if sni.nested_section
+        sni.all_questions.each do |q|
+          all_qs << q
+        end
+      else
+        all_qs << sni
+      end
+    end
+    all_qs
+  end
+
   def must_have_nested_section_or_question
-    if nested_section_id.blank? && question_id.blank?
+    if nested_section.blank? && question.blank?
       errors.add(:question, 'A question or section must be associated with this record')
     end
   end
