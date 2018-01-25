@@ -19,7 +19,7 @@
 	<% igrs = section.item_groups %>
   <FormDef OID="Form.<%= section.name.gsub(' ', '_')%>" Name="<%= section.name %>" Repeating="No" redcap:FormName="<%= section.name.underscore %>">
 		<% igrs.each do |key, _snis| %>
-		<ItemGroupRef ItemGroupOID="<%= key.gsub(' ', '_') %>.single_section" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="<%= section.name.gsub(' ', '_')%>.<%= key.gsub(' ', '_') %>.single_section" Mandatory="No"/>
 		<% end %>
   </FormDef>
 	<% end %>
@@ -28,9 +28,9 @@
   <% @survey.sections.each do |section| %>
 	<% igrs = section.item_groups %>
   <% igrs.each do |key, snis| %>
-  <ItemGroupDef OID="<%= key.gsub(' ', '_') %>.single_section" Name="<%= key %>" Repeating="No">
+  <ItemGroupDef OID="<%= section.name.gsub(' ', '_')%>.<%= key.gsub(' ', '_') %>.single_section" Name="<%= key %>" Repeating="No">
     <% snis.each do |sni| %>
-    <ItemRef ItemOID="question_<%=sni.id%>" Mandatory="No" redcap:Variable="<%=sni.program_var || "question_#{sni.id}"%>"/>
+    <ItemRef ItemOID="question_<%=sni.id%>" Mandatory="No" redcap:Variable="<%=sni.program_var.blank? ? "question_#{sni.id}" : sni.program_var%>"/>
     <% end %>
   </ItemGroupDef>
 	<% end %>
@@ -41,7 +41,7 @@
 	<% igrs = section.item_groups %>
   <% igrs.each do |key, snis| %>
   <% snis.each do |sni| %>
-  <ItemDef OID="question_<%=sni.id%>" Name="question_<%=sni.id%>" DataType="text" Length="999" redcap:Variable="<%=sni.program_var || "question_#{sni.id}"%>" redcap:FieldType="<%= sni.response_set ? 'select' : 'text' %>" >
+  <ItemDef OID="question_<%=sni.id%>" Name="question_<%=sni.id%>" DataType="text" Length="999" redcap:Variable="<%=sni.program_var.blank? ? "question_#{sni.id}" : sni.program_var%>" redcap:FieldType="<%= sni.response_set ? 'select' : 'text' %>" >
     <Question><TranslatedText><%= sni.question.content %></TranslatedText></Question>
     <% if sni.response_set %>
     <CodeListRef CodeListOID="question_<%=sni.id%>.choices"/>
@@ -57,7 +57,7 @@
   <% igrs.each do |key, snis| %>
   <% snis.each do |sni| %>
   <% if sni.response_set %>
-  <CodeList OID="question_<%=sni.id%>.choices" Name="question_<%=sni.id%>" DataType="text" redcap:Variable="<%=sni.program_var || "question_#{sni.id}"%>">
+  <CodeList OID="question_<%=sni.id%>.choices" Name="question_<%=sni.id%>" DataType="text" redcap:Variable="<%=sni.program_var.blank? ? "question_#{sni.id}" : sni.program_var%>">
     <% sni.response_set.responses.each do |response| %>
     <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.blank? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
     <% end %>
