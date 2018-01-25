@@ -91,8 +91,8 @@ function mapStateToProps(state, ownProps) {
             fullNestedItem = state.questions[sni.questionId];
             fullNestedItem.type = 'question';
             return fullNestedItem;
-          } else if (sni.sectionId) {
-            fullNestedItem = state.sections[sni.sectionId];
+          } else if (sni.nestedSectionId) {
+            fullNestedItem = state.sections[sni.nestedSectionId];
             fullNestedItem.type = 'section';
             return fullNestedItem;
           }

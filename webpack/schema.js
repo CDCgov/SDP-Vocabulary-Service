@@ -55,6 +55,7 @@ sectionSchema.define({
 
 surveySchema.define({
   questions: [ questionSchema ],
+  nestedSections: [ sectionSchema ],
   sections: [ sectionSchema ],
   parent: surveySchema
 });

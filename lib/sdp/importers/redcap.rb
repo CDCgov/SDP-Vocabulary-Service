@@ -24,7 +24,7 @@ module SDP
 
       def parse_sections(item_groups)
         sections = {}
-        xml.xpath('//odm:SectionDef').each do |s|
+        xml.xpath('//odm:FormDef').each do |s|
           section = Section.new(name: s['Name'],
                                 created_by: user)
           sections[s['OID']] = section
