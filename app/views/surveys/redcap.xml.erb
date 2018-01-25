@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redcap="https://projectredcap.org" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 schema/odm/ODM1-3-1.xsd" ODMVersion="1.3.1" FileOID="000-00-0000" FileType="Snapshot" Description="test"   AsOfDateTime="<%= Time.now %>"   CreationDateTime="<%= @survey.created_at %>"   SourceSystem="SDP-Vocabulary-Service" SourceSystemVersion="0.1">
-<Study OID="Project.Test">
+<Study OID="Project.<%= @survey.version_independent_id %>">
 <GlobalVariables>
 	<StudyName><%=@survey.name%></StudyName> <!--  -->
 	<StudyDescription><%=@survey.description %></StudyDescription>
-	<ProtocolName>Test</ProtocolName>
+	<ProtocolName>SDP-V</ProtocolName>
 	<redcap:RecordAutonumberingEnabled>1</redcap:RecordAutonumberingEnabled>
 	<redcap:CustomRecordLabel></redcap:CustomRecordLabel>
 	<redcap:SecondaryUniqueField></redcap:SecondaryUniqueField>
@@ -13,48 +13,59 @@
 	<redcap:PurposeOther></redcap:PurposeOther>
 	<redcap:ProjectNotes></redcap:ProjectNotes>
 </GlobalVariables>
-<MetaDataVersion OID="Metadata.Test_2016-12-15_1938" Name="test" >
-   <!-- section defs -->
-   <% @survey.sections.each do |section| %>
+<MetaDataVersion OID="Metadata.<%= @survey.version_independent_id %>" Name="<%= @survey.name %>" >
+  <!-- section defs -->
+  <% @survey.sections.each do |section| %>
+	<% igrs = section.item_groups %>
+  <FormDef OID="Form.<%= section.name.gsub(' ', '_')%>" Name="<%= section.name %>" Repeating="No" redcap:FormName="<%= section.name.underscore %>">
+		<% igrs.each do |key, _snis| %>
+		<ItemGroupRef ItemGroupOID="<%= section.name.gsub(' ', '_')%>.<%= key.gsub(' ', '_') %>.single_section" Mandatory="No"/>
+		<% end %>
+  </FormDef>
+	<% end %>
 
-   <SectionDef OID="Section.<%= section.name.gsub(' ', '_')%>" Name="<%= section.name %>" Repeating="No" redcap:SectionName="<%= section.name.underscore %>">
-     <ItemGroupRef ItemGroupOID="<%= section.name.gsub(' ', '_')%>.single_section" Mandatory="No"/>
-   </SectionDef>
-
-   <% end %>
-   <% @survey.sections.each do |section| %>
-   <!-- item groups -->
-   <ItemGroupDef OID="<%= section.name.gsub(' ', '_') %>.single_section" Name="<%= section.name %>" Repeating="No">
-     <% section.section_nested_items.each do |sni| %>
-     <ItemRef ItemOID="question_<%=sni.id%>" Mandatory="No" redcap:Variable="<%=sni.program_var || "question_#{sni.id}"%>"/>
-     <% end %>
-   </ItemGroupDef>
-   <% end %>
-
-   <% section_nested_items = @survey.sections.collect {|section| section.section_nested_items}.flatten %>
-
-  <!-- item defs -->
-  <% section_nested_items.each do |sni| %>
-    <ItemDef OID="question_<%=sni.id%>" Name="question_<%=sni.id%>" DataType="text" Length="999" redcap:Variable="<%=sni.program_var || "question_#{sni.id}"%>" redcap:FieldType="<%= sni.response_set ? 'select' : 'text' %>" >
-      <Question><TranslatedText><%= sni.question.content %></TranslatedText></Question>
-      <% if sni.response_set %>
-      <CodeListRef CodeListOID="question_<%=sni.id%>.choices"/>
-      <% end %>
-    </ItemDef>
-  <% end %>
-
-
-
-  <!-- code list defs -->
-  <% section_nested_items.each do |sni| %>
-     <% if sni.response_set %>
-      <CodeList OID="question_<%=sni.id%>.choices" Name="question_<%=sni.id%>" DataType="text" redcap:Variable="<%=sni.program_var || "question_#{sni.id}"%>">
-        <% sni.response_set.responses.each do |response| %>
-        <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.blank? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
-        <% end %>
-      </CodeList>
+  <!-- item groups -->
+  <% @survey.sections.each do |section| %>
+	<% igrs = section.item_groups %>
+  <% igrs.each do |key, snis| %>
+  <ItemGroupDef OID="<%= section.name.gsub(' ', '_')%>.<%= key.gsub(' ', '_') %>.single_section" Name="<%= key %>" Repeating="No">
+    <% snis.each do |sni| %>
+    <ItemRef ItemOID="question_<%=sni.id%>" Mandatory="No" redcap:Variable="<%=sni.program_var.blank? ? "question_#{sni.id}" : sni.program_var%>"/>
     <% end %>
+  </ItemGroupDef>
+	<% end %>
+	<% end %>
+
+	<!-- item defs -->
+  <% @survey.sections.each do |section| %>
+	<% igrs = section.item_groups %>
+  <% igrs.each do |key, snis| %>
+  <% snis.each do |sni| %>
+  <ItemDef OID="question_<%=sni.id%>" Name="question_<%=sni.id%>" DataType="text" Length="999" redcap:Variable="<%=sni.program_var.blank? ? "question_#{sni.id}" : sni.program_var%>" redcap:FieldType="<%= sni.response_set ? 'select' : 'text' %>" >
+    <Question><TranslatedText><%= sni.question.content %></TranslatedText></Question>
+    <% if sni.response_set %>
+    <CodeListRef CodeListOID="question_<%=sni.id%>.choices"/>
+    <% end %>
+  </ItemDef>
+	<% end %>
+	<% end %>
+	<% end %>
+
+	<!-- code list defs -->
+  <% @survey.sections.each do |section| %>
+	<% igrs = section.item_groups %>
+  <% igrs.each do |key, snis| %>
+  <% snis.each do |sni| %>
+  <% if sni.response_set %>
+  <CodeList OID="question_<%=sni.id%>.choices" Name="question_<%=sni.id%>" DataType="text" redcap:Variable="<%=sni.program_var.blank? ? "question_#{sni.id}" : sni.program_var%>">
+    <% sni.response_set.responses.each do |response| %>
+    <CodeListItem CodedValue="<%= response.value %>"><Decode><TranslatedText><%= response.display_name.blank? ?  response.value : response.display_name%></TranslatedText></Decode></CodeListItem>
+    <% end %>
+  </CodeList>
   <% end %>
+  <% end %>
+  <% end %>
+	<% end %>
 </MetaDataVersion>
 </Study>
 </ODM>

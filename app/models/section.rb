@@ -29,6 +29,20 @@ class Section < ApplicationRecord
     survey_array.each(&:update_section_positions)
   end
 
+  def item_groups
+    igrs = {}
+    count = 1
+    section_nested_items.each do |sni|
+      if sni.nested_section
+        igrs[sni.nested_section.name] = sni.all_questions
+      else
+        igrs["stand_alone_question_#{count}"] = [sni]
+        count += 1
+      end
+    end
+    igrs
+  end
+
   def update_nested_sections
     section_array = nested_sections.to_a
     section_nested_items.destroy_all
