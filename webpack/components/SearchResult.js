@@ -229,64 +229,72 @@ export default class SearchResult extends Component {
     switch(type) {
       case 'question':
         return (
-          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-question`}>
-            <text className="sr-only">List of links to response sets on this question:</text>
-            {result.responseSets && result.responseSets.length > 0 &&
-              result.responseSets.map((rs, i) => {
-                return(
-                  <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                    {rs.name === 'None' ? <text>No Associated Response Set.</text> : <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link>}
-                  </div>
-                );
-              })
-            }
+          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-question`}>
+            <div className="panel-body">
+              <text className="sr-only">List of links to response sets on this question:</text>
+              {result.responseSets && result.responseSets.length > 0 &&
+                result.responseSets.map((rs, i) => {
+                  return(
+                    <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link>}
+                    </div>
+                  );
+                })
+              }
+            </div>
           </div>
         );
       case 'response_set':
         return (
-          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-rs`}>
-            <text className="sr-only">List of responses on this response set:</text>
-            {result.codes && result.codes.length > 0 &&
-              result.codes.map((c, i) => {
-                return(
-                  <div key={`response-${c.id}-${i}`} className="result-details-content">
-                    {`${i+1}. ${c.displayName ? c.displayName : c.code}`}
-                  </div>
-                );
-              })
-            }
+          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
+            <div className="panel-body">
+              <text className="sr-only">List of responses on this response set:</text>
+              {result.codes && result.codes.length > 0 &&
+                result.codes.map((c, i) => {
+                  return(
+                    <div key={`response-${c.id}-${i}`} className="result-details-content">
+                      {`${i+1}. ${c.displayName ? c.displayName : c.code}`}
+                    </div>
+                  );
+                })
+              }
+            </div>
           </div>
         );
       case 'section':
       case 'nested_section':
       case 'survey_section':
         return (
-          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-${type}`}>
-            <text className="sr-only">List of links and names of questions and nested sections linked to this section:</text>
-            {result.sectionNestedItems && result.sectionNestedItems.length > 0 &&
-              result.sectionNestedItems.map((ni, i) => {
-                return(
-                  <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
-                    <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
-                  </div>
-                );
-              })
-            }
+          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-${type}`}>
+            <div className="panel-body">
+              <text className="sr-only">List of links and names of questions and nested sections linked to this section:</text>
+              {result.sectionNestedItems && result.sectionNestedItems.length > 0 &&
+                result.sectionNestedItems.map((ni, i) => {
+                  return(
+                    <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
+                      <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
+                    </div>
+                  );
+                })
+              }
+            </div>
           </div>
         );
       case 'survey':
         return (
-          <div className="panel-collapse panel-details collapse panel-body" id={`collapse-${result.id}-survey`}>
-            <text className="sr-only">List of links and names of sections on this survey</text>
-            {result.sections && result.sections.length > 0 &&
-              result.sections.map((sect, i) => {
-                return(
-                  <div key={`section-${sect.id}-${i}`} className="result-details-content">
-                    <Link to={`/sections/${sect.id}`}>{sect.name}</Link>
-                  </div>
-                );
-              })
-            }
+          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-survey`}>
+            <div className="panel-body">
+              <text className="sr-only">List of links and names of sections on this survey</text>
+              {result.sections && result.sections.length > 0 &&
+                result.sections.map((sect, i) => {
+                  return(
+                    <div key={`section-${sect.id}-${i}`} className="result-details-content">
+                      <Link to={`/sections/${sect.id}`}>{sect.name}</Link>
+                    </div>
+                  );
+                })
+              }
+            </div>
           </div>
         );
     }
