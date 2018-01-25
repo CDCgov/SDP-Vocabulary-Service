@@ -130,6 +130,8 @@ module SDP
               @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
             end
             sectionize_top_level_questions(sheet)
+            # Reset to top level to prevent mismatched sections causing issues
+            @current_section = @top_level
           else
             start_section(sheet)
             w.sheet(sheet).parse(@config[:de_columns]).each do |row|
@@ -340,9 +342,10 @@ module SDP
         elsif end_marker
           section_name = end_marker[1]
           if @current_section.name != section_name
-            @errors << "Mismatched section end: expected #{current_section}, found #{section_name}"
+            @errors << "Mismatched section end: expected #{@current_section.name}, found #{section_name}"
+          else
+            @current_section = @parent_sections.pop
           end
-          @current_section = @parent_sections.pop
         end
       end
 
