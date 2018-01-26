@@ -164,6 +164,7 @@ class SectionEditContainer extends Component {
                 </div>
                 <SectionEditSearchContainer selectedQuestions={this.props.selectedQuestions}
                                             selectedSections={this.props.selectedSections}
+                                            sectionId={this.props.section.id}
                                             handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <SectionEdit ref ='section'

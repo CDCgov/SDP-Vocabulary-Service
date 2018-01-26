@@ -18,16 +18,18 @@ class ElasticsearchController < ApplicationController
     current_version_filter = params[:mostrecent] == 'true'
     content_since = params[:contentSince]
     sort = params[:sort]
+    ns_filter = params[:nsfilter] ? params[:nsfilter] : nil
     results = if SDP::Elasticsearch.ping
                 SDP::Elasticsearch.search(type, query_string, page, query_size,
                                           current_user_id, publisher_search,
                                           my_stuff_filter, program_filter,
                                           system_filter, current_version_filter,
-                                          content_since, sort, groups, groups_filter_id)
+                                          content_since, sort, groups, groups_filter_id,
+                                          ns_filter)
               else
                 SDP::SimpleSearch.search(type, query_string, current_user_id,
                                          query_size, page, publisher_search,
-                                         my_stuff_filter).target!
+                                         my_stuff_filter, ns_filter).target!
               end
     render json: results
   end

@@ -43,6 +43,7 @@ class SectionEditSearchContainer extends SearchManagerComponent {
 
   search(searchParameters) {
     searchParameters.type = this.state.searchType;
+    searchParameters.nsFilter = this.props.sectionId;
     super.search(searchParameters, SECTION_EDIT_SEARCH_CONTEXT);
   }
 
@@ -76,7 +77,7 @@ class SectionEditSearchContainer extends SearchManagerComponent {
                          searchSource={this.props.searchResults.Source}
                          suggestions={this.props.suggestions}
                          fetchSuggestions={this.props.fetchSuggestions}
-                         placeholder="Search Questions..." />
+                         placeholder={`Search ${this.state.searchType}s...`} />
         <br/>
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((sr, i) => {
@@ -118,6 +119,7 @@ SectionEditSearchContainer.propTypes = {
   handleSelectSearchResult: PropTypes.func.isRequired,
   selectedQuestions: PropTypes.object.isRequired,
   selectedSections: PropTypes.object.isRequired,
+  sectionId: PropTypes.number,
   fetchSearchResults: PropTypes.func,
   fetchMoreSearchResults: PropTypes.func,
   fetchSuggestions: PropTypes.func,
