@@ -35,7 +35,7 @@ Given(/^I have a Question with the content "([^"]*)" linked to Surveillance Syst
   q.update_attribute(:status, 'published')
   q.save!
   s = Section.new(name: 'test', created_by: user)
-  s.section_questions << SectionQuestion.new(question: q, position: 1)
+  s.section_nested_items << SectionNestedItem.new(question: q, position: 1)
   s.save!
   survey = Survey.new(name: 'test', surveillance_system: ss, created_by: user)
   survey.survey_sections << SurveySection.new(section: s, position: 1)

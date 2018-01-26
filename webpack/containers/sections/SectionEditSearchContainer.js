@@ -63,11 +63,11 @@ class SectionEditSearchContainer extends SearchManagerComponent {
     return (
       <div>
         <ul className="nav nav-tabs" role="tablist">
-          <li id="question-search-tab" className={`nav-item ${this.state.searchType === 'question' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('question')} aria-selected={this.state.searchType === 'question'} aria-controls="question-search">
-            <a className="nav-link" data-toggle="tab" href="#" role="tab"><i className="fa fa-tasks" aria-hidden="true"><text className='sr-only'>Click to filter search by</text></i> Questions</a>
+          <li id="question-search-tab" className={`nav-item ${this.state.searchType === 'question' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('question')} aria-selected={this.state.searchType === 'question'}>
+            <a className="nav-link" href="#" onClick={(e) => e.preventDefault()} role="tab"><i className="fa fa-tasks" aria-hidden="true"><text className='sr-only' aria-hidden="true">Click to filter search by</text></i> Questions</a>
           </li>
-          <li id="section-search-tab" className={`nav-item ${this.state.searchType === 'section' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('section')} aria-selected={this.state.searchType === 'section'} aria-controls="section-search">
-            <a className="nav-link" data-toggle="tab" href="#" role="tab"><i className="fa fa-list-alt" aria-hidden="true"><text className='sr-only'>Click to filter search by</text></i> Sections</a>
+          <li id="section-search-tab" className={`nav-item ${this.state.searchType === 'section' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('section')} aria-selected={this.state.searchType === 'section'}>
+            <a className="nav-link" href="#" onClick={(e) => e.preventDefault()} role="tab"><i className="fa fa-list-alt" aria-hidden="true"><text className='sr-only' aria-hidden="true">Click to filter search by</text></i> Sections</a>
           </li>
         </ul>
         <DashboardSearch search={this.search}

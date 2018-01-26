@@ -48,9 +48,9 @@ end
 
 When(/^I move the Question "([^"]*)" (up|down)$/) do |question_content, direction|
   object_id = attribute_to_id('Question', 'content', question_content)
-  old_index = page.find_all('.question-item').index { |el| el.has_css?("#section_question_id_#{object_id}") }
+  old_index = page.find_all('.question-item').index { |el| el.has_css?("#section_nested_item_id_#{object_id}") }
   page.all(".move-#{direction}")[1].click
-  new_index = page.find_all('.question-item').index { |el| el.has_css?("#section_question_id_#{object_id}") }
+  new_index = page.find_all('.question-item').index { |el| el.has_css?("#section_nested_item_id_#{object_id}") }
   offset = direction.eql?('up') ? -1 : 1
 
   assert(old_index != new_index)
@@ -73,7 +73,7 @@ end
 
 When(/^I select the ([^"]*) program variable option for the Question "([^"]*)"$/) do |action, question_content|
   object_id = attribute_to_id('Question', 'content', question_content)
-  page.find("#section_question_#{object_id}_menu").click
+  page.find("#section_nested_item_#{object_id}_menu").click
   click_on("#{action.capitalize} Program Variable")
   sleep 1
 end

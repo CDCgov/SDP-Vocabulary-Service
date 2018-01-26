@@ -90,6 +90,21 @@ When(/^I set search filter to "([^"]*)"$/) do |type|
   end
 end
 
+When(/^I set search filter to "([^"]*)" without "([^"]*)"$/) do |type, name_filter|
+  case type
+  when 'question'
+    Elastictest.fake_question_search_results
+  when 'response_set'
+    Elastictest.fake_rs_search_results
+  when 'sections'
+    Elastictest.fake_section_search_results_except(name_filter)
+  when 'survey'
+    Elastictest.fake_survey_search_results
+  else
+    Elastictest.fake_all_search_results
+  end
+end
+
 Then(/^I wait (\d+) seconds$/) do |seconds|
   sleep seconds.to_i
 end
