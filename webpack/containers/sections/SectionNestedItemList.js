@@ -18,14 +18,11 @@ class SectionNestedItemList extends Component {
         <div>Loading...</div>
       );
     }
-    let currentUserId = this.props.currentUser ? this.props.currentUser.id : -1;
     return (
       <div className="question-group">
         {this.props.items.map((sni, i) => {
           let sniType = sni.content ? 'question' : 'section';
-          if (sni.status === 'published' || sni.createdById === currentUserId) {
-            return <SearchResult key={i} type={sniType} result={{Source: sni}} programVar={sni.programVar} currentUser={this.props.currentUser} updatePDV={this.props.updatePDV}/>;
-          }
+          return <SearchResult key={i} type={sniType} result={{Source: sni}} programVar={sni.programVar} currentUser={this.props.currentUser} updatePDV={this.props.updatePDV}/>;
         })}
       </div>
     );

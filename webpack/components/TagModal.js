@@ -55,7 +55,7 @@ TagModal.propTypes = {
   show: PropTypes.bool,
   cancelButtonAction: PropTypes.func,
   saveButtonAction: PropTypes.func,
-  concepts: PropTypes.object
+  concepts: PropTypes.array
 };
 
 export default TagModal;
