@@ -31,8 +31,8 @@ namespace :data do
         position = i + 1
         q = Question.create(content: "Is your favorite letter #{section_letter} and number #{position}?",
                             created_by: user, status: 'draft', response_type: boolean_rt)
-        sq = SectionQuestion.new(question: q, position: position)
-        section.section_questions << sq
+        sni = SectionNestedItem.new(question: q, position: position)
+        section.section_nested_items << sni
       end
       section.save!
       survey.survey_sections << SurveySection.new(section: section, position: survey_position)

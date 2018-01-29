@@ -7,13 +7,13 @@ import { bindActionCreators } from 'redux';
 import { sectionSchema } from '../../schema';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
-import { fetchSection, saveSection, newSection, saveDraftSection } from '../../actions/section_actions';
-import { addQuestion, removeQuestion, reorderQuestion, fetchQuestion } from '../../actions/questions_actions';
+import { fetchSection, saveSection, newSection, saveDraftSection, addNestedItem, removeNestedItem, reorderNestedItem } from '../../actions/section_actions';
+import { fetchQuestion } from '../../actions/questions_actions';
 import SectionEdit from '../../components/sections/SectionEdit';
 import ResponseSetModal from '../response_sets/ResponseSetModal';
 import QuestionModalContainer  from '../questions/QuestionModalContainer';
-import QuestionSearchContainer from '../questions/QuestionSearchContainer';
-import { sectionProps } from '../../prop-types/section_props';
+import SectionEditSearchContainer from '../sections/SectionEditSearchContainer';
+import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { questionsProps } from '../../prop-types/question_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 
@@ -57,8 +57,8 @@ class SectionEditContainer extends Component {
         position: 'right',
       },
       {
-        title: 'Question Search',
-        text: 'Type in your search keywords here to search for questions to add to the section.',
+        title: 'Search',
+        text: 'Type in your search keywords here to search for questions or nested sections to add to the section.',
         selector: '.search-input',
         position: 'bottom',
       },
@@ -69,14 +69,14 @@ class SectionEditContainer extends Component {
         position: 'right',
       },
       {
-        title: 'Question Search Result',
-        text: 'Use these search results to find the question you want to add.',
+        title: 'Search Result',
+        text: 'Use these search results to find the question or nested section you want to add.',
         selector: '.u-result',
         position: 'right',
       },
       {
-        title: 'Add Question',
-        text: 'Click on the add (+) button to select a question for the section.',
+        title: 'Add Item',
+        text: 'Click on the add (+) button to select an item for the section.',
         selector: '.fa-plus-square',
         position: 'bottom',
       },
@@ -98,8 +98,8 @@ class SectionEditContainer extends Component {
     if(this.props.params.sectionId && prevProps.params.sectionId != this.props.params.sectionId){
       this.props.fetchSection(this.props.params.sectionId);
     }
-    if(this.props.section && this.props.section.sectionQuestions) {
-      this.refs.section.updateSectionQuestions(this.props.section.sectionQuestions);
+    if(this.props.section && this.props.section.sectionNestedItems) {
+      this.refs.section.updateSectionNestedItems(this.props.section.sectionNestedItems);
     }
   }
 
@@ -122,11 +122,11 @@ class SectionEditContainer extends Component {
   handleSaveQuestionSuccess(successResponse){
     this.setState({showQuestionModal: false});
     this.props.fetchQuestion(successResponse.data.id);
-    this.props.addQuestion(this.props.section, successResponse.data);
+    this.props.addNestedItem(this.props.section, successResponse.data);
   }
 
-  handleSelectSearchResult(q){
-    this.props.addQuestion(this.props.section, q);
+  handleSelectSearchResult(sni, type){
+    this.props.addNestedItem(this.props.section, sni, type);
   }
 
   actionWord() {
@@ -135,7 +135,7 @@ class SectionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.section || !this.props.questions){
+    if(!this.props.section || !this.props.questions || !this.props.sections){
       return (
         <div>Loading...</div>
       );
@@ -162,8 +162,10 @@ class SectionEditContainer extends Component {
                 <div className="row add-question">
                   <Button tabIndex="4" onClick={this.showQuestionModal} bsStyle="primary">Add New Question</Button>
                 </div>
-                <QuestionSearchContainer selectedSearchResults={this.props.selectedSearchResults}
-                                         handleSelectSearchResult={this.handleSelectSearchResult} />
+                <SectionEditSearchContainer selectedQuestions={this.props.selectedQuestions}
+                                            selectedSections={this.props.selectedSections}
+                                            sectionId={this.props.section.id}
+                                            handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <SectionEdit ref ='section'
                         section={this.props.section}
@@ -174,9 +176,10 @@ class SectionEditContainer extends Component {
                         action={this.props.params.action || 'new'}
                         questions={this.props.questions}
                         responseSets ={this.props.responseSets}
+                        sections={this.props.sections}
                         sectionSubmitter={this.state.selectedSectionSaver}
-                        removeQuestion ={this.props.removeQuestion}
-                        reorderQuestion={this.props.reorderQuestion}
+                        removeNestedItem={this.props.removeNestedItem}
+                        reorderNestedItem={this.props.reorderNestedItem}
                         showResponseSetModal={this.showResponseSetModal} />
             </div>
           </div>
@@ -187,25 +190,32 @@ class SectionEditContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, addQuestion, fetchQuestion,
-    newSection, fetchSection, removeQuestion, reorderQuestion, setStats,
+  return bindActionCreators({setSteps, addNestedItem, fetchQuestion,
+    newSection, fetchSection, removeNestedItem, reorderNestedItem, setStats,
     saveSection, saveDraftSection}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {
   const section = denormalize(state.sections[ownProps.params.sectionId || 0], sectionSchema, state);
-  var selectedSearchResults = {};
-  if(section && section.sectionQuestions){
-    section.sectionQuestions.map((sq)=>{
-      selectedSearchResults[sq.questionId] = true;
+  var selectedQuestions = {};
+  var selectedSections = {};
+  if(section && section.sectionNestedItems){
+    section.sectionNestedItems.map((sni)=>{
+      if (sni.questionId) {
+        selectedQuestions[sni.questionId] = true;
+      } else {
+        selectedSections[sni.nestedSectionId] = true;
+      }
     });
   }
   return {
     section: section,
     questions: state.questions,
     responseSets: state.responseSets,
+    sections: state.sections,
     stats: state.stats,
-    selectedSearchResults: selectedSearchResults
+    selectedQuestions: selectedQuestions,
+    selectedSections: selectedSections
   };
 }
 
@@ -216,18 +226,20 @@ SectionEditContainer.propTypes = {
   params: PropTypes.object.isRequired,
   questions: questionsProps,
   responseSets: responseSetsProps,
+  sections: sectionsProps,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   newSection:  PropTypes.func,
   saveSection: PropTypes.func,
   fetchSection: PropTypes.func,
-  addQuestion: PropTypes.func,
+  addNestedItem: PropTypes.func,
   saveDraftSection: PropTypes.func,
   fetchQuestion: PropTypes.func,
-  removeQuestion: PropTypes.func,
-  reorderQuestion: PropTypes.func,
-  selectedSearchResults: PropTypes.object
+  removeNestedItem: PropTypes.func,
+  reorderNestedItem: PropTypes.func,
+  selectedQuestions: PropTypes.object,
+  selectedSections: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SectionEditContainer);

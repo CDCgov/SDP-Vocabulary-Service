@@ -127,7 +127,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     doc.root.add_namespace_definition('ds', 'http://www.w3.org/2000/09/xmldsig#')
     doc.root.add_namespace_definition('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
     doc.root.add_namespace_definition('redcap', 'https://projectredcap.org')
-    question_count = @survey.survey_sections.collect { |ss| ss.section.section_questions.count }.sum
+    question_count = @survey.survey_sections.collect { |ss| ss.section.section_nested_items.count }.sum
     assert doc
     assert doc.xpath('//odm:SectionDef').length == @survey.survey_sections.length
     assert doc.xpath('//odm:ItemGroupDef').length == @survey.survey_sections.length

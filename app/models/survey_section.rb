@@ -9,9 +9,10 @@ class SurveySection < ApplicationRecord
     if section
       UpdateIndexJob.perform_later('section', section.id)
       unique_response_sets = []
-      section.section_questions.each do |sq|
-        UpdateIndexJob.perform_later('question', sq.question.id)
-        unique_response_sets << sq.response_set if sq.response_set && !unique_response_sets.include?(sq.response_set)
+      section.section_nested_items.each do |sni|
+        UpdateIndexJob.perform_later('question', sni.question.id) if sni.question
+        UpdateIndexJob.perform_later('section', sni.nested_section.id) if sni.nested_section
+        unique_response_sets << sni.response_set if sni.response_set && !unique_response_sets.include?(sni.response_set)
       end
       unique_response_sets.each do |rs|
         UpdateIndexJob.perform_later('response_set', rs.id)

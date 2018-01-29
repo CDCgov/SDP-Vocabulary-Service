@@ -1,7 +1,8 @@
 json.array! @sections do |section|
   json.extract! section, :id, :name, :description, :created_at, :updated_at, \
                 :version_independent_id, :version, :parent, :concepts, \
-                :section_questions, :status, :created_by_id, :published_by_id
+                :section_nested_items, :status, :created_by_id, :published_by_id, \
+                :nested_sections
   json.url section_url(section, format: :json)
 
   json.questions section.questions do |q|

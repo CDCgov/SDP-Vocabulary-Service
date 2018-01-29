@@ -23,7 +23,7 @@ module SDP
                     my_stuff_filter = false, program_filter = [],
                     system_filter = [], current_version_filter = false,
                     content_since = nil, sort_filter = '', groups = [],
-                    group_filter_id = 0)
+                    group_filter_id = 0, ns_filter = nil)
       version_filter = if current_version_filter
                          { bool: { filter: {
                            term: { 'most_recent': true }
@@ -89,6 +89,12 @@ module SDP
       # prog_name = type == 'survey' ? 'surveillance_program' : 'surveillance_programs'
       # sys_name = type == 'survey' ? 'surveillance_system' : 'surveillance_systems'
 
+      ns_terms = if ns_filter.blank?
+                   {}
+                 else
+                   { term: { 'id': ns_filter } }
+                 end
+
       prog_terms = if program_filter.empty?
                      {}
                    else
@@ -149,7 +155,7 @@ module SDP
         from: from_index,
         query: {
           bool: {
-            filter: { bool: { filter: [filter_body, version_filter, group_filter], must: [prog_terms, sys_terms, date_terms] } },
+            filter: { bool: { filter: [filter_body, version_filter, group_filter], must: [prog_terms, sys_terms, date_terms], must_not: [ns_terms] } },
             must: must_body
           }
         },

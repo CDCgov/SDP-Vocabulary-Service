@@ -79,6 +79,18 @@ module Elastictest
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
 
+  def self.fake_section_search_results_except(name_filter)
+    sections = Section.all.where.not(name: name_filter)
+    fake_body = <<-EOS
+    {"took":1,"timed_out":false,"_shards":{"total":#{sections.size},"successful":5,"failed":0},
+    "hits":{"total":#{sections.size},"max_score":2.7132807,"hits":[
+    EOS
+    fake_body += fake_results('section', sections)
+    fake_body += ']}}'
+
+    FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
+  end
+
   def self.fake_survey_search_results
     surveys = Survey.all
     fake_body = <<-EOS

@@ -47,7 +47,7 @@ LoginMenu.propTypes = {
   currentUser: currentUserProps,
   logInOpener: PropTypes.func.isRequired,
   signUpOpener: PropTypes.func.isRequired,
-  disableUserRegistration: PropTypes.string.isRequired
+  disableUserRegistration: PropTypes.bool.isRequired
 };
 
 let ContentMenu = ({settingsOpener, currentUser}) => {
@@ -265,7 +265,7 @@ Header.propTypes = {
   logInOpener: PropTypes.func.isRequired,
   signUpOpener: PropTypes.func.isRequired,
   settingsOpener: PropTypes.func.isRequired,
-  disableUserRegistration: PropTypes.string.isRequired
+  disableUserRegistration: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

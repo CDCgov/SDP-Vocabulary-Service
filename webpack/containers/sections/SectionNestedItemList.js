@@ -4,28 +4,25 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
 
-import { questionProps } from "../../prop-types/question_props";
 import SearchResult from '../../components/SearchResult';
 import { updatePDV } from "../../actions/section_actions";
 
-class SectionQuestionList extends Component {
+class SectionNestedItemList extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   }
 
   render() {
-    if(!this.props.questions){
+    if(!this.props.items){
       return (
         <div>Loading...</div>
       );
     }
-    let currentUserId = this.props.currentUser ? this.props.currentUser.id : -1;
     return (
       <div className="question-group">
-        {this.props.questions.map((q, i) => {
-          if (q.status === 'published' || q.createdById === currentUserId) {
-            return <SearchResult key={i} type='question' result={{Source: q}} programVar={q.programVar} currentUser={this.props.currentUser} updatePDV={this.props.updatePDV}/>;
-          }
+        {this.props.items.map((sni, i) => {
+          let sniType = sni.content ? 'question' : 'section';
+          return <SearchResult key={i} type={sniType} result={{Source: sni}} programVar={sni.programVar} currentUser={this.props.currentUser} updatePDV={this.props.updatePDV}/>;
         })}
       </div>
     );
@@ -36,10 +33,10 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({updatePDV}, dispatch);
 }
 
-SectionQuestionList.propTypes = {
-  questions: PropTypes.arrayOf(questionProps),
+SectionNestedItemList.propTypes = {
+  items: PropTypes.array,
   updatePDV: PropTypes.func,
   currentUser: PropTypes.object
 };
 
-export default connect(null, mapDispatchToProps)(SectionQuestionList);
+export default connect(null, mapDispatchToProps)(SectionNestedItemList);

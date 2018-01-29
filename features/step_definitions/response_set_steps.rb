@@ -8,7 +8,7 @@ Given(/^I have a Response Set with the name "([^"]*)" linked to Surveillance Sys
   q.response_sets << rs
   q.save!
   s = Section.new(name: 'test', created_by: user)
-  s.section_questions << SectionQuestion.new(question: q, response_set: rs, position: 1)
+  s.section_nested_items << SectionNestedItem.new(question: q, response_set: rs, position: 1)
   s.save!
   survey = Survey.new(name: 'test', surveillance_system: ss, created_by: user)
   survey.survey_sections << SurveySection.new(section: s, position: 1)

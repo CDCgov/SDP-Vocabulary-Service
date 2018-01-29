@@ -139,9 +139,9 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal Question.last.status, 'draft'
     last_id = Question.last.id
     linked_question = { question_id: last_id, response_set_id: nil, position: 1, program_var: 'test' }
-    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @question.created_by_id, linked_questions: [linked_question], linked_response_sets: [nil] } }
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @question.created_by_id, linked_items: [linked_question], linked_response_sets: [nil] } }
     assert_difference('Question.count', -1) do
-      assert_difference('SectionQuestion.count', -1) do
+      assert_difference('SectionNestedItem.count', -1) do
         assert_difference('Section.count', 0) do
           delete question_url(Question.last, format: :json)
         end

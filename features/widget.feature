@@ -28,7 +28,7 @@ Feature: Widget Display
     When I go to the list of Sections
     Then I should see "Test Section"
     And I should see "Section description"
-    And I should see "Questions: 0"
+    And I should see "Questions and Nested Sections: 0"
     And I should see "DRAFT"
     And I should not see "PUBLISHED"
 

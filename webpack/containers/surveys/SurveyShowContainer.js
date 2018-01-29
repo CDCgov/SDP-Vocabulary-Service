@@ -83,11 +83,22 @@ function mapStateToProps(state, ownProps) {
     props.sections = props.survey.surveySections.map((section) => state.sections[section.sectionId]);
     props.sections = props.sections.filter((sect) => sect !== undefined);
     props.sections = props.sections.map((sect) => {
-      const sectionWithQuestions = Object.assign({}, sect);
-      if (sectionWithQuestions.sectionQuestions) {
-        sectionWithQuestions.questions = sectionWithQuestions.sectionQuestions.map((sq) => state.questions[sq.questionId]);
+      const sectionWithNestedItems = Object.assign({}, sect);
+      if (sectionWithNestedItems.sectionNestedItems) {
+        sectionWithNestedItems.sectionNestedItems = sectionWithNestedItems.sectionNestedItems.map((sni) => {
+          let fullNestedItem = {};
+          if (sni.questionId) {
+            fullNestedItem = state.questions[sni.questionId];
+            fullNestedItem.type = 'question';
+            return fullNestedItem;
+          } else if (sni.nestedSectionId) {
+            fullNestedItem = state.sections[sni.nestedSectionId];
+            fullNestedItem.type = 'section';
+            return fullNestedItem;
+          }
+        });
       }
-      return sectionWithQuestions;
+      return sectionWithNestedItems;
     });
     if (props.survey.surveillanceSystemId) {
       props.survey.surveillanceSystem = state.surveillanceSystems[props.survey.surveillanceSystemId];

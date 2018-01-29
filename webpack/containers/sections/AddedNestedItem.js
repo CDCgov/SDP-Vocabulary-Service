@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
-import { questionSchema } from '../../schema';
-import { questionProps } from "../../prop-types/question_props";
+import { questionSchema, sectionSchema } from '../../schema';
 import { responseSetProps } from "../../prop-types/response_set_props";
 import currentUserProps from '../../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
@@ -19,7 +18,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 const QUESTION_ITEM_CONTEXT = 'QUESTION_ITEM_CONTEXT';
 
-class QuestionItem extends SearchManagerComponent {
+class AddedNestedItem extends SearchManagerComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,6 +70,7 @@ class QuestionItem extends SearchManagerComponent {
     this.setState({ showProgramVarModal: false });
   }
 
+  // TODO check if I need to worry about adding _type to this
   handleSelectSearchResult(rs) {
     this.props.handleSelectSearchResult(this.props.index, rs);
     this.setState({ showSearchModal: false });
@@ -144,17 +144,18 @@ class QuestionItem extends SearchManagerComponent {
   }
 
   render() {
-    if (!this.props.question) {
+    if (!this.props.item) {
       return (<div>Loading...</div>);
     }
+    let srType = this.props.itemType === 'question' ? 'section_nested_item' : 'nested_section';
     return (
       <div className='question-item'>
         {this.searchModal()}
         {this.programVarModal()}
         <div className="col-md-12">
-          <SearchResult type  ='section_question'
+          <SearchResult type  ={srType}
                         index ={this.props.index}
-                        result={{Source:this.props.question}}
+                        result={{Source:this.props.item}}
                         isEditPage ={true}
                         programVar ={this.props.programVar}
                         currentUser={{id: -1}}
@@ -162,7 +163,6 @@ class QuestionItem extends SearchManagerComponent {
                         showProgramVarModal={this.showProgramVarModal}
                         selectedResponseSetId={this.props.selectedResponseSet}
                         showResponseSetSearch={this.showResponseSetSearch}
-                        handleProgramVarChange ={this.props.handleProgramVarChange}
                         handleResponseSetChange={this.handleResponseSetChangeEvent}
                         />
         </div>
@@ -172,13 +172,14 @@ class QuestionItem extends SearchManagerComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  var question = denormalize(ownProps.question, questionSchema, state);
+  var schema = ownProps.itemType === 'question' ? questionSchema : sectionSchema;
+  var item = denormalize(ownProps.item, schema, state);
   return {
     searchResults: state.searchResults[QUESTION_ITEM_CONTEXT] || {},
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser,
-    question: question,
+    item: item,
     suggestions: state.suggestions
   };
 }
@@ -187,8 +188,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchSearchResults, fetchSuggestions}, dispatch);
 }
 
-QuestionItem.propTypes = {
-  question: questionProps,
+AddedNestedItem.propTypes = {
+  item: PropTypes.object,
+  itemType: PropTypes.string,
   responseSets: PropTypes.arrayOf(responseSetProps),
   selectedResponseSet: PropTypes.number,
   index: PropTypes.number.isRequired,
@@ -206,4 +208,4 @@ QuestionItem.propTypes = {
   surveillancePrograms: surveillanceProgramsProps
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionItem);
+export default connect(mapStateToProps, mapDispatchToProps)(AddedNestedItem);

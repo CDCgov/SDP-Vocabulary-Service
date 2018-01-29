@@ -3,13 +3,14 @@ module SDP
   module SimpleSearch
     MAX_DUPLICATE_QUESTION_SUGGESTIONS = 10
 
-    def self.search(type, query_string, current_user_id = nil, limit = 10, page = 1, publisher_search = false, my_stuff_search = false)
+    def self.search(type, query_string, current_user_id = nil, limit = 10, page = 1, publisher_search = false, my_stuff_search = false, ns_filter = nil)
       current_user_id = current_user_id == -1 ? nil : current_user_id
       types = [type.camelize.constantize] if type
       types ||= [Section, Question, ResponseSet, Survey]
       results = {}
       types.map do |search_type|
         query = search_type.search(query_string, current_user_id, publisher_search, my_stuff_search)
+        query = query.where.not(id: ns_filter) if ns_filter
         count = query.count()
         results[search_type] = { total: count, hits: query.limit(limit).offset(limit * (page - 1)).to_a }
       end
