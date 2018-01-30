@@ -20,6 +20,7 @@ import SectionEditContainer from './containers/sections/SectionEditContainer';
 import SurveyShowContainer from './containers/surveys/SurveyShowContainer';
 import Privacy from './containers/Privacy';
 import Help from './containers/Help';
+import FHIRDoc from './components/FHIRDoc';
 import AdminPanel from './containers/AdminPanel';
 import App from './containers/App';
 import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
@@ -49,6 +50,7 @@ ReactDOM.render(
         </Route>
         <Route path='/privacy' component={Privacy}/>
         <Route path='/help' component={Help}/>
+        <Route path='/fhirDoc' component={FHIRDoc}/>
         <Route path='/sections/:sectionId' component={SectionShowContainer} />
         <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
         <Route path='/questions/:qId' component={QuestionShowContainer} />
