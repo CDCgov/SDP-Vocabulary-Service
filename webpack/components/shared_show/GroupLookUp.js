@@ -10,11 +10,15 @@ class GroupLookUp extends Component {
         <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
            <span className="fa fa-users"></span> Groups <span className="caret"></span>
         </button>
-        <ul className="dropdown-menu">
+        <ul className="group-dropdown-menu">
           <li key="header" className="dropdown-header">Current Groups:</li>
           {groups.length > 0 ? (
               groups.map((g) => {
-                return <li className='current-group-menu-item' key={g.id}><span className="fa fa-check-square-o" aria-hidden="true"></span> {g.name}</li>;
+                return (
+                  <li className='current-group-menu-item' key={g.id}><span className="fa fa-check-square-o" aria-hidden="true"></span> {g.name}
+                    <button id={`remove_${g.name}`} onClick={() => this.props.removeFunc(this.props.item.id, g.id)} className="btn btn-default pull-right"><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`Click to remove ${g.name} from group`}</text></button>
+                  </li>
+                );
               })
             ) : (
               <li className='current-group-menu-item'>None</li>
