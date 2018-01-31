@@ -100,6 +100,12 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should remove content from group' do
+    post sections_url(format: :json), params: { section: { name: 'Testing.' } }
+    put remove_from_group_section_url(Section.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
   test 'should not add content to group you arent a member of or dont own' do
     post sections_url(format: :json), params: { section: { name: 'Testing.' } }
     sign_in @na_user

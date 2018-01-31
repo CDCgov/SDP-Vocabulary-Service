@@ -81,6 +81,16 @@ class SurveysController < ApplicationController
     end
   end
 
+  def remove_from_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @survey.remove_from_group(params[:group])
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   def update_tags
     @survey.add_tags(params)
     if @survey.save!

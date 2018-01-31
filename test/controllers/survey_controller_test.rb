@@ -102,6 +102,14 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should remove content from group' do
+    sign_in @a_user
+    post surveys_url(format: :json), params: { survey: { name: 'Testing.' } }
+    @group.add_user(@a_user)
+    put remove_from_group_survey_url(Survey.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
   test 'should not add content to group you arent a member of or dont own' do
     post surveys_url(format: :json), params: { survey: { name: 'Testing.' } }
     sign_in @a_user

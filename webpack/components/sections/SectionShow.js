@@ -107,7 +107,7 @@ class SectionShow extends Component {
                            itemType="Section" />
           }
           {isGroupable(section, this.props.currentUser) &&
-            <GroupLookUp item={section} addFunc={this.props.addSectionToGroup} currentUser={this.props.currentUser} />
+            <GroupLookUp item={section} addFunc={this.props.addSectionToGroup} removeFunc={this.props.removeSectionFromGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(section, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -238,6 +238,7 @@ SectionShow.propTypes = {
   publishSection: PropTypes.func,
   deleteSection:  PropTypes.func.isRequired,
   addSectionToGroup: PropTypes.func,
+  removeSectionFromGroup: PropTypes.func,
   updateSectionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

@@ -61,6 +61,11 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should remove content from group' do
+    post response_sets_url(format: :json), params: { response_set: { name: 'Testing.' } }
+    put remove_from_group_response_set_url(ResponseSet.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
   test 'should not add content to group you arent a member of or dont own' do
     post response_sets_url(format: :json), params: { response_set: { name: 'Testing.' } }
     sign_in @na_user

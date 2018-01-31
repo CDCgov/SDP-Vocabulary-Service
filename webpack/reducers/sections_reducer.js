@@ -8,6 +8,7 @@ import {
   CREATE_SECTION,
   ADD_ENTITIES_FULFILLED,
   ADD_SECTION_TO_GROUP_FULFILLED,
+  REMOVE_SECTION_FROM_GROUP_FULFILLED,
   UPDATE_SECTION_TAGS_FULFILLED,
   UPDATE_PDV_FULFILLED
 } from '../actions/types';
@@ -23,6 +24,7 @@ export default function sections(state = {}, action) {
     case UPDATE_SECTION_TAGS_FULFILLED:
     case UPDATE_PDV_FULFILLED:
     case ADD_SECTION_TO_GROUP_FULFILLED:
+    case REMOVE_SECTION_FROM_GROUP_FULFILLED:
       return helpers.fetchIndividual(state, action);
     case CREATE_SECTION:
       newState = Object.assign({}, state);

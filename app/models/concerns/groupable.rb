@@ -16,5 +16,12 @@ module Groupable
       UpdateIndexJob.perform_later(element.class.to_s.downcase, id)
     end
   end
+
+  def remove_from_group(gid)
+    cascading_action do |element|
+      element.groups.delete(Group.find(gid))
+      UpdateIndexJob.perform_later(element.class.to_s.downcase, id)
+    end
+  end
 end
 # rubocop:enable Rails/HasAndBelongsToMany

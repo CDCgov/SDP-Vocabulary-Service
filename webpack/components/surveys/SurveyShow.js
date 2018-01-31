@@ -47,7 +47,7 @@ class SurveyShow extends Component {
                            itemType="Survey" />
           }
           {isGroupable(this.props.survey, this.props.currentUser) &&
-            <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} currentUser={this.props.currentUser} />
+            <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} removeFunc={this.props.removeSurveyFromGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(this.props.survey, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -200,6 +200,7 @@ SurveyShow.propTypes = {
   deleteSurvey:  PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
+  removeSurveyFromGroup: PropTypes.func,
   updateSurveyTags: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

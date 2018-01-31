@@ -73,7 +73,7 @@ export default class QuestionShow extends Component {
                              itemType="Question" />
             }
             {isGroupable(question, this.props.currentUser) &&
-              <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} currentUser={this.props.currentUser} />
+              <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} removeFunc={this.props.removeQuestionFromGroup} currentUser={this.props.currentUser} />
             }
             {isRevisable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
@@ -234,6 +234,7 @@ QuestionShow.propTypes = {
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
+  removeQuestionFromGroup: PropTypes.func,
   updateQuestionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

@@ -10,6 +10,7 @@ import {
   CREATE_SURVEY,
   PUBLISH_SURVEY,
   ADD_SURVEY_TO_GROUP,
+  REMOVE_SURVEY_FROM_GROUP,
   DELETE_SURVEY,
   ADD_ENTITIES,
   UPDATE_SURVEY_TAGS
@@ -58,6 +59,15 @@ export function addSurveyToGroup(id, group) {
   return {
     type: ADD_SURVEY_TO_GROUP,
     payload: axios.put(routes.addToGroupSurveyPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function removeSurveyFromGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: REMOVE_SURVEY_FROM_GROUP,
+    payload: axios.put(routes.removeFromGroupSurveyPath(id),
      {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }

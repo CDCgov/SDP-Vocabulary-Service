@@ -38,6 +38,16 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  def remove_from_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @response_set.remove_from_group(params[:group])
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create
