@@ -149,7 +149,6 @@ When(/^I click on the "([^"]*)" (button|link) and confirm my action$/) do |butto
       page.driver.browser.switch_to.alert.accept
     end
   end
-
 end
 
 When(/^I click on the create "([^"]*)" dropdown item$/) do |object_type|
