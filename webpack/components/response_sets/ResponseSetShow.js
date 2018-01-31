@@ -73,7 +73,7 @@ export default class ResponseSetShow extends Component {
                              itemType="Response Set" />
             }
             {isGroupable(responseSet, this.props.currentUser) &&
-              <GroupLookUp item={responseSet} addFunc={this.props.addResponseSetToGroup} currentUser={this.props.currentUser} />
+              <GroupLookUp item={responseSet} addFunc={this.props.addResponseSetToGroup} removeFunc={this.props.removeResponseSetFromGroup} currentUser={this.props.currentUser} />
             }
             {isRevisable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>
@@ -178,6 +178,7 @@ ResponseSetShow.propTypes = {
   publishResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
+  removeResponseSetFromGroup: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

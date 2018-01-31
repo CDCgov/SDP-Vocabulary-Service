@@ -166,6 +166,12 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should remove content from group' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    put remove_from_group_question_url(Question.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
   test 'should not add content to group you arent a member of or dont own' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
     sign_in @na_user

@@ -13,6 +13,7 @@ import {
   CREATE_SECTION,
   PUBLISH_SECTION,
   ADD_SECTION_TO_GROUP,
+  REMOVE_SECTION_FROM_GROUP,
   DELETE_SECTION,
   ADD_ENTITIES,
   UPDATE_SECTION_TAGS,
@@ -85,6 +86,15 @@ export function addSectionToGroup(id, group) {
   return {
     type: ADD_SECTION_TO_GROUP,
     payload: axios.put(routes.addToGroupSectionPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function removeSectionFromGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: REMOVE_SECTION_FROM_GROUP,
+    payload: axios.put(routes.removeFromGroupSectionPath(id),
      {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }

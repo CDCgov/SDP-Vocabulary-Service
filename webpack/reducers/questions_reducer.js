@@ -8,7 +8,8 @@ import {
   FETCH_QUESTION_USAGE_FULFILLED,
   DELETE_QUESTION_FULFILLED,
   ADD_ENTITIES_FULFILLED,
-  ADD_QUESTION_TO_GROUP_FULFILLED
+  ADD_QUESTION_TO_GROUP_FULFILLED,
+  REMOVE_QUESTION_FROM_GROUP_FULFILLED
 } from '../actions/types';
 
 function addQuestionToState(action, state){
@@ -30,6 +31,7 @@ export default function questions(state = {}, action) {
     case SAVE_QUESTION_FULFILLED:
     case UPDATE_QUESTION_TAGS_FULFILLED:
     case ADD_QUESTION_TO_GROUP_FULFILLED:
+    case REMOVE_QUESTION_FROM_GROUP_FULFILLED:
       return addQuestionToState(action, state);
     case DELETE_QUESTION_FULFILLED:
       return helpers.deleteItem(state, action);
