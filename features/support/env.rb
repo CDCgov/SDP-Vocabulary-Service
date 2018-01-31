@@ -50,9 +50,7 @@ Capybara.javascript_driver = :chrome
 if ENV['HEADLESS']
   require 'selenium/webdriver'
 
-  # TODO - We already have code in our Rakefile which appears to be an attempt at solving this same problem.
-  #        We should either fix or remove that code, and (either way) this code may be better off in the Jenkinsfile or elsewhere.
-  #        In addition, the delay may be too long, too short, or ultimately a bad solution to this race condition.
+  # TODO:  We already have code in our Rakefile which appears to be an attempt at solving this same problem. We should either fix or remove that code, and (either way) this code may be better off in the Jenkinsfile or elsewhere. In addition, the delay may be too long, too short, or ultimately a bad solution to this race condition.
   puts 'Alternate dir creation location...'
   `mkdir reports`
   `touch reports/cucumber.html`
