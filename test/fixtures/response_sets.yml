@@ -16,6 +16,7 @@ two:
   version: 1
   version_independent_id: RS-2
   created_by: admin
+  oid: 5.6.7.8
 
 three:
   name: Gender Full
@@ -30,6 +31,7 @@ gfv2:
   version: 2
   version_independent_id: RS-2
   created_by: admin
+  oid: 5.6.7.8
 
 search_1:
   name: Search Response Set 1

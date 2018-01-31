@@ -41,10 +41,10 @@ module SDP
           rs.save!
           question.response_sets << rs
           question.save!
-          section.section_questions << SectionQuestion.new(question: question, position: question_position)
+          section.section_nested_items << SectionNestedItem.new(question: question, position: question_position)
           question_position += 1
           additional_questions.each do |additional_question|
-            section.section_questions << SectionQuestion.new(question: additional_question, position: question_position)
+            section.section_nested_items << SectionNestedItem.new(question: additional_question, position: question_position)
             question_position += 1
           end
         end

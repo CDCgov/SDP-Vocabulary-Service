@@ -28,8 +28,8 @@ class ESQuestionSerializer < ActiveModel::Serializer
   end
 
   def sections
-    object.section_questions.includes(:section).collect do |sq|
-      { id: sq.section.id, name: sq.section.name }
+    object.section_nested_items.includes(:section).collect do |sni|
+      { id: sni.section.id, name: sni.section.name }
     end
   end
 

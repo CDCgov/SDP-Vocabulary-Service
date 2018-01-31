@@ -11,7 +11,8 @@ import {
   PUBLISH_SURVEY,
   ADD_SURVEY_TO_GROUP,
   DELETE_SURVEY,
-  ADD_ENTITIES
+  ADD_ENTITIES,
+  UPDATE_SURVEY_TAGS
 } from './types';
 
 
@@ -76,6 +77,17 @@ export function saveDraftSurvey(survey, successHandler=null, failureHandler=null
   return {
     type: SAVE_DRAFT_SURVEY,
     payload: postPromise
+  };
+}
+
+export function updateSurveyTags(id, conceptsAttributes) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_tags_survey_path(id),
+                      {id, authenticityToken, conceptsAttributes},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_SURVEY_TAGS,
+    payload: putPromise
   };
 }
 

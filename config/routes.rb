@@ -36,25 +36,28 @@ Rails.application.routes.draw do
     put '/groups/remove_user' => 'groups#remove_user', as: :remove_user
   end
 
-  resources :section_questions
   resources :sections, except: [:edit] do # No need for edit as that is handled on the react side
     get :revise, on: :member
     get :export, on: :member
     get :redcap, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
+    put :update_tags, on: :member
+    put :update_pdv, on: :member
   end
   resources :surveys, except: [:edit], defaults: { format: :json } do
     get :revise, on: :member
     put :publish, on: :member
     get :redcap, on: :member
     put :add_to_group, on: :member
+    put :update_tags, on: :member
   end
   resources :questions, except: [:edit] do
     get :revise, on: :member
     get :usage, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
+    put :update_tags, on: :member
   end
   resources :comments do
     post :reply_to, on: :member

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
-import capitalize from 'lodash/capitalize';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -79,6 +78,11 @@ class SurveyEditContainer extends Component {
       }]);
   }
 
+  actionWord() {
+    const wordMap = {'new': 'Create', 'revise': 'Revise', 'extend': 'Extend', 'edit': 'Edit'};
+    return wordMap[this.props.params.action || 'new'];
+  }
+
   componentDidUpdate(prevProps) {
     if(prevProps.params.surveyId != this.props.params.surveyId){
       this.props.fetchSurvey(this.props.params.surveyId);
@@ -99,7 +103,7 @@ class SurveyEditContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">{capitalize(this.props.params.action)} Survey </h1>
+              <h1 className="panel-title">{`${this.actionWord()} Survey`}</h1>
             </div>
             <div className="panel-body">
               <div className="col-md-5">

@@ -14,7 +14,12 @@ import {
   PUBLISH_SECTION,
   ADD_SECTION_TO_GROUP,
   DELETE_SECTION,
-  ADD_ENTITIES
+  ADD_ENTITIES,
+  UPDATE_SECTION_TAGS,
+  UPDATE_PDV,
+  ADD_NESTED_ITEM,
+  REORDER_NESTED_ITEM,
+  REMOVE_NESTED_ITEM
 } from './types';
 
 export function newSection() {
@@ -99,6 +104,49 @@ export function saveDraftSection(section, successHandler=null, failureHandler=nu
   return {
     type: SAVE_DRAFT_SECTION,
     payload: postPromise
+  };
+}
+
+export function updateSectionTags(id, conceptsAttributes) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_tags_section_path(id),
+                      {id, authenticityToken, conceptsAttributes},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_SECTION_TAGS,
+    payload: putPromise
+  };
+}
+
+export function addNestedItem(section, nestedItem, type='question') {
+  return {
+    type: ADD_NESTED_ITEM,
+    payload: {section, nestedItem, type}
+  };
+}
+
+export function removeNestedItem(section, index) {
+  return {
+    type: REMOVE_NESTED_ITEM,
+    payload: {section, index}
+  };
+}
+
+export function reorderNestedItem(section, index, direction) {
+  return {
+    type: REORDER_NESTED_ITEM,
+    payload: {section, index, direction}
+  };
+}
+
+export function updatePDV(id, sniId, pdv) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_pdv_section_path(id),
+                      {sniId, pdv, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_PDV,
+    payload: putPromise
   };
 }
 

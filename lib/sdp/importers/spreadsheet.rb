@@ -1,5 +1,19 @@
 module SDP
   module Importers
+    class NestedItem
+      attr_accessor :name, :type, :items, :data_element
+
+      def initialize(type = :data_element)
+        @name = name
+        @type = type
+        @items = []
+      end
+
+      def add_item(item)
+        @items << item
+      end
+    end
+
     class Spreadsheet
       attr_reader :errors
 
@@ -13,9 +27,10 @@ module SDP
         de_columns: {
           section_name: 'PHIN Variable',
           name: 'Data Element (DE) Name',
+          de_id: 'DE Identifier Sent in HL7 Message',
           description: 'Data Element Description',
           value_set: 'Value Set Name (VADS Hyperlink)',
-          program_var: 'Local Variable Code System',
+          program_var: /(PHIN|Local) Variable Code System/,
           data_type: 'Data Type'
         },
         vs_columns: {
@@ -38,8 +53,10 @@ module SDP
         @file = file
         @user = user
         @errors = []
-        @section_names = []
-        @sections = {}
+        @top_level = NestedItem.new(:section)
+        @top_level.name = 'Top Level'
+        @current_section = @top_level
+        @parent_sections = []
         @config = DEFAULT_CONFIG.deep_merge(config)
         @section_start = Regexp.new(@config[:section_start_regex])
         @section_end = Regexp.new(@config[:section_end_regex])
@@ -89,14 +106,14 @@ module SDP
              @valueset_sheet.match(sheet)
             logger.debug "skipping sheet #{sheet} -- looks like a value set"
             next
-          elsif !(@config[:de_columns].values - headers).empty?
+          elsif !de_sheet?(headers)
             logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
             next
           end
 
           logger.debug "processing sheet #{sheet}"
           if @config[:mmg]
-            w.sheet(sheet).each(@config[:de_columns]) do |row|
+            w.sheet(sheet).parse(@config[:de_columns]).each do |row|
               # skip first row
               next if row[:name] == @config[:de_columns][:name]
               # section start/end
@@ -107,26 +124,28 @@ module SDP
               data_element = extract_data_element(row)
               print_data_element(data_element) if verbose
 
-              section_name = @section_names.last
-              section_name ||= sheet
-              # initialize section if its not already there
-              @sections[section_name] ||= { name: section_name, data_elements: [] }
               # add the data element unless a matching data element is already present
-              @sections[section_name][:data_elements] << data_element unless @sections[section_name][:data_elements].include? data_element
+              ni = NestedItem.new
+              ni.data_element = data_element
+              @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
             end
+            sectionize_top_level_questions(sheet)
+            # Reset to top level to prevent mismatched sections causing issues
+            @current_section = @top_level
           else
-            w.sheet(sheet).each(@config[:de_columns]) do |row|
+            start_section(sheet)
+            w.sheet(sheet).parse(@config[:de_columns]).each do |row|
               # skip first row
               next if row[:name] == @config[:de_columns][:name]
               next if row[:name].nil?
-              section_name = sheet
-              @sections[section_name] ||= { name: section_name, data_elements: [] }
-              data_element = extract_data_element(row)
-              @sections[section_name][:data_elements] << data_element unless data_element.nil? ||
-                                                                             @sections[section_name][:data_elements].include?(data_element)
-              print_data_element(data_element) if verbose
-            end
 
+              data_element = extract_data_element(row)
+              print_data_element(data_element) if verbose
+              ni = NestedItem.new
+              ni.data_element = data_element
+              @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
+            end
+            @current_section = @parent_sections.pop
           end
         end
         # Go back and extract value sets when those are included in the workbook
@@ -134,57 +153,66 @@ module SDP
         w.close
       end
 
-      def sections
-        @sections.each_value do |section|
-          yield section[:name], section[:data_elements]
-        end
-      end
-
       private
 
       def save_survey_items(s, section_position)
-        sections do |name, elements|
-          section = Section.new(name: name || "Imported Section ##{section_position + 1}", created_by: @user)
+        @top_level.items.each do |nested_item|
+          if nested_item.type == :data_element
+          end
+          section = Section.new(name: nested_item.name || "Imported Section ##{section_position + 1}", created_by: @user)
           section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
           section.save!
           s.survey_sections.create(section: section, position: section_position)
           section_position += 1
-          q_position = 0
-          elements.each do |element|
-            rs = nil
-            if element[:value_set_oid]
-              rs = response_set_for_vads(element)
-            elsif element[:value_set]
-              rs = response_set_for_local(element)
-            end
-            q = question_for(element)
-            q.save!
-            q.question_response_sets.create(response_set: rs) if rs
-            section.section_questions.create(question: q, program_var: element[:program_var], response_set: rs, position: q_position)
-            q_position += 1
-            q.index
-          end
+          save_section_items(section, nested_item.items)
           UpdateIndexJob.perform_now('section', section)
         end
         UpdateIndexJob.perform_now('survey', s)
       end
 
+      def save_section_items(parent_section, items)
+        items.each_with_index do |item, i|
+          if item.type == :data_element
+            rs = nil
+            if item.data_element[:value_set_oid]
+              rs = response_set_for_vads(item.data_element)
+            elsif item.data_element[:value_set]
+              rs = response_set_for_local(item.data_element)
+            end
+            q = question_for(item.data_element)
+            q.save!
+            q.question_response_sets.create(response_set: rs) if rs
+            nsi = SectionNestedItem.new(question: q, program_var: item.data_element[:program_var], response_set: rs, position: i)
+            parent_section.section_nested_items << nsi
+          else
+            section = Section.new(name: item.name || "Imported Section ##{i + 1}", created_by: @user)
+            section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+            section.save!
+            nsi = SectionNestedItem.new(nested_section: section, position: i)
+            parent_section.section_nested_items << nsi
+            save_section_items(section, item.items)
+          end
+        end
+      end
+
       def response_type(type)
         response_type_code = @config[:response_types][type]
         rt = ResponseType.find_by(code: response_type_code)
-        raise "Unable to find response type #{response_type_code} - did response types change?" unless rt
+        raise "Unable to find response type #{type} - did response types change?" unless rt
         rt
       end
 
       def question_for(element)
-        Question.new(
+        q = Question.new(
           content: element[:name], description: element[:description],
           created_by: @user, response_type: response_type(element[:data_type])
         )
+        q.concepts << Concept.new(value: element[:de_id], display_name: 'Data Element Identifier') if element[:de_id].present?
+        q
       end
 
       def response_set_for_vads(element)
-        rs = ResponseSet.where(oid: element[:value_set_oid]).first
+        rs = ResponseSet.most_recent_for_oid(element[:value_set_oid])
         if rs.nil?
           rs = ResponseSet.new(
             created_by: @user, status: 'draft',
@@ -235,22 +263,58 @@ module SDP
         value_set
       end
 
-      def extract_value_sets(workbook, verbose)
-        sections do |_name, data_elements|
-          data_elements.each do |data_element|
-            next unless data_element[:value_set_tab_name]
-            sheet = workbook.sheet(data_element[:value_set_tab_name])
-            logger.info "Processing value set tab: #{data_element[:value_set_tab_name]}" if verbose
-            data_element[:value_set] = parse_value_set(sheet, data_element[:value_set_tab_name])
-            logger.info "  Codes: #{data_element[:value_set].join(', ')}" if verbose
+      def all_data_elements
+        data_elements_for_section(@top_level)
+      end
+
+      def data_elements_for_section(section)
+        data_elements = []
+        section.items.each do |item|
+          if item.type == :data_element
+            data_elements << item.data_element
+          else
+            data_elements.concat(data_elements_for_section(item))
           end
+        end
+        data_elements
+      end
+
+      def sectionize_top_level_questions(sheet)
+        new_items = []
+        current_top_level_section = nil
+        @top_level.items.each do |i|
+          if i.type == :section
+            if current_top_level_section
+              new_items << current_top_level_section
+              current_top_level_section = nil
+            end
+            new_items << i
+          else
+            if current_top_level_section.blank?
+              current_top_level_section = NestedItem.new(:section)
+              current_top_level_section.name = sheet
+            end
+            current_top_level_section.items << i
+          end
+        end
+        @top_level.items = new_items
+      end
+
+      def extract_value_sets(workbook, verbose)
+        all_data_elements.each do |data_element|
+          next unless data_element[:value_set_tab_name]
+          sheet = workbook.sheet(data_element[:value_set_tab_name])
+          logger.info "Processing value set tab: #{data_element[:value_set_tab_name]}" if verbose
+          data_element[:value_set] = parse_value_set(sheet, data_element[:value_set_tab_name])
+          logger.info "  Codes: #{data_element[:value_set].join(', ')}" if verbose
         end
       end
 
       def extract_data_element(row)
         data_element = {
           name: normalize(row[:name]), description: normalize(row[:description]),
-          data_type: normalize(row[:data_type]), program_var: normalize(row[:program_var])
+          data_type: normalize(row[:data_type]), program_var: normalize(row[:program_var]),
+          de_id: normalize(row[:de_id])
         }
         if @config[:de_coded_type].include? data_element[:data_type]
           if row[:value_set].respond_to? :to_uri
@@ -274,18 +338,27 @@ module SDP
         start_marker = @section_start.match(row[:section_name])
         end_marker = @section_end.match(row[:section_name])
         if start_marker
-          @section_names.push(start_marker[1])
+          start_section(start_marker[1])
         elsif end_marker
           section_name = end_marker[1]
-          current_section = @section_names.pop
-          if current_section != section_name
-            @errors << "Mismatched section end: expected #{current_section}, found #{section_name}"
+          if @current_section.name != section_name
+            @errors << "Mismatched section end: expected #{@current_section.name}, found #{section_name}"
+          else
+            @current_section = @parent_sections.pop
           end
         end
       end
 
+      def start_section(name)
+        new_section = NestedItem.new(:section)
+        new_section.name = name
+        @current_section.add_item(new_section)
+        @parent_sections.push(@current_section)
+        @current_section = new_section
+      end
+
       def normalize(str)
-        str.strip if str
+        str.strip if str.respond_to?(:strip)
       end
 
       def print_data_element(data_element)
@@ -301,6 +374,16 @@ module SDP
 
       def logger
         Rails.logger
+      end
+
+      def de_sheet?(headers)
+        @config[:de_columns].values.all? do |column_name|
+          if column_name.is_a?(Regexp)
+            headers.any? { |h| column_name.match?(h) }
+          else
+            headers.include?(column_name)
+          end
+        end
       end
     end
   end

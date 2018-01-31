@@ -4,7 +4,7 @@ namespace :usage do
     puts 'Reuse:'
     puts '-------'
     puts "Response Sets: #{QuestionResponseSet.group(:response_set_id).having('count(question_id) > 1').count.count}"
-    puts "Questions: #{SectionQuestion.group(:question_id).having('count(section_id) > 1').count.count}"
+    puts "Questions: #{SectionNestedItem.group(:question_id).having('count(section_id) > 1').count.count}"
     puts "Sections: #{SurveySection.group(:section_id).having('count(survey_id) > 1').count.count}"
     puts "\nExtensions:"
     puts '-----------'

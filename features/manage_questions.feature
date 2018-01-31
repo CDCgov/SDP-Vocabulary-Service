@@ -41,6 +41,25 @@ Feature: Manage Questions
     Then I should see "Group1"
     And I should not see "None"
 
+  Scenario: Manage Tags on a Question Show page
+    Given I have a published Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    And I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    Then I should see "Name: What is your gender?"
+    And I should see "Update"
+    When I click on the "Update" link
+    And I click on the "Add Row" link
+    And I fill in the "value_1" field with "Test Concept 2"
+    And I click on the "remove_0" link
+    And I click on the "Add Row" link
+    And I fill in the "displayName_1" field with "New"
+    And I select tag "New Concept Name" in the tag dropdown
+    And I click on the "Save" button
+    Then I should see "New Concept Name"
+    And I should see "Test Concept 2"
+
   Scenario: Send a Draft Question to a Publisher
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"
     And I have a publisher "johnny@test.org" with the first name "Johnny" and last name "Test"

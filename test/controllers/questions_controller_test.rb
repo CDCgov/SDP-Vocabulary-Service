@@ -41,6 +41,28 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
+  test 'cannot edit tags on something you do not own' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    sign_in users(:not_admin)
+    put update_tags_question_path(Question.last, format: :json, params: { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] })
+    assert_response :forbidden
+  end
+
+  test 'can edit tags on something you do own' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    put update_tags_question_path(Question.last, format: :json, params: { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] })
+    assert_response :success
+  end
+
+  test 'can edit tags on something you share a group with' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    Question.last.add_to_group(@group.id)
+    sign_in @na_user
+    @group.add_user(@na_user)
+    put update_tags_question_path(Question.last, format: :json, params: { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] })
+    assert_response :success
+  end
+
   test 'can revise something you share a group with' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
     Question.last.publish(@current_user)
@@ -117,9 +139,9 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal Question.last.status, 'draft'
     last_id = Question.last.id
     linked_question = { question_id: last_id, response_set_id: nil, position: 1, program_var: 'test' }
-    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @question.created_by_id, linked_questions: [linked_question], linked_response_sets: [nil] } }
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @question.created_by_id, linked_items: [linked_question], linked_response_sets: [nil] } }
     assert_difference('Question.count', -1) do
-      assert_difference('SectionQuestion.count', -1) do
+      assert_difference('SectionNestedItem.count', -1) do
         assert_difference('Section.count', 0) do
           delete question_url(Question.last, format: :json)
         end

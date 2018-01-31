@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSurvey, publishSurvey, addSurveyToGroup, deleteSurvey } from '../../actions/survey_actions';
+import { fetchSurvey, publishSurvey, addSurveyToGroup, deleteSurvey, updateSurveyTags } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import SurveyShow from '../../components/surveys/SurveyShow';
@@ -83,11 +83,22 @@ function mapStateToProps(state, ownProps) {
     props.sections = props.survey.surveySections.map((section) => state.sections[section.sectionId]);
     props.sections = props.sections.filter((sect) => sect !== undefined);
     props.sections = props.sections.map((sect) => {
-      const sectionWithQuestions = Object.assign({}, sect);
-      if (sectionWithQuestions.sectionQuestions) {
-        sectionWithQuestions.questions = sectionWithQuestions.sectionQuestions.map((sq) => state.questions[sq.questionId]);
+      const sectionWithNestedItems = Object.assign({}, sect);
+      if (sectionWithNestedItems.sectionNestedItems) {
+        sectionWithNestedItems.sectionNestedItems = sectionWithNestedItems.sectionNestedItems.map((sni) => {
+          let fullNestedItem = {};
+          if (sni.questionId) {
+            fullNestedItem = state.questions[sni.questionId];
+            fullNestedItem.type = 'question';
+            return fullNestedItem;
+          } else if (sni.nestedSectionId) {
+            fullNestedItem = state.sections[sni.nestedSectionId];
+            fullNestedItem.type = 'section';
+            return fullNestedItem;
+          }
+        });
       }
-      return sectionWithQuestions;
+      return sectionWithNestedItems;
     });
     if (props.survey.surveillanceSystemId) {
       props.survey.surveillanceSystem = state.surveillanceSystems[props.survey.surveillanceSystemId];
@@ -100,7 +111,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, publishSurvey, addSurveyToGroup, fetchSurvey, deleteSurvey}, dispatch);
+  return bindActionCreators({setSteps, setStats, publishSurvey, addSurveyToGroup, fetchSurvey, deleteSurvey, updateSurveyTags}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -110,6 +121,7 @@ SurveyShowContainer.propTypes = {
   fetchSurvey: PropTypes.func,
   publishSurvey: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
+  updateSurveyTags: PropTypes.func,
   deleteSurvey: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,

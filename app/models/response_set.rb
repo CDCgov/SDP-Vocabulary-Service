@@ -6,8 +6,8 @@ class ResponseSet < ApplicationRecord
   has_many :question_response_sets, dependent: :destroy
   has_many :questions, through: :question_response_sets
   has_many :responses, dependent: :destroy
-  has_many :section_questions, dependent: :nullify
-  has_many :sections, through: :section_questions
+  has_many :section_nested_items, dependent: :nullify
+  has_many :sections, through: :section_nested_items
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
@@ -23,6 +23,10 @@ class ResponseSet < ApplicationRecord
   accepts_nested_attributes_for :responses, allow_destroy: true
 
   after_commit :index, on: [:create, :update]
+
+  def self.most_recent_for_oid(oid)
+    where(oid: oid).order(version: :desc).first
+  end
 
   def index
     UpdateIndexJob.perform_later('response_set', id)
@@ -60,13 +64,13 @@ class ResponseSet < ApplicationRecord
 
   def surveillance_programs
     SurveillanceProgram.joins(surveys: :survey_sections)
-                       .joins('INNER join section_questions on section_questions.section_id = survey_sections.section_id')
-                       .where('section_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
+                       .joins('INNER join section_nested_items on section_nested_items.section_id = survey_sections.section_id')
+                       .where('section_nested_items.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def surveillance_systems
     SurveillanceSystem.joins(surveys: :survey_sections)
-                      .joins('INNER join section_questions on section_questions.section_id = survey_sections.section_id')
-                      .where('section_questions.response_set_id = ?', id).select(:id, :name).distinct.to_a
+                      .joins('INNER join section_nested_items on section_nested_items.section_id = survey_sections.section_id')
+                      .where('section_nested_items.response_set_id = ?', id).select(:id, :name).distinct.to_a
   end
 end

@@ -2,7 +2,7 @@
   @extend .panel-group;
   text-align: left;
 }
-.section-question-group {
+.section-nested-item-group {
   @extend .panel-group;
   text-align: right;
   margin-bottom: 10px;
@@ -105,4 +105,31 @@
   p{
     margin-bottom: 0px;
   }
+}
+
+.section-edit-search-filters-heading {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.section-edit-search-filter {
+  @extend .list-group-item;
+  display: table-cell !important;
+  width: 50% !important;
+  color: $cdc-blue !important;
+  text-align: center !important;
+  border: solid 1px $light-gray !important;
+  margin-top: 5px;
+  &:first-child {
+    border-left: none !important;
+  }
+  &:hover {
+    background-color: $analytics-hover-blue !important;
+    text-decoration: none !important;
+  }
+}
+
+.section-edit-search-filter-active-item {
+  background-color: $analytics-hover-blue !important;
 }

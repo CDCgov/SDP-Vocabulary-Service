@@ -29,7 +29,7 @@ class SectionsController < ApplicationController
     @section = Section.new(section_params)
     return unless can_section_be_created?(@section)
     @section.created_by = current_user
-    @section.section_questions = create_section_questions
+    @section.section_nested_items = create_section_nested_items
     if @section.save
       render :show, status: :created, location: @section
     else
@@ -45,7 +45,7 @@ class SectionsController < ApplicationController
     else
       update_successful = nil
       @section.transaction do
-        @section.section_questions = update_section_questions
+        @section.section_nested_items = update_section_nested_items
         @section.update_concepts('Section')
         # When we assign update_successful, it is the last expression in the block
         # That means, if the section fails to update, this block will return false,
@@ -92,6 +92,29 @@ class SectionsController < ApplicationController
     end
   end
 
+  def update_tags
+    @section.add_tags(params)
+    if @section.save!
+      render :show, status: :ok, location: @section
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update_pdv
+    if @section.section_nested_item_ids.include?(params[:sni_id])
+      sni = SectionNestedItem.find(params[:sni_id])
+      sni.program_var = params[:pdv]
+      if sni.save!
+        render :show, status: :ok, location: @section
+      else
+        render json: @section.errors, status: :unprocessable_entity
+      end
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /sections/1/redcap
   def redcap
     xml = render_to_string 'sections/redcap.xml', layout: false
@@ -126,52 +149,25 @@ class SectionsController < ApplicationController
     "Section was successfully #{action}."
   end
 
-  def create_section_questions
-    section_questions = []
-    if params[:section][:linked_questions]
-      params[:section][:linked_questions].each do |q|
-        section_questions << SectionQuestion.new(question_id: q[:question_id], response_set_id: q[:response_set_id],\
-                                                 position: q[:position], program_var: q[:program_var])
+  def create_section_nested_items
+    section_nested_items = []
+    if params[:section][:linked_items]
+      params[:section][:linked_items].each do |sni|
+        section_nested_items << SectionNestedItem.new(question_id: sni[:question_id], response_set_id: sni[:response_set_id],\
+                                                      position: sni[:position], program_var: sni[:program_var],\
+                                                      nested_section_id: sni[:nested_section_id])
       end
     end
-    section_questions
-  end
-
-  # old_q is a SectionQuestion, new_q is hash representing a new section question from the request params
-  def update_section_question(old_q, new_q)
-    old_q.position = new_q[:position]
-    old_q.program_var = new_q[:program_var]
-    old_q.question_id = new_q[:question_id]
-    old_q.response_set_id = new_q[:response_set_id]
-    # While this seems unecessary, checking changed? here improves
-    old_q.save! if old_q.changed?
-    old_q
+    section_nested_items
   end
 
   # !!! this algorithm assumes a question cannot appear twice on the same section !!!
   # Only update section questions that were changed
-  def update_section_questions
-    updated_qs = []
-    if params[:section][:linked_questions]
-      new_qs_hash = {}
-      params[:section][:linked_questions].each { |q| new_qs_hash[q[:question_id]] = q }
-      # Be aware, wrapping this loop in a transaction improves perf by batching all the updates to be committed at once
-      SectionQuestion.transaction do
-        @section.section_questions.each do |q|
-          if new_qs_hash.include? q.question_id
-            updated_qs << update_section_question(q, new_qs_hash.delete(q.question_id))
-          else
-            q.destroy!
-          end
-        end
-      end
-      # any new section question still in this hash needs to be created
-      new_qs_hash.each do |_id, q|
-        updated_qs << SectionQuestion.new(question_id: q[:question_id], response_set_id: q[:response_set_id],\
-                                          position: q[:position], program_var: q[:program_var])
-      end
-    end
-    updated_qs
+  def update_section_nested_items
+    snis = params[:section][:linked_items]
+    updated_snis = []
+    updated_snis = @section.update_snis(snis) if snis
+    updated_snis
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -1,7 +1,7 @@
 json.extract! section, :id, :name, :description, :created_at, :updated_at, :concepts, \
               :version_independent_id, :version, :all_versions, :most_recent, :parent, \
-              :section_questions, :status, :created_by_id, :published_by, :most_recent_published, \
-              :surveys, :groups
+              :section_nested_items, :status, :created_by_id, :published_by, :most_recent_published, \
+              :surveys, :groups, :nested_sections
 json.user_id section.created_by.email if section.created_by.present?
 json.url section_url(section, format: :json)
 

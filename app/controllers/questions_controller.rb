@@ -92,6 +92,15 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def update_tags
+    @question.add_tags(params)
+    if @question.save!
+      render :show, status: :ok, location: @question
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   def usage
     @question = Question.find(params[:id])
     if @question.status != 'published'

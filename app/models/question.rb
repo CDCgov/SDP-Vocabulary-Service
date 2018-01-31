@@ -4,8 +4,8 @@ class Question < ApplicationRecord
 
   has_many :question_response_sets, dependent: :destroy
   has_many :response_sets, through: :question_response_sets
-  has_many :section_questions
-  has_many :sections, through: :section_questions
+  has_many :section_nested_items
+  has_many :sections, through: :section_nested_items
 
   belongs_to :response_type
   belongs_to :category
@@ -25,8 +25,8 @@ class Question < ApplicationRecord
 
   def update_sections
     section_array = sections.to_a
-    section_questions.destroy_all
-    section_array.each(&:update_question_positions)
+    section_nested_items.destroy_all
+    section_array.each(&:update_item_positions)
   end
 
   def index
@@ -37,7 +37,7 @@ class Question < ApplicationRecord
     new_revision = Question.new(content: content, description: description, status: status,
                                 version_independent_id: version_independent_id,
                                 version: version + 1, question_response_sets: question_response_sets,
-                                response_sets: response_sets, section_questions: section_questions, sections: sections,
+                                response_sets: response_sets, section_nested_items: section_nested_items, sections: sections,
                                 category: category, oid: oid, parent_id: parent_id, subcategory: subcategory,
                                 response_type: response_type)
     concepts.each do |c|
@@ -56,14 +56,14 @@ class Question < ApplicationRecord
   # section is contained in
   def surveillance_programs
     SurveillanceProgram.joins(surveys: :survey_sections)
-                       .joins('INNER join section_questions on section_questions.section_id = survey_sections.section_id')
-                       .where('section_questions.question_id = ?', id).select(:id, :name).distinct.to_a
+                       .joins('INNER join section_nested_items on section_nested_items.section_id = survey_sections.section_id')
+                       .where('section_nested_items.question_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def surveillance_systems
     SurveillanceSystem.joins(surveys: :survey_sections)
-                      .joins('INNER join section_questions on section_questions.section_id = survey_sections.section_id')
-                      .where('section_questions.question_id = ?', id).select(:id, :name).distinct.to_a
+                      .joins('INNER join section_nested_items on section_nested_items.section_id = survey_sections.section_id')
+                      .where('section_nested_items.question_id = ?', id).select(:id, :name).distinct.to_a
   end
 
   def other_allowed_on_when_choice

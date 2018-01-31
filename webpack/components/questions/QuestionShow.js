@@ -11,14 +11,20 @@ import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
+import TagModal from "../TagModal";
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 export default class QuestionShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { tagModalOpen: false };
+  }
+
   render() {
     const {question} = this.props;
     if(question === undefined || question.content === undefined){
@@ -101,9 +107,9 @@ export default class QuestionShow extends Component {
           </div>
         }
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Name:</strong> {question.content} </h1>
+          <h1 className="maincontent-item-name"><strong>Question Name:</strong> {question.content} </h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
-          <div className="basic-c-box panel-default">
+          <div className="basic-c-box panel-default question-type">
             <div className="panel-heading">
               <h2 className="panel-title">Details</h2>
             </div>
@@ -146,7 +152,24 @@ export default class QuestionShow extends Component {
           </div>
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
-                <h2 className="panel-title">Tags</h2>
+                <h2 className="panel-title">
+                  Tags
+                  {isSimpleEditable(question, this.props.currentUser) &&
+                    <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>
+                      <TagModal show={this.state.tagModalOpen || false}
+                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                        concepts={question.concepts}
+                        saveButtonAction={(conceptsAttributes) => {
+                          this.props.updateQuestionTags(question.id, conceptsAttributes);
+                          this.setState({ tagModalOpen: false });
+                        }} />
+                      <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+                    </a>
+                  }
+                </h2>
               </div>
               <div className="box-content">
                 <div id="concepts-table">
@@ -211,6 +234,7 @@ QuestionShow.propTypes = {
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
+  updateQuestionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

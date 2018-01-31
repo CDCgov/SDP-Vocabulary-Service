@@ -49,11 +49,13 @@ sectionSchema.define({
   parent: sectionSchema,
   questions: [ questionSchema ],
   responseSets: [ responseSetSchema ],
-  surveys: [ surveySchema ]
+  surveys: [ surveySchema ],
+  nestedSections: [ sectionSchema ]
 });
 
 surveySchema.define({
   questions: [ questionSchema ],
+  nestedSections: [ sectionSchema ],
   sections: [ sectionSchema ],
   parent: surveySchema
 });
@@ -66,7 +68,5 @@ questionSearchSchema.define({
 });
 
 sectionSearchSchema.define({
-  parent: sectionSearchSchema,
-  questions: [ questionSchema ],
-  responseSets: [ responseSetSchema ]
+  parent: sectionSearchSchema
 });

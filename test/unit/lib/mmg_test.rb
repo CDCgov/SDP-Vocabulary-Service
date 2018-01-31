@@ -35,8 +35,12 @@ class MMGTest < ActiveSupport::TestCase
     assert section.present?
     assert_equal section.questions.count, 1
     assert_equal section.concepts.count, 1
-    assert_equal section.section_questions.first.position, 0
+    assert_equal section.section_nested_items.first.position, 0
     assert_equal section.concepts.first.value, 'Data Elements'
+    section = Section.where(name: 'Form Completion Metadata').first
+    assert section.present?
+    assert_equal section.questions.first.concepts.first.value, 'INV920'
+    assert_equal section.questions.first.concepts.first.display_name, 'Data Element Identifier'
 
     survey = Survey.where(name: f).first
     assert survey.sections.count, SECTION_COUNT
@@ -61,6 +65,26 @@ class MMGTest < ActiveSupport::TestCase
     mmg_ss = s.survey_sections[2]
     assert_equal 2, mmg_ss.position
     assert_equal 'Data Elements', mmg_ss.section.name
+  end
+
+  test 'nested section import' do
+    u = users(:admin)
+    f = './test/fixtures/files/NestedTestMMG.xlsx'
+
+    importer = SDP::Importers::Spreadsheet.new(f, u)
+    importer.parse!
+    importer.save!
+
+    survey = Survey.where(name: f).first
+    assert survey.present?
+
+    section = survey.sections.where(name: 'Case Data').first
+    first_question = section.section_nested_items[0]
+    assert first_question.question.present?
+    assert_equal 'RptComp', first_question.question.content
+    nested_section = section.section_nested_items[1]
+    assert nested_section.nested_section.present?
+    assert_equal 'Nested Case Data', nested_section.nested_section.name
   end
 
   test 'parse_spreedsheet' do
@@ -89,7 +113,7 @@ class MMGTest < ActiveSupport::TestCase
     assert section.present?
     assert_equal section.questions.count, 4
     assert_equal section.concepts.count, 1
-    assert_equal section.section_questions.first.position, 0
+    assert_equal section.section_nested_items.first.position, 0
     assert_equal section.concepts.first.value, 'Data Elements'
 
     survey = Survey.where(name: f).first

@@ -5,11 +5,11 @@ import { Button } from 'react-bootstrap';
 import compact from 'lodash/compact';
 import union from 'lodash/union';
 
-import { sectionProps } from '../../prop-types/section_props';
+import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 import { questionsProps } from '../../prop-types/question_props';
 
-import QuestionItem from '../../containers/questions/QuestionItem';
+import AddedNestedItem from '../../containers/sections/AddedNestedItem';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import ModalDialog  from '../ModalDialog';
 import Errors from '../Errors';
@@ -39,13 +39,13 @@ class SectionEdit extends Component {
     const version = section.version;
     const name = section.name || '';
     const description = section.description || '';
-    const sectionQuestions = section.sectionQuestions || [];
+    const sectionNestedItems = section.sectionNestedItems || [];
     const showWarningModal = false;
     const parentId = section.parent ? section.parent.id : '';
     const conceptsAttributes = filterConcepts(section.concepts) || [];
-    const linkedResponseSets = this.findLinkedResponseSets(sectionQuestions);
+    const linkedResponseSets = this.findLinkedResponseSets(sectionNestedItems);
     const groups = section.groups || [];
-    return {sectionQuestions, name, id, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, groups};
+    return {sectionNestedItems, name, id, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, groups};
   }
 
   constructor(props) {
@@ -64,15 +64,15 @@ class SectionEdit extends Component {
         this.state = this.stateForRevise({});
     }
     this.unsavedState = false;
-    this.lastQuestionCount = this.state.sectionQuestions.length;
-    this.addedResponseSets = compact(this.state.sectionQuestions.map((sq) => sq.responseSetId));
+    this.lastNestedItemCount = this.state.sectionNestedItems.length;
+    this.addedResponseSets = compact(this.state.sectionNestedItems.map((sni) => sni.responseSetId));
 
     this.handleSubmit   = this.handleSubmit.bind(this);
-    this.moveQuestionUp = this.moveQuestionUp.bind(this);
-    this.removeQuestion = this.removeQuestion.bind(this);
+    this.moveNestedItemUp = this.moveNestedItemUp.bind(this);
+    this.removeNestedItem = this.removeNestedItem.bind(this);
     this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
-    this.moveQuestionDown = this.moveQuestionDown.bind(this);
+    this.moveNestedItemDown = this.moveNestedItemDown.bind(this);
     this.handleModalResponse = this.handleModalResponse.bind(this);
     this.handleProgramVarChange   = this.handleProgramVarChange.bind(this);
     this.handleChangeDescription  = this.handleChangeDescription.bind(this);
@@ -92,9 +92,9 @@ class SectionEdit extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.lastQuestionCount !== prevState.sectionQuestions.length) {
+    if(this.lastNestedItemCount !== prevState.sectionNestedItems.length) {
       this.unsavedState = true;
-      this.lastQuestionCount = prevState.sectionQuestions.length;
+      this.lastNestedItemCount = prevState.sectionNestedItems.length;
     }
   }
 
@@ -112,7 +112,7 @@ class SectionEdit extends Component {
   handleModalResponse(){
     this.setState({ showWarningModal: false });
     let section = Object.assign({}, this.state);
-    section.linkedQuestions = this.state.sectionQuestions;
+    section.linkedItems = this.state.sectionNestedItems;
     this.props.sectionSubmitter(section, (response) => {
       // TODO: Handle when the saving section fails.
       this.unsavedState = false;
@@ -137,15 +137,15 @@ class SectionEdit extends Component {
       responseSetId = null;
     }
     let newState = Object.assign({}, this.state);
-    newState.sectionQuestions[questionIndex].responseSetId = responseSetId;
-    newState.linkedResponseSets = this.findLinkedResponseSets(newState.sectionQuestions);
+    newState.sectionNestedItems[questionIndex].responseSetId = responseSetId;
+    newState.linkedResponseSets = this.findLinkedResponseSets(newState.sectionNestedItems);
     this.setState(newState);
     this.unsavedState = true;
   }
 
-  handleProgramVarChange(questionIndex, programVar) {
+  handleProgramVarChange(sniIndex, programVar) {
     let newState = Object.assign({}, this.state);
-    newState.sectionQuestions[questionIndex].programVar = programVar;
+    newState.sectionNestedItems[sniIndex].programVar = programVar;
     this.setState(newState);
     this.unsavedState = true;
   }
@@ -169,7 +169,7 @@ class SectionEdit extends Component {
     event.preventDefault();
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let section = Object.assign({}, this.state);
-    section.linkedQuestions = this.state.sectionQuestions;
+    section.linkedItems = this.state.sectionNestedItems;
     this.props.sectionSubmitter(section, (response) => {
       this.unsavedState = false;
       if (this.props.action === 'new') {
@@ -197,31 +197,31 @@ class SectionEdit extends Component {
   }
 
   addLinkedResponseSet(questionIndex, responseSet){
-    if(this.state.sectionQuestions[questionIndex].responseSetId == responseSet.id){
+    if(this.state.sectionNestedItems[questionIndex].responseSetId == responseSet.id){
       return;
     }
     this.addedResponseSets = union(this.addedResponseSets, [responseSet.id]);
     var newState = Object.assign({}, this.state);
-    newState.sectionQuestions[questionIndex].responseSetId = responseSet.id;
+    newState.sectionNestedItems[questionIndex].responseSetId = responseSet.id;
     this.setState(newState);
   }
 
-  updateSectionQuestions(sectionQuestions){
-    var newState = Object.assign(this.state, {sectionQuestions: sectionQuestions, linkedResponseSets: this.findLinkedResponseSets(sectionQuestions)});
+  updateSectionNestedItems(sectionNestedItems){
+    var newState = Object.assign(this.state, {sectionNestedItems: sectionNestedItems, linkedResponseSets: this.findLinkedResponseSets(sectionNestedItems)});
     this.setState(newState);
   }
 
-  findLinkedResponseSets(sectionQuestions, addedResponseSets){
+  findLinkedResponseSets(sectionNestedItems, addedResponseSets){
     var linkedResponseSetMap = {};
-    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionQuestions.map((sq) => sq.responseSetId));
-    sectionQuestions.map((q) => {
+    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionNestedItems.map((sni) => sni.responseSetId));
+    sectionNestedItems.map((sni) => {
       var linkedResponseSets = [];
-      var qId = q.questionId;
+      var qId = sni.questionId || -1;
       if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
         linkedResponseSets = this.props.questions[qId].responseSets || [];
       }
       linkedResponseSets = union(linkedResponseSets, otherResponseSets);
-      linkedResponseSetMap[q.questionId] = compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
+      linkedResponseSetMap[sni.questionId] = compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
     });
     return linkedResponseSetMap;
   }
@@ -235,65 +235,64 @@ class SectionEdit extends Component {
     this.handleResponseSetChange(i, parseInt(event.target.value));
   }
 
-  moveQuestionUp(event){
+  moveNestedItemUp(event){
     event.preventDefault();
-    this.props.reorderQuestion(this.state, event.target.dataset.index, 1);
+    this.props.reorderNestedItem(this.state, event.target.dataset.index, 1);
   }
 
-  moveQuestionDown(event){
+  moveNestedItemDown(event){
     event.preventDefault();
-    this.props.reorderQuestion(this.state, event.target.dataset.index, -1);
+    this.props.reorderNestedItem(this.state, event.target.dataset.index, -1);
   }
 
-  removeQuestion(event){
+  removeNestedItem(event){
     event.preventDefault();
-    this.props.removeQuestion(this.state, event.target.dataset.index);
+    this.props.removeNestedItem(this.state, event.target.dataset.index);
   }
 
-  addedQuestions() {
+  addedNestedItems() {
     return (
-      <div id="added-questions" aria-label="Added">
+      <div id="added-nested-items" aria-label="Added sections and questions">
         <div className="row">
           <div className="response-set-header">
-            <div className="col-md-5 response-set-label"><span><b>Questions</b></span></div>
+            <div className="col-md-5 response-set-label"><span><b>Questions & Sections</b></span></div>
             <div className="col-md-7 response-set-label">
               <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
             </div>
           </div>
         </div>
-        <div className="added-question-group">
-          {this.state.sectionQuestions.map((q, i) =>
-            <div className="row" key={q.questionId}>
+        <div className="added-nested-item-group">
+          {this.state.sectionNestedItems.map((sni, i) =>
+            <div className="row" key={sni.questionId || sni.nestedSectionId}>
               <div className="col-md-11">
-                <QuestionItem index={i}
-                              question={this.props.questions[q.questionId]}
-                              programVar={q.programVar}
-                              responseSets={this.state.linkedResponseSets[q.questionId] || []}
-                              removeQuestion ={this.props.removeQuestion}
-                              reorderQuestion={this.props.reorderQuestion}
-                              selectedResponseSet={q.responseSetId}
-                              handleProgramVarChange={this.handleProgramVarChange}
-                              handleResponseSetChange ={this.handleResponseSetChangeEvent}
-                              handleSelectSearchResult={this.handleSelectSearchResult} />
+                <AddedNestedItem index={i}
+                                 item={sni.questionId ? this.props.questions[sni.questionId] : this.props.sections[sni.nestedSectionId]}
+                                 itemType={sni.questionId ? 'question' : 'section'}
+                                 programVar={sni.programVar}
+                                 responseSets={this.state.linkedResponseSets[sni.questionId] || []}
+                                 selectedResponseSet={sni.responseSetId}
+                                 handleProgramVarChange={this.handleProgramVarChange}
+                                 handleResponseSetChange ={this.handleResponseSetChangeEvent}
+                                 handleSelectSearchResult={this.handleSelectSearchResult} />
               </div>
               <div className="col-md-1">
-                <div className="row section-question-controls">
-                  <button data-index={i} className="btn btn-small btn-default move-up" onClick={this.moveQuestionUp}>
-                    <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up question ${this.props.questions[q.questionId].content} on section`}</span>
+                <div className="row section-nested-item-controls">
+                  <button data-index={i} className="btn btn-small btn-default move-up" onClick={this.moveNestedItemUp}>
+                    <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up item on section`}</span>
                   </button>
                 </div>
-                <div className="row section-question-controls">
-                  <button data-index={i} className="btn btn-small btn-default move-down" onClick={this.moveQuestionDown}>
-                    <i data-index={i} className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down question ${this.props.questions[q.questionId].content} on section`}</span>
+                <div className="row section-nested-item-controls">
+                  <button data-index={i} className="btn btn-small btn-default move-down" onClick={this.moveNestedItemDown}>
+                    <i data-index={i} className="fa fa fa-arrow-down" title="Move Down"></i><span className="sr-only">{`Move down item on section`}</span>
                   </button>
                 </div>
-                <div className="row section-question-controls">
-                  <button data-index={i} className="btn btn-small btn-default delete-question" onClick={this.removeQuestion}>
-                    <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove question ${this.props.questions[q.questionId].content} on section`}</span>
+                <div className="row section-nested-item-controls">
+                  <button data-index={i} className="btn btn-small btn-default delete-question" onClick={this.removeNestedItem}>
+                    <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove item from section`}</span>
                   </button>
                 </div>
               </div>
-              </div>
+            </div>
           )}
         </div>
       </div>
@@ -301,7 +300,7 @@ class SectionEdit extends Component {
   }
 
   render() {
-    if(!this.props.questions || !this.props.responseSets){
+    if(!this.props.questions || !this.props.responseSets || !this.props.sections){
       return (
         <div>Loading...</div>
       );
@@ -328,37 +327,23 @@ class SectionEdit extends Component {
             <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
             {this.cancelButton()}
           </div>
-        <div className="row">
-          <div className="col-md-12">
-            <hr />
+          <hr />
+          <div className="section-group">
+            <label htmlFor="section-name" hidden>Name</label>
+            <input tabIndex="3" className="input-format" placeholder="Section Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="row">
-              <div className="section-group col-md-12">
-                <label htmlFor="section-name" hidden>Name</label>
-                <input tabIndex="3" className="input-format" placeholder="Section Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="section-group col-md-12">
-                <label htmlFor="section-description">Description</label>
-                <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
-              </div>
-            </div>
+          <div className="section-group">
+            <label htmlFor="section-description">Description</label>
+            <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
+          <div className="section-group">
             <h2 className="tags-table-header"><strong>Tags</strong></h2>
             <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                      initialItems={this.state.conceptsAttributes}
                      parentName={'section'}
                      childName={'tag'} />
           </div>
-        </div>
-        {this.addedQuestions()}
+        {this.addedNestedItems()}
       </form>
       </div>
       </div>
@@ -383,12 +368,13 @@ SectionEdit.propTypes = {
   setStats: PropTypes.func,
   stats: PropTypes.object,
   sectionSubmitter:   PropTypes.func.isRequired,
-  reorderQuestion: PropTypes.func.isRequired,
-  removeQuestion:  PropTypes.func.isRequired,
+  reorderNestedItem: PropTypes.func.isRequired,
+  removeNestedItem:  PropTypes.func.isRequired,
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   responseSets: responseSetsProps,
   questions: questionsProps.isRequired,
+  sections: sectionsProps,
   showResponseSetModal: PropTypes.func.isRequired
 };
 

@@ -6,6 +6,7 @@ import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import CodedSetTable from "../CodedSetTable";
+import TagModal from "../TagModal";
 
 import SectionList from "../sections/SectionList";
 
@@ -14,9 +15,14 @@ import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { tagModalOpen: false };
+  }
+
   historyBar() {
     return (
       <div className="col-md-3 nopadding no-print">
@@ -80,11 +86,11 @@ class SurveyShow extends Component {
           <a className="btn btn-default" href={`/surveys/${this.props.survey.id}/redcap`}>Export to REDCap</a>
         </div>
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Name:</strong> {this.props.survey.name} </h1>
+          <h1 className="maincontent-item-name"><strong>Survey Name:</strong> {this.props.survey.name} </h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
-          <div className="basic-c-box panel-default">
+          <div className="basic-c-box panel-default survey-type">
             <div className="panel-heading">
               <h2 className="panel-title">Description</h2>
             </div>
@@ -106,7 +112,24 @@ class SurveyShow extends Component {
           </div>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
-              <h2 className="panel-title">Tags</h2>
+              <h2 className="panel-title">
+                Tags
+                {isSimpleEditable(this.props.survey, this.props.currentUser) &&
+                  <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                    e.preventDefault();
+                    this.setState({ tagModalOpen: true });
+                  }}>
+                    <TagModal show={this.state.tagModalOpen || false}
+                      cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                      concepts={this.props.survey.concepts}
+                      saveButtonAction={(conceptsAttributes) => {
+                        this.props.updateSurveyTags(this.props.survey.id, conceptsAttributes);
+                        this.setState({ tagModalOpen: false });
+                      }} />
+                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+                  </a>
+                }
+              </h2>
             </div>
             <div className="box-content">
               <div id="concepts-table">
@@ -177,6 +200,7 @@ SurveyShow.propTypes = {
   deleteSurvey:  PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
+  updateSurveyTags: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps
 };

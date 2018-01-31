@@ -13,7 +13,7 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :suggest
   attribute :updated_by, key: :updatedBy
   attribute :created_by, key: :createdBy
-  attribute :questions
+  attribute :section_nested_items
   attribute :surveys
   attribute(:codes) { codes }
   attribute :surveillance_programs
@@ -41,20 +41,28 @@ class ESSectionSerializer < ActiveModel::Serializer
     object.created_at.as_json if object.created_at
   end
 
-  def questions
-    object.section_questions.includes(:response_set, question: [:concepts]).collect do |sq|
-      { id: sq.question_id,
-        name: sq.question.content,
-        codes: (sq.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
-        response_set: sq.response_set.try(:name),
-        response_set_id: sq.response_set_id }
+  def section_nested_items
+    object.section_nested_items.includes(:response_set, question: [:concepts], nested_section: [:concepts]).collect do |sni|
+      if sni.question
+        { id: sni.question_id,
+          name: sni.question.content,
+          type: 'question',
+          codes: (sni.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
+          response_set: sni.response_set.try(:name),
+          response_set_id: sni.response_set_id }
+      elsif sni.nested_section
+        { id: sni.nested_section_id,
+          name: sni.nested_section.name,
+          type: 'section',
+          codes: (sni.nested_section.concepts || []).collect { |c| CodeSerializer.new(c).as_json } }
+      end
     end
   end
 
   def surveys
-    object.survey_sections.includes(:survey).collect do |sq|
-      { id: sq.survey_id,
-        name: sq.survey.name }
+    object.survey_sections.includes(:survey).collect do |ss|
+      { id: ss.survey_id,
+        name: ss.survey.name }
     end
   end
 

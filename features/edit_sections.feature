@@ -26,6 +26,7 @@ Feature: Edit Sections
 
   Scenario: Revise Section
     Given I have a published Section with the name "Test Section" and the description "Section description"
+    And I have a published Section with the name "Nested Section" and the description "Nested section description"
     And I have a published Question with the content "What is your gender?" and the type "MC"
     And I have a published Response Set with the name "Gender Partial"
     And I am logged in as test_author@gmail.com
@@ -47,14 +48,24 @@ Feature: Edit Sections
     And I fill in the "program-var" field with "Test Var Edit"
     And I click on the "Done" button
     And I should see "TEST VAR EDIT"
+    And I set search filter to "sections" without "Test Section"
+    And I click on the "Click to filter search by Sections" link
+    And I fill in the "search" field with "Nest"
+    And I click on the "search-btn" button
+    And I use the section search to select "Nested Section"
     And I click on the "Save" button
     Then I should see "Name: Gender Section"
     Then I should see "Revised Description"
-    When I click on the "Linked Questions" link
+    When I click on the "Linked Questions and Sections" link
     And I should see "What is your gender?"
+    And I should see "Nested Section"
     And I should not see "Publish"
     And I should see "Edit"
     And I should see "TEST VAR EDIT"
+    When I click on the "Item program defined variable: Test Var Edit" link
+    And I fill in the "program-defined-variable" field with "Edit on show page"
+    And I click on the "Save" link
+    Then I should see "EDIT ON SHOW PAGE"
 
   Scenario: Extend Section
     Given I have a published Section with the name "Test Section" and the description "Description from parent"

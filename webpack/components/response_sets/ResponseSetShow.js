@@ -6,7 +6,7 @@ import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
-import SectionQuestionList from '../sections/SectionQuestionList';
+import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -111,9 +111,9 @@ export default class ResponseSetShow extends Component {
           </div>
         }
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Name:</strong> {responseSet.name} </h1>
+          <h1 className="maincontent-item-name"><strong>Response Set Name:</strong> {responseSet.name} </h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
-          <div className="basic-c-box panel-default">
+          <div className="basic-c-box panel-default response_set-type">
             <div className="panel-heading">
               <h2 className="panel-title">Details</h2>
             </div>
@@ -158,7 +158,7 @@ export default class ResponseSetShow extends Component {
                 <h2 className="panel-title">Linked Questions</h2>
               </div>
               <div className="box-content">
-                <SectionQuestionList questions={responseSet.questions} currentUserId={this.props.currentUser.id} />
+                <SectionNestedItemList items={responseSet.questions} currentUser={this.props.currentUser} />
               </div>
             </div>
           }

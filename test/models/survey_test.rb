@@ -28,7 +28,7 @@ class SurveyTest < ActiveSupport::TestCase
     q.response_sets = [rs]
     assert q.save
     sect = Section.new(name: 'Test publish', created_by: user)
-    sect.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q.id, response_set_id: rs.id, position: 0)]
     assert sect.save
     s = Survey.new(name: 'Test publish', created_by: user)
     s.survey_sections = [SurveySection.new(section_id: sect.id, position: 0)]
@@ -49,7 +49,7 @@ class SurveyTest < ActiveSupport::TestCase
     q.response_sets = [rs]
     assert q.save
     sect = Section.new(name: 'Test group sect', created_by: user)
-    sect.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q.id, response_set_id: rs.id, position: 0)]
     assert sect.save
     s = Survey.new(name: 'Test group surv', created_by: user)
     s.survey_sections = [SurveySection.new(section_id: sect.id, position: 0)]
@@ -72,7 +72,7 @@ class SurveyTest < ActiveSupport::TestCase
     sect1 = Section.new(name: 'Test Delete 1', created_by: user)
     assert sect1.save
     sect2 = Section.new(name: 'Test Delete 2', created_by: user)
-    sect2.section_questions = [SectionQuestion.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    sect2.section_nested_items = [SectionNestedItem.new(question_id: q.id, response_set_id: rs.id, position: 0)]
     assert sect2.save
     sect3 = Section.new(name: 'Test Delete 3', created_by: user)
     assert sect3.save

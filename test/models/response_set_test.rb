@@ -93,4 +93,13 @@ class ResponseSetTest < ActiveSupport::TestCase
     assert_equal 1, sp.length
     assert_includes sp.map(&:name), 'Generic Surveillance Program'
   end
+
+  test 'most_recent_for_oid' do
+    rs = ResponseSet.most_recent_for_oid('5.6.7.8')
+    assert rs
+    assert_equal 2, rs.version
+
+    rs = ResponseSet.most_recent_for_oid('6.7.8.9')
+    assert_nil rs
+  end
 end
