@@ -109,8 +109,7 @@ Feature: Manage Questions
     When I go to the list of Questions
     And I click on the menu link for the Question with the content "Test Question"
     And I click on the option to Details the Question with the content "Test Question"
-    When I click on the "Delete" link
-    When I confirm my action
+    When I click on the "Delete" link and confirm my action
     Then I go to the dashboard
     When I go to the list of Questions
     Then I should not see "Test Question"
