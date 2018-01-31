@@ -334,7 +334,7 @@ GEM
       rake (>= 0.9, < 13)
       sass (~> 3.4.20)
     securecompare (1.0.0)
-    selenium-webdriver (2.48.0)
+    selenium-webdriver (3.8.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
@@ -451,7 +451,7 @@ DEPENDENCIES
   roo-xls (~> 1.0.0)
   rubocop (~> 0.49.0)
   scss_lint
-  selenium-webdriver (= 2.48.0)
+  selenium-webdriver (~> 3.8.0)
   simplecov
   tzinfo-data
   web-console

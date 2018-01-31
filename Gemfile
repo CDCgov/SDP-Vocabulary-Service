@@ -48,6 +48,7 @@ group :development, :test do
   gem 'capybara', '2.11.0'
   gem 'capybara-accessible'
   gem 'capybara-webkit'
+  gem 'chromedriver-helper'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner.git'
   gem 'headless'
@@ -59,7 +60,7 @@ group :development, :test do
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
   gem 'scss_lint', require: false
-  gem 'selenium-webdriver', '2.48.0'
+  gem 'selenium-webdriver'
 end
 
 group :development do
