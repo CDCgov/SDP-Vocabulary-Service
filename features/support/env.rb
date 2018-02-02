@@ -50,16 +50,14 @@ Capybara.javascript_driver = :chrome
 if ENV['HEADLESS']
   require 'selenium/webdriver'
 
-  # We already have code in our Rakefile which appears to be an attempt at solving this same problem
-  # TODO: Either fix or remove that code, and (either way) maybe move this code to Jenkinsfile or elsewhere
-  # TODO: This delay may be too long, too short, or ultimately a bad solution to this race condition
-  puts 'Alternate dir creation location...'
-  `mkdir reports`
+  # A task exists in the Rakefile to create this directory, but it fails to do so in headless mode
+  puts 'Creating reports directory...'
+  `mkdir -p reports`
   `touch reports/cucumber.html`
-  puts
-  puts 'Sleeping for 10 seconds...'
-  sleep(10)
-  puts
+
+  # Sleep to avoid a race condition as the directory and file are created
+  puts 'Sleeping for 15 seconds...'
+  sleep(15)
 
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new(app, browser: :chrome)
