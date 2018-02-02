@@ -47,11 +47,9 @@ group :development, :test do
   gem 'byebug'
   gem 'capybara', '2.11.0'
   gem 'capybara-accessible'
-  gem 'capybara-webkit'
   gem 'chromedriver-helper'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner.git'
-  gem 'headless'
   gem 'json-schema'
   gem 'overcommit'
   gem 'parallel_tests'
