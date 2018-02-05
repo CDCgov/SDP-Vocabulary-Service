@@ -14,6 +14,133 @@ module SDP
       end
     end
 
+    class DataElement
+      attr_accessor :name, :description, :data_type, :program_var, :de_id,
+                    :category, :subcategory, :tag_name, :tag_value, :value_set, :value_set_name,
+                    :value_set_url, :value_set_oid, :value_set_tab_name
+
+      def initialize(vads_oid_regex, coded_data_types, response_types)
+        @vads_oid_regex = vads_oid_regex
+        @coded_data_types = coded_data_types
+        @response_types = response_types
+      end
+
+      def normalize(str)
+        str.strip if str.respond_to?(:strip)
+      end
+
+      def coded?
+        @coded_data_types.include?(@data_type)
+      end
+
+      def extract(row)
+        @name = normalize(row[:name])
+        @description = normalize(row[:description])
+        @data_type = normalize(row[:data_type])
+        @value_set = normalize(row[:value_set])
+        if row[:value_set].respond_to? :to_uri
+          @value_set_url = row[:value_set].to_uri
+          oid_matcher = @vads_oid_regex.match(row[:value_set])
+          @value_set_oid = oid_matcher[1] if oid_matcher
+        end
+      end
+
+      def to_question(user)
+        q = Question.new(
+          content: @name, description: @description,
+          created_by: user, response_type: response_type(@data_type)
+        )
+        q
+      end
+
+      def response_type(query)
+        rt = ResponseType.find_by(query)
+        raise "Unable to find response type #{query.values.first} - did response types change?" unless rt
+        rt
+      end
+    end
+
+    class MMGDataElement < DataElement
+      def extract(row)
+        super
+        @program_var = normalize(row[:program_var])
+        @de_id = normalize(row[:de_id])
+        if row[:value_set].present?
+          @value_set_tab_name = normalize(row[:value_set])
+        end
+      end
+
+      def to_question(user)
+        q = super
+        q.concepts << Concept.new(value: @de_id, display_name: 'Data Element Identifier') if @de_id.present?
+        q
+      end
+
+      def response_type(type)
+        response_type_code = @response_types[type]
+        super(code: response_type_code)
+      end
+
+      def create_response_set(user)
+        rs = ResponseSet.new(
+          created_by: user, status: 'draft',
+          name: @value_set_tab_name,
+          source: 'local'
+        )
+        rs.save!
+        @value_set.each do |code|
+          rs.responses.create(code_system: code[:code_system_oid], display_name: code[:name], value: code[:code])
+        end
+        rs
+      end
+    end
+
+    class GenericSSDataElement < DataElement
+      def extract(row)
+        super
+        @category = normalize(row[:category]),
+                    @subcategory = normalize(row[:subcategory])
+        @tag_name = normalize(row[:tag_name])
+        @tag_value = normalize(row[:tag_value])
+        @tag_system = normalize(row[:tag_system])
+        @value_set_name = normalize(row[:value_set_name])
+        if row[:value_set] == 'Local' && row[:value_set_name].present?
+          @value_set_tab_name = normalize(row[:value_set_name])
+        end
+      end
+
+      def to_question(user)
+        q = super
+        if @tag_value.present?
+          q.concepts << Concept.new(value: @tag_value, display_name: @tag_name, code_system: @tag_system)
+        end
+        q.category = Category.find_by(name: @category) if @category.present?
+        q.subcategory = Subcategory.find_by(name: @subcategory) if @subcategory.present?
+        q
+      end
+
+      def response_type(name)
+        super(name: name)
+      end
+
+      def create_response_set(user)
+        vs_meta = @value_set.first
+        vs_meta ||= {}
+        rs_name = vs_meta[:name] || @value_set_tab_name
+        rs = ResponseSet.new(
+          created_by: user, status: 'draft',
+          name: rs_name,
+          source: 'local',
+          description: vs_meta[:description]
+        )
+        rs.save!
+        @value_set.each do |code|
+          rs.responses.create(code_system: code[:system], display_name: code[:display_name], value: code[:value])
+        end
+        rs
+      end
+    end
+
     class Spreadsheet
       attr_reader :errors
 
@@ -33,12 +160,32 @@ module SDP
           program_var: /(PHIN|Local) Variable Code System/,
           data_type: 'Data Type'
         },
+        gs_columns: {
+          program_var: 'Program Defined Variable Name (O)',
+          name: 'Question Text (R)',
+          description: 'Question Description (R)',
+          category: 'Question Category (O)',
+          subcategory: 'Question Subcategory (O)',
+          data_type: 'Question Response Type (R)',
+          tag_name: 'Question Tag Name (O)',
+          tag_value: 'Question Tag Value (O)',
+          tag_system: 'Question Code System Identifier (O)',
+          value_set_name: 'Response Set Name (C)',
+          value_set: 'Response Set Source (C)'
+        },
         vs_columns: {
           code: 'Concept Code',
           name: 'Concept Name',
           code_system_oid: 'Code System OID',
           code_system_name: 'Code System Name',
           code_system_version: 'Code System Version'
+        },
+        rs_columns: {
+          name: 'Response Set Name',
+          description: 'Response Set Description',
+          display_name: 'Display Name',
+          value: 'Response',
+          system: 'Code System Identifier (optional)'
         },
         response_types: {
           'Date' => :date,
@@ -106,45 +253,37 @@ module SDP
              @valueset_sheet.match(sheet)
             logger.debug "skipping sheet #{sheet} -- looks like a value set"
             next
+          elsif (@config[:rs_columns].values - headers).empty?
+            logger.debug "skipping sheet #{sheet} -- looks like a response set"
+            next
           elsif !de_sheet?(headers)
             logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
             next
           end
 
           logger.debug "processing sheet #{sheet}"
-          if @config[:mmg]
-            w.sheet(sheet).parse(@config[:de_columns]).each do |row|
-              # skip first row
-              next if row[:name] == @config[:de_columns][:name]
-              # section start/end
-              if row[:name].nil?
-                process_section_marker(row)
-                next
-              end
-              data_element = extract_data_element(row)
-              print_data_element(data_element) if verbose
-
-              # add the data element unless a matching data element is already present
-              ni = NestedItem.new
-              ni.data_element = data_element
-              @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
+          start_section(sheet) unless @config[:mmg]
+          w.sheet(sheet).parse(column_names).each do |row|
+            # skip first row
+            next if row[:name] == column_names[:name]
+            # section start/end
+            if row[:data_type].nil?
+              process_section_marker(row)
+              next
             end
+            data_element = extract_data_element(row)
+            print_data_element(data_element) if verbose
+
+            # add the data element unless a matching data element is already present
+            ni = NestedItem.new
+            ni.data_element = data_element
+            @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
+          end
+          if @config[:mmg]
             sectionize_top_level_questions(sheet)
             # Reset to top level to prevent mismatched sections causing issues
             @current_section = @top_level
           else
-            start_section(sheet)
-            w.sheet(sheet).parse(@config[:de_columns]).each do |row|
-              # skip first row
-              next if row[:name] == @config[:de_columns][:name]
-              next if row[:name].nil?
-
-              data_element = extract_data_element(row)
-              print_data_element(data_element) if verbose
-              ni = NestedItem.new
-              ni.data_element = data_element
-              @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
-            end
             @current_section = @parent_sections.pop
           end
         end
@@ -154,6 +293,14 @@ module SDP
       end
 
       private
+
+      def column_names
+        if @config[:mmg]
+          @config[:de_columns]
+        else
+          @config[:gs_columns]
+        end
+      end
 
       def save_survey_items(s, section_position)
         @top_level.items.each do |nested_item|
@@ -174,19 +321,20 @@ module SDP
         items.each_with_index do |item, i|
           if item.type == :data_element
             rs = nil
-            if item.data_element[:value_set_oid]
+            if item.data_element.value_set_oid
               rs = response_set_for_vads(item.data_element)
-            elsif item.data_element[:value_set]
+            elsif item.data_element.value_set_tab_name.present?
               rs = response_set_for_local(item.data_element)
             end
-            q = question_for(item.data_element)
+            q = item.data_element.to_question(@user)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
-            nsi = SectionNestedItem.new(question: q, program_var: item.data_element[:program_var], response_set: rs, position: i)
+            nsi = SectionNestedItem.new(question: q, program_var: item.data_element.program_var, response_set: rs, position: i)
             parent_section.section_nested_items << nsi
           else
             section = Section.new(name: item.name || "Imported Section ##{i + 1}", created_by: @user)
             section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+            section.parent = parent_section
             section.save!
             nsi = SectionNestedItem.new(nested_section: section, position: i)
             parent_section.section_nested_items << nsi
@@ -195,29 +343,13 @@ module SDP
         end
       end
 
-      def response_type(type)
-        response_type_code = @config[:response_types][type]
-        rt = ResponseType.find_by(code: response_type_code)
-        raise "Unable to find response type #{type} - did response types change?" unless rt
-        rt
-      end
-
-      def question_for(element)
-        q = Question.new(
-          content: element[:name], description: element[:description],
-          created_by: @user, response_type: response_type(element[:data_type])
-        )
-        q.concepts << Concept.new(value: element[:de_id], display_name: 'Data Element Identifier') if element[:de_id].present?
-        q
-      end
-
       def response_set_for_vads(element)
-        rs = ResponseSet.most_recent_for_oid(element[:value_set_oid])
+        rs = ResponseSet.most_recent_for_oid(element.value_set_oid)
         if rs.nil?
           rs = ResponseSet.new(
             created_by: @user, status: 'draft',
-            name: element[:value_set_tab_name] || element[:name],
-            source: 'PHIN_VADS', oid: element[:value_set_oid]
+            name: element.value_set_tab_name || element.name,
+            source: 'PHIN_VADS', oid: element.value_set_oid
           )
           rs.save!
         end
@@ -225,30 +357,28 @@ module SDP
       end
 
       def response_set_for_local(element)
-        @local_response_sets[element[:value_set_tab_name]] || create_response_set_for_local(element)
-      end
-
-      def create_response_set_for_local(element)
-        rs = ResponseSet.new(
-          created_by: @user, status: 'draft',
-          name: element[:value_set_tab_name],
-          source: 'local'
-        )
-        rs.save!
-        element[:value_set].each do |code|
-          rs.responses.create(code_system: code[:code_system_oid], display_name: code[:name], value: code[:code])
+        rs = @local_response_sets[element.value_set_tab_name]
+        unless rs
+          rs = element.create_response_set(@user)
+          @local_response_sets[element.value_set_tab_name] = rs
         end
-        @local_response_sets[element[:value_set_tab_name]] = rs
+        rs
       end
 
       def parse_value_set(sheet, name)
         value_set = []
         begin
-          sheet.each(@config[:vs_columns]) do |entry|
+          vs_column_names = if @config[:mmg]
+                              @config[:vs_columns]
+                            else
+                              @config[:rs_columns]
+                            end
+          sheet.each(vs_column_names) do |entry|
             # skip first row
-            next if entry[:name] == @config[:vs_columns][:name]
+            next if entry[:name] == vs_column_names[:name]
             # skip rows without a code
-            next if entry[:code].nil? || entry[:code].to_s.strip.empty?
+            next if (entry[:code].nil? || entry[:code].to_s.strip.empty?) &&
+                    (entry[:display_name].nil? || entry[:display_name].to_s.strip.empty?)
             value_set << entry
           end
         rescue Roo::HeaderRowNotFoundError
@@ -302,41 +432,41 @@ module SDP
 
       def extract_value_sets(workbook, verbose)
         all_data_elements.each do |data_element|
-          next unless data_element[:value_set_tab_name]
-          sheet = workbook.sheet(data_element[:value_set_tab_name])
-          logger.info "Processing value set tab: #{data_element[:value_set_tab_name]}" if verbose
-          data_element[:value_set] = parse_value_set(sheet, data_element[:value_set_tab_name])
-          logger.info "  Codes: #{data_element[:value_set].join(', ')}" if verbose
+          next unless data_element.value_set_tab_name
+          if @all_sheets.include?(data_element.value_set_tab_name)
+            sheet = workbook.sheet(data_element.value_set_tab_name)
+            logger.info "Processing value set tab: #{data_element.value_set_tab_name}" if verbose
+            data_element.value_set = parse_value_set(sheet, data_element.value_set_tab_name)
+            logger.info "  Codes: #{data_element.value_set.join(', ')}" if verbose
+          else
+            # sheet not present - create an empty response set
+            data_element.value_set = []
+          end
         end
       end
 
       def extract_data_element(row)
-        data_element = {
-          name: normalize(row[:name]), description: normalize(row[:description]),
-          data_type: normalize(row[:data_type]), program_var: normalize(row[:program_var]),
-          de_id: normalize(row[:de_id])
-        }
-        if @config[:de_coded_type].include? data_element[:data_type]
-          if row[:value_set].respond_to? :to_uri
-            data_element[:value_set_url] = row[:value_set].to_uri
-            oid_matcher = @vads_oid.match(data_element[:value_set_url].to_s)
-            data_element[:value_set_oid] = oid_matcher[1] if oid_matcher
-          elsif !row[:value_set].nil?
-            tab_name = normalize(row[:value_set])
-            if @all_sheets.include? tab_name
-              # can't access a different sheet mid-parse so just save tab name for now
-              data_element[:value_set_tab_name] = normalize(row[:value_set])
-            else
-              @errors << "Value set tab '#{tab_name}' not present"
-            end
-          end
+        data_element = if @config[:mmg]
+                         MMGDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
+                       else
+                         GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
+                       end
+        data_element.extract(row)
+        if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
+          @errors << "Value set tab '#{data_element.value_set_tab_name}' not present"
+          # data_element.value_set_tab_name = nil
         end
         data_element
       end
 
       def process_section_marker(row)
-        start_marker = @section_start.match(row[:section_name])
-        end_marker = @section_end.match(row[:section_name])
+        column_name = if @config[:mmg]
+                        :section_name
+                      else
+                        :name
+                      end
+        start_marker = @section_start.match(row[column_name])
+        end_marker = @section_end.match(row[column_name])
         if start_marker
           start_section(start_marker[1])
         elsif end_marker
@@ -357,18 +487,14 @@ module SDP
         @current_section = new_section
       end
 
-      def normalize(str)
-        str.strip if str.respond_to?(:strip)
-      end
-
       def print_data_element(data_element)
-        logger.info data_element[:name]
-        logger.info "  Type: #{data_element[:data_type]}"
-        if data_element[:value_set_url]
-          logger.info "  Value Set URL: #{data_element[:value_set_url]}"
+        logger.info data_element.name
+        logger.info "  Type: #{data_element.data_type}"
+        if data_element.value_set_url
+          logger.info "  Value Set URL: #{data_element.value_set_url}"
         end
-        if data_element[:value_set_tab_name]
-          logger.info "  Value Set Tab: #{data_element[:value_set_tab_name]}"
+        if data_element.value_set_tab_name
+          logger.info "  Value Set Tab: #{data_element.value_set_tab_name}"
         end
       end
 
@@ -377,7 +503,7 @@ module SDP
       end
 
       def de_sheet?(headers)
-        @config[:de_columns].values.all? do |column_name|
+        column_names.values.all? do |column_name|
           if column_name.is_a?(Regexp)
             headers.any? { |h| column_name.match?(h) }
           else

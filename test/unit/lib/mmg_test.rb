@@ -8,12 +8,18 @@ class MMGTest < ActiveSupport::TestCase
   RESPONSE_SET_COUNT = 2
   RESPONSE_COUNT = 6
 
+  GENERIC_SURVEY_COUNT = 1
+  GENERIC_SECTION_COUNT = 9
+  GENERIC_QUESTION_COUNT = 21
+  GENERIC_RESPONSE_SET_COUNT = 3
+  GENERIC_RESPONSE_COUNT = 5
+
   test 'parse_mmg' do
     u = users(:admin)
     f = './test/fixtures/files/TestMMG.xlsx'
 
-    importer = SDP::Importers::Spreadsheet.new(f, u)
-    importer.parse!
+    importer = SDP::Importers::Spreadsheet.new(f, u, mmg: true)
+    importer.parse!(true)
 
     rscount = ResponseSet.count
     rcount = Response.count
@@ -89,7 +95,7 @@ class MMGTest < ActiveSupport::TestCase
 
   test 'parse_spreedsheet' do
     u = users(:admin)
-    f = './test/fixtures/files/TestMMG.xlsx'
+    f = './test/fixtures/files/TestGenericTemplate.xlsx'
 
     importer = SDP::Importers::Spreadsheet.new(f, u, mmg: false)
     importer.parse!
@@ -101,23 +107,24 @@ class MMGTest < ActiveSupport::TestCase
     surveycount = Survey.count
 
     importer.save!
-
-    assert_equal rcount + RESPONSE_COUNT, Response.count
-    assert_equal rscount + RESPONSE_SET_COUNT, ResponseSet.count
-    assert_equal qcount  + QUESTION_COUNT * 2, Question.count
-    assert_equal sectioncount + 2, Section.count
-    assert_equal surveycount + SURVEY_COUNT, Survey.count
+    assert_equal rcount + GENERIC_RESPONSE_COUNT, Response.count
+    assert_equal rscount + GENERIC_RESPONSE_SET_COUNT, ResponseSet.count
+    assert_equal qcount  + GENERIC_QUESTION_COUNT, Question.count
+    assert_equal sectioncount + GENERIC_SECTION_COUNT, Section.count
+    assert_equal surveycount + GENERIC_SURVEY_COUNT, Survey.count
 
     assert Survey.where(name: f).exists?
-    section = Section.where(name: 'Data Elements').first
+    section = Section.where(name: '1.1.1 Activate/deactivate decision').first
     assert section.present?
-    assert_equal section.questions.count, 4
-    assert_equal section.concepts.count, 1
-    assert_equal section.section_nested_items.first.position, 0
-    assert_equal section.concepts.first.value, 'Data Elements'
+    assert_equal 7, section.questions.count
+    assert_equal 1, section.concepts.count
+    assert_equal '1.1 Decisions and approvals', section.parent.name
 
-    survey = Survey.where(name: f).first
-    assert survey.sections.count, SECTION_COUNT
-    assert survey.survey_sections.first.position, 0
+    q = section.section_nested_items.first.question
+    assert q
+    assert_equal 'Event ID activation/deactivation decision', q.content
+    rs = q.response_sets.first
+    assert rs
+    assert_equal 'Decision Activate/Deactivate Flag', rs.name
   end
 end
