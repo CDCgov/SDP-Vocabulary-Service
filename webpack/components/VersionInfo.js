@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import { isShowable } from '../utilities/componentHelpers';
 
 export default class VersionInfo extends Component {
-
   render() {
     const {versionable} = this.props;
     if(!versionable.allVersions || versionable.allVersions.length < 1){
@@ -17,7 +17,7 @@ export default class VersionInfo extends Component {
               return (
                 <li key={v.id} role="presentation" className="active"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {versionable.version} </Link></li>
               );
-            }else if (v.status === 'published' || v.createdById === this.props.currentUserId){
+            }else if (isShowable(v, this.props.currentUser)){
               return (
                 <li key={v.id} role="presentation"><Link to={`/${this.props.versionableType}s/${v.id}`}>Version {v.version} </Link></li>
               );
@@ -34,5 +34,5 @@ export default class VersionInfo extends Component {
 VersionInfo.propTypes = {
   versionable:  PropTypes.object,
   versionableType:  PropTypes.string,
-  currentUserId: PropTypes.number
+  currentUser: PropTypes.object
 };

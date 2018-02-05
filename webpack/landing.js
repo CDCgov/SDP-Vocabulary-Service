@@ -25,7 +25,7 @@ import AdminPanel from './containers/AdminPanel';
 import App from './containers/App';
 import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
 import AdminRoutes from './containers/AdminRoutes';
-import ErrorPage, {GenericError ,Forbidden403} from './containers/ErrorPages';
+import ErrorPage, {GenericError, Forbidden403, NotFound404} from './containers/ErrorPages';
 
 
 import store from './store/configure_store';
@@ -57,6 +57,7 @@ ReactDOM.render(
         <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
         <Route path='/errors/' component={ErrorPage} >
           <Route path='403' component={Forbidden403} />
+          <Route path='404' component={NotFound404} />
           <Route path='*' component={GenericError} />
         </Route>
       </Route>

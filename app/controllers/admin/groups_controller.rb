@@ -20,7 +20,8 @@ module Admin
       group = Group.find_by(name: params[:group])
       if user && group
         group.add_user(user)
-        render json: Group.all, status: 200
+        resp = { groups: Group.all.collect { |g| GroupSerializer.new(g) }, user: UserSerializer.new(current_user) }
+        render json: resp, status: 200
       else
         render json: {
           msg: "No user found with email #{params[:email]}, check what you entered and try again"
@@ -33,7 +34,8 @@ module Admin
       group = Group.find_by(name: params[:group])
       if user && group
         group.remove_user(user)
-        render json: Group.all, status: 200
+        resp = { groups: Group.all.collect { |g| GroupSerializer.new(g) }, user: UserSerializer.new(current_user) }
+        render json: resp, status: 200
       else
         render json: {
           msg: 'Error when removing user, please check email is in correct format or refresh application and try again'

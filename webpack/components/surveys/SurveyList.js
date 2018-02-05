@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
 
 import { surveyProps } from "../../prop-types/survey_props";
+import { isShowable } from '../../utilities/componentHelpers';
 import SearchResult from '../SearchResult';
 
 class SurveyList extends Component {
@@ -19,7 +20,7 @@ class SurveyList extends Component {
     return (
       <div className="survey-group">
         {this.props.surveys.map((s, i) => {
-          if (s.status === 'published' || s.createdById === this.props.currentUserId) {
+          if (isShowable(s, this.props.currentUser)) {
             return <SearchResult key={i} type='survey' result={{Source: s}} currentUser={{id: -1}} />;
           }
         })}
@@ -30,7 +31,7 @@ class SurveyList extends Component {
 
 SurveyList.propTypes = {
   surveys: PropTypes.arrayOf(surveyProps),
-  currentUserId: PropTypes.number
+  currentUser: PropTypes.object
 };
 
 export default SurveyList;

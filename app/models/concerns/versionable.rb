@@ -32,7 +32,7 @@ module Versionable
   end
 
   def all_versions
-    @_all_versions ||= self.class.where(version_independent_id: version_independent_id)
+    @_all_versions ||= self.class.includes(:groups).where(version_independent_id: version_independent_id)
                            .order(version: :desc)
   end
 

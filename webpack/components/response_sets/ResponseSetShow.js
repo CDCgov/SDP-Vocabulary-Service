@@ -48,7 +48,7 @@ export default class ResponseSetShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={responseSet} versionableType='ResponseSet' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={responseSet} versionableType='ResponseSet' currentUser={this.props.currentUser} />
       </div>
     );
   }

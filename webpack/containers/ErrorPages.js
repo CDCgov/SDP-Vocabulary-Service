@@ -36,3 +36,7 @@ export const GenericError = () => {
 export const Forbidden403 = () => {
   return <p>You do not have access to this resource.</p>;
 };
+
+export const NotFound404 = () => {
+  return <p>Resource not found, it may have been moved or deleted.</p>;
+};

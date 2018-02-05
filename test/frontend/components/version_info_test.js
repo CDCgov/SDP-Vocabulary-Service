@@ -18,7 +18,7 @@ describe('VersionInfo', () => {
         {id: 4, name: 'Test', version: 4, mostRecent: 4, createdAt: new Date()},
       ]
     };
-    component = renderComponent(VersionInfo, {versionable: responseSet, versionableType: 'responseSet'});
+    component = renderComponent(VersionInfo, {versionable: responseSet, versionableType: 'responseSet', currentUser: {id: 1, publisher: true}});
   });
 
   it('should create a list of versions', () => {

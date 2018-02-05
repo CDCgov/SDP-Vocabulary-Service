@@ -23,7 +23,7 @@ class GroupMembers extends Component {
       return (
         <p key={member.id} className="admin-group"><strong>{member.name}</strong> ({member.email})
           <button id={`remove_${member.email}`} onClick={() => this.props.removeUserFromGroup(member.email, this.state.group.name, (successResponse) => {
-            this.setState({ error: {}, group: successResponse.data.find((group) => {
+            this.setState({ error: {}, group: successResponse.data.groups.find((group) => {
               return group.name === this.state.group.name;
             })});
           }, (failureResponse) => {
@@ -55,7 +55,7 @@ class GroupMembers extends Component {
                 <button id="submit-email" onClick={(e) => {
                   e.preventDefault();
                   this.props.addUserToGroup(this.state.email, group.name, (successResponse) => {
-                    this.setState({ error: {}, group: successResponse.data.find((group) => {
+                    this.setState({ error: {}, group: successResponse.data.groups.find((group) => {
                       return group.name === this.state.group.name;
                     })});
                   }, (failureResponse) => {
