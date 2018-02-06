@@ -23,3 +23,9 @@ five:
 six:
   name: "Text"
   code: "text"
+seven:
+  name: "Date Time"
+  code: "dateTime"
+eight:
+  name: "Open Choice"
+  code: "openChoice"
