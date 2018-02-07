@@ -154,4 +154,18 @@ class Section < ApplicationRecord
     SurveillanceSystem.joins(surveys: :survey_sections)
                       .where('survey_sections.section_id = ?', id).select(:id, :name).distinct.to_a
   end
+
+  # Provides a list of nested items that are only questions by flattening out
+  # any subsections. Works recursively
+  def flatten_questions
+    flat_questions = []
+    section_nested_items.each do |sni|
+      if sni.question.present?
+        flat_questions << sni
+      else
+        flat_questions.concat(sni.nested_section.flatten_questions)
+      end
+    end
+    flat_questions
+  end
 end

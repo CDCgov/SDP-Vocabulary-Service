@@ -1,13 +1,11 @@
 <Page PageId="<%= page_id %>" Name="<%= section.name %>" Position="<%= position %>"  ViewId="<%= view_id %>">
-  <% section.section_questions.each do |section_question|
-     question = section_question.question
-    %>
+  <% section.flatten_questions.each do |sni| %>
       <Field
-        Name="<%= section_question.question.content %>"
+        Name="<%= sni.question.content %>"
         PageId="<%= page_id %>"
-        FieldId="<%= section_question.id %>"
+        FieldId="<%= sni.id %>"
         UniqueId=""
-        FieldTypeId="<%= epi_info_field_type(question.response_type.code) %>"
+        FieldTypeId="<%= epi_info_field_type(sni.question.response_type.code) %>"
         ControlAfterCheckCode=""
         ControlBeforeCheckCode=""
         PageName="<%= section.name %>"
@@ -21,7 +19,7 @@
         ControlScriptName=""
         PromptTopPositionPercentage="0"
         PromptLeftPositionPercentage="0"
-        PromptText="<%= section_question.question.content %>"
+        PromptText="<%= sni.question.content %>"
         PromptFontFamily="Verdana"
         PromptFontSize="8.25"
         PromptFontStyle="Regular"
@@ -42,7 +40,7 @@
         ShouldReturnToParent="False"
         RelatedViewId=""
         List=""
-        SourceTableName="<%= section_question.response_set.nil? ? '' : section_question.response_set.id %>"
+        SourceTableName="<%= sni.response_set.nil? ? '' : sni.response_set.id %>"
         CodeColumnName="code"
         TextColumnName="displayName"
         BackgroundColor=""

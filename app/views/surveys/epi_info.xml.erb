@@ -8,7 +8,7 @@
     </View>
   </Project>
   <%
-     questions = @survey.survey_sections.collect{|ss| ss.section.section_questions}.flatten
+     questions = @survey.survey_sections.collect{|ss| ss.section.flatten_questions}.flatten
      response_sets = questions.collect{|q| q.response_set}.compact
      response_sets.each do |rs| %>
   <SourceTable TableName="<%=rs.id%>">
