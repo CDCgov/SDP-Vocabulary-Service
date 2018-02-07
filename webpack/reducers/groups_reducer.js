@@ -5,10 +5,15 @@ import {
   REMOVE_USER_FROM_GROUP_FULFILLED
 } from '../actions/types';
 
-export default function tags(state = [], action) {
-  if (action.type === FETCH_GROUPS_FULFILLED || action.type === CREATE_GROUP_FULFILLED ||
-      action.type === ADD_USER_TO_GROUP_FULFILLED || action.type === REMOVE_USER_FROM_GROUP_FULFILLED ) {
-    return action.payload.data;
+export default function groups(state = [], action) {
+  switch (action.type) {
+    case FETCH_GROUPS_FULFILLED:
+    case CREATE_GROUP_FULFILLED:
+      return action.payload.data;
+    case ADD_USER_TO_GROUP_FULFILLED:
+    case REMOVE_USER_FROM_GROUP_FULFILLED:
+      return action.payload.data.groups;
+    default:
+      return state;
   }
-  return state;
 }

@@ -14,7 +14,8 @@ const errorResponses = store => next => action => {
         });
         break;
       case 403:
-        hashHistory.push(`/errors/${payload.response.status}`);
+      case 404:
+        hashHistory.replace(`/errors/${payload.response.status}`);
     }
 
   }

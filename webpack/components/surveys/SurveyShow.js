@@ -33,7 +33,7 @@ class SurveyShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={this.props.survey} versionableType='survey' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={this.props.survey} versionableType='survey' currentUser={this.props.currentUser} />
       </div>
     );
   }
@@ -145,7 +145,7 @@ class SurveyShow extends Component {
               </h2>
             </div>
             <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-              <SectionList sections={this.props.sections} currentUserId={this.props.currentUser.id} />
+              <SectionList sections={this.props.sections} currentUser={this.props.currentUser} />
             </div>
           </div>
         </div>

@@ -199,7 +199,7 @@ export default class QuestionShow extends Component {
                 </h2>
               </div>
               <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
-                <SectionList sections={question.sections} currentUserId={this.props.currentUser.id} />
+                <SectionList sections={question.sections} currentUser={this.props.currentUser} />
               </div>
             </div>
           }
@@ -221,7 +221,7 @@ export default class QuestionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={question} versionableType='Question' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={question} versionableType='Question' currentUser={this.props.currentUser} />
       </div>
     );
   }

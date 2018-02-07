@@ -57,7 +57,7 @@ class SectionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={section} versionableType='section' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
       </div>
     );
   }
@@ -220,7 +220,7 @@ class SectionShow extends Component {
                 </h2>
               </div>
               <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-                <SurveyList surveys={section.surveys} currentUserId={this.props.currentUser.id} />
+                <SurveyList surveys={section.surveys} currentUser={this.props.currentUser} />
               </div>
             </div>
           }
