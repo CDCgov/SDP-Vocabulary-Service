@@ -83,35 +83,35 @@ class AdminPanel extends Component {
     event.preventDefault();
     switch (this.state.selectedTab) {
       case 'admin-list':
-        this.props.grantAdmin(this.state.searchEmail, (successResponse) => {
+        this.props.grantAdmin(this.state.searchEmail, () => {
           this.setState({success: {msg: `Admin granted to ${this.state.searchEmail}`}, warning: {}});
         }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       case 'publisher-list':
-        this.props.grantPublisher(this.state.searchEmail, (successResponse) => {
+        this.props.grantPublisher(this.state.searchEmail, () => {
           this.setState({success: {msg: `Publisher granted to ${this.state.searchEmail}`}, warning: {}});
         }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       case 'program-list':
-        this.props.addProgram(this.state.name, this.state.description, this.state.acronym, (successResponse) => {
+        this.props.addProgram(this.state.name, this.state.description, this.state.acronym, () => {
           this.setState({success: {msg: `Successfully added program: ${this.state.name}`}, warning: {}});
         }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       case 'group-list':
-        this.props.createGroup(this.state.name, this.state.description, (successResponse) => {
+        this.props.createGroup(this.state.name, this.state.description, () => {
           this.setState({success: {msg: `Successfully created group: ${this.state.name}`}, warning: {}});
         }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       default:
-        this.props.addSystem(this.state.name, this.state.description, this.state.acronym, (successResponse) => {
+        this.props.addSystem(this.state.name, this.state.description, this.state.acronym, () => {
           this.setState({success: {msg: `Successfully added system: ${this.state.name}`}, warning: {}});
         }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
