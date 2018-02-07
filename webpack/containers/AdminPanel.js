@@ -28,7 +28,8 @@ class AdminPanel extends Component {
       description: '',
       acronym: '',
       groupModal: false,
-      selectedGroup: group
+      selectedGroup: group,
+      syncPending: false
     };
   }
 
@@ -82,27 +83,37 @@ class AdminPanel extends Component {
     event.preventDefault();
     switch (this.state.selectedTab) {
       case 'admin-list':
-        this.props.grantAdmin(this.state.searchEmail, null, (failureResponse) => {
+        this.props.grantAdmin(this.state.searchEmail, (successResponse) => {
+          this.setState({success: {msg: `Admin granted to ${this.state.searchEmail}`}, warning: {}});
+        }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       case 'publisher-list':
-        this.props.grantPublisher(this.state.searchEmail, null, (failureResponse) => {
+        this.props.grantPublisher(this.state.searchEmail, (successResponse) => {
+          this.setState({success: {msg: `Publisher granted to ${this.state.searchEmail}`}, warning: {}});
+        }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       case 'program-list':
-        this.props.addProgram(this.state.name, this.state.description, this.state.acronym, null, (failureResponse) => {
+        this.props.addProgram(this.state.name, this.state.description, this.state.acronym, (successResponse) => {
+          this.setState({success: {msg: `Successfully added program: ${this.state.name}`}, warning: {}});
+        }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       case 'group-list':
-        this.props.createGroup(this.state.name, this.state.description, null, (failureResponse) => {
+        this.props.createGroup(this.state.name, this.state.description, (successResponse) => {
+          this.setState({success: {msg: `Successfully created group: ${this.state.name}`}, warning: {}});
+        }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
       default:
-        this.props.addSystem(this.state.name, this.state.description, this.state.acronym, null, (failureResponse) => {
+        this.props.addSystem(this.state.name, this.state.description, this.state.acronym, (successResponse) => {
+          this.setState({success: {msg: `Successfully added system: ${this.state.name}`}, warning: {}});
+        }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
         break;
@@ -115,6 +126,11 @@ class AdminPanel extends Component {
         {this.state.error && this.state.error.msg &&
           <div className="alert alert-danger">
             {this.state.error.msg}
+          </div>
+        }
+        {this.state.success && this.state.success.msg &&
+          <div className="alert alert-success">
+            {this.state.success.msg}
           </div>
         }
         <div className="input-group search-group">
@@ -133,6 +149,11 @@ class AdminPanel extends Component {
         {this.state.error && this.state.error.msg &&
           <div className="alert alert-danger">
             {this.state.error.msg}
+          </div>
+        }
+        {this.state.success && this.state.success.msg &&
+          <div className="alert alert-success">
+            {this.state.success.msg}
           </div>
         }
         <div className="input-group search-group">
@@ -160,6 +181,11 @@ class AdminPanel extends Component {
         {this.state.error && this.state.error.msg &&
           <div className="alert alert-danger">
             {this.state.error.msg}
+          </div>
+        }
+        {this.state.success && this.state.success.msg &&
+          <div className="alert alert-success">
+            {this.state.success.msg}
           </div>
         }
         <div className="input-group search-group">
@@ -260,21 +286,21 @@ class AdminPanel extends Component {
           </div>
         }
         <p>Click the following button to synchronize elasticsearch records with the most recent activity (useful if ES was down for some time or records are not showing up in searches):</p>
-        <button id='elasticsearch-sync-button' className="btn btn-default col-md-12" onClick={() => {
-          this.setState({warning: {msg: 'Elasticsearch sync is pending, please do not re-sync until a success message is displayed (this could take a few minutes)'}});
+        <button id='elasticsearch-sync-button' className="btn btn-default col-md-12" disabled={this.state.syncPending} onClick={() => {
+          this.setState({syncPending: true, warning: {msg: 'Elasticsearch sync is pending, please do not re-sync until a success message is displayed (this could take a few minutes)'}});
           this.props.esSync((successResponse) => {
-            this.setState({success: successResponse.data, warning: {}});
+            this.setState({success: successResponse.data, warning: {}, syncPending: false});
           }, (failureResponse) => {
-            this.setState({error: failureResponse.response.data, warning: {}});
+            this.setState({error: failureResponse.response.data, warning: {}, syncPending: false});
           });
         }}><i className="fa fa-refresh search-btn-icon" aria-hidden="true"></i> Synchronize Elasticsearch Database<text className="sr-only"> - click this button to synchronize the Elasticsearch database</text></button><br/><br/><hr/>
         <p>Click the next button if you want to delete the current index, wiping the elasticsearch database of any out of date records, and resynchronize ES with all of the most recent records (Note: This action could cause ES to be unavailable for a short time):</p>
-        <button id='elasticsearch-delete-and-sync-button' className="btn btn-default col-md-12" onClick={() => {
-          this.setState({warning: {msg: 'Elasticsearch sync is pending, please do not re-sync until a success message is displayed (this could take a few minutes)'}});
+        <button id='elasticsearch-delete-and-sync-button' className="btn btn-default col-md-12" disabled={this.state.syncPending} onClick={() => {
+          this.setState({syncPending: true, warning: {msg: 'Elasticsearch sync is pending, please do not re-sync until a success message is displayed (this could take a few minutes)'}});
           this.props.esDeleteAndSync((successResponse) => {
-            this.setState({success: successResponse.data, warning: {}});
+            this.setState({success: successResponse.data, warning: {}, syncPending: false});
           }, (failureResponse) => {
-            this.setState({error: failureResponse.response.data, warning: {}});
+            this.setState({error: failureResponse.response.data, warning: {}, syncPending: false});
           });
         }}><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Delete Index and Synchronize Elasticsearch Database<text className="sr-only"> - click this button to synchronize the Elasticsearch database after deleting the index and all data</text></button>
       </div>
