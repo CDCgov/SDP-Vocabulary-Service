@@ -149,7 +149,7 @@ export default class ResponseSetEdit extends Component {
                 <div className="row">
                   <div className="col-md-8 question-form-group">
                     <label className="input-label" htmlFor="response-set-name">Name</label>
-                    <input className="input-format" type="text" value={this.state.name} name="response-set-name" id="response-set-name" onChange={this.handleChange('name')}/>
+                    <input className="input-format" tabIndex="3" type="text" value={this.state.name} name="response-set-name" id="response-set-name" onChange={this.handleChange('name')}/>
                   </div>
 
                   <div className="hidden">
@@ -160,7 +160,7 @@ export default class ResponseSetEdit extends Component {
                 <div className="row">
                 <div className="col-md-8 question-form-group">
                     <label className="input-label"  htmlFor="response-set-description">Description</label>
-                    <textarea className="input-format"  value={this.state.description} name="response-set-description" id="response-set-description" onChange={this.handleChange('description')}/>
+                    <textarea className="input-format" tabIndex="3"  value={this.state.description} name="response-set-description" id="response-set-description" onChange={this.handleChange('description')}/>
                   </div>
                 </div>
 
