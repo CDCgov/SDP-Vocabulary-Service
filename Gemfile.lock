@@ -55,8 +55,6 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     ansi (1.5.0)
-    archive-zip (0.11.0)
-      io-like (~> 0.3.0)
     arel (8.0.0)
     ast (2.3.0)
     attr_required (1.0.1)
@@ -96,9 +94,6 @@ GEM
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
     choice (0.2.0)
-    chromedriver-helper (1.2.0)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     coderay (1.1.2)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -170,7 +165,6 @@ GEM
     ice_nine (0.11.2)
     iniparse (1.4.4)
     interception (0.5)
-    io-like (0.3.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -417,7 +411,6 @@ DEPENDENCIES
   cancancan
   capybara (= 2.11.0)
   capybara-accessible
-  chromedriver-helper
   config
   cucumber-rails
   database_cleaner!
@@ -461,4 +454,4 @@ DEPENDENCIES
   webpacker
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
