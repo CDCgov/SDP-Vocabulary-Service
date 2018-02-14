@@ -152,7 +152,6 @@ class AddedNestedItem extends SearchManagerComponent {
       <div className='question-item'>
         {this.searchModal()}
         {this.programVarModal()}
-        <div className="col-md-12">
           <SearchResult type  ={srType}
                         index ={this.props.index}
                         result={{Source:this.props.item}}
@@ -165,7 +164,6 @@ class AddedNestedItem extends SearchManagerComponent {
                         showResponseSetSearch={this.showResponseSetSearch}
                         handleResponseSetChange={this.handleResponseSetChangeEvent}
                         />
-        </div>
       </div>
     );
   }

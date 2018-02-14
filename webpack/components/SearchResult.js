@@ -6,9 +6,10 @@ import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { displayVersion, isSimpleEditable } from '../utilities/componentHelpers';
-import PDVModal from "../components/PDVModal";
-import currentUserProps from "../prop-types/current_user_props";
-import { responseSetProps } from "../prop-types/response_set_props";
+import PDVModal from '../components/PDVModal';
+import currentUserProps from '../prop-types/current_user_props';
+import { responseSetProps } from '../prop-types/response_set_props';
+import iconMap from '../styles/iconMap';
 
 // Note, acceptable type strings are: response_set, question, section_nested_item, section, survey, survey_section, nested_section
 export default class SearchResult extends Component {
@@ -18,7 +19,8 @@ export default class SearchResult extends Component {
   }
 
   render() {
-    return (this.baseResult(this.props.type,
+  const renderFn = (this.props.resultStyle=='condensed') ? this.baseResultCondensed.bind(this) : this.baseResult.bind(this);
+    return (renderFn(this.props.type,
                             this.props.result.Source,
                             this.props.result.highlight,
                             this.props.handleSelectSearchResult,
@@ -101,6 +103,22 @@ export default class SearchResult extends Component {
           <span className="fa fa-question-circle fa-lg item-status-undefined" aria-hidden="true"></span>
           <p className="item-description"><text className="sr-only">Item visibility status: </text>Undefined Status</p>
         </li>
+      );
+    }
+  }
+
+  resultStatusCondensed(status,version,type,date) {
+    if(status === 'published') {
+      return(
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>published (<text className="sr-only">Item Version Number: </text><span title={type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('nested','').replace('item','question')}>v{version}</span>)</p>
+      );
+    } else if (status === 'draft') {
+      return(
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>draft (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
+      );
+    } else {
+      return(
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-question-circle fa-lg item-status-undefined" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>Undefined Status (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
       );
     }
   }
@@ -236,7 +254,7 @@ export default class SearchResult extends Component {
                 result.responseSets.map((rs, i) => {
                   return(
                     <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link>}
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link></span>}
                     </div>
                   );
                 })
@@ -272,7 +290,7 @@ export default class SearchResult extends Component {
                 result.sectionNestedItems.map((ni, i) => {
                   return(
                     <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
-                      <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
+                      <span className={`fa ${iconMap[type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
                     </div>
                   );
                 })
@@ -289,7 +307,7 @@ export default class SearchResult extends Component {
                 result.sections.map((sect, i) => {
                   return(
                     <div key={`section-${sect.id}-${i}`} className="result-details-content">
-                      <Link to={`/sections/${sect.id}`}>{sect.name}</Link>
+                      <span className={`fa ${iconMap[type]}`} aria-hidden="true"></span> <Link to={`/sections/${sect.id}`}>{sect.name}</Link>
                     </div>
                   );
                 })
@@ -300,8 +318,81 @@ export default class SearchResult extends Component {
     }
   }
 
+//we only want to show this if it is a question with a result set
+showLinkedDetails(result,type) {
+  if ( (type== 'section_nested_item' || type == 'question') && result.responseType && result.responseType.code == 'choice')  {
+  return(
+    <div>
+      <div className="result-linked-details">
+        {this.linkedDetails(result, type)}
+      </div>
+      {(type !== "section_nested_item") && this.detailsPanel(result, type)}
+    </div>
+  );
+  }
+}
+
+  baseResultCondensed(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
+    return (
+      <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
+        <li className="u-result-content-item condensed">
+          <div className={`u-result-details result__${type}`}>
+            <div className="list-inline result-type-wrapper">
+              <div className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></div>
+              <div className={isEditPage ? "unlinked-result-name" : "result-name"} aria-label="Item Name.">
+                <div className="result-status-condensed">
+                  {this.resultStatusCondensed(result.status,result.version,type,format(parse(result.createdAt,''), 'MMMM Do, YYYY'))}
+                  {isSimpleEditable(result, this.props.currentUser) ? (
+                    <a className="tag-modal-link" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ pdvModalOpen: true });
+                    }}>
+                      <PDVModal show={this.state.pdvModalOpen || false}
+                        cancelButtonAction={() => this.setState({ pdvModalOpen: false })}
+                        pdv={this.props.programVar || ''}
+                        saveButtonAction={(pdv) => {
+                          this.props.updatePDV(result.sectionId, result.sniId, pdv);
+                          this.setState({ pdvModalOpen: false });
+                        }} />
+                      <text className="sr-only">Item program defined variable: </text>{this.props.programVar ? this.props.programVar : 'Add Variable'} {'\u00A0'}
+                      <i className="fa fa-pencil-square-o" aria-hidden="true"> <text className="sr-only">Click to edit program defined variable</text></i>
+                    </a>
+                  ) : ( this.props.programVar &&
+                    <p>
+                      <text className="sr-only">Item program defined variable: </text>{this.props.programVar}
+                    </p>
+                  )}
+                </div>
+                <span className="da-name">{this.resultName(result, highlight, type, isEditPage)}</span>
+                <div className="result-description" aria-label="Item Description.">
+                  {highlight && highlight.description ? <text dangerouslySetInnerHTML={{__html: highlight.description[0]}} /> : result.description}
+                </div>
+              </div>
+            </div>
+          </div>
+          {this.showLinkedDetails(result, type)}
+        </li>
+        <li className="u-result-content-item condensed result-nav" role="navigation" aria-label="Search Result">
+          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div className="result-nav-item">
+            {handleSelectSearchResult ? (
+              this.selectResultButton(result, isSelected, handleSelectSearchResult, type)
+            ) : (
+              <div className="dropdown">
+                <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
+                  <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
+                  <span className="sr-only">View Item Action Menu</span>
+                </a>
+                {this.resultDropdownMenu(result, type, actionName, action)}
+              </div>
+            )}
+          </div>
+        </li>
+      </ul>
+    );
+  }
+
   baseResult(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
-    const iconMap = {'response_set': 'fa-list', 'question': 'fa-tasks', 'section_nested_item': 'fa-tasks', 'section': 'fa-list-alt', 'nested_section': 'fa-list-alt', 'survey_section': 'fa-list-alt', 'survey': 'fa-clipboard'};
     return (
       <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
         <li className="u-result-content-item">
