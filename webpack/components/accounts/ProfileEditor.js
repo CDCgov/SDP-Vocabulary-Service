@@ -44,7 +44,7 @@ export default class ProfileEditor extends Component {
             {this.extraContent()}
             <div className="field">
               {this.surveillanceProgramsField()}
-            </div>
+            </div><br/>
             <div className="field">
               {this.surveillanceSystemsField()}
             </div>
@@ -123,7 +123,7 @@ export default class ProfileEditor extends Component {
       return <p>No surveillance programs loaded in the database</p>;
     } else {
       return (<div id="search-programs">
-          <label className="control-label" htmlFor="lastProgramId">Surveillance Program</label>
+          <label className="control-label" htmlFor="lastProgramId">Default Surveillance Program</label>
           <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
           <select size='5' className="form-control" name="lastProgramId" id="lastProgramId" value={this.state.lastProgramId} onChange={this.handleChange('lastProgramId')} >
             {this.state.surveillancePrograms && this.state.surveillancePrograms.map((sp) => {
@@ -139,7 +139,7 @@ export default class ProfileEditor extends Component {
       return <p>No surveillance systems loaded in the database</p>;
     } else {
       return (<div id="search-systems">
-          <label className="control-label" htmlFor="lastSystemId">Surveillance System</label>
+          <label className="control-label" htmlFor="lastSystemId">Default Surveillance System</label>
           <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
           <select size='5' className="form-control" name="lastSystemId" id="lastSystemId" value={this.state.lastSystemId} onChange={this.handleChange('lastSystemId')} >
             {this.state.surveillanceSystems && this.state.surveillanceSystems.map((ss) => {

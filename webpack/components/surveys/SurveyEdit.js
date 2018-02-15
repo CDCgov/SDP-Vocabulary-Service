@@ -4,31 +4,38 @@ import { Link } from 'react-router';
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { sectionsProps } from '../../prop-types/section_props';
+import { surveillanceSystemsProps } from '../../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 import { questionsProps } from "../../prop-types/question_props";
+import currentUserProps from "../../prop-types/current_user_props";
 
 import SurveySectionList from './SurveySectionList';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
+import ProgSysEditModal from './ProgSysEditModal';
 
 class SurveyEdit extends Component {
 
-  stateForNew() {
+  stateForNew(currentUser) {
     return {
       id: null,
       name: '',
       version: 1,
-      showModal: false,
       conceptsAttributes: [],
       description: '',
       surveySections: [],
       controlNumber: null,
-      versionIndependentId: null
+      versionIndependentId: null,
+      showModal: false,
+      progSysModalOpen: false,
+      surveillanceProgramId: currentUser.lastProgramId || -1,
+      surveillanceSystemId: currentUser.lastSystemId || -1
     };
   }
 
-  stateForExtend(survey) {
-    var state = this.stateForEdit(survey);
+  stateForExtend(survey, currentUser) {
+    var state = this.stateForEdit(survey, currentUser);
     state.id = null;
     state.versionIndependentId = null;
     state.version = 1;
@@ -38,8 +45,8 @@ class SurveyEdit extends Component {
     return state;
   }
 
-  stateForEdit(survey) {
-    var newState = this.stateForNew();
+  stateForEdit(survey, currentUser) {
+    var newState = this.stateForNew(currentUser);
     newState.id = survey.id;
     newState.name = survey.name || '';
     newState.version = survey.version;
@@ -47,14 +54,16 @@ class SurveyEdit extends Component {
     newState.surveySections = survey.surveySections || [];
     newState.controlNumber = survey.controlNumber;
     newState.parentId = survey.parent ? survey.parent.id : '';
+    newState.surveillanceProgramId = survey.surveillanceProgramId || newState.surveillanceProgramId;
+    newState.surveillanceSystemId = survey.surveillanceSystemId || newState.surveillanceSystemId;
     newState.versionIndependentId = survey.versionIndependentId;
     newState.conceptsAttributes = filterConcepts(survey.concepts);
     newState.groups = survey.groups || [];
     return newState;
   }
 
-  stateForRevise(survey) {
-    var newState = this.stateForEdit(survey);
+  stateForRevise(survey, currentUser) {
+    var newState = this.stateForEdit(survey, currentUser);
     newState.version += 1;
     return newState;
   }
@@ -63,16 +72,16 @@ class SurveyEdit extends Component {
     super(props);
     switch (this.props.action) {
       case 'revise':
-        this.state = this.stateForRevise(props.survey);
+        this.state = this.stateForRevise(props.survey, props.currentUser);
         break;
       case 'extend':
-        this.state = this.stateForExtend(props.survey);
+        this.state = this.stateForExtend(props.survey, props.currentUser);
         break;
       case 'edit':
-        this.state = this.stateForEdit(props.survey);
+        this.state = this.stateForEdit(props.survey, props.currentUser);
         break;
       default:
-        this.state = this.stateForNew();
+        this.state = this.stateForNew(props.currentUser);
     }
     this.unsavedState = false;
     this.lastSectionCount = this.state.surveySections.length;
@@ -208,6 +217,30 @@ class SurveyEdit extends Component {
               <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
             </div>
           </div>
+          <div className="row">
+            <ProgSysEditModal closer={() => this.setState({progSysModalOpen: false})}
+              show={this.state.progSysModalOpen}
+              update={(sid, pid) => this.setState({surveillanceSystemId: sid, surveillanceProgramId: pid, progSysModalOpen: false})}
+              programId={this.state.surveillanceProgramId}
+              systemId={this.state.surveillanceSystemId}
+              currentUser={this.props.currentUser}
+              surveillanceSystems={this.props.surveillanceSystems}
+              surveillancePrograms={this.props.surveillancePrograms} />
+            <div className="col-md-6 survey-group">
+              <strong>Program: </strong>
+              <a className="tag-modal-link" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.setState({ progSysModalOpen: true });
+              }}> {this.props.surveillancePrograms && this.props.surveillancePrograms[this.state.surveillanceProgramId] && this.props.surveillancePrograms[this.state.surveillanceProgramId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit program</text></i></a>
+            </div>
+            <div className="col-md-6 survey-group">
+              <strong>System: </strong>
+              <a className="tag-modal-link" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.setState({ progSysModalOpen: true });
+              }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
+            </div>
+          </div>
           <h2 className="tags-table-header"><strong>Tags</strong></h2>
           <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                    initialItems={this.state.conceptsAttributes}
@@ -238,6 +271,9 @@ function filterConcepts(concepts) {
 
 SurveyEdit.propTypes = {
   survey: surveyProps,
+  currentUser: currentUserProps,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps,
   sections:  sectionsProps.isRequired,
   questions:  questionsProps.isRequired,
   action: PropTypes.string.isRequired,

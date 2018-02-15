@@ -11,6 +11,8 @@ import { removeSection, reorderSection } from '../../actions/section_actions';
 import { sectionsProps }  from '../../prop-types/section_props';
 import { questionsProps }  from '../../prop-types/question_props';
 import { surveyProps } from '../../prop-types/survey_props';
+import { surveillanceSystemsProps } from '../../prop-types/surveillance_system_props';
+import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 import SurveyEdit from '../../components/surveys/SurveyEdit';
 import currentUserProps from "../../prop-types/current_user_props";
 import SectionSearchContainer from '../sections/SectionSearchContainer';
@@ -122,6 +124,9 @@ class SurveyEditContainer extends Component {
                           questions  ={this.props.questions}
                           removeSection ={this.props.removeSection}
                           reorderSection={this.props.reorderSection}
+                          currentUser={this.props.currentUser}
+                          surveillanceSystems={this.props.surveillanceSystems}
+                          surveillancePrograms={this.props.surveillancePrograms}
                           surveySubmitter={this.state.selectedSurveySaver} />
             </div>
           </div>
@@ -150,6 +155,8 @@ function mapStateToProps(state, ownProps) {
     questions: state.questions,
     stats: state.stats,
     currentUser: state.currentUser,
+    surveillanceSystems:  state.surveillanceSystems,
+    surveillancePrograms: state.surveillancePrograms,
     selectedSearchResults: selectedSearchResults
   };
 }
@@ -170,6 +177,8 @@ SurveyEditContainer.propTypes = {
   removeSection:  PropTypes.func,
   reorderSection: PropTypes.func,
   currentUser: currentUserProps,
+  surveillanceSystems: surveillanceSystemsProps,
+  surveillancePrograms: surveillanceProgramsProps,
   saveDraftSurvey: PropTypes.func,
   selectedSearchResults: PropTypes.object
 };
