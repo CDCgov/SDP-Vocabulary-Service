@@ -40,6 +40,7 @@ export default class ProgSysEditModal extends Component {
         <Modal.Body>
           <form>
             <Errors errors={this.state.errors} />
+            <p><strong>Note: </strong>If not found below, please contact an administrator to have your surveillance program or system added to the list.</p>
             <div className="field">
               {this.surveillanceProgramsField()}
             </div><br/>
