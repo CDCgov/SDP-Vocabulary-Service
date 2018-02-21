@@ -29,8 +29,8 @@ class SurveyEdit extends Component {
       versionIndependentId: null,
       showModal: false,
       progSysModalOpen: false,
-      surveillanceProgramId: currentUser.lastProgramId || -1,
-      surveillanceSystemId: currentUser.lastSystemId || -1
+      surveillanceProgramId: currentUser.lastProgramId || null,
+      surveillanceSystemId: currentUser.lastSystemId || null
     };
   }
 
