@@ -130,8 +130,8 @@ class SurveysController < ApplicationController
   end
 
   def survey_params
-    params.require(:survey).permit(:name, :description, :status, :parent_id, :groups,
-                                   :control_number, :version_independent_id, :created_by_id,
+    params.require(:survey).permit(:name, :description, :parent_id, :groups,
+                                   :control_number, :version_independent_id,
                                    :surveillance_program_id, :surveillance_system_id,
                                    concepts_attributes: [:id, :value, :display_name, :code_system])
   end

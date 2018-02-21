@@ -104,6 +104,8 @@ export function updateSurveyTags(id, conceptsAttributes) {
 function createPostPromise(survey, url, fn, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   survey.questionsAttributes = survey.questions;
+  delete survey.showModal;
+  delete survey.progSysModalOpen;
   const postPromise = fn(url,
                       {survey, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});

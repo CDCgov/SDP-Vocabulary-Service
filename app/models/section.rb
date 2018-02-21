@@ -15,6 +15,7 @@ class Section < ApplicationRecord
 
   validates :name, presence: true
   validates :created_by, presence: true
+  validates :oid, allow_blank: true, format: { with: /\A[\d.]+\z/, message: 'OID must be correct format' }
 
   accepts_nested_attributes_for :questions, allow_destroy: true
 
