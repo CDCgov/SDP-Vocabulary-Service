@@ -6,6 +6,8 @@ Feature: Admin Panel
     When I go to the dashboard
     And I click on the "account-dropdown" link
     Then I should not see "Admin Panel"
+
+  Scenario: Unauthenticated admin page should error
     When I am on the "/#/admin" page
     Then I should not see "Admin List"
     And I should see "You are not authorized to see this content"

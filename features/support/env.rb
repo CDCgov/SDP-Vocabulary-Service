@@ -48,17 +48,37 @@ Capybara.default_driver = :chrome
 Capybara.javascript_driver = :chrome
 
 if ENV['HEADLESS']
-  require 'headless'
-  require 'capybara/webkit'
-  Capybara::Webkit.configure do |config|
-    config.block_unknown_urls
-    config.allow_url('fonts.googleapis.com')
-    config.skip_image_loading
+  require 'selenium/webdriver'
+
+  # A task exists in the Rakefile to create this directory, but it fails to do so in headless mode
+  puts 'Creating reports directory...'
+  `mkdir -p reports`
+  `touch reports/cucumber.html`
+
+  # Sleep to avoid a race condition as the directory and file are created
+  puts 'Sleeping for 15 seconds...'
+  sleep(15)
+
+  Capybara.register_driver :chrome do |app|
+    Capybara::Selenium::Driver.new(app, browser: :chrome)
+  end
+
+  Capybara.register_driver :headless_chrome do |app|
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-popup-blocking')
+    options.add_argument('--window-size=1280,800')
+
+    driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+    adaptor = Capybara::Accessible::SeleniumDriverAdapter.new
+    Capybara::Accessible.setup(driver, adaptor)
   end
 
   module Capybara
     module Accessible
-      class WebkitDriverAdapter
+      class SeleniumDriverAdapter
         def modal_dialog_present?(_driver)
           # driver.alert_messages.any?
           false
@@ -67,18 +87,8 @@ if ENV['HEADLESS']
     end
   end
 
-  Capybara.register_driver :accessible_webkit2 do |app|
-    driver = Capybara::Webkit::Driver.new(app, Capybara::Webkit::Configuration.to_hash)
-    adaptor = Capybara::Accessible::WebkitDriverAdapter.new
-    Capybara::Accessible.setup(driver, adaptor)
-  end
-
-  headless = Headless.new
-  headless.start
-
-  Capybara.default_driver = :accessible_webkit2
-  Capybara.javascript_driver = :acessible_webkit2
-
+  Capybara.default_driver = :headless_chrome
+  Capybara.javascript_driver = :headless_chrome
 end
 
 Capybara.default_max_wait_time = 5

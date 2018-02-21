@@ -37,8 +37,7 @@ Feature: Manage Sections
     When I go to the list of Sections
     And I click on the menu link for the Section with the name "Test Section"
     And I click on the option to Details the Section with the name "Test Section"
-    When I click on the "Delete" link
-    When I confirm my action
+    When I click on the "Delete" link and confirm my action
     Then I go to the dashboard
     When I go to the list of Sections
     Then I should not see "Test Section"
