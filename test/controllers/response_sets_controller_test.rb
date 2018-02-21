@@ -78,7 +78,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_equal DRAFT, ResponseSet.last.status
 
-    put response_set_url(ResponseSet.last, format: :json), params: { response_set: { description: 'new description' } }
+    put response_set_url(ResponseSet.last, format: :json), params: { response_set: { description: 'new description', oid: '2.16.840.1.113883.3.1502.3.4', version_independent_id: ResponseSet.last.version_independent_id } }
 
     assert_equal 'new description', ResponseSet.last.description
   end

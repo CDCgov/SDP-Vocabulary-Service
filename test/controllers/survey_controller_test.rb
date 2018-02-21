@@ -12,6 +12,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     @survey = surveys(:four)
     @a_user = users(:admin)
     @group = groups(:one)
+    @surveillance_program = surveillance_programs(:generic)
     sign_in @current_user
   end
 
@@ -28,7 +29,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
   test 'should create survey' do
     assert_enqueued_jobs 0
     assert_difference('Survey.count') do
-      post surveys_url params: { survey: { linked_sections: [{ section_id: sections(:one).id, position: 0 }], name: 'Test' } }
+      post surveys_url params: { survey: { linked_sections: [{ section_id: sections(:one).id, position: 0 }], name: 'Test', surveillance_program_id: @surveillance_program.id } }
     end
     assert_enqueued_jobs 5 # 1 for the survey, 1 for the section update, 2 for questions, 1 for response set
     assert_response :success

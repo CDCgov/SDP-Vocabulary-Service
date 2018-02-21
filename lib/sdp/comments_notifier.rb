@@ -24,15 +24,16 @@ module SDP
     end
 
     def self.commentable_url(comment)
-      url_helper = Rails.application.routes.url_helpers
       commentable = comment.commentable
       url = case commentable
             when Question
-              "/landing#/questions/#{commentable.id}"
+              "/#/questions/#{commentable.id}"
             when ResponseSet
-              url_helper.response_set_url(commentable)
+              "/#/responseSets/#{commentable.id}"
             when Section
-              url_helper.section_url(commentable)
+              "/#/Sections/#{commentable.id}"
+            when Survey
+              "/#/Surveys/#{commentable.id}"
             else
               ''
             end
