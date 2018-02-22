@@ -7,7 +7,6 @@ import {
 
 export function setResultStyle(resultStyle) {
 
-console.log(resultStyle);
   return {
     type: SET_RESULT_STYLE,
     payload: {resultStyle:resultStyle}
