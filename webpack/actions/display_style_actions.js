@@ -6,7 +6,6 @@ import {
 } from './types';
 
 export function setResultStyle(resultStyle) {
-
   return {
     type: SET_RESULT_STYLE,
     payload: {resultStyle:resultStyle}

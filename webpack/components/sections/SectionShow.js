@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
+import $ from 'jquery';
 
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import SurveyList from '../surveys/SurveyList';
@@ -58,7 +59,7 @@ class SectionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={section} versionableType='section' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
       </div>
     );
   }
@@ -205,7 +206,10 @@ class SectionShow extends Component {
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">
-                  <a className="panel-toggle" onClick={(e)=>{e.preventDefault();this.toggleExpand()}} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <a className="panel-toggle" onClick={(e) => {
+                    e.preventDefault();
+                    this.toggleExpand();
+                  }} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
                   <text className="sr-only">Click link to expand information about linked </text>Linked Questions and Sections: {section.sectionNestedItems && section.sectionNestedItems.length}</a>
                 </h2>
                 <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
@@ -254,8 +258,9 @@ SectionShow.propTypes = {
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps,
-  resultControlVisibility : PropTypes.string,
-  resultStyle : PropTypes.string
+  resultControlVisibility: PropTypes.string,
+  resultStyle: PropTypes.string,
+  toggleResultControl: PropTypes.func
 };
 
 export default SectionShow;

@@ -6,7 +6,6 @@ import shallowCompare from 'react-addons-shallow-compare';
 
 import SearchResult from '../../components/SearchResult';
 import { updatePDV } from "../../actions/section_actions";
-import { setResultStyle } from '../../actions/display_style_actions';
 
 class SectionNestedItemList extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -33,7 +32,7 @@ class SectionNestedItemList extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updatePDV, setResultStyle }, dispatch);
+  return bindActionCreators({ updatePDV }, dispatch);
 }
 
 SectionNestedItemList.propTypes = {

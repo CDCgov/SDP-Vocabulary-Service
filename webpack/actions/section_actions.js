@@ -20,8 +20,7 @@ import {
   UPDATE_PDV,
   ADD_NESTED_ITEM,
   REORDER_NESTED_ITEM,
-  REMOVE_NESTED_ITEM,
-  SET_RESULT_STYLE
+  REMOVE_NESTED_ITEM
 } from './types';
 
 export function newSection() {

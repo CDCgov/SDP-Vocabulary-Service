@@ -19,7 +19,7 @@ export default class SearchResult extends Component {
   }
 
   render() {
-  const renderFn = (this.props.resultStyle=='condensed') ? this.baseResultCondensed.bind(this) : this.baseResult.bind(this);
+    const renderFn = (this.props.resultStyle=='condensed') ? this.baseResultCondensed.bind(this) : this.baseResult.bind(this);
     return (renderFn(this.props.type,
                             this.props.result.Source,
                             this.props.result.highlight,
@@ -318,19 +318,19 @@ export default class SearchResult extends Component {
     }
   }
 
-//we only want to show this if it is a question with a result set
-showLinkedDetails(result,type) {
-  if ( (type== 'section_nested_item' || type == 'question') && result.responseType && result.responseType.code == 'choice')  {
-  return(
-    <div>
-      <div className="result-linked-details">
-        {this.linkedDetails(result, type)}
-      </div>
-      {(type !== "section_nested_item") && this.detailsPanel(result, type)}
-    </div>
-  );
+  //we only want to show this if it is a question with a result set
+  showLinkedDetails(result,type) {
+    if ( (type== 'section_nested_item' || type == 'question') && result.responseType && result.responseType.code == 'choice') {
+      return(
+        <div>
+          <div className="result-linked-details">
+            {this.linkedDetails(result, type)}
+          </div>
+          {(type !== "section_nested_item") && this.detailsPanel(result, type)}
+        </div>
+      );
+    }
   }
-}
 
   baseResultCondensed(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
     return (
@@ -470,6 +470,7 @@ SearchResult.propTypes = {
   result: PropTypes.object.isRequired,
   programVar: PropTypes.string,
   isEditPage: PropTypes.bool,
+  resultStyle: PropTypes.string,
   currentUser:  currentUserProps,
   extraAction:  PropTypes.func,
   responseSets: PropTypes.arrayOf(responseSetProps),

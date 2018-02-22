@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
-import { setResultStyle, hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
+import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
 import { sectionSchema } from '../../schema';
@@ -102,7 +102,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags, setResultStyle, hideResultControl, toggleResultControl}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl}, dispatch);
 }
 
 SectionShowContainer.propTypes = {
@@ -120,10 +120,11 @@ SectionShowContainer.propTypes = {
   updateSectionTags: PropTypes.func,
   publishSection: PropTypes.func,
   publishers: publishersProps,
-  setResultStyle: PropTypes.func,
-  hideResultControl : PropTypes.func,
-  toggleResultControl : PropTypes.func,
-  displayStyle : PropTypes.object,
+  hideResultControl: PropTypes.func,
+  toggleResultControl: PropTypes.func,
+  displayStyle: PropTypes.object,
+  resultStyle: PropTypes.string,
+  resultControlVisibility: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SectionShowContainer);
