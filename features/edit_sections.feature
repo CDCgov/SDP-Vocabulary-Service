@@ -85,11 +85,18 @@ Feature: Edit Sections
     Then I should see "Name: Test Section Extended"
     And I should see "Description from parent"
     And I should see "Extended from: Test Section"
+    And I should not see "Switch to expanded item view"
     When I click on the "Linked Questions" link
+    Then I should see "Switch to expanded item view"
     And I should see "What is your gender?"
+    And I should see "VERSION 1 | ITEM TYPE: QUESTION"
     And I should not see "Publish"
     And I should see "Version: 1"
     And I should see "Edit"
+    When I click on the "Switch to condensed item view" button
+    Then I should see "What is your gender?"
+    And I should not see "VERSION 1 | ITEM TYPE: QUESTION"
+    And I should see "v1"
 
   Scenario: Reorder Questions
     Given I have a published Section with the name "Test Section"
