@@ -477,7 +477,8 @@ paths:
           description: Successful response
           schema:
             type: array
-            $ref: '#/definitions/Survey'
+            items:
+              $ref: '#/definitions/Questionnaire'
 
   /fhir/Questionnaire/{id}:
     parameters:
@@ -504,7 +505,7 @@ paths:
         200:
           description: Successful response
           schema:
-            $ref: '#/definitions/Survey'
+            $ref: '#/definitions/Questionnaire'
 
   /fhir/Valueset:
     get:
@@ -911,7 +912,8 @@ definitions:
               $ref: '#/definitions/CodedValue'
       item:
         type: array
-        $ref: '#/definitions/Item'
+        items:
+          $ref: '#/definitions/Item'
 
   Item:
     type: object
@@ -945,13 +947,16 @@ definitions:
           - quantity
       item:
         type: array
-        $ref: '#/definitions/Item'
+        items:
+          $ref: '#/definitions/Item'
       extension:
         type: array
-        $ref: '#/definitions/Extension'
+        items:
+          $ref: '#/definitions/Extension'
       options:
         type: array
-        $ref: '#/definitions/ValueSet'
+        items:
+          $ref: '#/definitions/ValueSet'
 
   Extension:
     type: object

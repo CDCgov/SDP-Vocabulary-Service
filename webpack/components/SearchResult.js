@@ -290,7 +290,7 @@ export default class SearchResult extends Component {
                 result.sectionNestedItems.map((ni, i) => {
                   return(
                     <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
-                      <span className={`fa ${iconMap[type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
+                      <span className={`fa ${iconMap[ni.type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
                     </div>
                   );
                 })
