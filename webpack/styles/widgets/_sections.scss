@@ -133,3 +133,14 @@
 .section-edit-search-filter-active-item {
   background-color: $analytics-hover-blue !important;
 }
+
+.result-style-control {
+  position:absolute;
+  top:2px;
+  right:5px;
+  visibility:hidden;
+  opacity:0;
+  transition: visibility 0s 0.6s, opacity 0.5s ease-in;
+  &.visible {visibility:visible;opacity:1;  transition:opacity 1s ease-in;}
+  button.btn {margin:0 5px}
+}

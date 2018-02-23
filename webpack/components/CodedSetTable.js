@@ -9,7 +9,7 @@ export default class CodedSetTable extends Component {
       return (<strong>No {this.props.itemName}s Selected</strong>);
     }
     return (
-      <table className="table table-striped">
+      <table className="table table-striped coded-set-table">
         <caption>Information about associated {this.props.itemName}s:</caption>
         <thead>
           <tr>
