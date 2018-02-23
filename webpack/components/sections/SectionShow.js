@@ -40,7 +40,7 @@ class SectionShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Section Details {section.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
+            <li className="showpage_title"><h1>Section Details {section.status && (<text>[{section.status.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar(section)}
