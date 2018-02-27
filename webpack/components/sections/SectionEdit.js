@@ -14,7 +14,6 @@ import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContai
 import ModalDialog  from '../ModalDialog';
 import Errors from '../Errors';
 
-
 class SectionEdit extends Component {
 
   stateForRevise(section) {
@@ -255,7 +254,7 @@ class SectionEdit extends Component {
       <div id="added-nested-items" aria-label="Added sections and questions">
         <div className="row">
           <div className="response-set-header">
-            <div className="col-md-5 response-set-label"><span><b>Questions & Sections</b></span></div>
+            <div className="col-md-5 response-set-label"><span><b>Questions &amp; Sections</b></span></div>
             <div className="col-md-7 response-set-label">
               <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
             </div>

@@ -92,6 +92,16 @@ class SectionsController < ApplicationController
     end
   end
 
+  def remove_from_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @section.remove_from_group(params[:group])
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   def update_tags
     @section.add_tags(params)
     if @section.save!
@@ -172,8 +182,8 @@ class SectionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def section_params
-    params.require(:section).permit(:name, :user_id, :search, :description, :parent_id,
-                                    :status, :version_independent_id, :groups,
+    params.require(:section).permit(:name, :description, :parent_id,
+                                    :version_independent_id, :groups,
                                     concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

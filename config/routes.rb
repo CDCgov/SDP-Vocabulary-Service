@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     get :redcap, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
+    put :remove_from_group, on: :member
     put :update_tags, on: :member
     put :update_pdv, on: :member
   end
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
     put :publish, on: :member
     get :redcap, on: :member
     put :add_to_group, on: :member
+    put :remove_from_group, on: :member
     put :update_tags, on: :member
   end
   resources :questions, except: [:edit] do
@@ -57,6 +59,7 @@ Rails.application.routes.draw do
     get :usage, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
+    put :remove_from_group, on: :member
     put :update_tags, on: :member
   end
   resources :comments do
@@ -68,6 +71,7 @@ Rails.application.routes.draw do
     get :usage, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
+    put :remove_from_group, on: :member
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications

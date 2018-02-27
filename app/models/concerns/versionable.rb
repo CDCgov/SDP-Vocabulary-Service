@@ -1,17 +1,27 @@
+# rubocop:disable Metrics/ModuleLength
 module Versionable
   extend ActiveSupport::Concern
 
   included do
-    validates :version_independent_id, presence: true,
+    validates :version_independent_id, presence: true, format: { with: /\A\w{1,4}-\d+\z/ },
                                        if: proc { |v| v.version > 1 }
     validates :version, presence: true,
                         uniqueness: { scope:   :version_independent_id,
                                       message: 'versions should be unique' }
+    validate :oid_the_same
 
     after_save :assign_version_independent_id,
                if: proc { |v| v.version == 1 && v.version_independent_id.blank? }
 
     attr_accessor :_all_versions
+  end
+
+  def oid_the_same
+    if self.class.to_s != 'Survey' && oid && version > 1
+      prev_version = self.class.find_by(version_independent_id: version_independent_id,
+                                        version: version - 1)
+      errors.add(:oid, 'OID has to be the same as previous version') if prev_version.oid && prev_version.oid != oid
+    end
   end
 
   # Callback that assigns the version_independent_id. This should never be called
@@ -32,7 +42,7 @@ module Versionable
   end
 
   def all_versions
-    @_all_versions ||= self.class.where(version_independent_id: version_independent_id)
+    @_all_versions ||= self.class.includes(:groups).where(version_independent_id: version_independent_id)
                            .order(version: :desc)
   end
 
@@ -119,3 +129,4 @@ module Versionable
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength

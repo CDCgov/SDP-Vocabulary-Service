@@ -10,6 +10,7 @@ import {
   SAVE_DRAFT_QUESTION,
   PUBLISH_QUESTION,
   ADD_QUESTION_TO_GROUP,
+  REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
   ADD_ENTITIES,
   UPDATE_QUESTION_TAGS
@@ -109,6 +110,15 @@ export function addQuestionToGroup(id, group) {
   return {
     type: ADD_QUESTION_TO_GROUP,
     payload: axios.put(routes.addToGroupQuestionPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function removeQuestionFromGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: REMOVE_QUESTION_FROM_GROUP,
+    payload: axios.put(routes.removeFromGroupQuestionPath(id),
      {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }

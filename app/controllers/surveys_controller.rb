@@ -16,8 +16,6 @@ class SurveysController < ApplicationController
     @survey = Survey.new(survey_params)
     return unless can_survey_be_created?(@survey)
     @survey.created_by = current_user
-    @survey.surveillance_system = current_user.last_system
-    @survey.surveillance_program = current_user.last_program
     @survey.survey_sections = create_survey_sections
     if @survey.save
       render :show, status: :created, location: @survey
@@ -32,8 +30,6 @@ class SurveysController < ApplicationController
     else
       update_successful = nil
       @survey.transaction do
-        @survey.surveillance_system  = current_user.last_system
-        @survey.surveillance_program = current_user.last_program
         @survey.survey_sections = update_survey_sections
         @survey.update_concepts('Survey')
         update_successful = @survey.update(survey_params)
@@ -75,6 +71,16 @@ class SurveysController < ApplicationController
     group = Group.find(params[:group])
     if current_user.groups.include?(group)
       @survey.add_to_group(params[:group])
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
+  def remove_from_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @survey.remove_from_group(params[:group])
       render :show
     else
       render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
@@ -124,8 +130,9 @@ class SurveysController < ApplicationController
   end
 
   def survey_params
-    params.require(:survey).permit(:name, :description, :status, :parent_id, :groups,
-                                   :control_number, :version_independent_id, :created_by_id,
+    params.require(:survey).permit(:name, :description, :parent_id, :groups,
+                                   :control_number, :version_independent_id,
+                                   :surveillance_program_id, :surveillance_system_id,
                                    concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 

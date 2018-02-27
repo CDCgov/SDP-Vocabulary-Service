@@ -11,7 +11,7 @@ Feature: Edit Questions
     And I fill in the "Question" field with "What is your favorite color?"
     And I select the "Open Choice" option in the "Response Type" list
     And I fill in the "Description" field with "This is a revised description"
-    And I drag the "Gender Partial" option to the "Selected Response Sets" list
+    And I click on the "select-Gender Partial" link
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link
@@ -81,7 +81,7 @@ Feature: Edit Questions
     And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite animal?"
     And I select the "Open Choice" option in the "Response Type" list
-    And I drag the "Gender Full" option to the "Selected Response Sets" list
+    And I click on the "select-Gender Full" link
     And I select the "Multiple Choice" option in the "Category" list
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Concept 1"
@@ -124,7 +124,7 @@ Feature: Edit Questions
     And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite animal?"
     And I select the "Open Choice" option in the "Response Type" list
-    And I drag the "Gender Full" option to the "Selected Response Sets" list
+    And I click on the "select-Gender Full" link
     And I select the "Multiple Choice" option in the "Category" list
     And I fill in the "value_0" field with "Test Concept 1"
     When I click on the "CDC Vocabulary Service" link
@@ -151,3 +151,26 @@ Feature: Edit Questions
     Then I fill in the "Question" field with "What is your favorite animal?"
     Then I should see "Potential Duplicate Questions"
     And I should see "What is your favorite color?"
+
+  Scenario: Question added to group should show up in version history
+    Given I have a published Question with the content "What is your gender?"
+    And I am logged in as test_author@gmail.com
+    When I go to the dashboard
+    And I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Revise the Question with the content "What is your gender?"
+    And I fill in the "Question" field with "What is your gender? (revised)"
+    And I click on the "Save" button
+    Then I should see "What is your gender? (revised)"
+    When I click on the "Groups" button
+    Then I should see "Group1"
+    And I should see "None"
+    When I click on the "Click to add content to the Group1 group" button
+    And I click on the "Groups" button
+    Then I should see "Group1"
+    When I click on the "Version 1" link
+    Then I should see "Version 2"
+    When I am logged in as new_user_in_group1@gmail.com
+    And I go to the dashboard
+    And I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    Then I should see "Version 2"

@@ -29,7 +29,7 @@ export default class ResponseSetShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Response Set Details {responseSet.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
+            <li className="showpage_title"><h1>Response Set Details {responseSet.status && (<text>[{responseSet.status.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar(responseSet)}
@@ -48,7 +48,7 @@ export default class ResponseSetShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={responseSet} versionableType='ResponseSet' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={responseSet} versionableType='ResponseSet' currentUser={this.props.currentUser} />
       </div>
     );
   }
@@ -73,7 +73,7 @@ export default class ResponseSetShow extends Component {
                              itemType="Response Set" />
             }
             {isGroupable(responseSet, this.props.currentUser) &&
-              <GroupLookUp item={responseSet} addFunc={this.props.addResponseSetToGroup} currentUser={this.props.currentUser} />
+              <GroupLookUp item={responseSet} addFunc={this.props.addResponseSetToGroup} removeFunc={this.props.removeResponseSetFromGroup} currentUser={this.props.currentUser} />
             }
             {isRevisable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>
@@ -178,6 +178,7 @@ ResponseSetShow.propTypes = {
   publishResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
+  removeResponseSetFromGroup: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

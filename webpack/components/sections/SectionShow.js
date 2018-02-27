@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
+import $ from 'jquery';
 
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import SurveyList from '../surveys/SurveyList';
@@ -15,6 +16,7 @@ import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
+import ResultStyleControl from '../shared_show/ResultStyleControl';
 
 const PAGE_SIZE = 10;
 
@@ -38,7 +40,7 @@ class SectionShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Section Details {section.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
+            <li className="showpage_title"><h1>Section Details {section.status && (<text>[{section.status.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar(section)}
@@ -57,9 +59,14 @@ class SectionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={section} versionableType='section' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
       </div>
     );
+  }
+
+  toggleExpand() {
+    $('#collapse-linked-questions').collapse('toggle');
+    this.props.toggleResultControl(this.props.resultControlVisibility);
   }
 
   pageChange(nextPage) {
@@ -107,7 +114,7 @@ class SectionShow extends Component {
                            itemType="Section" />
           }
           {isGroupable(section, this.props.currentUser) &&
-            <GroupLookUp item={section} addFunc={this.props.addSectionToGroup} currentUser={this.props.currentUser} />
+            <GroupLookUp item={section} addFunc={this.props.addSectionToGroup} removeFunc={this.props.removeSectionFromGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(section, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -199,15 +206,21 @@ class SectionShow extends Component {
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">
-                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <a className="panel-toggle" onClick={(e) => {
+                    e.preventDefault();
+                    this.toggleExpand();
+                  }} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
                   <text className="sr-only">Click link to expand information about linked </text>Linked Questions and Sections: {section.sectionNestedItems && section.sectionNestedItems.length}</a>
                 </h2>
+                <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
               </div>
-              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-questions">
-                <SectionNestedItemList items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
-                {this.props.section.sectionNestedItems.length > 10 &&
-                <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
-                }
+              <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-questions">
+                <div className="panel-body">
+                  <SectionNestedItemList resultStyle={this.props.resultStyle} items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
+                  {this.props.section.sectionNestedItems.length > 10 &&
+                  <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
+                  }
+                </div>
               </div>
             </div>
           }
@@ -219,8 +232,10 @@ class SectionShow extends Component {
                   <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.surveys && section.surveys.length}</a>
                 </h2>
               </div>
-              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-                <SurveyList surveys={section.surveys} currentUserId={this.props.currentUser.id} />
+              <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-surveys">
+                <div className="panel-body">
+                  <SurveyList surveys={section.surveys} currentUser={this.props.currentUser} />
+                </div>
               </div>
             </div>
           }
@@ -238,10 +253,14 @@ SectionShow.propTypes = {
   publishSection: PropTypes.func,
   deleteSection:  PropTypes.func.isRequired,
   addSectionToGroup: PropTypes.func,
+  removeSectionFromGroup: PropTypes.func,
   updateSectionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
-  publishers: publishersProps
+  publishers: publishersProps,
+  resultControlVisibility: PropTypes.string,
+  resultStyle: PropTypes.string,
+  toggleResultControl: PropTypes.func
 };
 
 export default SectionShow;

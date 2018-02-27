@@ -17,6 +17,6 @@ describe('GroupLookUp', () => {
   });
 
   it('create a list of groups', () => {
-    expect(component.find("li[class='current-group-menu-item']").length).to.equal(2);
+    expect(component.find("li[class='current-group-menu-item']").length).to.equal(3);
   });
 });

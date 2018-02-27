@@ -6,6 +6,8 @@ Feature: Admin Panel
     When I go to the dashboard
     And I click on the "account-dropdown" link
     Then I should not see "Admin Panel"
+
+  Scenario: Unauthenticated admin page should error
     When I am on the "/#/admin" page
     Then I should not see "Admin List"
     And I should see "You are not authorized to see this content"
@@ -40,6 +42,7 @@ Feature: Admin Panel
     And I click on the "Program List" link
     And I fill in the "program-name" field with "New Program"
     And I click on the "submit-prog-sys" button
+    Then I should see "Successfully added program: New Program"
     And I fill in the "program-name" field with "Just clearing the text"
     Then I should see "New Program"
 
@@ -52,6 +55,7 @@ Feature: Admin Panel
     And I click on the "System List" link
     And I fill in the "system-name" field with "New System"
     And I click on the "submit-prog-sys" button
+    Then I should see "Successfully added system: New System"
     And I fill in the "system-name" field with "Just clearing the text"
     Then I should see "New System"
 
@@ -86,6 +90,7 @@ Feature: Admin Panel
     And I fill in the "group-name" field with "New Group"
     And I fill in the "group-description" field with "Test Description"
     And I click on the "submit-group" button
+    Then I should see "Successfully created group: New Group"
     And I fill in the "group-name" field with " "
     And I fill in the "group-description" field with " "
     Then I should see "New Group"

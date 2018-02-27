@@ -19,6 +19,7 @@ class ResponseSet < ApplicationRecord
   validates :name, presence: true
   validates :created_by, presence: true
   validates :source, presence: true, inclusion: { in: SOURCE_OPTIONS }
+  validates :oid, allow_blank: true, format: { with: /\A[\d.]+\z/, message: 'OID must be correct format' }
 
   accepts_nested_attributes_for :responses, allow_destroy: true
 

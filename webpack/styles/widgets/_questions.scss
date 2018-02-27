@@ -28,9 +28,9 @@
 }
 .question-group {
   @extend .panel-group;
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   .question-container {
     @extend .panel-body;

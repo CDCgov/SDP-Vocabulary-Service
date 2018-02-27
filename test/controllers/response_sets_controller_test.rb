@@ -61,6 +61,11 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should remove content from group' do
+    post response_sets_url(format: :json), params: { response_set: { name: 'Testing.' } }
+    put remove_from_group_response_set_url(ResponseSet.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
   test 'should not add content to group you arent a member of or dont own' do
     post response_sets_url(format: :json), params: { response_set: { name: 'Testing.' } }
     sign_in @na_user
@@ -73,7 +78,7 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     post response_sets_url, params: rs_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }
     assert_equal DRAFT, ResponseSet.last.status
 
-    put response_set_url(ResponseSet.last, format: :json), params: { response_set: { description: 'new description' } }
+    put response_set_url(ResponseSet.last, format: :json), params: { response_set: { description: 'new description', oid: '2.16.840.1.113883.3.1502.3.4', version_independent_id: ResponseSet.last.version_independent_id } }
 
     assert_equal 'new description', ResponseSet.last.description
   end

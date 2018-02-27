@@ -10,6 +10,7 @@ import {
   SAVE_DRAFT_RESPONSE_SET,
   PUBLISH_RESPONSE_SET,
   ADD_RESPONSE_SET_TO_GROUP,
+  REMOVE_RESPONSE_SET_FROM_GROUP,
   DELETE_RESPONSE_SET,
   ADD_ENTITIES
 } from './types';
@@ -95,6 +96,15 @@ export function addResponseSetToGroup(id, group) {
   return {
     type: ADD_RESPONSE_SET_TO_GROUP,
     payload: axios.put(routes.addToGroupResponseSetPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function removeResponseSetFromGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: REMOVE_RESPONSE_SET_FROM_GROUP,
+    payload: axios.put(routes.removeFromGroupResponseSetPath(id),
      {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }

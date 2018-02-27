@@ -20,11 +20,12 @@ import SectionEditContainer from './containers/sections/SectionEditContainer';
 import SurveyShowContainer from './containers/surveys/SurveyShowContainer';
 import Privacy from './containers/Privacy';
 import Help from './containers/Help';
+import FHIRDoc from './components/FHIRDoc';
 import AdminPanel from './containers/AdminPanel';
 import App from './containers/App';
 import AuthenticatedRoutes from './containers/AuthenticatedRoutes';
 import AdminRoutes from './containers/AdminRoutes';
-import ErrorPage, {GenericError ,Forbidden403} from './containers/ErrorPages';
+import ErrorPage, {GenericError, Forbidden403, NotFound404} from './containers/ErrorPages';
 
 
 import store from './store/configure_store';
@@ -49,12 +50,14 @@ ReactDOM.render(
         </Route>
         <Route path='/privacy' component={Privacy}/>
         <Route path='/help' component={Help}/>
+        <Route path='/fhirDoc' component={FHIRDoc}/>
         <Route path='/sections/:sectionId' component={SectionShowContainer} />
         <Route path='/responseSets/:rsId' component={ResponseSetShowContainer} />
         <Route path='/questions/:qId' component={QuestionShowContainer} />
         <Route path='/surveys/:surveyId' component={SurveyShowContainer} />
         <Route path='/errors/' component={ErrorPage} >
           <Route path='403' component={Forbidden403} />
+          <Route path='404' component={NotFound404} />
           <Route path='*' component={GenericError} />
         </Route>
       </Route>

@@ -33,7 +33,7 @@ class SurveyShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={this.props.survey} versionableType='survey' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={this.props.survey} versionableType='survey' currentUser={this.props.currentUser} />
       </div>
     );
   }
@@ -47,7 +47,7 @@ class SurveyShow extends Component {
                            itemType="Survey" />
           }
           {isGroupable(this.props.survey, this.props.currentUser) &&
-            <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} currentUser={this.props.currentUser} />
+            <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} removeFunc={this.props.removeSurveyFromGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(this.props.survey, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -145,7 +145,7 @@ class SurveyShow extends Component {
               </h2>
             </div>
             <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-              <SectionList sections={this.props.sections} currentUserId={this.props.currentUser.id} />
+              <SectionList sections={this.props.sections} currentUser={this.props.currentUser} />
             </div>
           </div>
         </div>
@@ -181,7 +181,7 @@ class SurveyShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Survey Details {survey.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
+            <li className="showpage_title"><h1>Survey Details {survey.status && (<text>[{survey.status.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar()}
@@ -200,6 +200,7 @@ SurveyShow.propTypes = {
   deleteSurvey:  PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
+  removeSurveyFromGroup: PropTypes.func,
   updateSurveyTags: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

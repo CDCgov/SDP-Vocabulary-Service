@@ -18,6 +18,7 @@ class Question < ApplicationRecord
   validates :content, presence: true
   validates :response_type, presence: true
   validate :other_allowed_on_when_choice
+  validates :oid, allow_blank: true, format: { with: /\A[\d.]+\z/, message: 'OID must be correct format' }
 
   after_destroy :update_sections
 

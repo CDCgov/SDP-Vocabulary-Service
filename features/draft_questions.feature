@@ -10,7 +10,7 @@ Feature: Draft, Publish, and Revise Questions
     And I select the "Open Choice" option in the "Response Type" list
     And I fill in the "Question" field with "What is your favorite color?"
     And I fill in the "Description" field with "This is a description"
-    And I drag the "Gender Full" option to the "Selected Response Sets" list
+    And I click on the "select-Gender Full" link
     And I select the "Multiple Choice" option in the "Category" list
     And I click on the "Save" button
     Then I should see "What is your favorite color?"

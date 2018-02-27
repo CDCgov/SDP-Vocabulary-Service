@@ -240,14 +240,14 @@ class CodedSetTableEditContainer extends Component {
   render() {
     var tableType = this.state.childName[0].toUpperCase() + this.state.childName.slice(1);
     return (
-      <div className="row">
+      <div>
         <table className="set-table">
           <caption>
-            Add, search, and create associated {tableType === 'Response' ? 'responses' : <a title="See Tag Help" href="#" onClick={(e) => {
+            Add, search, and create associated {tableType === 'Response' ? 'responses' : <a title="See Tag Help" tabIndex="3" href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({ showTagHelpModal: true });
             }}>tags <i className="fa fa-info-circle"></i><text className='sr-only'>(Click for more info)</text></a>}
-            <a className="pull-right" title="Search Codes" href="#" onClick={(e) => {
+            <a className="pull-right" tabIndex="3" title="Search Codes" href="#" onClick={(e) => {
               e.preventDefault();
               this.showCodeSearch();
             }}><i className="fa fa-search"></i> Search for coded {tableType}s</a>
@@ -271,11 +271,11 @@ class CodedSetTableEditContainer extends Component {
                   <td headers="display-name-column">
                     <label className="hidden" htmlFor={`displayName_${i}`}>{tableType === 'Response' ? 'Display Name' : `${tableType} Name`}</label>
                     {tableType === 'Response' ? (
-                      <input className="input-format" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
+                      <input className="input-format" tabIndex="3" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                     ) : (
                       <Autocomplete
                         value={r.displayName}
-                        inputProps={{ id: `displayName_${i}`, className: 'input-format', name: 'displayName', type: 'text' }}
+                        inputProps={{ id: `displayName_${i}`, className: 'input-format', name: 'displayName', type: 'text', tabIndex: '3' }}
                         wrapperStyle={{}}
                         items={sortBy(this.props.tags, 'displayName')}
                         getItemValue={(item) => item.displayName}
@@ -316,13 +316,13 @@ class CodedSetTableEditContainer extends Component {
                   </td>
                   <td headers="code-column">
                     <label className="hidden" htmlFor={`value_${i}`}>Value</label>
-                    <input className="input-format" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
+                    <input className="input-format" tabIndex="3" type="text" value={r.value} name="value" id={`value_${i}`} onChange={this.handleChange(i, 'value')}/>
                   </td>
                   <td headers="code-system-column">
                     <label className="hidden" htmlFor={`codeSystem_${i}`}>Code system</label>
-                    <input className="input-format" type="text" value={r.codeSystem}  name="codeSystem" id={`codeSystem_${i}`} onChange={this.handleChange(i, 'codeSystem')}/>
+                    <input className="input-format" tabIndex="3" type="text" value={r.codeSystem}  name="codeSystem" id={`codeSystem_${i}`} onChange={this.handleChange(i, 'codeSystem')}/>
                   </td>
-                  <a href="#" title={`Delete row number ${i+1}`} aria-label={`Remove row number ${i+1}`} id={`remove_${i}`} onClick={(e) => {
+                  <a href="#" title={`Delete row number ${i+1}`} tabIndex="3" aria-label={`Remove row number ${i+1}`} id={`remove_${i}`} onClick={(e) => {
                     e.preventDefault();
                     this.removeItemRow(i);
                   }}><i className="table-row-delete fa fa-2x fa-trash"></i><span className="sr-only">{`Delete row number ${i+1}`}</span></a>
@@ -331,10 +331,10 @@ class CodedSetTableEditContainer extends Component {
             })}
           </tbody>
         </table>
-        <a className="pull-right" title="Add Row" href="#" onClick={(e) => {
+        <a className="pull-right" tabIndex="3" title="Add Row" href="#" onClick={(e) => {
           e.preventDefault();
           this.addItemRow();
-        }}><i className="fa fa-plus"></i> {`Add a new ${tableType}`}</a>
+        }}><i className="fa fa-plus"></i> {`Add a new ${tableType}`}</a><br/>
       </div>
     );
   }

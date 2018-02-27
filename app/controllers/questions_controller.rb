@@ -28,7 +28,7 @@ class QuestionsController < ApplicationController
     link_response_sets(params)
 
     if @question.all_versions.count >= 1
-      if @question.not_owned_or_in_group?(current_user)
+      if @question.not_owned_or_in_group?(current_user) || @question.prev_not_owned_or_in_group?(current_user)
         render(json: @question.errors, status: :unauthorized) && return
       elsif @question.all_versions.last.status == 'draft'
         render(json: @question.errors, status: :unprocessable_entity) && return
@@ -74,10 +74,20 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def remove_from_group
+    group = Group.find(params[:group])
+    if current_user.groups.include?(group)
+      @question.remove_from_group(params[:group])
+      render :show
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
-    if @question.status == 'published'
+    if @question.status == 'published' || @question.version_independent_id != question_params[:version_independent_id]
       render json: @question.errors, status: :unprocessable_entity
     else
       update_response_sets(params)
@@ -129,8 +139,8 @@ class QuestionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def question_params
-    params.require(:question).permit(:content, :response_set_id, :response_type_id, :parent_id, :category_id, :groups,
-                                     :version_independent_id, :description, :status, :other_allowed, :subcategory_id,
+    params.require(:question).permit(:content, :response_type_id, :parent_id, :category_id, :groups,
+                                     :version_independent_id, :description, :other_allowed, :subcategory_id,
                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

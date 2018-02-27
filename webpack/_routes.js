@@ -692,6 +692,18 @@ Based on Rails routes of Vocabulary::Application
 // redcap_survey => /surveys/:id/redcap(.:format)
   // function(id, options)
   redcap_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"redcap",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// remove_from_group_question => /questions/:id/remove_from_group(.:format)
+  // function(id, options)
+  remove_from_group_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"remove_from_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// remove_from_group_response_set => /response_sets/:id/remove_from_group(.:format)
+  // function(id, options)
+  remove_from_group_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"remove_from_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// remove_from_group_section => /sections/:id/remove_from_group(.:format)
+  // function(id, options)
+  remove_from_group_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"remove_from_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// remove_from_group_survey => /surveys/:id/remove_from_group(.:format)
+  // function(id, options)
+  remove_from_group_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"remove_from_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // reply_to_comment => /comments/:id/reply_to(.:format)
   // function(id, options)
   reply_to_comment_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"comments",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"reply_to",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

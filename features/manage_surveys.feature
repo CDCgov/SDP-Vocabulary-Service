@@ -81,8 +81,7 @@ Feature: Manage Surveys
   When I go to the list of Surveys
   And I click on the menu link for the Survey with the name "Test Survey"
   And I click on the option to Details the Survey with the name "Test Survey"
-  When I click on the "Delete" link
-  When I confirm my action
+  When I click on the "Delete" link and confirm my action
   Then I go to the dashboard
   When I go to the list of Surveys
   Then I should not see "Test Survey"
@@ -104,6 +103,7 @@ Feature: Manage Surveys
   Scenario: Edit a draft Survey
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
     And I have a Surveillance Program with the name "FoodNet"
+    And I have a Surveillance Program with the name "Influenza"
     And I have a Survey with the name "Test Survey" and the description "Survey description" and the concept "Healthcare Concept"
     And I am working the program "FoodNet" and system "National Violent Death Reporting System" logged in as test_author@gmail.com
     When I go to the list of Surveys
@@ -113,6 +113,13 @@ Feature: Manage Surveys
     And I should see "Survey description"
     And I should see "Healthcare Concept"
     When I click on the "Edit" link
+    Then I should see "FoodNet"
+    When I click on the "FoodNet Click to edit program" link
+    And I search for the program "flu"
+    Then the list "Surveillance Program" should contain the option "FoodNet"
+    And the list "Surveillance Program" should contain the option "Influenza"
+    When I select the "Influenza" option in the "Surveillance Program" list
+    And I click on the "Update" button
     And I fill in the "survey-name" field with "Edited Survey"
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Concept 1"
@@ -120,7 +127,9 @@ Feature: Manage Surveys
     And I click on the "remove_0" link
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
-    Then I should see "Survey description"
+    And I should see "Survey description"
+    And I should see "Surveillance Program: Influenza"
+    And I should not see "FoodNet"
     And I should see "Test Concept 2"
     And I should not see "Test Concept 1"
     And I should not see "Publish"

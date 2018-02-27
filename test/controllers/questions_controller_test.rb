@@ -95,17 +95,17 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   test 'should update a draft question' do
     post questions_url(format: :json), params: { question: { content: 'TBD content', response_type_id: @question.response_type.id, category_id: @question.category.id } }
     assert_equal DRAFT, Question.last.status
-    put question_url(Question.last, format: :json), params: { question: { content: 'new content', response_type_id: @question.response_type.id } }
+    put question_url(Question.last, format: :json), params: { question: { content: 'new content', response_type_id: @question.response_type.id, version_independent_id: Question.last.version_independent_id } }
     assert_equal 'new content', Question.last.content
   end
 
   test 'should be unable to update a draft question owned by someone else' do
-    patch question_url(@question5, format: :json), params: { question: { content: 'new content', response_type_id: @question.response_type.id } }
+    patch question_url(@question5, format: :json), params: { question: { content: 'new content', response_type_id: @question5.response_type.id, version_independent_id: @question.version_independent_id } }
     assert_response :forbidden
   end
 
   test 'should be unable to update a published question' do
-    patch question_url(questions(:one), format: :json), params: { question: { content: 'secret content', response_type_id: @question.response_type.id } }
+    patch question_url(questions(:one), format: :json), params: { question: { content: 'secret content', response_type_id: @question.response_type.id, version_independent_id: @question.version_independent_id } }
     assert_response :unprocessable_entity
     assert_nil Question.find_by(content: 'secret content')
   end
@@ -163,6 +163,12 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
   test 'should add content to group' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
     put add_to_group_question_url(Question.last, format: :json), params: { group: @group.id }
+    assert_response :success
+  end
+
+  test 'should remove content from group' do
+    post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    put remove_from_group_question_url(Question.last, format: :json), params: { group: @group.id }
     assert_response :success
   end
 

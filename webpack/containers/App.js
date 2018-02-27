@@ -106,7 +106,7 @@ class App extends Component {
         </div>
         <footer className="footer">
           <div className="container">
-            2016 Centers for Disease Control and Prevention. All rights reserved.
+            2018 Centers for Disease Control and Prevention. All rights reserved.
             <div className="nav-links">
               <Link to="/privacy">Privacy</Link>
               <Link to="/">Security</Link>

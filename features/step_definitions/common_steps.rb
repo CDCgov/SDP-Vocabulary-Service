@@ -135,6 +135,22 @@ When(/^I click on the "([^"]*)" (button|link)$/) do |button_name, _button_or_lin
   click_on(button_name)
 end
 
+When(/^I click on the "([^"]*)" (button|link) and confirm my action$/) do |button_name, _button_or_link|
+  # This step is meant to supplement the standard "click" step above and replace the combination
+  # of it and the previous "I confirm my action" step, which did not work in a headless test.
+
+  if !ENV['HEADLESS']
+    click_on(button_name)
+    page.driver.browser.switch_to.alert.accept
+  else
+    begin
+      click_on(button_name)
+    rescue Selenium::WebDriver::Error::UnhandledAlertError
+      page.driver.browser.switch_to.alert.accept
+    end
+  end
+end
+
 When(/^I click on the create "([^"]*)" dropdown item$/) do |object_type|
   page.find('#create-menu').click
   page.find('.nav-dropdown-item', text: object_type).click
@@ -142,14 +158,6 @@ end
 
 When(/^I select the "([^"]*)" option in the "([^"]*)" list$/) do |option, list|
   select(option, from: list)
-end
-
-When(/^I confirm my action$/) do
-  # So, apparently the poltergeist driver automatically accept/confirm/okays all alerts
-  # Additionally, it doesn't support the code below, which is required when using selenium.
-  # I'm torn on removing the step entirely, so I'm leaving it and this explanation for posterity.
-
-  page.driver.browser.switch_to.alert.accept unless ENV['HEADLESS']
 end
 
 # Then clauses

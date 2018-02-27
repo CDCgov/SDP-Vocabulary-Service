@@ -37,6 +37,10 @@ export function isSimpleEditable(object, currentUser) {
   );
 }
 
+export function isShowable(object, currentUser) {
+  return object.status === 'published' || (currentUser && currentUser.publisher) || isSimpleEditable(object, currentUser);
+}
+
 export function isExtendable(object, currentUser) {
   return currentUser && currentUser.id &&
     object.status === 'published';

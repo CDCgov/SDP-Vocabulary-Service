@@ -10,6 +10,7 @@ import {
   CREATE_SURVEY,
   PUBLISH_SURVEY,
   ADD_SURVEY_TO_GROUP,
+  REMOVE_SURVEY_FROM_GROUP,
   DELETE_SURVEY,
   ADD_ENTITIES,
   UPDATE_SURVEY_TAGS
@@ -62,6 +63,15 @@ export function addSurveyToGroup(id, group) {
   };
 }
 
+export function removeSurveyFromGroup(id, group) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: REMOVE_SURVEY_FROM_GROUP,
+    payload: axios.put(routes.removeFromGroupSurveyPath(id),
+     {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
 export function saveSurvey(survey, successHandler=null, failureHandler=null) {
   const fn = axios.post;
   const postPromise = createPostPromise(survey, routes.surveysPath(), fn, successHandler, failureHandler);
@@ -94,6 +104,8 @@ export function updateSurveyTags(id, conceptsAttributes) {
 function createPostPromise(survey, url, fn, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   survey.questionsAttributes = survey.questions;
+  delete survey.showModal;
+  delete survey.progSysModalOpen;
   const postPromise = fn(url,
                       {survey, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});

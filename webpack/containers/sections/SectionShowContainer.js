@@ -3,9 +3,10 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSection, publishSection, addSectionToGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
+import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
 import { sectionSchema } from '../../schema';
@@ -44,6 +45,8 @@ class SectionShowContainer extends Component {
         selector: '.showpage-comments-title',
         position: 'top',
       }]);
+    // The default is for the nested section items to be collapsed, so hide the controls by default
+    this.props.hideResultControl();
   }
 
   componentDidUpdate(prevProps) {
@@ -70,8 +73,13 @@ class SectionShowContainer extends Component {
                       setStats={this.props.setStats}
                       deleteSection={this.props.deleteSection}
                       addSectionToGroup={this.props.addSectionToGroup}
+                      removeSectionFromGroup={this.props.removeSectionFromGroup}
                       updateSectionTags={this.props.updateSectionTags}
-                      publishers ={this.props.publishers} />
+                      publishers ={this.props.publishers}
+                      resultStyle={this.props.resultStyle}
+                      resultControlVisibility={this.props.resultControlVisibility}
+                      toggleResultControl={this.props.toggleResultControl}
+                     />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Section' commentableId={this.props.section.id} />
           </div>
@@ -86,13 +94,15 @@ function mapStateToProps(state, ownProps) {
     currentUser: state.currentUser,
     stats: state.stats,
     section: denormalize(state.sections[ownProps.params.sectionId], sectionSchema, state),
-    publishers: state.publishers
+    publishers: state.publishers,
+    resultControlVisibility : state.displayStyle.resultControlVisibility,
+    resultStyle : state.displayStyle.resultStyle
   };
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, deleteSection, updateSectionTags}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl}, dispatch);
 }
 
 SectionShowContainer.propTypes = {
@@ -106,9 +116,15 @@ SectionShowContainer.propTypes = {
   fetchSection: PropTypes.func,
   deleteSection:  PropTypes.func,
   addSectionToGroup: PropTypes.func,
+  removeSectionFromGroup: PropTypes.func,
   updateSectionTags: PropTypes.func,
   publishSection: PropTypes.func,
-  publishers: publishersProps
+  publishers: publishersProps,
+  hideResultControl: PropTypes.func,
+  toggleResultControl: PropTypes.func,
+  displayStyle: PropTypes.object,
+  resultStyle: PropTypes.string,
+  resultControlVisibility: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SectionShowContainer);

@@ -155,14 +155,17 @@ Feature: Session Management
     Then I should see "test_author@gmail.com"
     And I should see "2 Questions"
 
-  Scenario: Users should not be able to access restricted pages
-    Given I am on the "/#/responseSets/new" page
+  Scenario: Users should not be able to access restricted rs pages
+    Given I am on the "/landing#/responseSets/new" page
     Then I should see "You are not authorized to see this content, please login."
-    Given I am on the "/#/questions/new" page
+  Scenario: Users should not be able to access restricted question pages
+    Given I am on the "/landing#/questions/new" page
     Then I should see "You are not authorized to see this content, please login."
-    Given I am on the "/#/sections/new" page
+  Scenario: Users should not be able to access restricted section pages
+    Given I am on the "/landing#/sections/new" page
     Then I should see "You are not authorized to see this content, please login."
-    Given I am on the "/#/surveys/new" page
+  Scenario: Users should not be able to access restricted survey pages
+    Given I am on the "/landing#/surveys/new" page
     Then I should see "You are not authorized to see this content, please login."
 
   Scenario: Sessions that expire result in redirection

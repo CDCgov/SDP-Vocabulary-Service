@@ -1,6 +1,6 @@
 class SectionNestedItemsSerializer < ActiveModel::Serializer
   attribute :question do
-    QuestionsSerializer.new(object.question)
+    QuestionsSerializer.new(object.question) if object.question
   end
   attribute :response do
     ValueSetsSerializer.new(object.response_set) if object.response_set

@@ -36,7 +36,7 @@ export default class QuestionShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Question Details {question.status === 'draft' && <text>[DRAFT]</text>}</h1></li>
+            <li className="showpage_title"><h1>Question Details {question.status && (<text>[{question.status.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar(question)}
@@ -73,7 +73,7 @@ export default class QuestionShow extends Component {
                              itemType="Question" />
             }
             {isGroupable(question, this.props.currentUser) &&
-              <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} currentUser={this.props.currentUser} />
+              <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} removeFunc={this.props.removeQuestionFromGroup} currentUser={this.props.currentUser} />
             }
             {isRevisable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
@@ -199,7 +199,7 @@ export default class QuestionShow extends Component {
                 </h2>
               </div>
               <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
-                <SectionList sections={question.sections} currentUserId={this.props.currentUser.id} />
+                <SectionList sections={question.sections} currentUser={this.props.currentUser} />
               </div>
             </div>
           }
@@ -221,7 +221,7 @@ export default class QuestionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={question} versionableType='Question' currentUserId={this.props.currentUser.id} />
+        <VersionInfo versionable={question} versionableType='Question' currentUser={this.props.currentUser} />
       </div>
     );
   }
@@ -234,6 +234,7 @@ QuestionShow.propTypes = {
   handlePublish:  PropTypes.func,
   deleteQuestion: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
+  removeQuestionFromGroup: PropTypes.func,
   updateQuestionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

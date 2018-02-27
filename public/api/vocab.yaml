@@ -4,7 +4,7 @@ swagger: '2.0'
 info:
   version: "0.1.0"
   title: SDP Question Bank
-  description: Web API for the SDP Question Bank shared service
+  description: Web API for the SDP Question Bank shared service. A Fast Healthcare Interoperability Resources (FHIR) is available at the /api/fhir endpoint.
   contact:
     name: SDP Support
     url: http://www.cdc.gov/sdp/
@@ -12,17 +12,26 @@ info:
 
 tags:
   -
-    name: questions
-    description: Access to questions
+    name: surveys
+    description: Access to surveys
   -
     name: sections
     description: Access to sections
   -
-    name: programs
-    description: Access to programs
+    name: questions
+    description: Access to questions
   -
     name: valueSets
     description: Access to value sets
+  -
+    name: programs
+    description: Access to programs
+  -
+    name: systems
+    description: Access to systems
+  -
+    name: FHIR
+    description: Access to FHIR compliant API
 
 basePath: /api
 
@@ -435,6 +444,130 @@ paths:
             items:
               $ref: '#/definitions/Usage'
 
+  /fhir/Questionnaire:
+    get:
+      tags:
+      - FHIR
+      description: |
+        Get a list of FHIR formatted questionnaires (SDP-V Surveys).
+      produces:
+      - application/json
+
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned Questionnaires, defaults to 100 if no
+            `_content` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: _content
+          in: query
+          description:
+            Limits the returned value sets to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Questionnaire'
+
+  /fhir/Questionnaire/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of Questionnaire
+        required: true
+        type: string
+      -
+        name: version
+        in: query
+        description: Version of Questionnaire
+        required: false
+        type: string
+    get:
+      tags:
+      - FHIR
+      description: |
+        Get information about a Questionnaire.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Questionnaire'
+
+  /fhir/Valueset:
+    get:
+      tags:
+      - FHIR
+      description: |
+        Get a list of value sets that match the supplied search criteria.
+      produces:
+      - application/json
+
+      parameters:
+        -
+          name: limit
+          in: query
+          description: |
+            Limits the number of returned value sets, defaults to 100 if no
+            `search` parameter is supplied, infinity otherwise.
+          required: false
+          default: 100
+          type: integer
+        -
+          name: search
+          in: query
+          description:
+            Limits the returned value sets to those that contain the supplied
+            text in their name, description or tags
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ValueSet'
+
+  /fhir/Valueset/{id}:
+    parameters:
+      -
+        name: id
+        in: path
+        description: ID of value set
+        required: true
+        type: string
+      -
+        name: version
+        in: query
+        description: Version of value set
+        required: false
+        type: string
+    get:
+      tags:
+      - FHIR
+      description: |
+        Get information about a value set.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/ValueSet'
 
 definitions:
   ValueSet:
@@ -714,7 +847,7 @@ definitions:
         items:
           $ref: '#/definitions/CodedValue'
       # TODO additional metadata
-      questions:
+      nested_items:
         type: array
         description:
           Array of [question, response] pairs used in this section.
@@ -725,9 +858,122 @@ definitions:
               $ref: '#/definitions/Question'
             response:
               $ref: '#/definitions/ValueSet'
+            nested_section:
+              $ref: '#/definitions/Section'
             program_var:
               type: string
               title: Program Defined Variable name
+
+  Questionnaire:
+    type: object
+    description:
+      FHIR specification compliant SDPV Survey as seen [in the questionnaire spec here.](http://www.hl7.org/implement/standards/fhir/questionnaire.html)
+    properties:
+      resourceType:
+        type: string
+        title: Questionnaire resource identifier
+      url:
+        type: string
+        title: Globally unique identifier for the questionnaire
+      id:
+        type: string
+        title: Version independent identifier for the questionnaire
+      version:
+        type: string
+        title: Logical identifier for this version of the questionnaire
+      name:
+        type: string
+        title: informal name of the questionnaire (human friendly)
+      title:
+        type: string
+        title: name of the questionnaire (computer friendly)
+      date:
+        type: string
+        title: datetime with date of last change
+      status:
+        title: Status of the questionnaire
+        type: string
+        enum:
+          - draft
+          - active
+          - retired
+      description:
+        type: string
+        title: Human readable description of the questionnaire
+      publisher:
+        type: string
+        title: The name of the individual or organization that published the value set
+      meta:
+        type: object
+        properties:
+          tag:
+            type: array
+            items:
+              $ref: '#/definitions/CodedValue'
+      item:
+        type: array
+        items:
+          $ref: '#/definitions/Item'
+
+  Item:
+    type: object
+    description:
+      Questions and sections within the Questionnaire
+    properties:
+      linkId:
+        type: string
+        title: Unique id for item in questionnaire
+      text:
+        type: string
+        title: Primary text for this item
+      type:
+        type: string
+        enum:
+          - group
+          - display
+          - boolean
+          - decimal
+          - integer
+          - date
+          - dateTime
+          - time
+          - string
+          - text
+          - url
+          - choice
+          - open-choice
+          - attachment
+          - reference
+          - quantity
+      item:
+        type: array
+        items:
+          $ref: '#/definitions/Item'
+      extension:
+        type: array
+        items:
+          $ref: '#/definitions/Extension'
+      options:
+        type: array
+        items:
+          $ref: '#/definitions/ValueSet'
+
+  Extension:
+    type: object
+    description:
+      (FHIR extension)[http://www.hl7.org/implement/standards/fhir/extensibility.html]
+    properties:
+      url:
+        type: string
+        title: identifies the meaning of the extension
+      valueMeta:
+        type: object
+        title: A Meta heading from a resource
+        properties:
+          tag:
+            type: array
+            items:
+              $ref: '#/definitions/CodedValue'
 
   User:
     type: object
