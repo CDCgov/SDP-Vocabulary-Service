@@ -46,6 +46,20 @@ class SurveyShow extends Component {
             <PublisherLookUp publishers={this.props.publishers}
                            itemType="Survey" />
           }
+          <div className="btn-group">
+            <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span className="fa fa-arrow-circle-down"></span> Export <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu">
+              <li key="header" className="dropdown-header">Export format:</li>
+              <li><a href={`/surveys/${this.props.survey.id}/epi_info`}>Epi Info (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/redcap`}>REDCap (XML)</a></li>
+              <li><a href='#' onClick={(e) => {
+                e.preventDefault();
+                window.print();
+              }}>Print</a></li>
+            </ul>
+          </div>
           {isGroupable(this.props.survey, this.props.currentUser) &&
             <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} removeFunc={this.props.removeSurveyFromGroup} currentUser={this.props.currentUser} />
           }
@@ -82,8 +96,6 @@ class SurveyShow extends Component {
           {isExtendable(this.props.survey, this.props.currentUser) &&
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
           }
-          <button className="btn btn-default" onClick={() => window.print()}>Print</button>
-          <a className="btn btn-default" href={`/surveys/${this.props.survey.id}/redcap`}>Export to REDCap</a>
         </div>
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Survey Name:</strong> {this.props.survey.name} </h1>
