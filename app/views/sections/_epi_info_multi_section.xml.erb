@@ -1,5 +1,5 @@
-<Page PageId="<%= page_id %>" Name="<%= section.name %>" Position="<%= position %>"  BackgroundId="" ViewId="<%= view_id %>">
-  <% section.flatten_questions.each_with_index do |sni, index| %>
+<Page PageId="<%= page_id %>" Name="Page <%= page_id %>" Position="<%= position %>" BackgroundId=""  ViewId="<%= view_id %>">
+  <% questions.each_with_index do |sni, index| %>
         <Field
           Name="<%= sni.question.content %>"
           PageId="<%= page_id %>"
@@ -8,7 +8,7 @@
           FieldTypeId="<%= epi_info_field_type(sni.question.response_type.code) %>"
           ControlAfterCheckCode=""
           ControlBeforeCheckCode=""
-          PageName="<%= section.name %>"
+          PageName="Page <%= page_id %>"
           PageBeforeCheckCode=""
           PageAfterCheckCode=""
           Position="0"
