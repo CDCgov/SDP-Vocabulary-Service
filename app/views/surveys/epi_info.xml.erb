@@ -1,9 +1,21 @@
 <Template Level="Page">
   <Project>
     <View CheckCode="">
-      <% @survey.survey_sections.each do |ss| %>
+      <% if @survey.page_numbers_present? %>
+        <% sects = @survey.survey_sections %>
+        <% sects.each do |ss| %>
+        <% sections_for_page = @survey.sections.select { |s| s.concepts.where(display_name: 'PageId', value: ss.section.concepts.where(display_name: 'PageId')[0].value).present? } %>
+          <% if ss.section.id == sections_for_page[0].id %>
+          <% questions_for_page = sections_for_page.map { |s| s.flatten_questions }.flatten %>
+      <%= render partial: "sections/epi_info_multi_section.xml",
+        locals: {questions: questions_for_page, page_id: ss.section.concepts.where(display_name: 'PageId')[0].value, view_id: 1, position: ss.position} %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <% @survey.survey_sections.each do |ss| %>
       <%= render partial: "sections/epi_info_section.xml",
-        locals: {section: ss.section, page_id: ss.position, view_id: 1, position: ss.position} %>
+        locals: {section: ss.section, page_id: ss.position + 1, view_id: 1, position: ss.position} %>
+        <% end %>
       <% end %>
     </View>
   </Project>

@@ -2,11 +2,11 @@
   <Project>
     <View CheckCode="">
       <%= render partial: "sections/epi_info_section.xml",
-        locals: {section: @section, page_id:1, view_id: 1, position: 1} %>
+        locals: {section: @section, page_id: 1, view_id: 1, position: 1} %>
     </View>
   </Project>
     <%
-     questions = @section.section_questions
+     questions = @section.flatten_questions
      response_sets = questions.collect{|q| q.response_set}.compact
      response_sets.each do |rs| %>
   <SourceTable TableName="<%=rs.id%>">

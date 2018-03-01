@@ -80,6 +80,14 @@ class Survey < ApplicationRecord
     new_revision
   end
 
+  def page_numbers_present?
+    numbers_present = true
+    sections.each do |s|
+      numbers_present = false if s.concepts.where(display_name: 'PageId').empty?
+    end
+    numbers_present
+  end
+
   def cascading_action(&block)
     yield self
     sections.each { |s| s.cascading_action(&block) }
