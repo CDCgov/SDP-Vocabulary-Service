@@ -116,6 +116,20 @@ class SectionShow extends Component {
           {isGroupable(section, this.props.currentUser) &&
             <GroupLookUp item={section} addFunc={this.props.addSectionToGroup} removeFunc={this.props.removeSectionFromGroup} currentUser={this.props.currentUser} />
           }
+          <div className="btn-group">
+            <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span className="fa fa-arrow-circle-down"></span> Export <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu">
+              <li key="header" className="dropdown-header">Export format:</li>
+              <li><a href={`/sections/${this.props.section.id}/epi_info`}>Epi Info (XML)</a></li>
+              <li><a href={`/sections/${this.props.section.id}/redcap`}>REDCap (XML)</a></li>
+              <li><a href='#' onClick={(e) => {
+                e.preventDefault();
+                window.print();
+              }}>Print</a></li>
+            </ul>
+          </div>
           {isPublishable(section, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -149,8 +163,6 @@ class SectionShow extends Component {
           {isExtendable(section, this.props.currentUser) &&
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
-          <button className="btn btn-default" onClick={() => window.print()}>Print</button>
-          <a className="btn btn-default" href={`/sections/${section.id}/redcap`}>Export to REDCap</a>
         </div>
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Section Name:</strong> {section.name} </h1>

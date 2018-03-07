@@ -1,17 +1,17 @@
-<Template Level="Page">
+<Template Level="View" Name="<%= @section.name %>">
   <Project>
-    <View CheckCode="">
+    <View ViewId="1" Name="<%= @section.name %>" CheckCode="">
       <%= render partial: "sections/epi_info_section.xml",
-        locals: {section: @section, page_id: 1, view_id: 1, position: 1} %>
+        locals: {section: @section, page_id: 1, position: 1} %>
     </View>
   </Project>
     <%
      questions = @section.flatten_questions
      response_sets = questions.collect{|q| q.response_set}.compact
      response_sets.each do |rs| %>
-  <SourceTable TableName="<%=rs.id%>">
+  <SourceTable TableName="code<%=rs.name.parameterize.underscore.camelize%>">
     <% rs.responses.each do |resp| %>
-      <Item code="<%= resp.value %>" codeSystem="<%= resp.code_system %>" displayName="<%= resp.display_name %>"/>
+      <Item <%=rs.name.parameterize.underscore.camelize%>="<%= resp.value + '-' if resp.value %><%= resp.display_name %>" />
     <% end %>
   </SourceTable>
   <% end %>
