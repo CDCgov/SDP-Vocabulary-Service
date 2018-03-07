@@ -86,6 +86,10 @@ class Section < ApplicationRecord
     where(created_by: owner_id)
   end
 
+  def page_id
+    concepts.where(display_name: 'PageId')[0].value
+  end
+
   # Builds a new section object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
@@ -167,5 +171,23 @@ class Section < ApplicationRecord
       end
     end
     flat_questions
+  end
+
+  def flatten_nested_sections
+    flat_nested_sections = []
+    section_nested_items.each do |sni|
+      if sni.nested_section.present?
+        flat_nested_sections << sni
+        flat_nested_sections.concat(sni.nested_section.flatten_nested_sections)
+      end
+    end
+    flat_nested_sections
+  end
+
+  def nested_item_names
+    names = ''
+    items = section_nested_items.map { |sni| sni.nested_section ? sni.nested_section.name : sni.question.content }
+    items.each { |str| names << str + ',' }
+    names.chomp(',')
   end
 end
