@@ -54,6 +54,7 @@ class SurveyShow extends Component {
               <li key="header" className="dropdown-header">Export format:</li>
               <li><a href={`/surveys/${this.props.survey.id}/epi_info`}>Epi Info (XML)</a></li>
               <li><a href={`/surveys/${this.props.survey.id}/redcap`}>REDCap (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/spreadsheet`}>Spreadsheet (XLSX)</a></li>
               <li><a href='#' onClick={(e) => {
                 e.preventDefault();
                 window.print();

@@ -1,6 +1,6 @@
-<Template Name="<%= @survey.name %>" Level="View">
+<Template Name="<%= @survey.name.parameterize.underscore %>" Level="View">
   <Project>
-    <View ViewId="1" Name="<%= @survey.name %>" CheckCode="">
+    <View ViewId="1" Name="<%= @survey.name.parameterize.underscore %>" CheckCode="">
       <% if @survey.page_numbers_present? %>
         <% sects = @survey.survey_sections %>
         <% sects.each do |ss| %>

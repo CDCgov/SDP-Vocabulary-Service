@@ -52,6 +52,7 @@ Rails.application.routes.draw do
     put :publish, on: :member
     get :redcap, on: :member
     get :epi_info, on: :member
+    get :spreadsheet, on: :member, defaults: { format: :xlsx }
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :update_tags, on: :member

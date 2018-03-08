@@ -743,6 +743,9 @@ Based on Rails routes of Vocabulary::Application
 // sections => /sections(.:format)
   // function(options)
   sections_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// spreadsheet_survey => /surveys/:id/spreadsheet(.:format)
+  // function(id, options)
+  spreadsheet_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"spreadsheet",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // surveillance_programs => /surveillance_programs(.:format)
   // function(options)
   surveillance_programs_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"surveillance_programs",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
