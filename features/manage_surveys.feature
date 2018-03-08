@@ -18,6 +18,10 @@ Feature: Manage Surveys
     And I click on the option to Details the Survey with the name "Test Survey"
     Then I should see "Test Survey"
     Then I should see "Survey description"
+    When I click on the "Export" button
+    Then I should see "REDCap (XML)"
+    And I should see "Epi Info (XML)"
+    And I should see "Spreadsheet (XLSX)"
 
   Scenario: Send a Draft Survey to a Publisher
     Given I have a Survey with the name "Test Survey" and the description "Survey description"

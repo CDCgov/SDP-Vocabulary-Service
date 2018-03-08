@@ -20,9 +20,9 @@ module EpiInfoHelper
     when 'url'
       1
     when 'choice'
-      18
+      17
     when 'open-choice'
-      18
+      17
     when 'attachment'
       99
     when 'quantity'

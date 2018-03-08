@@ -15,6 +15,8 @@ class Ability
     else
       can :read, [ResponseSet, Question, Section, Survey], status: 'published'
       can :redcap, [ResponseSet, Question, Section, Survey], status: 'published'
+      can :epi_info, [Section, Survey], status: 'published'
+      can :spreadsheet, [Survey], status: 'published'
       can :read, User
     end
   end

@@ -125,7 +125,7 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get redcap export ' do
     get redcap_survey_url(@survey)
-    assert response.headers['Content-Disposition'].index("filename=\"#{@survey.name.underscore}_redcap.xml\"")
+    assert response.headers['Content-Disposition'].index("filename=\"#{@survey.name.parameterize.underscore}_redcap.xml\"")
     validate_redcap(response.body)
     assert_response :success
   end

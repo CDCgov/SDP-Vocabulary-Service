@@ -39,6 +39,10 @@ gem 'rolify'
 gem 'roo', '~> 2.4.0'
 gem 'roo-xls', '~> 1.0.0'
 
+# Gems to support writing spreadsheet export
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'axlsx_rails'
+
 group :development, :test do
   gem 'fakeweb', '~> 1.3'
   gem 'rubocop', '~> 0.49.0', require: false

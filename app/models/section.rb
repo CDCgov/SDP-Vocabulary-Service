@@ -187,7 +187,7 @@ class Section < ApplicationRecord
   def nested_item_names
     names = ''
     items = section_nested_items.map { |sni| sni.nested_section ? sni.nested_section.name : sni.question.content }
-    items.each { |str| names << str + ',' }
+    items.each { |str| names << str.parameterize.underscore + ',' }
     names.chomp(',')
   end
 end

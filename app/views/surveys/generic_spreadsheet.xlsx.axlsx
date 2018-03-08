@@ -1,0 +1,55 @@
+wb = xlsx_package.workbook
+
+def add_section_to_sheet(s, sheet)
+  sheet.add_row ["START: #{s.name}"]
+  s.section_nested_items.each do |sni|
+    add_section_to_sheet(sni.nested_section, sheet) if sni.nested_section
+    add_question_to_sheet(sni, sheet) if sni.question
+  end
+  sheet.add_row ["END: #{s.name}"]
+end
+
+def add_question_to_sheet(sni, sheet)
+  q = sni.question
+  new_row = []
+  new_row << (q.content || '')
+  new_row << (q.description || '')
+  new_row << (q.response_type ? q.response_type.name : '')
+  new_row << (sni.response_set ? sni.response_set.source : '')
+  new_row << (sni.response_set ? ('RS ' + sni.response_set.name.truncate(28).parameterize.underscore) : '')
+  new_row << (q.category ? q.category.name : '')
+  new_row << (q.subcategory ? q.subcategory.name : '')
+  new_row << (q.concepts[0] ? q.concepts[0].display_name: '')
+  new_row << (q.concepts[0] ? q.concepts[0].value : '')
+  new_row << (q.concepts[0] ? q.concepts[0].code_system : '')
+  new_row << (sni.program_var || '')
+  new_row << (q.created_by ? q.created_by.email : '')
+  new_row << (q.version_independent_id || '')
+  new_row << (q.version || '1')
+  new_row << (q.status || '')
+  new_row << (q.created_at.to_s || '')
+  new_row << (q.oid || '')
+  sheet.add_row new_row
+end
+
+@survey.sections.each do |s|
+  wb.add_worksheet(name: s.name.truncate(31).parameterize.underscore) do |sheet|
+    sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Response Set Source (C)','Response Set Name (C)','Question Category (O)','Question Subcategory (O)','Question Tag Name (O)','Question Tag Value (O)','Question Code System Identifier (O)','Program Defined Variable Name (O)','Author','SDP-V ID','Version','Workflow Status','Creation Date']
+    s.section_nested_items.each do |sni|
+      add_section_to_sheet(sni.nested_section, sheet) if sni.nested_section
+      add_question_to_sheet(sni, sheet) if sni.question
+    end
+  end
+end
+
+questions = @survey.survey_sections.collect{|ss| ss.section.flatten_questions}.flatten
+response_sets = questions.collect{|q| q.response_set}.compact.uniq{|rs| rs.name}
+response_sets.each do |rs|
+  wb.add_worksheet(name: "RS #{rs.name.truncate(28).parameterize.underscore}") do |sheet|
+    sheet.add_row ['Response Set Name','Response Set Description','Display Name','Response','Code System Identifier (optional)']
+    rs.responses.each_with_index do |resp, index|
+      sheet.add_row [rs.name,rs.description,resp.display_name,resp.value,resp.code_system] if index == 0
+      sheet.add_row ['','',resp.display_name,resp.value,resp.code_system] unless index == 0
+    end
+  end
+end
