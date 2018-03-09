@@ -7,6 +7,11 @@ pipeline {
   }
 
   stages {
+    stage('Contact Slack') {
+      steps {
+        slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+    }
     stage('Run Tests') {
       agent { label 'vocab-ruby' }
 
