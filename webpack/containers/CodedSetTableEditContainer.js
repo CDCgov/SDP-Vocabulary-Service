@@ -131,7 +131,7 @@ class CodedSetTableEditContainer extends Component {
                   <tr key={i}>
                     <td headers="add-code-checkboxes-column"><ControlLabel bsClass='checkbox-label'><Checkbox onChange={(e) => this.selectConcept(e,i)} name={`checkbox_${i}`}></Checkbox></ControlLabel></td>
                     <td headers="modal-code-display-name-column">{c.display}</td>
-                    <td headers="modal-code-column">{c.code}</td>
+                    <td headers="modal-code-column"><span title={`${c.code}`}>{c.code}</span></td>
                     <td headers="modal-code-system-column">{c.system}</td>
                   </tr>);
               })}
@@ -196,7 +196,7 @@ class CodedSetTableEditContainer extends Component {
 
   conceptModal(){
     return (
-      <Modal animation={false} show={this.state.showConceptModal} onHide={this.hideCodeSearch} aria-label="Search Codes">
+      <Modal animation={false} bsSize="large" show={this.state.showConceptModal} onHide={this.hideCodeSearch} aria-label="Search Codes">
         <Modal.Header closeButton bsStyle='concept'>
           <Modal.Title componentClass="h1">Search Codes</Modal.Title>
         </Modal.Header>
@@ -220,17 +220,17 @@ class CodedSetTableEditContainer extends Component {
           <table className="table table-striped scroll-table-header">
             <thead>
               <tr>
-                <th id="add-code-checkboxes-column" scope="col" style={{width: '9%', paddingRight:' 0px', paddingBottom: '0px'}}>Add</th>
-                <th id="modal-code-display-name-column" scope="col" style={{width: '50%', padding:' 0px'}}>Display Name / Tag Name</th>
-                <th id="modal-code-column" scope="col" style={{width: '10%', padding:' 0px'}}>Code / Value</th>
-                <th id="modal-code-system-column" scope="col" style={{width: '30%', padding:' 0px'}}>Code System</th>
+                <th id="add-code-checkboxes-column" scope="col">Add</th>
+                <th id="modal-code-display-name-column" scope="col">Display Name / Tag Name</th>
+                <th id="modal-code-column" scope="col">Code / Value</th>
+                <th id="modal-code-system-column" scope="col">Code System</th>
               </tr>
             </thead>
           </table>
           {this.resultsTable()}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.hideCodeSearch()} bsStyle="primary">Cancel</Button>
+          <Button onClick={() => this.hideCodeSearch()} bsStyle="default">Cancel</Button>
           <Button onClick={() => this.addSelectedConcepts()} bsStyle="primary">Add</Button>
         </Modal.Footer>
       </Modal>
