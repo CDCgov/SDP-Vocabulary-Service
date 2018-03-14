@@ -63,6 +63,14 @@ class ResponseSet < ApplicationRecord
     extended_set
   end
 
+  def response_values?
+    has_values = true
+    responses.each do |resp|
+      has_values = false if resp.value.blank?
+    end
+    has_values
+  end
+
   def surveillance_programs
     SurveillanceProgram.joins(surveys: :survey_sections)
                        .joins('INNER join section_nested_items on section_nested_items.section_id = survey_sections.section_id')

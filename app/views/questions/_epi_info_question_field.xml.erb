@@ -3,7 +3,7 @@
           PageId="<%= page_id %>"
           FieldId="<%= @tab_counter+1 %>"
           UniqueId=""
-          FieldTypeId="<%= epi_info_field_type(sni.question.response_type.code) %>"
+          FieldTypeId="<%= epi_info_field_type(sni.question.response_type.code, sni.response_set) %>"
           ControlAfterCheckCode=""
           ControlBeforeCheckCode=""
           PageName="<%= page_name %>"
