@@ -6,9 +6,8 @@
         <% sects.each do |ss| %>
         <% sections_for_page = @survey.sections.select { |s| s.concepts.where(display_name: 'PageId', value: ss.section.page_id).present? } %>
           <% if ss.section.id == sections_for_page[0].id %>
-          <% questions_for_page = sections_for_page.map { |s| s.flatten_questions }.flatten %>
-      <%= render partial: "sections/epi_info_multi_section.xml",
-        locals: {sections: sections_for_page, questions: questions_for_page, page_id: ss.section.page_id, position: ss.position} %>
+      <%= render partial: "sections/epi_info_multi_section_page.xml",
+        locals: {sections: sections_for_page, page_id: ss.section.page_id, position: ss.position} %>
           <% end %>
         <% end %>
       <% else %>

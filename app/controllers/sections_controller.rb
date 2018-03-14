@@ -135,8 +135,10 @@ class SectionsController < ApplicationController
 
   # GET /sections/1/redcap
   def epi_info
+    @tab_counter = 0
+    @top = -0.03
     xml = render_to_string 'sections/epi_info.xml', layout: false
-    send_data(xml, filename: "#{@section.name.underscore}_epi_info.xml",
+    send_data(xml, filename: "#{@section.name.parameterize.underscore}_epi_info.xml",
                    type: 'application/xml',
                    status: 200)
   end
