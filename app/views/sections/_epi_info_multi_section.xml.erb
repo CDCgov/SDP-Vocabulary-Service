@@ -2,7 +2,7 @@
   <% tab_counter = 0 %>
   <% sections.each do |s| %>
         <Field
-          Name="<%= s.name.parameterize.underscore %>"
+          Name="<%= s.name.parameterize.underscore.camelize %>"
           PageId="<%= page_id %>"
           FieldId="<%= s.id %>"
           UniqueId=""
@@ -52,7 +52,7 @@
           SourceFieldId="" />
     <% s.flatten_nested_sections.each do |sni| %>
         <Field
-          Name="<%= sni.nested_section.name.parameterize.underscore %>"
+          Name="<%= sni.nested_section.name.parameterize.underscore.camelize %>"
           PageId="<%= page_id %>"
           FieldId="<%= sni.id %>"
           UniqueId=""
@@ -104,7 +104,7 @@
   <% end %>
   <% questions.each do |sni| %>
         <Field
-          Name="<%= sni.question.content.parameterize.underscore %>"
+          Name="<%= sni.question.content.parameterize.underscore.camelize %>"
           PageId="<%= page_id %>"
           FieldId="<%= sni.id %>"
           UniqueId=""

@@ -1,6 +1,6 @@
-<Template Level="View" Name="<%= @section.name.parameterize.underscore %>">
+<Template Level="View" Name="<%= @section.name.parameterize.underscore.camelize %>">
   <Project>
-    <View ViewId="1" Name="<%= @section.name.parameterize.underscore %>" CheckCode="">
+    <View ViewId="1" Name="<%= @section.name.parameterize.underscore.camelize %>" CheckCode="">
       <%= render partial: "sections/epi_info_section.xml",
         locals: {section: @section, page_id: 1, position: 1} %>
     </View>

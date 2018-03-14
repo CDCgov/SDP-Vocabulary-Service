@@ -1,21 +1,21 @@
-<Page PageId="<%= page_id %>" Name="<%= 'page_' + section.name.parameterize.underscore %>" Position="<%= position %>"  BackgroundId="0" ViewId="1">
+<Page PageId="<%= page_id %>" Name="<%= 'Page' + section.name.parameterize.underscore.camelize %>" Position="<%= position %>"  BackgroundId="0" ViewId="1">
   <% tab_counter = 0 %>
         <Field
-          Name="<%= section.name.parameterize.underscore %>"
+          Name="<%= section.name.parameterize.underscore.camelize %>"
           PageId="<%= page_id %>"
           FieldId="<%= section.id %>"
           UniqueId=""
           FieldTypeId="21"
           ControlAfterCheckCode=""
           ControlBeforeCheckCode=""
-          PageName="<%= 'page_' + section.name.parameterize.underscore %>"
+          PageName="<%= 'Page' + section.name.parameterize.underscore.camelize %>"
           PageBeforeCheckCode=""
           PageAfterCheckCode=""
           Position="<%= position %>"
-          ControlTopPositionPercentage=""
-          ControlLeftPositionPercentage=""
-          ControlHeightPercentage=""
-          ControlWidthPercentage=""
+          ControlTopPositionPercentage="0"
+          ControlLeftPositionPercentage="0"
+          ControlHeightPercentage="1"
+          ControlWidthPercentage="1"
           ControlScriptName=""
           PromptTopPositionPercentage=""
           PromptLeftPositionPercentage=""
@@ -51,14 +51,14 @@
           SourceFieldId="" />
   <% section.flatten_nested_sections.each do |sni| %>
         <Field
-          Name="<%= sni.nested_section.name.parameterize.underscore %>"
+          Name="<%= sni.nested_section.name.parameterize.underscore.camelize %>"
           PageId="<%= page_id %>"
           FieldId="<%= sni.id %>"
           UniqueId=""
           FieldTypeId="21"
           ControlAfterCheckCode=""
           ControlBeforeCheckCode=""
-          PageName="<%= 'page_' + section.name.parameterize.underscore %>"
+          PageName="<%= 'Page' + section.name.parameterize.underscore.camelize %>"
           PageBeforeCheckCode=""
           PageAfterCheckCode=""
           Position="<%= position %>"
@@ -102,14 +102,14 @@
   <% end %>
   <% section.flatten_questions.each do |sni| %>
         <Field
-          Name="<%= sni.question.content.parameterize.underscore %>"
+          Name="<%= sni.question.content.parameterize.underscore.camelize %>"
           PageId="<%= page_id %>"
           FieldId="<%= sni.id %>"
           UniqueId=""
           FieldTypeId="<%= epi_info_field_type(sni.question.response_type.code) %>"
           ControlAfterCheckCode=""
           ControlBeforeCheckCode=""
-          PageName="<%= 'page_' + section.name.parameterize.underscore %>"
+          PageName="<%= 'Page' + section.name.parameterize.underscore.camelize %>"
           PageBeforeCheckCode=""
           PageAfterCheckCode=""
           Position="<%= position %>"
