@@ -1,0 +1,58 @@
+<Field
+          Name="<%= section.name.parameterize.underscore.camelize.truncate(40, omission: '') %>"
+          PageId="<%= page_id %>"
+          FieldId="<%= @tab_counter+1 %>"
+          UniqueId=""
+          FieldTypeId="21"
+          ControlAfterCheckCode=""
+          ControlBeforeCheckCode=""
+          PageName="<%= page_name %>"
+          PageBeforeCheckCode=""
+          PageAfterCheckCode=""
+          Position="<%= position %>"
+          ControlTopPositionPercentage="<%= @top+=0.03 %>"
+          ControlLeftPositionPercentage="<%= left %>"
+          ControlHeightPercentage="<%= height %>"
+          ControlWidthPercentage="<%= 1-(2*left) %>"
+          ControlScriptName=""
+          PromptTopPositionPercentage=""
+          PromptLeftPositionPercentage=""
+          PromptText="<%= section.name %>"
+          PromptFontFamily="Segoe UI"
+          PromptFontSize="12"
+          PromptFontStyle="Regular"
+          ControlFontFamily="Segoe UI"
+          ControlFontSize="12"
+          ControlFontStyle="Bold"
+          PromptScriptName=""
+          ShouldRepeatLast="False"
+          IsRequired="False"
+          IsReadOnly="False"
+          ShouldRetainImageSize="False"
+          Pattern=""
+          MaxLength=""
+          ShowTextOnRight="False"
+          Lower=""
+          Upper=""
+          RelateCondition=""
+          ShouldReturnToParent="False"
+          RelatedViewId=""
+          List="<%= section.nested_item_names %>"
+          SourceTableName=""
+          CodeColumnName=""
+          TextColumnName=""
+          BackgroundColor=""
+          Sort="False"
+          IsExclusiveTable="False"
+          TabIndex="<%= @tab_counter+=1 %>"
+          HasTabStop="True"
+          SourceFieldId="" />
+<% section.section_nested_items.each do |sni| %>
+  <% if sni.nested_section %>
+        <%= render partial: "sections/epi_info_section_field.xml",
+          locals: {section: sni.nested_section, page_id: page_id, position: position, left: left + 0.01, height: sni.nested_section.calculate_section_height, page_name: page_name } %>
+  <% else %>
+        <%= render partial: "questions/epi_info_question_field.xml",
+          locals: {section: section, sni: sni, page_id: page_id, position: position, left: left + 0.01, page_name: page_name } %>
+  <% end %>
+<% end %>

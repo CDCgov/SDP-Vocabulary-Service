@@ -1,5 +1,6 @@
+# rubocop:disable Metrics/MethodLength
 module EpiInfoHelper
-  def epi_info_field_type(code)
+  def epi_info_field_type(code, rs)
     case code
     when 'decimal'
       5
@@ -19,10 +20,12 @@ module EpiInfoHelper
       4
     when 'url'
       1
-    when 'choice'
-      17
-    when 'open-choice'
-      17
+    when 'choice', 'open-choice'
+      if rs && rs.response_values?
+        19
+      else
+        17
+      end
     when 'attachment'
       99
     when 'quantity'
@@ -32,3 +35,4 @@ module EpiInfoHelper
     end
   end
 end
+# rubocop:enable Metrics/MethodLength

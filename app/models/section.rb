@@ -184,10 +184,18 @@ class Section < ApplicationRecord
     flat_nested_sections
   end
 
+  def calculate_section_height
+    height = 0.03 # start with 0.025 for section name + 0.05 for bottom border
+    height += flatten_nested_sections.length * 0.03
+    height += flatten_questions.length * 0.05
+    height = 1 if height > 1
+    height
+  end
+
   def nested_item_names
     names = ''
     items = section_nested_items.map { |sni| sni.nested_section ? sni.nested_section.name : sni.question.content }
-    items.each { |str| names << str.parameterize.underscore + ',' }
+    items.each { |str| names << str.parameterize.underscore.camelize.truncate(40, omission: '') + ',' }
     names.chomp(',')
   end
 end

@@ -1,0 +1,7 @@
+<Page PageId="<%= page_id %>" Name="<%= 'Page_' + page_id %>" Position="<%= position %>"  BackgroundId="0" ViewId="1">
+      <% left = 0.01 %>
+      <% sections.each do |section| %>
+        <%= render partial: "sections/epi_info_section_field.xml",
+          locals: {section: section, page_id: page_id, position: position, left: left, height: 1, page_name: 'Page_' + page_id } %>
+      <% end %>
+      </Page>

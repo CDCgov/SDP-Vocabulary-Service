@@ -106,6 +106,8 @@ class SurveysController < ApplicationController
 
   # GET /surveys/1/epi_info
   def epi_info
+    @tab_counter = 0
+    @top = -0.03
     xml = render_to_string 'surveys/epi_info.xml', layout: false
     send_data(xml, filename: "#{@survey.name.parameterize.underscore}_epi_info.xml",
                    type: 'application/xml',
