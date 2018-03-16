@@ -78,7 +78,7 @@ pipeline {
       steps {
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
-          waitTime: '10', waitUnit: 'min'
+          waitTime: '20', waitUnit: 'min'
       }
     }
   }
