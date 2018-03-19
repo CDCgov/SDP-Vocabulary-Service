@@ -7,11 +7,12 @@ pipeline {
   }
 
   stages {
-    stage('Contact Slack') {
+    stage('Slack: start notification') {
       steps {
         slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
       }
     }
+
     stage('Run Tests') {
       agent { label 'vocab-ruby' }
 
@@ -84,6 +85,12 @@ pipeline {
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
           waitTime: '20', waitUnit: 'min'
+      }
+    }
+    
+    stage('Slack: finish notification') {
+      steps {
+        slackSend (color: '#00FF00', message: "FINISHED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
       }
     }
   }
