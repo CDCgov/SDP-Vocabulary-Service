@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Labels / Success</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="20" cy="20" r="20"></circle>
+    </defs>
+    <g id="-💥-Customize-Here" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Base-Elements-" transform="translate(-240.000000, -1831.000000)">
+            <g id="Labels" transform="translate(149.000000, 1734.000000)">
+                <g id="Labels-/-Success" transform="translate(93.000000, 99.000000)">
+                    <g id="Success">
+                        <g id="Oval-3">
+                            <use fill="#52C445" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            <circle stroke="#FFFFFF" stroke-width="2" cx="20" cy="20" r="21"></circle>
+                        </g>
+                        <path d="M26,14 C25.448,14 24.948,14.224 24.586,14.586 L22.586,16.586 L18,21.172 L15.414,18.586 C15.052,18.224 14.552,18 14,18 C12.895,18 12,18.895 12,20 C12,20.552 12.224,21.052 12.586,21.414 L16.586,25.414 C16.948,25.776 17.448,26 18,26 C18.552,26 19.052,25.776 19.414,25.414 L25.414,19.414 L27.414,17.414 C27.776,17.052 28,16.552 28,16 C28,14.895 27.105,14 26,14" id="Fill-1" fill="#FFFFFF"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
