@@ -118,12 +118,22 @@ class CodedSetTableEditContainer extends Component {
       return (
         <div className='table-scrolling-div'>
           <br/>
-          {this.props.concepts.error || this.props.conceptSystems.error}
+          <center>{this.props.concepts.error || this.props.conceptSystems.error}</center>
         </div>
       );
     } else {
       return (
         <div className='table-scrolling-div'>
+          <table className="table table-striped scroll-table-header">
+            <thead>
+              <tr>
+                <th id="add-code-checkboxes-column" scope="col">Add</th>
+                <th id="modal-code-display-name-column" scope="col">Display Name / Tag Name</th>
+                <th id="modal-code-column" scope="col">Code / Value</th>
+                <th id="modal-code-system-column" scope="col">Code System</th>
+              </tr>
+            </thead>
+          </table>
           <table className="table table-striped scroll-table-body">
             <tbody>
               {values(this.props.concepts[this.state.selectedSystem.oid]).map((c, i) => {
@@ -148,8 +158,8 @@ class CodedSetTableEditContainer extends Component {
         <Modal.Header closeButton bsStyle='concept'>
           <Modal.Title componentClass="h1">Tag Information</Modal.Title>
         </Modal.Header>
-        <Modal.Body bsStyle='concept'>
-          <h2>Purpose</h2>
+        <Modal.Body>
+          <h2 className="no-padding-top">Purpose</h2>
           <p>The purpose of Tags is to facilitate content discovery and reuse.</p>
           <h2>Definitions</h2>
           <p><strong>Tag Name: </strong>Keywords from a controlled vocabulary. A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies.</p>
@@ -217,16 +227,6 @@ class CodedSetTableEditContainer extends Component {
               <NestedSearchBar onSearchTermChange={this.search} modelName="Code" />
             </InputGroup>
           </FormGroup>
-          <table className="table table-striped scroll-table-header">
-            <thead>
-              <tr>
-                <th id="add-code-checkboxes-column" scope="col">Add</th>
-                <th id="modal-code-display-name-column" scope="col">Display Name / Tag Name</th>
-                <th id="modal-code-column" scope="col">Code / Value</th>
-                <th id="modal-code-system-column" scope="col">Code System</th>
-              </tr>
-            </thead>
-          </table>
           {this.resultsTable()}
         </Modal.Body>
         <Modal.Footer>

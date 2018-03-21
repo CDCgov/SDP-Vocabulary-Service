@@ -1,13 +1,27 @@
 @wb = xlsx_package.workbook
 @tag_tables = []
 
-def add_section_to_sheet(s, sheet)
+def add_section_to_sheet(s, sheet, section_sheet)
+  add_section_metadata(s, section_sheet)
   sheet.add_row ["START: #{s.name}"]
   s.section_nested_items.each do |sni|
-    add_section_to_sheet(sni.nested_section, sheet) if sni.nested_section
+    add_section_to_sheet(sni.nested_section, sheet, section_sheet) if sni.nested_section
     add_question_to_sheet(sni, sheet) if sni.question
   end
   sheet.add_row ["END: #{s.name}"]
+end
+
+def add_section_metadata(s, section_sheet)
+  section_row = []
+  section_row << (s.name || '')
+  section_row << (s.description || '')
+  section_row << (s.created_at || '')
+  section_row << (s.created_by ? s.created_by.email : '')
+  section_row << (s.version_independent_id || '')
+  section_row << (s.version || '')
+  section_row << (s.status || '')
+  section_row << tag_tab_name(s)
+  section_sheet.add_row section_row
 end
 
 def add_question_to_sheet(sni, sheet)
@@ -27,6 +41,8 @@ def add_question_to_sheet(sni, sheet)
   new_row << (q.version || '1')
   new_row << (q.status || '')
   new_row << (q.created_at.to_s || '')
+  new_row << surveillance_system_names(q)
+  new_row << surveillance_program_names(q)
   new_row << (q.oid || '')
   sheet.add_row new_row
 end
@@ -56,10 +72,50 @@ def tag_tab_name(obj)
   end
 end
 
+def surveillance_system_names(q)
+  system_names = ''
+  if q.surveillance_systems.length > 0
+    q.surveillance_systems.each {|ss| system_names << ss.name + ','}
+    system_names.chomp(',')
+  else
+    system_names = ''
+  end
+  system_names
+end
+
+def surveillance_program_names(q)
+  program_names = ''
+  if q.surveillance_programs.length > 0
+    q.surveillance_programs.each {|sp| program_names << sp.name + ','}
+    program_names.chomp(',')
+  else
+    program_names = ''
+  end
+  program_names
+end
+
 @wb.add_worksheet(name: 'Survey Data') do |sheet|
-  sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Response Set Source (C)','Response Set Table (C)','Question Category (O)','Question Subcategory (O)','Question Tag Table (O)','Program Defined Variable Name (O)','Author','SDP-V ID','Version','Workflow Status','Creation Date']
-  @survey.survey_sections.each do |ss|
-    add_section_to_sheet(ss.section, sheet)
+  sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Response Set Source (C)','Response Set Table (C)','Question Category (O)','Question Subcategory (O)','Question Tag Table (O)','Program Defined Variable Name (O)','Author','SDP-V ID','Version','Workflow Status','Creation Date','Surveillance Systems','Surveillance Programs','OID']
+  @wb.add_worksheet(name: 'Survey Metadata') do |survey_sheet|
+    survey_sheet.add_row ['Survey Name','Survey Description','Creation Date','Author','SDP-V ID','Version','Workflow Status','OMB Approval Number','Surveillance Program','Surveillance System']
+    survey_row = []
+    survey_row << (@survey.name || '')
+    survey_row << (@survey.description || '')
+    survey_row << (@survey.created_at || '')
+    survey_row << (@survey.created_by ? @survey.created_by.email : '')
+    survey_row << (@survey.version_independent_id || '')
+    survey_row << (@survey.version || '')
+    survey_row << (@survey.status || '')
+    survey_row << (@survey.control_number || '')
+    survey_row << (@survey.surveillance_program ? @survey.surveillance_program.name : '')
+    survey_row << (@survey.surveillance_system ? @survey.surveillance_system.name : '')
+    survey_sheet.add_row survey_row
+  end
+  @wb.add_worksheet(name: 'Sections Metadata') do |section_sheet|
+    section_sheet.add_row ['Section Name','Section Description','Creation Date','Author','SDP-V ID','Version','Workflow Status','Section Tag Table']
+    @survey.survey_sections.each do |ss|
+      add_section_to_sheet(ss.section, sheet, section_sheet)
+    end
   end
 end
 
