@@ -7,16 +7,13 @@ pipeline {
   }
 
   stages {
-    stage('Slack: start notification') {
-      steps {
-        slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
-    }
-
     stage('Run Tests') {
       agent { label 'vocab-ruby' }
 
       steps {
+        echo "Notifying Slack that the pipeline has started..."
+        slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
           env.tdbname = sh returnStdout: true, script: 'echo -n "${svcname}" | tr "-" "_"'
@@ -73,24 +70,40 @@ pipeline {
           archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
             fingerprint: true
         }
+
+        success {
+          slackSend (color: '#00FF00', message: "FINISHED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+
+        failure {
+          slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
       }
     }
 
     stage('Build for Dev Env') {
       agent any
+
       when {
         branch 'development'
       }
+
       steps {
+        slackSend (color: '#FFFF00', message: "Starting build for development environment: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
           waitTime: '20', waitUnit: 'min'
       }
-    }
-    
-    stage('Slack: finish notification') {
-      steps {
-        slackSend (color: '#00FF00', message: "FINISHED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+      post {
+        success {
+          slackSend (color: '#00FF00', message: "Finished building for development environment: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+
+        failure {
+          slackSend (color: '#FF0000', message: "Failed to build for development environment: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
       }
     }
   }
