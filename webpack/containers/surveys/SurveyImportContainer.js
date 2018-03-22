@@ -56,9 +56,10 @@ class SurveyImportContainer extends Component {
 
   fileSelector() {
     if (this.state.file === null) {
-      return (<div>
-        <label htmlFor="file-select">Select excel file for upload</label>
-        <input id="file-select" name="file-select" type="file" value={this.state.file} onChange={this.onChange} />
+      return (<div className="import-drop-zone drag-drop-target">
+        <h3>Please select the file you wish to import</h3>
+        <label htmlFor="file-select">Choose a Microsoft Excel formatted file (.xls, .xlsx, .xslm)</label>
+        <input id="file-select" name="file-select" type="file" value={this.state.file} onChange={this.onChange} accept=".xls, .xlsx, .xlsm, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
       </div>);
     } else {
       return (
@@ -267,7 +268,7 @@ class SurveyImportContainer extends Component {
             <div className="panel-heading">
               <h1 className="panel-title">Import MMG Spreadsheet</h1>
             </div>
-            <div className="panel-body">
+            <div className="panel-body import-panel">
               <div className="row">
                 <div className="col-sm-10 col-sm-offset-1">
                   <form onSubmit={this.onFormSubmit}>
