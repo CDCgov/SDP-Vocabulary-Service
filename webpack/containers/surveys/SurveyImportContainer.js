@@ -56,7 +56,10 @@ class SurveyImportContainer extends Component {
 
   fileSelector() {
     if (this.state.file === null) {
-      return <input id="file-select" type="file" value={this.state.file} onChange={this.onChange} />;
+      return (<div>
+        <label htmlFor="file-select">Select excel file for upload</label>
+        <input id="file-select" name="file-select" type="file" value={this.state.file} onChange={this.onChange} />
+      </div>);
     } else {
       return (
         <div className="import-action-area">
