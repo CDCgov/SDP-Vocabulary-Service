@@ -1,4 +1,4 @@
-Feature: Manage Questions
+Feature: Import Spreadsheet
   As an author
   I want to import a spreadsheet through the UI
   Scenario: Create Survey using importer
