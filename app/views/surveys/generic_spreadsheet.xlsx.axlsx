@@ -94,7 +94,7 @@ def surveillance_program_names(q)
   program_names
 end
 
-@wb.add_worksheet(name: 'Survey Data') do |sheet|
+@wb.add_worksheet(name: 'Survey Questions') do |sheet|
   sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Response Set Source (C)','Local Response Set Table (C)','Question Category (O)','Question Subcategory (O)','Question Tag Table (O)','Program Defined Variable Name (O)','Author','SDP-V ID','Version','Workflow Status','Creation Date','Surveillance Systems','Surveillance Programs','OID']
   @wb.add_worksheet(name: 'Survey Metadata') do |survey_sheet|
     survey_sheet.add_row ['Survey Name','Survey Description','Creation Date','Author','SDP-V ID','Version','Workflow Status','OMB Approval Number','Surveillance Program','Surveillance System']
