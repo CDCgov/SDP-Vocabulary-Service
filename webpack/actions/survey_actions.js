@@ -15,6 +15,7 @@ import {
   ADD_ENTITIES,
   UPDATE_SURVEY_TAGS,
   CREATE_IMPORT_SESSION,
+  UPDATE_IMPORT_SESSION,
   ATTEMPT_IMPORT_FILE
 } from './types';
 
@@ -109,6 +110,27 @@ export function createImportSession(file, successHandler=null, failureHandler=nu
   return {
     type: CREATE_IMPORT_SESSION,
     payload: postPromise
+  };
+}
+
+export function updateImportSession(id, file, successHandler=null, failureHandler=null) {
+  const authenticityToken  = getCSRFToken();
+  const formData = new FormData();
+  formData.append('authenticity_token', authenticityToken);
+  formData.append('file', file);
+  formData.append('request_survey_creation', false);
+  const putPromise = axios.put(routes.importSessionPath(id),
+                      formData,
+                      {headers: {'X-Key-Inflection': 'camel', 'content-type': 'multipart/form-data'}});
+  if (successHandler) {
+    putPromise.then(successHandler);
+  }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
+  }
+  return {
+    type: UPDATE_IMPORT_SESSION,
+    payload: putPromise
   };
 }
 

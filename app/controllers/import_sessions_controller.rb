@@ -13,7 +13,6 @@ class ImportSessionsController < ApplicationController
   end
 
   def update
-    @survey = {}
     if import_session_params[:file].present?
       spreadsheet_upload = import_session_params[:file]
       @import_session.spreadsheet = spreadsheet_upload.read
@@ -22,7 +21,7 @@ class ImportSessionsController < ApplicationController
     end
     @import_session.request_survey_creation = import_session_params[:request_survey_creation]
     if @import_session.request_survey_creation && @import_session.top_level_sections > 0
-      @survey = Survey.last if @import_session.create_survey!
+      @import_session.create_survey!
     end
     render json: @import_session, status: :ok
   end

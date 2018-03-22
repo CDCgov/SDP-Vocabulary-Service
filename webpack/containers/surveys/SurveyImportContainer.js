@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setSteps } from '../../actions/tutorial_actions';
-import { createImportSession, attemptImportFile } from '../../actions/survey_actions';
+import { createImportSession, updateImportSession, attemptImportFile } from '../../actions/survey_actions';
 
 class SurveyImportContainer extends Component {
   constructor(props) {
@@ -18,7 +18,8 @@ class SurveyImportContainer extends Component {
       fileFormatCheck: null,
       file: null,
       survey: {},
-      fileChosen: false
+      fileChosen: false,
+      filePromiseReturned: false
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -41,9 +42,15 @@ class SurveyImportContainer extends Component {
   }
 
   onChange(e) {
-    this.props.createImportSession(e.target.files[0], (successResponse) => {
-      this.setState({importErrors: successResponse.data.importErrors, importSessionId: successResponse.data.id});
-    });
+    if (this.state.importSessionId) {
+      this.props.updateImportSession(this.state.importSessionId, e.target.files[0], (successResponse) => {
+        this.setState({importErrors: successResponse.data.importErrors, importSessionId: successResponse.data.id, filePromiseReturned: true});
+      });
+    } else {
+      this.props.createImportSession(e.target.files[0], (successResponse) => {
+        this.setState({importErrors: successResponse.data.importErrors, importSessionId: successResponse.data.id, filePromiseReturned: true});
+      });
+    }
     this.setState({file: e.target.files[0], fileChosen: true});
   }
 
@@ -80,7 +87,7 @@ class SurveyImportContainer extends Component {
   }
 
   cancelImport() {
-    this.setState({file: null, importAttempted: false, importErrors: [], importSessionId: null, fileChosen: false});
+    this.setState({file: null, importAttempted: false, importErrors: [], fileChosen: false, filePromiseReturned: false});
   }
 
   fileActions() {
@@ -103,7 +110,7 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
-    } else if (!this.state.importAttempted && this.state.importSessionId){
+    } else if (!this.state.importAttempted && this.state.filePromiseReturned){
       return (
         <div className="import-action-message success" role="alert">
           <button className="btn btn-primary" onClick={this.attemptImport}>Import</button>
@@ -111,7 +118,7 @@ class SurveyImportContainer extends Component {
           File recognized as MMG Excel spreadsheet
         </div>
       );
-    } else if (this.state.fileChosen && !this.state.importSessionId) {
+    } else if (this.state.fileChosen && !this.state.filePromiseReturned) {
       return <div className="import-action-message warning" role="alert">Checking file format... Please wait.</div>;
     } else {
       return;
@@ -275,17 +282,14 @@ class SurveyImportContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, createImportSession, attemptImportFile}, dispatch);
-}
-
-function mapStateToProps() {
-  return {};
+  return bindActionCreators({setSteps, createImportSession, updateImportSession, attemptImportFile}, dispatch);
 }
 
 SurveyImportContainer.propTypes = {
   setSteps: PropTypes.func,
   createImportSession: PropTypes.func,
+  updateImportSession: PropTypes.func,
   attemptImportFile: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyImportContainer);
+export default connect(null, mapDispatchToProps)(SurveyImportContainer);
