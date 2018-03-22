@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Labels / Alert</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="20" cy="20" r="20"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Import-with-warnings" transform="translate(-156.000000, -580.000000)">
+            <g id="Labels-/-Alert" transform="translate(158.000000, 582.000000)">
+                <g id="Alert" transform="translate(-12.000000, -12.000000)">
+                    <g id="Oval-3">
+                        <use fill="#FFBF44" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <circle stroke="#FFFFFF" stroke-width="2" cx="20" cy="20" r="21"></circle>
+                    </g>
+                    <path d="M20,24 C18.895,24 18,24.895 18,26 C18,27.105 18.895,28 20,28 C21.105,28 22,27.105 22,26 C22,24.895 21.105,24 20,24 L20,24 Z M19,21 C19,21.552 19.448,22 20,22 C20.552,22 21,21.552 21,21 L21.928,14.504 C21.97,14.342 22,14.175 22,14 C22,12.895 21.105,12 20,12 C18.895,12 18,12.895 18,14 C18,14.175 18.03,14.342 18.072,14.504 L19,21 Z" id="Fill-1" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

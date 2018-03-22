@@ -22,7 +22,7 @@ class ImportSession < ApplicationRecord
   end
 
   def create_survey!
-    importer = SDP::Importers::Spreadsheet.new(roo_friendly_spreadsheet, created_by)
+    importer = SDP::Importers::Spreadsheet.new(roo_friendly_spreadsheet, created_by, survey_name: original_filename)
     importer.parse!
     if importer.sections_exist?
       survey = importer.save!

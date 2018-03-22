@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Labels / Error</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="20" cy="20" r="20"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Unsuccessful-Import" transform="translate(-166.000000, -640.000000)">
+            <g id="Labels-/-Error" transform="translate(168.000000, 642.000000)">
+                <g id="Error" transform="translate(-12.000000, -12.000000)">
+                    <g id="Oval-3">
+                        <use fill="#F64662" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <circle stroke="#FFFFFF" stroke-width="2" cx="20" cy="20" r="21"></circle>
+                    </g>
+                    <path d="M25.4363061,14.5636939 C24.6847143,13.812102 23.4679428,13.812102 22.7182732,14.5636939 L20.0002403,17.2817268 L17.2802851,14.5636939 C16.5306155,13.812102 15.3138441,13.812102 14.5622522,14.5636939 C13.8125826,15.3152857 13.8125826,16.5320572 14.5622522,17.2817268 L17.2802851,19.9997597 L14.5622522,22.7197149 C13.8125826,23.4693845 13.8125826,24.6861559 14.5622522,25.4377478 C15.3138441,26.1874174 16.5306155,26.1874174 17.2802851,25.4377478 L20.0002403,22.7197149 L22.7182732,25.4377478 C23.4679428,26.1874174 24.6847143,26.1874174 25.4363061,25.4377478 C26.187898,24.6861559 26.187898,23.4693845 25.4363061,22.7197149 L22.7182732,19.9997597 L25.4363061,17.2817268 C26.187898,16.5320572 26.187898,15.3152857 25.4363061,14.5636939" id="Fill-1" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
