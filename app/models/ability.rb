@@ -6,6 +6,7 @@ class Ability
       can :manage, :all
     elsif user && user.publisher?
       can :manage, [ResponseSet, Question, Section, Survey]
+      can :manage, [ImportSession], created_by_id: user.id
       can :read, User
     elsif user
       can :manage, [ResponseSet, Question, Section, Survey], status: 'published'
