@@ -218,6 +218,7 @@ module SDP
         s.save!
         section_position = 0
         save_survey_items(s, section_position)
+        s
       end
 
       def append!(survey_id)
@@ -242,7 +243,7 @@ module SDP
       end
 
       def parse!(verbose = false)
-        w = Roo::Spreadsheet.open(@file)
+        w = Roo::Spreadsheet.open(@file, extension: 'xlsx')
         @all_sheets = w.sheets
         @all_sheets.each do |sheet|
           headers = []
@@ -290,6 +291,16 @@ module SDP
         # Go back and extract value sets when those are included in the workbook
         extract_value_sets(w, verbose)
         w.close
+      end
+
+      # Should only be called after parse!
+      def sections_exist?
+        @top_level.items.present?
+      end
+
+      # Should only be called after parse!
+      def top_level_section_count
+        @top_level.items.size
       end
 
       private

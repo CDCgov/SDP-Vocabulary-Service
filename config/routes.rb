@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :import_sessions
   resources :surveillance_systems, only: [:index, :create]
   resources :surveillance_programs, only: [:index, :create]
   get 'response_types', to: 'response_types#index', as: :response_types

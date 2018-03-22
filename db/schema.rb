@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180109185938) do
+ActiveRecord::Schema.define(version: 20180315181057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,18 @@ ActiveRecord::Schema.define(version: 20180109185938) do
     t.bigint "group_id", null: false
     t.bigint "user_id", null: false
     t.index ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
+  end
+
+  create_table "import_sessions", force: :cascade do |t|
+    t.binary "spreadsheet"
+    t.string "import_errors", array: true
+    t.string "original_filename"
+    t.boolean "request_survey_creation"
+    t.integer "top_level_sections"
+    t.integer "created_by_id"
+    t.integer "survey_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "notifications", id: :serial, force: :cascade do |t|
