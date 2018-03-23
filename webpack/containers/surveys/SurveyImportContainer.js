@@ -95,7 +95,7 @@ class SurveyImportContainer extends Component {
   }
 
   fileActions() {
-    if (this.state.importErrors.length > 0 && !this.state.importAttempted) {
+    if (this.state.importErrors && this.state.importErrors.length > 0 && !this.state.importAttempted) {
       return (
         <div>
           <div className="import-action-message error" role="alert">
@@ -130,7 +130,7 @@ class SurveyImportContainer extends Component {
   }
 
   importStatus() {
-    if (this.state.importAttempted && this.state.importErrors.length > 0 && !this.state.survey.id) {
+    if (this.state.importAttempted && this.state.importErrors && this.state.importErrors.length > 0 && !this.state.survey.id) {
       return (
         <div>
           <div className="import-action-message error" role="alert">
@@ -148,7 +148,7 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
-    } else if (this.state.importAttempted && this.state.importWarnings.length > 0 && this.state.survey.id) {
+    } else if (this.state.importAttempted && this.state.importWarnings && this.state.importWarnings.length > 0 && this.state.survey.id) {
       return (
         <div>
           <div className="import-action-message warning" role="alert">
