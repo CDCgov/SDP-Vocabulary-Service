@@ -17,6 +17,7 @@ class ImportSessionsController < ApplicationController
       spreadsheet_upload = import_session_params[:file]
       @import_session.spreadsheet = spreadsheet_upload.read
       @import_session.original_filename = spreadsheet_upload.original_filename
+      @import_session.import_errors = []
       @import_session.check!
     end
     @import_session.request_survey_creation = import_session_params[:request_survey_creation]
