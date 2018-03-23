@@ -12,7 +12,7 @@ pipeline {
 
       steps {
         echo "Notifying Slack that the pipeline has started..."
-        slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        updateSlack('#FFFF00', 'STARTED')
 
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
@@ -72,11 +72,11 @@ pipeline {
         }
 
         success {
-          slackSend (color: '#00FF00', message: "FINISHED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          updateSlack('#00FF00', 'FINISHED')
         }
 
         failure {
-          slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          updateSlack('#FF0000', 'FAILED')
         }
       }
     }
@@ -89,7 +89,7 @@ pipeline {
       }
 
       steps {
-        slackSend (color: '#FFFF00', message: "Starting build for development environment: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        updateSlack('#FFFF00', 'Starting build for development environment')
         
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
@@ -98,13 +98,17 @@ pipeline {
 
       post {
         success {
-          slackSend (color: '#00FF00', message: "Finished building for development environment: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          updateSlack('#00FF00', 'Finished building for development environment')
         }
 
         failure {
-          slackSend (color: '#FF0000', message: "Failed to build for development environment: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          updateSlack('#FF0000', 'Failed to build for development environment')
         }
       }
     }
   }
+}
+
+def updateSlack(String colorHex, String messageText) {
+  slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 }
