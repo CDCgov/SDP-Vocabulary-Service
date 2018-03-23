@@ -11,7 +11,6 @@ pipeline {
       agent { label 'vocab-ruby' }
 
       steps {
-        echo "Notifying Slack that the pipeline has started..."
         updateSlack('#FFFF00', 'STARTED')
 
         script {
@@ -110,5 +109,7 @@ pipeline {
 }
 
 def updateSlack(String colorHex, String messageText) {
-  slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  if (env.BRANCH_NAME == 'development' || env.CHANGE_ID) {
+    slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  }
 }
