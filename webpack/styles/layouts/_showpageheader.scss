@@ -60,6 +60,11 @@
    margin: 0 !important;
 }
 
+.no-padding-top {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
 .subtitle {
   color: $medium-gray;
   span {
