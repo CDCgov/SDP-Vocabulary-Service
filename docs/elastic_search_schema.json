@@ -2,22 +2,33 @@
   "settings": {
     "index": {
       "number_of_shards": 1,
+      "number_of_replicas": 0,
       "analysis": {
         "analyzer": {
           "sdp": {
             "type": "custom",
             "tokenizer": "sdp",
-            "filter": ["lowercase", "asciifolding", "stop"]
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "stop"
+            ]
           },
           "trigram": {
             "type": "custom",
             "tokenizer": "sdp",
-            "filter": ["standard", "shingle"]
+            "filter": [
+              "standard",
+              "shingle"
+            ]
           },
           "reverse": {
             "type": "custom",
             "tokenizer": "sdp",
-            "filter": ["standard", "reverse"]
+            "filter": [
+              "standard",
+              "reverse"
+            ]
           }
         },
         "tokenizer": {
@@ -42,445 +53,1166 @@
     }
   },
   "mappings": {
-    "question": {
+    "section": {
       "properties": {
-        "suggest": {
-          "type": "completion"
-        },
-        "id": {
-          "type": "string"
-        },
-        "version_independent_id": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
         "category": {
-          "type": "object",
           "properties": {
             "id": {
-              "type": "string"
+              "type": "text"
             },
             "name": {
-              "type": "string"
-            }
-          }
-        },
-        "subcategory": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            }
-          }
-        },
-        "name": {
-          "type": "string",
-          "analyzer": "sdp"
-        },
-        "description": {
-          "type": "string",
-          "analyzer": "sdp"
-        },
-        "createdAt": {
-          "type": "date"
-        },
-        "updatedAt": {
-          "type": "date"
-        },
-        "mostRecent" : {
-          "type": "boolean"
-        },
-        "responseType": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "code": {
-              "type": "string"
-            }
-          }
-        },
-        "createdBy": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            }
-          }
-        },
-        "updatedBy": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            }
-          }
-        },
-        "content": {
-          "type": "string"
-        },
-        "responseSets": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
+              "type": "text"
             }
           }
         },
         "codes": {
-          "type": "object",
           "properties": {
             "code": {
-              "type": "string"
-            },
-            "displayName": {
-              "type": "string"
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
             "codeSystem": {
-              "type": "string"
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "displayName": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "createdAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "properties": {
+            "admin": {
+              "type": "boolean"
+            },
+            "email": {
+              "type": "text"
+            },
+            "first_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "groups": {
+              "properties": {
+                "description": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "id": {
+                  "type": "long"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "text"
+            },
+            "last_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "last_program_id": {
+              "type": "long"
+            },
+            "last_system_id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text"
+            },
+            "publisher": {
+              "type": "boolean"
+            }
+          }
+        },
+        "description": {
+          "type": "text",
+          "analyzer": "sdp"
+        },
+        "groups": {
+          "type": "text"
+        },
+        "id": {
+          "type": "text"
+        },
+        "mostRecent": {
+          "type": "boolean"
+        },
+        "most_recent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "text",
+          "analyzer": "sdp"
+        },
+        "sectionNestedItems": {
+          "properties": {
+            "codes": {
+              "type": "object"
+            },
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            },
+            "responseSet": {
+              "type": "text"
+            },
+            "responseSetID": {
+              "type": "text"
+            }
+          }
+        },
+        "section_nested_items": {
+          "properties": {
+            "codes": {
+              "properties": {
+                "code": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "codeSystem": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "displayName": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "response_set": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "response_set_id": {
+              "type": "long"
+            },
+            "type": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "status": {
+          "type": "text"
+        },
+        "suggest": {
+          "type": "completion",
+          "analyzer": "simple",
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 50
+        },
+        "surveillance_programs": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "surveillance_systems": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "surveys": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "updatedBy": {
+          "properties": {
+            "email": {
+              "type": "text"
+            },
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "version": {
+          "type": "text"
+        },
+        "version_independent_id": {
+          "type": "text"
+        }
+      }
+    },
+    "question": {
+      "properties": {
+        "category": {
+          "properties": {
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "codes": {
+          "properties": {
+            "code": {
+              "type": "text"
+            },
+            "codeSystem": {
+              "type": "text"
             },
             "codeSystemOid": {
-              "type": "string"
+              "type": "text"
             },
             "date": {
               "type": "date"
-            }
-          }
-        },
-        "groups": {
-          "type": "string"
-        }
-      }
-    },
-    "section": {
-      "properties": {
-        "suggest": {
-          "type": "completion"
-        },
-        "id": {
-          "type": "string"
-        },
-        "version_independent_id": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "category": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
             },
-            "name": {
-              "type": "string"
+            "displayName": {
+              "type": "text"
             }
           }
         },
-        "name": {
-          "type": "string",
-          "analyzer": "sdp"
-        },
-        "description": {
-          "type": "string",
-          "analyzer": "sdp"
+        "content": {
+          "type": "text"
         },
         "createdAt": {
           "type": "date"
         },
-        "updatedAt": {
-          "type": "date"
-        },
-        "mostRecent" : {
-          "type": "boolean"
-        },
         "createdBy": {
-          "type": "object",
           "properties": {
-            "name": {
-              "type": "string"
+            "admin": {
+              "type": "boolean"
             },
             "email": {
-              "type": "string"
+              "type": "text"
+            },
+            "first_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "groups": {
+              "properties": {
+                "description": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "id": {
+                  "type": "long"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
             },
             "id": {
-              "type": "string"
-            }
-          }
-        },
-        "updatedBy": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
+              "type": "text"
             },
-            "email": {
-              "type": "string"
+            "last_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
-            "id": {
-              "type": "string"
-            }
-          }
-        },
-        "sectionNestedItems": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
+            "last_program_id": {
+              "type": "long"
             },
-            "name": {
-              "type": "string"
-            },
-            "responseSet": {
-              "type": "string"
-            },
-            "responseSetID": {
-              "type": "string"
-            },
-            "codes" :{
-              "type" : "object"
-            }
-          }
-        },
-        "groups": {
-          "type": "string"
-        }
-      }
-    },
-    "survey": {
-      "properties": {
-        "suggest": {
-          "type": "completion"
-        },
-        "id": {
-          "type": "string"
-        },
-        "version_independent_id": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "category": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
+            "last_system_id": {
+              "type": "long"
             },
             "name": {
-              "type": "string"
+              "type": "text"
+            },
+            "publisher": {
+              "type": "boolean"
             }
           }
-        },
-        "name": {
-          "type": "string",
-          "analyzer": "sdp"
         },
         "description": {
-          "type": "string",
+          "type": "text",
           "analyzer": "sdp"
         },
-        "createdAt": {
-          "type": "date"
+        "groups": {
+          "type": "text"
         },
-        "updatedAt": {
-          "type": "date"
+        "id": {
+          "type": "text"
         },
-        "mostRecent" : {
+        "mostRecent": {
           "type": "boolean"
         },
-        "createdBy": {
-          "type": "object",
+        "most_recent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "text",
+          "analyzer": "sdp"
+        },
+        "responseSets": {
           "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
             "id": {
-              "type": "string"
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
             }
           }
         },
-        "updatedBy": {
-          "type": "object",
+        "responseType": {
           "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
+            "code": {
+              "type": "text"
             },
             "id": {
-              "type": "string"
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
             }
           }
         },
-        "questions": {
-          "type": "object",
+        "response_type": {
           "properties": {
-            "name": {
-              "type": "string"
-            },
-            "responseSet": {
-              "type": "string"
+            "code": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
             "id": {
-              "type": "string"
+              "type": "long"
             },
-            "responseSetID": {
-              "type": "string"
-            },
-            "codes" :{
-              "type" : "object"
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             }
           }
         },
         "sections": {
-          "type": "object",
           "properties": {
-            "name": {
-              "type": "string"
-            },
             "id": {
-              "type": "string"
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             }
           }
         },
-        "groups": {
-          "type": "string"
+        "status": {
+          "type": "text"
+        },
+        "subcategory": {
+          "properties": {
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "suggest": {
+          "type": "completion",
+          "analyzer": "simple",
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 50
+        },
+        "surveillance_programs": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "surveillance_systems": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "updatedBy": {
+          "properties": {
+            "admin": {
+              "type": "boolean"
+            },
+            "email": {
+              "type": "text"
+            },
+            "first_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "groups": {
+              "properties": {
+                "description": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "id": {
+                  "type": "long"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "text"
+            },
+            "last_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "last_program_id": {
+              "type": "long"
+            },
+            "last_system_id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text"
+            },
+            "publisher": {
+              "type": "boolean"
+            }
+          }
+        },
+        "version": {
+          "type": "text"
+        },
+        "version_independent_id": {
+          "type": "text"
         }
       }
     },
     "response_set": {
       "properties": {
-        "suggest": {
-          "type": "completion"
-        },
-        "id": {
-          "type": "string"
-        },
-        "version_independent_id": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
         "category": {
-          "type": "object",
           "properties": {
             "id": {
-              "type": "string"
+              "type": "text"
             },
             "name": {
-              "type": "string"
-            }
-          }
-        },
-        "name": {
-          "type": "string",
-          "analyzer": "sdp"
-        },
-        "description": {
-          "type": "string",
-          "analyzer": "sdp"
-        },
-        "createdAt": {
-          "type": "date"
-        },
-        "updatedAt": {
-          "type": "date"
-        },
-        "mostRecent" : {
-          "type": "boolean"
-        },
-        "createdBy": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            }
-          }
-        },
-        "updatedBy": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
+              "type": "text"
             }
           }
         },
         "codes": {
-          "type": "object",
           "properties": {
             "code": {
-              "type": "string"
-            },
-            "displayName": {
-              "type": "string"
+              "type": "text"
             },
             "codeSystem": {
-              "type": "string"
+              "type": "text"
             },
             "codeSystemOid": {
-              "type": "string"
+              "type": "text"
             },
             "date": {
               "type": "date"
+            },
+            "displayName": {
+              "type": "text"
             }
           }
         },
+        "createdAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "properties": {
+            "admin": {
+              "type": "boolean"
+            },
+            "email": {
+              "type": "text"
+            },
+            "first_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "groups": {
+              "properties": {
+                "description": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "id": {
+                  "type": "long"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "text"
+            },
+            "last_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "last_program_id": {
+              "type": "long"
+            },
+            "last_system_id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text"
+            },
+            "publisher": {
+              "type": "boolean"
+            }
+          }
+        },
+        "description": {
+          "type": "text",
+          "analyzer": "sdp"
+        },
         "groups": {
-          "type": "string"
+          "type": "text"
+        },
+        "id": {
+          "type": "text"
+        },
+        "mostRecent": {
+          "type": "boolean"
+        },
+        "most_recent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "text",
+          "analyzer": "sdp"
+        },
+        "questions": {
+          "properties": {
+            "id": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "status": {
+          "type": "text"
+        },
+        "suggest": {
+          "type": "completion",
+          "analyzer": "simple",
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 50
+        },
+        "surveillance_programs": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "surveillance_systems": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "updatedBy": {
+          "properties": {
+            "admin": {
+              "type": "boolean"
+            },
+            "email": {
+              "type": "text"
+            },
+            "first_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "groups": {
+              "properties": {
+                "description": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "id": {
+                  "type": "long"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "text"
+            },
+            "last_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "last_program_id": {
+              "type": "long"
+            },
+            "last_system_id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text"
+            },
+            "publisher": {
+              "type": "boolean"
+            }
+          }
+        },
+        "version": {
+          "type": "text"
+        },
+        "version_independent_id": {
+          "type": "text"
+        }
+      }
+    },
+    "survey": {
+      "properties": {
+        "category": {
+          "properties": {
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "codes": {
+          "properties": {
+            "code": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "codeSystem": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "displayName": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "createdAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "properties": {
+            "admin": {
+              "type": "boolean"
+            },
+            "email": {
+              "type": "text"
+            },
+            "first_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "groups": {
+              "properties": {
+                "description": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "id": {
+                  "type": "long"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "text"
+            },
+            "last_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "last_program_id": {
+              "type": "long"
+            },
+            "last_system_id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text"
+            },
+            "publisher": {
+              "type": "boolean"
+            }
+          }
+        },
+        "description": {
+          "type": "text",
+          "analyzer": "sdp"
+        },
+        "groups": {
+          "type": "text"
+        },
+        "id": {
+          "type": "text"
+        },
+        "mostRecent": {
+          "type": "boolean"
+        },
+        "most_recent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "text",
+          "analyzer": "sdp"
+        },
+        "questions": {
+          "properties": {
+            "codes": {
+              "properties": {
+                "code": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "codeSystem": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "displayName": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            },
+            "responseSet": {
+              "type": "text"
+            },
+            "responseSetID": {
+              "type": "text"
+            },
+            "response_set": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "response_set_id": {
+              "type": "long"
+            }
+          }
+        },
+        "sections": {
+          "properties": {
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "status": {
+          "type": "text"
+        },
+        "suggest": {
+          "type": "completion",
+          "analyzer": "simple",
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 50
+        },
+        "surveillance_program": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "surveillance_system": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "updatedAt": {
+          "type": "date"
+        },
+        "updatedBy": {
+          "properties": {
+            "email": {
+              "type": "text"
+            },
+            "id": {
+              "type": "text"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "version": {
+          "type": "text"
+        },
+        "version_independent_id": {
+          "type": "text"
         }
       }
     }
