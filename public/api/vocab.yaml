@@ -3,8 +3,8 @@ swagger: '2.0'
 
 info:
   version: "0.1.0"
-  title: SDP Question Bank
-  description: Web API for the SDP Question Bank shared service. A Fast Healthcare Interoperability Resources (FHIR) is available at the /api/fhir endpoint.
+  title: SDP Vocabulary Service
+  description: Web API for the SDP Vocabulary shared service. A Fast Healthcare Interoperability Resources (FHIR) is available at the /api/fhir endpoint.
   contact:
     name: SDP Support
     url: http://www.cdc.gov/sdp/

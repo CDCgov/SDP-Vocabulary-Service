@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :import_sessions
   resources :surveillance_systems, only: [:index, :create]
   resources :surveillance_programs, only: [:index, :create]
   get 'response_types', to: 'response_types#index', as: :response_types
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :export, on: :member
     get :redcap, on: :member
+    get :epi_info, on: :member
     put :publish, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
@@ -50,6 +52,8 @@ Rails.application.routes.draw do
     get :revise, on: :member
     put :publish, on: :member
     get :redcap, on: :member
+    get :epi_info, on: :member
+    get :spreadsheet, on: :member, defaults: { format: :xlsx }
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :update_tags, on: :member

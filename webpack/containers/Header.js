@@ -94,6 +94,8 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
               <li className="nav-dropdown-item"><Link to="/questions/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Questions</Link></li>
               <li className="nav-dropdown-item"><Link to="/sections/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Sections</Link></li>
               <li className="nav-dropdown-item"><Link to="/surveys/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Surveys</Link></li>
+              <li role="separator" className="divider"></li>
+              <li className="nav-dropdown-item"><Link to="/surveys/import" tabIndex="2"><text className="sr-only">Click link to </text>Import MMG</Link></li>
             </ul>
           </li>
         }
@@ -229,7 +231,8 @@ class Header extends Component {
                     }}>Step-by-Step Walkthrough</a></li>
                   }
                   <li className="nav-dropdown-item"><a href="/api/" tabIndex="2" target="_blank">Swagger API</a></li>
-                  <li className="nav-dropdown-item"><Link to="/fhirDoc">FHIR Documentation</Link></li>
+                  <li className="nav-dropdown-item"><Link to="/fhirDoc" tabIndex="2">FHIR Documentation</Link></li>
+                  <li className="nav-dropdown-item"><a href="https://www.cdc.gov/sdp/SDPContactUs.html" tabIndex="2" target="_blank">Contact Us</a></li>
                   <li role="separator" className="divider"></li>
                   <li className="nav-dropdown-item"><span className="version-display">Release: v{this.props.appVersion}</span></li>
                 </ul>

@@ -16,8 +16,8 @@ module SDP
 
     class DataElement
       attr_accessor :name, :description, :data_type, :program_var, :de_id,
-                    :category, :subcategory, :tag_name, :tag_value, :value_set, :value_set_name,
-                    :value_set_url, :value_set_oid, :value_set_tab_name
+                    :category, :subcategory, :value_set, :concepts,
+                    :value_set_url, :value_set_oid, :value_set_tab_name, :tag_tab_name
 
       def initialize(vads_oid_regex, coded_data_types, response_types)
         @vads_oid_regex = vads_oid_regex
@@ -38,6 +38,7 @@ module SDP
         @description = normalize(row[:description])
         @data_type = normalize(row[:data_type])
         @value_set = normalize(row[:value_set])
+        @concepts = []
         if row[:value_set].respond_to? :to_uri
           @value_set_url = row[:value_set].to_uri
           oid_matcher = @vads_oid_regex.match(row[:value_set])
@@ -100,20 +101,14 @@ module SDP
         super
         @category = normalize(row[:category]),
                     @subcategory = normalize(row[:subcategory])
-        @tag_name = normalize(row[:tag_name])
-        @tag_value = normalize(row[:tag_value])
-        @tag_system = normalize(row[:tag_system])
-        @value_set_name = normalize(row[:value_set_name])
-        if row[:value_set] == 'Local' && row[:value_set_name].present?
-          @value_set_tab_name = normalize(row[:value_set_name])
+        @tag_tab_name = normalize(row[:tag_table]) if row[:tag_table].present?
+        if row[:value_set] == 'Local' && row[:value_set_table].present?
+          @value_set_tab_name = normalize(row[:value_set_table])
         end
       end
 
       def to_question(user)
         q = super
-        if @tag_value.present?
-          q.concepts << Concept.new(value: @tag_value, display_name: @tag_name, code_system: @tag_system)
-        end
         q.category = Category.find_by(name: @category) if @category.present?
         q.subcategory = Subcategory.find_by(name: @subcategory) if @subcategory.present?
         q
@@ -167,10 +162,8 @@ module SDP
           category: 'Question Category (O)',
           subcategory: 'Question Subcategory (O)',
           data_type: 'Question Response Type (R)',
-          tag_name: 'Question Tag Name (O)',
-          tag_value: 'Question Tag Value (O)',
-          tag_system: 'Question Code System Identifier (O)',
-          value_set_name: 'Response Set Name (C)',
+          tag_table: 'Question Tag Table (O)',
+          value_set_table: 'Local Response Set Table (C)',
           value_set: 'Response Set Source (C)'
         },
         vs_columns: {
@@ -186,6 +179,11 @@ module SDP
           display_name: 'Display Name',
           value: 'Response',
           system: 'Code System Identifier (optional)'
+        },
+        tag_columns: {
+          name: 'Tag Name (R)',
+          value: 'Tag Value (R)',
+          system: 'Code System Identifier (O)'
         },
         response_types: {
           'Date' => :date,
@@ -218,6 +216,7 @@ module SDP
         s.save!
         section_position = 0
         save_survey_items(s, section_position)
+        s
       end
 
       def append!(survey_id)
@@ -242,7 +241,7 @@ module SDP
       end
 
       def parse!(verbose = false)
-        w = Roo::Spreadsheet.open(@file)
+        w = Roo::Spreadsheet.open(@file, extension: 'xlsx')
         @all_sheets = w.sheets
         @all_sheets.each do |sheet|
           headers = []
@@ -262,7 +261,6 @@ module SDP
           end
 
           logger.debug "processing sheet #{sheet}"
-          start_section(sheet) unless @config[:mmg]
           w.sheet(sheet).parse(column_names).each do |row|
             # skip first row
             next if row[:name] == column_names[:name]
@@ -279,17 +277,24 @@ module SDP
             ni.data_element = data_element
             @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
           end
-          if @config[:mmg]
-            sectionize_top_level_questions(sheet)
-            # Reset to top level to prevent mismatched sections causing issues
-            @current_section = @top_level
-          else
-            @current_section = @parent_sections.pop
-          end
+          sectionize_top_level_questions(sheet)
+          # Reset to top level to prevent mismatched sections causing issues
+          @current_section = @top_level
         end
         # Go back and extract value sets when those are included in the workbook
         extract_value_sets(w, verbose)
+        extract_tags(w, verbose)
         w.close
+      end
+
+      # Should only be called after parse!
+      def sections_exist?
+        @top_level.items.present?
+      end
+
+      # Should only be called after parse!
+      def top_level_section_count
+        @top_level.items.size
       end
 
       private
@@ -321,14 +326,19 @@ module SDP
         items.each_with_index do |item, i|
           if item.type == :data_element
             rs = nil
+            concepts = nil
             if item.data_element.value_set_oid
               rs = response_set_for_vads(item.data_element)
             elsif item.data_element.value_set_tab_name.present?
               rs = response_set_for_local(item.data_element)
             end
+            if item.data_element.tag_tab_name.present?
+              concepts = item.data_element.concepts
+            end
             q = item.data_element.to_question(@user)
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
+            q.concepts << concepts if concepts
             nsi = SectionNestedItem.new(question: q, program_var: item.data_element.program_var, response_set: rs, position: i)
             parent_section.section_nested_items << nsi
           else
@@ -430,6 +440,33 @@ module SDP
         @top_level.items = new_items
       end
 
+      def extract_tags(workbook, verbose)
+        all_data_elements.each do |data_element|
+          next unless data_element.tag_tab_name
+          next unless @all_sheets.include?(data_element.tag_tab_name)
+          sheet = workbook.sheet(data_element.tag_tab_name)
+          logger.info "Processing tag tab: #{data_element.tag_tab_name}" if verbose
+          begin
+            tag_columns = @config[:tag_columns]
+            sheet.each(tag_columns) do |entry|
+              # skip first row
+              next if entry[:name] == tag_columns[:name]
+              # skip rows without tag name and value
+              next if entry[:name].nil? || entry[:name].to_s.strip.empty?
+              data_element.concepts << Concept.new(value: entry[:value], display_name: entry[:name], code_system: entry[:system])
+            end
+          rescue Roo::HeaderRowNotFoundError
+            if sheet.header_line == 1
+              @errors << "Missing header row in #{data_element.tag_tab_name}, retrying"
+              sheet.header_line = 2
+              retry
+            else
+              @errors << "Unable to parse tags from #{data_element.tag_tab_name}"
+            end
+          end
+        end
+      end
+
       def extract_value_sets(workbook, verbose)
         all_data_elements.each do |data_element|
           next unless data_element.value_set_tab_name
@@ -455,6 +492,9 @@ module SDP
         if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
           @errors << "Value set tab '#{data_element.value_set_tab_name}' not present"
           # data_element.value_set_tab_name = nil
+        end
+        if data_element.tag_tab_name.present? && !@all_sheets.include?(data_element.tag_tab_name)
+          @errors << "Tag tab '#{data_element.tag_tab_name}' not present"
         end
         data_element
       end

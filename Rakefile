@@ -8,8 +8,8 @@ Rails.application.load_tasks
 if Rails.env != 'production'
   require 'rubocop/rake_task'
   RuboCop::RakeTask.new
-  task default: [:create_reports_dir, :rubocop, 'cucumber:html', 'brakeman:run', 'bundle_audit:run',
-                 'javascript:test', 'javascript:lint', 'erd:test', 'swagger:validate']
+  task default: [:create_reports_dir, :rubocop, 'brakeman:run', 'bundle_audit:run',
+                 'javascript:test', 'javascript:lint', 'erd:test', 'swagger:validate', 'cucumber:html']
 end
 
 task :create_reports_dir do

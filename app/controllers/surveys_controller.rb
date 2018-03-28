@@ -99,9 +99,24 @@ class SurveysController < ApplicationController
   # GET /surveys/1/redcap
   def redcap
     xml = render_to_string 'surveys/redcap.xml', layout: false
-    send_data(xml, filename: "#{@survey.name.underscore}_redcap.xml",
+    send_data(xml, filename: "#{@survey.name.parameterize.underscore}_redcap.xml",
                    type: 'application/xml',
                    status: 200)
+  end
+
+  # GET /surveys/1/epi_info
+  def epi_info
+    @tab_counter = 0
+    @top = -0.03
+    xml = render_to_string 'surveys/epi_info.xml', layout: false
+    send_data(xml, filename: "#{@survey.name.parameterize.underscore}_epi_info.xml",
+                   type: 'application/xml',
+                   status: 200)
+  end
+
+  def spreadsheet
+    @survey = Survey.find(params[:id])
+    render xlsx: "#{@survey.name.parameterize.underscore}_spreadsheet", template: 'surveys/generic_spreadsheet.xlsx.axlsx'
   end
 
   private

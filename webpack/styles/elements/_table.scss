@@ -55,36 +55,35 @@ div.fixed-height-table{
   padding: 0;
 }
 
-div.table-scrolling-div{
-    display:inline-block;
-    zoom: 1;
-    *display:inline;
-    margin-top:0px;
-    height:300px;
-    width:100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+.table-scrolling-div{
+  height:50vh;
+  margin-top:0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width:100%;
 }
 
 table.scroll-table-header{
   table-layout: fixed;
   width: 100%;
   margin-bottom: 0px;
-  thead{
+  thead {
     width: 100%;
     table-layout: fixed;
-      tr{
+      tr {
         table-layout: fixed;
-      width: 100%;
-      /*position: absolute;*/
-      vertical-align: middle;
+        width: 100%;
+        vertical-align: middle;
     }
   }
+  th:nth-of-type(1) {width:6%;  text-align:center; padding:0;}
+  th:nth-of-type(2) {width:60%; text-align:left;   padding: 0;}
+  th:nth-of-type(3) {width:12%; text-align:left;   padding: 0;}
+  th:nth-of-type(4) {width:22%; text-align:left;   padding: 0 0 0 5px;}
 
 }
 
 table.scroll-table-body{
-  overflow:hidden;
   width: 100%;
   table-layout: fixed;
   tbody{
@@ -93,10 +92,18 @@ table.scroll-table-body{
   tr{
     table-layout: fixed;
     vertical-align: middle;
-    td:nth-of-type(1) {width:10%;vertical-align: middle; text-align: center; padding: 0px;}
-    td:nth-of-type(2) {width:60%;vertical-align: middle; padding: 0px;}
-    td:nth-of-type(3) {width:10%;vertical-align: middle; padding: 0px;}
-    td:nth-of-type(4) {width:30%;vertical-align: middle; padding: 0px;}
+    td:nth-of-type(1) {width:6%;vertical-align: middle; text-align: center; padding: 2px 0 2px 0;}
+    td:nth-of-type(2) {width:60%;vertical-align: middle; padding: 2px 0 2px 0;}
+    td:nth-of-type(3) {
+      cursor:pointer;
+      overflow: hidden;
+      padding: 2px 0 2px 10px;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      white-space: nowrap;
+      width:12%;
+    }
+    td:nth-of-type(4) {width:22%;vertical-align: middle; padding: 2px 0 2px 5px;letter-spacing: -1px;}
   }
 }
 

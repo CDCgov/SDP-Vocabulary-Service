@@ -10,8 +10,37 @@
   padding-bottom:5px;
 }
 .modal-body-concept{
-  padding-top:0px;
+  padding:0;
+  // overflow-y:scroll;
+  // height:30vh;
+  max-height:80vh;
+  .form-group {
+    padding:0 15px;
+  }
+  .table {margin-bottom:0}
+  th {text-align:left}
+
 }
+
+
+@media (min-width: 767px) {
+  .modal-lg {
+      width: 750px;
+      margin: 30px auto;
+  }
+}
+@media (min-width: 860px) {
+  .modal-lg {
+      width: 840px;
+      margin: 30px auto;
+  }
+}
+@media (min-width: 992px) {
+  .modal-lg {
+      width: 980px;
+  }
+}
+
 .checkbox-label{
   width: 100%
 }

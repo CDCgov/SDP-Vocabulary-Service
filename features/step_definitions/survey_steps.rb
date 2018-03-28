@@ -30,6 +30,11 @@ When(/^I use the section search to select "([^"]*)"$/) do |name|
   page.find('a', id: "select-#{name}").click
 end
 
+When(/^I attach an MMG to the "([^"]*)" input$/) do |input_name|
+  file_path = Rails.root + 'test/fixtures/files/TestMMG.xlsx'
+  attach_file(input_name, file_path)
+end
+
 When(/^I click on the menu link for the Survey with the (.+) "([^"]*)"$/) do |attribute, attribute_value|
   object_id = attribute_to_id('Survey', attribute, attribute_value)
   page.find("#survey_#{object_id}_menu").click

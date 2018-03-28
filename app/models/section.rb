@@ -86,6 +86,10 @@ class Section < ApplicationRecord
     where(created_by: owner_id)
   end
 
+  def page_id
+    concepts.where(display_name: 'PageId')[0].value
+  end
+
   # Builds a new section object with the same version_independent_id. Increments
   # the version by one and builds a new set of Response objects to go with it.
   def build_new_revision
@@ -153,5 +157,45 @@ class Section < ApplicationRecord
   def surveillance_systems
     SurveillanceSystem.joins(surveys: :survey_sections)
                       .where('survey_sections.section_id = ?', id).select(:id, :name).distinct.to_a
+  end
+
+  # Provides a list of nested items that are only questions by flattening out
+  # any subsections. Works recursively
+  def flatten_questions
+    flat_questions = []
+    section_nested_items.each do |sni|
+      if sni.question.present?
+        flat_questions << sni
+      else
+        flat_questions.concat(sni.nested_section.flatten_questions)
+      end
+    end
+    flat_questions
+  end
+
+  def flatten_nested_sections
+    flat_nested_sections = []
+    section_nested_items.each do |sni|
+      if sni.nested_section.present?
+        flat_nested_sections << sni
+        flat_nested_sections.concat(sni.nested_section.flatten_nested_sections)
+      end
+    end
+    flat_nested_sections
+  end
+
+  def calculate_section_height
+    height = 0.03 # start with 0.025 for section name + 0.05 for bottom border
+    height += flatten_nested_sections.length * 0.03
+    height += flatten_questions.length * 0.05
+    height = 1 if height > 1
+    height
+  end
+
+  def nested_item_names
+    names = ''
+    items = section_nested_items.map { |sni| sni.nested_section ? sni.nested_section.name : sni.question.content }
+    items.each { |str| names << str.parameterize.underscore.camelize.truncate(40, omission: '') + ',' }
+    names.chomp(',')
   end
 end
