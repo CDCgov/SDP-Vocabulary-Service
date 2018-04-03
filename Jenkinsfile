@@ -11,6 +11,8 @@ pipeline {
       agent { label 'vocab-ruby' }
 
       steps {
+        updateSlack('#FFFF00', 'STARTED')
+
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
           env.tdbname = sh returnStdout: true, script: 'echo -n "${svcname}" | tr "-" "_"'
@@ -67,19 +69,47 @@ pipeline {
           archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
             fingerprint: true
         }
+
+        success {
+          updateSlack('#00FF00', 'FINISHED')
+        }
+
+        failure {
+          updateSlack('#FF0000', 'FAILED')
+        }
       }
     }
 
     stage('Build for Dev Env') {
       agent any
+
       when {
         branch 'development'
       }
+
       steps {
+        updateSlack('#FFFF00', 'Starting build for development environment')
+        
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
           waitTime: '20', waitUnit: 'min'
       }
+
+      post {
+        success {
+          updateSlack('#00FF00', 'Finished building for development environment')
+        }
+
+        failure {
+          updateSlack('#FF0000', 'Failed to build for development environment')
+        }
+      }
     }
+  }
+}
+
+def updateSlack(String colorHex, String messageText) {
+  if (env.BRANCH_NAME == 'development' || env.CHANGE_ID) {
+    slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
   }
 }
