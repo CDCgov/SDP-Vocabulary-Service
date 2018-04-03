@@ -44,8 +44,10 @@ class SurveysController < ApplicationController
 
   def destroy
     if @survey.status == 'draft'
+      @survey.cascading_action do |element|
+        element.destroy if element.status == 'draft' && element.exclusive_use?
+      end
       @survey.destroy
-      SDP::Elasticsearch.delete_item('survey', @survey.id, true)
       render json: @survey
     else
       render json: @survey.errors, status: :unprocessable_entity

@@ -55,13 +55,15 @@ class SectionNestedItem < ApplicationRecord
   end
 
   def reindex
-    UpdateIndexJob.perform_later('question', question.id) if previous_changes[:question_id]
+    UpdateIndexJob.perform_later('question', question.id) if question && previous_changes[:question_id]
     UpdateIndexJob.perform_later('response_set', response_set.id) if response_set
+    UpdateIndexJob.perform_later('section', nested_section.id) if nested_section && previous_changes[:nested_section_id]
   end
 
   def reindex_on_update
     # While question can't actually change, previous_changes[:question_id] will exist if this section question was just created
-    UpdateIndexJob.perform_later('question', question.id) if previous_changes[:question_id]
+    UpdateIndexJob.perform_later('question', question.id) if question && previous_changes[:question_id]
+    UpdateIndexJob.perform_later('section', nested_section.id) if nested_section && previous_changes[:nested_section_id]
     if response_set && previous_changes[:response_set_id]
       UpdateIndexJob.perform_later('response_set', response_set.id)
     end

@@ -64,8 +64,10 @@ class SectionsController < ApplicationController
   # DELETE /sections/1.json
   def destroy
     if @section.status == 'draft'
+      @section.cascading_action do |element|
+        element.destroy if element.status == 'draft' && element.exclusive_use?
+      end
       @section.destroy
-      SDP::Elasticsearch.delete_item('section', @section.id, true)
       render json: @section
     else
       render json: @section.errors, status: :unprocessable_entity

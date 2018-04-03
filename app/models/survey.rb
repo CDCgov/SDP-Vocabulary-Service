@@ -21,6 +21,16 @@ class Survey < ApplicationRecord
   accepts_nested_attributes_for :sections, allow_destroy: true
 
   after_commit :index, on: [:create, :update]
+  after_commit :es_destroy, on: [:destroy]
+
+  def es_destroy
+    SDP::Elasticsearch.delete_item('survey', id, true)
+  end
+
+  def exclusive_use?
+    # Need an exclusive use call for cascade block, survey always exclusive
+    true
+  end
 
   def questions
     Question.joins(section_nested_items: { section: { survey_sections: :survey } }).where(surveys: { id: id }).all
@@ -89,7 +99,9 @@ class Survey < ApplicationRecord
   end
 
   def cascading_action(&block)
+    temp_sects = []
+    sections.each { |s| temp_sects << s }
     yield self
-    sections.each { |s| s.cascading_action(&block) }
+    temp_sects.each { |s| s.cascading_action(&block) }
   end
 end

@@ -20,7 +20,7 @@ class ProgramsAndSystems extends Component {
   surveillancePrograms(item) {
     if (item.surveillancePrograms) {
       return <span>{item.surveillancePrograms.length}
-       {item.surveillancePrograms.length > 0 ? ` - ${join(item.surveillancePrograms)}` : ''}</span>;
+       {item.surveillancePrograms.length > 0 ? ` - ${join(item.surveillancePrograms, ', ')}` : ''}</span>;
     } else {
       return 'Loading';
     }
@@ -29,7 +29,7 @@ class ProgramsAndSystems extends Component {
   surveillanceSystems(item) {
     if (item.surveillanceSystems) {
       return <span>{item.surveillanceSystems.length}
-       {item.surveillanceSystems.length > 0 ? ` - ${join(item.surveillanceSystems)}` : ''}</span>;
+       {item.surveillanceSystems.length > 0 ? ` - ${join(item.surveillanceSystems, ', ')}` : ''}</span>;
     } else {
       return 'Loading';
     }
