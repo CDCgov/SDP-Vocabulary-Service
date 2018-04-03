@@ -11,7 +11,7 @@ pipeline {
       agent { label 'vocab-ruby' }
 
       steps {
-        updateSlack('#FFFF00', 'STARTED')
+        updateSlack('#FFFF00', 'Started tests')
 
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
@@ -71,11 +71,11 @@ pipeline {
         }
 
         success {
-          updateSlack('#00FF00', 'FINISHED')
+          updateSlack('#00FF00', 'Finished tests')
         }
 
         failure {
-          updateSlack('#FF0000', 'FAILED')
+          updateSlack('#FF0000', 'Failed tests')
         }
       }
     }
