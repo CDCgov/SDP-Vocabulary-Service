@@ -24,6 +24,16 @@ class ResponseSet < ApplicationRecord
   accepts_nested_attributes_for :responses, allow_destroy: true
 
   after_commit :index, on: [:create, :update]
+  after_commit :es_destroy, on: [:destroy]
+
+  def es_destroy
+    SDP::Elasticsearch.delete_item('response_set', id, true)
+  end
+
+  def exclusive_use?
+    # Checking if the question or section that was just destroyed was the only link
+    sections.empty? && questions.empty?
+  end
 
   def self.most_recent_for_oid(oid)
     where(oid: oid).order(version: :desc).first

@@ -181,7 +181,7 @@ export default class SearchResult extends Component {
     } else if (result.responseSets == undefined) {
       return (<li>Click question name to view additional question information.</li>);
     } else {
-      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
+      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Author Recommended Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
     }
   }
 
