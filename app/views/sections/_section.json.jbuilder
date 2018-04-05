@@ -9,6 +9,11 @@ json.all_versions section.all_versions do |s|
   json.extract! s, :id, :name, :created_by_id, :version_independent_id, :version, :groups, :status, :most_recent
 end
 
+json.versions section.paper_trail_versions do |version|
+  json.extract! version, :changeset, :created_at
+  json.author User.find(version.whodunnit).email
+end
+
 json.questions section.questions_with_most_recent do |q|
   json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :category_id, :description, :status, \
                 :version, :version_independent_id, :response_type, :most_recent, :most_recent_published, :subcategory_id, \

@@ -10,6 +10,7 @@ import SectionList from "../sections/SectionList";
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import TagModal from "../TagModal";
 
@@ -22,7 +23,7 @@ import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSi
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false };
+    this.state = { tagModalOpen: false, selectedTab: 'main' };
   }
 
   render() {
@@ -109,116 +110,131 @@ export default class QuestionShow extends Component {
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Question Name:</strong> {question.content} </h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
-          <div className="basic-c-box panel-default question-type">
-            <div className="panel-heading">
-              <h2 className="panel-title">Details</h2>
+          <ul className="nav nav-tabs" role="tablist">
+            <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
+              <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
+            </li>
+            <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
+              <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
+            </li>
+          </ul>
+          <div className="tab-content">
+            <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
+              <ChangeHistoryTab versions={question.versions} type='question' majorVersion={question.version} />
             </div>
-            <div className="box-content">
-              <strong>Description: </strong>
-              {question.description}
-            </div>
-            <div className="box-content">
-              <strong>Created: </strong>
-              { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
-            </div>
-            { question.parent &&
-              <div className="box-content">
-                <strong>Extended from: </strong>
-                <Link to={`/questions/${question.parent.id}`}>{ question.parent.name || question.parent.content }</Link>
-              </div>
-            }
-            { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
-            <div className="box-content">
-              <strong>Published By: </strong>
-              {question.publishedBy.email}
-            </div>
-            }
-            {question.category && <div className="box-content">
-              <strong>Category: </strong>
-              {question.category.name && question.category.name}
-            </div>}
-            {question.subcategory && <div className="box-content">
-              <strong>Subcategory: </strong>
-              {question.subcategory.name && question.subcategory.name}
-            </div>}
-            {question.responseType && <div className="box-content">
-              <strong>Response Type: </strong>
-              {question.responseType.name && question.responseType.name}
-            </div>}
-            {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
-              <strong>Other Allowed: </strong>
-              {question.otherAllowed ? 'Yes' : 'No' }
-            </div>}
-          </div>
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  Tags
-                  {isSimpleEditable(question, this.props.currentUser) &&
-                    <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                      e.preventDefault();
-                      this.setState({ tagModalOpen: true });
-                    }}>
-                      <TagModal show={this.state.tagModalOpen || false}
-                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                        concepts={question.concepts}
-                        saveButtonAction={(conceptsAttributes) => {
-                          this.props.updateQuestionTags(question.id, conceptsAttributes);
-                          this.setState({ tagModalOpen: false });
-                        }} />
-                      <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                    </a>
-                  }
-                </h2>
-              </div>
-              <div className="box-content">
-                <div id="concepts-table">
-                  <CodedSetTable items={question.concepts} itemName={'Tag'} />
+            <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
+              <div className="basic-c-box panel-default question-type">
+                <div className="panel-heading">
+                  <h2 className="panel-title">Details</h2>
                 </div>
+                <div className="box-content">
+                  <strong>Description: </strong>
+                  {question.description}
+                </div>
+                <div className="box-content">
+                  <strong>Created: </strong>
+                  { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
+                </div>
+                { question.parent &&
+                  <div className="box-content">
+                    <strong>Extended from: </strong>
+                    <Link to={`/questions/${question.parent.id}`}>{ question.parent.name || question.parent.content }</Link>
+                  </div>
+                }
+                { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
+                <div className="box-content">
+                  <strong>Published By: </strong>
+                  {question.publishedBy.email}
+                </div>
+                }
+                {question.category && <div className="box-content">
+                  <strong>Category: </strong>
+                  {question.category.name && question.category.name}
+                </div>}
+                {question.subcategory && <div className="box-content">
+                  <strong>Subcategory: </strong>
+                  {question.subcategory.name && question.subcategory.name}
+                </div>}
+                {question.responseType && <div className="box-content">
+                  <strong>Response Type: </strong>
+                  {question.responseType.name && question.responseType.name}
+                </div>}
+                {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
+                  <strong>Other Allowed: </strong>
+                  {question.otherAllowed ? 'Yes' : 'No' }
+                </div>}
               </div>
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      Tags
+                      {isSimpleEditable(question, this.props.currentUser) &&
+                        <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                          e.preventDefault();
+                          this.setState({ tagModalOpen: true });
+                        }}>
+                          <TagModal show={this.state.tagModalOpen || false}
+                            cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                            concepts={question.concepts}
+                            saveButtonAction={(conceptsAttributes) => {
+                              this.props.updateQuestionTags(question.id, conceptsAttributes);
+                              this.setState({ tagModalOpen: false });
+                            }} />
+                          <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+                        </a>
+                      }
+                    </h2>
+                  </div>
+                  <div className="box-content">
+                    <div id="concepts-table">
+                      <CodedSetTable items={question.concepts} itemName={'Tag'} />
+                    </div>
+                  </div>
+                </div>
+              {question.responseSets && question.responseSets.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets: {question.responseSets && question.responseSets.length}</a>
+                    </h2>
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
+                    <ResponseSetList responseSets={question.responseSets} />
+                  </div>
+                </div>
+              }
+              {question.linkedResponseSets && question.linkedResponseSets.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-lrs"><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections: {question.linkedResponseSets && question.linkedResponseSets.length}</a>
+                    </h2>
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-lrs">
+                    <ResponseSetList responseSets={question.linkedResponseSets} />
+                  </div>
+                </div>
+              }
+              {question.sections && question.sections.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
+                    </h2>
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
+                    <SectionList sections={question.sections} currentUser={this.props.currentUser} />
+                  </div>
+                </div>
+              }
+              {question.status === 'published' &&
+                <ProgramsAndSystems item={question} />
+              }
             </div>
-          {question.responseSets && question.responseSets.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets: {question.responseSets && question.responseSets.length}</a>
-                </h2>
-              </div>
-              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
-                <ResponseSetList responseSets={question.responseSets} />
-              </div>
-            </div>
-          }
-          {question.linkedResponseSets && question.linkedResponseSets.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-lrs"><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections: {question.linkedResponseSets && question.linkedResponseSets.length}</a>
-                </h2>
-              </div>
-              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-lrs">
-                <ResponseSetList responseSets={question.linkedResponseSets} />
-              </div>
-            </div>
-          }
-          {question.sections && question.sections.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
-                </h2>
-              </div>
-              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
-                <SectionList sections={question.sections} currentUser={this.props.currentUser} />
-              </div>
-            </div>
-          }
-          {question.status === 'published' &&
-            <ProgramsAndSystems item={question} />
-          }
+          </div>
         </div>
       </div>
     );

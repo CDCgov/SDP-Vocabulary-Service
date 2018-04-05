@@ -12,3 +12,8 @@ end
 json.all_versions question.all_versions do |q|
   json.extract! q, :id, :content, :created_by_id, :version_independent_id, :version, :groups, :status, :most_recent
 end
+
+json.versions question.paper_trail_versions do |version|
+  json.extract! version, :changeset, :created_at
+  json.author User.find(version.whodunnit).email
+end

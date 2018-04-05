@@ -11,11 +11,19 @@ import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
+import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 export default class ResponseSetShow extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      selectedTab: 'main'
+    };
+  }
+
   render() {
     const {responseSet} = this.props;
     if(responseSet === undefined || responseSet.name === undefined){
@@ -113,58 +121,73 @@ export default class ResponseSetShow extends Component {
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Response Set Name:</strong> {responseSet.name} </h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
-          <div className="basic-c-box panel-default response_set-type">
-            <div className="panel-heading">
-              <h2 className="panel-title">Details</h2>
+          <ul className="nav nav-tabs" role="tablist">
+            <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
+              <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
+            </li>
+            <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
+              <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
+            </li>
+          </ul>
+          <div className="tab-content">
+            <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
+              <ChangeHistoryTab versions={responseSet.versions} type='response_set' majorVersion={responseSet.version} />
             </div>
-            <div className="box-content">
-              <strong>Description: </strong>
-              {responseSet.description}
-            </div>
-            <div className="box-content">
-              <strong>Created: </strong>
-              { format(parse(responseSet.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
-            </div>
-            { responseSet.parent &&
-              <div className="box-content">
-                <strong>Extended from: </strong>
-                <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
+            <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
+              <div className="basic-c-box panel-default response_set-type">
+                <div className="panel-heading">
+                  <h2 className="panel-title">Details</h2>
+                </div>
+                <div className="box-content">
+                  <strong>Description: </strong>
+                  {responseSet.description}
+                </div>
+                <div className="box-content">
+                  <strong>Created: </strong>
+                  { format(parse(responseSet.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
+                </div>
+                { responseSet.parent &&
+                  <div className="box-content">
+                    <strong>Extended from: </strong>
+                    <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
+                  </div>
+                }
+                { responseSet.source &&
+                  <div className="box-content">
+                    <strong>Import / Source: </strong>
+                    {this.sourceLink(responseSet)}
+                  </div>
+                }
+                { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
+                <div className="box-content">
+                  <strong>Published By: </strong>
+                  {responseSet.publishedBy.email}
+                </div>
+                }
               </div>
-            }
-            { responseSet.source &&
-              <div className="box-content">
-                <strong>Import / Source: </strong>
-                {this.sourceLink(responseSet)}
+              <div className="basic-c-box panel-default">
+                <div className="panel-heading">
+                  <h2 className="panel-title">Responses</h2>
+                </div>
+                <div className="box-content">
+                <CodedSetTable items={responseSet.responses} itemName={'Response'} />
+                </div>
               </div>
-            }
-            { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
-            <div className="box-content">
-              <strong>Published By: </strong>
-              {responseSet.publishedBy.email}
+              {responseSet.questions && responseSet.questions.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">Linked Questions</h2>
+                  </div>
+                  <div className="box-content">
+                    <SectionNestedItemList items={responseSet.questions} currentUser={this.props.currentUser} />
+                  </div>
+                </div>
+              }
+              {responseSet.status === 'published' &&
+                <ProgramsAndSystems item={responseSet} />
+              }
             </div>
-            }
           </div>
-          <div className="basic-c-box panel-default">
-            <div className="panel-heading">
-              <h2 className="panel-title">Responses</h2>
-            </div>
-            <div className="box-content">
-            <CodedSetTable items={responseSet.responses} itemName={'Response'} />
-            </div>
-          </div>
-          {responseSet.questions && responseSet.questions.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">Linked Questions</h2>
-              </div>
-              <div className="box-content">
-                <SectionNestedItemList items={responseSet.questions} currentUser={this.props.currentUser} />
-              </div>
-            </div>
-          }
-          {responseSet.status === 'published' &&
-            <ProgramsAndSystems item={responseSet} />
-          }
         </div>
       </div>
     );

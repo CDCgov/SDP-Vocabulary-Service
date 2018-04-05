@@ -2,6 +2,8 @@ class ResponseSet < ApplicationRecord
   include Versionable, OidGenerator, Searchable, Groupable
   SOURCE_OPTIONS = %w(local PHIN_VADS).freeze
   acts_as_commentable
+  has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
+                  ignore: [:created_at, :updated_at, :version_independent_id, :published_by_id]
 
   has_many :question_response_sets, dependent: :destroy
   has_many :questions, through: :question_response_sets

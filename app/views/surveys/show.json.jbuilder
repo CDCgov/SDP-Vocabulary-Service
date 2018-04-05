@@ -15,6 +15,11 @@ json.all_versions @survey.all_versions do |s|
   json.extract! s, :id, :name, :created_by_id, :version_independent_id, :version, :groups, :status, :most_recent
 end
 
+json.versions @survey.paper_trail_versions do |version|
+  json.extract! version, :changeset, :created_at
+  json.author User.find(version.whodunnit).email
+end
+
 json.nested_sections @survey.nested_sections do |section|
   json.extract! section, :id, :name, :description, :created_at, :updated_at, \
                 :version_independent_id, :version, :parent, :most_recent, :most_recent_published, \

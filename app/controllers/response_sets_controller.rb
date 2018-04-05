@@ -1,5 +1,6 @@
 class ResponseSetsController < ApplicationController
   load_and_authorize_resource except: [:usage]
+  before_action :set_paper_trail_whodunnit
 
   # GET /response_sets
   # GET /response_sets.json
