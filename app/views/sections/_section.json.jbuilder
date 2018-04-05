@@ -11,7 +11,7 @@ end
 
 json.versions section.paper_trail_versions do |version|
   json.extract! version, :changeset, :created_at
-  json.author User.find(version.whodunnit).email
+  json.author User.find(version.whodunnit).email if version.whodunnit
 end
 
 json.questions section.questions_with_most_recent do |q|
