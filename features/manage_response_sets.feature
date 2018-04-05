@@ -42,7 +42,10 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Details the Response Set with the name "Gender Full"
-    Then I should see "Edit"
+    And I click on the "Change History" link
+    Then I should see "No changes have been made to this version."
+    And I should not see "Changes by"
+    And I should see "Edit"
     When I click on the "Edit" button
     And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "Description" field with "M / F"
@@ -50,6 +53,10 @@ Feature: Manage Response Sets
     Then I should see "Gender Partial"
     And I should see "M / F"
     And I should not see "Publish"
+    When I click on the "Change History" link
+    Then I should see "Changes by test_author@gmail.com"
+    And I should see "field changed from"
+    And I should not see "No changes have been made to this version."
 
   Scenario: Send a Draft Response Set to a Publisher
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
