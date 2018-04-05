@@ -30,7 +30,13 @@ Feature: Edit Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    And I click on the "Publish" button
+    When I click on the "Change History" link
+    Then I should see "No changes have been made to this version."
+    And I should not see "Changes by"
+    When I click on the "Publish" button
+    Then I should see "Changes by test_author@gmail.com"
+    And I should see "field changed from"
+    And I should not see "No changes have been made to this version."
     And I click on the "Extend" button
     And I fill in the "Description" field with "This is an extended description"
     And I click on the "Save" button

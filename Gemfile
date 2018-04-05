@@ -33,6 +33,7 @@ gem 'httparty'
 gem 'js-routes'
 gem 'omniauth'
 gem 'omniauth_openid_connect'
+gem 'paper_trail'
 gem 'rolify'
 
 # Gems to support MMG spreadsheet import

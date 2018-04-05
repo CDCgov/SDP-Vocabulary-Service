@@ -10,6 +10,7 @@ import CodedSetTable from "../CodedSetTable";
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
+import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import TagModal from "../TagModal";
 
 import { sectionProps } from '../../prop-types/section_props';
@@ -23,7 +24,7 @@ const PAGE_SIZE = 10;
 class SectionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { page: 1, tagModalOpen: false };
+    this.state = { page: 1, tagModalOpen: false, selectedTab: 'main' };
     this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
     this.pageChange = this.pageChange.bind(this);
   }
@@ -167,91 +168,105 @@ class SectionShow extends Component {
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Section Name:</strong> {section.name} </h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
-          <div className="basic-c-box panel-default section-type">
-            <div className="panel-heading">
-              <h2 className="panel-title">Description</h2>
+          <ul className="nav nav-tabs" role="tablist">
+            <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
+              <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
+            </li>
+            <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
+              <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
+            </li>
+          </ul>
+          <div className="tab-content">
+            <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
+              <ChangeHistoryTab versions={section.versions} type='section' majorVersion={section.version} />
             </div>
-            <div className="box-content">
-              {section.description}
-            </div>
-            { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
-            <div className="box-content">
-              <strong>Published By: </strong>
-              {section.publishedBy.email}
-            </div>
-            }
-            { section.parent &&
-            <div className="box-content">
-              <strong>Extended from: </strong>
-              <Link to={`/sections/${section.parent.id}`}>{ section.parent.name && section.parent.name }</Link>
-            </div>
-            }
-          </div>
-          <div className="basic-c-box panel-default">
-            <div className="panel-heading">
-              <h2 className="panel-title">
-                Tags
-                {isSimpleEditable(section, this.props.currentUser) &&
-                  <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                    e.preventDefault();
-                    this.setState({ tagModalOpen: true });
-                  }}>
-                    <TagModal show={this.state.tagModalOpen || false}
-                      cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                      concepts={section.concepts}
-                      saveButtonAction={(conceptsAttributes) => {
-                        this.props.updateSectionTags(section.id, conceptsAttributes);
-                        this.setState({ tagModalOpen: false });
-                      }} />
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                  </a>
+            <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
+              <div className="basic-c-box panel-default section-type">
+                <div className="panel-heading">
+                  <h2 className="panel-title">Description</h2>
+                </div>
+                <div className="box-content">
+                  {section.description}
+                </div>
+                { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
+                <div className="box-content">
+                  <strong>Published By: </strong>
+                  {section.publishedBy.email}
+                </div>
                 }
-              </h2>
-            </div>
-            <div className="box-content">
-              <div id="concepts-table">
-                <CodedSetTable items={section.concepts} itemName={'Tag'} />
+                { section.parent &&
+                <div className="box-content">
+                  <strong>Extended from: </strong>
+                  <Link to={`/sections/${section.parent.id}`}>{ section.parent.name && section.parent.name }</Link>
+                </div>
+                }
               </div>
+              <div className="basic-c-box panel-default">
+                <div className="panel-heading">
+                  <h2 className="panel-title">
+                    Tags
+                    {isSimpleEditable(section, this.props.currentUser) &&
+                      <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({ tagModalOpen: true });
+                      }}>
+                        <TagModal show={this.state.tagModalOpen || false}
+                          cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                          concepts={section.concepts}
+                          saveButtonAction={(conceptsAttributes) => {
+                            this.props.updateSectionTags(section.id, conceptsAttributes);
+                            this.setState({ tagModalOpen: false });
+                          }} />
+                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+                      </a>
+                    }
+                  </h2>
+                </div>
+                <div className="box-content">
+                  <div id="concepts-table">
+                    <CodedSetTable items={section.concepts} itemName={'Tag'} />
+                  </div>
+                </div>
+              </div>
+              {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" onClick={(e) => {
+                        e.preventDefault();
+                        this.toggleExpand();
+                      }} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about linked </text>Linked Questions and Sections: {section.sectionNestedItems && section.sectionNestedItems.length}</a>
+                    </h2>
+                    <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-questions">
+                    <div className="panel-body">
+                      <SectionNestedItemList resultStyle={this.props.resultStyle} items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
+                      {this.props.section.sectionNestedItems.length > 10 &&
+                      <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+              {section.surveys && section.surveys.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.surveys && section.surveys.length}</a>
+                    </h2>
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-surveys">
+                    <div className="panel-body">
+                      <SurveyList surveys={section.surveys} currentUser={this.props.currentUser} />
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
           </div>
-          {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  <a className="panel-toggle" onClick={(e) => {
-                    e.preventDefault();
-                    this.toggleExpand();
-                  }} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Questions and Sections: {section.sectionNestedItems && section.sectionNestedItems.length}</a>
-                </h2>
-                <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
-              </div>
-              <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-questions">
-                <div className="panel-body">
-                  <SectionNestedItemList resultStyle={this.props.resultStyle} items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
-                  {this.props.section.sectionNestedItems.length > 10 &&
-                  <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
-                  }
-                </div>
-              </div>
-            </div>
-          }
-          {section.surveys && section.surveys.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.surveys && section.surveys.length}</a>
-                </h2>
-              </div>
-              <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-surveys">
-                <div className="panel-body">
-                  <SurveyList surveys={section.surveys} currentUser={this.props.currentUser} />
-                </div>
-              </div>
-            </div>
-          }
-
         </div>
       </div>
     );
