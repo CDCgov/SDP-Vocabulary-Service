@@ -8,6 +8,7 @@ namespace :admin do
     else
       user = User.create(email: args.email, password: args.password, password_confirmation: args.password)
       user.add_role :admin if args.admin == 'true'
+      user.save!
     end
   end
 
