@@ -179,7 +179,7 @@ class DashboardContainer extends SearchManagerComponent {
                 {this.state.groupFilterId > 0 &&
                   <div className="group-filter-info">
                   <div className="adv-filter-list">
-                  
+
                   <a className="panel-toggle" data-toggle="collapse" href="#collapse_group_detail"><i className="fa fa-bars" aria-hidden="true"></i>
                   <text className="sr-only">Click link to expand information about group</text>
                   Filtering by content in group: {groupObj.name}</a></div>
@@ -189,9 +189,9 @@ class DashboardContainer extends SearchManagerComponent {
                     <p><strong>Group Members</strong></p>
                     <ul>
                       {groupObj.users && groupObj.users.map((member) => {
-                       return  <li key={member.id}> {member.firstName} {member.lastName} (<a href="mailto:{member.email}">{member.email}</a>)</li>
+                        return  <li key={member.id}> {member.firstName} {member.lastName} (<a href="mailto:{member.email}">{member.email}</a>)</li>;
                       })}
-                    </ul>  
+                    </ul>
                   </div>
                   </div>
                 </div>
@@ -358,7 +358,7 @@ class DashboardContainer extends SearchManagerComponent {
           )}
         </div>
         <div className="recent-items-heading"></div>
-        {groups.length > 0 && this.props.searchResults.Source !== 'simple_search' && 
+        {groups.length > 0 && this.props.searchResults.Source !== 'simple_search' &&
           <div>
             <div className="recent-items-group-heading">Filter by Group</div>
             <div className="recent-items-body">
