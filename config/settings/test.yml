@@ -1,5 +1,5 @@
 default_url_helper_host: "localhost:3000"
 elasticsearch:
   log: true
-  host: <%= ENV['ES_HOST'] || http://example.com:9200 %>
+  host: <%= ENV['ES_HOST'] || 'http://example.com:9200' %>
   adapter: :net_http
