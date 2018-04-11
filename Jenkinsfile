@@ -16,6 +16,7 @@ pipeline {
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
           env.tdbname = sh returnStdout: true, script: 'echo -n "${svcname}" | tr "-" "_"'
+          env.esname = sh returnStdout: true, script: 'echo -n "es-test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
         }
         echo "svc: ${svcname}, tdbname: ${tdbname}"
 
@@ -57,16 +58,16 @@ pipeline {
 
         echo "Starting elasticsearch"
         timeout(time: 5, unit: 'MINUTES') {
-          sh 'oc process openshift//elasticsearch-ephemeral -l elastichost=${svcname} | oc create -f -'
+          sh 'oc process openshift//elasticsearch-ephemeral ELASTICSEARCH_SERVICE_NAME=${esname} | oc create -f -'
           waitUntil {
             script {
               sleep time: 15, unit: 'SECONDS'
-              def r = sh returnStdout: true, script: 'oc get pod -l elastichost=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
+              def r = sh returnStdout: true, script: 'oc get pod -l name=${esname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
               return (r == "true")
             }
           }
           script {
-            env.elastichost = sh returnStdout: true, script: 'oc get service -l elastichost=${svcname} -o jsonpath="{.items[*].spec.clusterIP}"'
+            env.elastichost = sh returnStdout: true, script: 'oc get service -l name=${esname} -o jsonpath="{.items[*].spec.clusterIP}"'
           }
         }
 
