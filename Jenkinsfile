@@ -55,9 +55,32 @@ pipeline {
           sh 'bundle exec rake db:schema:load'
         }
 
+        echo "Starting elasticsearch"
+        timeout(time: 5, unit: 'MINUTES') {
+          sh 'oc process openshift//elasticsearch-ephemeral -l elastichost=${svcname} | oc create -f -'
+          waitUntil {
+            script {
+              sleep time: 15, unit: 'SECONDS'
+              def r = sh returnStdout: true, script: 'oc get pod -l elastichost=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
+              return (r == "true")
+            }
+          }
+          script {
+            env.elastichost = sh returnStdout: true, script: 'oc get service -l elastichost=${svcname} -o jsonpath="{.items[*].spec.clusterIP}"'
+          }
+        }
+
         echo "Running tests..."
         withEnv(['NO_PROXY=localhost,127.0.0.1', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
           sh 'bundle exec rake'
+        }
+
+        echo "Running elasticsearch integration tests..."
+        withEnv(['NO_PROXY=localhost,127.0.0.1', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
+                 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432',
+                 "ES_HOST=${elastichost}"]) {
+          sh 'bundle exec rake admin:create_user[test@sdpv.local,test,false]'
+          sh 'bundle exec rake data:load_test[test@sdpv.local]'
         }
       }
 
@@ -65,6 +88,8 @@ pipeline {
         always {
           echo "Destroying test database..."
           sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
+          echo "Destroying elasticsearch..."
+          sh 'oc delete pods,dc,rc,services,secrets -l elastichost=${svcname}'
           echo "Archiving test artifacts..."
           archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
             fingerprint: true
