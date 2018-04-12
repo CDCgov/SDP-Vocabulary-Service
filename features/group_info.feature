@@ -12,3 +12,4 @@ Feature: Group information page
     And I should not see "Clear Adv. Filters"
     When I select the "All My Groups" option in the "Group Select" list
     Then I should see "Filtering to content owned by any of your groups"
+    And I should not see "(test_author@gmail.com)"
