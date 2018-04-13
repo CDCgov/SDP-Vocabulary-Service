@@ -77,9 +77,9 @@ pipeline {
         }
 
         echo "Running elasticsearch integration tests..."
-        withEnv(['NO_PROXY=localhost,127.0.0.1', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
+        withEnv(["NO_PROXY=localhost,127.0.0.1,${elastichost}", "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
                  'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432',
-                 "ES_HOST=${elastichost}", 'RAILS_ENV=test']) {
+                 "ES_HOST=http://${elastichost}:9200", 'RAILS_ENV=test']) {
           sh 'bundle exec rake db:seed'
           sh 'bundle exec rake admin:create_user[test@sdpv.local,testtest,false]'
           sh 'bundle exec rake data:load_test[test@sdpv.local]'
