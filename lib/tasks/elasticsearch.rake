@@ -7,7 +7,8 @@ namespace :es do
 
   desc 'Test that elasticsearch is actually working'
   task :test, [:user_email] => :environment do |_t, args|
-    search_results = SDP::Elasticsearch.search('question', 'favorite', 1, 10, args.user_email)
+    u = User.find_by email: args.user_email
+    search_results = SDP::Elasticsearch.search('', '', 1, 10, u.id)
     if search_results.hits.count > 0
       puts 'Search executed successfully'
     else
