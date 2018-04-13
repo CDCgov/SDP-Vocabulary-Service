@@ -2,7 +2,7 @@ class Survey < ApplicationRecord
   include Versionable, Searchable, Taggable, Groupable
   acts_as_commentable
   has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
-                  ignore: [:created_at, :updated_at, :version_independent_id, :published_by_id]
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
 
   has_many :survey_sections, -> { order 'position asc' }, dependent: :destroy
   has_many :sections, through: :survey_sections
