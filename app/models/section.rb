@@ -2,7 +2,7 @@ class Section < ApplicationRecord
   include OidGenerator, Versionable, Searchable, Taggable, Groupable
   acts_as_commentable
   has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
-                  ignore: [:created_at, :updated_at, :version_independent_id, :published_by_id]
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
 
   has_many :section_nested_items, -> { order 'position asc' }, dependent: :destroy
   has_many :nested_sections, through: :section_nested_items

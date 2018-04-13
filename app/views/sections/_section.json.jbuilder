@@ -10,8 +10,19 @@ json.all_versions section.all_versions do |s|
 end
 
 json.versions section.paper_trail_versions do |version|
-  json.extract! version, :changeset, :created_at
+  json.extract! version, :created_at
   json.author User.find(version.whodunnit).email if version.whodunnit
+  temp_hash = {}
+  version.changeset.each_pair do |field, arr|
+    if field.end_with?('_id')
+      before_name = field.chomp('_id').camelize.constantize.find(arr[0]).name if arr[0]
+      after_name = field.chomp('_id').camelize.constantize.find(arr[1]).name if arr[1]
+      temp_hash[field.chomp('_id').humanize] = [before_name, after_name]
+    else
+      temp_hash[field.humanize] = arr
+    end
+  end
+  json.changeset temp_hash
 end
 
 json.questions section.questions_with_most_recent do |q|

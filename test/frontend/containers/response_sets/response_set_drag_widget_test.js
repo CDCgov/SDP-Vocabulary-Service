@@ -18,8 +18,8 @@ describe('ResponseSetDragWidget', () => {
   it('should create response set drag widget', () => {
     expect(component.find("div[name='linked_response_sets']").length).to.exist;
     expect(component.find("div[class='selected_response_sets']").length).to.exist;
-    expect(component.find("ul[id='response_set_id_1']").length).to.equal(1);
-    expect(component.find("ul[id='response_set_id_2']").length).to.equal(1);
+    expect(component.find("ul[id='response_set_dropped_id_1']").length).to.equal(1);
+    expect(component.find("ul[id='response_set_dropped_id_2']").length).to.equal(1);
   });
 
 });

@@ -24,14 +24,14 @@ module Groupable
   def add_to_group(gid)
     cascading_action do |element|
       element.groups << Group.find(gid) unless element.groups.include?(Group.find(gid))
-      UpdateIndexJob.perform_later(element.class.to_s.underscore, id)
+      UpdateIndexJob.perform_later(element.class.to_s.underscore, element.id)
     end
   end
 
   def remove_from_group(gid)
     cascading_action do |element|
       element.groups.delete(Group.find(gid))
-      UpdateIndexJob.perform_later(element.class.to_s.underscore, id)
+      UpdateIndexJob.perform_later(element.class.to_s.underscore, element.id)
     end
   end
 end
