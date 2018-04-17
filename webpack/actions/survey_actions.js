@@ -26,10 +26,10 @@ export function newSurvey() {
   };
 }
 
-export function deleteSurvey(id, callback=null) {
+export function deleteSurvey(id, cascade, callback=null) {
   return {
     type: DELETE_SURVEY,
-    payload: deleteObject(routes.surveyPath(id), callback)
+    payload: deleteObject(routes.surveyPath(id), cascade, callback)
   };
 }
 

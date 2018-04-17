@@ -128,8 +128,10 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1.json
   def destroy
     if @question.status == 'draft'
-      @question.cascading_action do |element|
-        element.destroy if element.status == 'draft' && element.exclusive_use?
+      if params[:cascade] == 'true'
+        @question.cascading_action do |element|
+          element.destroy if element.status == 'draft' && element.exclusive_use?
+        end
       end
       @question.destroy
       render json: @question

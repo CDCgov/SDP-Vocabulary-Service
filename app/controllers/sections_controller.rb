@@ -65,8 +65,10 @@ class SectionsController < ApplicationController
   # DELETE /sections/1.json
   def destroy
     if @section.status == 'draft'
-      @section.cascading_action do |element|
-        element.destroy if element.status == 'draft' && element.exclusive_use?
+      if params[:cascade] == 'true'
+        @section.cascading_action do |element|
+          element.destroy if element.status == 'draft' && element.exclusive_use?
+        end
       end
       @section.destroy
       render json: @section

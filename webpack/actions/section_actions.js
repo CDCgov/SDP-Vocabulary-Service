@@ -50,10 +50,10 @@ export function reorderSection(survey, index, direction) {
   };
 }
 
-export function deleteSection(id, callback=null) {
+export function deleteSection(id, cascade, callback=null) {
   return {
     type: DELETE_SECTION,
-    payload: deleteObject(routes.sectionPath(id), callback)
+    payload: deleteObject(routes.sectionPath(id), cascade, callback)
   };
 }
 

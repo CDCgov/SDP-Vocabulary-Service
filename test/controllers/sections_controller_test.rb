@@ -182,7 +182,23 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Question.count', -1) do
       assert_difference('SectionNestedItem.count', -1) do
         assert_difference('Section.count', -1) do
-          delete section_url(Section.last, format: :json)
+          delete section_url(Section.last, format: :json), params: { cascade: 'true' }
+        end
+      end
+    end
+    assert_response :success
+    assert_not_equal last_id, Section.last
+  end
+
+  test 'shouldnt destroy question if cascade param is false' do
+    post questions_url(format: :json), params: { question: { status: 'draft', content: 'TBD content' } }
+    last_id = Section.last.id
+    linked_question = { question_id: Question.last.id, response_set_id: nil, position: 1, program_var: 'test' }
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @section.created_by_id, linked_items: [linked_question] } }
+    assert_difference('Question.count', 0) do
+      assert_difference('SectionNestedItem.count', -1) do
+        assert_difference('Section.count', -1) do
+          delete section_url(Section.last, format: :json), params: { cascade: 'false' }
         end
       end
     end
@@ -199,7 +215,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Question.count', 0) do
       assert_difference('SectionNestedItem.count', -1) do
         assert_difference('Section.count', -1) do
-          delete section_url(Section.last, format: :json)
+          delete section_url(Section.last, format: :json), params: { cascade: 'true' }
         end
       end
     end

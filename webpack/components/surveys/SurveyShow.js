@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
+import { Modal, Button } from 'react-bootstrap';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -21,7 +22,7 @@ import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSi
 class SurveyShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, selectedTab: 'main' };
+    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
   historyBar() {
@@ -35,6 +36,46 @@ class SurveyShow extends Component {
           </ul>
         </h2>
         <VersionInfo versionable={this.props.survey} versionableType='survey' currentUser={this.props.currentUser} />
+      </div>
+    );
+  }
+
+  deleteModal() {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showDeleteModal} onHide={()=>this.setState({showDeleteModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete this survey? This action cannot be undone.</p>
+            <p><strong>Delete Survey: </strong>This will delete the survey but not any of the other items created or associated with it</p>
+            <p><strong>Delete All: </strong>This will delete the survey and all other unused draft sections, questions, and response sets associated with it</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => this.props.deleteSurvey(this.props.survey.id, false, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.surveyCount = this.props.stats.surveyCount - 1;
+                stats.mySurveyCount = this.props.stats.mySurveyCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete Survey</Button>
+            <Button onClick={() => this.props.deleteSurvey(this.props.survey.id, true, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.surveyCount = this.props.stats.surveyCount - 1;
+                stats.mySurveyCount = this.props.stats.mySurveyCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete All</Button>
+            <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
@@ -81,19 +122,9 @@ class SurveyShow extends Component {
           {isEditable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              if(confirm('Are you sure you want to delete this Survey? This action cannot be undone.')){
-                this.props.deleteSurvey(this.props.survey.id, (response) => {
-                  if (response.status == 200) {
-                    let stats = Object.assign({}, this.props.stats);
-                    stats.surveyCount = this.props.stats.surveyCount - 1;
-                    stats.mySurveyCount = this.props.stats.mySurveyCount - 1;
-                    this.props.setStats(stats);
-                    this.props.router.push('/');
-                  }
-                });
-              }
+              this.setState({showDeleteModal: true});
               return false;
-            }}>Delete</a>
+            }}>{this.deleteModal()}Delete</a>
           }
           {isExtendable(this.props.survey, this.props.currentUser) &&
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
