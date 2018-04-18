@@ -109,14 +109,46 @@ Feature: Manage Questions
 
    Scenario: Delete a Question
     Given I have a Question with the content "Test Question" and the description "Question description"
+    Given I have a Response Set with the name "Gender Full"
     And I am logged in as test_author@gmail.com
-    When I go to the list of Questions
+    When I go to the dashboard
     And I click on the menu link for the Question with the content "Test Question"
-    And I click on the option to Details the Question with the content "Test Question"
-    When I click on the "Delete" link and confirm my action
+    And I click on the option to Edit the Question with the content "Test Question"
+    And I select the "Open Choice" option in the "Response Type" list
+    And I wait 2 seconds
+    And I click on the "select-Gender Full" link
+    And I click on the "Save" button
+    Then I should see "Test Question"
+    When I click on the "Delete" link
+    Then I should see "Are you sure you want to delete this question?"
+    When I click on the "Delete Question" link
     Then I go to the dashboard
     When I go to the list of Questions
     Then I should not see "Test Question"
+    When I go to the list of Response Sets
+    Then I should see "Gender Full"
+
+  Scenario: Delete all for a question
+    Given I have a Response Set with the name "Gender Full"
+    And I have a Category with the name "Multiple Choice"
+    And I am logged in as test_author@gmail.com
+    When I go to the dashboard
+    And I click on the create "Questions" dropdown item
+    And I select the "Open Choice" option in the "Response Type" list
+    And I fill in the "Question" field with "What is your favorite color?"
+    And I fill in the "Description" field with "This is a description"
+    And I click on the "select-Gender Full" link
+    And I select the "Multiple Choice" option in the "Category" list
+    And I click on the "Save" button
+    Then I should see "What is your favorite color?"
+    When I click on the "Delete" link
+    Then I should see "Are you sure you want to delete this question?"
+    When I click on the "Delete All" link
+    And I wait 1 seconds
+    When I go to the list of Questions
+    Then I should not see "Test Question"
+    When I go to the list of Response Sets
+    Then I should not see "Gender Full"
 
   Scenario: Published Question should be visible when not logged in
     Given I have a published Question with the content "Why?"

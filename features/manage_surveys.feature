@@ -85,7 +85,9 @@ Feature: Manage Surveys
   When I go to the list of Surveys
   And I click on the menu link for the Survey with the name "Test Survey"
   And I click on the option to Details the Survey with the name "Test Survey"
-  When I click on the "Delete" link and confirm my action
+  When I click on the "Delete" link
+  Then I should see "Are you sure you want to delete this survey?"
+  When I click on the "Delete Survey" link
   Then I go to the dashboard
   When I go to the list of Surveys
   Then I should not see "Test Survey"
