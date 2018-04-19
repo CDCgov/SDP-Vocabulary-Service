@@ -76,6 +76,64 @@ class SurveyImportContainer extends Component {
             </dl>
           </div>
           {this.fileActions()}
+          <h2>14 Duplicates Found <span className="small">Please resolve before continuing</span></h2>
+          <div className="progress">
+            <div className="progress-bar" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100" style={{minWidth: '2em', width:'7.15%'}}>
+            </div>
+          </div>
+          <div className="pull-right"><button className="btn btn-sm btn-default"><span className="fa fa-arrow-left"></span></button> <button className="btn btn-sm btn-default"><span className="fa fa-arrow-right"></span></button></div>
+          <p>14 questions remaining</p>
+
+          <h3>Imported from spreadsheet</h3>
+          <table className="table">
+            <thead>
+              <tr className="active">
+                <th>Name &amp; Description</th>
+                <th>Response Type</th>
+                <th>Category</th>
+                <th className="action"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><text>What was the principal reason for travel</text><br/><span className="small">Select the principal reason for travel</span></td>
+                <td><i className="fa fa-comments" aria-hidden="true"></i> Travel Reason (Hepatitis A)</td>
+                <td><a href="#">Travel Reason (Hepatitis A)</a></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>Potential Duplicate Questions (n)</h3>
+          <table className="table">
+            <thead>
+              <tr className="active">
+                <th className="match-score">Match</th>
+                <th>Name &amp; Description</th>
+                <th>Response Type</th>
+                <th>Category</th>
+                <th className="text-center">Ref. Count</th>
+                <th className="action"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="match-score">99</td>
+                <td><a href="#">What was the principal reason for travel</a><br/><span className="small">Select the principal reason for travel</span></td>
+                <td><i className="fa fa-comments" aria-hidden="true"></i> Travel Reason (Hepatitis A)</td>
+                <td>Epidemiological</td>
+                <td className="text-center">14</td>
+                <td><button className="btn btn-default btn-sm">Select</button></td>
+              </tr>
+              <tr>
+                <td className="match-score">89</td>
+                <td><a href="#">What was the primary reason for travel</a><br/><span className="small">Select the primary reason for travel</span></td>
+                <td><i className="fa fa-comments" aria-hidden="true"></i> Travel Reason (Hepatitis A)</td>
+                <td>Epidemiological</td>
+                <td className="text-center">5</td>
+                <td><button className="btn btn-success btn-sm">Select</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       );
     }
