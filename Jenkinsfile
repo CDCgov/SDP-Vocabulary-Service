@@ -16,6 +16,7 @@ pipeline {
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
           env.tdbname = sh returnStdout: true, script: 'echo -n "${svcname}" | tr "-" "_"'
+          env.esname = sh returnStdout: true, script: 'echo -n "es-test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
         }
         echo "svc: ${svcname}, tdbname: ${tdbname}"
 
@@ -55,9 +56,34 @@ pipeline {
           sh 'bundle exec rake db:schema:load'
         }
 
+        echo "Starting elasticsearch..."
+        timeout(time: 5, unit: 'MINUTES') {
+          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} | oc create -f -'
+          waitUntil {
+            script {
+              sleep time: 15, unit: 'SECONDS'
+              def r = sh returnStdout: true, script: 'oc get pod -l name=${esname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
+              return (r == "true")
+            }
+          }
+          script {
+            env.elastichost = sh returnStdout: true, script: 'oc get service -l name=${esname} -o jsonpath="{.items[*].spec.clusterIP}"'
+          }
+        }
+
         echo "Running tests..."
         withEnv(['NO_PROXY=localhost,127.0.0.1', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
           sh 'bundle exec rake'
+        }
+
+        echo "Running elasticsearch integration tests..."
+        withEnv(["NO_PROXY=localhost,127.0.0.1,${elastichost}", "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
+                 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432',
+                 "ES_HOST=http://${elastichost}:9200", 'RAILS_ENV=test']) {
+          sh 'bundle exec rake db:seed'
+          sh 'bundle exec rake admin:create_user[test@sdpv.local,testtest,false]'
+          sh 'bundle exec rake data:load_test[test@sdpv.local]'
+          sh 'bundle exec rake es:test[test@sdpv.local]'
         }
       }
 
@@ -65,6 +91,8 @@ pipeline {
         always {
           echo "Destroying test database..."
           sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
+          echo "Destroying elasticsearch..."
+          sh 'oc delete pods,dc,rc,services,secrets -l name=${esname}'
           echo "Archiving test artifacts..."
           archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
             fingerprint: true
