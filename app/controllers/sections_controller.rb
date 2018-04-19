@@ -67,7 +67,8 @@ class SectionsController < ApplicationController
     if @section.status == 'draft'
       if params[:cascade] == 'true'
         @section.cascading_action do |element|
-          element.destroy if element.status == 'draft' && element.exclusive_use?
+          # Original item for deletion can be used elsewhere, children must not be reused
+          element.destroy if element.status == 'draft' && (element.exclusive_use? || element == @section)
         end
       end
       @section.destroy

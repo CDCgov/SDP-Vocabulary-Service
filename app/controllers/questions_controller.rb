@@ -130,7 +130,8 @@ class QuestionsController < ApplicationController
     if @question.status == 'draft'
       if params[:cascade] == 'true'
         @question.cascading_action do |element|
-          element.destroy if element.status == 'draft' && element.exclusive_use?
+          # Original item for deletion can be used elsewhere, children must not be reused
+          element.destroy if element.status == 'draft' && (element.exclusive_use? || element == @question)
         end
       end
       @question.destroy
