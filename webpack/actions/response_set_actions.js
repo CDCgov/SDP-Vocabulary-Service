@@ -18,7 +18,7 @@ import {
 export function deleteResponseSet(id, callback=null) {
   return {
     type: DELETE_RESPONSE_SET,
-    payload: deleteObject(routes.responseSetPath(id), callback)
+    payload: deleteObject(routes.responseSetPath(id), false, callback)
   };
 }
 

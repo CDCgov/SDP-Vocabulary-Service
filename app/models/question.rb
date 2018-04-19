@@ -62,7 +62,8 @@ class Question < ApplicationRecord
   end
 
   def cascading_action(&block)
-    temp_rs = response_sets
+    temp_rs = []
+    response_sets.each { |rs| temp_rs << rs }
     yield self
     temp_rs.each { |rs| rs.cascading_action(&block) }
   end

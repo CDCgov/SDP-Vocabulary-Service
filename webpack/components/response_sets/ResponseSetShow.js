@@ -100,22 +100,22 @@ export default class ResponseSetShow extends Component {
               }}>Publish</a>
             }
             {isEditable(responseSet, this.props.currentUser) &&
-            <a className="btn btn-default" href="#" onClick={(e) => {
-              e.preventDefault();
-              if(confirm('Are you sure you want to delete this Response Set? This action cannot be undone.')){
-                this.props.deleteResponseSet(responseSet.id, (response) => {
-                  if (response.status == 200) {
-                    let stats = Object.assign({}, this.props.stats);
-                    stats.responseSetCount = this.props.stats.responseSetCount - 1;
-                    stats.myResponseSetCount = this.props.stats.myResponseSetCount - 1;
-                    this.props.setStats(stats);
-                    this.props.router.push('/');
-                  }
-                });
-              }
-              return false;
-            }}>Delete</a>
-          }
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                if(confirm('Are you sure you want to delete this Response Set? This action cannot be undone.')){
+                  this.props.deleteResponseSet(responseSet.id, (response) => {
+                    if (response.status == 200) {
+                      let stats = Object.assign({}, this.props.stats);
+                      stats.responseSetCount = this.props.stats.responseSetCount - 1;
+                      stats.myResponseSetCount = this.props.stats.myResponseSetCount - 1;
+                      this.props.setStats(stats);
+                      this.props.router.push('/');
+                    }
+                  });
+                }
+                return false;
+              }}>Delete</a>
+            }
           </div>
         }
         <div className="maincontent-details">

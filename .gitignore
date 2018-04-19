@@ -22,6 +22,7 @@ config/initializers/local.rb
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/test/fixtures/files/~$*
 
 # Ignore Byebug command history file.
 .byebug_history

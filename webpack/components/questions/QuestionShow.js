@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
+import { Modal, Button } from 'react-bootstrap';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
@@ -23,7 +24,7 @@ import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSi
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, selectedTab: 'main' };
+    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
   render() {
@@ -64,6 +65,46 @@ export default class QuestionShow extends Component {
     }
   }
 
+  deleteModal(question) {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showDeleteModal} onHide={()=>this.setState({showDeleteModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete this question? This action cannot be undone.</p>
+            <p><strong>Delete Question: </strong>This will delete the question but not any of the other items created or associated with it</p>
+            <p><strong>Delete All: </strong>This will delete the question and all other unused draft response sets associated with it</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => this.props.deleteQuestion(question.id, false, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.questionCount = this.props.stats.questionCount - 1;
+                stats.myQuestionCount = this.props.stats.myQuestionCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete Question</Button>
+            <Button onClick={() => this.props.deleteQuestion(question.id, true, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.questionCount = this.props.stats.questionCount - 1;
+                stats.myQuestionCount = this.props.stats.myQuestionCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete All</Button>
+            <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
   mainContent(question) {
     return (
       <div className="col-md-9 nopadding maincontent">
@@ -91,19 +132,9 @@ export default class QuestionShow extends Component {
             {isEditable(question, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                if(confirm('Are you sure you want to delete this Question? This action cannot be undone.')){
-                  this.props.deleteQuestion(question.id, (response) => {
-                    if (response.status == 200) {
-                      let stats = Object.assign({}, this.props.stats);
-                      stats.questionCount = this.props.stats.questionCount - 1;
-                      stats.myQuestionCount = this.props.stats.myQuestionCount - 1;
-                      this.props.setStats(stats);
-                      this.props.router.push('/');
-                    }
-                  });
-                }
+                this.setState({showDeleteModal: true});
                 return false;
-              }}>Delete</a>
+              }}>{this.deleteModal(question)}Delete</a>
             }
           </div>
         }

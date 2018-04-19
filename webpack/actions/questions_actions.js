@@ -16,10 +16,10 @@ import {
   UPDATE_QUESTION_TAGS
 } from './types';
 
-export function deleteQuestion(id, callback=null) {
+export function deleteQuestion(id, cascade=false, callback=null) {
   return {
     type: DELETE_QUESTION,
-    payload: deleteObject(routes.question_path(id), callback)
+    payload: deleteObject(routes.question_path(id), cascade, callback)
   };
 }
 

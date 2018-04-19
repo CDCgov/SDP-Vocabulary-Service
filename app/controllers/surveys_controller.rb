@@ -46,8 +46,10 @@ class SurveysController < ApplicationController
 
   def destroy
     if @survey.status == 'draft'
-      @survey.cascading_action do |element|
-        element.destroy if element.status == 'draft' && element.exclusive_use?
+      if params[:cascade] == 'true'
+        @survey.cascading_action do |element|
+          element.destroy if element.status == 'draft' && element.exclusive_use?
+        end
       end
       @survey.destroy
       render json: @survey

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 import $ from 'jquery';
+import { Modal, Button } from 'react-bootstrap';
 
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import SurveyList from '../surveys/SurveyList';
@@ -24,7 +25,7 @@ const PAGE_SIZE = 10;
 class SectionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { page: 1, tagModalOpen: false, selectedTab: 'main' };
+    this.state = { page: 1, tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
     this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
     this.pageChange = this.pageChange.bind(this);
   }
@@ -106,6 +107,46 @@ class SectionShow extends Component {
     });
   }
 
+  deleteModal(section) {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showDeleteModal} onHide={()=>this.setState({showDeleteModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete this section? This action cannot be undone.</p>
+            <p><strong>Delete Section: </strong>This will delete the section but not any of the other items created or associated with it</p>
+            <p><strong>Delete All: </strong>This will delete the section and all other unused draft questions and response sets associated with it</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => this.props.deleteSection(section.id, false, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.sectionCount = this.props.stats.sectionCount - 1;
+                stats.mySectionCount = this.props.stats.mySectionCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete Section</Button>
+            <Button onClick={() => this.props.deleteSection(section.id, true, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.sectionCount = this.props.stats.sectionCount - 1;
+                stats.mySectionCount = this.props.stats.mySectionCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete All</Button>
+            <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
   mainContent(section) {
     return (
       <div className="col-md-9 nopadding maincontent">
@@ -147,19 +188,9 @@ class SectionShow extends Component {
           {isEditable(section, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              if(confirm('Are you sure you want to delete this Section? This action cannot be undone.')){
-                this.props.deleteSection(section.id, (response) => {
-                  if (response.status == 200) {
-                    let stats = Object.assign({}, this.props.stats);
-                    stats.sectionCount = this.props.stats.sectionCount - 1;
-                    stats.mySectionCount = this.props.stats.mySectionCount - 1;
-                    this.props.setStats(stats);
-                    this.props.router.push('/');
-                  }
-                });
-              }
+              this.setState({showDeleteModal: true});
               return false;
-            }}>Delete</a>
+            }}>{this.deleteModal(section)}Delete</a>
           }
           {isExtendable(section, this.props.currentUser) &&
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
