@@ -63,8 +63,25 @@ class Help extends Component {
         <li>The footer contains useful links to pages with additional information about the site, including the application version. Please reference this version number in any bug reports.</li>
         <li>On most pages the top right navigation bar gives a &quot;Help&quot; option. Click on this option to view documentation for various actions or see step-by-step walk throughs on some pages. The step by step walkthroughs are also available below in accessible plain text format.</li>
         </ul>
+
+
+        <p><strong>Page Step By Step Instructions:</strong></p>
+        <ul>
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#section-edit">Section Edit Page</a></li>
+          <li><a href="#section-details">Section Details Page</a></li>
+          <li><a href="#question-edit">Question Edit Page</a></li>
+          <li><a href="#question-details">Question Details Page</a></li>
+          <li><a href="#response-set-edit">Response Set Edit Page</a></li>
+          <li><a href="#response-set-details">Response Set Details Page</a></li>
+          <li><a href="#survey-edit">Survey Edit Page</a></li>
+          <li><a href="#survey-details">Survey Details Page</a></li>
+          <li><a href="#help-page-link">Help Page</a></li>
+          <li><a href="#tag-tables-edit">Tag Tables on Edit Page</a></li>
+        </ul>
+
         <h2 id="step-by-step">Step-by-Step Walkthroughs by Page</h2>
-        <h3>Dashboard</h3>
+        <h3 id="dashboard">Dashboard</h3>
         <ul>
         <li>Type in your search term and search across all items by default. Results include items you own and published items.</li>
         <li>Click on any of the type boxes to highlight them and toggle on filtering by that single item type.</li>
@@ -76,7 +93,7 @@ class Help extends Component {
         <li>Click the alerts dropdown to see any new notifications about your content.</li>
         <li>Click your e-mail to see various account management options.</li>
         </ul>
-        <h3>Section Edit Page</h3>
+        <h3 id="section-edit">Section Edit Page</h3>
         <ul>
         <li>If you need to create a new question without leaving the the section use this button to author a new question from scratch.</li>
         <li>Type in your search keywords in the top left search bar to search for questions to add to the section.</li>
@@ -85,13 +102,13 @@ class Help extends Component {
         <li>Click on the add (+) button to select a question for the section.</li>
         <li>Edit the various section details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published).</li>
         </ul>
-        <h3>Section Details Page</h3>
+        <h3 id="section-details">Section Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
-        <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
+        <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the 'Create and Edit Content' section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
         <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
         </ul>
-        <h3>Question Edit Page</h3>
+        <h3 id="question-edit">Question Edit Page</h3>
         <ul>
         <li>Use the input fields to edit content of the question. If the response type is open choice this panel will also give you the option to associate response sets with this quesiton at creation time</li>
         <li>Click the search icon to search for and add coded tags to the question</li>
@@ -100,13 +117,13 @@ class Help extends Component {
         <li>Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
         <li>Click save to save a draft of the edited content</li>
         </ul>
-        <h3>Question Details Page</h3>
+        <h3 id="question-details">Question Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
         <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
         </ul>
-        <h3>Response Set Edit Page</h3>
+        <h3 id="response-set-edit">Response Set Edit Page</h3>
         <ul>
         <li>Use the input fields to edit content of the response set</li>
         <li>Click the search icon to search for and add coded responses to the response set</li>
@@ -115,13 +132,13 @@ class Help extends Component {
         <li>Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
         <li>Click save to save a draft of the edited content (this content will not be public until it is published)</li>
         </ul>
-        <h3>Response Set Details Page</h3>
+        <h3 id="response-set-details">Response Set Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
         <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
         </ul>
-        <h3>Survey Edit Page</h3>
+        <h3 id="survey-edit">Survey Edit Page</h3>
         <ul>
         <li>Type in your search keywords here to search for sections to add to the survey</li>
         <li>Click Advanced to see additional filters you can apply to your search</li>
@@ -129,17 +146,17 @@ class Help extends Component {
         <li>Click on the add button to select a section for the survey</li>
         <li>Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published)</li>
         </ul>
-        <h3>Survey Details Page</h3>
+        <h3 id="survey-details">Survey Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
         <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
         </ul>
-        <h3>Help Page</h3>
+        <h3 id="help-page-link">Help Page</h3>
         <ul>
         <li>Click any item in the left side bar to see instructions on how to perform any of the specified activities</li>
         </ul>
-        <h3>Tags Tables on Edit Pages</h3>
+        <h3 id="tag-tables-edit">Tags Tables on Edit Pages</h3>
         <ul>
         <li>The purpose of Tags is to facilitate content discovery and reuse. Click the info (i) icon, or go to the Tagging Content tab in the help documentation to see more information and examples on how to get the most out of tags.</li>
         </ul>
@@ -195,18 +212,39 @@ class Help extends Component {
   viewInstructions() {
     return(
       <div className="tab-pane" id="view" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'view'} aria-labelledby="view-tab">
-        <h1 id="view-content">View Content</h1>
+        <h1 id="content-viewing-and-exporting">Content Viewing and Exporting</h1>
         <p><strong>Options:</strong></p>
+        <ul>
+        <li><a href="#viewing">View Content</a></li>
+        <li><a href="#exporting">Export Content</a></li>
+        </ul>
+
+        <h2 className="help-section-subtitle" id="viewing">View Content</h2>
+
         <ul>
         <li>On the dashboard and various other places you will see a little summary box, or widget, displaying important information about the search result.</li>
         <li>Clicking the bottom link on each widget expands a box with additional information about the item.</li>
         <li>In most places the full details page can be seen by clicking the name / title link of the item.</li>
         <li>On the edit pages the name link is disabled but you can click the eyeball icon on any of the widgets to navigate to the details page.</li>
         </ul>
+
         <h2 className="help-section-subtitle" id="exporting">Exporting</h2>
+        <p><strong>Epi Info </strong>(Surveys and Sections)</p>
+        <p>On the view pages for surveys and sections there is an action button that exports the current content to Epi Info (XML). To export a survey or section and use it in Epi Info execute the following steps:</p>
+        <ul>
+        <li>Click on the 'Export' button on the Vocabulary service section details page (this will save a .xml file to the folder your browser directs downloads)</li>
+        <li>Open Epi Info</li>
+        <li>Choose the option to 'Create Forms'</li>
+        <li>From the File menu, select 'Get Template'</li>
+        <li>Select the .xml file you downloaded from the vocabulary service, it will be in the folder your browser downloads content into (usually the 'Downloads' folder). Click 'Open'.</li>
+        <li>From the File menu, select 'New Project from Template'</li>
+        <li>After selecting the template that was created from the vocabulary service .xml file, complete the rest of the fields. Click 'Ok'</li>
+        </ul>
+
+        <p><strong>REDCap </strong>(Surveys and Sections)</p>
         <p>On the view pages for surveys and sections there is an action button that exports the current section to REDCap. To export a survey or section and use it in REDCap execute the following steps (exact wording may differ slightly based on your version of REDCap):</p>
         <ul>
-        <li>Click on the 'Export to REDCap' button on the Vocabulary service section details page (this will save a .xml file to the folder your browser directs downloads)</li>
+        <li>Click on the 'Export' button on the Vocabulary service survey or section details page and select 'REDCap (XML)' (this will save a .xml file to the folder your browser directs downloads)</li>
         <li>Open up REDCap</li>
         <li>Choose the option to create a new project</li>
         <li>On the project creation page follow the on screen instructions to add a name and various attributes to the new projects</li>
@@ -214,7 +252,16 @@ class Help extends Component {
         <li>Click the "Choose File" button to select the .xml file you downloaded from the vocabulary service, it will be in the folder your browser downloads content into (usually the 'Downloads' folder)</li>
         <li>After selecting the .xml file to import and filling out the rest of the fields, click on the Create Project or Start Project button at the bottom of the page</li>
         </ul>
-      </div>
+
+        <p><strong>Spreadsheet </strong> (Surveys only)</p>
+        <p>On the view page for surveys there is an action button that exports the current survey to spreadsheet format (xlsx). To export a survey into this format, execute the following steps:</p>
+        <ul><li>Click on the 'Export' button on the Vocabulary service survey or section details page and select 'Spreadsheet (XLSX)' (this will save a .xlsx file to the folder where your browser directs <b>downloads</b>.)</li></ul>
+
+        <p><strong>PDF </strong> (Surveys and Sections)</p>
+        <p>On the view page for surveys and sections there is an action button that exports the current content to a PDF file. To export a section or survey into this format, execute the following steps:</p>
+        <ul><li>Click on the 'Export' button on the Vocabulary service survey or section details page and select 'Print' (this will save a .pdf file to the folder your browser directs downloads)</li></ul>
+
+        </div>
     );
   }
 
@@ -224,38 +271,110 @@ class Help extends Component {
         <h1 id="content-creation-and-editing">Content Creation and Editing</h1>
         <p><strong>Options:</strong></p>
         <ul>
-        <li><a href="#create-new-content">Create New Content</a></li>
-        <li><a href="#edit-content">Edit Content</a></li>
-        <li><a href="#revise-content">Revise Content</a></li>
-        <li><a href="#extend-content">Extend Content</a></li>
+          <li><a href="#create-new-content">Create New Content</a></li>
+          <li><a href="#edit-content">Edit Content</a></li>
+          <li><a href="#revise-content">Revise Content</a></li>
+          <li><a href="#extend-content">Extend Content</a></li>
         </ul>
         <h2 className="help-section-subtitle" id="create-new-content">Create New Content</h2>
         <ul>
-        <li>To start a new draft of any item click on the &quot;Create&quot; drop down in the top navigation bar on the dashboard.</li>
-        <li>On the creation / editing page change any fields that need to be updated and press save - this saves a draft of the first version of the new item that will need to get published by a publisher before it will be visible to others.</li>
-        <li>If you try to navigate away before saving the changes a prompt will ask if you want to navigate away without saving or save before you leave.</li>
+          <li>To start a new draft of any item click on the &quot;Create&quot; drop down in the top navigation bar on the dashboard.</li>
+          <li>On the creation / editing page change any fields that need to be updated and press save - this saves a draft of the first version of the new item that will need to get published by a publisher before it will be visible to others.</li>
+          <li>If you try to navigate away before saving the changes a prompt will ask if you want to navigate away without saving or save before you leave.</li>
         </ul>
         <h2 className="help-section-subtitle" id="edit-content">Edit Content</h2>
         <p><strong>Note:</strong> You can only edit your own draft content, or content that belongs to a group where you are a member - once your content is published you will be given the option to create a new revision or extension (a copy with a separate version history) of the content.</p>
         <ul>
-        <li>When looking at the search result for the item you want to edit click on the menu button in the bottom right and select edit.</li>
-        <li>When on the details page of an item the edit or revise button should appear in the top right above the item information.</li>
-        <li>On the edit page change any fields that need to be updated and press save - this overwrites the previous draft with the changes made and does not keep a history of the previous draft.</li>
+          <li>When looking at the search result for the item you want to edit click on the menu button in the bottom right and select edit.</li>
+          <li>When on the details page of an item the edit or revise button should appear in the top right above the item information.</li>
+          <li>On the edit page change any fields that need to be updated and press save - this overwrites the previous draft with the changes made and does not keep a history of the previous draft.</li>
         </ul>
         <h2 className="help-section-subtitle" id="revise-content">Revise Content</h2>
         <p><strong>Note:</strong> You can only revise your own published content, or published content that belongs to a group where you are a member. Saving a revision will save a draft of that revision until you publish the new version.</p>
         <ul>
-        <li>When looking at the search result for the item you want to revise click on the menu button in the bottom right and select revise</li>
-        <li>When on the details page of an item the edit or revise button should appear in the top right above the item information</li>
-        <li>On the revision editing page change any fields that need to be updated and press save - this saves a draft of the new version that will need to get published by a publisher before it will be visible to others.</li>
+          <li>When looking at the search result for the item you want to revise click on the menu button in the bottom right and select revise</li>
+          <li>When on the details page of an item the edit or revise button should appear in the top right above the item information</li>
+          <li>On the revision editing page change any fields that need to be updated and press save - this saves a draft of the new version that will need to get published by a publisher before it will be visible to others.</li>
         </ul>
         <h2 className="help-section-subtitle" id="extend-content">Extend Content</h2>
         <p><strong>Note:</strong> You can only extend published content. Unlike revising, you do not need to own or be part of a group that owns content in order to create an extension (use it as a template with its own version history). Saving an extension will save a draft that is the first version (new revision history) with a link to the content it was extended from (shown as the parent of the item).</p>
         <ul>
-        <li>When looking at the search result for the item you want to extend click on the menu button in the bottom right and select extend</li>
-        <li>When on the details page of a published item the extend button should appear in the top right above the item information</li>
-        <li>On the extension editing page change any fields that need to be updated and press save - this saves a draft of the first version of the extended item that will need to get published by a publisher before it will be visible to others.</li>
+          <li>When looking at the search result for the item you want to extend click on the menu button in the bottom right and select extend</li>
+          <li>When on the details page of a published item the extend button should appear in the top right above the item information</li>
+          <li>On the extension editing page change any fields that need to be updated and press save - this saves a draft of the first version of the extended item that will need to get published by a publisher before it will be visible to others.</li>
         </ul>
+
+      </div>
+    );
+  }
+
+  importInstructions() {
+    return(
+      <div className="tab-pane" id="import" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'import'} aria-labelledby="import-tab">
+        <h1 id="import-content">Importing Content</h1>
+
+          <p id="message-mapping-guide"><strong>Message Mapping Guide and Value Sets</strong></p>
+          <p>On the taskbar, there is an action button to create content. To create a SDP-V survey using content from a Message Mapping Guide (MMG) formatted spreadsheet, execute the following steps:</p>
+          <ul>
+            <li>Click on the 'Create' button on the Vocabulary service taskbar and select 'Import MMG'</li>
+            <li>Select the MMG formatted file you wish to import using the file explore by clicking 'Browse…' </li>
+          </ul>
+          <p>The following table shows the expected MMG Column Names and how they map to Vocabulary Service. <strong>Each column is necessary for import, even if left blank. Each column should be spelled exactly as appears in quotes in the table below.</strong>
+          </p>
+
+          <table className="set-table table">
+            <caption>MMG column name with associated vocabulary service item</caption>
+            <thead>
+              <tr>
+                <th  id="mmg-display-name-column">MMG Column Name</th>
+                <th  id="vocab-service-item-column">Vocabulary Service Item</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="mmg-display-name-column">Data Element (DE) Name</td>
+                <td headers="vocab-service-item-column">Question Name</td>
+              </tr>
+              <tr>
+                <td headers="mmg-display-name-column">'DE Identifier Sent in HL7 Message'</td>
+                <td headers="vocab-service-item-column">'Data Element Identifier' Tag on Question</td>
+              </tr>
+              <tr>
+                <td headers="mmg-display-name-column">'Data Element Description'</td>
+                <td headers="vocab-service-item-column">Question Description</td>
+              </tr>
+              <tr>
+                <td headers="mmg-display-name-column">'Value Set Name (VADS Hyperlink)'</td>
+                <td headers="vocab-service-item-column">The DE will be associated with the PHIN VADS value set if a hyperlink is provided. <br/> If a valid hyperlink is not provided, the importer will look <br/> for a tab with the same name that contains the value set values. <br/>If a tab with the same name is not found,   the following error will be displayed: <br/>'Error: Value set tab 'XXX' not present'</td>
+              </tr>
+              <tr>
+                <td headers="mmg-display-name-column">'PHIN Variable Code System' OR 'Local Variable Code System'</td>
+                <td headers="vocab-service-item-column">Program Defined Variable Name associated with a question</td>
+              </tr>
+              <tr>
+                <td headers="mmg-display-name-column">'PHIN Variable'</td>
+                <td headers="vocab-service-item-column">PHIN data element identifier (leave blank if local)</td>
+              </tr>
+              <tr>
+                <td headers="mmg-display-name-column">'Data Type'</td>
+                <td headers="vocab-service-item-column">PHIN data element identifier (leave blank if local)</td>
+              </tr>
+              </tbody>
+          </table><br/>
+
+          <p><strong>How to Identify Sections, Templates, or Repeating Groups</strong></p>
+          <p>
+            Sections, templates, or repeating groups are created by listing data elements between 'START: insert section name' and 'END: insert section name' rows.
+            Each row between these markers are imported as data elements within that grouping (called sections in the vocabulary service).
+            Sub-sections or sub-groupings may be created by including additional 'START: ' and 'END: ' markers within a parent section or grouping
+          </p>
+          <ul>
+            <li>The beginning of a section is indicated by the prefix 'START: ' (including a space after the colon)</li>
+            <li>The end of a section is indicated by the prefix 'END: '(including a space after the colon)</li>
+            <li>The text following the 'START: ' and 'END: ' pre-fixes will be imported as the Section Name in the vocabulary service</li>
+            <li>The section name following the 'START: ' prefix must exactly match the section name following the 'END: ' prefix in order for the section to be correctly imported. </li>
+          </ul>
+
       </div>
     );
   }
@@ -369,6 +488,7 @@ class Help extends Component {
             <li id="search-tab" role="tab" onClick={() => this.selectInstruction('search')} aria-selected={this.state.selectedInstruction === 'search'} aria-controls="search"><a data-toggle="tab" href="#search">Search</a></li>
             <li id="view-tab" role="tab" onClick={() => this.selectInstruction('view')} aria-selected={this.state.selectedInstruction === 'view'} aria-controls="view"><a data-toggle="tab" href="#view">View and Export Content</a></li>
             <li id="create-and-edit-tab" role="tab" onClick={() => this.selectInstruction('create-and-edit')} aria-selected={this.state.selectedInstruction === 'create-and-edit'} aria-controls="create-and-edit"><a data-toggle="tab" href="#create-and-edit">Create and Edit Content</a></li>
+            <li id="import-tab" role="tab" onClick={() => this.selectInstruction('import')} aria-selected={this.state.selectedInstruction === 'import'} aria-controls="import"><a data-toggle="tab" href="#import">Import Content</a></li>
             <li id="tagging-tab" role="tab" onClick={() => this.selectInstruction('tagging')} aria-selected={this.state.selectedInstruction === 'tagging'} aria-controls="tagging"><a data-toggle="tab" href="#tagging">Tagging Content</a></li>
             <li id="comment-tab" role="tab" onClick={() => this.selectInstruction('comment')} aria-selected={this.state.selectedInstruction === 'comment'} aria-controls="comment"><a data-toggle="tab" href="#comment">Comment on Content</a></li>
             <li id="admin-tab" role="tab" onClick={() => this.selectInstruction('admin')} aria-selected={this.state.selectedInstruction === 'admin'} aria-controls="admin"><a data-toggle="tab" href="#admin">Admin Panel</a></li>
@@ -380,6 +500,7 @@ class Help extends Component {
           {this.accountInstructions()}
           {this.viewInstructions()}
           {this.editInstructions()}
+          {this.importInstructions()}
           {this.taggingInstructions()}
           {this.commentInstructions()}
           {this.adminInstructions()}
