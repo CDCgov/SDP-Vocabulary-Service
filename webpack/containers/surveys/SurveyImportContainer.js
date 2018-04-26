@@ -44,11 +44,11 @@ class SurveyImportContainer extends Component {
   onChange(e) {
     if (this.state.importSessionId) {
       this.props.updateImportSession(this.state.importSessionId, e.target.files[0], (successResponse) => {
-        this.setState({importErrors: successResponse.data.importErrors, importSessionId: successResponse.data.id, filePromiseReturned: true});
+        this.setState({importErrors: successResponse.data.importErrors, importWarnings: successResponse.data.importWarnings, importSessionId: successResponse.data.id, filePromiseReturned: true});
       });
     } else {
       this.props.createImportSession(e.target.files[0], (successResponse) => {
-        this.setState({importErrors: successResponse.data.importErrors, importSessionId: successResponse.data.id, filePromiseReturned: true});
+        this.setState({importErrors: successResponse.data.importErrors, importWarnings: successResponse.data.importWarnings, importSessionId: successResponse.data.id, filePromiseReturned: true});
       });
     }
     this.setState({file: e.target.files[0], fileChosen: true});
@@ -83,16 +83,17 @@ class SurveyImportContainer extends Component {
 
   attemptImport() {
     this.props.attemptImportFile(this.state.importSessionId, (successResponse)=>{
-      this.setState({importWarnings: successResponse.data.importErrors,
+      this.setState({importWarnings: successResponse.data.importWarnings,
         importErrors: successResponse.data.importErrors,
+        importWarnings: successResponse.data.importWarnings,
         importSessionId: successResponse.data.id,
         survey: successResponse.data.survey});
     });
-    this.setState({importAttempted: true, importErrors: []});
+    this.setState({importAttempted: true, importErrors: [], importWarnings: []});
   }
 
   cancelImport() {
-    this.setState({file: null, importAttempted: false, importErrors: [], fileChosen: false, filePromiseReturned: false, survey: {}});
+    this.setState({file: null, importAttempted: false, importWarnings: [],importErrors: [], fileChosen: false, filePromiseReturned: false, survey: {}});
   }
 
   fileActions() {
@@ -101,7 +102,6 @@ class SurveyImportContainer extends Component {
         <div>
           <div className="import-action-message error" role="alert">
             <button className="btn btn-default" onClick={this.cancelImport}><span className="fa fa-trash"></span> Remove</button>
-            <button className="btn btn-primary" onClick={this.attemptImport}>Attempt Import</button>
             File not recognized as MMG Excel spreadsheet
           </div>
           <div className="import-notes">
@@ -115,7 +115,27 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
-    } else if (!this.state.importAttempted && this.state.filePromiseReturned){
+    }else if (this.state.importWarnings && this.state.importWarnings.length > 0 && !this.state.importAttempted){
+      return (
+        <div>
+          <div className="import-action-message warning" role="alert">
+            <button className="btn btn-primary" onClick={this.attemptImport}>Import</button>
+            <button className="btn btn-default" onClick={this.cancelImport}><span className="fa fa-trash"></span> Remove</button>
+            File format warnings:
+          </div>
+          <div className="import-notes">
+            {this.state.importWarnings.map((msg, i) => {
+              return (
+                <div key={i} className="import-note warning">
+                  <strong>Warning</strong>: {msg}<br />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+    else if (!this.state.importAttempted && this.state.filePromiseReturned){
       return (
         <div className="import-action-message success" role="alert">
           <button className="btn btn-primary" onClick={this.attemptImport}>Import</button>
