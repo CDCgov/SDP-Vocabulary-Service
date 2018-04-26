@@ -507,10 +507,12 @@ module SDP
       def extract_value_sets(workbook, verbose)
         all_data_elements.each do |data_element|
           next unless data_element.value_set_tab_name
-          if @all_sheets.include?(data_element.value_set_tab_name)
-            sheet = workbook.sheet(data_element.value_set_tab_name)
-            logger.info "Processing value set tab: #{data_element.value_set_tab_name} on #{sheet}" if verbose
-            data_element.value_set = parse_value_set(sheet, data_element.value_set_tab_name)
+          vs_tab_name = @all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
+          if @all_sheets.include?(vs_tab_name)
+            sheet = workbook.sheet(vs_tab_name)
+            logger.info "Processing value set tab: #{vs_tab_name}" if verbose
+            data_element.value_set = parse_value_set(sheet, vs_tab_name)
+
             logger.info "  Codes: #{data_element.value_set.join(', ')}" if verbose
           else
             # sheet not present - create an empty response set
