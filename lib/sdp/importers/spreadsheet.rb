@@ -138,6 +138,34 @@ module SDP
       end
     end
 
+    class MarkerRow
+      START_REGEX = /^(BEGIN|START|start):? (.*)/
+      END_REGEX = /^(END|end):? (.*)/
+      NOTE_REGEX = /^(NOTE|end):? (.*)/
+
+      attr_accessor :type, :text, :error
+
+      def initialize(row_contents)
+        trimmed_contents = row_contents.strip
+        { section_start: START_REGEX, section_end: END_REGEX, note: NOTE_REGEX }.each_pair do |k, v|
+          match_result = v.match(trimmed_contents)
+          next unless match_result
+          self.type = k
+          self.text = match_result[2]
+          break
+        end
+        if text.blank?
+          self.type = :error
+          self.error = 'Unable to find marker prefix'
+        else
+          splits = text.split(/:|NOTE:/)
+          if splits.length > 1 && splits[1].length >= 30
+            self.text = splits[0].strip
+          end
+        end
+      end
+    end
+
     class Spreadsheet
       attr_reader :errors
       attr_reader :warnings
@@ -146,8 +174,6 @@ module SDP
         mmg: true,
         de_tab_name: 'Data Elements',
         de_coded_type: ['Coded'],
-        section_start_regex: '^START: (.*)',
-        section_end_regex: '^END: (.*)',
         phin_vads_oid_regex: '.*oid=(.*)(&.*)*',
         de_columns: {
           section_name: 'PHIN Variable',
@@ -208,8 +234,6 @@ module SDP
         @current_section = @top_level
         @parent_sections = []
         @config = DEFAULT_CONFIG.deep_merge(config)
-        @section_start = Regexp.new(@config[:section_start_regex])
-        @section_end = Regexp.new(@config[:section_end_regex])
         @vads_oid = Regexp.new(@config[:phin_vads_oid_regex])
         @oid_matcher = /^([\.\d]+)$/
         @valueset_sheet = /Valueset.*/
@@ -503,11 +527,11 @@ module SDP
                        end
         data_element.extract(row)
         if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
-          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
+          @warnings << "Value set tab '#{data_element.value_set_tab_name}' not present"
           # data_element.value_set_tab_name = nil
         end
         if data_element.tag_tab_name.present? && !@all_sheets.include?(data_element.tag_tab_name)
-          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Tag tab '#{data_element.tag_tab_name}' not present" # warning
+          @warnings << "Tag tab '#{data_element.tag_tab_name}' not present"
         end
         data_element
       end
@@ -518,17 +542,21 @@ module SDP
                       else
                         :name
                       end
-        start_marker = @section_start.match(row[column_name])
-        end_marker = @section_end.match(row[column_name])
-        if start_marker
-          start_section(start_marker[1])
-        elsif end_marker
-          section_name = end_marker[1]
-          if @current_section.name != section_name
-            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{section_name}" # warning
+        row_contents = row[column_name]
+        mr = MarkerRow.new(row_contents)
+        case mr.type
+        when :section_start
+          start_section(mr.text)
+        when :section_end
+          if @current_section.name != mr.text
+            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{mr.text}"
           else
             @current_section = @parent_sections.pop
           end
+        when :note
+          logger.info("Found NOTE: #{mr.text}")
+        when :error
+          @error << "Unable to process marker row with contents #{row_contents}"
         end
       end
 

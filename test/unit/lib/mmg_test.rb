@@ -127,4 +127,53 @@ class MMGTest < ActiveSupport::TestCase
     assert rs
     assert_equal 'Decision Activate/Deactivate Flag', rs.name
   end
+
+  test 'Handle a properly formatted section start marker' do
+    row_contents = 'START: Message Structure Section'
+    mr = SDP::Importers::MarkerRow.new(row_contents)
+    assert_equal :section_start, mr.type
+    assert_equal 'Message Structure Section', mr.text
+  end
+
+  test 'Handle a properly formatted section end marker' do
+    row_contents = 'END: Message Structure Section'
+    mr = SDP::Importers::MarkerRow.new(row_contents)
+    assert_equal :section_end, mr.type
+    assert_equal 'Message Structure Section', mr.text
+  end
+
+  test 'Handle a section start marker missing the colon' do
+    row_contents = 'START Message Structure Section'
+    mr = SDP::Importers::MarkerRow.new(row_contents)
+    assert_equal :section_start, mr.type
+    assert_equal 'Message Structure Section', mr.text
+  end
+
+  test 'Handle a section start marker in lower case' do
+    row_contents = 'start: Message Structure Section'
+    mr = SDP::Importers::MarkerRow.new(row_contents)
+    assert_equal :section_start, mr.type
+    assert_equal 'Message Structure Section', mr.text
+  end
+
+  test 'Handle a section start marker with leading whitespace' do
+    row_contents = '    start: Message Structure Section'
+    mr = SDP::Importers::MarkerRow.new(row_contents)
+    assert_equal :section_start, mr.type
+    assert_equal 'Message Structure Section', mr.text
+  end
+
+  test 'Trim gross section markers' do
+    row_contents = "START: EPIDEMIOLOGIC INFORMATION SECTION: The observations in this section will be mapped under a \"Epidemiologic Information\" category OBR segment with an OBR-4 value of '68991-9^Epidemiologic Information^LN' "
+    mr = SDP::Importers::MarkerRow.new(row_contents)
+    assert_equal :section_start, mr.type
+    assert_equal 'EPIDEMIOLOGIC INFORMATION SECTION', mr.text
+  end
+
+  test 'Trim in marker notes' do
+    row_contents = 'START: Travel History Repeating Questions   NOTE:  This group repeats for any concepts related to the assigned value set that are collected for the condition reported.'
+    mr = SDP::Importers::MarkerRow.new(row_contents)
+    assert_equal :section_start, mr.type
+    assert_equal 'Travel History Repeating Questions', mr.text
+  end
 end
