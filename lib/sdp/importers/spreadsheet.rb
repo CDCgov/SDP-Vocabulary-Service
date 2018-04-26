@@ -140,6 +140,7 @@ module SDP
 
     class Spreadsheet
       attr_reader :errors
+      attr_reader :warnings
 
       DEFAULT_CONFIG = {
         mmg: true,
@@ -201,6 +202,7 @@ module SDP
         @file = file
         @user = user
         @errors = []
+        @warnings = []
         @top_level = NestedItem.new(:section)
         @top_level.name = 'Top Level'
         @current_section = @top_level
@@ -246,8 +248,13 @@ module SDP
       def parse!(verbose = false)
         w = Roo::Spreadsheet.open(@file, extension: 'xlsx')
         @all_sheets = w.sheets
+
         @all_sheets.each do |sheet|
           headers = []
+          unless w.sheet(sheet).first_row
+            @warnings << "Sheet #{sheet} skipped because it is blank"
+            next
+          end
           w.sheet(sheet).row(1).each do |header|
             headers << header
           end
@@ -260,6 +267,7 @@ module SDP
             next
           elsif !de_sheet?(headers)
             logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
+            @warnings << "Sheet #{sheet} does not contain parsable headers and will not be imported" #warning
             next
           end
 
@@ -396,11 +404,11 @@ module SDP
           end
         rescue Roo::HeaderRowNotFoundError
           if sheet.header_line == 1
-            @errors << "Missing header row in #{name}, retrying"
+            @warnings << "Missing header row in #{name} in #{sheet}, retrying" #warning
             sheet.header_line = 2
             retry
           else
-            @errors << "Unable to parse value set from #{name}"
+            @warnings << "Unable to parse value set from #{name} in #{sheet}" #warning
           end
         end
         value_set
@@ -458,13 +466,13 @@ module SDP
               next if entry[:name].nil? || entry[:name].to_s.strip.empty?
               data_element.concepts << Concept.new(value: entry[:value], display_name: entry[:name], code_system: entry[:system])
             end
-          rescue Roo::HeaderRowNotFoundError
+          rescue Roo::HeaderRowNotFoundError #catching the error
             if sheet.header_line == 1
-              @errors << "Missing header row in #{data_element.tag_tab_name}, retrying"
+              @warnings << "Missing header row in #{data_element.tag_tab_name}, retrying" #warning
               sheet.header_line = 2
               retry
             else
-              @errors << "Unable to parse tags from #{data_element.tag_tab_name}"
+              @warnings << "Unable to parse tags from #{data_element.tag_tab_name}" #warning
             end
           end
         end
@@ -475,7 +483,7 @@ module SDP
           next unless data_element.value_set_tab_name
           if @all_sheets.include?(data_element.value_set_tab_name)
             sheet = workbook.sheet(data_element.value_set_tab_name)
-            logger.info "Processing value set tab: #{data_element.value_set_tab_name}" if verbose
+            logger.info "Processing value set tab: #{data_element.value_set_tab_name} on #{sheet}" if verbose
             data_element.value_set = parse_value_set(sheet, data_element.value_set_tab_name)
             logger.info "  Codes: #{data_element.value_set.join(', ')}" if verbose
           else
@@ -493,11 +501,11 @@ module SDP
                        end
         data_element.extract(row)
         if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
-          @errors << "Value set tab '#{data_element.value_set_tab_name}' not present"
+          @warnings << "Value set tab '#{data_element.value_set_tab_name}' not present" #warning
           # data_element.value_set_tab_name = nil
         end
         if data_element.tag_tab_name.present? && !@all_sheets.include?(data_element.tag_tab_name)
-          @errors << "Tag tab '#{data_element.tag_tab_name}' not present"
+          @warnings << "Tag tab '#{data_element.tag_tab_name}' not present" #warning
         end
         data_element
       end
@@ -515,7 +523,7 @@ module SDP
         elsif end_marker
           section_name = end_marker[1]
           if @current_section.name != section_name
-            @errors << "Mismatched section end: expected #{@current_section.name}, found #{section_name}"
+            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{section_name}" #warning
           else
             @current_section = @parent_sections.pop
           end

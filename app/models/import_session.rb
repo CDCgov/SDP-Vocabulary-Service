@@ -9,7 +9,9 @@ class ImportSession < ApplicationRecord
       importer = SDP::Importers::Spreadsheet.new(roo_friendly_spreadsheet, created_by)
       importer.parse!
       self.top_level_sections = importer.top_level_section_count
-      self.import_errors = importer.errors.uniq if importer.errors.present?
+      self.import_warnings = importer.warnings.uniq if importer.warnings.present? #
+      self.import_errors = importer.errors.uniq if importer.errors.present? #
+      
       unless importer.sections_exist?
         self.import_errors ||= []
         self.import_errors << 'Unable to find any data element sheets in this Excel file. Check that your spreadsheet ' \
