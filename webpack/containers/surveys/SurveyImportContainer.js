@@ -85,7 +85,6 @@ class SurveyImportContainer extends Component {
     this.props.attemptImportFile(this.state.importSessionId, (successResponse)=>{
       this.setState({importWarnings: successResponse.data.importWarnings,
         importErrors: successResponse.data.importErrors,
-        importWarnings: successResponse.data.importWarnings,
         importSessionId: successResponse.data.id,
         survey: successResponse.data.survey});
     });
@@ -134,8 +133,7 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
-    }
-    else if (!this.state.importAttempted && this.state.filePromiseReturned){
+    }else if (!this.state.importAttempted && this.state.filePromiseReturned){
       return (
         <div className="import-action-message success" role="alert">
           <button className="btn btn-primary" onClick={this.attemptImport}>Import</button>
