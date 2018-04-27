@@ -1,5 +1,5 @@
 class ImportSessionSerializer < ActiveModel::Serializer
-  attributes :id, :import_errors,:import_warnings, :original_filename, :request_survey_creation, :top_level_sections, :survey, :sections
+  attributes :id, :import_errors, :import_warnings, :original_filename, :request_survey_creation, :top_level_sections, :survey, :sections
 
   def sections
     if object.survey_id

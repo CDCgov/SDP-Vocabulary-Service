@@ -11,11 +11,10 @@ class ImportSession < ApplicationRecord
       self.top_level_sections = importer.top_level_section_count
       self.import_warnings = importer.warnings.uniq if importer.warnings.present? #
       self.import_errors = importer.errors.uniq if importer.errors.present? #
-      
+
       unless importer.sections_exist?
         self.import_errors ||= []
-        self.import_errors << 'Unable to find any data element sheets in this Excel file. Check that your spreadsheet ' \
-                              "sections are separated by 'START: ' and 'END: ' rows (include these phrases with exact spelling before the section name)."
+        self.import_errors << 'This Excel file does not contain any tabs with the expected MMG column names and will not be imported. Refer to "How to Identify Sections, Templates, or Repeating Groups" in the "Import Content" Help Documentation for more information.'
       end
     rescue ArgumentError, Zip::Error
       self.import_errors ||= []
@@ -30,10 +29,12 @@ class ImportSession < ApplicationRecord
     if importer.sections_exist?
       survey = importer.save!
       self.survey = survey
-    else
+    else #
       self.import_errors ||= []
-      self.import_errors << 'Unable to find any data element sheets in this Excel file. Check that your spreadsheet ' \
-                            "sections are separated by 'START: ' and 'END: ' rows (include these phrases with exact spelling before the section name)."
+      self.import_errors << 'Unable to find any Sections in any tab.'\
+      ' This file will not be imported. Refer to the table'\
+      ' in the “Import Content” Help Documentation for more information.'
+
     end
     save!
   end
