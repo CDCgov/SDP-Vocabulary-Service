@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
+import { Modal, Button } from 'react-bootstrap';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
@@ -10,6 +11,7 @@ import SectionList from "../sections/SectionList";
 import CodedSetTable from "../CodedSetTable";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
+import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import TagModal from "../TagModal";
 
@@ -22,7 +24,7 @@ import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSi
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false };
+    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
   render() {
@@ -63,6 +65,46 @@ export default class QuestionShow extends Component {
     }
   }
 
+  deleteModal(question) {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showDeleteModal} onHide={()=>this.setState({showDeleteModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete this question? This action cannot be undone.</p>
+            <p><strong>Delete Question: </strong>This will delete the question but not any of the other items created or associated with it</p>
+            <p><strong>Delete All: </strong>This will delete the question and all other unused draft response sets associated with it</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => this.props.deleteQuestion(question.id, false, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.questionCount = this.props.stats.questionCount - 1;
+                stats.myQuestionCount = this.props.stats.myQuestionCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete Question</Button>
+            <Button onClick={() => this.props.deleteQuestion(question.id, true, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.questionCount = this.props.stats.questionCount - 1;
+                stats.myQuestionCount = this.props.stats.myQuestionCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete All</Button>
+            <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
   mainContent(question) {
     return (
       <div className="col-md-9 nopadding maincontent">
@@ -90,122 +132,140 @@ export default class QuestionShow extends Component {
             {isEditable(question, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                if(confirm('Are you sure you want to delete this Question? This action cannot be undone.')){
-                  this.props.deleteQuestion(question.id, (response) => {
-                    if (response.status == 200) {
-                      let stats = Object.assign({}, this.props.stats);
-                      stats.questionCount = this.props.stats.questionCount - 1;
-                      stats.myQuestionCount = this.props.stats.myQuestionCount - 1;
-                      this.props.setStats(stats);
-                      this.props.router.push('/');
-                    }
-                  });
-                }
+                this.setState({showDeleteModal: true});
                 return false;
-              }}>Delete</a>
+              }}>{this.deleteModal(question)}Delete</a>
             }
           </div>
         }
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Question Name:</strong> {question.content} </h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
-          <div className="basic-c-box panel-default question-type">
-            <div className="panel-heading">
-              <h2 className="panel-title">Details</h2>
+          <ul className="nav nav-tabs" role="tablist">
+            <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
+              <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
+            </li>
+            <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
+              <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
+            </li>
+          </ul>
+          <div className="tab-content">
+            <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
+              <ChangeHistoryTab versions={question.versions} type='question' majorVersion={question.version} />
             </div>
-            <div className="box-content">
-              <strong>Description: </strong>
-              {question.description}
-            </div>
-            <div className="box-content">
-              <strong>Created: </strong>
-              { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
-            </div>
-            { question.parent &&
-              <div className="box-content">
-                <strong>Extended from: </strong>
-                <Link to={`/questions/${question.parent.id}`}>{ question.parent.name || question.parent.content }</Link>
-              </div>
-            }
-            { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
-            <div className="box-content">
-              <strong>Published By: </strong>
-              {question.publishedBy.email}
-            </div>
-            }
-            {question.category && <div className="box-content">
-              <strong>Category: </strong>
-              {question.category.name && question.category.name}
-            </div>}
-            {question.subcategory && <div className="box-content">
-              <strong>Subcategory: </strong>
-              {question.subcategory.name && question.subcategory.name}
-            </div>}
-            {question.responseType && <div className="box-content">
-              <strong>Response Type: </strong>
-              {question.responseType.name && question.responseType.name}
-            </div>}
-            {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
-              <strong>Other Allowed: </strong>
-              {question.otherAllowed ? 'Yes' : 'No' }
-            </div>}
-          </div>
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  Tags
-                  {isSimpleEditable(question, this.props.currentUser) &&
-                    <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                      e.preventDefault();
-                      this.setState({ tagModalOpen: true });
-                    }}>
-                      <TagModal show={this.state.tagModalOpen || false}
-                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                        concepts={question.concepts}
-                        saveButtonAction={(conceptsAttributes) => {
-                          this.props.updateQuestionTags(question.id, conceptsAttributes);
-                          this.setState({ tagModalOpen: false });
-                        }} />
-                      <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                    </a>
-                  }
-                </h2>
-              </div>
-              <div className="box-content">
-                <div id="concepts-table">
-                  <CodedSetTable items={question.concepts} itemName={'Tag'} />
+            <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
+              <div className="basic-c-box panel-default question-type">
+                <div className="panel-heading">
+                  <h2 className="panel-title">Details</h2>
                 </div>
+                <div className="box-content">
+                  <strong>Description: </strong>
+                  {question.description}
+                </div>
+                <div className="box-content">
+                  <strong>Created: </strong>
+                  { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
+                </div>
+                { question.parent &&
+                  <div className="box-content">
+                    <strong>Extended from: </strong>
+                    <Link to={`/questions/${question.parent.id}`}>{ question.parent.name || question.parent.content }</Link>
+                  </div>
+                }
+                { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
+                <div className="box-content">
+                  <strong>Published By: </strong>
+                  {question.publishedBy.email}
+                </div>
+                }
+                {question.category && <div className="box-content">
+                  <strong>Category: </strong>
+                  {question.category.name && question.category.name}
+                </div>}
+                {question.subcategory && <div className="box-content">
+                  <strong>Subcategory: </strong>
+                  {question.subcategory.name && question.subcategory.name}
+                </div>}
+                {question.responseType && <div className="box-content">
+                  <strong>Response Type: </strong>
+                  {question.responseType.name && question.responseType.name}
+                </div>}
+                {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
+                  <strong>Other Allowed: </strong>
+                  {question.otherAllowed ? 'Yes' : 'No' }
+                </div>}
               </div>
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      Tags
+                      {isSimpleEditable(question, this.props.currentUser) &&
+                        <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                          e.preventDefault();
+                          this.setState({ tagModalOpen: true });
+                        }}>
+                          <TagModal show={this.state.tagModalOpen || false}
+                            cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                            concepts={question.concepts}
+                            saveButtonAction={(conceptsAttributes) => {
+                              this.props.updateQuestionTags(question.id, conceptsAttributes);
+                              this.setState({ tagModalOpen: false });
+                            }} />
+                          <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+                        </a>
+                      }
+                    </h2>
+                  </div>
+                  <div className="box-content">
+                    <div id="concepts-table">
+                      <CodedSetTable items={question.concepts} itemName={'Tag'} />
+                    </div>
+                  </div>
+                </div>
+              {question.responseSets && question.responseSets.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets: {question.responseSets && question.responseSets.length}</a>
+                    </h2>
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
+                    <ResponseSetList responseSets={question.responseSets} />
+                  </div>
+                </div>
+              }
+              {question.linkedResponseSets && question.linkedResponseSets.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-lrs"><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections: {question.linkedResponseSets && question.linkedResponseSets.length}</a>
+                    </h2>
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-lrs">
+                    <ResponseSetList responseSets={question.linkedResponseSets} />
+                  </div>
+                </div>
+              }
+              {question.sections && question.sections.length > 0 &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
+                    </h2>
+                  </div>
+                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
+                    <SectionList sections={question.sections} currentUser={this.props.currentUser} />
+                  </div>
+                </div>
+              }
+              {question.status === 'published' &&
+                <ProgramsAndSystems item={question} />
+              }
             </div>
-          {question.responseSets && question.responseSets.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Response Sets: {question.responseSets && question.responseSets.length}</a>
-                </h2>
-              </div>
-              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
-                <ResponseSetList responseSets={question.responseSets} />
-              </div>
-            </div>
-          }
-          {question.sections && question.sections.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">
-                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
-                </h2>
-              </div>
-              <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
-                <SectionList sections={question.sections} currentUser={this.props.currentUser} />
-              </div>
-            </div>
-          }
-          {question.status === 'published' &&
-            <ProgramsAndSystems item={question} />
-          }
+          </div>
         </div>
       </div>
     );

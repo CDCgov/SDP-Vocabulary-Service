@@ -1,6 +1,8 @@
 class Section < ApplicationRecord
   include OidGenerator, Versionable, Searchable, Taggable, Groupable
   acts_as_commentable
+  has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
 
   has_many :section_nested_items, -> { order 'position asc' }, dependent: :destroy
   has_many :nested_sections, through: :section_nested_items
@@ -23,6 +25,16 @@ class Section < ApplicationRecord
   after_destroy :update_nested_sections
 
   after_commit :index, on: [:create, :update]
+  after_commit :es_destroy, on: [:destroy]
+
+  def es_destroy
+    SDP::Elasticsearch.delete_item('section', id, true)
+  end
+
+  def exclusive_use?
+    # Checking if the survey or parent section that was just destroyed was the only link
+    surveys.empty? && parent.nil?
+  end
 
   def update_surveys
     survey_array = surveys.to_a
@@ -139,12 +151,18 @@ class Section < ApplicationRecord
   end
 
   def cascading_action(&block)
-    yield self
+    temp_qs = []
+    temp_nested_sections = []
+    temp_response_sets = []
     section_nested_items.each do |sni|
-      sni.nested_section.cascading_action(&block) if sni.nested_section
-      sni.question.cascading_action(&block) if sni.question
-      sni.response_set.cascading_action(&block) if sni.response_set
+      temp_qs << sni.question if sni.question
+      temp_nested_sections << sni.nested_section if sni.nested_section
+      temp_response_sets << sni.response_set if sni.response_set
     end
+    yield self
+    temp_qs.each { |q| q.cascading_action(&block) }
+    temp_nested_sections.each { |ns| ns.cascading_action(&block) }
+    temp_response_sets.each { |rs| rs.cascading_action(&block) }
   end
 
   # Get the programs that the section is associated with by the surveys that the

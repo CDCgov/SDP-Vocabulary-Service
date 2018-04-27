@@ -84,6 +84,7 @@ class SurveyImportContainer extends Component {
   attemptImport() {
     this.props.attemptImportFile(this.state.importSessionId, (successResponse)=>{
       this.setState({importWarnings: successResponse.data.importErrors,
+        importErrors: successResponse.data.importErrors,
         importSessionId: successResponse.data.id,
         survey: successResponse.data.survey});
     });
@@ -91,7 +92,7 @@ class SurveyImportContainer extends Component {
   }
 
   cancelImport() {
-    this.setState({file: null, importAttempted: false, importErrors: [], fileChosen: false, filePromiseReturned: false});
+    this.setState({file: null, importAttempted: false, importErrors: [], fileChosen: false, filePromiseReturned: false, survey: {}});
   }
 
   fileActions() {
@@ -130,12 +131,12 @@ class SurveyImportContainer extends Component {
   }
 
   importStatus() {
-    if (this.state.importAttempted && this.state.importErrors && this.state.importErrors.length > 0 && !this.state.survey.id) {
+    if (this.state.importAttempted && this.state.importErrors && this.state.importErrors.length > 0 && this.state.survey === null) {
       return (
         <div>
           <div className="import-action-message error" role="alert">
             <button className="btn btn-default" onClick={this.cancelImport}><span className="fa fa-trash"></span> Remove</button>
-            File could not be imported
+            File could not be imported. Try to fix as many of the following errors as possible.
           </div>
           <div className="import-notes">
             {this.state.importErrors.map((msg, i) => {
@@ -148,7 +149,7 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
-    } else if (this.state.importAttempted && this.state.importWarnings && this.state.importWarnings.length > 0 && this.state.survey.id) {
+    } else if (this.state.importAttempted && this.state.importWarnings && this.state.importWarnings.length > 0 && this.state.survey && this.state.survey.id) {
       return (
         <div>
           <div className="import-action-message warning" role="alert">
@@ -167,7 +168,7 @@ class SurveyImportContainer extends Component {
           {this.importResults()}
         </div>
       );
-    } else if (this.state.importAttempted && this.state.survey.id) {
+    } else if (this.state.importAttempted && this.state.survey && this.state.survey.id) {
       return (
         <div>
           <div className="import-action-message success" role="alert">

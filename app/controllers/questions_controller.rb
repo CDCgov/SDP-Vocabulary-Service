@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   load_and_authorize_resource except: [:usage]
+  before_action :set_paper_trail_whodunnit
 
   # GET /questions.json
   def index
@@ -127,8 +128,13 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1.json
   def destroy
     if @question.status == 'draft'
+      if params[:cascade] == 'true'
+        @question.cascading_action do |element|
+          # Original item for deletion can be used elsewhere, children must not be reused
+          element.destroy if element.status == 'draft' && (element.exclusive_use? || element == @question)
+        end
+      end
       @question.destroy
-      SDP::Elasticsearch.delete_item('question', @question.id, true)
       render json: @question
     else
       render json: @question.errors, status: :unprocessable_entity

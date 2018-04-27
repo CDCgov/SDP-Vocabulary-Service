@@ -42,18 +42,47 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should destroy survey and surveysections' do
+  test 'should destroy section if cascade is false' do
     assert_enqueued_jobs 0
     post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @survey.created_by_id, linked_questions: [nil], linked_response_sets: [nil] } }
     post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_sections: [{ section_id: Section.last.id, position: 0 }] } }
     assert_difference('Survey.count', -1) do
       assert_difference('SurveySection.count', -1) do
         assert_difference('Section.count', 0) do
-          delete survey_url(Survey.last)
+          delete survey_url(Survey.last), params: { cascade: 'false' }
         end
       end
     end
     assert_enqueued_jobs 4
+  end
+
+  test 'shouldnt destroy survey and surveysections' do
+    assert_enqueued_jobs 0
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @survey.created_by_id, linked_questions: [nil], linked_response_sets: [nil] } }
+    post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_sections: [{ section_id: Section.last.id, position: 0 }] } }
+    assert_difference('Survey.count', -1) do
+      assert_difference('SurveySection.count', -1) do
+        assert_difference('Section.count', -1) do
+          delete survey_url(Survey.last), params: { cascade: 'true' }
+        end
+      end
+    end
+    assert_enqueued_jobs 4
+  end
+
+  test 'shouldnt destroy section if used on another survey' do
+    assert_enqueued_jobs 0
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @survey.created_by_id, linked_questions: [nil], linked_response_sets: [nil] } }
+    post surveys_url(format: :json), params: { survey: { name: 'No delete test survey', created_by_id: @survey.created_by_id, linked_sections: [{ section_id: Section.last.id, position: 0 }] } }
+    post surveys_url(format: :json), params: { survey: { name: 'Create test survey', created_by_id: @survey.created_by_id, linked_sections: [{ section_id: Section.last.id, position: 0 }] } }
+    assert_difference('Survey.count', -1) do
+      assert_difference('SurveySection.count', -1) do
+        assert_difference('Section.count', 0) do
+          delete survey_url(Survey.last), params: { cascade: 'true' }
+        end
+      end
+    end
+    assert_enqueued_jobs 6
   end
 
   test 'should not publish a published survey' do

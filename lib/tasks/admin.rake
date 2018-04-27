@@ -4,10 +4,11 @@ namespace :admin do
   task :create_user, [:email, :password, :admin] => :environment do |_t, args|
     user = User.find_by(email: args.email)
     if user
+      puts "User with email address #{args.email} already exists"
+    else
       user = User.create(email: args.email, password: args.password, password_confirmation: args.password)
       user.add_role :admin if args.admin == 'true'
-    else
-      puts "User with email address #{args.email} already exists"
+      user.save!
     end
   end
 

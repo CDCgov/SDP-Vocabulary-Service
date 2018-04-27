@@ -15,7 +15,7 @@ module SDP
     end
 
     class DataElement
-      attr_accessor :name, :description, :data_type, :program_var, :de_id,
+      attr_accessor :name, :description, :data_type, :program_var, :de_id, :de_code_system,
                     :category, :subcategory, :value_set, :concepts,
                     :value_set_url, :value_set_oid, :value_set_tab_name, :tag_tab_name
 
@@ -37,6 +37,7 @@ module SDP
         @name = normalize(row[:name])
         @description = normalize(row[:description])
         @data_type = normalize(row[:data_type])
+        @program_var = normalize(row[:program_var])
         @value_set = normalize(row[:value_set])
         @concepts = []
         if row[:value_set].respond_to? :to_uri
@@ -64,8 +65,8 @@ module SDP
     class MMGDataElement < DataElement
       def extract(row)
         super
-        @program_var = normalize(row[:program_var])
         @de_id = normalize(row[:de_id])
+        @de_code_system = normalize(row[:de_code_system])
         if row[:value_set].present?
           @value_set_tab_name = normalize(row[:value_set])
         end
@@ -73,7 +74,8 @@ module SDP
 
       def to_question(user)
         q = super
-        q.concepts << Concept.new(value: @de_id, display_name: 'Data Element Identifier') if @de_id.present?
+        code_sys = @de_code_system || ''
+        q.concepts << Concept.new(value: @de_id, display_name: 'Data Element Identifier', code_system: code_sys) if @de_id.present?
         q
       end
 
@@ -150,6 +152,7 @@ module SDP
           section_name: 'PHIN Variable',
           name: 'Data Element (DE) Name',
           de_id: 'DE Identifier Sent in HL7 Message',
+          de_code_system: 'DE Code System',
           description: 'Data Element Description',
           value_set: 'Value Set Name (VADS Hyperlink)',
           program_var: /(PHIN|Local) Variable Code System/,

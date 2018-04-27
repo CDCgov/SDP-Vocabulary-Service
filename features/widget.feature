@@ -9,7 +9,7 @@ Feature: Widget Display
     Then I should see "What is your gender?"
     And I should see "This is a question"
     And I should see "DRAFT"
-    And I should see "Linked Response Sets: 0"
+    And I should see "Author Recommended Response Sets: 0"
 
   Scenario: View response set widget and test collapsable responses
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"

@@ -1,5 +1,6 @@
 class ResponseSetsController < ApplicationController
   load_and_authorize_resource except: [:usage]
+  before_action :set_paper_trail_whodunnit
 
   # GET /response_sets
   # GET /response_sets.json
@@ -112,7 +113,6 @@ class ResponseSetsController < ApplicationController
   def destroy
     if @response_set.status == 'draft'
       @response_set.destroy
-      SDP::Elasticsearch.delete_item('response_set', @response_set.id, true)
       render json: @response_set
     else
       render json: @response_set.errors, status: :unprocessable_entity

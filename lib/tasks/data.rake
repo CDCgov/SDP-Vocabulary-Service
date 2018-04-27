@@ -9,7 +9,7 @@ namespace :data do
     boolean_rt = ResponseType.where(name: 'Boolean').first
 
     if boolean_rt.blank?
-      STDERR.puts "Unable to Boolean ResponseType. Did you seed the database?"
+      STDERR.puts "Unable to find Boolean ResponseType. Did you seed the database?"
       exit(-1)
     end
 

@@ -44,8 +44,9 @@ Category.find_or_create_by name: 'Clinical'
 Category.find_or_create_by name: 'Treatment'
 Category.find_or_create_by name: 'Laboratory'
 Category.find_or_create_by name: 'Vaccine'
+Category.find_or_create_by name: 'Screening'
 epid = Category.find_or_create_by name: 'Epidemiological'
-ep = Category.find_or_create_by name: 'Emergency Preparedness'
+ep = Category.find_or_create_by name: 'Public Health Emergency Preparedness & Response'
 
 Subcategory.find_or_create_by name: 'Managing & Commanding', category: ep
 Subcategory.find_or_create_by name: 'Operations', category: ep

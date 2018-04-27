@@ -135,6 +135,7 @@ class DashboardContainer extends SearchManagerComponent {
     let loggedIn = ! isEmpty(this.props.currentUser);
     const searchResults = this.props.searchResults;
     const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
+    const groupObj = this.props.currentUser.groups && this.props.currentUser.groups.find((g) => g.id === parseInt(this.state.groupFilterId, 10));
     return (
       <div className="container-fluid">
         {!loggedIn &&
@@ -147,8 +148,7 @@ class DashboardContainer extends SearchManagerComponent {
             <div className="cdc-jumbotron">
               <div className="container">
                 <div className="row">
-                  <div className="col-md-12">
-                    <div className="col-md-8">
+                   <div className="col-md-8">
                       <div className="cdc-promo-banner">
                         <h1 className="banner-title">CDC Vocabulary Service</h1>
                         <h2 className="banner-subtitle">Author Questions, Response Sets, Sections, and Surveys</h2>
@@ -157,7 +157,6 @@ class DashboardContainer extends SearchManagerComponent {
                       </div>
                     </div>
                     <div className="col-md-4"></div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -178,12 +177,27 @@ class DashboardContainer extends SearchManagerComponent {
                   <div className="adv-filter-list">Filtering to content owned by any of your groups</div>
                 }
                 {this.state.groupFilterId > 0 &&
-                  <div className="adv-filter-list">Filtering by content in group: {this.props.currentUser.groups && this.props.currentUser.groups.find((g) => g.id === parseInt(this.state.groupFilterId, 10)).name}</div>
-                }
-                <div className="row">
-                  <div className="col-md-12">
-                    {this.analyticsGroup(this.state.type)}
+                  <div className="group-filter-info">
+                  <div className="adv-filter-list">
+
+                  <a className="panel-toggle" data-toggle="collapse" href="#collapse_group_detail"><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about group</text>
+                  Filtering by content in group: {groupObj.name}</a></div>
+                  <div className="group-detail panel-collapse panel-details collapse" id="collapse_group_detail">
+                    <div className="panel-body">
+                    <p><strong>Description:</strong> {groupObj.description}</p>
+                    <p><strong>Group Members</strong></p>
+                    <ul>
+                      {groupObj.users && groupObj.users.map((member) => {
+                        return  <li key={member.id}> {member.firstName} {member.lastName} (<a href="mailto:{member.email}">{member.email}</a>)</li>;
+                      })}
+                    </ul>
                   </div>
+                  </div>
+                </div>
+                }
+                <div>
+                    {this.analyticsGroup(this.state.type)}
                 </div>
                 <div className="load-more-search">
                   <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} />
@@ -317,7 +331,7 @@ class DashboardContainer extends SearchManagerComponent {
       <div className="recent-items-panel">
         <div className="recent-items-heading">My Stuff</div>
         <div className="recent-items-body">
-          <ul className="list-group" name="Filter by stuff you own">
+          <div className="list-group" name="Filter by stuff you own">
             <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'response_set' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set', true)}>
               <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
               <text className="sr-only">Click button to filter search results by response sets you own.</text>
@@ -338,9 +352,9 @@ class DashboardContainer extends SearchManagerComponent {
               <text className="sr-only">Click button to filter search results by surveys you own.</text>
               <div className="recent-items-value">{this.props.mySurveyCount} Surveys</div>
             </button>
-          </ul>
-          {myStuffFilter ? (<a href="#" className="col-md-12 text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
-            <a href="#" tabIndex="4" className="col-md-12 text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
+          </div>
+          {myStuffFilter ? (<a href="#" className="center-block text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
+            <a href="#" tabIndex="4" className="center-block text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
           )}
         </div>
         <div className="recent-items-heading"></div>
@@ -357,7 +371,7 @@ class DashboardContainer extends SearchManagerComponent {
                 <option disabled>----------------------------</option>
                 <option value={-1}>All My Groups</option>
               </select>
-              {this.state.groupFilterId !== 0 && <a href="#" tabIndex="4" className="col-md-12 text-center" onClick={() => this.selectGroup(0)}>Clear Groups Filter</a>}
+              {this.state.groupFilterId !== 0 && <a href="#" tabIndex="4" className="center-block text-center" onClick={() => this.selectGroup(0)}>Clear Groups Filter</a>}
             </div>
           </div>
         }

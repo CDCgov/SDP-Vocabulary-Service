@@ -9,6 +9,22 @@ json.all_versions section.all_versions do |s|
   json.extract! s, :id, :name, :created_by_id, :version_independent_id, :version, :groups, :status, :most_recent
 end
 
+json.versions section.paper_trail_versions do |version|
+  json.extract! version, :created_at
+  json.author User.find(version.whodunnit).email if version.whodunnit
+  temp_hash = {}
+  version.changeset.each_pair do |field, arr|
+    if field.end_with?('_id')
+      before_name = field.chomp('_id').camelize.constantize.find(arr[0]).name if arr[0]
+      after_name = field.chomp('_id').camelize.constantize.find(arr[1]).name if arr[1]
+      temp_hash[field.chomp('_id').humanize] = [before_name, after_name]
+    else
+      temp_hash[field.humanize] = arr
+    end
+  end
+  json.changeset temp_hash
+end
+
 json.questions section.questions_with_most_recent do |q|
   json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :category_id, :description, :status, \
                 :version, :version_independent_id, :response_type, :most_recent, :most_recent_published, :subcategory_id, \

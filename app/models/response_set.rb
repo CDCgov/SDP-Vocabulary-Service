@@ -2,6 +2,8 @@ class ResponseSet < ApplicationRecord
   include Versionable, OidGenerator, Searchable, Groupable
   SOURCE_OPTIONS = %w(local PHIN_VADS).freeze
   acts_as_commentable
+  has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
 
   has_many :question_response_sets, dependent: :destroy
   has_many :questions, through: :question_response_sets
@@ -24,6 +26,16 @@ class ResponseSet < ApplicationRecord
   accepts_nested_attributes_for :responses, allow_destroy: true
 
   after_commit :index, on: [:create, :update]
+  after_commit :es_destroy, on: [:destroy]
+
+  def es_destroy
+    SDP::Elasticsearch.delete_item('response_set', id, true)
+  end
+
+  def exclusive_use?
+    # Checking if the question or section that was just destroyed was the only link
+    sections.empty? && questions.empty?
+  end
 
   def self.most_recent_for_oid(oid)
     where(oid: oid).order(version: :desc).first

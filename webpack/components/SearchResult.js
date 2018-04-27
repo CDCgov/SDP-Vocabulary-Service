@@ -55,7 +55,7 @@ export default class SearchResult extends Component {
   }
 
   resultDropdownMenu(result, originalType, extraActionName, extraAction) {
-    var type = originalType.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','');
+    var type = originalType.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','');
     return (
       <ul className="dropdown-menu dropdown-menu-right">
         {(originalType === 'section_nested_item' || originalType == 'nested_section') && <li>
@@ -110,7 +110,7 @@ export default class SearchResult extends Component {
   resultStatusCondensed(status,version,type,date) {
     if(status === 'published') {
       return(
-          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>published (<text className="sr-only">Item Version Number: </text><span title={type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('nested','').replace('item','question')}>v{version}</span>)</p>
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>published (<text className="sr-only">Item Version Number: </text><span title={type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}>v{version}</span>)</p>
       );
     } else if (status === 'draft') {
       return(
@@ -130,7 +130,7 @@ export default class SearchResult extends Component {
       return innerHTML;
     }else{
       return (
-        <Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','')}s/${result.id}`}>
+        <Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','')}s/${result.id}`}>
           {innerHTML}
         </Link>
       );
@@ -181,7 +181,7 @@ export default class SearchResult extends Component {
     } else if (result.responseSets == undefined) {
       return (<li>Click question name to view additional question information.</li>);
     } else {
-      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
+      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Author Recommended Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
     }
   }
 
@@ -194,9 +194,10 @@ export default class SearchResult extends Component {
           </ul>
         );
       case 'response_set':
+      case 'response_set_dropped':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Response Set details.">
-            {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.codes && result.codes.length}</a></li>}
+            {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs${type === 'response_set_dropped' ? '-drop' : ''}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.codes && result.codes.length}</a></li>}
           </ul>
         );
       case 'section':
@@ -263,8 +264,9 @@ export default class SearchResult extends Component {
           </div>
         );
       case 'response_set':
+      case 'response_set_dropped':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs`}>
+          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-rs${type === 'response_set_dropped' ? '-drop' : ''}`}>
             <div className="panel-body">
               <text className="sr-only">List of responses on this response set:</text>
               {result.codes && result.codes.length > 0 &&
@@ -373,7 +375,7 @@ export default class SearchResult extends Component {
           {this.showLinkedDetails(result, type)}
         </li>
         <li className="u-result-content-item condensed result-nav" role="navigation" aria-label="Search Result">
-          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult, type)
@@ -413,7 +415,7 @@ export default class SearchResult extends Component {
                 {this.resultStatus(result.status)}
                 <li className={`result-timestamp pull-right ${(this.props.programVar || isSimpleEditable(result, this.props.currentUser)) && 'list-program-var'}`}>
                   <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
-                  <p><text className="sr-only">Item Version Number: </text>version {displayVersion(result.version, result.mostRecentPublished)} | <text className="sr-only">Item type: </text>{type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('nested','').replace('item','question')}</p>
+                  <p><text className="sr-only">Item Version Number: </text>version {displayVersion(result.version, result.mostRecentPublished)} | <text className="sr-only">Item type: </text>{type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}</p>
                   {isSimpleEditable(result, this.props.currentUser) ? (
                     <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
                       e.preventDefault();
@@ -444,7 +446,7 @@ export default class SearchResult extends Component {
           {(type !== "section_nested_item") && this.detailsPanel(result, type)}
         </li>
         <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
-          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult, type)

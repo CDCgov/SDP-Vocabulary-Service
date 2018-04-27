@@ -1,6 +1,8 @@
 class Survey < ApplicationRecord
   include Versionable, Searchable, Taggable, Groupable
   acts_as_commentable
+  has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
 
   has_many :survey_sections, -> { order 'position asc' }, dependent: :destroy
   has_many :sections, through: :survey_sections
@@ -21,6 +23,16 @@ class Survey < ApplicationRecord
   accepts_nested_attributes_for :sections, allow_destroy: true
 
   after_commit :index, on: [:create, :update]
+  after_commit :es_destroy, on: [:destroy]
+
+  def es_destroy
+    SDP::Elasticsearch.delete_item('survey', id, true)
+  end
+
+  def exclusive_use?
+    # Need an exclusive use call for cascade block, survey always exclusive
+    true
+  end
 
   def questions
     Question.joins(section_nested_items: { section: { survey_sections: :survey } }).where(surveys: { id: id }).all
@@ -89,7 +101,9 @@ class Survey < ApplicationRecord
   end
 
   def cascading_action(&block)
+    temp_sects = []
+    sections.each { |s| temp_sects << s }
     yield self
-    sections.each { |s| s.cascading_action(&block) }
+    temp_sects.each { |s| s.cascading_action(&block) }
   end
 end

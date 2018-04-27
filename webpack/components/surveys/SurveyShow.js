@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
+import { Modal, Button } from 'react-bootstrap';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
+import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
 
@@ -20,7 +22,7 @@ import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSi
 class SurveyShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false };
+    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
   historyBar() {
@@ -34,6 +36,46 @@ class SurveyShow extends Component {
           </ul>
         </h2>
         <VersionInfo versionable={this.props.survey} versionableType='survey' currentUser={this.props.currentUser} />
+      </div>
+    );
+  }
+
+  deleteModal() {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showDeleteModal} onHide={()=>this.setState({showDeleteModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete this survey? This action cannot be undone.</p>
+            <p><strong>Delete Survey: </strong>This will delete the survey but not any of the other items created or associated with it</p>
+            <p><strong>Delete All: </strong>This will delete the survey and all other unused draft sections, questions, and response sets associated with it</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => this.props.deleteSurvey(this.props.survey.id, false, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.surveyCount = this.props.stats.surveyCount - 1;
+                stats.mySurveyCount = this.props.stats.mySurveyCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete Survey</Button>
+            <Button onClick={() => this.props.deleteSurvey(this.props.survey.id, true, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.surveyCount = this.props.stats.surveyCount - 1;
+                stats.mySurveyCount = this.props.stats.mySurveyCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete All</Button>
+            <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
@@ -80,19 +122,9 @@ class SurveyShow extends Component {
           {isEditable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              if(confirm('Are you sure you want to delete this Survey? This action cannot be undone.')){
-                this.props.deleteSurvey(this.props.survey.id, (response) => {
-                  if (response.status == 200) {
-                    let stats = Object.assign({}, this.props.stats);
-                    stats.surveyCount = this.props.stats.surveyCount - 1;
-                    stats.mySurveyCount = this.props.stats.mySurveyCount - 1;
-                    this.props.setStats(stats);
-                    this.props.router.push('/');
-                  }
-                });
-              }
+              this.setState({showDeleteModal: true});
               return false;
-            }}>Delete</a>
+            }}>{this.deleteModal()}Delete</a>
           }
           {isExtendable(this.props.survey, this.props.currentUser) &&
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
@@ -103,62 +135,77 @@ class SurveyShow extends Component {
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
-          <div className="basic-c-box panel-default survey-type">
-            <div className="panel-heading">
-              <h2 className="panel-title">Description</h2>
+          <ul className="nav nav-tabs" role="tablist">
+            <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
+              <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
+            </li>
+            <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
+              <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
+            </li>
+          </ul>
+          <div className="tab-content">
+            <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
+              <ChangeHistoryTab versions={this.props.survey.versions} type='survey' majorVersion={this.props.survey.version} />
             </div>
-            <div className="box-content">
-              {this.props.survey.description}
-            </div>
-            { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
-            <div className="box-content">
-              <strong>Published By: </strong>
-              {this.props.survey.publishedBy.email}
-            </div>
-            }
-            { this.props.survey.parent &&
-            <div className="box-content">
-              <strong>Extended from: </strong>
-              <Link to={this.props.survey.parent.id && `/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name && this.props.survey.parent.name }</Link>
-            </div>
-            }
-          </div>
-          <div className="basic-c-box panel-default">
-            <div className="panel-heading">
-              <h2 className="panel-title">
-                Tags
-                {isSimpleEditable(this.props.survey, this.props.currentUser) &&
-                  <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                    e.preventDefault();
-                    this.setState({ tagModalOpen: true });
-                  }}>
-                    <TagModal show={this.state.tagModalOpen || false}
-                      cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                      concepts={this.props.survey.concepts}
-                      saveButtonAction={(conceptsAttributes) => {
-                        this.props.updateSurveyTags(this.props.survey.id, conceptsAttributes);
-                        this.setState({ tagModalOpen: false });
-                      }} />
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                  </a>
+            <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
+              <div className="basic-c-box panel-default survey-type">
+                <div className="panel-heading">
+                  <h2 className="panel-title">Description</h2>
+                </div>
+                <div className="box-content">
+                  {this.props.survey.description}
+                </div>
+                { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
+                <div className="box-content">
+                  <strong>Published By: </strong>
+                  {this.props.survey.publishedBy.email}
+                </div>
                 }
-              </h2>
-            </div>
-            <div className="box-content">
-              <div id="concepts-table">
-                <CodedSetTable items={this.props.survey.concepts} itemName={'Tag'} />
+                { this.props.survey.parent &&
+                <div className="box-content">
+                  <strong>Extended from: </strong>
+                  <Link to={this.props.survey.parent.id && `/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name && this.props.survey.parent.name }</Link>
+                </div>
+                }
               </div>
-            </div>
-          </div>
-          <div className="basic-c-box panel-default">
-            <div className="panel-heading">
-              <h2 className="panel-title">
-                <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
-                <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {this.props.sections && this.props.sections.length}</a>
-              </h2>
-            </div>
-            <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-              <SectionList sections={this.props.sections} currentUser={this.props.currentUser} />
+              <div className="basic-c-box panel-default">
+                <div className="panel-heading">
+                  <h2 className="panel-title">
+                    Tags
+                    {isSimpleEditable(this.props.survey, this.props.currentUser) &&
+                      <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({ tagModalOpen: true });
+                      }}>
+                        <TagModal show={this.state.tagModalOpen || false}
+                          cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                          concepts={this.props.survey.concepts}
+                          saveButtonAction={(conceptsAttributes) => {
+                            this.props.updateSurveyTags(this.props.survey.id, conceptsAttributes);
+                            this.setState({ tagModalOpen: false });
+                          }} />
+                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+                      </a>
+                    }
+                  </h2>
+                </div>
+                <div className="box-content">
+                  <div id="concepts-table">
+                    <CodedSetTable items={this.props.survey.concepts} itemName={'Tag'} />
+                  </div>
+                </div>
+              </div>
+              <div className="basic-c-box panel-default">
+                <div className="panel-heading">
+                  <h2 className="panel-title">
+                    <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                    <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {this.props.sections && this.props.sections.length}</a>
+                  </h2>
+                </div>
+                <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
+                  <SectionList sections={this.props.sections} currentUser={this.props.currentUser} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

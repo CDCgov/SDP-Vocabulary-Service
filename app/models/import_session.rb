@@ -12,7 +12,8 @@ class ImportSession < ApplicationRecord
       self.import_errors = importer.errors.uniq if importer.errors.present?
       unless importer.sections_exist?
         self.import_errors ||= []
-        self.import_errors << 'Unable to find any data element sheets in this Excel file'
+        self.import_errors << 'Unable to find any data element sheets in this Excel file. Check that your spreadsheet ' \
+                              "sections are separated by 'START: ' and 'END: ' rows (include these phrases with exact spelling before the section name)."
       end
     rescue ArgumentError, Zip::Error
       self.import_errors ||= []
@@ -29,7 +30,8 @@ class ImportSession < ApplicationRecord
       self.survey = survey
     else
       self.import_errors ||= []
-      self.import_errors << 'Unable to find any data element sheets in this Excel file'
+      self.import_errors << 'Unable to find any data element sheets in this Excel file. Check that your spreadsheet ' \
+                            "sections are separated by 'START: ' and 'END: ' rows (include these phrases with exact spelling before the section name)."
     end
     save!
   end

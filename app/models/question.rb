@@ -1,11 +1,14 @@
 class Question < ApplicationRecord
   include Versionable, OidGenerator, Searchable, Taggable, Groupable
   acts_as_commentable
+  has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
 
   has_many :question_response_sets, dependent: :destroy
   has_many :response_sets, through: :question_response_sets
   has_many :section_nested_items
   has_many :sections, through: :section_nested_items
+  has_many :section_linked_response_sets, through: :section_nested_items, source: :response_set
 
   belongs_to :response_type
   belongs_to :category
@@ -23,6 +26,16 @@ class Question < ApplicationRecord
   after_destroy :update_sections
 
   after_commit :index, on: [:create, :update]
+  after_commit :es_destroy, on: [:destroy]
+
+  def es_destroy
+    SDP::Elasticsearch.delete_item('question', id, true)
+  end
+
+  def exclusive_use?
+    # Checking if the section that was just destroyed was the only linked section
+    sections.empty?
+  end
 
   def update_sections
     section_array = sections.to_a
@@ -49,8 +62,14 @@ class Question < ApplicationRecord
   end
 
   def cascading_action(&block)
+    temp_rs = []
+    response_sets.each { |rs| temp_rs << rs }
     yield self
-    response_sets.each { |rs| rs.cascading_action(&block) }
+    temp_rs.each { |rs| rs.cascading_action(&block) }
+  end
+
+  def linked_response_sets
+    section_linked_response_sets.uniq
   end
 
   # Get the programs that the section is associated with by the surveys that the

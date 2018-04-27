@@ -1,5 +1,6 @@
 class SectionsController < ApplicationController
   load_and_authorize_resource
+  before_action :set_paper_trail_whodunnit
 
   # GET /sections
   # GET /sections.json
@@ -64,8 +65,13 @@ class SectionsController < ApplicationController
   # DELETE /sections/1.json
   def destroy
     if @section.status == 'draft'
+      if params[:cascade] == 'true'
+        @section.cascading_action do |element|
+          # Original item for deletion can be used elsewhere, children must not be reused
+          element.destroy if element.status == 'draft' && (element.exclusive_use? || element == @section)
+        end
+      end
       @section.destroy
-      SDP::Elasticsearch.delete_item('section', @section.id, true)
       render json: @section
     else
       render json: @section.errors, status: :unprocessable_entity

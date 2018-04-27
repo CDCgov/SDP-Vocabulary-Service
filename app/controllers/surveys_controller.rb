@@ -1,5 +1,7 @@
 class SurveysController < ApplicationController
   load_and_authorize_resource
+  before_action :set_paper_trail_whodunnit
+
   def index
     @users = User.all
   end
@@ -44,8 +46,12 @@ class SurveysController < ApplicationController
 
   def destroy
     if @survey.status == 'draft'
+      if params[:cascade] == 'true'
+        @survey.cascading_action do |element|
+          element.destroy if element.status == 'draft' && element.exclusive_use?
+        end
+      end
       @survey.destroy
-      SDP::Elasticsearch.delete_item('survey', @survey.id, true)
       render json: @survey
     else
       render json: @survey.errors, status: :unprocessable_entity

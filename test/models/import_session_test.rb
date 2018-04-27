@@ -30,7 +30,7 @@ class ImportSessionTest < ActiveSupport::TestCase
       import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplate.xlsx', mode: 'rb'),
                                          created_by: @user, original_filename: 'TestGenericTemplate.xlsx')
       import_session.check!
-      assert_equal 'Unable to find any data element sheets in this Excel file', import_session.import_errors.first
+      assert_equal "Unable to find any data element sheets in this Excel file. Check that your spreadsheet sections are separated by 'START: ' and 'END: ' rows (include these phrases with exact spelling before the section name).", import_session.import_errors.first
     end
   end
 

@@ -18,6 +18,9 @@ global.navigator = {
   userAgent: 'node.js'
 };
 
+// Handle Promise Rejection Warnings
+process.on('unhandledRejection', warning => {});
+
 const $ = _$(window);
 
 chaiJquery(chai, chai.util, $);

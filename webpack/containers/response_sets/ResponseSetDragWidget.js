@@ -43,7 +43,7 @@ class DropTarget extends Component {
             removeResponseSet(rs.id);
           }
           }><i className='fa fa-close' aria-hidden="true"/><span className="sr-only">Remove Selected Response Set</span></button>
-          <DraggableResponseSet type='response_set' result={{Source: rs}} currentUser={{id: -1}} />
+          <DraggableResponseSet type='response_set_dropped' result={{Source: rs}} currentUser={{id: -1}} />
           </div>);
         })}
         <select readOnly={true} value={selectedResponseSets.map((rs) => rs.id )} name="linked_response_sets[]" id="linked_response_sets" aria-label="Selected Response Sets" size="5" multiple="multiple" className="form-control"  style={{display: 'none'}}>
