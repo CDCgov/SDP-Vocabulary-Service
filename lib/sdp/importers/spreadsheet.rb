@@ -252,7 +252,7 @@ module SDP
         @all_sheets.each do |sheet|
           headers = []
           unless w.sheet(sheet).first_row
-            @warnings << "Sheet #{sheet} skipped because it is blank"
+            @warnings << "Sheet #{sheet} skipped because it is blank" # Do not think this can  be reached - caught earlier
             next
           end
           w.sheet(sheet).row(1).each do |header|
@@ -266,8 +266,10 @@ module SDP
             logger.debug "skipping sheet #{sheet} -- looks like a response set"
             next
           elsif !de_sheet?(headers)
-            logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
-            @warnings << "Sheet #{sheet} does not contain parsable headers and will not be imported" #warning
+            logger.debug "skipping tab #{sheet} -- looks like it does not contain form data elements"
+            @warnings << "'#{sheet}' tab does not contain expected MMG column names"\
+            " and will not be imported. Refer to the table in the 'Import Content' "\
+            "Help Documentation for more info." # warning
             next
           end
 
@@ -280,7 +282,7 @@ module SDP
               process_section_marker(row)
               next
             end
-            data_element = extract_data_element(row)
+            data_element = extract_data_element(sheet, row)
             print_data_element(data_element) if verbose
 
             # add the data element unless a matching data element is already present
@@ -404,11 +406,11 @@ module SDP
           end
         rescue Roo::HeaderRowNotFoundError
           if sheet.header_line == 1
-            @warnings << "Missing header row in #{name} in #{sheet}, retrying" #warning
+            @warnings << "On '#{sheet}' tab there is a missing header row in #{name}, retrying" # warning
             sheet.header_line = 2
             retry
           else
-            @warnings << "Unable to parse value set from #{name} in #{sheet}" #warning
+            @warnings << "Unable to process value set from #{name} in tab #{sheet} as no header rows found" # warning
           end
         end
         value_set
@@ -466,13 +468,13 @@ module SDP
               next if entry[:name].nil? || entry[:name].to_s.strip.empty?
               data_element.concepts << Concept.new(value: entry[:value], display_name: entry[:name], code_system: entry[:system])
             end
-          rescue Roo::HeaderRowNotFoundError #catching the error
+          rescue Roo::HeaderRowNotFoundError # catching the error
             if sheet.header_line == 1
-              @warnings << "Missing header row in #{data_element.tag_tab_name}, retrying" #warning
+              @warnings << "On tab '#{sheet}' there is a missing header row in #{data_element.tag_tab_name}, retrying" # warning
               sheet.header_line = 2
               retry
             else
-              @warnings << "Unable to parse tags from #{data_element.tag_tab_name}" #warning
+              @warnings << "For tab '#{sheet}' Unable to parse tags from #{data_element.tag_tab_name}" # warning
             end
           end
         end
@@ -493,7 +495,7 @@ module SDP
         end
       end
 
-      def extract_data_element(row)
+      def extract_data_element(sheet, row)
         data_element = if @config[:mmg]
                          MMGDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
                        else
@@ -501,11 +503,11 @@ module SDP
                        end
         data_element.extract(row)
         if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
-          @warnings << "Value set tab '#{data_element.value_set_tab_name}' not present" #warning
+          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
           # data_element.value_set_tab_name = nil
         end
         if data_element.tag_tab_name.present? && !@all_sheets.include?(data_element.tag_tab_name)
-          @warnings << "Tag tab '#{data_element.tag_tab_name}' not present" #warning
+          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Tag tab '#{data_element.tag_tab_name}' not present" # warning
         end
         data_element
       end
@@ -523,7 +525,7 @@ module SDP
         elsif end_marker
           section_name = end_marker[1]
           if @current_section.name != section_name
-            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{section_name}" #warning
+            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{section_name}" # warning
           else
             @current_section = @parent_sections.pop
           end

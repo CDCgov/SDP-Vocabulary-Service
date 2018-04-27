@@ -9,7 +9,7 @@ Feature: Import Spreadsheet
     And I attach an MMG to the "file-select" input
     Then I wait 5 seconds
     And I should see "TestMMG.xlsx"
-    And I should see "Value set tab 'Yes No Unknown (YNU)' not present"
+    And I should see "'Introduction' tab does not contain expected MMG column names and will not be imported."
     When I click on the "Import" button
     And I wait 10 seconds
     Then I should see "File imported with warnings"
@@ -41,5 +41,5 @@ Feature: Import Spreadsheet
       And I should see "TestMMGNoData.xlsx"
       And I should see "File not recognized as MMG Excel spreadsheet"
       When I click on the "Remove" button
-      And I wait 10 seconds
+      And I wait 2 seconds
       Then I should see "Please select the file you wish to import"
