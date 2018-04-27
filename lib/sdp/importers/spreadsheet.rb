@@ -267,9 +267,9 @@ module SDP
             next
           elsif !de_sheet?(headers)
             logger.debug "skipping tab #{sheet} -- looks like it does not contain form data elements"
-            @warnings << "'#{sheet}' tab does not contain expected MMG column names"\
-            " and will not be imported. Refer to the table in the 'Import Content' "\
-            "Help Documentation for more info." # warning
+            @warnings << " '#{sheet}' tab does not contain expected MMG column names"\
+            ' and will not be imported. Refer to the table in the "Import Content" '\
+            'Help Documentation for more info.' # warning
             next
           end
 

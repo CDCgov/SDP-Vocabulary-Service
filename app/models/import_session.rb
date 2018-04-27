@@ -14,7 +14,10 @@ class ImportSession < ApplicationRecord
 
       unless importer.sections_exist?
         self.import_errors ||= []
-        self.import_errors << 'This Excel file does not contain any tabs with the expected MMG column names and will not be imported. Refer to "How to Identify Sections, Templates, or Repeating Groups" in the "Import Content" Help Documentation for more information.'
+        self.import_errors << 'This Excel file does not contain any tabs.'\
+          ' with the expected MMG column names and will not be imported. '\
+          'Refer to "How to Identify Sections, Templates, or Repeating Groups"'\
+          ' in the "Import Content" Help Documentation for more information.'
       end
     rescue ArgumentError, Zip::Error
       self.import_errors ||= []
@@ -32,7 +35,7 @@ class ImportSession < ApplicationRecord
     else #
       self.import_errors ||= []
       self.import_errors << 'Unable to find any Sections in any tab.'\
-      ' This file will not be imported. Refer to the table'\
+      's This file will not be imported. Refer to the table'\
       ' in the “Import Content” Help Documentation for more information.'
 
     end
