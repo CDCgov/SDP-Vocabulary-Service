@@ -10,7 +10,7 @@ class ImportSessionTest < ActiveSupport::TestCase
   test 'check!' do
     assert_difference 'ImportSession.count' do
       @import_session.check!
-      assert_equal "Value set tab 'Yes No Unknown (YNU)' not present", @import_session.import_errors.first
+      assert_equal " 'Introduction' tab does not contain expected MMG column names and will not be imported. Refer to the table in the \"Import Content\" Help Documentation for more info.", @import_session.import_warnings.first
       assert_equal 6, @import_session.top_level_sections
     end
   end
@@ -30,7 +30,7 @@ class ImportSessionTest < ActiveSupport::TestCase
       import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplate.xlsx', mode: 'rb'),
                                          created_by: @user, original_filename: 'TestGenericTemplate.xlsx')
       import_session.check!
-      assert_equal "Unable to find any data element sheets in this Excel file. Check that your spreadsheet sections are separated by 'START: ' and 'END: ' rows (include these phrases with exact spelling before the section name).", import_session.import_errors.first
+      assert_equal 'This Excel file does not contain any tabs. with the expected MMG column names and will not be imported. Refer to "How to Identify Sections, Templates, or Repeating Groups" in the "Import Content" Help Documentation for more information.', import_session.import_errors.first
     end
   end
 
