@@ -25,6 +25,8 @@ json.versions section.paper_trail_versions do |version|
   json.changeset temp_hash
 end
 
+json.dupe_count section.q_with_dupes_count(current_user) if section && current_user
+
 json.questions section.questions_with_most_recent do |q|
   json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :category_id, :description, :status, \
                 :version, :version_independent_id, :response_type, :most_recent, :most_recent_published, :subcategory_id, \

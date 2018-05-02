@@ -31,6 +31,8 @@ json.versions @survey.paper_trail_versions do |version|
   json.changeset temp_hash
 end
 
+json.dupe_count @survey.q_with_dupes_count(current_user) if @survey && current_user
+
 json.nested_sections @survey.nested_sections do |section|
   json.extract! section, :id, :name, :description, :created_at, :updated_at, \
                 :version_independent_id, :version, :parent, :most_recent, :most_recent_published, \
