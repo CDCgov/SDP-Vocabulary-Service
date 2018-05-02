@@ -558,7 +558,7 @@ module SDP
         when :note
           logger.info("Found NOTE: #{mr.text}")
         when :error
-          @error << "Unable to process marker row with contents #{row_contents}"
+          @warnings << "Unable to process marker row with contents #{row_contents}"
         end
       end
 
