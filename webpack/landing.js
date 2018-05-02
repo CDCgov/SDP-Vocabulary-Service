@@ -17,6 +17,7 @@ import ResponseSetEditContainer from './containers/response_sets/ResponseSetEdit
 import QuestionEditContainer from './containers/questions/QuestionEditContainer';
 import SurveyEditContainer from './containers/surveys/SurveyEditContainer';
 import SurveyImportContainer from './containers/surveys/SurveyImportContainer';
+import SurveyDedupeContainer from './containers/surveys/SurveyDedupeContainer';
 import SectionEditContainer from './containers/sections/SectionEditContainer';
 import SurveyShowContainer from './containers/surveys/SurveyShowContainer';
 import Privacy from './containers/Privacy';
@@ -48,6 +49,7 @@ ReactDOM.render(
           <Route path='/questions/:qId/:action' component={QuestionEditContainer} />
           <Route path='/surveys/new'  component={SurveyEditContainer} />
           <Route path='/surveys/import' component={SurveyImportContainer} />
+          <Route path='/surveys/:surveyId/dedupe' component={SurveyDedupeContainer} />
           <Route path='/surveys/:surveyId/:action' component={SurveyEditContainer} />
         </Route>
         <Route path='/privacy' component={Privacy}/>
