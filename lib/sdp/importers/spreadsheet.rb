@@ -529,11 +529,11 @@ module SDP
                        end
         data_element.extract(row)
         if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
-          @warnings << "Value set tab '#{data_element.value_set_tab_name}' not present"
+          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
           # data_element.value_set_tab_name = nil
         end
         if data_element.tag_tab_name.present? && !@all_sheets.include?(data_element.tag_tab_name)
-          @warnings << "Tag tab '#{data_element.tag_tab_name}' not present"
+          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Tag tab '#{data_element.tag_tab_name}' not present" # warning
         end
         data_element
       end
