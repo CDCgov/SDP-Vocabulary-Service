@@ -76,4 +76,23 @@ class SectionTest < ActiveSupport::TestCase
     assert_equal 2, old_question.max_version
     assert_equal 2, old_question.most_recent
   end
+
+  test 'Run dupe count and dupes' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test Delete', created_by: user)
+    assert rs.save
+    q1 = Question.new(content: 'Test Delete 1', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
+    assert q1.save
+    q2 = Question.new(content: 'Test Delete 2', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
+    assert q2.save
+    q3 = Question.new(content: 'Test Delete 3', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
+    assert q3.save
+    sect = Section.new(name: 'Test Delete 2', created_by: user)
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q1.id, response_set_id: rs.id, position: 0), SectionNestedItem.new(question_id: q2.id, response_set_id: rs.id, position: 0), SectionNestedItem.new(question_id: q3.id, response_set_id: rs.id, position: 0)]
+    assert sect.save
+    dupe_count = sect.q_with_dupes_count(user)
+    assert_equal 0, dupe_count
+    pot_dupes = sect.potential_duplicates(user)
+    assert_equal 0, pot_dupes.length
+  end
 end

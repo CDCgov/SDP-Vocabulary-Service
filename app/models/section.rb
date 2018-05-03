@@ -64,7 +64,7 @@ class Section < ApplicationRecord
       rt = question.response_type ? question.response_type.name : ''
       next unless question && question.status == 'draft'
       results = SDP::Elasticsearch.find_duplicates(question, current_user_id, current_user_groups)
-      if results['hits']['total'] > 0
+      if results && results['hits'] && results['hits']['total'] > 0
         dupes << { draft_question: { id: question.id, content: content, description: q_description, response_type: rt,
                                      category: category }, potential_duplicates: results['hits']['hits'] }
       end

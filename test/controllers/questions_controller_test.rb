@@ -12,6 +12,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     @question5 = questions(:five)
     @current_user = users(:admin)
     @na_user = users(:not_admin)
+    @survey = surveys(:four)
     @group = groups(:one)
     sign_in @current_user
   end
@@ -149,6 +150,27 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :success
     assert_not_equal last_id, Question.last
+  end
+
+  test 'should delete a duplicate and replace the NestedItem associations' do
+    post questions_url(format: :json), params: { question: { content: 'Test content', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    assert_equal Question.last.status, 'draft'
+    question = Question.last
+    post questions_url(format: :json), params: { question: { content: 'Test content', response_type_id: @question.response_type.id, category_id: @question.category.id } }
+    replacement = Question.last.id
+    linked_question = { question_id: question.id, response_set_id: nil, position: 1, program_var: 'test' }
+    post sections_url(format: :json), params: { section: { name: 'Create test section', created_by_id: @question.created_by_id, linked_items: [linked_question], linked_response_sets: [nil] } }
+    assert_difference('Question.count', -1) do
+      assert_difference('SectionNestedItem.count', 0) do
+        assert_difference('Section.count', 0) do
+          put mark_as_duplicate_question_url(question, format: :json), params: { replacement: replacement, survey: @survey.id }
+        end
+      end
+    end
+    assert_response :success
+    sect = Section.last
+    sni = sect.section_nested_items.first
+    assert_equal replacement, sni.question_id
   end
 
   test 'should get question usage' do
