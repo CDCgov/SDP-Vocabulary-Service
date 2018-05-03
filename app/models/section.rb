@@ -52,6 +52,26 @@ class Section < ApplicationRecord
     count
   end
 
+  def potential_duplicates(current_user)
+    current_user_id = current_user ? current_user.id : nil
+    current_user_groups = current_user ? current_user.groups : []
+    dupes = []
+    flatten_questions.each do |sni|
+      question = sni.question
+      category = question.category ? question.category.name : ''
+      content = question.content
+      q_description = question.description
+      rt = question.response_type ? question.response_type.name : ''
+      next unless question && question.status == 'draft'
+      results = SDP::Elasticsearch.find_duplicates(question, current_user_id, current_user_groups)
+      if results['hits']['total'] > 0
+        dupes << { draft_question: { id: question.id, content: content, description: q_description, response_type: rt,
+                                     category: category }, potential_duplicates: results['hits']['hits'] }
+      end
+    end
+    dupes
+  end
+
   def update_surveys
     survey_array = surveys.to_a
     survey_sections.destroy_all

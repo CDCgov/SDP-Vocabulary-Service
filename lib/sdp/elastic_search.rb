@@ -224,7 +224,7 @@ module SDP
       }
 
       with_client do |client|
-        results = client.search index: 'vocabulary', body: search_body
+        results = client.search index: 'vocabulary', type: obj.class.to_s.underscore, body: search_body
         return results
       end
     end

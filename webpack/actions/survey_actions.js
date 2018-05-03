@@ -16,7 +16,8 @@ import {
   UPDATE_SURVEY_TAGS,
   CREATE_IMPORT_SESSION,
   UPDATE_IMPORT_SESSION,
-  ATTEMPT_IMPORT_FILE
+  ATTEMPT_IMPORT_FILE,
+  FETCH_DUPLICATES
 } from './types';
 
 
@@ -44,6 +45,18 @@ export function fetchSurvey(id) {
     }).then((surveyResponse) => {
       const normalizedData = normalize(surveyResponse.data, surveySchema);
       return normalizedData.entities;
+    })
+  };
+}
+
+export function fetchDuplicates(id) {
+  return {
+    type: FETCH_DUPLICATES,
+    payload: axios.get(routes.duplicatesSurveyPath(id), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      }
     })
   };
 }

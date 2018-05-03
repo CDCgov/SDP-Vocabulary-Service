@@ -43,6 +43,15 @@ class Survey < ApplicationRecord
     count
   end
 
+  def potential_duplicates(current_user)
+    dupes = []
+    sections.each do |s|
+      sect_dupe_count = s.q_with_dupes_count(current_user)
+      dupes << { id: s.id, name: s.name, count: sect_dupe_count, questions: s.potential_duplicates(current_user) } if sect_dupe_count > 0
+    end
+    dupes
+  end
+
   def questions
     Question.joins(section_nested_items: { section: { survey_sections: :survey } }).where(surveys: { id: id }).all
   end
