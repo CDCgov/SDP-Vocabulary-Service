@@ -107,11 +107,29 @@ class SurveyShow extends Component {
             <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} removeFunc={this.props.removeSurveyFromGroup} currentUser={this.props.currentUser} />
           }
           {isPublishable(this.props.survey, this.props.currentUser) &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.props.publishSurvey(this.props.survey.id);
-                return false;
-              }}>Publish</a>
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.props.publishSurvey(this.props.survey.id);
+              return false;
+            }}>Publish</a>
+          }
+          {this.props.currentUser && this.props.currentUser.admin && !this.props.survey.preferred &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.props.addPreferred(this.props.survey.id, 'Survey', () => {
+                this.props.fetchSurvey(this.props.survey.id);
+              });
+              return false;
+            }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+          }
+          {this.props.currentUser && this.props.currentUser.admin && this.props.survey.preferred &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.props.removePreferred(this.props.survey.id, 'Survey', () => {
+                this.props.fetchSurvey(this.props.survey.id);
+              });
+              return false;
+            }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
           }
           {isRevisable(this.props.survey, this.props.currentUser) &&
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/revise`}>Revise</Link>
@@ -134,7 +152,7 @@ class SurveyShow extends Component {
           }
         </div>
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Survey Name:</strong> {this.props.survey.name} </h1>
+          <h1 className={`maincontent-item-name ${this.props.survey.preferred ? 'cdc-preferred-note' : ''}`}><strong>Survey Name:</strong> {this.props.survey.name} {this.props.survey.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
@@ -261,6 +279,9 @@ SurveyShow.propTypes = {
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,
   deleteSurvey:  PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
+  fetchSurvey: PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
   removeSurveyFromGroup: PropTypes.func,

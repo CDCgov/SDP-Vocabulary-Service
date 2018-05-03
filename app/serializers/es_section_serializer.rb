@@ -20,6 +20,7 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :surveillance_systems
   attribute :most_recent
   attribute :groups
+  attribute :preferred
 
   def most_recent
     object.most_recent?

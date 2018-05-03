@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchResponseSet, publishResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
+import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import ResponseSetShow from '../../components/response_sets/ResponseSetShow';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import { responseSetSchema } from '../../schema';
@@ -91,7 +92,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
+    addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage}, dispatch);
 }
 
 ResponseSetShowContainer.propTypes = {
@@ -103,6 +105,8 @@ ResponseSetShowContainer.propTypes = {
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
   removeResponseSetFromGroup: PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

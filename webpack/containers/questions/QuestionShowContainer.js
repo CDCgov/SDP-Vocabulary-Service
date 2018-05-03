@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchQuestion, publishQuestion, addQuestionToGroup, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
+import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { questionProps } from "../../prop-types/question_props";
 import QuestionShow  from '../../components/questions/QuestionShow';
 import { questionSchema } from '../../schema';
@@ -85,6 +86,9 @@ class QuestionShowContainer extends Component {
                              deleteQuestion={this.props.deleteQuestion}
                              addQuestionToGroup={this.props.addQuestionToGroup}
                              removeQuestionFromGroup={this.props.removeQuestionFromGroup}
+                             fetchQuestion={this.props.fetchQuestion}
+                             addPreferred={this.props.addPreferred}
+                             removePreferred={this.props.removePreferred}
                              updateQuestionTags={this.props.updateQuestionTags}
                              publishers={this.props.publishers} />
             <div className="col-md-12 showpage-comments-title">Public Comments:</div>
@@ -106,7 +110,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred,
+    removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -124,6 +129,8 @@ QuestionShowContainer.propTypes = {
   deleteQuestion: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
   removeQuestionFromGroup: PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
   publishers: publishersProps
 };
 

@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchSurvey, publishSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateSurveyTags } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
+import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
@@ -111,7 +112,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, publishSurvey, addSurveyToGroup, removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags}, dispatch);
+  return bindActionCreators({setSteps, setStats, publishSurvey, addSurveyToGroup, addPreferred, removePreferred,
+    removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -122,6 +124,8 @@ SurveyShowContainer.propTypes = {
   publishSurvey: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
   removeSurveyFromGroup: PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
   updateSurveyTags: PropTypes.func,
   deleteSurvey: PropTypes.func,
   setSteps: PropTypes.func,
