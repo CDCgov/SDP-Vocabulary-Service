@@ -225,3 +225,47 @@ Feature: Manage Surveys
     And I click on the option to Details the Survey with the name "Test Survey"
     Then I should see "Publish"
     And I should not see "Revise"
+
+  Scenario: Curate Survey
+    Given I have a Section with the name "Test Section"
+    And I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I have a Question with the content "What is your name?" and the type "MC"
+    And I have a Question with the content "What is your name? Dupe" and the type "MC"
+    And I have a Response Set with the name "Gender Partial"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Sections
+    And I click on the menu link for the Section with the name "Test Section"
+    And I click on the option to Edit the Section with the name "Test Section"
+    And I fill in the "search" field with "What"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
+    And I use the response set search modal to select "Gender Partial"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your name?"
+    And I click on the "Save" button
+    Then I wait 1 seconds
+    When I go to the dashboard
+    And I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Edit the Survey with the name "Test Survey"
+    And I fill in the "search" field with "Test"
+    And I set search filter to "section"
+    And I click on the "search-btn" button
+    And I use the section search to select "Test Section"
+    And I click on the "Save" button
+    Then I wait 1 seconds
+    And I click on the "Curate" button
+    Then I should see "Potential Duplicate Questions (2)"
+    And I should see "Test Section (2)"
+    When I click on the "view-single-What is your gender?" button
+    Then I should see "Viewing 1 of 2 Potential Duplicate Questions"
+    When I click on the "Switch to the next potential duplicate question" button
+    Then I should see "Viewing 2 of 2 Potential Duplicate Questions"
+    When I click on the "select-question-What is your name? Dupe" button
+    Then I should see "Select & Replace Confirmation"
+    When I click on the "Cancel" button
+    And I click on the "(List all)" link
+    Then I should see "Test Section (2)"

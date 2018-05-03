@@ -89,7 +89,7 @@ class SurveyDedupe extends Component {
                       <td><text>{question.draftQuestion.content}</text><br/><span className="small">{question.draftQuestion.description}</span></td>
                       <td><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
                       <td>{question.draftQuestion.category}</td>
-                      <td><button className="btn btn-sm btn-default" onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewQuestionIndex: j})}>View</button></td>
+                      <td><button className="btn btn-sm btn-default" id={`view-single-${question.draftQuestion.content}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewQuestionIndex: j})}>View</button></td>
                     </tr>
                   );
                 })}
@@ -162,6 +162,7 @@ class SurveyDedupe extends Component {
           </tbody>
         </table>
         <h4>Suggested Replacement Questions ({question.potentialDuplicates && question.potentialDuplicates.length})</h4>
+        {this.deleteModal()}
         <table className="table">
           <thead>
             <tr className="active">
@@ -184,11 +185,11 @@ class SurveyDedupe extends Component {
                   <td><i className='fa $fa-comments' aria-hidden="true"></i> {dupe.Source.responseType && dupe.Source.responseType.name}</td>
                   <td>{dupe.Source.category && dupe.Source.category.name}</td>
                   <td className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                  <td><button className="btn btn-default btn-sm" onClick={(e) => {
+                  <td><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
                     e.preventDefault();
                     this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
                     return false;
-                  }}>{this.deleteModal()}Select</button></td>
+                  }}>Select</button></td>
                 </tr>
               );
             })}
