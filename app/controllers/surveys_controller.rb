@@ -102,6 +102,15 @@ class SurveysController < ApplicationController
     end
   end
 
+  # GET /surveys/1/duplicates
+  def duplicates
+    if SDP::Elasticsearch.ping
+      render json: @survey.potential_duplicates(current_user), status: :ok
+    else
+      render json: { msg: 'Request cannot be processed as Elasticsearch appears to be down.' }, status: :unprocessable_entity
+    end
+  end
+
   # GET /surveys/1/redcap
   def redcap
     xml = render_to_string 'surveys/redcap.xml', layout: false
