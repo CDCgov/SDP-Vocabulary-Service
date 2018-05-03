@@ -45,7 +45,7 @@ class Section < ApplicationRecord
       flatten_questions.each do |sni|
         if sni.question && sni.question.status == 'draft'
           results = SDP::Elasticsearch.find_duplicates(sni.question, current_user_id, current_user_groups)
-          count += 1 if results['hits']['total'] > 0
+          count += 1 if results && results['hits'] && results['hits']['total'] > 0
         end
       end
     end
