@@ -37,6 +37,9 @@ class SurveysController < ApplicationController
         update_successful = @survey.update(survey_params)
       end
       if update_successful
+        @survey.groups.each do |group|
+          @survey.add_to_group(group.id)
+        end
         render json: @survey.to_json, status: :ok
       else
         render json: @survey.errors, status: :unprocessable_entity

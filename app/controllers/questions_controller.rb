@@ -114,6 +114,9 @@ class QuestionsController < ApplicationController
       @question.update_concepts('Question')
       @question.updated_by = current_user
       if @question.update(question_params)
+        @question.groups.each do |group|
+          @question.add_to_group(group.id)
+        end
         render :show, status: :ok, location: @question
       else
         @categories = Category.all

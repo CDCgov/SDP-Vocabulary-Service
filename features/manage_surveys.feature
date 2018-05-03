@@ -269,3 +269,45 @@ Feature: Manage Surveys
     When I click on the "Cancel" button
     And I click on the "(List all)" link
     Then I should see "Test Section (2)"
+
+  Scenario: A Section when added to a Survey should inherit the group assigned to Survey
+    Given I have a Survey with the name "Search Survey Test" and the description "Test"
+    And I have a Section with the name "New Section" and the description "New section description"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Search Survey Test"
+    And I click on the option to Details the Survey with the name "Search Survey Test"
+    When I click on the "Groups" button
+    Then I should see "Group1"
+    When I click on the "Click to add content to the Group1 group" button
+    And I click on the "Groups" button
+    Then I should see "Group1"
+    When I click on the "Edit" button
+    When I go to the list of Sections
+    And I click on the menu link for the Section with the name "New Section"
+    Then I should see "Edit"
+    And I go to the dashboard
+    When I am logged in as new_user_in_group1@gmail.com
+    And I go to the dashboard
+    And I fill in the "search" field with "New Section"
+    And I click on the "search-btn" button
+    And I click on the menu link for the Section with the name "New Section"
+    Then I should not see "Edit"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Search Survey Test"
+    And I click on the option to Details the Survey with the name "Search Survey Test"
+    When I click on the "Edit" button
+    Then I should see "Edit Survey"
+    And I set search filter to "section"
+    And I fill in the "search" field with "New Section"
+    And I click on the "search-btn" button
+    And I use the section search to select "New Section"
+    And I click on the "Save" button
+    When I am logged in as new_user_in_group1@gmail.com
+    And I go to the dashboard
+    And I fill in the "search" field with "New Section"
+    And I click on the "search-btn" button
+    And I click on the menu link for the Section with the name "New Section"
+    And I click on the "Details" link
+    Then I should see "Edit"
