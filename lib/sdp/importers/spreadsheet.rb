@@ -528,7 +528,7 @@ module SDP
                          GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
                        end
         data_element.extract(row)
-        if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
+        if data_element.value_set_tab_name.present? && !@all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
           @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
           # data_element.value_set_tab_name = nil
         end
