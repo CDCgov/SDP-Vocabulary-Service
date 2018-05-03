@@ -138,6 +138,34 @@ module SDP
       end
     end
 
+    class MarkerRow
+      START_REGEX = /^(BEGIN|START|start):? (.*)/
+      END_REGEX = /^(END|end):? (.*)/
+      NOTE_REGEX = /^(NOTE|end):? (.*)/
+
+      attr_accessor :type, :text, :error
+
+      def initialize(row_contents)
+        trimmed_contents = row_contents.strip
+        { section_start: START_REGEX, section_end: END_REGEX, note: NOTE_REGEX }.each_pair do |k, v|
+          match_result = v.match(trimmed_contents)
+          next unless match_result
+          self.type = k
+          self.text = match_result[2]
+          break
+        end
+        if text.blank?
+          self.type = :error
+          self.error = 'Unable to find marker prefix'
+        else
+          splits = text.split(/:|NOTE:/)
+          if splits.length > 1 && splits[1].length >= 30
+            self.text = splits[0].strip
+          end
+        end
+      end
+    end
+
     class Spreadsheet
       attr_reader :errors
       attr_reader :warnings
@@ -146,8 +174,6 @@ module SDP
         mmg: true,
         de_tab_name: 'Data Elements',
         de_coded_type: ['Coded'],
-        section_start_regex: '^START: (.*)',
-        section_end_regex: '^END: (.*)',
         phin_vads_oid_regex: '.*oid=(.*)(&.*)*',
         de_columns: {
           section_name: 'PHIN Variable',
@@ -208,8 +234,6 @@ module SDP
         @current_section = @top_level
         @parent_sections = []
         @config = DEFAULT_CONFIG.deep_merge(config)
-        @section_start = Regexp.new(@config[:section_start_regex])
-        @section_end = Regexp.new(@config[:section_end_regex])
         @vads_oid = Regexp.new(@config[:phin_vads_oid_regex])
         @oid_matcher = /^([\.\d]+)$/
         @valueset_sheet = /Valueset.*/
@@ -483,10 +507,12 @@ module SDP
       def extract_value_sets(workbook, verbose)
         all_data_elements.each do |data_element|
           next unless data_element.value_set_tab_name
-          if @all_sheets.include?(data_element.value_set_tab_name)
-            sheet = workbook.sheet(data_element.value_set_tab_name)
-            logger.info "Processing value set tab: #{data_element.value_set_tab_name} on #{sheet}" if verbose
-            data_element.value_set = parse_value_set(sheet, data_element.value_set_tab_name)
+          vs_tab_name = @all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
+          if @all_sheets.include?(vs_tab_name)
+            sheet = workbook.sheet(vs_tab_name)
+            logger.info "Processing value set tab: #{vs_tab_name}" if verbose
+            data_element.value_set = parse_value_set(sheet, vs_tab_name)
+
             logger.info "  Codes: #{data_element.value_set.join(', ')}" if verbose
           else
             # sheet not present - create an empty response set
@@ -502,7 +528,7 @@ module SDP
                          GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
                        end
         data_element.extract(row)
-        if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
+        if data_element.value_set_tab_name.present? && !@all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
           @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
           # data_element.value_set_tab_name = nil
         end
@@ -518,17 +544,21 @@ module SDP
                       else
                         :name
                       end
-        start_marker = @section_start.match(row[column_name])
-        end_marker = @section_end.match(row[column_name])
-        if start_marker
-          start_section(start_marker[1])
-        elsif end_marker
-          section_name = end_marker[1]
-          if @current_section.name != section_name
-            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{section_name}" # warning
+        row_contents = row[column_name]
+        mr = MarkerRow.new(row_contents)
+        case mr.type
+        when :section_start
+          start_section(mr.text)
+        when :section_end
+          if @current_section.name != mr.text
+            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{mr.text}"
           else
             @current_section = @parent_sections.pop
           end
+        when :note
+          logger.info("Found NOTE: #{mr.text}")
+        when :error
+          @warnings << "Unable to process marker row with contents #{row_contents}"
         end
       end
 
