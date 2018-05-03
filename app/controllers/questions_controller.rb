@@ -85,6 +85,25 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def mark_as_duplicate
+    replacement = Question.find(params[:replacement])
+    @question.section_nested_items.each do |sni|
+      sni.question = replacement
+      if sni.save
+        next
+      else
+        render json: { msg: 'Error saving one of the sections where the question is used', status: :unprocessable_entity }
+      end
+    end
+    if @question.section_nested_items.count == 0
+      q = Question.find(@question.id)
+      q.destroy
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update

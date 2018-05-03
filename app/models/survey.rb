@@ -34,6 +34,24 @@ class Survey < ApplicationRecord
     true
   end
 
+  # Returns the number of questions with potential duplicates on the survey
+  def q_with_dupes_count(current_user)
+    count = 0
+    sections.each do |s|
+      count += s.q_with_dupes_count(current_user)
+    end
+    count
+  end
+
+  def potential_duplicates(current_user)
+    dupes = []
+    sections.each do |s|
+      sect_dupe_count = s.q_with_dupes_count(current_user)
+      dupes << { id: s.id, name: s.name, count: sect_dupe_count, questions: s.potential_duplicates(current_user) } if sect_dupe_count > 0
+    end
+    dupes
+  end
+
   def questions
     Question.joins(section_nested_items: { section: { survey_sections: :survey } }).where(surveys: { id: id }).all
   end

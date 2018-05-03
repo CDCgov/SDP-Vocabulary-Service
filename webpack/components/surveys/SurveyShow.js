@@ -129,6 +129,9 @@ class SurveyShow extends Component {
           {isExtendable(this.props.survey, this.props.currentUser) &&
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
           }
+          {isEditable(this.props.survey, this.props.currentUser) && this.props.survey.dupeCount > 0 &&
+              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`}>Curate ({this.props.survey.dupeCount})</Link>
+          }
         </div>
         <div className="maincontent-details">
           <h1 className="maincontent-item-name"><strong>Survey Name:</strong> {this.props.survey.name} </h1>

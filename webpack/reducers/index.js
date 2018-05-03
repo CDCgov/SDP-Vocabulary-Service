@@ -39,6 +39,7 @@ import lastSearch from './last_search_reducer';
 import suggestions from './suggestions_reducer';
 import groups from './groups_reducer';
 import displayStyle from './display_style_reducer';
+import potentialDupes from './potential_dupes_reducer';
 
 const categories = byIdWithIndividualReducer(FETCH_CATEGORIES_FULFILLED,
   FETCH_CATEGORY_FULFILLED, 'categories');
@@ -50,7 +51,7 @@ const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED, GRANT_PUBLISHER_FULFI
 const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE_ADMIN_FULFILLED);
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, sections, categories, admins,
+  questions, comments, stats, currentUser, responseSets, sections, categories, admins, potentialDupes,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags, groups, displayStyle
 });

@@ -90,6 +90,25 @@ class SurveyTest < ActiveSupport::TestCase
     assert_equal sect3.id, s.survey_sections[1].section_id
   end
 
+  test 'Dupe count and dupes can run without error' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test group rs', created_by: user)
+    assert rs.save
+    q = Question.new(content: 'Test group q', response_type: ResponseType.new(name: 'choice', code: 'choice'), created_by: user)
+    q.response_sets = [rs]
+    assert q.save
+    sect = Section.new(name: 'Test group sect', created_by: user)
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    assert sect.save
+    s = Survey.new(name: 'Test group surv', created_by: user)
+    s.survey_sections = [SurveySection.new(section_id: sect.id, position: 0)]
+    assert s.save
+    dupe_count = s.q_with_dupes_count(user)
+    assert_equal 0, dupe_count
+    pot_dupes = s.potential_duplicates(user)
+    assert_equal 0, pot_dupes.length
+  end
+
   test 'Getting sections with most_recent loaded' do
     s = surveys(:one)
     fs = s.sections_with_most_recent

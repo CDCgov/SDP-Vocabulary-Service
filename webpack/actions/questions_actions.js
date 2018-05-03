@@ -13,13 +13,25 @@ import {
   REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
   ADD_ENTITIES,
-  UPDATE_QUESTION_TAGS
+  UPDATE_QUESTION_TAGS,
+  MARK_AS_DUPLICATE
 } from './types';
 
 export function deleteQuestion(id, cascade=false, callback=null) {
   return {
     type: DELETE_QUESTION,
     payload: deleteObject(routes.question_path(id), cascade, callback)
+  };
+}
+
+export function markAsDuplicate(id, replacement, survey) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.mark_as_duplicate_question_path(id),
+                      {replacement, survey, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: MARK_AS_DUPLICATE,
+    payload: putPromise
   };
 }
 
