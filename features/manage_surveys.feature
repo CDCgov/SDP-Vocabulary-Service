@@ -292,6 +292,7 @@ Feature: Manage Surveys
     And I fill in the "search" field with "New Section"
     And I click on the "search-btn" button
     And I click on the menu link for the Section with the name "New Section"
+    And I click on the "Details" link
     Then I should not see "Edit"
     And I am logged in as test_author@gmail.com
     When I go to the list of Surveys
