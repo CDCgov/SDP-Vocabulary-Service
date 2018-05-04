@@ -46,3 +46,6 @@ config/environments/*.local.yml
 /public/packs
 /public/assets
 /node_modules
+
+# ignore error logs
+yarn-error.log
