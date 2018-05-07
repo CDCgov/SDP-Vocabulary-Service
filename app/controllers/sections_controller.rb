@@ -54,6 +54,9 @@ class SectionsController < ApplicationController
         update_successful = @section.update(section_params)
       end
       if update_successful
+        @section.groups.each do |group|
+          @section.add_to_group(group.id)
+        end
         render json: @section.to_json, status: :ok
       else
         render json: @section.errors, status: :unprocessable_entity
