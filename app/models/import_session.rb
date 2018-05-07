@@ -14,7 +14,7 @@ class ImportSession < ApplicationRecord
 
       unless importer.sections_exist?
         self.import_errors ||= []
-        self.import_errors << 'This Excel file does not contain any tabs.'\
+        self.import_errors << 'This Excel file does not contain any tabs'\
           ' with the expected MMG column names and will not be imported. '\
           'Refer to "How to Identify Sections, Templates, or Repeating Groups"'\
           ' in the "Import Content" Help Documentation for more information.'

@@ -206,7 +206,7 @@ class SurveyDedupe extends Component {
     return (
       <div>
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Survey Name:</strong> {this.props.survey.name} </h1>
+          <h1 className="maincontent-item-name"><strong>Survey Name:</strong> <a href={`/#/surveys/${this.props.survey.id}`}>{this.props.survey.name}</a> </h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
