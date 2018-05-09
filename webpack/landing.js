@@ -20,7 +20,7 @@ import SurveyImportContainer from './containers/surveys/SurveyImportContainer';
 import SurveyDedupeContainer from './containers/surveys/SurveyDedupeContainer';
 import SectionEditContainer from './containers/sections/SectionEditContainer';
 import SurveyShowContainer from './containers/surveys/SurveyShowContainer';
-import Privacy from './containers/Privacy';
+import TermsOfService from './containers/TermsOfService';
 import Help from './containers/Help';
 import FHIRDoc from './components/FHIRDoc';
 import AdminPanel from './containers/AdminPanel';
@@ -52,7 +52,7 @@ ReactDOM.render(
           <Route path='/surveys/:surveyId/dedupe' component={SurveyDedupeContainer} />
           <Route path='/surveys/:surveyId/:action' component={SurveyEditContainer} />
         </Route>
-        <Route path='/privacy' component={Privacy}/>
+        <Route path='/termsOfService' component={TermsOfService}/>
         <Route path='/help' component={Help}/>
         <Route path='/fhirDoc' component={FHIRDoc}/>
         <Route path='/sections/:sectionId' component={SectionShowContainer} />
