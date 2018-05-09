@@ -181,7 +181,7 @@ class SurveyDedupe extends Component {
                 <tr key={i}>
                   <td className="match-score">{dupe.Score}</td>
                   <td><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
-                  <td></td>
+                  <td className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
                   <td><i className='fa $fa-comments' aria-hidden="true"></i> {dupe.Source.responseType && dupe.Source.responseType.name}</td>
                   <td>{dupe.Source.category && dupe.Source.category.name}</td>
                   <td className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>

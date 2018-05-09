@@ -43,6 +43,15 @@
   background:url(img/cdc-preferred.svg) right top no-repeat;
 }
 
+.cdc-preferred-column {
+  background:url(img/cdc-preferred.svg) left center no-repeat;
+}
+
+.cdc-preferred-search-result {
+  background:url(img/cdc-preferred.svg) center top no-repeat;
+  background-size: contain;
+}
+
 .item-icon {
   margin-top: 20px;
 }

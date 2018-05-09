@@ -414,6 +414,10 @@ export default class SearchResult extends Component {
             </div>
             <div className="result-analytics">
               <ul className="list-inline">
+                {result.preferred && <li className="result-analytics-item">
+                  <div className="cdc-preferred-search-result" aria-hidden="true"><text className="sr-only">This content is marked as preferred by the CDC</text>&nbsp;</div>
+                  <p className="item-description">Preferred</p>
+                </li>}
                 {result.surveillancePrograms && this.programsInfo(result)}
                 {result.surveillanceSystems && this.systemsInfo(result)}
                 {this.resultStatus(result.status)}
