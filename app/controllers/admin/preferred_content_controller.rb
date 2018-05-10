@@ -7,7 +7,6 @@ module Admin
       if object
         object.preferred = true
         object.save!
-        UpdateIndexJob.perform_later(object.class.to_s.underscore, object.id)
         render json: object.to_json, status: :ok
       else
         render json: { msg: "Couldn't find #{params[:type]} with id #{params[:id]}" }, status: :unprocessable_entity
@@ -19,7 +18,6 @@ module Admin
       if object
         object.preferred = false
         object.save!
-        UpdateIndexJob.perform_later(object.class.to_s.underscore, object.id)
         render json: object.to_json, status: :ok
       else
         render json: { msg: "Couldn't find #{params[:type]} with id #{params[:id]}" }, status: :unprocessable_entity
