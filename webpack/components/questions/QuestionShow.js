@@ -248,8 +248,10 @@ export default class QuestionShow extends Component {
                       <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets: {question.responseSets && question.responseSets.length}</a>
                     </h2>
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
-                    <ResponseSetList responseSets={question.responseSets} />
+                  <div className="panel-collapse panel-details collapse" id="collapse-rs">
+                    <div className="box-content panel-body">
+                      <ResponseSetList responseSets={question.responseSets} />
+                    </div>
                   </div>
                 </div>
               }
@@ -261,8 +263,10 @@ export default class QuestionShow extends Component {
                       <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections: {question.linkedResponseSets && question.linkedResponseSets.length}</a>
                     </h2>
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-lrs">
-                    <ResponseSetList responseSets={question.linkedResponseSets} />
+                  <div className="panel-collapse panel-details collapse" id="collapse-lrs">
+                    <div className="box-content panel-body">
+                      <ResponseSetList responseSets={question.linkedResponseSets} />
+                    </div>
                   </div>
                 </div>
               }
@@ -274,8 +278,10 @@ export default class QuestionShow extends Component {
                       <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
                     </h2>
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
-                    <SectionList sections={question.sections} currentUser={this.props.currentUser} />
+                  <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
+                    <div class="box-content panel-body">
+                      <SectionList sections={question.sections} currentUser={this.props.currentUser} />
+                    </div>
                   </div>
                 </div>
               }

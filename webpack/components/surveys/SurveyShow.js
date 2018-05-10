@@ -223,8 +223,10 @@ class SurveyShow extends Component {
                     <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {this.props.sections && this.props.sections.length}</a>
                   </h2>
                 </div>
-                <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-surveys">
-                  <SectionList sections={this.props.sections} currentUser={this.props.currentUser} />
+                <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
+                  <div className="box-content panel-body">
+                    <SectionList sections={this.props.sections} currentUser={this.props.currentUser} />
+                  </div>
                 </div>
               </div>
             </div>

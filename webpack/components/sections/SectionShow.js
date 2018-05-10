@@ -289,8 +289,8 @@ class SectionShow extends Component {
                     </h2>
                     <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-questions">
-                    <div className="panel-body">
+                  <div className="panel-collapse panel-details collapse" id="collapse-linked-questions">
+                    <div className="box-content panel-body">
                       <SectionNestedItemList resultStyle={this.props.resultStyle} items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
                       {this.props.section.sectionNestedItems.length > 10 &&
                       <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
@@ -307,8 +307,8 @@ class SectionShow extends Component {
                       <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.surveys && section.surveys.length}</a>
                     </h2>
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse" id="collapse-linked-surveys">
-                    <div className="panel-body">
+                  <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
+                    <div className="box-content panel-body">
                       <SurveyList surveys={section.surveys} currentUser={this.props.currentUser} />
                     </div>
                   </div>
