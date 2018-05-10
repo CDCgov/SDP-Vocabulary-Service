@@ -208,7 +208,7 @@ module SDP
             }
           ],
           min_term_freq: 1,
-          minimum_should_match: '50%'
+          minimum_should_match: '75%'
         }
       }
 

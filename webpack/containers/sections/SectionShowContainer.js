@@ -7,6 +7,7 @@ import { fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
+import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
 import { sectionSchema } from '../../schema';
@@ -74,6 +75,9 @@ class SectionShowContainer extends Component {
                       deleteSection={this.props.deleteSection}
                       addSectionToGroup={this.props.addSectionToGroup}
                       removeSectionFromGroup={this.props.removeSectionFromGroup}
+                      addPreferred={this.props.addPreferred}
+                      removePreferred={this.props.removePreferred}
+                      fetchSection={this.props.fetchSection}
                       updateSectionTags={this.props.updateSectionTags}
                       publishers ={this.props.publishers}
                       resultStyle={this.props.resultStyle}
@@ -102,7 +106,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl}, dispatch);
+  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
+    removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl}, dispatch);
 }
 
 SectionShowContainer.propTypes = {
@@ -117,6 +122,8 @@ SectionShowContainer.propTypes = {
   deleteSection:  PropTypes.func,
   addSectionToGroup: PropTypes.func,
   removeSectionFromGroup: PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
   updateSectionTags: PropTypes.func,
   publishSection: PropTypes.func,
   publishers: publishersProps,

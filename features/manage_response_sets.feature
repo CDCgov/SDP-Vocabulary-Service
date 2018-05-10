@@ -65,8 +65,8 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     When I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Details the Response Set with the name "Gender Full"
-    Then I should see "Send to publisher"
-    When I click on the "Send to publisher" button
+    Then I should see "Send"
+    When I click on the "Send" button
     And I should see "Johnny Test <johnny@test.org>"
 
    Scenario: Delete a draft Response Set

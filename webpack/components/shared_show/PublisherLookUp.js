@@ -8,7 +8,7 @@ class PublisherLookUp extends Component {
   render() {
     return (<div className="btn-group">
               <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span className="fa fa-envelope-o"></span> Send to publisher <span className="caret"></span>
+                <span className="fa fa-envelope-o"></span> Send <span className="caret"></span>
               </button>
               <ul className="dropdown-menu">
                 <li key="header" className="dropdown-header">Publishers</li>

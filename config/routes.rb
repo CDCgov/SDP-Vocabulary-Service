@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     resources :groups, only: [:index, :create]
     put '/groups/add_user' => 'groups#add_user', as: :add_user
     put '/groups/remove_user' => 'groups#remove_user', as: :remove_user
+    put '/preferred_content/add_preferred_label', as: :add_preferred_label
+    put '/preferred_content/remove_preferred_label', as: :remove_preferred_label
   end
 
   resources :sections, except: [:edit] do # No need for edit as that is handled on the react side

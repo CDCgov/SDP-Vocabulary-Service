@@ -290,11 +290,15 @@ export default class SearchResult extends Component {
               <text className="sr-only">List of links and names of questions and nested sections linked to this section:</text>
               {result.sectionNestedItems && result.sectionNestedItems.length > 0 &&
                 result.sectionNestedItems.map((ni, i) => {
-                  return(
-                    <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
-                      <span className={`fa ${iconMap[ni.type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
-                    </div>
-                  );
+                  if(ni !== undefined) {
+                    return(
+                      <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
+                        <span className={`fa ${iconMap[ni.type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
+                      </div>
+                    );
+                  } else {
+                    return;
+                  }
                 })
               }
             </div>
@@ -410,6 +414,10 @@ export default class SearchResult extends Component {
             </div>
             <div className="result-analytics">
               <ul className="list-inline">
+                {result.preferred && <li className="result-analytics-item">
+                  <div className="cdc-preferred-search-result" aria-hidden="true"><text className="sr-only">This content is marked as preferred by the CDC</text>&nbsp;</div>
+                  <p className="item-description">Preferred</p>
+                </li>}
                 {result.surveillancePrograms && this.programsInfo(result)}
                 {result.surveillanceSystems && this.systemsInfo(result)}
                 {this.resultStatus(result.status)}

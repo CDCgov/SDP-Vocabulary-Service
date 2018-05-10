@@ -471,6 +471,9 @@ Based on Rails routes of Vocabulary::Application
 // add_to_group_survey => /surveys/:id/add_to_group(.:format)
   // function(id, options)
   add_to_group_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"add_to_group",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_add_preferred_label => /admin/preferred_content/add_preferred_label(.:format)
+  // function(options)
+  admin_add_preferred_label_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"preferred_content",false],[2,[7,"/",false],[2,[6,"add_preferred_label",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_add_user => /admin/groups/add_user(.:format)
   // function(options)
   admin_add_user_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[2,[7,"/",false],[2,[6,"add_user",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -489,6 +492,9 @@ Based on Rails routes of Vocabulary::Application
 // admin_groups => /admin/groups(.:format)
   // function(options)
   admin_groups_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// admin_remove_preferred_label => /admin/preferred_content/remove_preferred_label(.:format)
+  // function(options)
+  admin_remove_preferred_label_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"preferred_content",false],[2,[7,"/",false],[2,[6,"remove_preferred_label",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_remove_user => /admin/groups/remove_user(.:format)
   // function(options)
   admin_remove_user_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"groups",false],[2,[7,"/",false],[2,[6,"remove_user",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

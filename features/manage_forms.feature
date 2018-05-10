@@ -27,8 +27,8 @@ Feature: Manage Sections
     And I click on the menu link for the Section with the name "Test Section"
     And I click on the option to Details the Section with the name "Test Section"
     Then I should see "Test Section"
-    And I should see "Send to publisher"
-    When I click on the "Send to publisher" button
+    And I should see "Send"
+    When I click on the "Send" button
     And I should see "Johnny Test <johnny@test.org>"
 
   Scenario: Delete Section

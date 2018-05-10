@@ -31,8 +31,8 @@ Feature: Manage Surveys
     And I click on the menu link for the Survey with the name "Test Survey"
     And I click on the option to Details the Survey with the name "Test Survey"
     Then I should see "Test Survey"
-    And I should see "Send to publisher"
-    When I click on the "Send to publisher" button
+    And I should see "Send"
+    When I click on the "Send" button
     And I should see "Johnny Test <johnny@test.org>"
 
  Scenario: Revise Survey

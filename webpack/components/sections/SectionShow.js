@@ -179,6 +179,24 @@ class SectionShow extends Component {
                 return false;
               }}>Publish</a>
           }
+          {this.props.currentUser && this.props.currentUser.admin && !section.preferred &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.props.addPreferred(section.id, 'Section', () => {
+                this.props.fetchSection(section.id);
+              });
+              return false;
+            }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+          }
+          {this.props.currentUser && this.props.currentUser.admin && section.preferred &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.props.removePreferred(section.id, 'Section', () => {
+                this.props.fetchSection(section.id);
+              });
+              return false;
+            }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
+          }
           {isRevisable(section, this.props.currentUser) &&
             <Link className="btn btn-default" to={`sections/${section.id}/revise`}>Revise</Link>
           }
@@ -197,7 +215,7 @@ class SectionShow extends Component {
           }
         </div>
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Section Name:</strong> {section.name} </h1>
+          <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
@@ -312,6 +330,9 @@ SectionShow.propTypes = {
   deleteSection:  PropTypes.func.isRequired,
   addSectionToGroup: PropTypes.func,
   removeSectionFromGroup: PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
+  fetchSection: PropTypes.func,
   updateSectionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

@@ -22,6 +22,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :response_type
   attribute :most_recent
   attribute :groups
+  attribute :preferred
 
   def most_recent
     object.most_recent?

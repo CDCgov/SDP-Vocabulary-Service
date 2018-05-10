@@ -72,8 +72,8 @@ Feature: Manage Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     Then I should see "Name: What is your gender?"
-    And I should see "Send to publisher"
-    When I click on the "Send to publisher" button
+    And I should see "Send"
+    When I click on the "Send" button
     And I should see "Johnny Test <johnny@test.org>"
 
   Scenario: Show Question in Detail No Concepts

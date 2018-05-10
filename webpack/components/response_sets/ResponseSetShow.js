@@ -99,6 +99,24 @@ export default class ResponseSetShow extends Component {
                 return false;
               }}>Publish</a>
             }
+            {this.props.currentUser && this.props.currentUser.admin && !responseSet.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.addPreferred(responseSet.id, 'ResponseSet', () => {
+                  this.props.fetchResponseSet(responseSet.id);
+                });
+                return false;
+              }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+            }
+            {this.props.currentUser && this.props.currentUser.admin && responseSet.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.removePreferred(responseSet.id, 'ResponseSet', () => {
+                  this.props.fetchResponseSet(responseSet.id);
+                });
+                return false;
+              }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
+            }
             {isEditable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -119,7 +137,7 @@ export default class ResponseSetShow extends Component {
           </div>
         }
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Response Set Name:</strong> {responseSet.name} </h1>
+          <h1 className={`maincontent-item-name ${responseSet.preferred ? 'cdc-preferred-note' : ''}`}><strong>Response Set Name:</strong> {responseSet.name} {responseSet.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
@@ -202,6 +220,9 @@ ResponseSetShow.propTypes = {
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
   removeResponseSetFromGroup: PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
+  fetchResponseSet: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps
