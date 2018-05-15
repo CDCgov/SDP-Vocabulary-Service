@@ -49,6 +49,25 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  def mark_as_duplicate
+    replacement = ResponseSet.find(params[:replacement])
+    @response_set.section_nested_items.each do |sni|
+      sni.response_set = replacement
+      if sni.save
+        next
+      else
+        render json: { msg: 'Error saving one of the sections where the response set is used', status: :unprocessable_entity }
+      end
+    end
+    if @response_set.section_nested_items.count == 0
+      rs = ResponseSet.find(@response_set.id)
+      rs.destroy
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create

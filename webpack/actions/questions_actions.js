@@ -24,9 +24,15 @@ export function deleteQuestion(id, cascade=false, callback=null) {
   };
 }
 
-export function markAsDuplicate(id, replacement, survey) {
-  const authenticityToken  = getCSRFToken();
-  const putPromise = axios.put(routes.mark_as_duplicate_question_path(id),
+export function markAsDuplicate(id, replacement, survey, type) {
+  const authenticityToken = getCSRFToken();
+  let route = '';
+  if (type === 'question'){
+    route = routes.mark_as_duplicate_question_path(id);
+  } else {
+    route = routes.mark_as_duplicate_response_set_path(id);
+  }
+  const putPromise = axios.put(route,
                       {replacement, survey, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {

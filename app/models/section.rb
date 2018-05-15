@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/AbcSize
 class Section < ApplicationRecord
   include OidGenerator, Versionable, Searchable, Taggable, Groupable
   acts_as_commentable
@@ -47,6 +48,10 @@ class Section < ApplicationRecord
           results = SDP::Elasticsearch.find_duplicates(sni.question, current_user_id, current_user_groups)
           count += 1 if results && results['hits'] && results['hits']['total'] > 0
         end
+        if sni.response_set && sni.response_set.status == 'draft'
+          rs_results = SDP::Elasticsearch.find_duplicates(sni.response_set, current_user_id, current_user_groups)
+          count += 1 if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
+        end
       end
     end
     count
@@ -55,21 +60,30 @@ class Section < ApplicationRecord
   def potential_duplicates(current_user)
     current_user_id = current_user ? current_user.id : nil
     current_user_groups = current_user ? current_user.groups : []
-    dupes = []
+    dupe_qs = []
+    dupe_rs = []
     flatten_questions.each do |sni|
       question = sni.question
-      category = question.category ? question.category.name : ''
-      content = question.content
-      q_description = question.description
-      rt = question.response_type ? question.response_type.name : ''
-      next unless question && question.status == 'draft'
-      results = SDP::Elasticsearch.find_duplicates(question, current_user_id, current_user_groups)
-      if results && results['hits'] && results['hits']['total'] > 0
-        dupes << { draft_question: { id: question.id, content: content, description: q_description, response_type: rt,
-                                     category: category }, potential_duplicates: results['hits']['hits'] }
+      response_set = sni.response_set
+      if question && question.status == 'draft'
+        category = question.category ? question.category.name : ''
+        content = question.content
+        q_description = question.description
+        rt = question.response_type ? question.response_type.name : ''
+        results = SDP::Elasticsearch.find_duplicates(question, current_user_id, current_user_groups)
+        if results && results['hits'] && results['hits']['total'] > 0
+          dupe_qs << { draft_question: { id: question.id, content: content, description: q_description, response_type: rt,
+                                         category: category }, potential_duplicates: results['hits']['hits'] }
+        end
       end
+      next unless response_set && response_set.status == 'draft'
+      rs_results = SDP::Elasticsearch.find_duplicates(response_set, current_user_id, current_user_groups)
+      next unless rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
+      dupe_rs << { draft_response_set: { id: response_set.id, linked_question: { id: question.id, content: question.content },
+                                         name: response_set.name, description: response_set.description, responses: response_set.responses },
+                   potential_duplicates: rs_results['hits']['hits'] }
     end
-    dupes
+    { questions: dupe_qs, response_sets: dupe_rs }
   end
 
   def update_surveys
@@ -253,3 +267,4 @@ class Section < ApplicationRecord
     names.chomp(',')
   end
 end
+# rubocop:enable Metrics/AbcSize

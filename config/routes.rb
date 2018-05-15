@@ -78,6 +78,7 @@ Rails.application.routes.draw do
     put :publish, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
+    put :mark_as_duplicate, on: :member
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications
