@@ -126,6 +126,10 @@ When(/^I check the "([^"]*)" checkbox$/) do |name|
   check(name)
 end
 
+When(/^I select the "([^"]*)" radio button$/) do |name|
+  choose(name)
+end
+
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|
   fill_in(field_name, with: new_value)
 end

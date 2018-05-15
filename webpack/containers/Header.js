@@ -95,7 +95,7 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
               <li className="nav-dropdown-item"><Link to="/sections/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Sections</Link></li>
               <li className="nav-dropdown-item"><Link to="/surveys/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Surveys</Link></li>
               <li role="separator" className="divider"></li>
-              <li className="nav-dropdown-item"><Link to="/surveys/import" tabIndex="2"><text className="sr-only">Click link to </text>Import MMG</Link></li>
+              <li className="nav-dropdown-item"><Link to="/surveys/import" tabIndex="2"><text className="sr-only">Click link to </text>Import Spreadsheet</Link></li>
             </ul>
           </li>
         }

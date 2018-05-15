@@ -224,7 +224,7 @@ module SDP
         }
       }.freeze
 
-      def initialize(file, user, config = {})
+      def initialize(file, user, import_type, config = {})
         @file = file
         @user = user
         @errors = []
@@ -238,6 +238,14 @@ module SDP
         @oid_matcher = /^([\.\d]+)$/
         @valueset_sheet = /Valueset.*/
         @local_response_sets = {}
+
+        # Put this into a variable somewhere appropriate that can be referenced by multiple classes
+
+        @config[:mmg] = if import_type == 'mmg'
+                          true
+                        else
+                          false
+                        end
       end
 
       def save!
@@ -290,8 +298,11 @@ module SDP
             logger.debug "skipping sheet #{sheet} -- looks like a response set"
             next
           elsif !de_sheet?(headers)
+            import_type_label = 'mmg'
+            import_type_label = 'generic' unless @config[:mmg]
+
             logger.debug "skipping tab #{sheet} -- looks like it does not contain form data elements"
-            @warnings << " '#{sheet}' tab does not contain expected MMG column names"\
+            @warnings << " '#{sheet}' tab does not contain expected #{import_type_label} column names"\
             ' and will not be imported. Refer to the table in the "Import Content" '\
             'Help Documentation for more info.' # warning
             next
