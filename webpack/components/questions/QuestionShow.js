@@ -279,7 +279,7 @@ export default class QuestionShow extends Component {
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
-                    <div class="box-content panel-body">
+                    <div className="box-content panel-body">
                       <SectionList sections={question.sections} currentUser={this.props.currentUser} />
                     </div>
                   </div>

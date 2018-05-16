@@ -95,9 +95,9 @@ class SurveyDedupe extends Component {
           {this.props.potentialDupes.map((section, i) => {
             return (
               <tbody key={i}>
-                <tr className="section-row">
+                {section.qCount > 0 && <tr className="section-row">
                   <td id={`section_${i}`} scope="colgroup" colSpan="4"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></td>
-                </tr>
+                </tr>}
                 {section.dupes.questions.map((question, j) => {
                   return (
                     <tr key={j}>
@@ -354,8 +354,8 @@ class SurveyDedupe extends Component {
     if(!this.props.survey || !this.props.potentialDupes){
       return ('Loading...');
     }
-    let qCountArray = this.props.potentialDupes.map((s) => s.qCount)
-    let rsCountArray = this.props.potentialDupes.map((s) => s.rsCount)
+    let qCountArray = this.props.potentialDupes.map((s) => s.qCount);
+    let rsCountArray = this.props.potentialDupes.map((s) => s.rsCount);
     let qCount = qCountArray.length > 0 ? qCountArray.reduce((prev, next) => prev + next) : 0;
     let rsCount = rsCountArray.length > 0 ? rsCountArray.reduce((prev, next) => prev + next) : 0;
     return (
