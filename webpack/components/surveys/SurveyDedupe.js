@@ -334,7 +334,7 @@ class SurveyDedupe extends Component {
                 <tr key={i}>
                   <td headers="match-score-column" className="match-score">{dupe.Score}</td>
                   <td scope="row" headers="name-desc-column"><a href={`/#/responseSets/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
-                  <td headers="cdc-pref-column"></td>
+                  <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
                   <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
                   <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
                     e.preventDefault();
