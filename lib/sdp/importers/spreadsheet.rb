@@ -19,10 +19,11 @@ module SDP
                     :category, :subcategory, :value_set, :concepts,
                     :value_set_url, :value_set_oid, :value_set_tab_name, :tag_tab_name
 
-      def initialize(vads_oid_regex, coded_data_types, response_types)
+      def initialize(vads_oid_regex, coded_data_types, response_types, warnings)
         @vads_oid_regex = vads_oid_regex
         @coded_data_types = coded_data_types
         @response_types = response_types
+        @warnings = warnings
       end
 
       def normalize(str)
@@ -57,8 +58,15 @@ module SDP
 
       def response_type(query)
         rt = ResponseType.find_by(query)
-        raise "Unable to find response type #{query.values.first} - did response types change?" unless rt
+        unless rt
+          @warnings << "Unable to find response type '#{query.values.first}' for question '#{@name}'. This response set will not be imported. Please use preferred types"
+        end#raise "Unable to find response type #{query.values.first} - did response types change?" unless rt
         rt
+      end
+
+      def warnings()
+        w = @warnings
+        w
       end
     end
 
@@ -101,12 +109,14 @@ module SDP
     class GenericSSDataElement < DataElement
       def extract(row)
         super
+
         @category = normalize(row[:category]),
                     @subcategory = normalize(row[:subcategory])
         @tag_tab_name = normalize(row[:tag_table]) if row[:tag_table].present?
-        if row[:value_set] == 'Local' && row[:value_set_table].present?
+        if row[:value_set_table].present?
           @value_set_tab_name = normalize(row[:value_set_table])
         end
+
       end
 
       def to_question(user)
@@ -123,6 +133,7 @@ module SDP
       def create_response_set(user)
         vs_meta = @value_set.first
         vs_meta ||= {}
+
         rs_name = vs_meta[:name] || @value_set_tab_name
         rs = ResponseSet.new(
           created_by: user, status: 'draft',
@@ -194,7 +205,7 @@ module SDP
           data_type: 'Question Response Type (R)',
           tag_table: 'Question Tag Table (O)',
           value_set_table: 'Local Response Set Table (C)',
-          value_set: 'Response Set Source (C)'
+          value_set: 'Local Response Set Table (C)'
         },
         vs_columns: {
           code: 'Concept Code',
@@ -534,11 +545,14 @@ module SDP
 
       def extract_data_element(sheet, row)
         data_element = if @config[:mmg]
-                         MMGDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
+                         MMGDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types], @warnings)
                        else
-                         GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
+                         GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types], @warnings)
                        end
         data_element.extract(row)
+        #make sure that any warnings from the data element itself is passed back
+        #@warnings << data_element.warnings()
+
         if data_element.value_set_tab_name.present? && !@all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
           @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
           # data_element.value_set_tab_name = nil

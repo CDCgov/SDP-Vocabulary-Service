@@ -68,14 +68,16 @@ class SurveyImportContainer extends Component {
         <label htmlFor="file-select">Choose a Microsoft Excel formatted file (.xls, .xlsx, .xslm)</label>
         <input id="file-select" name="file-select" type="file" value={this.state.file} onChange={this.onChange} accept=".xls, .xlsx, .xlsm, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
         <br/>
-        <div>
-        <label htmlFor="importType">Please select the format of the file you wish to import</label>
-        <br/>
-        <input type='radio' className='form-radio-input'  value="generic" onClick={this.changeFormat} name='importType' id='import-type-generic'  />
-        <label htmlFor="import-type-generic">Generic Import</label>
-        <br/><input type='radio' className='form-radio-input' value="mmg" onClick={this.changeFormat}  defaultChecked name='importType' id='import-type-mmg' />
-        <label htmlFor="import-type-mmg">MMG Import</label>
+        <fieldset>
+          <legend>Please select the format of the file you wish to import</legend>
+          <div>
+          <br/>
+          <input type='radio' className='form-radio-input'  value="generic" onClick={this.changeFormat} name='importType' id='import-type-generic'  />
+          <label htmlFor="import-type-generic">Generic Import</label>
+          <br/><input type='radio' className='form-radio-input' value="mmg" onClick={this.changeFormat}  defaultChecked name='importType' id='import-type-mmg' />
+          <label htmlFor="import-type-mmg">MMG Import</label>
         </div>
+        </fieldset>
 
       </div>);
     } else {
