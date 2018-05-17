@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180503162840) do
+ActiveRecord::Schema.define(version: 20180517161140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 20180503162840) do
     t.bigint "subcategory_id"
     t.bigint "category_id"
     t.boolean "preferred"
+    t.integer "duplicates_replaced_count", default: 0
     t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id"
     t.index ["response_type_id"], name: "index_questions_on_response_type_id"
@@ -161,6 +162,7 @@ ActiveRecord::Schema.define(version: 20180503162840) do
     t.string "source", default: "local"
     t.integer "published_by_id"
     t.boolean "preferred"
+    t.integer "duplicates_replaced_count", default: 0
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id"
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id"
   end
