@@ -227,12 +227,12 @@ class SurveyDedupe extends Component {
             e.preventDefault();
             this.setState({ viewPage: 'all' });
           }}>(List all)</a></h2>
-          <div className="text-large"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></div>
+          <div className="text-large">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></div>
           <table className="table">
             <caption>Information about potential duplicate draft questions in this survey</caption>
             <thead>
               <tr className="active">
-                <th scope="col" id="name-desc-q-column">Name &amp; Description</th>
+                <th scope="col" id="name-desc-q-column">Question Name &amp; Description</th>
                 <th scope="col" id="response-type-q-column">Response Type</th>
                 <th scope="col" id="category-q-column">Category</th>
               </tr>
@@ -251,13 +251,13 @@ class SurveyDedupe extends Component {
             <caption>Information about suggested replacement questions</caption>
             <thead>
               <tr className="active">
-                <th scope="col" id="match-score-column" className="match-score">Match</th>
-                <th scope="col" id="name-desc-column">Name &amp; Description</th>
-                <th scope="col" id="cdc-pref-column">CDC Pref</th>
+                <th scope="col" id="match-score-column" className="match-score">Match Score</th>
+                <th scope="col" id="name-desc-column">Question Name &amp; Description</th>
+                <th scope="col" id="cdc-pref-column">CDC Preferred</th>
                 <th scope="col" id="response-type-column">Response Type</th>
-                <th scope="col" id="category-column">Category</th>
-                <th scope="col" id="usage-column" className="text-center">Usage</th>
-                <th scope="col" id="action-column" className="action"></th>
+                <th scope="col" id="category-column">Question Category</th>
+                <th scope="col" id="usage-column" className="text-center">Program Usage</th>
+                <th scope="col" id="action-column" className="action">Suggested Questions</th>
               </tr>
             </thead>
             <tbody>
@@ -274,7 +274,7 @@ class SurveyDedupe extends Component {
                       e.preventDefault();
                       this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
                       return false;
-                    }}>Select</button></td>
+                    }}>Replace</button></td>
                   </tr>
                 );
               })}
@@ -302,7 +302,7 @@ class SurveyDedupe extends Component {
             e.preventDefault();
             this.setState({ viewPage: 'all' });
           }}>(List all)</a></h2>
-          <div className="text-large"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></div>
+          <div className="text-large">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></div>
           <table className="table">
             <caption>Information about potential duplicate draft response sets in this survey</caption>
             <thead>
@@ -326,10 +326,10 @@ class SurveyDedupe extends Component {
             <caption>Information about suggested replacement response sets</caption>
             <thead>
               <tr className="active">
-                <th scope="col" id="match-score-column" className="match-score">Match</th>
-                <th scope="col" id="name-desc-column">Name &amp; Description</th>
-                <th scope="col" id="cdc-pref-column">CDC Pref</th>
-                <th scope="col" id="usage-column" className="text-center">Usage</th>
+                <th scope="col" id="match-score-column" className="match-score">Match Score</th>
+                <th scope="col" id="name-desc-column">Response Set Name &amp; Description</th>
+                <th scope="col" id="cdc-pref-column">CDC Preferred</th>
+                <th scope="col" id="usage-column" className="text-center">Program Usage</th>
                 <th scope="col" id="action-column" className="action"></th>
               </tr>
             </thead>
@@ -345,7 +345,7 @@ class SurveyDedupe extends Component {
                       e.preventDefault();
                       this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: responseSet.draftResponseSet});
                       return false;
-                    }}>Select</button></td>
+                    }}>Replace</button></td>
                   </tr>
                 );
               })}
