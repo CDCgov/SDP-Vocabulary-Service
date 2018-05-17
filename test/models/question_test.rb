@@ -78,6 +78,38 @@ class QuestionTest < ActiveSupport::TestCase
     assert_includes sp.map(&:name), 'Generic Surveillance Program'
   end
 
+  test 'mark as duplicate' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test rs', created_by: user)
+    assert rs.save
+    rt = ResponseType.new(name: 'choice', code: 'choice')
+    assert rt.save
+    q = Question.new(content: 'Test q1', response_type: rt, created_by: user)
+    assert q.save
+    replacement_q = Question.new(content: 'Replacement question', response_type: rt, created_by: user)
+    replacement_q.save
+    new_replacement_q = Question.new(content: 'Another Replacement question', response_type: rt, created_by: user)
+    new_replacement_q.save
+    sect = Section.new(name: 'Test sect', created_by: user)
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    assert sect.save
+    s = Survey.new(name: 'Test surv', created_by: user)
+    s.survey_sections = [SurveySection.new(section_id: sect.id, position: 0)]
+    assert s.save
+    assert s.questions.include?(q)
+    refute s.questions.include?(replacement_q)
+    assert_equal replacement_q.duplicates_replaced_count, 0
+    q.mark_as_duplicate(replacement_q)
+    refute s.questions.include?(q)
+    assert s.questions.include?(replacement_q)
+    assert_equal replacement_q.duplicates_replaced_count, 1
+    # This second mark as dupe checks that the later replacement inherits the replaced count and increments again
+    replacement_q.mark_as_duplicate(new_replacement_q)
+    refute s.questions.include?(replacement_q)
+    assert s.questions.include?(new_replacement_q)
+    assert_equal new_replacement_q.duplicates_replaced_count, 2
+  end
+
   test 'only choice response type allows other' do
     blank_rs_question = Question.new(content: 'test', other_allowed: true)
     refute blank_rs_question.valid?

@@ -50,15 +50,7 @@ class ResponseSetsController < ApplicationController
   end
 
   def mark_as_duplicate
-    replacement = ResponseSet.find(params[:replacement])
-    @response_set.section_nested_items.each do |sni|
-      sni.response_set = replacement
-      if sni.save
-        next
-      else
-        render json: { msg: 'Error saving one of the sections where the response set is used', status: :unprocessable_entity }
-      end
-    end
+    @response_set.mark_as_duplicate(ResponseSet.find(params[:replacement]))
     if @response_set.section_nested_items.count == 0
       rs = ResponseSet.find(@response_set.id)
       rs.destroy

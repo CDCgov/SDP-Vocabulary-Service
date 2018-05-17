@@ -76,6 +76,16 @@ class ResponseSet < ApplicationRecord
     end
   end
 
+  def mark_as_duplicate(replacement)
+    section_nested_items.each do |sni|
+      sni.response_set = replacement
+      sni.save
+    end
+    # Keeping track of previously deleted dupes and incrementing deletions by 1
+    replacement.duplicates_replaced_count += duplicates_replaced_count + 1
+    replacement.save!
+  end
+
   def cascading_action
     yield self
   end
