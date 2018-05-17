@@ -216,138 +216,146 @@ class SurveyDedupe extends Component {
     let section = this.props.potentialDupes[this.state.viewSectionIndex];
     let question = section.dupes.questions[this.state.viewQuestionIndex];
     let pageIndex = this.previousQuestionCount(this.state.viewSectionIndex) + this.state.viewQuestionIndex + 1;
-    return (
-      <div>
-        <div className="duplicate-nav-buttons">
-          <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousQuestion()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate question</span></button>
-          <button className="btn btn-default" disabled={pageIndex == qCount} onClick={() => this.nextQuestion()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate question</span></button>
-        </div>
-        <h2 className="h4">Viewing {pageIndex} of {qCount} Potential Duplicate Questions <a href="#" onClick={(e) => {
-          e.preventDefault();
-          this.setState({ viewPage: 'all' });
-        }}>(List all)</a></h2>
-        <div className="text-large"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></div>
-        <table className="table">
-          <caption>Information about potential duplicate draft questions in this survey</caption>
-          <thead>
-            <tr className="active">
-              <th scope="col" id="name-desc-q-column">Name &amp; Description</th>
-              <th scope="col" id="response-type-q-column">Response Type</th>
-              <th scope="col" id="category-q-column">Category</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row" headers="name-desc-q-column"><text>{question.draftQuestion.content}</text><br/><span className="small">{question.draftQuestion.description}</span></td>
-              <td headers="response-type-q-column"><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
-              <td headers="category-q-column">{question.draftQuestion.category}</td>
-            </tr>
-          </tbody>
-        </table>
+    if (question) {
+      return (
+        <div>
+          <div className="duplicate-nav-buttons">
+            <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousQuestion()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate question</span></button>
+            <button className="btn btn-default" disabled={pageIndex == qCount} onClick={() => this.nextQuestion()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate question</span></button>
+          </div>
+          <h2 className="h4">Viewing {pageIndex} of {qCount} Potential Duplicate Questions <a href="#" onClick={(e) => {
+            e.preventDefault();
+            this.setState({ viewPage: 'all' });
+          }}>(List all)</a></h2>
+          <div className="text-large"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></div>
+          <table className="table">
+            <caption>Information about potential duplicate draft questions in this survey</caption>
+            <thead>
+              <tr className="active">
+                <th scope="col" id="name-desc-q-column">Name &amp; Description</th>
+                <th scope="col" id="response-type-q-column">Response Type</th>
+                <th scope="col" id="category-q-column">Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row" headers="name-desc-q-column"><text>{question.draftQuestion.content}</text><br/><span className="small">{question.draftQuestion.description}</span></td>
+                <td headers="response-type-q-column"><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
+                <td headers="category-q-column">{question.draftQuestion.category}</td>
+              </tr>
+            </tbody>
+          </table>
 
-        <h2 className="h4">Suggested Replacement Questions ({question.potentialDuplicates && question.potentialDuplicates.length})</h2>
-        <table className="table">
-          <caption>Information about suggested replacement questions</caption>
-          <thead>
-            <tr className="active">
-              <th scope="col" id="match-score-column" className="match-score">Match</th>
-              <th scope="col" id="name-desc-column">Name &amp; Description</th>
-              <th scope="col" id="cdc-pref-column">CDC Pref</th>
-              <th scope="col" id="response-type-column">Response Type</th>
-              <th scope="col" id="category-column">Category</th>
-              <th scope="col" id="usage-column" className="text-center">Usage</th>
-              <th scope="col" id="action-column" className="action"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {question.potentialDuplicates && question.potentialDuplicates.map((dupe, i) => {
-              return (
-                <tr key={i}>
-                  <td headers="match-score-column" className="match-score">{dupe.Score}</td>
-                  <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
-                  <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
-                  <td headers="response-type-column"><i className='fa $fa-comments' aria-hidden="true"></i> {dupe.Source.responseType && dupe.Source.responseType.name}</td>
-                  <td headers="category-column">{dupe.Source.category && dupe.Source.category.name}</td>
-                  <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                  <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
-                    e.preventDefault();
-                    this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
-                    return false;
-                  }}>Select</button></td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    );
+          <h2 className="h4">Suggested Replacement Questions ({question.potentialDuplicates && question.potentialDuplicates.length})</h2>
+          <table className="table">
+            <caption>Information about suggested replacement questions</caption>
+            <thead>
+              <tr className="active">
+                <th scope="col" id="match-score-column" className="match-score">Match</th>
+                <th scope="col" id="name-desc-column">Name &amp; Description</th>
+                <th scope="col" id="cdc-pref-column">CDC Pref</th>
+                <th scope="col" id="response-type-column">Response Type</th>
+                <th scope="col" id="category-column">Category</th>
+                <th scope="col" id="usage-column" className="text-center">Usage</th>
+                <th scope="col" id="action-column" className="action"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {question.potentialDuplicates && question.potentialDuplicates.map((dupe, i) => {
+                return (
+                  <tr key={i}>
+                    <td headers="match-score-column" className="match-score">{dupe.Score}</td>
+                    <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
+                    <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
+                    <td headers="response-type-column"><i className='fa $fa-comments' aria-hidden="true"></i> {dupe.Source.responseType && dupe.Source.responseType.name}</td>
+                    <td headers="category-column">{dupe.Source.category && dupe.Source.category.name}</td>
+                    <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
+                    <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
+                      return false;
+                    }}>Select</button></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      );
+    } else {
+      return;
+    }
   }
 
   viewSingleRSDupe(rsCount) {
     let section = this.props.potentialDupes[this.state.viewSectionIndex];
     let responseSet = section.dupes.responseSets[this.state.viewResponseSetIndex];
     let pageIndex = this.previousResponseSetCount(this.state.viewSectionIndex) + this.state.viewResponseSetIndex + 1;
-    return (
-      <div>
-        <div className="duplicate-nav-buttons">
-          <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousResponseSet()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate response set</span></button>
-          <button className="btn btn-default" disabled={pageIndex == rsCount} onClick={() => this.nextResponseSet()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate response set</span></button>
-        </div>
-        <h2 className="h4">Viewing {pageIndex} of {rsCount} Potential Duplicate Response Sets <a href="#" onClick={(e) => {
-          e.preventDefault();
-          this.setState({ viewPage: 'all' });
-        }}>(List all)</a></h2>
-        <div className="text-large"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></div>
-        <table className="table">
-          <caption>Information about potential duplicate draft response sets in this survey</caption>
-          <thead>
-            <tr className="active">
-              <th scope="col" id="name-desc-rs-column">Name &amp; Description</th>
-              <th scope="col" id="linked-rs-column">Linked Question</th>
-              <th scope="col" id="responses-rs-column">Responses</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row" headers="name-desc-rs-column"><text>{responseSet.draftResponseSet.name}</text><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
-              <td headers="linked-rs-column"><a target='_blank' href={`/#/questions/${responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.id}`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</a></td>
-              <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ')}</td>
-            </tr>
-          </tbody>
-        </table>
+    if (responseSet) {
+      return (
+        <div>
+          <div className="duplicate-nav-buttons">
+            <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousResponseSet()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate response set</span></button>
+            <button className="btn btn-default" disabled={pageIndex == rsCount} onClick={() => this.nextResponseSet()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate response set</span></button>
+          </div>
+          <h2 className="h4">Viewing {pageIndex} of {rsCount} Potential Duplicate Response Sets <a href="#" onClick={(e) => {
+            e.preventDefault();
+            this.setState({ viewPage: 'all' });
+          }}>(List all)</a></h2>
+          <div className="text-large"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></div>
+          <table className="table">
+            <caption>Information about potential duplicate draft response sets in this survey</caption>
+            <thead>
+              <tr className="active">
+                <th scope="col" id="name-desc-rs-column">Name &amp; Description</th>
+                <th scope="col" id="linked-rs-column">Linked Question</th>
+                <th scope="col" id="responses-rs-column">Responses</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row" headers="name-desc-rs-column"><text>{responseSet.draftResponseSet.name}</text><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
+                <td headers="linked-rs-column"><a target='_blank' href={`/#/questions/${responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.id}`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</a></td>
+                <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ')}</td>
+              </tr>
+            </tbody>
+          </table>
 
-        <h2 className="h4">Suggested Replacement Response Sets ({responseSet.potentialDuplicates && responseSet.potentialDuplicates.length})</h2>
-        <table className="table">
-          <caption>Information about suggested replacement response sets</caption>
-          <thead>
-            <tr className="active">
-              <th scope="col" id="match-score-column" className="match-score">Match</th>
-              <th scope="col" id="name-desc-column">Name &amp; Description</th>
-              <th scope="col" id="cdc-pref-column">CDC Pref</th>
-              <th scope="col" id="usage-column" className="text-center">Usage</th>
-              <th scope="col" id="action-column" className="action"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {responseSet.potentialDuplicates && responseSet.potentialDuplicates.map((dupe, i) => {
-              return (
-                <tr key={i}>
-                  <td headers="match-score-column" className="match-score">{dupe.Score}</td>
-                  <td scope="row" headers="name-desc-column"><a href={`/#/responseSets/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
-                  <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
-                  <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                  <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
-                    e.preventDefault();
-                    this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: responseSet.draftResponseSet});
-                    return false;
-                  }}>Select</button></td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    );
+          <h2 className="h4">Suggested Replacement Response Sets ({responseSet.potentialDuplicates && responseSet.potentialDuplicates.length})</h2>
+          <table className="table">
+            <caption>Information about suggested replacement response sets</caption>
+            <thead>
+              <tr className="active">
+                <th scope="col" id="match-score-column" className="match-score">Match</th>
+                <th scope="col" id="name-desc-column">Name &amp; Description</th>
+                <th scope="col" id="cdc-pref-column">CDC Pref</th>
+                <th scope="col" id="usage-column" className="text-center">Usage</th>
+                <th scope="col" id="action-column" className="action"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {responseSet.potentialDuplicates && responseSet.potentialDuplicates.map((dupe, i) => {
+                return (
+                  <tr key={i}>
+                    <td headers="match-score-column" className="match-score">{dupe.Score}</td>
+                    <td scope="row" headers="name-desc-column"><a href={`/#/responseSets/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
+                    <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
+                    <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
+                    <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: responseSet.draftResponseSet});
+                      return false;
+                    }}>Select</button></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      );
+    } else {
+      return;
+    }
   }
 
   render() {
