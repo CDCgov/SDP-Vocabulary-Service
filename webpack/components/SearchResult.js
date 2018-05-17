@@ -378,9 +378,9 @@ export default class SearchResult extends Component {
           </div>
           {this.showLinkedDetails(result, type)}
         </li>
-        <li className="u-result-content-item condensed result-nav" role="navigation" aria-label="Search Result">
-          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
-          <div className="result-nav-item">
+        <li className="u-result-content-item condensed result-nav text-center" role="navigation" aria-label="Search Result">
+          <div><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div>
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult, type)
             ) : (

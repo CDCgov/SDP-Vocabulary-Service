@@ -233,6 +233,8 @@ Feature: Manage Surveys
     And I have a Question with the content "What is your name?" and the type "MC"
     And I have a Question with the content "What is your name? Dupe" and the type "MC"
     And I have a Response Set with the name "Gender Partial"
+    And I have a Response Set with the name "Gender Partial dupe"
+    And I have a Response Set with the name "Gender Partial again"
     And I am logged in as test_author@gmail.com
     When I go to the list of Sections
     And I click on the menu link for the Section with the name "Test Section"
@@ -260,6 +262,7 @@ Feature: Manage Surveys
     And I click on the "Curate" button
     Then I should see "Potential Duplicate Questions (2)"
     And I should see "Test Section (2)"
+    And I should see "Response Sets (1)"
     When I click on the "view-single-What is your gender?" button
     Then I should see "Viewing 1 of 2 Potential Duplicate Questions"
     When I click on the "Switch to the next potential duplicate question" button
@@ -269,6 +272,12 @@ Feature: Manage Surveys
     When I click on the "Cancel" button
     And I click on the "(List all)" link
     Then I should see "Test Section (2)"
+    When I click on the "Response Sets (1)" link
+    Then I should see "Potential Duplicate Response Sets (1)"
+    And I click on the "view-single-Gender Partial" button
+    Then I should see "Suggested Replacement Response Sets ("
+    When I click on the "select-response-set-Gender Partial dupe" button
+    Then I should see "Select & Replace Confirmation"
 
   Scenario: A Section when added to a Survey should inherit the group assigned to Survey
     Given I have a Survey with the name "Search Survey Test" and the description "Test"

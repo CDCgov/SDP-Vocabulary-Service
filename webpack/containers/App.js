@@ -108,9 +108,8 @@ class App extends Component {
           <div className="container">
             2018 Centers for Disease Control and Prevention. All rights reserved.
             <div className="nav-links">
-              <Link to="/privacy">Privacy</Link>
-              <Link to="/">Security</Link>
-              <Link to="/">Terms of Service</Link>
+              <a target="_blank" href="https://www.cdc.gov/sdp/SDPContactUs.html">Contact Us</a>
+              <Link to="/termsOfService">Terms of Service</Link>
               Release: v{this.props.appVersion}
             </div>
           </div>

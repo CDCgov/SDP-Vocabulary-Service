@@ -17,9 +17,6 @@ class SurveyDedupeContainer extends Component {
       this.props.fetchSurvey(this.props.params.surveyId);
       this.props.fetchDuplicates(this.props.params.surveyId);
     }
-    this.state = {
-      itemPageIndex: 0
-    };
   }
 
   componentDidMount() {

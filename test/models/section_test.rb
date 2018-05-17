@@ -92,7 +92,5 @@ class SectionTest < ActiveSupport::TestCase
     assert sect.save
     dupe_count = sect.q_with_dupes_count(user)
     assert_equal 0, dupe_count
-    pot_dupes = sect.potential_duplicates(user)
-    assert_equal 0, pot_dupes.length
   end
 end

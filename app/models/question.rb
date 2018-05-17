@@ -61,6 +61,24 @@ class Question < ApplicationRecord
     new_revision
   end
 
+  def potential_duplicates(current_user)
+    current_user_id = current_user ? current_user.id : nil
+    current_user_groups = current_user ? current_user.groups : []
+    if status == 'draft'
+      category_name = category ? category.name : ''
+      rt = response_type ? response_type.name : ''
+      results = SDP::Elasticsearch.find_duplicates(self, current_user_id, current_user_groups)
+      if results && results['hits'] && results['hits']['total'] > 0
+        { draft_question: { id: id, content: content, description: description, response_type: rt,
+                            category: category_name }, potential_duplicates: results['hits']['hits'] }
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
   def cascading_action(&block)
     temp_rs = []
     response_sets.each { |rs| temp_rs << rs }

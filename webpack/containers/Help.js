@@ -559,7 +559,7 @@ class Help extends Component {
                     {this.instructionsTab()}
                     <div className="tab-pane" id="faq" role="tabpanel" aria-hidden={this.state.selectedTab !== 'faq'} aria-labelledby="faq-tab">
                       <h1 className="help-section-title">FAQs</h1>
-                      <p>This section has not been added. Please check back later.</p>
+                      <p>Please visit the FAQ page on the official cdc.gov website: <a href="https://www.cdc.gov/sdp/SDPFAQs.html#tabs-2-2" target="_blank">https://www.cdc.gov/sdp/SDPFAQs.html</a></p>
                     </div>
                     {this.glossaryTab()}
                   </div>
