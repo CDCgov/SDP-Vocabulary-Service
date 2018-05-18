@@ -9,10 +9,10 @@ class MMGTest < ActiveSupport::TestCase
   RESPONSE_COUNT = 6
 
   GENERIC_SURVEY_COUNT = 1
-  GENERIC_SECTION_COUNT = 20
-  GENERIC_QUESTION_COUNT = 72
-  GENERIC_RESPONSE_SET_COUNT = 4
-  GENERIC_RESPONSE_COUNT = 30
+  GENERIC_SECTION_COUNT = 3
+  GENERIC_QUESTION_COUNT = 4
+  GENERIC_RESPONSE_SET_COUNT = 1
+  GENERIC_RESPONSE_COUNT = 4
 
   test 'parse_mmg' do
     u = users(:admin)
@@ -98,7 +98,7 @@ class MMGTest < ActiveSupport::TestCase
   test 'parse_spreadsheet' do
     u = users(:admin)
     import_type = 'generic'
-    f = './test/fixtures/files/TestGenericTemplate.xlsx'
+    f = './test/fixtures/files/TestGenericTemplateMini.xlsx'
 
     importer = SDP::Importers::Spreadsheet.new(f, u, import_type)
     importer.parse!
@@ -117,11 +117,11 @@ class MMGTest < ActiveSupport::TestCase
     assert_equal surveycount + GENERIC_SURVEY_COUNT, Survey.count
 
     assert Survey.where(name: f).exists?
-    section = Section.where(name: 'Asthma Follow-up Call Back').first
+    section = Section.where(name: 'Chronic Health Conditions').first
     assert section.present?
-    assert_equal 2, section.questions.count
+    assert_equal 4, section.questions.count
     assert_equal 1, section.concepts.count
-    assert_equal 'Followup', section.parent.name
+    assert_equal 'Section', section.parent.name
 
     q = section.section_nested_items.second.question
     assert q

@@ -59,15 +59,13 @@ module SDP
       def response_type(query)
         rt = ResponseType.find_by(query)
         unless rt
-          @warnings << "Unable to find response type '#{query.values.first}' for question '#{@name}'. This response set will not be imported. Please use preferred types"
-        end#raise "Unable to find response type #{query.values.first} - did response types change?" unless rt
+          @warnings << "Unable to find response type '#{query.values.first}' for question '#{@name}'. "\
+          ' This response set will not be imported. Please use preferred types'
+        end
         rt
       end
 
-      def warnings()
-        w = @warnings
-        w
-      end
+      attr_reader :warnings
     end
 
     class MMGDataElement < DataElement
@@ -116,7 +114,6 @@ module SDP
         if row[:value_set_table].present?
           @value_set_tab_name = normalize(row[:value_set_table])
         end
-
       end
 
       def to_question(user)
@@ -550,8 +547,8 @@ module SDP
                          GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types], @warnings)
                        end
         data_element.extract(row)
-        #make sure that any warnings from the data element itself is passed back
-        #@warnings << data_element.warnings()
+        # make sure that any warnings from the data element itself is passed back
+        # @warnings << data_element.warnings()
 
         if data_element.value_set_tab_name.present? && !@all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
           @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning

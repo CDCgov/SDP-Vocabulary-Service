@@ -55,10 +55,10 @@ Scenario: Create Survey from Generically Formatted Spreadsheet
       And I attach a generic spreadsheet to the "file-select" input
       Then I wait 5 seconds
       And I should see "TestGenericTemplate.xlsx"
-      And I should see "File recognized as generic Excel spreadsheet"
+      And I should see "Warning: In tab 'Survey Questions' on row 'Is this (phone number) ?'"
       When I click on the "Import" button
       And I wait 30 seconds
-      Then I should see "File successfully imported"
+      Then I should see "File imported with warnings"
       When I click on the "View Survey" button
       And I wait 10 seconds
       Then I should see "Survey Name: TestGenericTemplate.xlsx"
