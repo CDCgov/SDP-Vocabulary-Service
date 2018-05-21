@@ -2,6 +2,8 @@ require 'sdp/elastic_search'
 
 module Admin
   class PreferredContentController < AdminController
+    before_action :set_paper_trail_whodunnit
+
     def add_preferred_label
       object = params[:type].constantize.find(params[:id])
       if object

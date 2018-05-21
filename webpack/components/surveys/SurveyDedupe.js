@@ -61,7 +61,7 @@ class SurveyDedupe extends Component {
             <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Select &amp; Replace Confirmation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure you want to replace "{draft.content}" with "{dupeItem.name}" and mark the {this.state.viewType} draft as a duplicate? Doing so will replace the duplicate draft {this.state.viewType} with the preferred content throughout the system and delete the duplicate.
+            <p>Are you sure you want to replace "{draft.content || draft.name}" with "{dupeItem.name}" and mark the {this.state.viewType} draft as a duplicate? Doing so will replace the duplicate draft {this.state.viewType} with the preferred content throughout the system and delete the duplicate.
             This action cannot be undone.</p>
           </Modal.Body>
           <br/>
