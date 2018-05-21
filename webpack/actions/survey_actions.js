@@ -106,11 +106,12 @@ export function saveDraftSurvey(survey, successHandler=null, failureHandler=null
   };
 }
 
-export function createImportSession(file, successHandler=null, failureHandler=null) {
+export function createImportSession(file, importType, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();
   const formData = new FormData();
   formData.append('authenticity_token', authenticityToken);
   formData.append('file', file);
+  formData.append('import_type', importType);
   const postPromise = axios.post(routes.importSessionsPath(),
                         formData,
                         {headers: {'X-Key-Inflection': 'camel', 'content-type': 'multipart/form-data'}});
@@ -126,11 +127,12 @@ export function createImportSession(file, successHandler=null, failureHandler=nu
   };
 }
 
-export function updateImportSession(id, file, successHandler=null, failureHandler=null) {
+export function updateImportSession(id, file,  importType, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();
   const formData = new FormData();
   formData.append('authenticity_token', authenticityToken);
   formData.append('file', file);
+  formData.append('import_type', importType);
   formData.append('request_survey_creation', false);
   const putPromise = axios.put(routes.importSessionPath(id),
                       formData,
@@ -147,11 +149,17 @@ export function updateImportSession(id, file, successHandler=null, failureHandle
   };
 }
 
-export function attemptImportFile(id, successHandler=null, failureHandler=null) {
+export function attemptImportFile(id, importType, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();
   const requestSurveyCreation = true;
+  const formData = new FormData();
+
+  formData.append('authenticity_token', authenticityToken);
+  formData.append('import_type', importType);
+  formData.append('request_survey_creation', requestSurveyCreation);
+
   const putPromise = axios.put(routes.importSessionPath(id),
-                      {authenticityToken, requestSurveyCreation},
+                      formData,
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (successHandler) {
     putPromise.then(successHandler);
