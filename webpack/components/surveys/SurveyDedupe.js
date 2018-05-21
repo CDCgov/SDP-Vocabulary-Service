@@ -300,7 +300,7 @@ class SurveyDedupe extends Component {
             <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousResponseSet()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate response set</span></button>
             <button className="btn btn-default" disabled={pageIndex == rsCount} onClick={() => this.nextResponseSet()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate response set</span></button>
           </div>
-          
+
           <h2 className="h4 pull-right">Viewing {pageIndex} of {rsCount} Potential Duplicate Response Sets <a href="#" onClick={(e) => {
             e.preventDefault();
             this.setState({ viewPage: 'all' });
