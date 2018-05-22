@@ -1,4 +1,4 @@
-json.linkId sni.id.to_s
+json.linkId link_id(sni.question)
 json.text sni.question.content if sni.question
 type = sni.question.response_type.code if sni.question
 type ||= sni.response_set ? 'choice' : 'text'
