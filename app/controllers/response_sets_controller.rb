@@ -49,6 +49,17 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  def mark_as_duplicate
+    @response_set.mark_as_duplicate(ResponseSet.find(params[:replacement]))
+    if @response_set.section_nested_items.count == 0
+      rs = ResponseSet.find(@response_set.id)
+      rs.destroy
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create

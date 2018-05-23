@@ -308,6 +308,97 @@ class Help extends Component {
     );
   }
 
+  curationInstructions() {
+    return (
+      <div className="tab-pane" id="curation" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'curation'} aria-labelledby="curation-tab">
+        <h1 id="curation-wizard">Curation Wizard</h1>
+        <p>The curation wizard shows the user questions and response sets in the SDP-V repository that are similar to content on user’s draft survey. This feature automates the identification of similar questions and response sets created by other programs to maximize harmonization opportunities within SDP-V before draft content is published. Use of this feature will enable proper population of usage statistics in SDP-V to show use of content across programs and systems (e.g., different users must link to the same question in the repository for usage across sections, surveys, programs, and surveillance systems to be transparent in the service). This feature will help to prevent duplicate questions and response sets from cluttering the repository.</p>
+        <p><strong>How to Find Similar Questions and Response Sets in SDP-V (Surveys)</strong></p>
+        <p>On the Survey Details page, the Curation Wizard feature will be available if the survey is in DRAFT status and the algorithm detects similar questions and/or response sets in the SDP-V repository.</p>
+        <p>To start the curation wizard, execute the following steps:</p>
+        <ul>
+          <li>
+            Click on the 'Curate' button on the Survey details page (the number in parentheses indicates the total questions and/or response sets on the draft survey with similar content in SDP-V detected)
+            <ul>
+              <li>
+                If no similar questions and/or response sets are detected on the draft survey, then the “Curate” button will not appear to the user.
+              </li>
+            </ul>
+          </li>
+          <li>
+            The Curate Survey Content Page contains two tabs.
+            <ul>
+              <li>
+                The ‘Questions’ tab is the default view and lists all questions on the survey with potential duplicates in the repository (the number in parentheses indicates the total questions on the draft survey with similar content detected in SDP-V).
+              </li>
+              <li>
+                The ‘Response Sets’ tab lists all response sets on the survey with potential duplicates in the repository (the number in parentheses indicates the total response sets on the draft survey with similar content detected in SDP-V).
+              </li>
+            </ul>
+          </li>
+          <li>
+            Select ‘View’ to see similar questions or response sets in the SDP-V repository with significant overlap in various fields (at least 75%).
+            <ul>
+              <li>Click on the Section Name hyperlink to view the section details where the potential duplicate questions were identified on the user’s draft survey</li>
+            </ul>
+          </li>
+          <li>
+            Scroll through ‘Potential Duplicate Questions’ or ‘Potential Duplicate Response Sets’ by using the left and right arrows on the right-side of the screen
+            <ul>
+              <li>Click on the Section Name hyperlink to view the section details where the potential duplicate questions were identified on the user’s draft survey</li>
+            </ul>
+          </li>
+          <li>
+            Select ‘Replace’ to mark the draft question or response set on the user’s survey as a duplicate and replace it with the selected question or response set. This action will delete the question or response set marked as a duplicate. This action cannot be undone.
+            <ul>
+              <li>Click on the Question Name hyperlink to view the question details of the suggested replacement questions that were identified by the matching algorithm</li>
+            </ul>
+          </li>
+        </ul>
+        <h2>Curation Wizard ‘Replace’ Function</h2>
+        <p>Whenever a user chooses to replace a draft question or response set on their survey with an existing question or response set in SDP-V, only some fields are updated. This is to prevent the user from losing information that has already been entered.</p>
+        <p><strong>Questions</strong></p>
+        <p>Whenever a user replaces a duplicate question on their draft survey with a suggested replacement question, the replacement question is linked to the draft survey. The following list shows which fields will change:</p>
+        <ul>
+          <li>Question Name</li>
+          <li>Question Description</li>
+          <li>Response Type</li>
+          <li>Question Category</li>
+          <li>Question Subcategory</li>
+          <li>Tags</li>
+        </ul>
+        <p>The following fields and relationships will not change:</p>
+        <ul>
+          <li>Response Set (if choice question)</li>
+          <li>Program Defined Variable Name</li>
+        </ul>
+        <p><strong>Note: </strong>Since there are many valid question and response set pairs, questions and response sets are assessed independently using the curation wizard. For instance, a program can harmonize a question (like ‘How old are you?’) with another program while choosing to use a different valid response set than that same program (like 5-year age categories compared to 10-year age categories).</p>
+        <p><strong>Response Sets</strong></p>
+        <p>Whenever a user replaces a duplicate response set on their draft survey with a suggested replacement response set, the replacement response set is linked to the draft survey. The following list shows which fields will change:</p>
+        <ul>
+          <li>Response Set Name</li>
+          <li>Response Set Description</li>
+          <li>Responses</li>
+        </ul>
+        <p><strong>Curation Wizard Match Score Algorithm</strong></p>
+        <p>The match score algorithm identifies questions and response sets in the SDP-V repository that are like content on a user’s draft survey based on a match of at least 75% overlap in the fields.</p>
+        <p>The match score algorithm compares the following fields to find similar questions:</p>
+        <ul>
+          <li>Question Name</li>
+          <li>Question Description</li>
+          <li>Question Category and Subcategory</li>
+          <li>Tags and Tag Code System</li>
+        </ul>
+        <p>The match score algorithm compares the following fields to find similar response sets:</p>
+        <ul>
+          <li>Response Set Name</li>
+          <li>Response Description</li>
+          <li>Responses and Response Code Systems</li>
+        </ul>
+      </div>
+    );
+  }
+
   importInstructions() {
     return(
       <div className="tab-pane" id="import" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'import'} aria-labelledby="import-tab">
@@ -488,6 +579,7 @@ class Help extends Component {
             <li id="search-tab" role="tab" onClick={() => this.selectInstruction('search')} aria-selected={this.state.selectedInstruction === 'search'} aria-controls="search"><a data-toggle="tab" href="#search">Search</a></li>
             <li id="view-tab" role="tab" onClick={() => this.selectInstruction('view')} aria-selected={this.state.selectedInstruction === 'view'} aria-controls="view"><a data-toggle="tab" href="#view">View and Export Content</a></li>
             <li id="create-and-edit-tab" role="tab" onClick={() => this.selectInstruction('create-and-edit')} aria-selected={this.state.selectedInstruction === 'create-and-edit'} aria-controls="create-and-edit"><a data-toggle="tab" href="#create-and-edit">Create and Edit Content</a></li>
+            <li id="curation-tab" role="tab" onClick={() => this.selectInstruction('curation')} aria-selected={this.state.selectedInstruction === 'curation'} aria-controls="curation"><a data-toggle="tab" href="#curation">Curation Wizard</a></li>
             <li id="import-tab" role="tab" onClick={() => this.selectInstruction('import')} aria-selected={this.state.selectedInstruction === 'import'} aria-controls="import"><a data-toggle="tab" href="#import">Import Content</a></li>
             <li id="tagging-tab" role="tab" onClick={() => this.selectInstruction('tagging')} aria-selected={this.state.selectedInstruction === 'tagging'} aria-controls="tagging"><a data-toggle="tab" href="#tagging">Tagging Content</a></li>
             <li id="comment-tab" role="tab" onClick={() => this.selectInstruction('comment')} aria-selected={this.state.selectedInstruction === 'comment'} aria-controls="comment"><a data-toggle="tab" href="#comment">Comment on Content</a></li>
@@ -500,6 +592,7 @@ class Help extends Component {
           {this.accountInstructions()}
           {this.viewInstructions()}
           {this.editInstructions()}
+          {this.curationInstructions()}
           {this.importInstructions()}
           {this.taggingInstructions()}
           {this.commentInstructions()}
@@ -559,7 +652,7 @@ class Help extends Component {
                     {this.instructionsTab()}
                     <div className="tab-pane" id="faq" role="tabpanel" aria-hidden={this.state.selectedTab !== 'faq'} aria-labelledby="faq-tab">
                       <h1 className="help-section-title">FAQs</h1>
-                      <p>This section has not been added. Please check back later.</p>
+                      <p>Please visit the FAQ page on the official cdc.gov website: <a href="https://www.cdc.gov/sdp/SDPFAQs.html#tabs-2-2" target="_blank">https://www.cdc.gov/sdp/SDPFAQs.html</a></p>
                     </div>
                     {this.glossaryTab()}
                   </div>

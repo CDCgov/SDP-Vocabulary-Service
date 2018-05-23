@@ -22,7 +22,7 @@ oid_prefix:
 elasticsearch:
   log: false
 
-app_version: '1.8'
+app_version: '1.9'
 disable_user_registration: false
 #
 # This URL should use the internal cluster name for the concept-manager service.

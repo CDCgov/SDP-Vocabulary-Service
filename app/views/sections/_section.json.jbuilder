@@ -1,7 +1,7 @@
 json.extract! section, :id, :name, :description, :created_at, :updated_at, :concepts, \
               :version_independent_id, :version, :most_recent, :parent, \
               :section_nested_items, :status, :created_by_id, :published_by, :most_recent_published, \
-              :groups, :nested_sections
+              :groups, :nested_sections, :preferred
 json.user_id section.created_by.email if section.created_by.present?
 json.url section_url(section, format: :json)
 
@@ -24,6 +24,8 @@ json.versions section.paper_trail_versions do |version|
   end
   json.changeset temp_hash
 end
+
+json.dupe_count section.q_with_dupes_count(current_user) if section && current_user
 
 json.questions section.questions_with_most_recent do |q|
   json.extract! q, :id, :content, :created_at, :created_by_id, :updated_at, :category_id, :description, :status, \

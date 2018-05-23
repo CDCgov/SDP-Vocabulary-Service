@@ -36,6 +36,38 @@ class Section < ApplicationRecord
     surveys.empty? && parent.nil?
   end
 
+  # Returns the number of questions with potential duplicates on the section
+  def q_with_dupes_count(current_user)
+    count = 0
+    if SDP::Elasticsearch.ping
+      current_user_id = current_user ? current_user.id : nil
+      current_user_groups = current_user ? current_user.groups : []
+      flatten_questions.each do |sni|
+        if sni.question && sni.question.status == 'draft'
+          results = SDP::Elasticsearch.find_duplicates(sni.question, current_user_id, current_user_groups)
+          count += 1 if results && results['hits'] && results['hits']['total'] > 0
+        end
+        if sni.response_set && sni.response_set.status == 'draft'
+          rs_results = SDP::Elasticsearch.find_duplicates(sni.response_set, current_user_id, current_user_groups)
+          count += 1 if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
+        end
+      end
+    end
+    count
+  end
+
+  def potential_duplicates(current_user)
+    dupe_qs = []
+    dupe_rs = []
+    flatten_questions.each do |sni|
+      qpd = sni.question.potential_duplicates(current_user) if sni.question
+      dupe_qs << qpd if qpd
+      rspd = sni.response_set.potential_duplicates(current_user, sni.question) if sni.response_set && sni.question
+      dupe_rs << rspd if rspd
+    end
+    { questions: dupe_qs, response_sets: dupe_rs }
+  end
+
   def update_surveys
     survey_array = surveys.to_a
     survey_sections.destroy_all

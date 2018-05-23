@@ -19,12 +19,14 @@ class SurveyImportContainer extends Component {
       file: null,
       survey: {},
       fileChosen: false,
-      filePromiseReturned: false
+      filePromiseReturned: false,
+      importType: "mmg" //make sure that value matches with default clicked value
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.attemptImport = this.attemptImport.bind(this);
     this.cancelImport = this.cancelImport.bind(this);
+    this.changeFormat = this.changeFormat.bind(this); //provide mechanism to bind the event to state object
   }
 
   componentDidMount() {
@@ -43,15 +45,20 @@ class SurveyImportContainer extends Component {
 
   onChange(e) {
     if (this.state.importSessionId) {
-      this.props.updateImportSession(this.state.importSessionId, e.target.files[0], (successResponse) => {
-        this.setState({importErrors: successResponse.data.importErrors, importSessionId: successResponse.data.id, filePromiseReturned: true});
+      this.props.updateImportSession(this.state.importSessionId, e.target.files[0], this.state.importType, (successResponse) => {
+        this.setState({importErrors: successResponse.data.importErrors, importWarnings: successResponse.data.importWarnings, importSessionId: successResponse.data.id, filePromiseReturned: true});
       });
     } else {
-      this.props.createImportSession(e.target.files[0], (successResponse) => {
-        this.setState({importErrors: successResponse.data.importErrors, importSessionId: successResponse.data.id, filePromiseReturned: true});
+      this.props.createImportSession(e.target.files[0], this.state.importType, (successResponse) => {
+        this.setState({importErrors: successResponse.data.importErrors, importWarnings: successResponse.data.importWarnings, importSessionId: successResponse.data.id, filePromiseReturned: true});
       });
     }
     this.setState({file: e.target.files[0], fileChosen: true});
+  }
+
+  //takes the onclick event - returns the target value to the state object.
+  changeFormat( e) {
+    this.setState({importType : e.target.value});
   }
 
   fileSelector() {
@@ -60,6 +67,18 @@ class SurveyImportContainer extends Component {
         <h3>Please select the file you wish to import</h3>
         <label htmlFor="file-select">Choose a Microsoft Excel formatted file (.xls, .xlsx, .xslm)</label>
         <input id="file-select" name="file-select" type="file" value={this.state.file} onChange={this.onChange} accept=".xls, .xlsx, .xlsm, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+        <br/>
+        <fieldset>
+          <legend>Please select the format of the file you wish to import</legend>
+          <div>
+          <br/>
+          <input type='radio' className='form-radio-input'  value="generic" onClick={this.changeFormat} name='importType' id='import-type-generic'  />
+          <label htmlFor="import-type-generic">Generic Import</label>
+          <br/><input type='radio' className='form-radio-input' value="mmg" onClick={this.changeFormat}  defaultChecked name='importType' id='import-type-mmg' />
+          <label htmlFor="import-type-mmg">MMG Import</label>
+        </div>
+        </fieldset>
+
       </div>);
     } else {
       return (
@@ -82,27 +101,33 @@ class SurveyImportContainer extends Component {
   }
 
   attemptImport() {
-    this.props.attemptImportFile(this.state.importSessionId, (successResponse)=>{
-      this.setState({importWarnings: successResponse.data.importErrors,
+    this.props.attemptImportFile(this.state.importSessionId, this.state.importType, (successResponse)=>{
+      this.setState({importWarnings: successResponse.data.importWarnings,
         importErrors: successResponse.data.importErrors,
         importSessionId: successResponse.data.id,
         survey: successResponse.data.survey});
     });
-    this.setState({importAttempted: true, importErrors: []});
+    this.setState({importAttempted: true, importErrors: [], importWarnings: [], importFormat: null});
   }
 
   cancelImport() {
-    this.setState({file: null, importAttempted: false, importErrors: [], fileChosen: false, filePromiseReturned: false, survey: {}});
+    this.setState({file: null, importAttempted: false, importWarnings: [],importErrors: [], fileChosen: false, importFormat: null, filePromiseReturned: false, survey: {}, importType:"mmg"});
   }
 
   fileActions() {
+
+    if (this.state.importType == "mmg" ){
+      var errorText = "File not recognized as MMG Excel spreadsheet";
+    } else {
+      errorText = "File format not able to be imported";
+    }
+
     if (this.state.importErrors && this.state.importErrors.length > 0 && !this.state.importAttempted) {
       return (
         <div>
           <div className="import-action-message error" role="alert">
             <button className="btn btn-default" onClick={this.cancelImport}><span className="fa fa-trash"></span> Remove</button>
-            <button className="btn btn-primary" onClick={this.attemptImport}>Attempt Import</button>
-            File not recognized as MMG Excel spreadsheet
+            {errorText}
           </div>
           <div className="import-notes">
             {this.state.importErrors.map((msg, i) => {
@@ -115,12 +140,31 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
-    } else if (!this.state.importAttempted && this.state.filePromiseReturned){
+    }else if (this.state.importWarnings && this.state.importWarnings.length > 0 && !this.state.importAttempted){
+      return (
+        <div>
+          <div className="import-action-message warning" role="alert">
+            <button className="btn btn-primary" onClick={this.attemptImport}>Import</button>
+            <button className="btn btn-default" onClick={this.cancelImport}><span className="fa fa-trash"></span> Remove</button>
+            File format warnings:
+          </div>
+          <div className="import-notes">
+            {this.state.importWarnings.map((msg, i) => {
+              return (
+                <div key={i} className="import-note warning">
+                  <strong>Warning</strong>: {msg}<br />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }else if (!this.state.importAttempted && this.state.filePromiseReturned){
       return (
         <div className="import-action-message success" role="alert">
           <button className="btn btn-primary" onClick={this.attemptImport}>Import</button>
           <button className="btn btn-default" onClick={this.cancelImport}>Cancel</button>
-          File recognized as MMG Excel spreadsheet
+          File recognized as {this.state.importType} Excel spreadsheet
         </div>
       );
     } else if (this.state.fileChosen && !this.state.filePromiseReturned) {
@@ -267,7 +311,7 @@ class SurveyImportContainer extends Component {
         <div className="row">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h1 className="panel-title">Import MMG Spreadsheet</h1>
+              <h1 className="panel-title">Import Spreadsheet</h1>
             </div>
             <div className="panel-body import-panel">
               <div className="row">

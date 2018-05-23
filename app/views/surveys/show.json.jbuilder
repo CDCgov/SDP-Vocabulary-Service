@@ -1,6 +1,6 @@
 json.extract! @survey, :id, :name, :description, :created_at, :updated_at, :survey_sections, \
               :version_independent_id, :version, :most_recent, :most_recent_published, :concepts, \
-              :control_number, :created_by_id, :status, :published_by, :parent, :groups
+              :control_number, :created_by_id, :status, :published_by, :parent, :groups, :preferred
 json.user_id @survey.created_by.email if @survey.created_by.present?
 json.surveillance_system_id @survey.surveillance_system.id if @survey.surveillance_system.present?
 json.surveillance_program_id @survey.surveillance_program.id if @survey.surveillance_program.present?
@@ -30,6 +30,8 @@ json.versions @survey.paper_trail_versions do |version|
   end
   json.changeset temp_hash
 end
+
+json.dupe_count @survey.q_with_dupes_count(current_user) if @survey && current_user
 
 json.nested_sections @survey.nested_sections do |section|
   json.extract! section, :id, :name, :description, :created_at, :updated_at, \

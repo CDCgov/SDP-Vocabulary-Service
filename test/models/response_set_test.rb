@@ -94,6 +94,35 @@ class ResponseSetTest < ActiveSupport::TestCase
     assert_includes sp.map(&:name), 'Generic Surveillance Program'
   end
 
+  test 'mark as duplicate' do
+    user = users(:admin)
+    rs = ResponseSet.new(name: 'Test rs', created_by: user)
+    assert rs.save
+    replacement_rs = ResponseSet.new(name: 'Replace rs', created_by: user)
+    replacement_rs.save
+    new_replacement_rs = ResponseSet.new(name: 'New replace rs', created_by: user)
+    new_replacement_rs.save
+    rt = ResponseType.new(name: 'choice', code: 'choice')
+    assert rt.save
+    q = Question.new(content: 'Test q1', response_type: rt, created_by: user)
+    assert q.save
+    sect = Section.new(name: 'Test sect', created_by: user)
+    sect.section_nested_items = [SectionNestedItem.new(question_id: q.id, response_set_id: rs.id, position: 0)]
+    assert sect.save
+    assert sect.response_sets.include?(rs)
+    refute sect.response_sets.include?(replacement_rs)
+    assert_equal replacement_rs.duplicates_replaced_count, 0
+    rs.mark_as_duplicate(replacement_rs)
+    refute sect.response_sets.include?(rs)
+    assert sect.response_sets.include?(replacement_rs)
+    assert_equal replacement_rs.duplicates_replaced_count, 1
+    # This second mark as dupe checks that the later replacement inherits the replaced count and increments again
+    replacement_rs.mark_as_duplicate(new_replacement_rs)
+    refute sect.response_sets.include?(replacement_rs)
+    assert sect.response_sets.include?(new_replacement_rs)
+    assert_equal new_replacement_rs.duplicates_replaced_count, 2
+  end
+
   test 'most_recent_for_oid' do
     rs = ResponseSet.most_recent_for_oid('5.6.7.8')
     assert rs

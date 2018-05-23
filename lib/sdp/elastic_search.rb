@@ -183,6 +183,52 @@ module SDP
       end
     end
 
+    def self.find_duplicates(obj, current_user_id = nil, groups = [])
+      sort_body = ['_score', { '_script': {
+        'script': "doc['surveillance_systems.id'].values.size()",
+        type: 'number',
+        order: 'desc'
+      } }]
+
+      version_filter = { term: { 'most_recent': true } }
+
+      filter_body = { dis_max: { queries: [
+        { term: { 'createdBy.id': current_user_id } },
+        { match: { status: 'published' } },
+        { terms: { groups: groups } }
+      ] } }
+
+      mlt_body = {
+        more_like_this: {
+          fields: ['name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName', 'category.name', 'subcategory.name'],
+          like: [
+            {
+              '_type': obj.class.to_s.underscore,
+              '_id': obj.id
+            }
+          ],
+          min_term_freq: 1,
+          minimum_should_match: '75%'
+        }
+      }
+
+      search_body = {
+        size: 10,
+        query: {
+          bool: {
+            filter: [filter_body, version_filter],
+            must: [mlt_body]
+          }
+        },
+        sort: sort_body
+      }
+
+      with_client do |client|
+        results = client.search index: 'vocabulary', type: obj.class.to_s.underscore, body: search_body
+        return results
+      end
+    end
+
     def self.find_duplicate_questions(content, description)
       with_client do |client|
         client.search(index: 'vocabulary', type: 'question',

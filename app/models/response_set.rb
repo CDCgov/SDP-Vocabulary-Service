@@ -59,6 +59,33 @@ class ResponseSet < ApplicationRecord
     new_revision
   end
 
+  def potential_duplicates(current_user, question)
+    current_user_id = current_user ? current_user.id : nil
+    current_user_groups = current_user ? current_user.groups : []
+    if status == 'draft'
+      rs_results = SDP::Elasticsearch.find_duplicates(self, current_user_id, current_user_groups)
+      if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
+        { draft_response_set: { id: id, linked_question: { id: question.id, content: question.content },
+                                name: name, description: description, responses: responses },
+          potential_duplicates: rs_results['hits']['hits'] }
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
+  def mark_as_duplicate(replacement)
+    section_nested_items.each do |sni|
+      sni.response_set = replacement
+      sni.save
+    end
+    # Keeping track of previously deleted dupes and incrementing deletions by 1
+    replacement.duplicates_replaced_count += duplicates_replaced_count + 1
+    replacement.save!
+  end
+
   def cascading_action
     yield self
   end

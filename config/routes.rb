@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     resources :groups, only: [:index, :create]
     put '/groups/add_user' => 'groups#add_user', as: :add_user
     put '/groups/remove_user' => 'groups#remove_user', as: :remove_user
+    put '/preferred_content/add_preferred_label', as: :add_preferred_label
+    put '/preferred_content/remove_preferred_label', as: :remove_preferred_label
   end
 
   resources :sections, except: [:edit] do # No need for edit as that is handled on the react side
@@ -53,6 +55,7 @@ Rails.application.routes.draw do
     put :publish, on: :member
     get :redcap, on: :member
     get :epi_info, on: :member
+    get :duplicates, on: :member
     get :spreadsheet, on: :member, defaults: { format: :xlsx }
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
@@ -64,6 +67,7 @@ Rails.application.routes.draw do
     put :publish, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
+    put :mark_as_duplicate, on: :member
     put :update_tags, on: :member
   end
   resources :comments do
@@ -76,6 +80,7 @@ Rails.application.routes.draw do
     put :publish, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
+    put :mark_as_duplicate, on: :member
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications

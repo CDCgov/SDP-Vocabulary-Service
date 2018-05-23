@@ -127,6 +127,12 @@ table.scroll-table-body{
   color: white;
   background-color: #4095bf;
 }
+.table.table-dark-header {
+  tr th {
+  background-color: #3E576E;
+  color:white;
+  }
+}
 
 /*table.fixed-height{
    height:300px;

@@ -37,6 +37,9 @@ class SurveysController < ApplicationController
         update_successful = @survey.update(survey_params)
       end
       if update_successful
+        @survey.groups.each do |group|
+          @survey.add_to_group(group.id)
+        end
         render json: @survey.to_json, status: :ok
       else
         render json: @survey.errors, status: :unprocessable_entity
@@ -99,6 +102,15 @@ class SurveysController < ApplicationController
       render :show, status: :ok, location: @survey
     else
       render json: @survey.errors, status: :unprocessable_entity
+    end
+  end
+
+  # GET /surveys/1/duplicates
+  def duplicates
+    if SDP::Elasticsearch.ping
+      render json: @survey.potential_duplicates(current_user), status: :ok
+    else
+      render json: { msg: 'Request cannot be processed as Elasticsearch appears to be down.' }, status: :unprocessable_entity
     end
   end
 

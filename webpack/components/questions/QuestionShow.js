@@ -129,6 +129,24 @@ export default class QuestionShow extends Component {
             {isPublishable(question, this.props.currentUser) &&
               <button className="btn btn-primary" onClick={() => this.props.handlePublish(question) }>Publish</button>
             }
+            {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.addPreferred(question.id, 'Question', () => {
+                  this.props.fetchQuestion(question.id);
+                });
+                return false;
+              }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+            }
+            {this.props.currentUser && this.props.currentUser.admin && question.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.removePreferred(question.id, 'Question', () => {
+                  this.props.fetchQuestion(question.id);
+                });
+                return false;
+              }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
+            }
             {isEditable(question, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -139,7 +157,7 @@ export default class QuestionShow extends Component {
           </div>
         }
         <div className="maincontent-details">
-          <h1 className="maincontent-item-name"><strong>Question Name:</strong> {question.content} </h1>
+          <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
@@ -230,8 +248,10 @@ export default class QuestionShow extends Component {
                       <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets: {question.responseSets && question.responseSets.length}</a>
                     </h2>
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-rs">
-                    <ResponseSetList responseSets={question.responseSets} />
+                  <div className="panel-collapse panel-details collapse" id="collapse-rs">
+                    <div className="box-content panel-body">
+                      <ResponseSetList responseSets={question.responseSets} />
+                    </div>
                   </div>
                 </div>
               }
@@ -243,8 +263,10 @@ export default class QuestionShow extends Component {
                       <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections: {question.linkedResponseSets && question.linkedResponseSets.length}</a>
                     </h2>
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-lrs">
-                    <ResponseSetList responseSets={question.linkedResponseSets} />
+                  <div className="panel-collapse panel-details collapse" id="collapse-lrs">
+                    <div className="box-content panel-body">
+                      <ResponseSetList responseSets={question.linkedResponseSets} />
+                    </div>
                   </div>
                 </div>
               }
@@ -256,8 +278,10 @@ export default class QuestionShow extends Component {
                       <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
                     </h2>
                   </div>
-                  <div className="box-content panel-collapse panel-details collapse panel-body" id="collapse-linked-sections">
-                    <SectionList sections={question.sections} currentUser={this.props.currentUser} />
+                  <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
+                    <div className="box-content panel-body">
+                      <SectionList sections={question.sections} currentUser={this.props.currentUser} />
+                    </div>
                   </div>
                 </div>
               }
@@ -295,6 +319,9 @@ QuestionShow.propTypes = {
   deleteQuestion: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
   removeQuestionFromGroup: PropTypes.func,
+  addPreferred: PropTypes.func,
+  removePreferred: PropTypes.func,
+  fetchQuestion: PropTypes.func,
   updateQuestionTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

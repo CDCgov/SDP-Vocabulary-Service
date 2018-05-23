@@ -85,6 +85,17 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def mark_as_duplicate
+    @question.mark_as_duplicate(Question.find(params[:replacement]))
+    if @question.section_nested_items.count == 0
+      q = Question.find(@question.id)
+      q.destroy
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
@@ -95,6 +106,9 @@ class QuestionsController < ApplicationController
       @question.update_concepts('Question')
       @question.updated_by = current_user
       if @question.update(question_params)
+        @question.groups.each do |group|
+          @question.add_to_group(group.id)
+        end
         render :show, status: :ok, location: @question
       else
         @categories = Category.all

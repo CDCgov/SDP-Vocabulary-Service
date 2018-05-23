@@ -19,10 +19,11 @@ module SDP
                     :category, :subcategory, :value_set, :concepts,
                     :value_set_url, :value_set_oid, :value_set_tab_name, :tag_tab_name
 
-      def initialize(vads_oid_regex, coded_data_types, response_types)
+      def initialize(vads_oid_regex, coded_data_types, response_types, warnings)
         @vads_oid_regex = vads_oid_regex
         @coded_data_types = coded_data_types
         @response_types = response_types
+        @warnings = warnings
       end
 
       def normalize(str)
@@ -57,9 +58,14 @@ module SDP
 
       def response_type(query)
         rt = ResponseType.find_by(query)
-        raise "Unable to find response type #{query.values.first} - did response types change?" unless rt
+        unless rt
+          @warnings << "Unable to find response type '#{query.values.first}' for question '#{@name}'. "\
+          ' This response set will not be imported. Please use preferred types'
+        end
         rt
       end
+
+      attr_reader :warnings
     end
 
     class MMGDataElement < DataElement
@@ -101,10 +107,11 @@ module SDP
     class GenericSSDataElement < DataElement
       def extract(row)
         super
+
         @category = normalize(row[:category]),
                     @subcategory = normalize(row[:subcategory])
         @tag_tab_name = normalize(row[:tag_table]) if row[:tag_table].present?
-        if row[:value_set] == 'Local' && row[:value_set_table].present?
+        if row[:value_set_table].present?
           @value_set_tab_name = normalize(row[:value_set_table])
         end
       end
@@ -123,6 +130,7 @@ module SDP
       def create_response_set(user)
         vs_meta = @value_set.first
         vs_meta ||= {}
+
         rs_name = vs_meta[:name] || @value_set_tab_name
         rs = ResponseSet.new(
           created_by: user, status: 'draft',
@@ -138,15 +146,42 @@ module SDP
       end
     end
 
+    class MarkerRow
+      START_REGEX = /^(BEGIN|START|start):? (.*)/
+      END_REGEX = /^(END|end):? (.*)/
+      NOTE_REGEX = /^(NOTE|end):? (.*)/
+
+      attr_accessor :type, :text, :error
+
+      def initialize(row_contents)
+        trimmed_contents = row_contents.strip
+        { section_start: START_REGEX, section_end: END_REGEX, note: NOTE_REGEX }.each_pair do |k, v|
+          match_result = v.match(trimmed_contents)
+          next unless match_result
+          self.type = k
+          self.text = match_result[2]
+          break
+        end
+        if text.blank?
+          self.type = :error
+          self.error = 'Unable to find marker prefix'
+        else
+          splits = text.split(/:|NOTE:/)
+          if splits.length > 1 && splits[1].length >= 30
+            self.text = splits[0].strip
+          end
+        end
+      end
+    end
+
     class Spreadsheet
       attr_reader :errors
+      attr_reader :warnings
 
       DEFAULT_CONFIG = {
         mmg: true,
         de_tab_name: 'Data Elements',
         de_coded_type: ['Coded'],
-        section_start_regex: '^START: (.*)',
-        section_end_regex: '^END: (.*)',
         phin_vads_oid_regex: '.*oid=(.*)(&.*)*',
         de_columns: {
           section_name: 'PHIN Variable',
@@ -167,7 +202,7 @@ module SDP
           data_type: 'Question Response Type (R)',
           tag_table: 'Question Tag Table (O)',
           value_set_table: 'Local Response Set Table (C)',
-          value_set: 'Response Set Source (C)'
+          value_set: 'Local Response Set Table (C)'
         },
         vs_columns: {
           code: 'Concept Code',
@@ -197,21 +232,28 @@ module SDP
         }
       }.freeze
 
-      def initialize(file, user, config = {})
+      def initialize(file, user, import_type, config = {})
         @file = file
         @user = user
         @errors = []
+        @warnings = []
         @top_level = NestedItem.new(:section)
         @top_level.name = 'Top Level'
         @current_section = @top_level
         @parent_sections = []
         @config = DEFAULT_CONFIG.deep_merge(config)
-        @section_start = Regexp.new(@config[:section_start_regex])
-        @section_end = Regexp.new(@config[:section_end_regex])
         @vads_oid = Regexp.new(@config[:phin_vads_oid_regex])
         @oid_matcher = /^([\.\d]+)$/
         @valueset_sheet = /Valueset.*/
         @local_response_sets = {}
+
+        # Put this into a variable somewhere appropriate that can be referenced by multiple classes
+
+        @config[:mmg] = if import_type == 'mmg'
+                          true
+                        else
+                          false
+                        end
       end
 
       def save!
@@ -246,8 +288,13 @@ module SDP
       def parse!(verbose = false)
         w = Roo::Spreadsheet.open(@file, extension: 'xlsx')
         @all_sheets = w.sheets
+
         @all_sheets.each do |sheet|
           headers = []
+          unless w.sheet(sheet).first_row
+            @warnings << "Sheet #{sheet} skipped because it is blank" # Do not think this can  be reached - caught earlier
+            next
+          end
           w.sheet(sheet).row(1).each do |header|
             headers << header
           end
@@ -259,7 +306,13 @@ module SDP
             logger.debug "skipping sheet #{sheet} -- looks like a response set"
             next
           elsif !de_sheet?(headers)
-            logger.debug "skipping sheet #{sheet} -- looks like it does not contain form data elements"
+            import_type_label = 'mmg'
+            import_type_label = 'generic' unless @config[:mmg]
+
+            logger.debug "skipping tab #{sheet} -- looks like it does not contain form data elements"
+            @warnings << " '#{sheet}' tab does not contain expected #{import_type_label} column names"\
+            ' and will not be imported. Refer to the table in the "Import Content" '\
+            'Help Documentation for more info.' # warning
             next
           end
 
@@ -272,7 +325,7 @@ module SDP
               process_section_marker(row)
               next
             end
-            data_element = extract_data_element(row)
+            data_element = extract_data_element(sheet, row)
             print_data_element(data_element) if verbose
 
             # add the data element unless a matching data element is already present
@@ -396,11 +449,11 @@ module SDP
           end
         rescue Roo::HeaderRowNotFoundError
           if sheet.header_line == 1
-            @errors << "Missing header row in #{name}, retrying"
+            @warnings << "On '#{sheet}' tab there is a missing header row in #{name}, retrying" # warning
             sheet.header_line = 2
             retry
           else
-            @errors << "Unable to parse value set from #{name}"
+            @warnings << "Unable to process value set from #{name} in tab #{sheet} as no header rows found" # warning
           end
         end
         value_set
@@ -458,13 +511,13 @@ module SDP
               next if entry[:name].nil? || entry[:name].to_s.strip.empty?
               data_element.concepts << Concept.new(value: entry[:value], display_name: entry[:name], code_system: entry[:system])
             end
-          rescue Roo::HeaderRowNotFoundError
+          rescue Roo::HeaderRowNotFoundError # catching the error
             if sheet.header_line == 1
-              @errors << "Missing header row in #{data_element.tag_tab_name}, retrying"
+              @warnings << "On tab '#{sheet}' there is a missing header row in #{data_element.tag_tab_name}, retrying" # warning
               sheet.header_line = 2
               retry
             else
-              @errors << "Unable to parse tags from #{data_element.tag_tab_name}"
+              @warnings << "For tab '#{sheet}' Unable to parse tags from #{data_element.tag_tab_name}" # warning
             end
           end
         end
@@ -473,10 +526,12 @@ module SDP
       def extract_value_sets(workbook, verbose)
         all_data_elements.each do |data_element|
           next unless data_element.value_set_tab_name
-          if @all_sheets.include?(data_element.value_set_tab_name)
-            sheet = workbook.sheet(data_element.value_set_tab_name)
-            logger.info "Processing value set tab: #{data_element.value_set_tab_name}" if verbose
-            data_element.value_set = parse_value_set(sheet, data_element.value_set_tab_name)
+          vs_tab_name = @all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
+          if @all_sheets.include?(vs_tab_name)
+            sheet = workbook.sheet(vs_tab_name)
+            logger.info "Processing value set tab: #{vs_tab_name}" if verbose
+            data_element.value_set = parse_value_set(sheet, vs_tab_name)
+
             logger.info "  Codes: #{data_element.value_set.join(', ')}" if verbose
           else
             # sheet not present - create an empty response set
@@ -485,19 +540,22 @@ module SDP
         end
       end
 
-      def extract_data_element(row)
+      def extract_data_element(sheet, row)
         data_element = if @config[:mmg]
-                         MMGDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
+                         MMGDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types], @warnings)
                        else
-                         GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types])
+                         GenericSSDataElement.new(@vads_oid, @config[:de_coded_type], @config[:response_types], @warnings)
                        end
         data_element.extract(row)
-        if data_element.value_set_tab_name.present? && !@all_sheets.include?(data_element.value_set_tab_name)
-          @errors << "Value set tab '#{data_element.value_set_tab_name}' not present"
+        # make sure that any warnings from the data element itself is passed back
+        # @warnings << data_element.warnings()
+
+        if data_element.value_set_tab_name.present? && !@all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
+          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
           # data_element.value_set_tab_name = nil
         end
         if data_element.tag_tab_name.present? && !@all_sheets.include?(data_element.tag_tab_name)
-          @errors << "Tag tab '#{data_element.tag_tab_name}' not present"
+          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Tag tab '#{data_element.tag_tab_name}' not present" # warning
         end
         data_element
       end
@@ -508,17 +566,21 @@ module SDP
                       else
                         :name
                       end
-        start_marker = @section_start.match(row[column_name])
-        end_marker = @section_end.match(row[column_name])
-        if start_marker
-          start_section(start_marker[1])
-        elsif end_marker
-          section_name = end_marker[1]
-          if @current_section.name != section_name
-            @errors << "Mismatched section end: expected #{@current_section.name}, found #{section_name}"
+        row_contents = row[column_name]
+        mr = MarkerRow.new(row_contents)
+        case mr.type
+        when :section_start
+          start_section(mr.text)
+        when :section_end
+          if @current_section.name != mr.text
+            @warnings << "Mismatched section end: expected #{@current_section.name}, found #{mr.text}"
           else
             @current_section = @parent_sections.pop
           end
+        when :note
+          logger.info("Found NOTE: #{mr.text}")
+        when :error
+          @warnings << "Unable to process marker row with contents #{row_contents}"
         end
       end
 
