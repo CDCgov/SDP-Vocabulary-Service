@@ -77,8 +77,19 @@
 
 
 .section-row td {background-color:#f0f0f0}
+.duplicate-row td {background-color:#fffcd9;}
+
+.linked-section {
+    font-size:$font-size-base;
+}
+
+.suggested-replacements {
+  margin-top:2em;
+}
+
 .duplicate-nav-buttons {
   float:right;
+  h2 {display:inline-block;margin-top:6px}
   button {
   margin-left:10px;
   }
