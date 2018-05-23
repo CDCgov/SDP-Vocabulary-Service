@@ -49,7 +49,7 @@ class QuestionModalContainer extends Component {
 
   saveNewQuestion(newQuestion){
     newQuestion.linkedResponseSets = this.state.linkedResponseSets;
-    this.props.saveQuestion(newQuestion, (successResponse) => {
+    this.props.saveQuestion(newQuestion, '', (successResponse) => {
       this.setState({showResponseSetWidget: false, linkedResponseSets: [], errors: null});
       this.props.handleSaveQuestionSuccess(successResponse);
     }, (failureResponse) => {

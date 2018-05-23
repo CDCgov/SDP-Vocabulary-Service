@@ -82,7 +82,7 @@ class QuestionEdit extends Component {
       this.unsavedState = false;
       this.props.router.push(this.nextLocation.pathname);
     }else{
-      this.props.questionSubmitter(this.state, () => {
+      this.props.questionSubmitter(this.state, this.state.comment, () => {
         this.unsavedState = false;
         this.props.router.push(this.nextLocation.pathname);
       }, (failureResponse) => {
@@ -99,7 +99,8 @@ class QuestionEdit extends Component {
     return {
       showWarningModal: false,
       showResponseSetModal: false,
-      showPotentialDuplicates: false
+      showPotentialDuplicates: false,
+      comment: ''
     };
   }
 
@@ -262,14 +263,20 @@ class QuestionEdit extends Component {
                   <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange}
                                          selectedResponseSets={this.state.linkedResponseSets} />
                 : ''}
-              </div>
-              <div>
-                { this.state.showPotentialDuplicates && this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
-                  <SearchResultList searchResults={this.props.potentialDuplicates}
-                                    isEditPage={false}
-                                    currentUser={this.props.currentUser}
-                                    title="Potential Duplicate Questions"/>
-                }
+                <div>
+                  { this.state.showPotentialDuplicates && this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
+                    <SearchResultList searchResults={this.props.potentialDuplicates}
+                                      isEditPage={false}
+                                      currentUser={this.props.currentUser}
+                                      title="Potential Duplicate Questions"/>
+                  }
+                </div>
+                {this.props.action === 'edit' && <div className="row">
+                  <div className="col-md-8 question-form-group">
+                    <label className="input-label"  htmlFor="save-with-comment">Save with Notes / Comments (Optional)</label>
+                    <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." value={state.comment} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
+                  </div>
+                </div>}
               </div>
               <div className="panel-footer">
                 <div className="actions form-group">
@@ -325,7 +332,7 @@ class QuestionEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.props.action === 'edit') {
-      this.props.draftSubmitter(this.props.id, this.state, (response) => {
+      this.props.draftSubmitter(this.props.id, this.state, this.state.comment, (response) => {
         // TODO: Handle when the saving question fails.
         this.unsavedState = false;
         if (response.status === 200) {
@@ -333,7 +340,7 @@ class QuestionEdit extends Component {
         }
       });
     } else {
-      this.props.questionSubmitter(this.state, (successResponse) => {
+      this.props.questionSubmitter(this.state, this.state.comment, (successResponse) => {
         this.unsavedState = false;
         if (this.props.action === 'new') {
           let stats = Object.assign({}, this.props.stats);
