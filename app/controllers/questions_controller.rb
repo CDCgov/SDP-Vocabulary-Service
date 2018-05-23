@@ -2,6 +2,11 @@ class QuestionsController < ApplicationController
   load_and_authorize_resource except: [:usage]
   before_action :set_paper_trail_whodunnit
 
+  def info_for_paper_trail
+    comment = request.params[:comment] || ''
+    { comment: comment }
+  end
+
   # GET /questions.json
   def index
   end

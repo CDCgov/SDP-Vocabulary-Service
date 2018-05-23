@@ -48,12 +48,14 @@ Feature: Manage Response Sets
     And I should see "Edit"
     When I click on the "Edit" button
     And I fill in the "response-set-name" field with "Gender Partial"
+    And I fill in the "save-with-comment" field with "Testing comment functionality on edit"
     And I fill in the "Description" field with "M / F"
     And I click on the "Save" button
     Then I should see "Gender Partial"
     And I should see "M / F"
     And I should not see "Publish"
     When I click on the "Change History" link
+    Then I should see "Notes / Comments: Testing comment functionality on edit"
     Then I should see "Changes by test_author@gmail.com"
     And I should see "field changed from"
     And I should not see "No changes have been made to this version."

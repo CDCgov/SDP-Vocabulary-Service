@@ -16,7 +16,7 @@ json.all_versions @survey.all_versions do |s|
 end
 
 json.versions @survey.paper_trail_versions do |version|
-  json.extract! version, :created_at
+  json.extract! version, :created_at, :comment
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
   version.changeset.each_pair do |field, arr|

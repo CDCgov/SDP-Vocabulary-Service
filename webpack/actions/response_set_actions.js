@@ -43,10 +43,10 @@ export function fetchResponseSetUsage(id) {
   };
 }
 
-function createPostPromise(responseSet, url, fn, successHandler=null, failureHandler=null) {
+function createPostPromise(responseSet, comment, url, fn, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   const postPromise = fn(url,
-                      {responseSet, authenticityToken},
+                      {responseSet, comment, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (successHandler) {
     postPromise.then(successHandler);
@@ -58,18 +58,18 @@ function createPostPromise(responseSet, url, fn, successHandler=null, failureHan
   return postPromise;
 }
 
-export function saveResponseSet(responseSet, successHandler=null, failureHandler=null) {
+export function saveResponseSet(responseSet, comment, successHandler=null, failureHandler=null) {
   const fn = axios.post;
-  const postPromise = createPostPromise(responseSet, routes.responseSetsPath(), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(responseSet, comment, routes.responseSetsPath(), fn, successHandler, failureHandler);
   return {
     type: SAVE_RESPONSE_SET,
     payload: postPromise
   };
 }
 
-export function saveDraftResponseSet(responseSet, successHandler=null, failureHandler=null) {
+export function saveDraftResponseSet(responseSet, comment, successHandler=null, failureHandler=null) {
   const fn = axios.put;
-  const postPromise = createPostPromise(responseSet, routes.responseSetPath(responseSet.id), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(responseSet, comment, routes.responseSetPath(responseSet.id), fn, successHandler, failureHandler);
   return {
     type: SAVE_DRAFT_RESPONSE_SET,
     payload: postPromise

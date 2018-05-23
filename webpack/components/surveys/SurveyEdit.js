@@ -20,6 +20,7 @@ class SurveyEdit extends Component {
   stateForNew(currentUser) {
     return {
       id: null,
+      comment: '',
       name: '',
       version: 1,
       conceptsAttributes: [],
@@ -125,7 +126,7 @@ class SurveyEdit extends Component {
       // Because we were saving SurveySections with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
       // At some point, we can remove this code
       survey.linkedSections = this.state.surveySections.map((sect, i) => ({id: sect.id, surveyId: sect.surveyId, sectionId: sect.sectionId, position: i}));
-      this.props.surveySubmitter(survey, (response) => {
+      this.props.surveySubmitter(survey, this.state.comment, (response) => {
         // TODO: Handle when the saving survey fails.
         this.unsavedState = false;
         if (response.status === 201) {
@@ -153,7 +154,7 @@ class SurveyEdit extends Component {
     // Because of the way we have to pass the current sections in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
     survey.linkedSections = this.state.surveySections;
-    this.props.surveySubmitter(survey, (response) => {
+    this.props.surveySubmitter(survey, this.state.comment, (response) => {
       this.unsavedState = false;
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
@@ -241,6 +242,10 @@ class SurveyEdit extends Component {
               }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
             </div>
           </div>
+          {this.props.action === 'edit' && <div className="survey-group">
+            <label  htmlFor="save-with-comment">Save with Notes / Comments (Optional)</label>
+            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
+          </div>}
           <h2 className="tags-table-header"><strong>Tags</strong></h2>
           <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                    initialItems={this.state.conceptsAttributes}
