@@ -403,57 +403,100 @@ class Help extends Component {
     return(
       <div className="tab-pane" id="import" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'import'} aria-labelledby="import-tab">
         <h1 id="import-content">Importing Content</h1>
+        <br/>
+        <ul>
+        <li><a href="#message-mapping-guide">Importing Message Mapping Guides and Value Sets</a>
+        <ol>
+        <li><a href="#message-mapping-guide-import-MMG">How to Import MMG Content Through SDP-V User Interface</a></li>
+        <li><a href="#message-mapping-import-requirements">MMG Spreadsheet Import Template Content and Formatting Requirements</a></li>
+        <li><a href="#MMG-content-organization">MMG Content: Content Organization: How to Identify Sections, Templates, or Repeating Groups</a></li>
+        </ol>
 
-          <p id="message-mapping-guide"><strong>Message Mapping Guide and Value Sets</strong></p>
+        </li>
+        <li><a href="#generic-spreadsheet-guide">Importing Generic Spreadsheets and Response Sets</a>
+        <ol>
+          <li><a href="#generic-spreadsheet-import">How to Import Generic Content Through SDP-V User Interface</a></li>
+          <li><a href="#generic-content-organization">How to Identify Sections, Templates, or Repeating Groups within the Generic Spreadsheet</a></li>
+          <li><a href="#generic-associate-rs">How to Associate Response Sets with Choice Questions on Import</a></li>
+          <li><a href="#generic-local-rs">How to Create User-defined (“Local”) Response Sets Using the SDP-V Import Template</a></li>
+          <li><a href="#generic-add-tags">Adding Tags with Generic Spreadsheet</a></li>
+        </ol>
+        </li>
+        </ul>
+
+          <h3><p id="message-mapping-guide">Message Mapping Guide (MMG) and Value Sets</p></h3>
+          <p>This feature is to support the bulk import of vocabulary content from Nationally Notifiable Disease Message Mapping Guides (MMGs).</p>
+
+          <h4><strong><p id="message-mapping-guide-import-MMG">How to Import MMG Content Through SDP-V User Interface</p></strong></h4>
           <p>On the taskbar, there is an action button to create content. To create a SDP-V survey using content from a Message Mapping Guide (MMG) formatted spreadsheet, execute the following steps:</p>
           <ul>
-            <li>Click on the 'Create' button on the Vocabulary service taskbar and select 'Import MMG'</li>
-            <li>Select the MMG formatted file you wish to import using the file explore by clicking 'Browse…' </li>
+            <li>Click on the 'Create' button on the Vocabulary service taskbar and select 'Import Spreadsheet'</li>
+            <li>Select the MMG formatted file you wish to import by clicking 'Choose File' </li>
+            <li>Select ‘MMG Import’ as the format of the file you wish to import </li>
           </ul>
-          <p>The following table shows the expected MMG Column Names and how they map to Vocabulary Service. <strong>Each column is necessary for import, even if left blank. Each column should be spelled exactly as appears in quotes in the table below.</strong>
+          <br/>
+
+          <h4><p id="message-mapping-import-requirements"><strong>MMG Spreadsheet Import Template Content and Formatting Requirements</strong></p></h4>
+
+          <p>The following table shows the expected MMG Column Names and how they map to Vocabulary Service.
+          <strong>Each column is necessary for import, even if left blank. Each column should be spelled exactly as appears in quotes in the table below.</strong>
           </p>
+          <br/>
 
           <table className="set-table table">
-            <caption>MMG column name with associated vocabulary service item</caption>
+            <caption><strong>Table 1. MMG Import: Required Spreadsheet Column Names and Associated Vocabulary Service Item on Import</strong></caption>
             <thead>
               <tr>
-                <th  id="mmg-display-name-column">MMG Column Name</th>
+                <th  id="mmg-display-name-column">MMG Import Column Name</th>
                 <th  id="vocab-service-item-column">Vocabulary Service Item</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td headers="mmg-display-name-column">Data Element (DE) Name</td>
+                <td headers="mmg-display-name-column">'Data Element (DE) Name'</td>
                 <td headers="vocab-service-item-column">Question Name</td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'DE Identifier Sent in HL7 Message'</td>
-                <td headers="vocab-service-item-column">'Data Element Identifier' Tag on Question</td>
+                <td headers="vocab-service-item-column">'Data Element Identifier' Tag on Question*</td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'Data Element Description'</td>
                 <td headers="vocab-service-item-column">Question Description</td>
               </tr>
               <tr>
+                <td headers="mmg-display-name-column">'DE Code System'</td>
+                <td headers="vocab-service-item-column">Code System Identifier for 'Data Element Identifier' Tag on Question*</td>
+              </tr>
+              <tr>
                 <td headers="mmg-display-name-column">'Value Set Name (VADS Hyperlink)'</td>
-                <td headers="vocab-service-item-column">The DE will be associated with the PHIN VADS value set if a hyperlink is provided. <br/> If a valid hyperlink is not provided, the importer will look <br/> for a tab with the same name that contains the value set values. <br/>If a tab with the same name is not found,   the following error will be displayed: <br/>'Error: Value set tab 'XXX' not present'</td>
+                <td headers="vocab-service-item-column"><p>Response Set </p>Note: The DE will be associated with the PHIN VADS value set if a hyperlink is provided. <br/>
+                 If a valid hyperlink is not provided, the importer will look for a tab with the same name as the value in this cell. The value set tab is expected to contain the value set values.
+                 If a tab with the same name is not found, an error message will be displayed.
+                 </td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'PHIN Variable Code System' OR 'Local Variable Code System'</td>
                 <td headers="vocab-service-item-column">Program Defined Variable Name associated with a question</td>
               </tr>
               <tr>
-                <td headers="mmg-display-name-column">'PHIN Variable'</td>
-                <td headers="vocab-service-item-column">PHIN data element identifier (leave blank if local)</td>
-              </tr>
-              <tr>
                 <td headers="mmg-display-name-column">'Data Type'</td>
-                <td headers="vocab-service-item-column">PHIN data element identifier (leave blank if local)</td>
+                <td headers="vocab-service-item-column">Question Response Type</td>
               </tr>
               </tbody>
           </table><br/>
 
-          <p><strong>How to Identify Sections, Templates, or Repeating Groups</strong></p>
+          <ul>
+            <li>The content in each tab in the spreadsheet that contains all required columns will be imported and tagged with 'Tab Name'.</li>
+            <li>If there are multiple spreadsheets that contain all required columns, they will be imported as separate sections on the same SDP-V survey.</li>
+            <li>The user importing content into SDP-V using this template will be assigned as the author of the survey</li>
+            <li>Content will be imported into SDP-V in 'DRAFT' status</li>
+          </ul>
+
+          <br/>
+          <p><strong>NOTE:</strong> If a required column from the table is missing, the user will receive an error message and the content will not be imported</p>
+          <br/>
+          <h4 id="MMG-content-organization"><p><strong>Content Organization: How to Identify Sections, Templates, or Repeating Groups within the MMG Spreadsheet Import Template</strong></p></h4>
           <p>
             Sections, templates, or repeating groups are created by listing data elements between 'START: insert section name' and 'END: insert section name' rows.
             Each row between these markers are imported as data elements within that grouping (called sections in the vocabulary service).
@@ -464,7 +507,276 @@ class Help extends Component {
             <li>The end of a section is indicated by the prefix 'END: '(including a space after the colon)</li>
             <li>The text following the 'START: ' and 'END: ' pre-fixes will be imported as the Section Name in the vocabulary service</li>
             <li>The section name following the 'START: ' prefix must exactly match the section name following the 'END: ' prefix in order for the section to be correctly imported. </li>
+            <li>Notes should not be included in the same row as the section name (e.g., after the ‘START:’ or ‘END:’ pre-fixes’)</li>
+            <li>Text following a ‘NOTE:’ pre-fix will not be imported. </li>
           </ul>
+          <br/>
+          <br/>
+
+          <h3><p id="generic-spreadsheet-guide">Generic Questions and Response Sets</p></h3>
+          <br/>
+          <p>The purpose of this feature is to support the bulk import of questions and response sets into the SDP Vocabulary Service.</p>
+          <br/>
+
+          <h4><p id="generic-spreadsheet-import"><strong>How to Import Generic Content Through SDP-V User Interface</strong></p></h4>
+          <p>On the taskbar, there is an action button to create content. To create a SDP-V survey using content from the generic SDP-V template formatted spreadsheet, execute the following steps:</p>
+          <ol>
+            <li>Click on the 'Create' button on the Vocabulary service taskbar and select 'Import Spreadsheet'</li>
+            <li>Select the SDP-V template formatted file you wish to import by clicking 'Choose File'</li>
+            <li>Select 'Generic Import' as the format of the file you wish to import</li>
+          </ol>
+
+          <p>The following tables lists the Generic Import Column Names and the import priority.
+          <strong>Each required column is necessary for import, even if left blank.
+          Each column should be spelled exactly as appears in quotes in the table below.</strong>
+          The generic import column names map directly to the Vocabulary Service items
+          (e.g., 'Question Description' in Generic SDP-V template spreadsheet imported as 'Question Description' in SDP-V).
+          </p>
+
+          <table className="set-table table">
+            <caption><strong>Table 2. Generic Import: Spreadsheet Column Names, Priority and Description </strong></caption>
+            <thead>
+              <tr>
+                <th  id="generic-display-name-column">Generic Import Column Name</th>
+                <th  id="generic-display-priority">Priority</th>
+                <th  id="generic-display-desc">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="generic-display-name-column">'Survey Name (R)'</td>
+                <td headers="generic-display-priority">Required</td>
+                <td headers="generic-display-desc">The information contained in this column on the 'Survey Metadata' tab is imported as the Survey name</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Survey Description (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">The information contained in this column on the ‘Survey Metadata’ tab is imported as the Survey description. This information can alternatively be added through the SDP-V user interface after import.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Section Name (R)'</td>
+                <td headers="generic-display-priority">Required</td>
+                <td headers="generic-display-desc">The information contained in this column on the ‘Section Metadata’ tab is imported as the Section name.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Section Description (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">The information contained in this column on the ‘Section Metadata’ tab is imported as the Section description. This information can alternatively be added through the SDP-V user interface after import.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Section Tag Table (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">The purpose of Tags is to facilitate content discovery and reuse.
+                A user can create tags by creating tags tables on separate tabs within the SDP-V generic import spreadsheet.
+                A section will be tagged with values from a tag table where the value in this cell matches the name of a tab
+                in the spreadsheet with the naming convention "TAG #", where # is a number assigned by the user to identify
+                the tags table in this template (e.g., TAGS 1, TAGS 2,  TAGS 3...).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Question Text (R)'</td>
+                <td headers="generic-display-priority">Required</td>
+                <td headers="generic-display-desc">Each row between Section ‘START:’ and ‘END’ markers will be imported as questions within that section. Questions must be associated with a section in SDP-V.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Question Description (R)'</td>
+                <td headers="generic-display-priority">Required</td>
+                <td headers="generic-display-desc">The information contained in this column is imported as the question description.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Question Response Type (R)'</td>
+                <td headers="generic-display-priority">Required</td>
+                <td headers="generic-display-desc">The information contained in this column is imported as the question response type.
+                  <ul>
+                    <li>The allowed response types are: Attachment, Boolean, Choice, Date, Date Time, Decimal, Instant, Integer, Open Choice, Quantity, Reference, String, Text, Time, or URL</li>
+                    <li>The 14 allowed response types are defined at https://www.hl7.org/fhir/valueset-item-type.html </li>
+                  </ul>
+                  The information contained in this column is required IF the question response type is choice or open choice
+                  <ul><li>This column should be left blank if any other response type is selected. </li></ul>
+                  The allowed values for Response Set Source are either "Local" or a URL to an existing PHIN VADS value set.
+                  <ul>
+                  <li>An example of a valid PHIN VADS URL is: https://phinvads.cdc.gov/vads/ViewValueSet.action?id=6358110D-9517-E011-87A0-00188B39829B</li>
+                  <li>If you provide a PHIN VADS URL, the value set information will be parsed from PHIN VADS and linked to the appropriate question in SDP-V upon import. </li>
+                  <li>Alternatively, PHIN VADS value sets can be found by searching SDP-V and linking them with the question through the user interface.</li>
+                  </ul>
+                  <br/>
+                  If this column is left blank, the content owner will be able to add response set information through the SDP-V user interface.
+                </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Response Set Name (I)'</td>
+                <td headers="generic-display-priority">Informational</td>
+                <td headers="generic-display-desc">This column is to help the user of the template catalog the local response set tables that are being created in the Response Set tabs. The information in this column is for workflow purposes and will not be imported. The Response Set Name will be assigned to local response sets based on values in the response set tables in each response set tab.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Local Response Set Table (C)'</td>
+                <td headers="generic-display-priority">Conditional</td>
+                <td headers="generic-display-desc">The information contained in this column is required if the Response Set Source column value is "Local" and the user wants to create the local response set on import.
+                <ul>
+                  <li>A local response set will be created on import and associated with the question in the same row where the value in this cell matches the name of a tab in the spreadsheet with the naming convention 'RS ID#',
+                  where ID# is a number assigned by the user to identify the response set in this template (e.g., RS 1, RS 2, RS 3...)
+                  <ul><li>The RS ID# tab will contain the response set table that will be imported as the response set</li></ul>
+                  </li>
+                  <li>The SDP-V importer will associate a local response set with each question where Response Set Source = "Local" and the Response Set Name matches a tab with the same RS ID#.</li>
+                </ul>
+                Note: A user may create as many local response sets as needed, but it is best practice to check SDP-V for existing response sets before doing so to prevent creating duplicate response sets in SDP-V
+                </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Question Category (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">The information contained in this column is imported as the Question Category.
+                <ul><li>The following are allowed values: Screening, Clinical, Demographics, Treatment, Laboratory, Epidemiological, Vaccine, or Public Health Emergency Preparedness & Response</li></ul>
+                Note: This information is optional, but it is best practice to complete it since it will help other users find related content within SDP-V.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Question Subcategory (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">The information contained in this column is imported as the Question Subcategory.
+                <ul>
+                  <li>The Question Subcategory field is only valid if the Question Category is either "Epidemiological" or "Emergency Preparedness".
+                    <ul>
+                      <li>The following are allowed values for "Epidemiological" category: Travel, Contact or Exposure, Drug Abuse, or Sexual Behavior. </li>
+                      <li>The following are allowed values for "Emergency Preparedness" category: Managing & Commanding, Operations, Planning/Intelligence, Logistics, and Financial/Administration.</li>
+                    </ul>
+                  </li>
+                </ul>
+                Note: This information is optional, but it is best practice to complete since it will help other users find related content within SDP-V.
+                </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Question Tag Table (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">The purpose of Tags is to facilitate content discovery and reuse.  A user can create tags by creating tags tables on separate tabs within the SDP-V generic import spreadsheet. A question will be tagged with values from a tag table where the value in this cell matches the name of a tab in the spreadsheet with the naming convention "TAG #", where # is a number assigned by the user to identify the tags table in this template (e.g., TAGS 1, TAGS 2,  TAGS 3...).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Program Defined Variable Name (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">Program-defined Variable Name is associated with questions at the section level. The purpose of this is to allow each program to use its local program variable names to identify a question, such as those used in data analysis by a program, without changing the properties of the question itself. Since this attribute is not a property of the question, it allows for users across SDP-V to reuse the same questions while allowing programs to meet its use case requirements. </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">'Notes (I)'</td>
+                <td headers="generic-display-priority">Informational</td>
+                <td headers="generic-display-desc">This column is to help the user of the template keep track of actions that may need to be completed after imported, such as the need to extend an existing response set in SDP-V. The information in this column is for workflow purposes and will not be imported.</td>
+              </tr>
+              </tbody>
+          </table><br/>
+          <p>The content in each tab in the spreadsheet that contains all required columns will be imported and tagged with “Tab Name”. If there are multiple spreadsheets that contain all required columns, they will be imported as separate sections on the same SDP-V survey.</p>
+          <p><strong>NOTE:</strong> If a required column from the table is missing, the user will receive an error message and the content will not be imported.</p>
+          <br/>
+
+          <h4 id="generic-content-organization"><p><strong>Content Organization: How to Identify Sections, Templates, or Repeating Groups within the Generic Spreadsheet Import Template</strong></p></h4>
+          <p>Sections, templates, or repeating groups are created by listing data elements between 'START: insert section name' and 'END: insert section name' rows. Each row between these markers are imported as data elements within that grouping (called sections in the vocabulary service). Sub-sections or sub-groupings may be created by including additional 'START: ' and 'END: ' markers within a parent section or grouping</p>
+          <ul>
+            <li>The beginning of a section is indicated by the prefix 'START: ' (including a space after the colon)</li>
+            <li>The end of a section is indicated by the prefix 'END: '(including a space after the colon)</li>
+            <li>The text following the 'START: ' and 'END: ' pre-fixes will be imported as the Section Name in the vocabulary service</li>
+            <li>The section name following the 'START: ' prefix must exactly match the section name following the 'END: ' prefix in order for the section to be correctly imported. </li>
+            <li>Notes should not be included in the same row as the section name (e.g., after the ‘START:’ or ‘END:’ pre-fixes’)</li>
+            <li>Text following a ‘NOTE:’ pre-fix will not be imported. </li>
+          </ul>
+          <br/>
+
+
+          <h4 id="generic-associate-rs"><strong>How to Associate Response Sets with Choice Questions on Import</strong></h4>
+          <p><strong>There are 3 options for Choice Questions for import into SDP-V:</strong></p>
+          <ol>
+          <li>A PHIN VADS response value can be associated with a question by providing a valid PHIN VADS value set URL</li>
+          <li>A local response set can be created in the template and imported</li>
+          <li>The response set information can be left blank and the user can add response information through the SDP-V user interface</li>
+          </ol>
+
+          <p><strong>BEST PRACTICE:</strong> Check SDP-V for existing response sets before importing local response sets to prevent creating duplicate response sets in SDP-V.
+          The SDP Vocabulary Service imports value sets from PHIN VADS on a weekly basis and other users have added response sets which are available to be reused or extended within SDP-V.
+           Where applicable, existing SDP-V response sets should be reused or extended before creating new ones; this will allow SDP-V to show the relationship between response set and
+           program and surveillance system usage. This will allow other users to see which response sets are most commonly used.</p>
+
+          <br/>
+          <h4 id="generic-local-rs"><strong>How to Create User-defined (“Local”) Response Sets Using the SDP-V Import Template</strong></h4>
+          <p>A "local" response set is a response set defined within this template and does not already exist in either SDP-V or PHIN VADS.
+          "Local" tells the importer to look for a response set tab within this template for more information.</p>
+
+          <ol><li><strong>Populate Distinct Response Set Information on Separate Response Set Tabs in the Spreadsheet (Tab naming convention: RS #)</strong></li>
+          <br/>
+          <table className="set-table table">
+            <caption><strong>Table 3. Response Set Tab Column Listings</strong></caption>
+            <thead>
+              <tr>
+                <th  id="generic-rs-name-column">Column Name</th>
+                <th  id="generic-rs-description-column">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="generic-rs-name-column">Response Set Name (R)</td>
+                <td headers="generic-rs-description-column">The information contained in the first cell is imported as the ‘Response Set Name’.</td>
+              </tr>
+              <tr>
+                <td headers="generic-rs-name-column">Response Set Description (O)</td>
+                <td headers="generic-rs-description-column">The information contained in this column is imported as the ‘Response Set Description’ values in the response set table created in SDP-V. </td>
+              </tr>
+              <tr>
+                <td headers="generic-rs-name-column">Display Name (R)</td>
+                <td headers="generic-rs-description-column">The information contained in this column is imported as the ‘Display Name’ values in the response set table created in SDP-V. </td>
+              </tr>
+              <tr>
+                <td headers="generic-rs-name-column">Response (R)</td>
+                <td headers="generic-rs-description-column">The information contained in this column is imported as the ‘Response’ values in the response set table created in SDP-V.</td>
+              </tr>
+              <tr>
+                <td headers="generic-rs-name-column">Code System Identifier (optional)</td>
+                <td headers="generic-rs-description-column">The information contained in this column is imported as the ‘Code System Identifier (optional)’ values in the response set table created in SDP-V.</td>
+              </tr>
+              </tbody>
+          </table>
+          <br/>
+          <li><strong>Associate response set with appropriate question by entering the following values in the same row as the question text:</strong></li>
+            <ul>
+            <li>‘Response Set Source’ (Column D) - “Local”
+              <ul><li>"Local" tells the importer to look for a response set tab within this template for more information.</li></ul>
+            </li>
+            <li>‘Response Set Table’ (column E) – A local response set will be associated with the question in the same row where the value in this cell matches the name of a tab in the spreadsheet with the naming convention RS ID#, where ID# is a number assigned by the user to identify the response set in this template (e.g., RS 1, RS 2, RS 3...)
+              <ul><li>The tab name identifies where the response set table information for a question is located </li></ul>
+            </li>
+            </ul>
+          </ol>
+          <br/>
+          <h4 id="generic-add-tags"><strong>How to Add Tags to Content Using the SDP-V Import Template</strong></h4>
+          <p>The purpose of Tags is to facilitate content discovery and reuse.  A user can create tags by creating tags tables on separate tabs within the SDP-V generic import spreadsheet. </p>
+
+          <ol><li><strong>Populate Distinct Tags Tables on Separate Tabs in the Spreadsheet (Tab naming convention: Tags #)</strong></li>
+
+          <table className="set-table table">
+            <caption><strong>Table 4. Response Set Tab Column Listings</strong></caption>
+            <thead>
+              <tr>
+                <th  id="generic-tag-name-column">Column Name</th>
+                <th  id="generic-tag-description-column">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="generic-tag-name-column">Tag Name (R)</td>
+                <td headers="generic-tag-description-column">The information contained in this column is imported as ‘Tag Value’ values in the Tags table created in SDP-V.</td>
+              </tr>
+              <tr>
+                <td headers="generic-tag-name-column">Tag Value (R)</td>
+                <td headers="generic-tag-description-column">The information contained in this column is imported as the ‘Response Set Description’ values in the response set table created in SDP-V. </td>
+              </tr>
+              <tr>
+                <td headers="generic-tag-name-column">Code System Identifier (optional)</td>
+                <td headers="generic-tag-description-column">The information contained in this column is imported as the ‘Code System Identifier (optional)’ values in the response set table created in SDP-V. </td>
+              </tr>
+              </tbody>
+          </table>
+          <br/>
+          <li><strong>Associate tags with appropriate Question or Section by entering the following values in the same row as the question/section text:</strong></li>
+            <ul>
+              <li>‘Question Tag Table’ OR ‘Section Tag Table’ – A question/section will be tagged with values from a tags table where the value in this cell matches the name of a tab in the spreadsheet with the naming convention "TAGS #", where # is a number assigned by the user to identify the tags table in this template (e.g., TAGS 1,  TAGS 2,  TAGS 3...)
+                <ul><li>The tab name identifies where the tag table information for a particular question/section is located </li></ul>
+              </li>
+            </ul>
+          </ol>
+
 
       </div>
     );
