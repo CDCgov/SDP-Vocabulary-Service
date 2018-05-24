@@ -461,12 +461,16 @@ class Help extends Component {
                 <td headers="vocab-service-item-column">'Data Element Identifier' Tag on Question*</td>
               </tr>
               <tr>
-                <td headers="mmg-display-name-column">'DE Code System’'</td>
+                <td headers="mmg-display-name-column">'Data Element Description'</td>
+                <td headers="vocab-service-item-column">Question Description</td>
+              </tr>
+              <tr>
+                <td headers="mmg-display-name-column">'DE Code System'</td>
                 <td headers="vocab-service-item-column">Code System Identifier for 'Data Element Identifier' Tag on Question*</td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'Value Set Name (VADS Hyperlink)'</td>
-                <td headers="vocab-service-item-column">Note: The DE will be associated with the PHIN VADS value set if a hyperlink is provided. <br/>
+                <td headers="vocab-service-item-column"><p>Response Set </p>Note: The DE will be associated with the PHIN VADS value set if a hyperlink is provided. <br/>
                  If a valid hyperlink is not provided, the importer will look for a tab with the same name as the value in this cell. The value set tab is expected to contain the value set values.
                  If a tab with the same name is not found, an error message will be displayed.
                  </td>
@@ -503,25 +507,28 @@ class Help extends Component {
             <li>The end of a section is indicated by the prefix 'END: '(including a space after the colon)</li>
             <li>The text following the 'START: ' and 'END: ' pre-fixes will be imported as the Section Name in the vocabulary service</li>
             <li>The section name following the 'START: ' prefix must exactly match the section name following the 'END: ' prefix in order for the section to be correctly imported. </li>
+            <li>Notes should not be included in the same row as the section name (e.g., after the ‘START:’ or ‘END:’ pre-fixes’)</li>
             <li>Text following a ‘NOTE:’ pre-fix will not be imported. </li>
           </ul>
           <br/>
           <br/>
 
           <h3><p id="generic-spreadsheet-guide">Generic Questions and Response Sets</p></h3>
+          <br/>
           <p>The purpose of this feature is to support the bulk import of questions and response sets into the SDP Vocabulary Service.</p>
           <br/>
 
           <h4><p id="generic-spreadsheet-import"><strong>How to Import Generic Content Through SDP-V User Interface</strong></p></h4>
           <p>On the taskbar, there is an action button to create content. To create a SDP-V survey using content from the generic SDP-V template formatted spreadsheet, execute the following steps:</p>
-          <ul>
+          <ol>
             <li>Click on the 'Create' button on the Vocabulary service taskbar and select 'Import Spreadsheet'</li>
             <li>Select the SDP-V template formatted file you wish to import by clicking 'Choose File'</li>
             <li>Select 'Generic Import' as the format of the file you wish to import</li>
-          </ul>
+          </ol>
 
-          <p>The following tables lists the Generic Import Column Names and the import priority. Each required column is necessary for import, even if left blank.
-          Each column should be spelled exactly as appears in quotes in the table below.
+          <p>The following tables lists the Generic Import Column Names and the import priority.
+          <strong>Each required column is necessary for import, even if left blank.
+          Each column should be spelled exactly as appears in quotes in the table below.</strong>
           The generic import column names map directly to the Vocabulary Service items
           (e.g., 'Question Description' in Generic SDP-V template spreadsheet imported as 'Question Description' in SDP-V).
           </p>
@@ -552,6 +559,11 @@ class Help extends Component {
                 <td headers="generic-display-desc">The information contained in this column on the ‘Section Metadata’ tab is imported as the Section name.</td>
               </tr>
               <tr>
+                <td headers="generic-display-name-column">'Section Description (O)'</td>
+                <td headers="generic-display-priority">Optional</td>
+                <td headers="generic-display-desc">The information contained in this column on the ‘Section Metadata’ tab is imported as the Section description. This information can alternatively be added through the SDP-V user interface after import.</td>
+              </tr>
+              <tr>
                 <td headers="generic-display-name-column">'Section Tag Table (O)'</td>
                 <td headers="generic-display-priority">Optional</td>
                 <td headers="generic-display-desc">The purpose of Tags is to facilitate content discovery and reuse.
@@ -574,6 +586,11 @@ class Help extends Component {
                 <td headers="generic-display-name-column">'Question Response Type (R)'</td>
                 <td headers="generic-display-priority">Required</td>
                 <td headers="generic-display-desc">The information contained in this column is imported as the question response type.
+                  <ul>
+                    <li>The allowed response types are: Attachment, Boolean, Choice, Date, Date Time, Decimal, Instant, Integer, Open Choice, Quantity, Reference, String, Text, Time, or URL</li>
+                    <li>The 14 allowed response types are defined at https://www.hl7.org/fhir/valueset-item-type.html </li>
+                  </ul>
+                  The information contained in this column is required IF the question response type is choice or open choice
                   <ul><li>This column should be left blank if any other response type is selected. </li></ul>
                   The allowed values for Response Set Source are either "Local" or a URL to an existing PHIN VADS value set.
                   <ul>
@@ -729,7 +746,7 @@ class Help extends Component {
           <ol><li><strong>Populate Distinct Tags Tables on Separate Tabs in the Spreadsheet (Tab naming convention: Tags #)</strong></li>
 
           <table className="set-table table">
-            <caption><strong>Table 3. Response Set Tab Column Listings</strong></caption>
+            <caption><strong>Table 4. Response Set Tab Column Listings</strong></caption>
             <thead>
               <tr>
                 <th  id="generic-tag-name-column">Column Name</th>
