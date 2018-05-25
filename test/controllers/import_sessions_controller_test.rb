@@ -47,6 +47,6 @@ class ImportSessionsControllerTest < ActionDispatch::IntegrationTest
     import_session = ImportSession.find is_id
     survey = Survey.last
     assert_equal import_session.survey_id, survey.id
-    assert_equal 7, survey.sections.count
+    assert_equal 8, survey.sections.count
   end
 end

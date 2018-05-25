@@ -71,6 +71,6 @@ class ImportSessionTest < ActiveSupport::TestCase
     end
     sleep 15
     assert @import_session.survey
-    assert_equal 7, @import_session.survey.sections.count
+    assert_equal 8, @import_session.survey.sections.count
   end
 end

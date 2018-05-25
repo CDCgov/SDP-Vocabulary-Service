@@ -212,11 +212,11 @@ module SDP
           code_system_version: 'Code System Version'
         },
         rs_columns: {
-          name: 'Response Set Name',
-          description: 'Response Set Description',
-          display_name: 'Display Name',
-          value: 'Response',
-          system: 'Code System Identifier (optional)'
+          name: 'Response Set Name (R)',
+          description: 'Response Set Description (O)',
+          display_name: 'Display Name (R)',
+          value: 'Response (R)',
+          system: 'Code System Identifier (O)'
         },
         tag_columns: {
           name: 'Tag Name (R)',
@@ -392,6 +392,7 @@ module SDP
               concepts = item.data_element.concepts
             end
             q = item.data_element.to_question(@user)
+
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
             q.concepts << concepts if concepts
