@@ -1,4 +1,7 @@
+require './lib/sdp/elastic_search'
+
 class SurveysController < ApplicationController
+  before_action :load_survey_with_children, only: :show
   load_and_authorize_resource
   before_action :set_paper_trail_whodunnit
 
@@ -112,7 +115,7 @@ class SurveysController < ApplicationController
 
   # GET /surveys/1/duplicates
   def duplicates
-    if SDP::Elasticsearch.ping
+    if ::SDP::Elasticsearch.ping
       render json: @survey.potential_duplicates(current_user), status: :ok
     else
       render json: { msg: 'Request cannot be processed as Elasticsearch appears to be down.' }, status: :unprocessable_entity
@@ -143,6 +146,10 @@ class SurveysController < ApplicationController
   end
 
   private
+
+  def load_survey_with_children
+    @survey = Survey.includes(sections: [:groups]).find(params[:id])
+  end
 
   def can_survey_be_created?(survey)
     if survey.all_versions.count >= 1

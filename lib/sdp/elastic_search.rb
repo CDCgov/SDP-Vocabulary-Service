@@ -7,6 +7,30 @@
 
 module SDP
   module Elasticsearch
+    class BatchDuplicateFinder
+      def initialize
+        @potential_duplicates = []
+      end
+
+      def add_to_batch(obj, category, &block)
+        @potential_duplicates << { object: obj, category: category, filter: block }
+      end
+
+      def execute(current_user_id = nil, groups = [])
+        batch_results = {}
+        result = SDP::Elasticsearch.batch_find_duplicates(@potential_duplicates.map { |pd| pd[:object] }, current_user_id, groups)
+        result['responses'].each_with_index do |resp, i|
+          pd = @potential_duplicates[i]
+          filter_result = pd[:filter].call(resp)
+          if filter_result
+            batch_results[pd[:category]] ||= []
+            batch_results[pd[:category]] << filter_result
+          end
+        end
+        batch_results
+      end
+    end
+
     MAX_DUPLICATE_QUESTION_SUGGESTIONS = 10
 
     def self.with_client
@@ -280,6 +304,58 @@ module SDP
                         },
                         size: MAX_DUPLICATE_QUESTION_SUGGESTIONS
                       })
+      end
+    end
+
+    def self.batch_find_duplicates(objs, current_user_id = nil, groups = [])
+      search_body = []
+
+      sort_body = ['_score', { '_script': {
+        'script': "doc['surveillance_systems.id'].values.size()",
+        type: 'number',
+        order: 'desc'
+      } }]
+
+      version_filter = { term: { 'most_recent': true } }
+
+      filter_body = { dis_max: { queries: [
+        { term: { 'createdBy.id': current_user_id } },
+        { match: { status: 'published' } },
+        { terms: { groups: groups } }
+      ] } }
+
+      objs.each do |obj|
+        search_body << { index: 'vocabulary', type: obj.class.to_s.underscore }
+
+        mlt_body = {
+          more_like_this: {
+            fields: ['name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName', 'category.name', 'subcategory.name'],
+            like: [
+              {
+                '_type': obj.class.to_s.underscore,
+                '_id': obj.id
+              }
+            ],
+            min_term_freq: 1,
+            minimum_should_match: '75%'
+          }
+        }
+
+        individual_search_body = {
+          size: 10,
+          query: {
+            bool: {
+              filter: [filter_body, version_filter],
+              must: [mlt_body]
+            }
+          },
+          sort: sort_body
+        }
+
+        search_body << individual_search_body
+      end
+      with_client do |client|
+        client.msearch(body: search_body)
       end
     end
 

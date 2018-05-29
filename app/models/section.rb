@@ -57,15 +57,14 @@ class Section < ApplicationRecord
   end
 
   def potential_duplicates(current_user)
-    dupe_qs = []
-    dupe_rs = []
+    bdf = SDP::Elasticsearch::BatchDuplicateFinder.new
     flatten_questions.each do |sni|
-      qpd = sni.question.potential_duplicates(current_user) if sni.question
-      dupe_qs << qpd if qpd
-      rspd = sni.response_set.potential_duplicates(current_user, sni.question) if sni.response_set && sni.question
-      dupe_rs << rspd if rspd
+      sni.question.enque_duplicate_finder(bdf) if sni.question
+      sni.response_set.enque_duplicate_finder(bdf, sni.question) if sni.response_set && sni.question
     end
-    { questions: dupe_qs, response_sets: dupe_rs }
+    current_user_id = current_user ? current_user.id : nil
+    current_user_groups = current_user ? current_user.groups : []
+    bdf.execute(current_user_id, current_user_groups)
   end
 
   def update_surveys
@@ -213,7 +212,7 @@ class Section < ApplicationRecord
   # any subsections. Works recursively
   def flatten_questions
     flat_questions = []
-    section_nested_items.each do |sni|
+    section_nested_items.includes(:question, response_set: [:responses]).each do |sni|
       if sni.question.present?
         flat_questions << sni
       else
