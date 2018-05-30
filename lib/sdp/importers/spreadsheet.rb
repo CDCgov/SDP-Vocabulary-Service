@@ -392,7 +392,7 @@ module SDP
               concepts = item.data_element.concepts
             end
             q = item.data_element.to_question(@user)
-            
+
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
             q.concepts << concepts if concepts
