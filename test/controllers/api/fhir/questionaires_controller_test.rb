@@ -48,6 +48,16 @@ module Api
         assert_equal 'MyString', program_var['valueString']
       end
 
+      test 'api should use the data element identifier as the link id' do
+        get api_fhir_questionaire_url(@survey.version_independent_id)
+        assert_response :success
+        assert_json_schema_response('fhir/Questionnaire.json')
+        res = JSON.parse response.body
+        link_id = res['item'][0]['item'][0]['linkId']
+        assert link_id
+        assert_equal '1234-5', link_id
+      end
+
       test 'api should show survey of specific version' do
         get api_fhir_questionaire_url(@survey.version_independent_id, version: 1)
         assert_response :success
