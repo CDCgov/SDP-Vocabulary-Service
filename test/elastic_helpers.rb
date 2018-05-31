@@ -32,6 +32,9 @@ module Elastictest
     fake_body += ']}}'
     FakeWeb.clean_registry
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
+    FakeWeb.register_uri(:get, %r{http://example\.com:9200/_msearch}, body: fake_body + "\n" + fake_body + "\n", content_type: 'application/x-ndjson')
+    # FakeWeb.register_uri(:get, %r{http://example\.com:9200/vocabulary}, body: fake_body, content_type: 'application/json')
+    # FakeWeb.register_uri(:get, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
 
   def self.fake_results(result_type, results)

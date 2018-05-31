@@ -19,12 +19,14 @@ module SDP
       def execute(current_user_id = nil, groups = [])
         batch_results = {}
         result = SDP::Elasticsearch.batch_find_duplicates(@potential_duplicates.map { |pd| pd[:object] }, current_user_id, groups)
-        result['responses'].each_with_index do |resp, i|
-          pd = @potential_duplicates[i]
-          filter_result = pd[:filter].call(resp)
-          if filter_result
-            batch_results[pd[:category]] ||= []
-            batch_results[pd[:category]] << filter_result
+        if result['responses']
+          result['responses'].each_with_index do |resp, i|
+            pd = @potential_duplicates[i]
+            filter_result = pd[:filter].call(resp)
+            if filter_result
+              batch_results[pd[:category]] ||= []
+              batch_results[pd[:category]] << filter_result
+            end
           end
         end
         batch_results
