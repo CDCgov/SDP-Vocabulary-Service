@@ -341,10 +341,6 @@ class SectionEdit extends Component {
             <label htmlFor="section-description">Description</label>
             <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
           </div>
-          {this.props.action === 'edit' && <div className="section-group">
-            <label  htmlFor="save-with-comment">Save with Notes / Comments (Optional)</label>
-            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChangeComment}/>
-          </div>}
           <div className="section-group">
             <h2 className="tags-table-header"><strong>Tags</strong></h2>
             <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
@@ -352,6 +348,10 @@ class SectionEdit extends Component {
                      parentName={'section'}
                      childName={'tag'} />
           </div>
+          {this.props.action === 'edit' && <div className="section-group">
+            <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
+            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChangeComment}/>
+          </div>}
         {this.addedNestedItems()}
       </form>
       </div>

@@ -242,15 +242,15 @@ class SurveyEdit extends Component {
               }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
             </div>
           </div>
-          {this.props.action === 'edit' && <div className="survey-group">
-            <label  htmlFor="save-with-comment">Save with Notes / Comments (Optional)</label>
-            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
-          </div>}
           <h2 className="tags-table-header"><strong>Tags</strong></h2>
           <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                    initialItems={this.state.conceptsAttributes}
                    parentName={'survey'}
                    childName={'tag'} />
+          {this.props.action === 'edit' && <div className="survey-group">
+            <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
+            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
+          </div>}
           <SurveySectionList survey={this.state}
                           sections ={this.props.sections}
                           questions  ={this.props.questions}

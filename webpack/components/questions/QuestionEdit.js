@@ -273,7 +273,7 @@ class QuestionEdit extends Component {
                 </div>
                 {this.props.action === 'edit' && <div className="row">
                   <div className="col-md-8 question-form-group">
-                    <label className="input-label"  htmlFor="save-with-comment">Save with Notes / Comments (Optional)</label>
+                    <label className="input-label"  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
                     <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." value={state.comment} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
                   </div>
                 </div>}
