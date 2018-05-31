@@ -25,7 +25,7 @@ class ElasticSearchTest < ActiveSupport::TestCase
   end
 
   def test_search_all
-    SDP::Elasticsearch.search(nil, nil, 1, 10, -1, true)
+    SDP::Elasticsearch.search(nil, nil, 1, 10)
     req = FakeWeb.last_request
     assert_equal 'GET', req.method
     assert_equal '/vocabulary/_search', req.path
