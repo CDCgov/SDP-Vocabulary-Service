@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import debounce from 'lodash/debounce';
 import { addSection } from '../../actions/section_actions';
 import { sectionProps } from '../../prop-types/section_props';
 import { surveyProps } from '../../prop-types/survey_props';
@@ -59,6 +60,7 @@ class SectionSearchContainer extends SearchManagerComponent {
 
   render() {
     const searchResults = this.props.searchResults;
+    const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     return (
       <div>
         <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
@@ -66,7 +68,7 @@ class SectionSearchContainer extends SearchManagerComponent {
                          changeFiltersCallback={this.changeFiltersCallback}
                          searchSource={this.props.searchResults.Source}
                          suggestions={this.props.suggestions}
-                         fetchSuggestions={this.props.fetchSuggestions}
+                         fetchSuggestions={fetchSuggestions}
                          placeholder="Search sections..." />
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((sect, i) => {

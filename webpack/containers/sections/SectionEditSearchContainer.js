@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import debounce from 'lodash/debounce';
 
 import { fetchSearchResults, fetchMoreSearchResults, fetchSuggestions } from '../../actions/search_results_actions';
 
@@ -60,6 +61,7 @@ class SectionEditSearchContainer extends SearchManagerComponent {
 
   render() {
     const searchResults = this.props.searchResults;
+    const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     return (
       <div>
         <ul className="nav nav-tabs" role="tablist">
@@ -76,7 +78,7 @@ class SectionEditSearchContainer extends SearchManagerComponent {
                          changeFiltersCallback={this.changeFiltersCallback}
                          searchSource={this.props.searchResults.Source}
                          suggestions={this.props.suggestions}
-                         fetchSuggestions={this.props.fetchSuggestions}
+                         fetchSuggestions={fetchSuggestions}
                          placeholder={`Search ${this.state.searchType}s...`} />
         <br/>
         <div className="load-more-search">
