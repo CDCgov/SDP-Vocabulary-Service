@@ -107,7 +107,7 @@ Feature: Manage Questions
     Then I should see "Why"
     And I should see "Reasons"
 
-   Scenario: Delete a Question
+   Scenario: Edit with Comment and Delete a Question
     Given I have a Question with the content "Test Question" and the description "Question description"
     Given I have a Response Set with the name "Gender Full"
     And I am logged in as test_author@gmail.com
@@ -117,8 +117,13 @@ Feature: Manage Questions
     And I select the "Open Choice" option in the "Response Type" list
     And I wait 2 seconds
     And I click on the "select-Gender Full" link
+    And I fill in the "save-with-comment" field with "Testing comment functionality on edit"
     And I click on the "Save" button
     Then I should see "Test Question"
+    When I click on the "Change History" link
+    Then I should see "Notes / Comments: Testing comment functionality on edit"
+    Then I should see "Changes by test_author@gmail.com"
+    And I should see "field changed from"
     When I click on the "Delete" link
     Then I should see "Are you sure you want to delete this question?"
     When I click on the "Delete Question" link

@@ -16,11 +16,16 @@ Feature: Edit Sections
     And I fill in the "value_0" field with "Test Concept 1"
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link
+    And I fill in the "save-with-comment" field with "Testing comment functionality on edit"
     And I click on the "Save" button
     Then I should see "Name: Edited Section"
     Then I should see "Section description"
     And I should see "Test Concept 2"
     And I should not see "Test Concept 1"
+    When I click on the "Change History" link
+    Then I should see "Notes / Comments: Testing comment functionality on edit"
+    Then I should see "Changes by test_author@gmail.com"
+    And I should see "field changed from"
     And I should not see "Publish"
     And I should see "Edit"
 
