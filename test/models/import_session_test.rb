@@ -30,7 +30,7 @@ class ImportSessionTest < ActiveSupport::TestCase
   test 'check! with non-MMG Excel file' do
     @import_type = 'mmg'
     assert_difference 'ImportSession.count' do
-      import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplate.xlsx', mode: 'rb'),
+      import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplateMini.xlsx', mode: 'rb'),
                                          created_by: @user, original_filename: 'TestGenericTemplate.xlsx')
       import_session.check!(@import_type)
       assert_equal 'This Excel file does not contain any tabs. with the expected mmg column name format and will not be imported. Refer to "How to Identify Sections, Templates, or Repeating Groups" in the "Import Content" Help Documentation for more information.', import_session.import_errors.first
