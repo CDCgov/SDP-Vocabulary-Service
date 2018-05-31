@@ -57,12 +57,12 @@ Scenario: Create Survey from Generically Formatted Spreadsheet
       And I should see "TestGenericTemplate.xlsx"
       And I should see "Warning: In tab 'Survey Questions' on row 'Is this (phone number) ?'"
       When I click on the "Import" button
-      And I wait 30 seconds
+      And I wait 75 seconds
       Then I should see "File imported with warnings"
       When I click on the "View Survey" button
       And I wait 10 seconds
       Then I should see "Survey Name: TestGenericTemplate.xlsx"
-      And I should see "Linked Sections: 7"
+      And I should see "Linked Sections: 8"
 
 Scenario: Check that Survey Import fails from badly Formatted Generic Spreadsheet
       Given I am logged in as test_author@gmail.com

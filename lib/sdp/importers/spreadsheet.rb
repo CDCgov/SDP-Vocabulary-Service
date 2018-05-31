@@ -212,11 +212,11 @@ module SDP
           code_system_version: 'Code System Version'
         },
         rs_columns: {
-          name: 'Response Set Name',
-          description: 'Response Set Description',
-          display_name: 'Display Name',
-          value: 'Response',
-          system: 'Code System Identifier (optional)'
+          name: 'Response Set Name (R)',
+          description: 'Response Set Description (O)',
+          display_name: 'Display Name (R)',
+          value: 'Response (R)',
+          system: 'Code System Identifier (O)'
         },
         tag_columns: {
           name: 'Tag Name (R)',
@@ -383,6 +383,7 @@ module SDP
           if item.type == :data_element
             rs = nil
             concepts = nil
+
             if item.data_element.value_set_oid
               rs = response_set_for_vads(item.data_element)
             elsif item.data_element.value_set_tab_name.present?
@@ -392,6 +393,7 @@ module SDP
               concepts = item.data_element.concepts
             end
             q = item.data_element.to_question(@user)
+
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
             q.concepts << concepts if concepts
@@ -449,11 +451,11 @@ module SDP
           end
         rescue Roo::HeaderRowNotFoundError
           if sheet.header_line == 1
-            @warnings << "On '#{sheet}' tab there is a missing header row in #{name}, retrying" # warning
+            @warnings << "On '#{name}' tab there is a missing header row , retrying" # warning
             sheet.header_line = 2
             retry
           else
-            @warnings << "Unable to process value set from #{name} in tab #{sheet} as no header rows found" # warning
+            @warnings << "Unable to process value set from tab #{name} as no header rows found" # warning
           end
         end
         value_set
