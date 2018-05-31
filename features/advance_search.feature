@@ -15,11 +15,13 @@ Feature: Advanced Search
     Then the list "select-prog" should contain the option "Influenza"
     When I select the "Influenza" option in the "select-prog" list
     And I check the "most-recent-filter" checkbox
+    And I check the "preferred-filter" checkbox
     And I click on the "Close" button
     Then I should see "Program Filters:"
     And I should see "Influenza"
     And I should see "Clear Adv. Filters"
     And I should see "Filtering by most recent version"
+    And I should see "Filtering by CDC preferred content"
 
   Scenario: Filter search by date
     And I am on the "/" page
@@ -28,6 +30,38 @@ Feature: Advanced Search
     And I click on the "Close" button
     Then I should see "Content Since Filter:"
     And I should see "7/29/2017"
+    And I should see "Clear Adv. Filters"
+
+  Scenario: Filter search by source
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I select the "SDPV Local" option in the "Source (Response Sets Only):" list
+    And I click on the "Close" button
+    Then I should see "Filtering results by local source"
+    And I should see "Clear Adv. Filters"
+
+  Scenario: Filter search by status
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I select the "Draft" option in the "Status:" list
+    And I click on the "Close" button
+    Then I should see "Filtering results by draft status"
+    And I should see "Clear Adv. Filters"
+
+  Scenario: Filter search by category
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I select the "Clinical" option in the "Category (Questions Only):" list
+    And I click on the "Close" button
+    Then I should see "Filtering results by Clinical category"
+    And I should see "Clear Adv. Filters"
+
+  Scenario: Filter search by response type
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I select the "Choice" option in the "Response Type (Questions Only):" list
+    And I click on the "Close" button
+    Then I should see "Filtering results by Choice response type"
     And I should see "Clear Adv. Filters"
 
   Scenario: Sort by system and program usage

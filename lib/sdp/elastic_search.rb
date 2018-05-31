@@ -2,6 +2,8 @@
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
 # rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/CyclomaticComplexity
 
 module SDP
   module Elasticsearch
@@ -18,13 +20,8 @@ module SDP
       return false
     end
 
-    def self.search(type, query_string, page, query_size = 10,
-                    current_user_id = nil, publisher_search = false,
-                    my_stuff_filter = false, program_filter = [],
-                    system_filter = [], current_version_filter = false,
-                    content_since = nil, sort_filter = '', groups = [],
-                    group_filter_id = 0, ns_filter = nil)
-      version_filter = if current_version_filter
+    def self.search(type, query_string, page, query_size = 10, must_filters = {}, current_user_id = nil, groups = [])
+      version_filter = if must_filters['current_version']
                          { bool: { filter: {
                            term: { 'most_recent': true }
                          } } }
@@ -32,23 +29,25 @@ module SDP
                          {}
                        end
 
-      group_filter = if group_filter_id == -1
+      # This check ensures the > doesn't crash on nil
+      must_filters['group_id'] = must_filters['group_id'] || 0
+      group_filter = if must_filters['group_id'] == -1
                        { bool: { filter: {
                          terms: { groups: groups }
                        } } }
-                     elsif group_filter_id > 0
+                     elsif must_filters['group_id'] > 0
                        { bool: { filter: {
-                         terms: { groups: [group_filter_id] }
+                         terms: { groups: [must_filters['group_id']] }
                        } } }
                      else
                        {}
                      end
 
-      filter_body = if my_stuff_filter
+      filter_body = if must_filters['mystuff']
                       { dis_max: { queries: [
                         { term: { 'createdBy.id': current_user_id } }
                       ] } }
-                    elsif publisher_search
+                    elsif must_filters['publisher']
                       {}
                     else
                       { dis_max: { queries: [
@@ -89,37 +88,69 @@ module SDP
       # prog_name = type == 'survey' ? 'surveillance_program' : 'surveillance_programs'
       # sys_name = type == 'survey' ? 'surveillance_system' : 'surveillance_systems'
 
-      ns_terms = if ns_filter.blank?
+      ns_terms = if must_filters['nested_section'].blank?
                    {}
                  else
-                   { term: { 'id': ns_filter } }
+                   { term: { 'id': must_filters['nested_section'] } }
                  end
 
-      prog_terms = if program_filter.empty?
+      must_filters['programs'] = must_filters['programs'] || []
+      prog_terms = if must_filters['programs'].empty?
                      {}
                    else
                      { dis_max: { queries: [
-                       { 'terms': { 'surveillance_programs.id': program_filter } },
-                       { 'terms': { 'surveillance_program.id': program_filter } }
+                       { 'terms': { 'surveillance_programs.id': must_filters['programs'] } },
+                       { 'terms': { 'surveillance_program.id': must_filters['programs'] } }
                      ] } }
                    end
 
-      sys_terms = if system_filter.empty?
+      must_filters['systems'] = must_filters['systems'] || []
+      sys_terms = if must_filters['systems'].empty?
                     {}
                   else
                     { dis_max: { queries: [
-                      { 'terms': { 'surveillance_systems.id': system_filter } },
-                      { 'terms': { 'surveillance_system.id': system_filter } }
+                      { 'terms': { 'surveillance_systems.id': must_filters['systems'] } },
+                      { 'terms': { 'surveillance_system.id': must_filters['systems'] } }
                     ] } }
                   end
 
-      date_terms = if content_since.present?
-                     { range: { createdAt: { gte: content_since } } }
+      date_terms = if must_filters['content_since'].present?
+                     { range: { createdAt: { gte: must_filters['content_since'] } } }
                    else
                      {}
                    end
 
-      sort_body = case sort_filter
+      preferred_terms = if must_filters['preferred']
+                          { term: { 'preferred': true } }
+                        else
+                          {}
+                        end
+
+      status_terms = if must_filters['status'].blank?
+                       {}
+                     else
+                       { term: { 'status': must_filters['status'] } }
+                     end
+
+      category_terms = if must_filters['category'].blank?
+                         {}
+                       else
+                         { term: { 'category.name': must_filters['category'] } }
+                       end
+
+      rt_terms = if must_filters['rt'].blank?
+                   {}
+                 else
+                   { term: { 'response_type.name': must_filters['rt'] } }
+                 end
+
+      source_terms = if must_filters['source'].blank?
+                       {}
+                     else
+                       { term: { 'source': must_filters['source'] } }
+                     end
+
+      sort_body = case must_filters['sort']
                   when 'Program Usage'
                     [
                       { '_script': {
@@ -127,6 +158,7 @@ module SDP
                         type: 'number',
                         order: 'desc'
                       } },
+                      { 'preferred': { order: 'desc' } },
                       '_score'
                     ]
                   when 'System Usage'
@@ -136,10 +168,12 @@ module SDP
                         type: 'number',
                         order: 'desc'
                       } },
+                      { 'preferred': { order: 'desc' } },
                       '_score'
                     ]
                   else
                     [
+                      { 'preferred': { order: 'desc' } },
                       '_score',
                       { '_script': {
                         'script': "doc['surveillance_systems.id'].values.size()",
@@ -155,7 +189,11 @@ module SDP
         from: from_index,
         query: {
           bool: {
-            filter: { bool: { filter: [filter_body, version_filter, group_filter], must: [prog_terms, sys_terms, date_terms], must_not: [ns_terms] } },
+            filter: { bool: {
+              filter: [filter_body, version_filter, group_filter],
+              must: [prog_terms, sys_terms, date_terms, preferred_terms, status_terms, source_terms, rt_terms, category_terms],
+              must_not: [ns_terms]
+            } },
             must: must_body
           }
         },

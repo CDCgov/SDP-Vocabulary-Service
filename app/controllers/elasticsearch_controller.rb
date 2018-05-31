@@ -10,26 +10,27 @@ class ElasticsearchController < ApplicationController
     page = params[:page] ? params[:page].to_i : 1
     current_user_id = current_user ? current_user.id : -1
     groups = current_user ? current_user.groups : []
-    groups_filter_id = params[:groups] ? params[:groups].to_i : 0
-    publisher_search = current_user ? current_user.publisher? : false
-    my_stuff_filter = params[:mystuff] == 'true'
-    program_filter = params[:programs] ? params[:programs] : []
-    system_filter = params[:systems] ? params[:systems] : []
-    current_version_filter = params[:mostrecent] == 'true'
-    content_since = params[:contentSince]
-    sort = params[:sort]
-    ns_filter = params[:nsfilter] ? params[:nsfilter] : nil
+    must_filters = {}
+    must_filters['group_id'] = params[:groups] ? params[:groups].to_i : 0
+    must_filters['publisher'] = current_user ? current_user.publisher? : false
+    must_filters['mystuff'] = params[:mystuff] == 'true'
+    must_filters['programs'] = params[:programs] ? params[:programs] : []
+    must_filters['systems'] = params[:systems] ? params[:systems] : []
+    must_filters['current_version'] = params[:mostrecent] == 'true'
+    must_filters['content_since'] = params[:contentSince]
+    must_filters['sort'] = params[:sort] ? params[:sort] : ''
+    must_filters['nested_section'] = params[:nsfilter] ? params[:nsfilter] : nil
+    must_filters['preferred'] = params[:preferred] ? params[:preferred] : false
+    must_filters['status'] = params[:status] ? params[:status] : ''
+    must_filters['category'] = params[:category] ? params[:category].underscore.split(' ')[0] : ''
+    must_filters['rt'] = params[:rt] ? params[:rt].underscore.split(' ')[0] : ''
+    must_filters['source'] = params[:source] ? params[:source] : ''
     results = if SDP::Elasticsearch.ping
-                SDP::Elasticsearch.search(type, query_string, page, query_size,
-                                          current_user_id, publisher_search,
-                                          my_stuff_filter, program_filter,
-                                          system_filter, current_version_filter,
-                                          content_since, sort, groups, groups_filter_id,
-                                          ns_filter)
+                SDP::Elasticsearch.search(type, query_string, page, query_size, must_filters, current_user_id, groups)
               else
                 SDP::SimpleSearch.search(type, query_string, current_user_id,
-                                         query_size, page, publisher_search,
-                                         my_stuff_filter, ns_filter).target!
+                                         query_size, page, must_filters['publisher'],
+                                         must_filters['mystuff'], must_filters['nested_section']).target!
               end
     render json: results
   end

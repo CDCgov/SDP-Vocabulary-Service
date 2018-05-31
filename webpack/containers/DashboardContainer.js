@@ -7,6 +7,8 @@ import debounce from 'lodash/debounce';
 import { Modal, Button } from 'react-bootstrap';
 
 import { setSteps } from '../actions/tutorial_actions';
+import { fetchResponseTypes } from '../actions/response_type_actions';
+import { fetchCategories } from '../actions/category_actions';
 import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
 import DashboardSearch from '../components/DashboardSearch';
 import SearchManagerComponent from '../components/SearchManagerComponent';
@@ -39,6 +41,11 @@ class DashboardContainer extends SearchManagerComponent {
       systemFilter: [],
       mostRecentFilter: false,
       contentSince: null,
+      sourceFilter: '',
+      statusFilter: '',
+      categoryFilter: '',
+      rtFilter: '',
+      preferredFilter: false,
       signUpOpen: false,
       firstTimeOpen: false,
       myStuffFilter: false,
@@ -56,6 +63,8 @@ class DashboardContainer extends SearchManagerComponent {
     } else {
       this.props.fetchSearchResults(DASHBOARD_CONTEXT, searchParameters);
     }
+    this.props.fetchCategories();
+    this.props.fetchResponseTypes();
     this.setState(searchParameters);
   }
 
@@ -168,6 +177,8 @@ class DashboardContainer extends SearchManagerComponent {
               <div className="dashboard-details">
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
                                  surveillancePrograms={this.props.surveillancePrograms}
+                                 categories={this.props.categories}
+                                 responseTypes={this.props.responseTypes}
                                  changeFiltersCallback={this.changeFiltersCallback}
                                  searchSource={this.props.searchResults.Source}
                                  lastSearch={this.props.lastSearch}
@@ -395,12 +406,14 @@ function mapStateToProps(state) {
     suggestions: state.suggestions,
     surveillanceSystems: state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    categories: state.categories,
+    responseTypes: state.responseTypes
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp}, dispatch);
+  return bindActionCreators({setSteps, fetchResponseTypes, fetchCategories, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -413,6 +426,8 @@ DashboardContainer.propTypes = {
   myResponseSetCount: PropTypes.number,
   mySurveyCount: PropTypes.number,
   setSteps: PropTypes.func,
+  fetchResponseTypes: PropTypes.func,
+  fetchCategories: PropTypes.func,
   fetchSearchResults: PropTypes.func,
   setLastSearch: PropTypes.func,
   fetchLastSearch: PropTypes.func,
@@ -421,6 +436,8 @@ DashboardContainer.propTypes = {
   fetchMoreSearchResults: PropTypes.func,
   signUp: PropTypes.func,
   currentUser: currentUserProps,
+  categories: PropTypes.object,
+  responseTypes: PropTypes.object,
   searchResults: PropTypes.object,
   suggestions: PropTypes.array,
   surveillanceSystems: surveillanceSystemsProps,

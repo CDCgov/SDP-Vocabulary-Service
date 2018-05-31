@@ -22,6 +22,11 @@ class DashboardSearch extends SearchStateComponent {
       programFilter: [],
       systemFilter: [],
       sort: '',
+      sourceFilter: '',
+      statusFilter: '',
+      categoryFilter: '',
+      rtFilter: '',
+      preferredFilter: false,
       showAdvSearchModal: false,
       mostRecentFilter: false,
       surveillancePrograms: {},
@@ -76,6 +81,11 @@ class DashboardSearch extends SearchStateComponent {
       systemFilter: [],
       mostRecentFilter: false,
       contentSince: null,
+      sourceFilter: '',
+      statusFilter: '',
+      categoryFilter: '',
+      rtFilter: '',
+      preferredFilter: false,
       sort: '',
       groupFilterId: 0
     };
@@ -163,6 +173,51 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
+  togglePreferredFilter() {
+    let newState = {preferredFilter: !this.state.preferredFilter};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.preferredFilter = newState.preferredFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
+  toggleSource(e) {
+    let newState = {sourceFilter: e.target.value};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.sourceFilter = newState.sourceFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
+  toggleStatus(e) {
+    let newState = {statusFilter: e.target.value};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.statusFilter = newState.statusFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
+  toggleCategory(e) {
+    let newState = {categoryFilter: e.target.value};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.categoryFilter = newState.categoryFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
+  toggleResponseType(e) {
+    let newState = {rtFilter: e.target.value};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.rtFilter = newState.rtFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
   toggleSort(e) {
     let newState = {sort: e.target.value};
     this.setState(newState);
@@ -204,9 +259,45 @@ class DashboardSearch extends SearchStateComponent {
               <div className="col-md-12">
                 <h2>Additonal Filters:</h2>
                 <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
-                <label htmlFor="most-recent-filter">Most Recent Versions Only</label>
+                <label htmlFor="most-recent-filter">Most Recent Versions Only</label><br/>
+                <input type='checkbox' className='form-check-input' name='preferred-filter' id='preferred-filter' checked={this.state.preferredFilter} onChange={() => this.togglePreferredFilter()} />
+                <label htmlFor="preferred-filter">CDC Preferred Content Only</label>
+                <div className = "col-md-12">
+                  <label className="input-label" htmlFor="status-filter">Status:</label>
+                  <select className="input-select" name="status-filter" id="status-filter" value={this.state.statusFilter} onChange={(e) => this.toggleStatus(e)} >
+                    <option value=""></option>
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                  </select>
+                </div>
+                <div className = "col-md-12">
+                  <label className="input-label" htmlFor="rt-filter">Response Type (Questions Only):</label>
+                  <select className="input-select" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
+                    <option value=""></option>
+                    {values(this.props.responseTypes).map((rt, i) => {
+                      return <option key={i} value={rt.name}>{rt.name}</option>;
+                    })}
+                  </select>
+                </div>
+                <div className = "col-md-12">
+                  <label className="input-label" htmlFor="category-filter">Category (Questions Only):</label>
+                  <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
+                    <option value=""></option>
+                    {values(this.props.categories).map((category, i) => {
+                      return <option key={i} value={category.name}>{category.name}</option>;
+                    })}
+                  </select>
+                </div>
+                <div className = "col-md-12">
+                  <label className="input-label" htmlFor="source-filter">Source (Response Sets Only):</label>
+                  <select className="input-select" name="source-filter" id="source-filter" value={this.state.sourceFilter} onChange={(e) => this.toggleSource(e)} >
+                    <option value=""></option>
+                    <option value="local">SDPV Local</option>
+                    <option value="PHIN_VADS">PHIN VADS</option>
+                  </select>
+                </div>
                 <div>
-                  <label htmlFor='content-since'>Content Changed Since</label>
+                  <label htmlFor='content-since'>Content Changed Since: &nbsp;</label>
                   <SingleDatePicker id="content-since"
                                     date={this.state.contentSince}
                                     onDateChange={this.handleDateChange}
@@ -271,7 +362,7 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.mostRecentFilter || this.state.contentSince || this.state.sort !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.mostRecentFilter || this.state.preferredFilter || this.state.contentSince || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -294,6 +385,9 @@ class DashboardSearch extends SearchStateComponent {
             {this.state.mostRecentFilter &&
               <div className="adv-filter-list">Filtering by most recent version</div>
             }
+            {this.state.preferredFilter &&
+              <div className="adv-filter-list">Filtering by CDC preferred content</div>
+            }
             {this.state.contentSince &&
               <div className="adv-filter-list">Content Since Filter:
                 <row className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')}</row>
@@ -301,6 +395,18 @@ class DashboardSearch extends SearchStateComponent {
             }
             {this.state.sort !== '' &&
               <div className="adv-filter-list">Sorting results by {this.state.sort}</div>
+            }
+            {this.state.categoryFilter !== '' &&
+              <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category</div>
+            }
+            {this.state.statusFilter !== '' &&
+              <div className="adv-filter-list">Filtering results by {this.state.statusFilter} status</div>
+            }
+            {this.state.sourceFilter !== '' &&
+              <div className="adv-filter-list">Filtering results by {this.state.sourceFilter} source</div>
+            }
+            {this.state.rtFilter !== '' &&
+              <div className="adv-filter-list">Filtering results by {this.state.rtFilter} response type</div>
             }
           </div><br/>
         </div>
@@ -312,6 +418,8 @@ class DashboardSearch extends SearchStateComponent {
 
 DashboardSearch.propTypes = {
   search: PropTypes.func.isRequired,
+  categories: PropTypes.object,
+  responseTypes: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
   surveillancePrograms: surveillanceProgramsProps,
   changeFiltersCallback: PropTypes.func,
