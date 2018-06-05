@@ -43,6 +43,14 @@ export default class FHIRDoc extends Component {
               variable for the question.</p>
               <p>Extension with the URL <strong>https://sdp-v.services.cdc.gov/fhir/questionnaire-item-meta</strong> represents the tags
               assciated with the question.</p>
+
+              <h2>MMG import data in FHIR</h2>
+              <p>If a Questionnaire was imported from an MMG, the Vocabulary Service will attempt to preserve MMG specific information.
+                If a Data Element in the MMG is given a Data Element Identifier, that will be maintained in the Vocabulary Service. The
+                Data Element Identifier as well as the code system, if provided, will are available in the tags extensions of <strong>Question.item</strong>.
+                Additionally, the Data Element Identifier will be used as the <strong>Question.item.linkId</strong>. If there is no Data Element Identifier,
+                then the Vocabulary Service generated id will be used.
+              </p>
             </div>
           </div>
         </div>
