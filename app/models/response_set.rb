@@ -76,6 +76,20 @@ class ResponseSet < ApplicationRecord
     end
   end
 
+  def enque_duplicate_finder(batch, question)
+    if status == 'draft'
+      batch.add_to_batch(self, :response_sets) do |rs_results|
+        if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
+          { draft_response_set: { id: id, linked_question: { id: question.id, content: question.content },
+                                  name: name, description: description, responses: responses },
+            potential_duplicates: rs_results['hits']['hits'] }
+        else
+          false
+        end
+      end
+    end
+  end
+
   def mark_as_duplicate(replacement)
     section_nested_items.each do |sni|
       sni.response_set = replacement

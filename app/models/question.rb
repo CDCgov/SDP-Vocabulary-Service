@@ -79,6 +79,21 @@ class Question < ApplicationRecord
     end
   end
 
+  def enque_duplicate_finder(batch)
+    if status == 'draft'
+      batch.add_to_batch(self, :questions) do |results|
+        if results && results['hits'] && results['hits']['total'] > 0
+          category_name = category ? category.name : ''
+          rt = response_type ? response_type.name : ''
+          { draft_question: { id: id, content: content, description: description, response_type: rt,
+                              category: category_name }, potential_duplicates: results['hits']['hits'] }
+        else
+          false
+        end
+      end
+    end
+  end
+
   def mark_as_duplicate(replacement)
     section_nested_items.each do |sni|
       sni.question = replacement
