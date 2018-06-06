@@ -319,8 +319,11 @@ Feature: Manage Surveys
     And I click on the "search-btn" button
     And I use the section search to select "New Section"
     And I click on the "Save" button
+    And I wait 2 seconds
+    Then I should see "Name: Search Survey Test"
     When I am logged in as new_user_in_group1@gmail.com
-    And I go to the dashboard
+    And I wait 2 seconds
+    Then I go to the dashboard
     And I fill in the "search" field with "New Section"
     And I click on the "search-btn" button
     And I click on the menu link for the Section with the name "New Section"
