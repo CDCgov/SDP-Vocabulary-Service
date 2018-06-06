@@ -191,7 +191,7 @@ Feature: Manage Response Sets
     And I click on the "remove_0" link
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
-    When I go to the dashboard
+    And I wait 2 seconds
     And I go to the list of Response Sets
     And I should see "Gender Partial"
     And I should see "M / F"
