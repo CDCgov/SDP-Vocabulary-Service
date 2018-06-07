@@ -57,7 +57,7 @@ Scenario: Create Survey from Generically Formatted Spreadsheet
       And I should see "TestGenericTemplate.xlsx"
       And I should see "Warning: In tab 'Survey Questions' on row 'Is this (phone number) ?'"
       When I click on the "Import" button
-      And I wait 75 seconds
+      And I wait 120 seconds
       Then I should see "File imported with warnings"
       When I click on the "View Survey" button
       And I wait 10 seconds
