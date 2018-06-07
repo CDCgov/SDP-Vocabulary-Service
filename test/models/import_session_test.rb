@@ -72,5 +72,6 @@ class ImportSessionTest < ActiveSupport::TestCase
     sleep 15
     assert @import_session.survey
     assert_equal 8, @import_session.survey.sections.count
+    assert_equal 9, @import_session.survey.questions[4].question_response_sets[0].response_set.responses.count # corresponds to 'Secondary screening flag' and RS 2 Tab (These shoudl not change is spreadsheet)
   end
 end

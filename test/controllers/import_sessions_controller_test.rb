@@ -48,5 +48,6 @@ class ImportSessionsControllerTest < ActionDispatch::IntegrationTest
     survey = Survey.last
     assert_equal import_session.survey_id, survey.id
     assert_equal 8, survey.sections.count
+    assert_equal 9, survey.questions[4].question_response_sets[0].response_set.responses.count # corresponds to 'Secondary screening flag' and RS 2 Tab (These shoudl not change is spreadsheet)
   end
 end
