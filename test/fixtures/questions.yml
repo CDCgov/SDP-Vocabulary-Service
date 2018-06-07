@@ -2,8 +2,8 @@
 one:
   content: What is your gender?
   created_by: admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: boolean
   status: published
   version: 1
   version_independent_id: Q-1
@@ -12,40 +12,40 @@ one:
 two:
   content: What is another question example?
   created_by: admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: boolean
   version: 1
   version_independent_id: Q-2
 
 three:
   content: What is another question example?
   created_by: admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: boolean
   version: 1
   version_independent_id: Q-3
 
 gfv2:
   content: What is another question example?
   created_by: admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: boolean
   version: 2
   version_independent_id: Q-3
 
 five:
   content: Who did this?
   created_by: not_admin
-  category: one
-  response_type: four
+  category: demographics
+  response_type: string
   version: 1
   version_independent_id: Q-5
 
 search_1:
   content: Search Question 1
   created_by: admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: boolean
   status: published
   version: 1
   version_independent_id: Q-6
@@ -53,23 +53,23 @@ search_1:
 search_2:
   content: Search Question 2
   created_by: admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: boolean
   version: 1
   version_independent_id: Q-7
 
 search_3:
   content: Search question 3
   created_by: not_admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: boolean
   version: 1
   version_independent_id: Q-8
 
 new_two:
   content: What is yet another question example?
   created_by: admin
-  category: one
-  response_type: one
+  category: demographics
+  response_type: string
   version: 2
   version_independent_id: Q-2

@@ -4,7 +4,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @category = categories(:one)
+    @category = categories(:clinical)
     sign_in users(:admin)
   end
 
