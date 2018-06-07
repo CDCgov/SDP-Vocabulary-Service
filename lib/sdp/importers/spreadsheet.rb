@@ -223,12 +223,16 @@ module SDP
           value: 'Tag Value (R)',
           system: 'Code System Identifier (O)'
         },
+        # Note that response_types does not contain all possible values.
+        # It only contains values that can appear in MMG files.
+        # This appears to be the complete set, but with MMGs, it can be hard to tell.
         response_types: {
           'Date' => :date,
           'Coded' => :choice,
           'Numeric' => :decimal,
           'Text' => :text,
-          'Date/time' => :dateTime
+          'Date/time' => :dateTime,
+          'String' => :string
         }
       }.freeze
 
