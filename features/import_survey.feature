@@ -54,15 +54,15 @@ Scenario: Create Survey from Generically Formatted Spreadsheet
       And I select the "import-type-generic" radio button
       And I attach a generic spreadsheet to the "file-select" input
       Then I wait 5 seconds
-      And I should see "TestGenericTemplate.xlsx"
-      And I should see "Warning: In tab 'Survey Questions' on row 'Is this (phone number) ?'"
+      And I should see "TestGenericTemplateMini.xlsx"
+      And I should see "Warning: Sheet Sheet1 skipped"
       When I click on the "Import" button
-      And I wait 120 seconds
+      And I wait 30 seconds
       Then I should see "File imported with warnings"
       When I click on the "View Survey" button
       And I wait 10 seconds
-      Then I should see "Survey Name: TestGenericTemplate.xlsx"
-      And I should see "Linked Sections: 8"
+      Then I should see "Survey Name: TestGenericTemplateMini.xlsx"
+      And I should see "Linked Sections: 1"
 
 Scenario: Check that Survey Import fails from badly Formatted Generic Spreadsheet
       Given I am logged in as test_author@gmail.com

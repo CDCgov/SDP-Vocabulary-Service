@@ -60,18 +60,19 @@ class ImportSessionTest < ActiveSupport::TestCase
 
   test 'create_survey! for generic' do
     @user = users(:admin)
-    @import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplate.xlsx', mode: 'rb'),
-                                        created_by: @user, original_filename: 'TestGenericTemplate.xlsx')
+    @import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplateMini.xlsx', mode: 'rb'),
+                                        created_by: @user, original_filename: 'TestGenericTemplateMini.xlsx')
 
     @import_type = 'generic'
     @import_session.check!(@import_type)
     @import_session.reload
     assert_difference 'Survey.count' do
-      @import_session.create_survey!(@import_type)
+      assert_difference('Response.count', 4) do
+        @import_session.create_survey!(@import_type)
+      end
     end
     sleep 15
     assert @import_session.survey
-    assert_equal 8, @import_session.survey.sections.count
-    assert_equal 9, @import_session.survey.questions[4].question_response_sets[0].response_set.responses.count # corresponds to 'Secondary screening flag' and RS 2 Tab (These shoudl not change is spreadsheet)
+    assert_equal 1, @import_session.survey.sections.count
   end
 end
