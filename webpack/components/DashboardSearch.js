@@ -112,7 +112,7 @@ class DashboardSearch extends SearchStateComponent {
     let newParams = Object.assign(this.currentSearchParameters(), newState);
     this.props.search(newParams);
     this.props.changeFiltersCallback(newState);
-    return this.setState(newState)
+    return this.setState(newState);
   }
 
   handleDateChange(date) {
