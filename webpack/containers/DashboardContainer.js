@@ -39,6 +39,7 @@ class DashboardContainer extends SearchManagerComponent {
       searchTerms: '',
       programFilter: [],
       systemFilter: [],
+      methodsFilter: [],
       mostRecentFilter: false,
       contentSince: null,
       sourceFilter: '',

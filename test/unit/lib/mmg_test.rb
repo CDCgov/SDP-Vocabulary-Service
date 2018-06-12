@@ -47,6 +47,9 @@ class MMGTest < ActiveSupport::TestCase
     assert section.present?
     assert_equal section.questions.first.concepts.first.value, 'INV920'
     assert_equal section.questions.first.concepts.first.display_name, 'Data Element Identifier'
+    section = Section.where(name: 'Form2 Completion Metadata').first
+    assert section.present?
+    assert_equal section.concepts.last.value, 'Sheet1'
 
     survey = Survey.where(name: f).first
     assert survey.sections.count, SECTION_COUNT

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
+import debounce from 'lodash/debounce';
 import { questionSchema, sectionSchema } from '../../schema';
 import { responseSetProps } from "../../prop-types/response_set_props";
 import currentUserProps from '../../prop-types/current_user_props';
@@ -96,6 +97,7 @@ class AddedNestedItem extends SearchManagerComponent {
   }
 
   searchModal() {
+    const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     return (
       <Modal animation={false} show={this.state.showSearchModal} onHide={this.hideResponseSetSearch} aria-label="Search Response Sets">
         <Modal.Header closeButton bsStyle='search'>
@@ -108,7 +110,7 @@ class AddedNestedItem extends SearchManagerComponent {
                            surveillanceSystems={this.props.surveillanceSystems}
                            surveillancePrograms={this.props.surveillancePrograms}
                            suggestions={this.props.suggestions}
-                           fetchSuggestions={this.props.fetchSuggestions}
+                           fetchSuggestions={fetchSuggestions}
                           />
           <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} handleSelectSearchResult={this.handleSelectSearchResult} />
         </Modal.Body>

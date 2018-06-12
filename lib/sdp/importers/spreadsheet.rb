@@ -1,15 +1,17 @@
 module SDP
   module Importers
     class NestedItem
-      attr_accessor :name, :type, :items, :data_element
+      attr_accessor :name, :type, :items, :data_element, :de_tab_name
 
       def initialize(type = :data_element)
         @name = name
         @type = type
         @items = []
+        @de_tab_name = 'Data Elements'
       end
 
-      def add_item(item)
+      def add_item(item, tab_name)
+        @de_tab_name = tab_name
         @items << item
       end
     end
@@ -250,6 +252,7 @@ module SDP
         @oid_matcher = /^([\.\d]+)$/
         @valueset_sheet = /Valueset.*/
         @local_response_sets = {}
+        @top_level.de_tab_name = @config[:de_tab_name]
 
         # Put this into a variable somewhere appropriate that can be referenced by multiple classes
 
@@ -326,7 +329,7 @@ module SDP
             next if row[:name] == column_names[:name]
             # section start/end
             if row[:data_type].nil?
-              process_section_marker(row)
+              process_section_marker(row, sheet)
               next
             end
             data_element = extract_data_element(sheet, row)
@@ -335,7 +338,8 @@ module SDP
             # add the data element unless a matching data element is already present
             ni = NestedItem.new
             ni.data_element = data_element
-            @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
+            @current_section.de_tab_name = sheet
+            @current_section.add_item(ni, sheet) unless @current_section.items.map(&:data_element).include? data_element
           end
           sectionize_top_level_questions(sheet)
           # Reset to top level to prevent mismatched sections causing issues
@@ -372,7 +376,7 @@ module SDP
           if nested_item.type == :data_element
           end
           section = Section.new(name: nested_item.name || "Imported Section ##{section_position + 1}", created_by: @user)
-          section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+          section.concepts << Concept.new(display_name: 'MMG Tab Name', value: nested_item.de_tab_name)
           section.save!
           s.survey_sections.create(section: section, position: section_position)
           section_position += 1
@@ -405,7 +409,7 @@ module SDP
             parent_section.section_nested_items << nsi
           else
             section = Section.new(name: item.name || "Imported Section ##{i + 1}", created_by: @user)
-            section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+            section.concepts << Concept.new(display_name: 'MMG Tab Name', value: item.de_tab_name)
             section.parent = parent_section
             section.save!
             nsi = SectionNestedItem.new(nested_section: section, position: i)
@@ -494,6 +498,7 @@ module SDP
           else
             if current_top_level_section.blank?
               current_top_level_section = NestedItem.new(:section)
+              current_top_level_section.de_tab_name = sheet
               current_top_level_section.name = sheet
             end
             current_top_level_section.items << i
@@ -566,7 +571,7 @@ module SDP
         data_element
       end
 
-      def process_section_marker(row)
+      def process_section_marker(row, sheet)
         column_name = if @config[:mmg]
                         :section_name
                       else
@@ -576,7 +581,7 @@ module SDP
         mr = MarkerRow.new(row_contents)
         case mr.type
         when :section_start
-          start_section(mr.text)
+          start_section(mr.text, sheet)
         when :section_end
           if @current_section.name != mr.text
             @warnings << "Mismatched section end: expected #{@current_section.name}, found #{mr.text}"
@@ -590,10 +595,11 @@ module SDP
         end
       end
 
-      def start_section(name)
+      def start_section(name, sheet)
         new_section = NestedItem.new(:section)
         new_section.name = name
-        @current_section.add_item(new_section)
+        @current_section.de_tab_name = sheet
+        @current_section.add_item(new_section, sheet)
         @parent_sections.push(@current_section)
         @current_section = new_section
       end

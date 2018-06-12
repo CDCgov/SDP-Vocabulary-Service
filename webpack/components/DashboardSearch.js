@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import Autocomplete from 'react-autocomplete';
 import NestedSearchBar from './NestedSearchBar';
+import DataCollectionSelect from './DataCollectionSelect';
 import SearchStateComponent from './SearchStateComponent';
 import { SearchParameters } from '../actions/search_results_actions';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
@@ -21,6 +22,7 @@ class DashboardSearch extends SearchStateComponent {
       searchTerms: '',
       programFilter: [],
       systemFilter: [],
+      methodsFilter: [],
       sort: '',
       sourceFilter: '',
       statusFilter: '',
@@ -37,6 +39,7 @@ class DashboardSearch extends SearchStateComponent {
     this.clearAdvSearch = this.clearAdvSearch.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.selectFilters = this.selectFilters.bind(this);
+    this.selectMethods = this.selectMethods.bind(this);
     this.onFormSubmit  = this.onFormSubmit.bind(this);
     this.surveillanceProgramsSelect = this.surveillanceProgramsSelect.bind(this);
     this.surveillanceSystemsSelect = this.surveillanceSystemsSelect.bind(this);
@@ -79,6 +82,7 @@ class DashboardSearch extends SearchStateComponent {
     const clearedParams = {
       programFilter: [],
       systemFilter: [],
+      methodsFilter: [],
       mostRecentFilter: false,
       contentSince: null,
       sourceFilter: '',
@@ -98,6 +102,14 @@ class DashboardSearch extends SearchStateComponent {
   selectFilters(e, filterType) {
     var newState = {};
     newState[filterType] = $(e.target).val().map((opt) => parseInt(opt));
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
+    this.props.changeFiltersCallback(newState);
+    return this.setState(newState);
+  }
+
+  selectMethods(e) {
+    let newState = { methodsFilter: $(e.target).val() };
     let newParams = Object.assign(this.currentSearchParameters(), newState);
     this.props.search(newParams);
     this.props.changeFiltersCallback(newState);
@@ -305,6 +317,10 @@ class DashboardSearch extends SearchStateComponent {
                                     onFocusChange={({ focused }) => this.setState({ focused })}
                                     isOutsideRange={(day) => day.isAfter()}/>
                 </div>
+                <div className="col-md-12 question-form-group">
+                  <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
+                  <DataCollectionSelect onChangeFunc={this.selectMethods} methods={this.state.methodsFilter} />
+                </div>
               </div>
             </div>
           )}
@@ -362,7 +378,7 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.mostRecentFilter || this.state.preferredFilter || this.state.contentSince || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.preferredFilter || this.state.contentSince || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -379,6 +395,12 @@ class DashboardSearch extends SearchStateComponent {
             {this.state.systemFilter.length > 0 &&
               <div className="adv-filter-list">System Filters: {this.state.systemFilter.map((id, i) => {
                 return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillanceSystems[id].name}</row>;
+              })}
+              </div>
+            }
+            {this.state.methodsFilter.length > 0 &&
+              <div className="adv-filter-list">Data Collection Method Filters: {this.state.methodsFilter.map((method, i) => {
+                return <row key={i} className="adv-filter-list-item col-md-12">{method}</row>;
               })}
               </div>
             }

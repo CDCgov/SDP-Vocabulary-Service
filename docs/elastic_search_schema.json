@@ -472,6 +472,9 @@
         "groups": {
           "type": "text"
         },
+        "dataCollectionMethods": {
+          "type": "text"
+        },
         "id": {
           "type": "text"
         },
