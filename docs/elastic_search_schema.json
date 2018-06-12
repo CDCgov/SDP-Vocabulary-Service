@@ -472,9 +472,6 @@
         "groups": {
           "type": "text"
         },
-        "data_collection_methods": {
-          "type": "text"
-        },
         "dataCollectionMethods": {
           "type": "text"
         },

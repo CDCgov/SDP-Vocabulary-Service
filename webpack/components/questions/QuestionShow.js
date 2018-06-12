@@ -208,6 +208,14 @@ export default class QuestionShow extends Component {
                   <strong>Response Type: </strong>
                   {question.responseType.name && question.responseType.name}
                 </div>}
+                {question.dataCollectionMethods && <div className="box-content">
+                  <strong>Data Collection Methods: </strong>
+                  <ul>
+                    {question.dataCollectionMethods.map((dcm, i) => {
+                      return (<li key={i}>{dcm}</li>);
+                    })}
+                  </ul>
+                </div>}
                 {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
                   <strong>Other Allowed: </strong>
                   {question.otherAllowed ? 'Yes' : 'No' }

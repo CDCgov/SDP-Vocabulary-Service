@@ -13,6 +13,7 @@ import ResponseSetModal from '../../containers/response_sets/ResponseSetModal';
 import ResponseSetDragWidget from '../../containers/response_sets/ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import SearchResultList from '../../components/SearchResultList';
+import DataCollectionSelect from '../DataCollectionSelect';
 
 class QuestionEdit extends Component {
   constructor(props) {
@@ -245,14 +246,7 @@ class QuestionEdit extends Component {
                 <div className="row">
                   <div className="col-md-8 question-form-group">
                     <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method</label>
-                    <select multiple className="form-control" name="dataCollectionMethod" id="dataCollectionMethod" tabIndex="3" value={state.dataCollectionMethods || undefined} onChange={this.handleDataCollectionMethodsChange()}>
-                      <option value='Electronic (e.g., machine to machine)'>Electronic (e.g., machine to machine)</option>
-                      <option value='Record review'>Record review</option>
-                      <option value='Self-Administered (Web or Mobile)'>Self-Administered (Web or Mobile)</option>
-                      <option value='Self-Administered (Paper)'>Self-Administered (Paper)</option>
-                      <option value='Facilitated by Interviewer (Phone)'>Facilitated by Interviewer (Phone)</option>
-                      <option value='Facilitated by Interviewer (In-Person)'>Facilitated by Interviewer (In-Person)</option>
-                    </select>
+                    <DataCollectionSelect onChangeFunc={this.handleDataCollectionMethodsChange()} methods={state.dataCollectionMethods} />
                   </div>
                 </div>
                 {this.otherAllowedBox()}

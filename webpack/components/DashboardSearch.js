@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import Autocomplete from 'react-autocomplete';
 import NestedSearchBar from './NestedSearchBar';
+import DataCollectionSelect from './DataCollectionSelect';
 import SearchStateComponent from './SearchStateComponent';
 import { SearchParameters } from '../actions/search_results_actions';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
@@ -318,14 +319,7 @@ class DashboardSearch extends SearchStateComponent {
                 </div>
                 <div className="col-md-12 question-form-group">
                   <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
-                  <select multiple className="form-control" name="dataCollectionMethod" id="dataCollectionMethod" value={this.state.methodsFilter} onChange={(e) => this.selectMethods(e)}>
-                    <option value='Electronic (e.g., machine to machine)'>Electronic (e.g., machine to machine)</option>
-                    <option value='Record review'>Record review</option>
-                    <option value='Self-Administered (Web or Mobile)'>Self-Administered (Web or Mobile)</option>
-                    <option value='Self-Administered (Paper)'>Self-Administered (Paper)</option>
-                    <option value='Facilitated by Interviewer (Phone)'>Facilitated by Interviewer (Phone)</option>
-                    <option value='Facilitated by Interviewer (In-Person)'>Facilitated by Interviewer (In-Person)</option>
-                  </select>
+                  <DataCollectionSelect onChangeFunc={this.selectMethods} methods={this.state.methodsFilter} />
                 </div>
               </div>
             </div>
