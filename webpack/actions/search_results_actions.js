@@ -15,7 +15,7 @@ import {
 } from './types';
 
 const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter', 'nsFilter',
-  'rtFilter', 'sourceFilter', 'categoryFilter', 'preferredFilter', 'statusFilter',
+  'rtFilter', 'sourceFilter', 'categoryFilter', 'preferredFilter', 'statusFilter', 'methodsFilter',
   'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId'];
 
 export class SearchParameters {
@@ -31,7 +31,8 @@ export class SearchParameters {
   toSearchParameters() {
     const simpleMapping = {'searchTerms': 'search', 'type': 'type', 'programFilter': 'programs', 'sort': 'sort', 'groupFilterId': 'groups',
       'rtFilter': 'rt', 'sourceFilter': 'source', 'categoryFilter': 'category', 'preferredFilter': 'preferred', 'statusFilter': 'status',
-      'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page', 'nsFilter': 'nsfilter'};
+      'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page', 'nsFilter': 'nsfilter',
+      'methodsFilter': 'methods'};
     const params = {};
     forEach(simpleMapping, (value, key) => {
       if (this[key]) {

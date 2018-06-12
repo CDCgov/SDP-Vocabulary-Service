@@ -25,6 +25,7 @@ class ElasticsearchController < ApplicationController
     must_filters['category'] = params[:category] ? params[:category].underscore.split(' ')[0] : ''
     must_filters['rt'] = params[:rt] ? params[:rt].underscore.split(' ')[0] : ''
     must_filters['source'] = params[:source] ? params[:source] : ''
+    must_filters['data_collection_methods'] = params[:methods]
     results = if SDP::Elasticsearch.ping
                 SDP::Elasticsearch.search(type, query_string, page, query_size, must_filters, current_user_id, groups)
               else

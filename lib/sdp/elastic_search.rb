@@ -120,6 +120,13 @@ module SDP
                    { term: { 'id': must_filters['nested_section'] } }
                  end
 
+      must_filters['data_collection_methods'] = must_filters['data_collection_methods'] || []
+      methods_terms = if must_filters['data_collection_methods'].empty?
+                        {}
+                      else
+                        { 'terms': { 'data_collection_methods.keyword': must_filters['data_collection_methods'] } }
+                      end
+
       must_filters['programs'] = must_filters['programs'] || []
       prog_terms = if must_filters['programs'].empty?
                      {}
@@ -217,7 +224,7 @@ module SDP
           bool: {
             filter: { bool: {
               filter: [filter_body, version_filter, group_filter],
-              must: [prog_terms, sys_terms, date_terms, preferred_terms, status_terms, source_terms, rt_terms, category_terms],
+              must: [prog_terms, sys_terms, date_terms, preferred_terms, status_terms, source_terms, rt_terms, category_terms, methods_terms],
               must_not: [ns_terms]
             } },
             must: must_body

@@ -166,6 +166,7 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:content, :response_type_id, :parent_id, :category_id, :groups,
                                      :version_independent_id, :description, :other_allowed, :subcategory_id,
-                                     concepts_attributes: [:id, :value, :display_name, :code_system])
+                                     concepts_attributes: [:id, :value, :display_name, :code_system],
+                                     data_collection_methods: [])
   end
 end

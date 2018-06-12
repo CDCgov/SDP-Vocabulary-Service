@@ -85,3 +85,12 @@ Feature: Advanced Search
     And I should not see "Clear Adv. Filters"
     When I select the "All My Groups" option in the "Group Select" list
     Then I should see "Filtering to content owned by any of your groups"
+
+  Scenario: Filter by collection method
+    Given I am logged in as test_author@gmail.com
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I select the "Record review" option in the "Data Collection Method (Questions Only):" list
+    And I click on the "Close" button
+    Then I should see "Data Collection Method Filters:"
+    And I should see "Record review"
