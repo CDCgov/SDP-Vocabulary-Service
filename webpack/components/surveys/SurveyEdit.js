@@ -27,6 +27,7 @@ class SurveyEdit extends Component {
       description: '',
       surveySections: [],
       controlNumber: null,
+      ombApprovalDate : '',
       versionIndependentId: null,
       showModal: false,
       progSysModalOpen: false,
@@ -42,6 +43,7 @@ class SurveyEdit extends Component {
     state.version = 1;
     state.parentId = survey.id;
     state.controlNumber = '';
+    state.ombApprovalDate = '';
     state.groups = [];
     return state;
   }
@@ -54,6 +56,7 @@ class SurveyEdit extends Component {
     newState.description = survey.description || '';
     newState.surveySections = survey.surveySections || [];
     newState.controlNumber = survey.controlNumber;
+    newState.ombApprovalDate = survey.ombApprovalDate;
     newState.parentId = survey.parent ? survey.parent.id : '';
     newState.surveillanceProgramId = survey.surveillanceProgramId || newState.surveillanceProgramId;
     newState.surveillanceSystemId = survey.surveillanceSystemId || newState.surveillanceSystemId;
@@ -216,6 +219,12 @@ class SurveyEdit extends Component {
             <div className="survey-group col-md-4">
               <label htmlFor="controlNumber">OMB Approval</label>
               <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+              { this.state.controlNumber !== '' && this.state.controlNumber !== null &&
+                <div>
+                  <label htmlFor="OMBApprovalDate">OMB Approval Date</label>
+                  <input tabIndex="3" className="input-format" type="date" placeholder="mm/dd/yyyy" value={this.state.ombApprovalDate || ''} name ="ombApprovalDate" id="ombApprovalDate" onChange={this.handleChange('ombApprovalDate')}/>
+                </div>
+              }
             </div>
           </div>
           <div className="row">
