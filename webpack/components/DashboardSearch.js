@@ -340,7 +340,7 @@ class DashboardSearch extends SearchStateComponent {
                   <FormGroup>
                     <label htmlFor="rt-filter">Response Type <span className="label-note">(Questions Only):</span></label>
                     <select className="input-select" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
-                      <option value="" disabled hidden>Select Response Type...</option>
+                      <option value="">Select Response Type...</option>
                       {values(this.props.responseTypes).map((rt, i) => {
                         return <option key={i} value={rt.name}>{rt.name}</option>;
                       })}
@@ -348,7 +348,7 @@ class DashboardSearch extends SearchStateComponent {
                     <br />
                     <label htmlFor="category-filter">Category <span className="label-note">(Questions Only):</span></label>
                     <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
-                      <option value="" disabled hidden>Select Category...</option>
+                      <option value="">Select Category...</option>
                       {values(this.props.categories).map((category, i) => {
                         return <option key={i} value={category.name}>{category.name}</option>;
                       })}
@@ -358,13 +358,12 @@ class DashboardSearch extends SearchStateComponent {
                 <Col sm="6">
                   <label htmlFor="source-filter">Source <span className="label-note">(Response Sets Only):</span></label>
                   <select className="input-select" name="source-filter" id="source-filter" value={this.state.sourceFilter} onChange={(e) => this.toggleSource(e)} >
-                    <option value="" disabled hidden>Select Source...</option>
-                    <option value=""></option>
+                    <option value="">Select Source...</option>
                     <option value="local">SDPV Local</option>
                     <option value="PHIN_VADS">PHIN VADS</option>
                   </select>
                   <br />
-                  <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
+                  <label htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
                   <DataCollectionSelect onChangeFunc={this.selectMethods} methods={this.state.methodsFilter} />
                 </Col>
               </Row>
