@@ -156,7 +156,7 @@ module SDP
       attr_accessor :type, :text, :error
 
       def initialize(row_contents)
-        trimmed_contents = row_contents.strip
+        trimmed_contents = row_contents ? row_contents.strip : ''
         { section_start: START_REGEX, section_end: END_REGEX, note: NOTE_REGEX }.each_pair do |k, v|
           match_result = v.match(trimmed_contents)
           next unless match_result
