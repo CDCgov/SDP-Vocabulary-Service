@@ -288,19 +288,7 @@ export default class SearchResult extends Component {
           <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-${type}`}>
             <div className="panel-body">
               <text className="sr-only">List of links and names of questions and nested sections linked to this section:</text>
-              {result.sectionNestedItems && result.sectionNestedItems.length > 0 &&
-                result.sectionNestedItems.map((ni, i) => {
-                  if(ni !== undefined) {
-                    return(
-                      <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
-                        <span className={`fa ${iconMap[ni.type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
-                      </div>
-                    );
-                  } else {
-                    return;
-                  }
-                })
-              }
+              {this.sectionPanel(result)}
             </div>
           </div>
         );
@@ -321,6 +309,26 @@ export default class SearchResult extends Component {
             </div>
           </div>
         );
+    }
+  }
+
+  sectionPanel(result) {
+    if (result.sectionNestedItems && result.sectionNestedItems.length > 0) {
+      if (result.sectionNestedItems[0].type) {
+        return (result.sectionNestedItems.map((ni, i) => {
+          if(ni !== undefined) {
+            return(
+              <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
+                <span className={`fa ${iconMap[ni.type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
+              </div>
+            );
+          } else {
+            return;
+          }
+        }));
+      } else {
+        return <div className="result-details-content">Click details view in top right for more info and full list of nested items.</div>;
+      }
     }
   }
 
