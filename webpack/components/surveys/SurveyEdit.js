@@ -221,7 +221,7 @@ class SurveyEdit extends Component {
               <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
               { this.state.controlNumber !== '' && this.state.controlNumber !== null &&
                 <div>
-                  <label htmlFor="OMBApprovalDate">OMB Approval Date</label>
+                  <label htmlFor="ombApprovalDate">OMB Approval Date</label>
                   <input tabIndex="3" className="input-format" type="date" placeholder="mm/dd/yyyy" value={this.state.ombApprovalDate || ''} name ="ombApprovalDate" id="ombApprovalDate" onChange={this.handleChange('ombApprovalDate')}/>
                 </div>
               }

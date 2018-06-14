@@ -341,12 +341,9 @@ Feature: Manage Surveys
       And I fill in the "controlNumber" field with "1234-1234"
       Then I should see "OMB Approval Date"
       And I fill in the "ombApprovalDate" field with "12/12/2015"
-      Then I wait 5 seconds
       And I click on the "Save" button
-      Then I wait 1 seconds
       When I go to the dashboard
       And I go to the list of Surveys
       And I click on the menu link for the Survey with the name "Test2 Survey"
       And I click on the option to Edit the Survey with the name "Test2 Survey"
       Then I should see "OMB Approval Date"
-      Then I should see "12/12/2015"
