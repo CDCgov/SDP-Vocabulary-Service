@@ -1,8 +1,3 @@
-.basic-form-bg{
-  @extend .basic-bg;
-  height: 100%;
-}
-
 .response-data {
   padding-top: 7px;
   padding-bottom: 7px;
@@ -115,53 +110,5 @@ form.new-response-set{
 
   .description-input-textarea{
     display: none;
-  }
-}
-
-.new-response-page-header {
-  @extend .page-header;
-  margin-top: 18px;
-
-  .new-response-set-icon {
-    color: $cdc-blue;
-    text-align: center;
-    font-size: 26px;
-    i {
-      float: left;
-    }
-  }
-
-  .new-response-set-title{
-    font-weight: 600;
-    color: $cdc-dark-blue;
-    padding-left: 4%;
-  }
-}
-
-.form-footer{
-  @extend .panel-footer;
-  background-color: unset;
-
-  .cancel{
-    @extend .button-disabled;
-    color: white;
-    font-weight: 700;
-    float: left;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-  .done{
-    @extend .cancel;
-    margin-right: 10px;
-  }
-
-  .submit{
-    @extend .button-submit;
-    color: white;
-    font-weight: 700;
-    float: right;
-    padding-top: 10px;
-    padding-bottom: 10px;
   }
 }

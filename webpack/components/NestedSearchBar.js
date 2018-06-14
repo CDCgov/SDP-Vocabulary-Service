@@ -9,9 +9,9 @@ class NestedSearchBar extends Component {
 
   render() {
     return (
-      <div className="search-bar input-group nested-search-group">
+      <div className="search-bar nested-search-group">
         <input
-            className="search-input"
+            className="search-input form-control"
             placeholder={`Search ${this.props.modelName}s...`}
             value={this.state.term}
             aria-label={`Search ${this.props.modelName}s`}

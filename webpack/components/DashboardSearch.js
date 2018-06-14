@@ -2,7 +2,11 @@ import { SingleDatePicker } from 'react-dates';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row, Col, FormGroup, ControlLabel } from 'react-bootstrap';
+
+import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
+import ToggleButton from 'react-bootstrap/lib/ToggleButton';
+
 import Autocomplete from 'react-autocomplete';
 import NestedSearchBar from './NestedSearchBar';
 import DataCollectionSelect from './DataCollectionSelect';
@@ -47,6 +51,8 @@ class DashboardSearch extends SearchStateComponent {
     this.systemSearch  = this.systemSearch.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleOmbDateChange = this.handleOmbDateChange.bind(this);
+    this.toggleSort = this.toggleSort.bind(this);
+    this.toggleStatus = this.toggleStatus.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -69,6 +75,10 @@ class DashboardSearch extends SearchStateComponent {
       let searchParameters = new SearchParameters(this.props.lastSearch);
       this.setState(searchParameters);
     }
+  }
+
+  componentDidMount() {
+    $(document).off('click.bs.button.data-api', '[data-toggle^="button"]')
   }
 
   showAdvSearch() {
@@ -155,7 +165,7 @@ class DashboardSearch extends SearchStateComponent {
       return <p>No surveillance programs loaded in the database</p>;
     } else {
       return (
-        <div className="form-group" id="search-programs">
+        <FormGroup id="search-programs">
           <label htmlFor="select-prog">Select Programs:</label>
           <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
           <select multiple className="form-control" id="select-prog" value={this.state.programFilter} onChange={(e) => this.selectFilters(e, 'programFilter')}>
@@ -163,7 +173,7 @@ class DashboardSearch extends SearchStateComponent {
               return <option key={sp.id} value={sp.id}>{sp.name}</option>;
             })}
           </select>
-        </div>
+        </FormGroup>
       );
     }
   }
@@ -173,7 +183,7 @@ class DashboardSearch extends SearchStateComponent {
       return <p>No surveillance systems loaded in the database</p>;
     } else {
       return (
-        <div className="form-group" id="search-systems">
+        <FormGroup id="search-systems">
           <label htmlFor="select-sys">Select Systems:</label>
           <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
           <select multiple className="form-control" id="select-sys" value={this.state.systemFilter} onChange={(e) => this.selectFilters(e, 'systemFilter')}>
@@ -181,7 +191,7 @@ class DashboardSearch extends SearchStateComponent {
               return <option key={ss.id} value={ss.id}>{ss.name}</option>;
             })}
           </select>
-        </div>
+        </FormGroup>
       );
     }
   }
@@ -213,8 +223,8 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
-  toggleStatus(e) {
-    let newState = {statusFilter: e.target.value};
+  toggleStatus(val) {
+    let newState = {statusFilter: val};
     this.setState(newState);
     let searchParams = this.currentSearchParameters();
     searchParams.statusFilter = newState.statusFilter;
@@ -240,8 +250,8 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
-  toggleSort(e) {
-    let newState = {sort: e.target.value};
+  toggleSort(val) {
+    let newState = {sort: val};
     this.setState(newState);
     let searchParams = this.currentSearchParameters();
     searchParams.sort = newState.sort;
@@ -251,7 +261,7 @@ class DashboardSearch extends SearchStateComponent {
 
   advSearchModal() {
     return (
-      <Modal animation={false} show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
+      <Modal animation={false} bsSize="large" show={this.state.showAdvSearchModal} onHide={this.hideAdvSearch} aria-label="Advanced Search Filters">
         <Modal.Header closeButton bsStyle='search'>
           <Modal.Title componentClass="h1">Advanced Search Filters</Modal.Title>
         </Modal.Header>
@@ -263,89 +273,125 @@ class DashboardSearch extends SearchStateComponent {
             </div>
             ) : (
             <div className="adv-filter-modal-body">
-              <div className="col-md-12 adv-filter-instr">Select programs and systems to filter by. You may hold down control (CTRL), command (CMD), or shift on your keyboard to select multiple filters.</div>
-              <div className="col-md-12">
-                {this.surveillanceProgramsSelect()}
-              </div>
-              <div className="col-md-12">
-                {this.surveillanceSystemsSelect()}
-              </div>
-              <div className = "col-md-12">
-                <label className="input-label" htmlFor="sort-by">Sort By:</label>
-                <select className="input-select" name="sort-by" id="sort-by" value={this.state.sort} onChange={(e) => this.toggleSort(e)} >
-                  <option value=""></option>
-                  <option value="System Usage">System Usage</option>
-                  <option value="Program Usage">Program Usage</option>
-                </select>
-              </div>
-              <div className="col-md-12">
-                <h2>Additonal Filters:</h2>
-                <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
-                <label htmlFor="most-recent-filter">Most Recent Versions Only</label><br/>
-                <input type='checkbox' className='form-check-input' name='preferred-filter' id='preferred-filter' checked={this.state.preferredFilter} onChange={() => this.togglePreferredFilter()} />
-                <label htmlFor="preferred-filter">CDC Preferred Content Only</label>
-                <div className = "col-md-12">
-                  <label className="input-label" htmlFor="status-filter">Status:</label>
-                  <select className="input-select" name="status-filter" id="status-filter" value={this.state.statusFilter} onChange={(e) => this.toggleStatus(e)} >
-                    <option value=""></option>
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
-                  </select>
-                </div>
-                <div className = "col-md-12">
-                  <label className="input-label" htmlFor="rt-filter">Response Type (Questions Only):</label>
-                  <select className="input-select" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
-                    <option value=""></option>
-                    {values(this.props.responseTypes).map((rt, i) => {
-                      return <option key={i} value={rt.name}>{rt.name}</option>;
-                    })}
-                  </select>
-                </div>
-                <div className = "col-md-12">
-                  <label className="input-label" htmlFor="category-filter">Category (Questions Only):</label>
-                  <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
-                    <option value=""></option>
-                    {values(this.props.categories).map((category, i) => {
-                      return <option key={i} value={category.name}>{category.name}</option>;
-                    })}
-                  </select>
-                </div>
-                <div className = "col-md-12">
-                  <label className="input-label" htmlFor="source-filter">Source (Response Sets Only):</label>
+              <p>Select programs and systems to filter by. You may hold down control (CTRL), command (CMD), or shift on your keyboard to select multiple filters.</p>
+              <Row>
+                <Col sm="6">
+                  {this.surveillanceProgramsSelect()}
+                </Col>
+                <Col sm="6">
+                  {this.surveillanceSystemsSelect()}
+                </Col>
+              </Row>
+              <Row>
+                <Col sm="6">
+                  <FormGroup className="sort-by-group">
+                    <ControlLabel htmlFor="sort-by">Sort By:</ControlLabel>
+                    <ToggleButtonGroup
+                      type="radio"
+                      name="sort-by"
+                      onChange={this.toggleSort}
+                      value={this.state.sort}
+                      className="form-btn-group"
+                      >
+                      <ToggleButton value={''}>Default</ToggleButton>
+                      <ToggleButton value={'System Usage'}>System Usage</ToggleButton>
+                      <ToggleButton value={'Program Usage'}>Program Usage</ToggleButton>
+                    </ToggleButtonGroup>
+                  </FormGroup>
+                </Col>
+                <Col sm="6">
+                  <FormGroup>
+                    <label htmlFor='content-since'>Content Changed Since:</label>
+                    <SingleDatePicker id="content-since"
+                                      date={this.state.contentSince}
+                                      onDateChange={this.handleDateChange}
+                                      focused={this.state.focused}
+                                      onFocusChange={({ focused }) => this.setState({ focused })}
+                                      isOutsideRange={(day) => day.isAfter()}/>
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row className="additional-filters">
+                
+                <h3 className="h4 col-xs-12">Additonal Filters:</h3>
+
+                <Col sm="6">
+                  <FormGroup row>
+                    <label htmlFor="most-recent-filter">
+                      <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
+                      Most Recent Versions Only
+                    </label>
+                    <br />
+                    <label htmlFor="preferred-filter">
+                      <input type='checkbox' className='form-check-input' name='preferred-filter' id='preferred-filter' checked={this.state.preferredFilter} onChange={() => this.togglePreferredFilter()} />
+                      CDC Preferred Content Only
+                    </label>
+                  </FormGroup>
+                </Col>
+                <Col sm="6">
+                  <FormGroup>
+                    <ControlLabel htmlFor="status-filter">Status: </ControlLabel>
+                    <ToggleButtonGroup
+                      type="radio"
+                      name="status-filter"
+                      onChange={this.toggleStatus}
+                      value={this.state.statusFilter}
+                      className="form-btn-group"
+                      >
+                      <ToggleButton value={''}>Any</ToggleButton>
+                      <ToggleButton value={'draft'}>Draft</ToggleButton>
+                      <ToggleButton value={'published'}>Published</ToggleButton>
+                    </ToggleButtonGroup>
+                  </FormGroup>
+                  <FormGroup>
+                    <label htmlFor='omb-date'>OMB Approval Date (Surveys Only):</label>
+                    <SingleDatePicker id="omb-date"
+                                      date={this.state.ombDate}
+                                      onDateChange={this.handleOmbDateChange}
+                                      focused={this.state.ombFocused}
+                                      onFocusChange={({ focused }) => this.setState({ ombFocused: focused })}
+                                      isOutsideRange={(day) => day.isAfter()}/>
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm="6">
+                  <FormGroup>
+                    <label htmlFor="rt-filter">Response Type <span className="label-note">(Questions Only):</span></label>
+                    <select className="input-select" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
+                      <option value="" disabled hidden>Select Response Type...</option>
+                      {values(this.props.responseTypes).map((rt, i) => {
+                        return <option key={i} value={rt.name}>{rt.name}</option>;
+                      })}
+                    </select>
+                    <br />
+                    <label htmlFor="category-filter">Category <span className="label-note">(Questions Only):</span></label>
+                    <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
+                      <option value="" disabled hidden>Select Category...</option>
+                      {values(this.props.categories).map((category, i) => {
+                        return <option key={i} value={category.name}>{category.name}</option>;
+                      })}
+                    </select>
+                  </FormGroup>
+                </Col>
+                <Col sm="6">
+                  <label htmlFor="source-filter">Source <span className="label-note">(Response Sets Only):</span></label>
                   <select className="input-select" name="source-filter" id="source-filter" value={this.state.sourceFilter} onChange={(e) => this.toggleSource(e)} >
-                    <option value=""></option>
+                    <option value="" disabled hidden>Select Source...</option>
                     <option value="local">SDPV Local</option>
                     <option value="PHIN_VADS">PHIN VADS</option>
                   </select>
-                </div>
-                <div>
-                  <label htmlFor='content-since'>Content Changed Since: &nbsp;</label>
-                  <SingleDatePicker id="content-since"
-                                    date={this.state.contentSince}
-                                    onDateChange={this.handleDateChange}
-                                    focused={this.state.focused}
-                                    onFocusChange={({ focused }) => this.setState({ focused })}
-                                    isOutsideRange={(day) => day.isAfter()}/>
-                </div>
-                <div>
-                  <label htmlFor='omb-date'>OMB Approval Date (Surveys Only): &nbsp;</label>
-                  <SingleDatePicker id="omb-date"
-                                    date={this.state.ombDate}
-                                    onDateChange={this.handleOmbDateChange}
-                                    focused={this.state.ombFocused}
-                                    onFocusChange={({ focused }) => this.setState({ ombFocused: focused })}
-                                    isOutsideRange={(day) => day.isAfter()}/>
-                </div>
-                <div className="col-md-12 question-form-group">
+                  <br />
                   <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
                   <DataCollectionSelect onChangeFunc={this.selectMethods} methods={this.state.methodsFilter} />
                 </div>
-              </div>
+                </Col>
+              </Row>
             </div>
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.clearAdvSearch} disabled={this.props.searchSource === 'simple_search'} bsStyle="primary">Clear Filters</Button>
+          <Button onClick={this.clearAdvSearch} disabled={this.props.searchSource === 'simple_search'} bsStyle="default">Clear Filters</Button>
           <Button onClick={this.hideAdvSearch} bsStyle="primary">Close</Button>
         </Modal.Footer>
       </Modal>
