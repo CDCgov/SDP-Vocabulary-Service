@@ -359,13 +359,13 @@ class DashboardSearch extends SearchStateComponent {
                   <label htmlFor="source-filter">Source <span className="label-note">(Response Sets Only):</span></label>
                   <select className="input-select" name="source-filter" id="source-filter" value={this.state.sourceFilter} onChange={(e) => this.toggleSource(e)} >
                     <option value="" disabled hidden>Select Source...</option>
+                    <option value=""></option>
                     <option value="local">SDPV Local</option>
                     <option value="PHIN_VADS">PHIN VADS</option>
                   </select>
                   <br />
                   <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
                   <DataCollectionSelect onChangeFunc={this.selectMethods} methods={this.state.methodsFilter} />
-                </div>
                 </Col>
               </Row>
             </div>
