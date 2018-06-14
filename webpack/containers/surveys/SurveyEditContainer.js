@@ -143,15 +143,34 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, ownProps) {
   const survey = state.surveys[ownProps.params.surveyId||0];
+  let sections = state.sections;
   var selectedSearchResults = {};
   if(survey && survey.surveySections){
     survey.surveySections.map((ss)=>{
       selectedSearchResults[ss.sectionId] = true;
+      const sectionWithNestedItems = Object.assign({}, sections[ss.sectionId]);
+      if (sectionWithNestedItems.sectionNestedItems && sectionWithNestedItems.sectionNestedItems[0]) {
+        sectionWithNestedItems.sectionNestedItems = sectionWithNestedItems.sectionNestedItems.map((sni) => {
+          let fullNestedItem = {};
+          if (sni.questionId && state.questions[sni.questionId]) {
+            fullNestedItem = state.questions[sni.questionId];
+            fullNestedItem.type = 'question';
+            return fullNestedItem;
+          } else if (sni.nestedSectionId && state.sections[sni.nestedSectionId]) {
+            fullNestedItem = state.sections[sni.nestedSectionId];
+            fullNestedItem.type = 'section';
+            return fullNestedItem;
+          } else {
+            return sni;
+          }
+        });
+      }
+      sections[ss.sectionId] = sectionWithNestedItems;
     });
   }
   return {
     survey: survey,
-    sections:  state.sections,
+    sections:  sections,
     questions: state.questions,
     stats: state.stats,
     currentUser: state.currentUser,
