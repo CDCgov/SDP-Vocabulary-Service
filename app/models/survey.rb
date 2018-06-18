@@ -109,7 +109,7 @@ class Survey < ApplicationRecord
     new_revision = Survey.new(version_independent_id: version_independent_id,
                               name: name, parent_id: parent_id,
                               version: version + 1, status: status,
-                              created_by: created_by, control_number: control_number)
+                              created_by: created_by, control_number: control_number, omb_approval_date: omb_approval_date)
     concepts.each do |c|
       new_revision.concepts << c.dup
     end

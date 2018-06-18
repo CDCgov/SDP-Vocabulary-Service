@@ -329,3 +329,21 @@ Feature: Manage Surveys
     And I click on the menu link for the Section with the name "New Section"
     And I click on the "Details" link
     Then I should see "Edit"
+
+    Scenario: Approval Data visible only when there is OMB Approval Code
+      Given I have a Survey with the name "Search Survey Test" and the description "Test"
+      And I am logged in as test_author@gmail.com
+      And I go to the dashboard
+      And I click on the create "Surveys" dropdown item
+      And I fill in the "survey-name" field with "Test2 Survey"
+      And I fill in the "survey-description" field with "OMB Date Test"
+      Then I should not see "OMB Approval Date"
+      And I fill in the "controlNumber" field with "1234-1234"
+      Then I should see "OMB Approval Date"
+      And I fill in the "ombApprovalDate" field with "12/12/2015"
+      And I click on the "Save" button
+      When I go to the dashboard
+      And I go to the list of Surveys
+      And I click on the menu link for the Survey with the name "Test2 Survey"
+      And I click on the option to Edit the Survey with the name "Test2 Survey"
+      Then I should see "OMB Approval Date"
