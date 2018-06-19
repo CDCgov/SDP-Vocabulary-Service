@@ -314,7 +314,7 @@ export default class SearchResult extends Component {
 
   sectionPanel(result) {
     if (result.sectionNestedItems && result.sectionNestedItems.length > 0) {
-      if (result.sectionNestedItems[0].type) {
+      if (result.sectionNestedItems[0] && result.sectionNestedItems[0].type) {
         return (result.sectionNestedItems.map((ni, i) => {
           if(ni !== undefined) {
             return(

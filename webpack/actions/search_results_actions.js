@@ -16,7 +16,7 @@ import {
 
 const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter', 'nsFilter',
   'rtFilter', 'sourceFilter', 'categoryFilter', 'preferredFilter', 'statusFilter', 'methodsFilter',
-  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId'];
+  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId', 'ombDate'];
 
 export class SearchParameters {
   constructor(params) {
@@ -44,6 +44,13 @@ export class SearchParameters {
         params.contentSince = this.contentSince.format('YYYY-MM-DD');
       } else {
         params.contentSince = this.contentSince;
+      }
+    }
+    if (this.ombDate) {
+      if (this.ombDate.format) {
+        params.ombDate = this.ombDate.format('YYYY-MM-DD');
+      } else {
+        params.ombDate = this.ombDate;
       }
     }
     return params;

@@ -1,4 +1,5 @@
 # rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
 require 'elasticsearch'
 require 'sdp/elastic_search'
 require 'sdp/simple_search'
@@ -26,6 +27,7 @@ class ElasticsearchController < ApplicationController
     must_filters['rt'] = params[:rt] ? params[:rt].underscore.split(' ')[0] : ''
     must_filters['source'] = params[:source] ? params[:source] : ''
     must_filters['data_collection_methods'] = params[:methods]
+    must_filters['omb_approval_date'] = params[:ombDate]
     results = if SDP::Elasticsearch.ping
                 SDP::Elasticsearch.search(type, query_string, page, query_size, must_filters, current_user_id, groups)
               else
@@ -61,3 +63,4 @@ class ElasticsearchController < ApplicationController
   end
 end
 # rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/MethodLength
