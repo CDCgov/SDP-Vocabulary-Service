@@ -1,0 +1,28 @@
+mc:
+ name: 'Managing & Commanding'
+ category: ep
+operations:
+  name: 'Operations'
+  category: ep
+planning:
+  name: 'Planning/Intelligence'
+  category: ep
+logistics:
+  name: 'Logistics'
+  category: ep
+financial:
+  name: 'Financial/Administration'
+  category: ep
+
+travel:
+ name: 'Travel'
+ category: epidemiological
+contact:
+  name: 'Contact or Exposure'
+  category: epidemiological
+drug_abuse:
+  name: 'Drug Abuse'
+  category: epidemiological
+sexual_behavior:
+  name: 'Sexual Behavior'
+  category: epidemiological

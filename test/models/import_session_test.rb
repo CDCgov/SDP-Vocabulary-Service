@@ -30,7 +30,7 @@ class ImportSessionTest < ActiveSupport::TestCase
   test 'check! with non-MMG Excel file' do
     @import_type = 'mmg'
     assert_difference 'ImportSession.count' do
-      import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplate.xlsx', mode: 'rb'),
+      import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplateMini.xlsx', mode: 'rb'),
                                          created_by: @user, original_filename: 'TestGenericTemplate.xlsx')
       import_session.check!(@import_type)
       assert_equal 'This Excel file does not contain any tabs. with the expected mmg column name format and will not be imported. Refer to "How to Identify Sections, Templates, or Repeating Groups" in the "Import Content" Help Documentation for more information.', import_session.import_errors.first
@@ -60,17 +60,19 @@ class ImportSessionTest < ActiveSupport::TestCase
 
   test 'create_survey! for generic' do
     @user = users(:admin)
-    @import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplate.xlsx', mode: 'rb'),
-                                        created_by: @user, original_filename: 'TestGenericTemplate.xlsx')
+    @import_session = ImportSession.new(spreadsheet: File.read('./test/fixtures/files/TestGenericTemplateMini.xlsx', mode: 'rb'),
+                                        created_by: @user, original_filename: 'TestGenericTemplateMini.xlsx')
 
     @import_type = 'generic'
     @import_session.check!(@import_type)
     @import_session.reload
     assert_difference 'Survey.count' do
-      @import_session.create_survey!(@import_type)
+      assert_difference('Response.count', 4) do
+        @import_session.create_survey!(@import_type)
+      end
     end
     sleep 15
     assert @import_session.survey
-    assert_equal 7, @import_session.survey.sections.count
+    assert_equal 1, @import_session.survey.sections.count
   end
 end

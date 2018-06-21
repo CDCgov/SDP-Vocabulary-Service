@@ -9,8 +9,8 @@ class MMGTest < ActiveSupport::TestCase
   RESPONSE_COUNT = 6
 
   GENERIC_SURVEY_COUNT = 1
-  GENERIC_SECTION_COUNT = 3
-  GENERIC_QUESTION_COUNT = 4
+  GENERIC_SECTION_COUNT = 4
+  GENERIC_QUESTION_COUNT = 5
   GENERIC_RESPONSE_SET_COUNT = 1
   GENERIC_RESPONSE_COUNT = 4
 
@@ -47,6 +47,9 @@ class MMGTest < ActiveSupport::TestCase
     assert section.present?
     assert_equal section.questions.first.concepts.first.value, 'INV920'
     assert_equal section.questions.first.concepts.first.display_name, 'Data Element Identifier'
+    section = Section.where(name: 'Form2 Completion Metadata').first
+    assert section.present?
+    assert_equal section.concepts.last.value, 'Sheet1'
 
     survey = Survey.where(name: f).first
     assert survey.sections.count, SECTION_COUNT

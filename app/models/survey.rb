@@ -46,14 +46,15 @@ class Survey < ApplicationRecord
   def potential_duplicates(current_user)
     dupes = []
     sections.each do |s|
-      sect_dupe_count = s.q_with_dupes_count(current_user)
-      next unless sect_dupe_count > 0
       q_count = 0
       rs_count = 0
       sect_dupes = s.potential_duplicates(current_user)
+      sect_dupes[:response_sets] ||= []
       q_count = sect_dupes[:questions].length if sect_dupes[:questions]
       rs_count = sect_dupes[:response_sets].length if sect_dupes[:response_sets]
-      dupes << { id: s.id, name: s.name, q_count: q_count, rs_count: rs_count, dupes: sect_dupes }
+      if q_count + rs_count > 0
+        dupes << { id: s.id, name: s.name, q_count: q_count, rs_count: rs_count, dupes: sect_dupes }
+      end
     end
     dupes
   end
@@ -108,7 +109,7 @@ class Survey < ApplicationRecord
     new_revision = Survey.new(version_independent_id: version_independent_id,
                               name: name, parent_id: parent_id,
                               version: version + 1, status: status,
-                              created_by: created_by, control_number: control_number)
+                              created_by: created_by, control_number: control_number, omb_approval_date: omb_approval_date)
     concepts.each do |c|
       new_revision.concepts << c.dup
     end

@@ -62,12 +62,12 @@ export function fetchQuestionUsage(id) {
   };
 }
 
-export function saveQuestion(question, successHandler=null, failureHandler=null) {
+export function saveQuestion(question, comment, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();
   const linkedResponseSets = question.linkedResponseSets ? question.linkedResponseSets.map((rs) => rs.id) : [];
   delete question.linkedResponseSets;
   const postPromise = axios.post(routes.questionsPath(),
-                      {question, authenticityToken, linkedResponseSets},
+                      {question, comment, authenticityToken, linkedResponseSets},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (failureHandler) {
     postPromise.catch(failureHandler);
@@ -81,12 +81,12 @@ export function saveQuestion(question, successHandler=null, failureHandler=null)
   };
 }
 
-export function saveDraftQuestion(id, question, callback=null) {
+export function saveDraftQuestion(id, question, comment, callback=null) {
   const authenticityToken  = getCSRFToken();
   const linkedResponseSets = question.linkedResponseSets ? question.linkedResponseSets.map((rs) => rs.id) : [];
   delete question.linkedResponseSets;
   const putPromise = axios.put(routes.questions_path()+'/'+id,
-                      {question, authenticityToken, linkedResponseSets},
+                      {question, comment, authenticityToken, linkedResponseSets},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (callback) {
     putPromise.then(callback);

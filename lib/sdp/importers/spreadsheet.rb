@@ -1,15 +1,17 @@
 module SDP
   module Importers
     class NestedItem
-      attr_accessor :name, :type, :items, :data_element
+      attr_accessor :name, :type, :items, :data_element, :de_tab_name
 
       def initialize(type = :data_element)
         @name = name
         @type = type
         @items = []
+        @de_tab_name = 'Data Elements'
       end
 
-      def add_item(item)
+      def add_item(item, tab_name)
+        @de_tab_name = tab_name
         @items << item
       end
     end
@@ -154,7 +156,7 @@ module SDP
       attr_accessor :type, :text, :error
 
       def initialize(row_contents)
-        trimmed_contents = row_contents.strip
+        trimmed_contents = row_contents ? row_contents.strip : ''
         { section_start: START_REGEX, section_end: END_REGEX, note: NOTE_REGEX }.each_pair do |k, v|
           match_result = v.match(trimmed_contents)
           next unless match_result
@@ -212,23 +214,27 @@ module SDP
           code_system_version: 'Code System Version'
         },
         rs_columns: {
-          name: 'Response Set Name',
-          description: 'Response Set Description',
-          display_name: 'Display Name',
-          value: 'Response',
-          system: 'Code System Identifier (optional)'
+          name: 'Response Set Name (R)',
+          description: 'Response Set Description (O)',
+          display_name: 'Display Name (R)',
+          value: 'Response (R)',
+          system: 'Code System Identifier (O)'
         },
         tag_columns: {
           name: 'Tag Name (R)',
           value: 'Tag Value (R)',
           system: 'Code System Identifier (O)'
         },
+        # Note that response_types does not contain all possible values.
+        # It only contains values that can appear in MMG files.
+        # This appears to be the complete set, but with MMGs, it can be hard to tell.
         response_types: {
           'Date' => :date,
           'Coded' => :choice,
           'Numeric' => :decimal,
           'Text' => :text,
-          'Date/time' => :dateTime
+          'Date/time' => :dateTime,
+          'String' => :string
         }
       }.freeze
 
@@ -246,6 +252,7 @@ module SDP
         @oid_matcher = /^([\.\d]+)$/
         @valueset_sheet = /Valueset.*/
         @local_response_sets = {}
+        @top_level.de_tab_name = @config[:de_tab_name]
 
         # Put this into a variable somewhere appropriate that can be referenced by multiple classes
 
@@ -322,7 +329,7 @@ module SDP
             next if row[:name] == column_names[:name]
             # section start/end
             if row[:data_type].nil?
-              process_section_marker(row)
+              process_section_marker(row, sheet)
               next
             end
             data_element = extract_data_element(sheet, row)
@@ -331,7 +338,8 @@ module SDP
             # add the data element unless a matching data element is already present
             ni = NestedItem.new
             ni.data_element = data_element
-            @current_section.add_item(ni) unless @current_section.items.map(&:data_element).include? data_element
+            @current_section.de_tab_name = sheet
+            @current_section.add_item(ni, sheet) unless @current_section.items.map(&:data_element).include? data_element
           end
           sectionize_top_level_questions(sheet)
           # Reset to top level to prevent mismatched sections causing issues
@@ -368,7 +376,7 @@ module SDP
           if nested_item.type == :data_element
           end
           section = Section.new(name: nested_item.name || "Imported Section ##{section_position + 1}", created_by: @user)
-          section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+          section.concepts << Concept.new(display_name: 'MMG Tab Name', value: nested_item.de_tab_name)
           section.save!
           s.survey_sections.create(section: section, position: section_position)
           section_position += 1
@@ -383,6 +391,7 @@ module SDP
           if item.type == :data_element
             rs = nil
             concepts = nil
+
             if item.data_element.value_set_oid
               rs = response_set_for_vads(item.data_element)
             elsif item.data_element.value_set_tab_name.present?
@@ -392,6 +401,7 @@ module SDP
               concepts = item.data_element.concepts
             end
             q = item.data_element.to_question(@user)
+
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
             q.concepts << concepts if concepts
@@ -399,7 +409,7 @@ module SDP
             parent_section.section_nested_items << nsi
           else
             section = Section.new(name: item.name || "Imported Section ##{i + 1}", created_by: @user)
-            section.concepts << Concept.new(display_name: 'MMG Tab Name', value: @config[:de_tab_name])
+            section.concepts << Concept.new(display_name: 'MMG Tab Name', value: item.de_tab_name)
             section.parent = parent_section
             section.save!
             nsi = SectionNestedItem.new(nested_section: section, position: i)
@@ -449,11 +459,11 @@ module SDP
           end
         rescue Roo::HeaderRowNotFoundError
           if sheet.header_line == 1
-            @warnings << "On '#{sheet}' tab there is a missing header row in #{name}, retrying" # warning
+            @warnings << "On '#{name}' tab there is a missing header row , retrying" # warning
             sheet.header_line = 2
             retry
           else
-            @warnings << "Unable to process value set from #{name} in tab #{sheet} as no header rows found" # warning
+            @warnings << "Unable to process value set from tab #{name} as no header rows found" # warning
           end
         end
         value_set
@@ -488,6 +498,7 @@ module SDP
           else
             if current_top_level_section.blank?
               current_top_level_section = NestedItem.new(:section)
+              current_top_level_section.de_tab_name = sheet
               current_top_level_section.name = sheet
             end
             current_top_level_section.items << i
@@ -560,7 +571,7 @@ module SDP
         data_element
       end
 
-      def process_section_marker(row)
+      def process_section_marker(row, sheet)
         column_name = if @config[:mmg]
                         :section_name
                       else
@@ -570,7 +581,7 @@ module SDP
         mr = MarkerRow.new(row_contents)
         case mr.type
         when :section_start
-          start_section(mr.text)
+          start_section(mr.text, sheet)
         when :section_end
           if @current_section.name != mr.text
             @warnings << "Mismatched section end: expected #{@current_section.name}, found #{mr.text}"
@@ -584,10 +595,11 @@ module SDP
         end
       end
 
-      def start_section(name)
+      def start_section(name, sheet)
         new_section = NestedItem.new(:section)
         new_section.name = name
-        @current_section.add_item(new_section)
+        @current_section.de_tab_name = sheet
+        @current_section.add_item(new_section, sheet)
         @parent_sections.push(@current_section)
         @current_section = new_section
       end

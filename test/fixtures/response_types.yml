@@ -1,31 +1,63 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
 #
-one:
-  name: "Response Set"
-# column: value
-#
-two:
-  name: "Integer"
-# column: value
-three:
-  name: "Date"
-  code: "date"
-four:
-  name: "Choice"
-  code: "choice"
-five:
-  name: "Decimal"
-  code: "decimal"
-six:
-  name: "Text"
-  code: "text"
-seven:
-  name: "Date Time"
-  code: "dateTime"
-eight:
-  name: "Open Choice"
-  code: "openChoice"
+# This is based on the FHIR ValueSet - https://www.hl7.org/fhir/DSTU2/valueset-answer-format.html
+boolean:
+  code: 'boolean'
+  name: 'Boolean'
+  description: 'Answer is a yes/no answer.'
+decimal:
+  code: 'decimal'
+  name: 'Decimal'
+  description: 'Answer is a floating point number.'
+integer:
+  code: 'integer'
+  name: 'Integer'
+  description: 'Answer is an integer.'
+date:
+  code: 'date'
+  name: 'Date'
+  description: 'Answer is a date.'
+date_time:
+  code: 'dateTime'
+  name: 'Date Time'
+  description: 'Answer is a date and time.'
+instant:
+  code: 'instant'
+  name: 'Instant'
+  description: 'Answer is a system timestamp.'
+time:
+  code: 'time'
+  name: 'Time'
+  description: 'Answer is a time (hour/minute/second) independent of date.'
+string:
+  code: 'string'
+  name: 'String'
+  description: 'Answer is a short (few words to short sentence) free-text entry.'
+text:
+  code: 'text'
+  name: 'Text'
+  description: 'Answer is a long (potentially multi-paragraph) free-text entry (still captured as a string).'
+url:
+  code: 'url'
+  name: 'Url'
+  description: 'Answer is a url (website, FTP site, etc.).'
+choice:
+  code: 'choice'
+  name: 'Choice'
+  description: 'Answer is a Coding drawn from a list of options.'
+open_choice:
+  code: 'open-choice'
+  name: 'Open Choice'
+  description: 'Answer is a Coding drawn from a list of options or a free-text entry.'
+attachment:
+  code: 'attachment'
+  name: 'Attachment'
+  description: 'Answer is binary content such as a image, PDF, etc.'
+reference:
+  code: 'reference'
+  name: 'Reference'
+  description: 'Answer is a reference to another resource (practitioner, organization, etc.).'
+quantity:
+  code: 'quantity'
+  name: 'Quantity'
+  description: 'Answer is a combination of a numeric value and unit, potentially with a comparator (<, >, etc.).'

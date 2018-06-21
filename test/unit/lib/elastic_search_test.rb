@@ -1,6 +1,7 @@
 require 'test_helper'
 
 require 'sdp/elastic_search'
+require 'elastic_helpers'
 
 class ElasticSearchTest < ActiveSupport::TestCase
   def test_ensure_index
@@ -25,7 +26,7 @@ class ElasticSearchTest < ActiveSupport::TestCase
   end
 
   def test_search_all
-    SDP::Elasticsearch.search(nil, nil, 1, 10, -1, true)
+    SDP::Elasticsearch.search(nil, nil, 1, 10)
     req = FakeWeb.last_request
     assert_equal 'GET', req.method
     assert_equal '/vocabulary/_search', req.path
@@ -43,5 +44,31 @@ class ElasticSearchTest < ActiveSupport::TestCase
     req = FakeWeb.last_request
     assert_equal 'GET', req.method
     assert_equal '/vocabulary/question/_search', req.path
+  end
+
+  def test_batch_find_duplicates
+    SDP::Elasticsearch.batch_find_duplicates([questions(:one), questions(:two)], users(:admin).id)
+    req = FakeWeb.last_request
+    assert_equal 'GET', req.method
+    assert_equal '/_msearch', req.path
+  end
+
+  def test_batch_duplicate_finder
+    old_impl = SDP::Elasticsearch.singleton_method(:batch_find_duplicates)
+    begin
+      SDP::Elasticsearch.define_singleton_method(:batch_find_duplicates) do |objs, _user_id, _groups|
+        { 'responses' => objs }
+      end
+      bdf = SDP::Elasticsearch::BatchDuplicateFinder.new
+      bdf.add_to_batch('foo', :test_category) do |result|
+        assert_equal 'foo', result
+        'dupe question'
+      end
+      batch_result = bdf.execute(users(:admin).id)
+      assert batch_result
+      assert_equal 'dupe question', batch_result[:test_category].first
+    ensure
+      SDP::Elasticsearch.define_singleton_method(:batch_find_duplicates, old_impl)
+    end
   end
 end

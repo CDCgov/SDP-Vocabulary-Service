@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import values from 'lodash/values';
+import $ from 'jquery';
 
 import { questionProps } from '../../prop-types/question_props';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -12,6 +13,7 @@ import ResponseSetModal from '../../containers/response_sets/ResponseSetModal';
 import ResponseSetDragWidget from '../../containers/response_sets/ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import SearchResultList from '../../components/SearchResultList';
+import DataCollectionSelect from '../DataCollectionSelect';
 
 class QuestionEdit extends Component {
   constructor(props) {
@@ -30,6 +32,7 @@ class QuestionEdit extends Component {
         this.state = this.stateForRevise();
     }
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
+    this.handleDataCollectionMethodsChange = this.handleDataCollectionMethodsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
     this.unsavedState = false;
   }
@@ -82,7 +85,7 @@ class QuestionEdit extends Component {
       this.unsavedState = false;
       this.props.router.push(this.nextLocation.pathname);
     }else{
-      this.props.questionSubmitter(this.state, () => {
+      this.props.questionSubmitter(this.state, this.state.comment, () => {
         this.unsavedState = false;
         this.props.router.push(this.nextLocation.pathname);
       }, (failureResponse) => {
@@ -99,7 +102,8 @@ class QuestionEdit extends Component {
     return {
       showWarningModal: false,
       showResponseSetModal: false,
-      showPotentialDuplicates: false
+      showPotentialDuplicates: false,
+      comment: ''
     };
   }
 
@@ -114,6 +118,7 @@ class QuestionEdit extends Component {
       responseTypeId: null,
       conceptsAttributes: [],
       linkedResponseSets: [],
+      dataCollectionMethods: [],
       otherAllowed: false
     };
   }
@@ -128,6 +133,7 @@ class QuestionEdit extends Component {
       responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
     questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
     questionCopy.linkedResponseSets = this.props.question.responseSets || [];
+    questionCopy.dataCollectionMethods = this.props.question.dataCollectionMethods || [];
     return questionCopy;
   }
 
@@ -228,13 +234,19 @@ class QuestionEdit extends Component {
                     <textarea className="input-format" tabIndex="3" placeholder="Question description" type="text" name="question-description" id="question-description" defaultValue={state.description} onChange={this.handleChange('description')} />
                   </div>
 
-                <div className="col-md-4 question-form-group">
-                  <label className="input-label" htmlFor="responseTypeId">Response Type</label>
+                  <div className="col-md-4 question-form-group">
+                    <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" tabIndex="3" id="responseTypeId" className="input-select" value={state.responseTypeId || undefined} onChange={this.handleResponseTypeChange()} >
                       {this.sortedResponseTypes(this.props.responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
                       })}
                     </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-8 question-form-group">
+                    <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method</label>
+                    <DataCollectionSelect onChangeFunc={this.handleDataCollectionMethodsChange()} methods={state.dataCollectionMethods} />
                   </div>
                 </div>
                 {this.otherAllowedBox()}
@@ -262,14 +274,20 @@ class QuestionEdit extends Component {
                   <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange}
                                          selectedResponseSets={this.state.linkedResponseSets} />
                 : ''}
-              </div>
-              <div>
-                { this.state.showPotentialDuplicates && this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
-                  <SearchResultList searchResults={this.props.potentialDuplicates}
-                                    isEditPage={false}
-                                    currentUser={this.props.currentUser}
-                                    title="Potential Duplicate Questions"/>
-                }
+                <div>
+                  { this.state.showPotentialDuplicates && this.props.potentialDuplicates && this.props.potentialDuplicates.hits && this.props.potentialDuplicates.hits.total > 0 &&
+                    <SearchResultList searchResults={this.props.potentialDuplicates}
+                                      isEditPage={false}
+                                      currentUser={this.props.currentUser}
+                                      title="Potential Duplicate Questions"/>
+                  }
+                </div>
+                {this.props.action === 'edit' && <div className="row">
+                  <div className="col-md-8 question-form-group">
+                    <label className="input-label"  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
+                    <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." value={state.comment} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
+                  </div>
+                </div>}
               </div>
               <div className="panel-footer">
                 <div className="actions form-group">
@@ -325,7 +343,7 @@ class QuestionEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.props.action === 'edit') {
-      this.props.draftSubmitter(this.props.id, this.state, (response) => {
+      this.props.draftSubmitter(this.props.id, this.state, this.state.comment, (response) => {
         // TODO: Handle when the saving question fails.
         this.unsavedState = false;
         if (response.status === 200) {
@@ -333,7 +351,7 @@ class QuestionEdit extends Component {
         }
       });
     } else {
-      this.props.questionSubmitter(this.state, (successResponse) => {
+      this.props.questionSubmitter(this.state, this.state.comment, (successResponse) => {
         this.unsavedState = false;
         if (this.props.action === 'new') {
           let stats = Object.assign({}, this.props.stats);
@@ -393,6 +411,13 @@ class QuestionEdit extends Component {
     } else {
       return '';
     }
+  }
+
+  handleDataCollectionMethodsChange(){
+    return (event) => {
+      this.setState({dataCollectionMethods: $(event.target).val()});
+      this.unsavedState = true;
+    };
   }
 
   handleResponseSetsChange(newResponseSets){

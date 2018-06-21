@@ -1,6 +1,6 @@
 json.extract! @survey, :id, :name, :description, :created_at, :updated_at, :survey_sections, \
               :version_independent_id, :version, :most_recent, :most_recent_published, :concepts, \
-              :control_number, :created_by_id, :status, :published_by, :parent, :groups, :preferred
+              :control_number, :omb_approval_date, :created_by_id, :status, :published_by, :parent, :groups, :preferred
 json.user_id @survey.created_by.email if @survey.created_by.present?
 json.surveillance_system_id @survey.surveillance_system.id if @survey.surveillance_system.present?
 json.surveillance_program_id @survey.surveillance_program.id if @survey.surveillance_program.present?
@@ -16,7 +16,7 @@ json.all_versions @survey.all_versions do |s|
 end
 
 json.versions @survey.paper_trail_versions do |version|
-  json.extract! version, :created_at
+  json.extract! version, :created_at, :comment
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
   version.changeset.each_pair do |field, arr|

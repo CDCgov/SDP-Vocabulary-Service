@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180517161140) do
+ActiveRecord::Schema.define(version: 20180612154248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,9 +38,10 @@ ActiveRecord::Schema.define(version: 20180517161140) do
     t.integer "commentable_id"
     t.integer "user_id"
     t.string "role", default: "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["commentable_id"], name: "index_comments_on_commentable_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["commentable_type"], name: "index_comments_on_commentable_type"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 20180517161140) do
     t.bigint "category_id"
     t.boolean "preferred"
     t.integer "duplicates_replaced_count", default: 0
+    t.string "data_collection_methods", default: [], array: true
     t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id"
     t.index ["response_type_id"], name: "index_questions_on_response_type_id"
@@ -189,10 +191,11 @@ ActiveRecord::Schema.define(version: 20180517161140) do
     t.string "name"
     t.string "resource_type"
     t.integer "resource_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
   create_table "section_nested_items", id: :serial, force: :cascade do |t|
@@ -268,6 +271,7 @@ ActiveRecord::Schema.define(version: 20180517161140) do
     t.integer "published_by_id"
     t.integer "parent_id"
     t.boolean "preferred"
+    t.date "omb_approval_date"
     t.index ["created_by_id"], name: "index_surveys_on_created_by_id"
   end
 
@@ -297,7 +301,9 @@ ActiveRecord::Schema.define(version: 20180517161140) do
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
+    t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -308,6 +314,7 @@ ActiveRecord::Schema.define(version: 20180517161140) do
     t.text "object"
     t.datetime "created_at"
     t.text "object_changes"
+    t.string "comment"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 

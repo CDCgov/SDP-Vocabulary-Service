@@ -34,6 +34,7 @@ class ChangeHistoryTab extends Component {
                   return (<li key={key}><strong>{`"${key}"`}</strong>{` field changed from "${version.changeset[key][0]}" to "${version.changeset[key][1]}"`}</li>);
                 })}
               </ul>
+              {version.comment && <p><strong>Notes / Comments:</strong> {version.comment}</p>}
             </div>
           );
         })}

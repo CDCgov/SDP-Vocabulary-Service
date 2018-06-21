@@ -131,6 +131,7 @@ Feature: Manage Surveys
     And I fill in the "value_0" field with "Test Concept 1"
     And I fill in the "value_1" field with "Test Concept 2"
     And I click on the "remove_0" link
+    And I fill in the "save-with-comment" field with "Testing comment functionality on edit"
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
     And I should see "Survey description"
@@ -141,6 +142,10 @@ Feature: Manage Surveys
     And I should not see "Publish"
     And I should see "Edit"
     And I should see "Surveillance System: National Violent Death Reporting System"
+    When I click on the "Change History" link
+    Then I should see "Notes / Comments: Testing comment functionality on edit"
+    Then I should see "Changes by test_author@gmail.com"
+    And I should see "field changed from"
 
   Scenario: Reorder sections on a Survey
     Given I have a published Survey with the name "Test Survey"
@@ -314,10 +319,31 @@ Feature: Manage Surveys
     And I click on the "search-btn" button
     And I use the section search to select "New Section"
     And I click on the "Save" button
+    And I wait 2 seconds
+    Then I should see "Name: Search Survey Test"
     When I am logged in as new_user_in_group1@gmail.com
-    And I go to the dashboard
+    And I wait 2 seconds
+    Then I go to the dashboard
     And I fill in the "search" field with "New Section"
     And I click on the "search-btn" button
     And I click on the menu link for the Section with the name "New Section"
     And I click on the "Details" link
     Then I should see "Edit"
+
+    Scenario: Approval Data visible only when there is OMB Approval Code
+      Given I have a Survey with the name "Search Survey Test" and the description "Test"
+      And I am logged in as test_author@gmail.com
+      And I go to the dashboard
+      And I click on the create "Surveys" dropdown item
+      And I fill in the "survey-name" field with "Test2 Survey"
+      And I fill in the "survey-description" field with "OMB Date Test"
+      Then I should not see "OMB Approval Date"
+      And I fill in the "controlNumber" field with "1234-1234"
+      Then I should see "OMB Approval Date"
+      And I fill in the "ombApprovalDate" field with "12/12/2015"
+      And I click on the "Save" button
+      When I go to the dashboard
+      And I go to the list of Surveys
+      And I click on the menu link for the Survey with the name "Test2 Survey"
+      And I click on the option to Edit the Survey with the name "Test2 Survey"
+      Then I should see "OMB Approval Date"

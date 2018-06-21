@@ -1,5 +1,5 @@
 json.extract! question, :id, :content, :created_at, :created_by, :created_by_id, :updated_at, :category_id, :concepts, :description, :status, \
-              :category, :version, :version_independent_id, :other_versions, :most_recent, :response_sets, :response_type, \
+              :category, :version, :version_independent_id, :other_versions, :most_recent, :response_sets, :response_type, :data_collection_methods, \
               :parent, :other_allowed, :published_by, :most_recent_published, :subcategory, :groups, :linked_response_sets, :preferred
 json.url question_url(question, format: :json)
 
@@ -14,7 +14,7 @@ json.all_versions question.all_versions do |q|
 end
 
 json.versions question.paper_trail_versions do |version|
-  json.extract! version, :created_at
+  json.extract! version, :created_at, :comment
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
   version.changeset.each_pair do |field, arr|

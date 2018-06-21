@@ -3,7 +3,7 @@ pipeline {
   agent none
 
   options {
-    timeout(time: 1, unit: 'HOURS')
+    timeout(time: 90, unit: 'MINUTES')
   }
 
   stages {
@@ -117,7 +117,7 @@ pipeline {
 
       steps {
         updateSlack('#FFFF00', 'Starting build for development environment')
-        
+
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
           waitTime: '20', waitUnit: 'min'

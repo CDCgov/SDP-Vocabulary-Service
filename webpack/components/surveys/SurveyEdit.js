@@ -20,12 +20,14 @@ class SurveyEdit extends Component {
   stateForNew(currentUser) {
     return {
       id: null,
+      comment: '',
       name: '',
       version: 1,
       conceptsAttributes: [],
       description: '',
       surveySections: [],
       controlNumber: null,
+      ombApprovalDate : '',
       versionIndependentId: null,
       showModal: false,
       progSysModalOpen: false,
@@ -41,6 +43,7 @@ class SurveyEdit extends Component {
     state.version = 1;
     state.parentId = survey.id;
     state.controlNumber = '';
+    state.ombApprovalDate = '';
     state.groups = [];
     return state;
   }
@@ -53,6 +56,7 @@ class SurveyEdit extends Component {
     newState.description = survey.description || '';
     newState.surveySections = survey.surveySections || [];
     newState.controlNumber = survey.controlNumber;
+    newState.ombApprovalDate = survey.ombApprovalDate;
     newState.parentId = survey.parent ? survey.parent.id : '';
     newState.surveillanceProgramId = survey.surveillanceProgramId || newState.surveillanceProgramId;
     newState.surveillanceSystemId = survey.surveillanceSystemId || newState.surveillanceSystemId;
@@ -125,7 +129,7 @@ class SurveyEdit extends Component {
       // Because we were saving SurveySections with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
       // At some point, we can remove this code
       survey.linkedSections = this.state.surveySections.map((sect, i) => ({id: sect.id, surveyId: sect.surveyId, sectionId: sect.sectionId, position: i}));
-      this.props.surveySubmitter(survey, (response) => {
+      this.props.surveySubmitter(survey, this.state.comment, (response) => {
         // TODO: Handle when the saving survey fails.
         this.unsavedState = false;
         if (response.status === 201) {
@@ -153,7 +157,7 @@ class SurveyEdit extends Component {
     // Because of the way we have to pass the current sections in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
     survey.linkedSections = this.state.surveySections;
-    this.props.surveySubmitter(survey, (response) => {
+    this.props.surveySubmitter(survey, this.state.comment, (response) => {
       this.unsavedState = false;
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
@@ -215,6 +219,12 @@ class SurveyEdit extends Component {
             <div className="survey-group col-md-4">
               <label htmlFor="controlNumber">OMB Approval</label>
               <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
+              { this.state.controlNumber !== '' && this.state.controlNumber !== null &&
+                <div>
+                  <label htmlFor="ombApprovalDate">OMB Approval Date</label>
+                  <input tabIndex="3" className="input-format" type="date" placeholder="mm/dd/yyyy" value={this.state.ombApprovalDate || ''} name ="ombApprovalDate" id="ombApprovalDate" onChange={this.handleChange('ombApprovalDate')}/>
+                </div>
+              }
             </div>
           </div>
           <div className="row">
@@ -246,6 +256,10 @@ class SurveyEdit extends Component {
                    initialItems={this.state.conceptsAttributes}
                    parentName={'survey'}
                    childName={'tag'} />
+          {this.props.action === 'edit' && <div className="survey-group">
+            <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
+            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
+          </div>}
           <SurveySectionList survey={this.state}
                           sections ={this.props.sections}
                           questions  ={this.props.questions}

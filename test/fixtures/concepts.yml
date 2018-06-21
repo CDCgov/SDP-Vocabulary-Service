@@ -49,3 +49,9 @@ ten:
   value: Generic
   taggable: one (Survey)
   code_system: MMG
+
+eleven:
+  value: 1234-5
+  taggable: one (Question)
+  code_system: LOINC
+  display_name: Data Element Identifier

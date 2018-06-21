@@ -44,7 +44,8 @@ class SectionEdit extends Component {
     const conceptsAttributes = filterConcepts(section.concepts) || [];
     const linkedResponseSets = this.findLinkedResponseSets(sectionNestedItems);
     const groups = section.groups || [];
-    return {sectionNestedItems, name, id, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, groups};
+    const comment = '';
+    return {sectionNestedItems, name, id, comment, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, groups};
   }
 
   constructor(props) {
@@ -71,6 +72,7 @@ class SectionEdit extends Component {
     this.removeNestedItem = this.removeNestedItem.bind(this);
     this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
+    this.handleChangeComment = this.handleChangeComment.bind(this);
     this.moveNestedItemDown = this.moveNestedItemDown.bind(this);
     this.handleModalResponse = this.handleModalResponse.bind(this);
     this.handleProgramVarChange   = this.handleProgramVarChange.bind(this);
@@ -112,7 +114,7 @@ class SectionEdit extends Component {
     this.setState({ showWarningModal: false });
     let section = Object.assign({}, this.state);
     section.linkedItems = this.state.sectionNestedItems;
-    this.props.sectionSubmitter(section, (response) => {
+    this.props.sectionSubmitter(section, this.state.comment, (response) => {
       // TODO: Handle when the saving section fails.
       this.unsavedState = false;
       if (response.status === 201) {
@@ -160,6 +162,10 @@ class SectionEdit extends Component {
     this.handleChange('name', event);
   }
 
+  handleChangeComment(event){
+    this.handleChange('comment', event);
+  }
+
   handleChangeDescription(event){
     this.handleChange('description', event);
   }
@@ -169,7 +175,7 @@ class SectionEdit extends Component {
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let section = Object.assign({}, this.state);
     section.linkedItems = this.state.sectionNestedItems;
-    this.props.sectionSubmitter(section, (response) => {
+    this.props.sectionSubmitter(section, this.state.comment, (response) => {
       this.unsavedState = false;
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
@@ -342,6 +348,10 @@ class SectionEdit extends Component {
                      parentName={'section'}
                      childName={'tag'} />
           </div>
+          {this.props.action === 'edit' && <div className="section-group">
+            <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
+            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChangeComment}/>
+          </div>}
         {this.addedNestedItems()}
       </form>
       </div>

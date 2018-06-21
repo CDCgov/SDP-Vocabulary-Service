@@ -1,6 +1,14 @@
+require './lib/sdp/elastic_search'
+
 class SurveysController < ApplicationController
+  before_action :load_survey_with_children, only: :show
   load_and_authorize_resource
   before_action :set_paper_trail_whodunnit
+
+  def info_for_paper_trail
+    comment = request.params[:comment] || ''
+    { comment: comment }
+  end
 
   def index
     @users = User.all
@@ -107,7 +115,7 @@ class SurveysController < ApplicationController
 
   # GET /surveys/1/duplicates
   def duplicates
-    if SDP::Elasticsearch.ping
+    if ::SDP::Elasticsearch.ping
       render json: @survey.potential_duplicates(current_user), status: :ok
     else
       render json: { msg: 'Request cannot be processed as Elasticsearch appears to be down.' }, status: :unprocessable_entity
@@ -139,6 +147,10 @@ class SurveysController < ApplicationController
 
   private
 
+  def load_survey_with_children
+    @survey = Survey.includes(sections: [:groups]).find(params[:id])
+  end
+
   def can_survey_be_created?(survey)
     if survey.all_versions.count >= 1
       if survey.not_owned_or_in_group?(current_user)
@@ -164,7 +176,7 @@ class SurveysController < ApplicationController
 
   def survey_params
     params.require(:survey).permit(:name, :description, :parent_id, :groups,
-                                   :control_number, :version_independent_id,
+                                   :control_number, :omb_approval_date, :version_independent_id,
                                    :surveillance_program_id, :surveillance_system_id,
                                    concepts_attributes: [:id, :value, :display_name, :code_system])
   end

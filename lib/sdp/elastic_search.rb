@@ -2,9 +2,37 @@
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
 # rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/CyclomaticComplexity
 
 module SDP
   module Elasticsearch
+    class BatchDuplicateFinder
+      def initialize
+        @potential_duplicates = []
+      end
+
+      def add_to_batch(obj, category, &block)
+        @potential_duplicates << { object: obj, category: category, filter: block }
+      end
+
+      def execute(current_user_id = nil, groups = [])
+        batch_results = {}
+        result = SDP::Elasticsearch.batch_find_duplicates(@potential_duplicates.map { |pd| pd[:object] }, current_user_id, groups)
+        if result['responses']
+          result['responses'].each_with_index do |resp, i|
+            pd = @potential_duplicates[i]
+            filter_result = pd[:filter].call(resp)
+            if filter_result
+              batch_results[pd[:category]] ||= []
+              batch_results[pd[:category]] << filter_result
+            end
+          end
+        end
+        batch_results
+      end
+    end
+
     MAX_DUPLICATE_QUESTION_SUGGESTIONS = 10
 
     def self.with_client
@@ -18,13 +46,8 @@ module SDP
       return false
     end
 
-    def self.search(type, query_string, page, query_size = 10,
-                    current_user_id = nil, publisher_search = false,
-                    my_stuff_filter = false, program_filter = [],
-                    system_filter = [], current_version_filter = false,
-                    content_since = nil, sort_filter = '', groups = [],
-                    group_filter_id = 0, ns_filter = nil)
-      version_filter = if current_version_filter
+    def self.search(type, query_string, page, query_size = 10, must_filters = {}, current_user_id = nil, groups = [])
+      version_filter = if must_filters['current_version']
                          { bool: { filter: {
                            term: { 'most_recent': true }
                          } } }
@@ -32,23 +55,25 @@ module SDP
                          {}
                        end
 
-      group_filter = if group_filter_id == -1
+      # This check ensures the > doesn't crash on nil
+      must_filters['group_id'] = must_filters['group_id'] || 0
+      group_filter = if must_filters['group_id'] == -1
                        { bool: { filter: {
                          terms: { groups: groups }
                        } } }
-                     elsif group_filter_id > 0
+                     elsif must_filters['group_id'] > 0
                        { bool: { filter: {
-                         terms: { groups: [group_filter_id] }
+                         terms: { groups: [must_filters['group_id']] }
                        } } }
                      else
                        {}
                      end
 
-      filter_body = if my_stuff_filter
+      filter_body = if must_filters['mystuff']
                       { dis_max: { queries: [
                         { term: { 'createdBy.id': current_user_id } }
                       ] } }
-                    elsif publisher_search
+                    elsif must_filters['publisher']
                       {}
                     else
                       { dis_max: { queries: [
@@ -89,37 +114,82 @@ module SDP
       # prog_name = type == 'survey' ? 'surveillance_program' : 'surveillance_programs'
       # sys_name = type == 'survey' ? 'surveillance_system' : 'surveillance_systems'
 
-      ns_terms = if ns_filter.blank?
+      ns_terms = if must_filters['nested_section'].blank?
                    {}
                  else
-                   { term: { 'id': ns_filter } }
+                   { term: { 'id': must_filters['nested_section'] } }
                  end
 
-      prog_terms = if program_filter.empty?
+      must_filters['data_collection_methods'] = must_filters['data_collection_methods'] || []
+      methods_terms = if must_filters['data_collection_methods'].empty?
+                        {}
+                      else
+                        { 'terms': { 'data_collection_methods.keyword': must_filters['data_collection_methods'] } }
+                      end
+
+      must_filters['programs'] = must_filters['programs'] || []
+      prog_terms = if must_filters['programs'].empty?
                      {}
                    else
                      { dis_max: { queries: [
-                       { 'terms': { 'surveillance_programs.id': program_filter } },
-                       { 'terms': { 'surveillance_program.id': program_filter } }
+                       { 'terms': { 'surveillance_programs.id': must_filters['programs'] } },
+                       { 'terms': { 'surveillance_program.id': must_filters['programs'] } }
                      ] } }
                    end
 
-      sys_terms = if system_filter.empty?
+      must_filters['systems'] = must_filters['systems'] || []
+      sys_terms = if must_filters['systems'].empty?
                     {}
                   else
                     { dis_max: { queries: [
-                      { 'terms': { 'surveillance_systems.id': system_filter } },
-                      { 'terms': { 'surveillance_system.id': system_filter } }
+                      { 'terms': { 'surveillance_systems.id': must_filters['systems'] } },
+                      { 'terms': { 'surveillance_system.id': must_filters['systems'] } }
                     ] } }
                   end
 
-      date_terms = if content_since.present?
-                     { range: { createdAt: { gte: content_since } } }
+      date_terms = if must_filters['content_since'].present?
+                     { range: { createdAt: { gte: must_filters['content_since'] } } }
                    else
                      {}
                    end
 
-      sort_body = case sort_filter
+      ombd_terms = if must_filters['omb_approval_date'].present?
+                     { range: { ombApprovalDate: { gte: must_filters['omb_approval_date'] } } }
+                   else
+                     {}
+                   end
+
+      preferred_terms = if must_filters['preferred']
+                          { term: { 'preferred': true } }
+                        else
+                          {}
+                        end
+
+      status_terms = if must_filters['status'].blank?
+                       {}
+                     else
+                       { term: { 'status': must_filters['status'] } }
+                     end
+
+      category_terms = if must_filters['category'].blank?
+                         {}
+                       else
+                         { term: { 'category.name': must_filters['category'] } }
+                       end
+
+      rt_terms = if must_filters['rt'].blank?
+                   {}
+                 else
+                   { term: { 'response_type.name': must_filters['rt'] } }
+                 end
+
+      source_terms = if must_filters['source'].blank?
+                       {}
+                     else
+                       { term: { 'source': must_filters['source'] } }
+                     end
+
+      sort_body = case must_filters['sort']
                   when 'Program Usage'
                     [
                       { '_script': {
@@ -127,6 +197,7 @@ module SDP
                         type: 'number',
                         order: 'desc'
                       } },
+                      { 'preferred': { order: 'desc' } },
                       '_score'
                     ]
                   when 'System Usage'
@@ -136,10 +207,12 @@ module SDP
                         type: 'number',
                         order: 'desc'
                       } },
+                      { 'preferred': { order: 'desc' } },
                       '_score'
                     ]
                   else
                     [
+                      { 'preferred': { order: 'desc' } },
                       '_score',
                       { '_script': {
                         'script': "doc['surveillance_systems.id'].values.size()",
@@ -155,7 +228,11 @@ module SDP
         from: from_index,
         query: {
           bool: {
-            filter: { bool: { filter: [filter_body, version_filter, group_filter], must: [prog_terms, sys_terms, date_terms], must_not: [ns_terms] } },
+            filter: { bool: {
+              filter: [filter_body, version_filter, group_filter],
+              must: [prog_terms, sys_terms, date_terms, ombd_terms, preferred_terms, status_terms, source_terms, rt_terms, category_terms, methods_terms],
+              must_not: [ns_terms]
+            } },
             must: must_body
           }
         },
@@ -242,6 +319,58 @@ module SDP
                         },
                         size: MAX_DUPLICATE_QUESTION_SUGGESTIONS
                       })
+      end
+    end
+
+    def self.batch_find_duplicates(objs, current_user_id = nil, groups = [])
+      search_body = []
+
+      sort_body = ['_score', { '_script': {
+        'script': "doc['surveillance_systems.id'].values.size()",
+        type: 'number',
+        order: 'desc'
+      } }]
+
+      version_filter = { term: { 'most_recent': true } }
+
+      filter_body = { dis_max: { queries: [
+        { term: { 'createdBy.id': current_user_id } },
+        { match: { status: 'published' } },
+        { terms: { groups: groups } }
+      ] } }
+
+      objs.each do |obj|
+        search_body << { index: 'vocabulary', type: obj.class.to_s.underscore }
+
+        mlt_body = {
+          more_like_this: {
+            fields: ['name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName', 'category.name', 'subcategory.name'],
+            like: [
+              {
+                '_type': obj.class.to_s.underscore,
+                '_id': obj.id
+              }
+            ],
+            min_term_freq: 1,
+            minimum_should_match: '75%'
+          }
+        }
+
+        individual_search_body = {
+          size: 10,
+          query: {
+            bool: {
+              filter: [filter_body, version_filter],
+              must: [mlt_body]
+            }
+          },
+          sort: sort_body
+        }
+
+        search_body << individual_search_body
+      end
+      with_client do |client|
+        client.msearch(body: search_body)
       end
     end
 

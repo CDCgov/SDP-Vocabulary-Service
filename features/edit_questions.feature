@@ -87,6 +87,7 @@ Feature: Edit Questions
     And I click on the create "Questions" dropdown item
     And I fill in the "Question" field with "What is your favorite animal?"
     And I select the "Open Choice" option in the "Response Type" list
+    And I select the "Record review" option in the "Data Collection Method" list
     And I click on the "select-Gender Full" link
     And I select the "Multiple Choice" option in the "Category" list
     And I click on the "Add Row" link
@@ -95,9 +96,14 @@ Feature: Edit Questions
     And I click on the "remove_0" link
     When I click on the "CDC Vocabulary Service" link
     And I click on the "Save & Leave" button
+    And I wait 2 seconds
     Then I go to the dashboard
     When I go to the list of Questions
     And I should see "What is your favorite animal?"
+    When I click on the menu link for the Question with the content "What is your favorite animal?"
+    And I click on the option to Details the Question with the content "What is your favorite animal?"
+    And I should see "Data Collection Methods:"
+    And I should see "Record review"
 
   Scenario: Create New Question that does not use a response set
     And I have a Category with the name "Multiple Choice"

@@ -46,7 +46,7 @@ When(/^I attach an MMG with no data to the "([^"]*)" input$/) do |input_name|
 end
 
 When(/^I attach a generic spreadsheet to the "([^"]*)" input$/) do |input_name|
-  file_path = Rails.root + 'test/fixtures/files/TestGenericTemplate.xlsx'
+  file_path = Rails.root + 'test/fixtures/files/TestGenericTemplateMini.xlsx'
   attach_file(input_name, file_path)
 end
 

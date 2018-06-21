@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { createImportSession, updateImportSession, attemptImportFile } from '../../actions/survey_actions';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 class SurveyImportContainer extends Component {
   constructor(props) {
@@ -47,17 +48,21 @@ class SurveyImportContainer extends Component {
     if (this.state.importSessionId) {
       this.props.updateImportSession(this.state.importSessionId, e.target.files[0], this.state.importType, (successResponse) => {
         this.setState({importErrors: successResponse.data.importErrors, importWarnings: successResponse.data.importWarnings, importSessionId: successResponse.data.id, filePromiseReturned: true});
+      },(error) => {
+        this.setState({importErrors: [error.message],filePromiseReturned: true});
       });
     } else {
       this.props.createImportSession(e.target.files[0], this.state.importType, (successResponse) => {
         this.setState({importErrors: successResponse.data.importErrors, importWarnings: successResponse.data.importWarnings, importSessionId: successResponse.data.id, filePromiseReturned: true});
+      },(error) => {
+        this.setState({importErrors: [error.message],filePromiseReturned: true});
       });
     }
     this.setState({file: e.target.files[0], fileChosen: true});
   }
 
   //takes the onclick event - returns the target value to the state object.
-  changeFormat( e) {
+  changeFormat(e) {
     this.setState({importType : e.target.value});
   }
 
@@ -70,13 +75,18 @@ class SurveyImportContainer extends Component {
         <br/>
         <fieldset>
           <legend>Please select the format of the file you wish to import</legend>
-          <div>
-          <br/>
-          <input type='radio' className='form-radio-input'  value="generic" onClick={this.changeFormat} name='importType' id='import-type-generic'  />
-          <label htmlFor="import-type-generic">Generic Import</label>
-          <br/><input type='radio' className='form-radio-input' value="mmg" onClick={this.changeFormat}  defaultChecked name='importType' id='import-type-mmg' />
-          <label htmlFor="import-type-mmg">MMG Import</label>
-        </div>
+          <div className="radio">
+            <label htmlFor="import-type-generic">
+              <input type='radio' className='form-radio-input'  value="generic" onClick={this.changeFormat} name='importType' id='import-type-generic'  />
+              Generic Import
+            </label>
+          </div>
+          <div className="radio">
+            <label htmlFor="import-type-mmg">
+              <input type='radio' className='form-radio-input' value="mmg" onClick={this.changeFormat}  defaultChecked name='importType' id='import-type-mmg' />
+              MMG Import
+            </label>
+          </div>
         </fieldset>
 
       </div>);
@@ -140,7 +150,7 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
-    }else if (this.state.importWarnings && this.state.importWarnings.length > 0 && !this.state.importAttempted){
+    }else if (this.state.importWarnings && this.state.importWarnings.length > 0 && !this.state.importAttempted && this.state.filePromiseReturned){
       return (
         <div>
           <div className="import-action-message warning" role="alert">
@@ -159,6 +169,15 @@ class SurveyImportContainer extends Component {
           </div>
         </div>
       );
+    }else if (this.state.importWarnings && this.state.importWarnings.length > 0 && !this.state.importAttempted && !this.state.filePromiseReturned){
+      return (
+        <div>
+          <div className="import-action-message warning" role="alert">
+            Checking file format... Please wait.
+            <LoadingSpinner msg="Working..."/>
+          </div>
+        </div>
+      );
     }else if (!this.state.importAttempted && this.state.filePromiseReturned){
       return (
         <div className="import-action-message success" role="alert">
@@ -168,7 +187,12 @@ class SurveyImportContainer extends Component {
         </div>
       );
     } else if (this.state.fileChosen && !this.state.filePromiseReturned) {
-      return <div className="import-action-message warning" role="alert">Checking file format... Please wait.</div>;
+      return (
+        <div className="import-action-message warning" role="alert">
+          Checking file format... Please wait.
+          <LoadingSpinner msg="Working..."/>
+        </div>
+      );
     } else {
       return;
     }
@@ -223,7 +247,10 @@ class SurveyImportContainer extends Component {
         </div>
       );
     } else if (this.state.importAttempted) {
-      return <div className="import-action-message warning" role="alert">Attempting Import... Please wait.</div>;
+      return <div className="import-action-message warning" role="alert">
+        Attempting Import... Please wait.
+        <LoadingSpinner msg="Working..." />
+      </div>;
     } else {
       return;
     }

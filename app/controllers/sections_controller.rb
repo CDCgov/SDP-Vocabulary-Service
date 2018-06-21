@@ -2,6 +2,11 @@ class SectionsController < ApplicationController
   load_and_authorize_resource
   before_action :set_paper_trail_whodunnit
 
+  def info_for_paper_trail
+    comment = request.params[:comment] || ''
+    { comment: comment }
+  end
+
   # GET /sections
   # GET /sections.json
   def index

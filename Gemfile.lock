@@ -310,7 +310,7 @@ GEM
       pry (>= 0.9.11)
     public_suffix (3.0.2)
     puma (3.11.3)
-    rack (2.0.4)
+    rack (2.0.5)
     rack-oauth2 (1.9.1)
       activesupport
       attr_required
@@ -399,7 +399,7 @@ GEM
     slop (3.6.0)
     spreadsheet (1.1.7)
       ruby-ole (>= 1.0)
-    sprockets (3.7.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.1)

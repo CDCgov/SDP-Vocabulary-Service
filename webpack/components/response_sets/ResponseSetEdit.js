@@ -52,7 +52,7 @@ export default class ResponseSetEdit extends Component {
       this.unsavedState = false;
       this.props.router.push(this.nextLocation.pathname);
     }else{
-      this.props.responseSetSubmitter(this.state, () => {
+      this.props.responseSetSubmitter(this.state, this.state.comment, () => {
         this.unsavedState = false;
         this.props.router.push(this.nextLocation.pathname);
       }, (failureResponse) => {
@@ -81,7 +81,7 @@ export default class ResponseSetEdit extends Component {
 
   stateForNew() {
     return {
-      name: '', oid: '', description: '',
+      name: '', oid: '', description: '', comment: '',
       responsesAttributes: [],
       version: 1, versionIndependentId: null, showModal: false
     };
@@ -158,7 +158,7 @@ export default class ResponseSetEdit extends Component {
                 </div>
 
                 <div className="row">
-                <div className="col-md-8 question-form-group">
+                  <div className="col-md-8 question-form-group">
                     <label className="input-label"  htmlFor="response-set-description">Description</label>
                     <textarea className="input-format" tabIndex="3"  value={this.state.description} name="response-set-description" id="response-set-description" onChange={this.handleChange('description')}/>
                   </div>
@@ -173,11 +173,18 @@ export default class ResponseSetEdit extends Component {
                                    initialItems={this.state.responsesAttributes}
                                    parentName={'response_set'}
                                    childName={'response'} />
-                </div>
-                <div className="panel-footer">
-                  <input className="btn btn-default" id='submit-response-set-form' type="submit" name="Save Response Set" value="Save" />
-                  {this.cancelButton()}
-                </div>
+
+                {this.props.action === 'edit' && <div className="row">
+                  <div className="col-md-8 question-form-group">
+                    <label className="input-label"  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
+                    <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." value={this.state.comment} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
+                  </div>
+                </div>}
+            </div>
+            <div className="panel-footer">
+              <input className="btn btn-default" id='submit-response-set-form' type="submit" name="Save Response Set" value="Save" />
+              {this.cancelButton()}
+            </div>
           </div>
         </div>
       </form>
@@ -192,7 +199,7 @@ export default class ResponseSetEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     let responseSet = Object.assign({}, this.state);
-    this.props.responseSetSubmitter(responseSet, (successResponse) => {
+    this.props.responseSetSubmitter(responseSet, this.state.comment, (successResponse) => {
       this.unsavedState = false;
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);

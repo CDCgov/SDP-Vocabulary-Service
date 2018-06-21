@@ -88,18 +88,18 @@ export function removeSurveyFromGroup(id, group) {
   };
 }
 
-export function saveSurvey(survey, successHandler=null, failureHandler=null) {
+export function saveSurvey(survey, comment, successHandler=null, failureHandler=null) {
   const fn = axios.post;
-  const postPromise = createPostPromise(survey, routes.surveysPath(), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(survey, comment, routes.surveysPath(), fn, successHandler, failureHandler);
   return {
     type: SAVE_SURVEY,
     payload: postPromise
   };
 }
 
-export function saveDraftSurvey(survey, successHandler=null, failureHandler=null) {
+export function saveDraftSurvey(survey, comment, successHandler=null, failureHandler=null) {
   const fn = axios.put;
-  const postPromise = createPostPromise(survey, routes.surveyPath(survey.id), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(survey, comment, routes.surveyPath(survey.id), fn, successHandler, failureHandler);
   return {
     type: SAVE_DRAFT_SURVEY,
     payload: postPromise
@@ -184,13 +184,13 @@ export function updateSurveyTags(id, conceptsAttributes) {
   };
 }
 
-function createPostPromise(survey, url, fn, successHandler=null, failureHandler=null) {
+function createPostPromise(survey, comment, url, fn, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   survey.questionsAttributes = survey.questions;
   delete survey.showModal;
   delete survey.progSysModalOpen;
   const postPromise = fn(url,
-                      {survey, authenticityToken},
+                      {survey, comment, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (successHandler) {
     postPromise.then(successHandler);

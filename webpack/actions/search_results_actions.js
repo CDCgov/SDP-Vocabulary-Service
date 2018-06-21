@@ -15,7 +15,8 @@ import {
 } from './types';
 
 const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter', 'nsFilter',
-  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId'];
+  'rtFilter', 'sourceFilter', 'categoryFilter', 'preferredFilter', 'statusFilter', 'methodsFilter',
+  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId', 'ombDate'];
 
 export class SearchParameters {
   constructor(params) {
@@ -29,7 +30,9 @@ export class SearchParameters {
 
   toSearchParameters() {
     const simpleMapping = {'searchTerms': 'search', 'type': 'type', 'programFilter': 'programs', 'sort': 'sort', 'groupFilterId': 'groups',
-      'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page', 'nsFilter': 'nsfilter'};
+      'rtFilter': 'rt', 'sourceFilter': 'source', 'categoryFilter': 'category', 'preferredFilter': 'preferred', 'statusFilter': 'status',
+      'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page', 'nsFilter': 'nsfilter',
+      'methodsFilter': 'methods'};
     const params = {};
     forEach(simpleMapping, (value, key) => {
       if (this[key]) {
@@ -41,6 +44,13 @@ export class SearchParameters {
         params.contentSince = this.contentSince.format('YYYY-MM-DD');
       } else {
         params.contentSince = this.contentSince;
+      }
+    }
+    if (this.ombDate) {
+      if (this.ombDate.format) {
+        params.ombDate = this.ombDate.format('YYYY-MM-DD');
+      } else {
+        params.ombDate = this.ombDate;
       }
     }
     return params;

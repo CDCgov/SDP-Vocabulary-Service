@@ -2,6 +2,11 @@ class QuestionsController < ApplicationController
   load_and_authorize_resource except: [:usage]
   before_action :set_paper_trail_whodunnit
 
+  def info_for_paper_trail
+    comment = request.params[:comment] || ''
+    { comment: comment }
+  end
+
   # GET /questions.json
   def index
   end
@@ -161,6 +166,7 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:content, :response_type_id, :parent_id, :category_id, :groups,
                                      :version_independent_id, :description, :other_allowed, :subcategory_id,
-                                     concepts_attributes: [:id, :value, :display_name, :code_system])
+                                     concepts_attributes: [:id, :value, :display_name, :code_system],
+                                     data_collection_methods: [])
   end
 end

@@ -28,7 +28,7 @@ class ImportSessionsControllerTest < ActionDispatch::IntegrationTest
     response_json = JSON.parse(@response.body)
     is_id = response_json['id']
     assert_difference 'Survey.count' do
-      put import_session_url(is_id), params: {  import_type: 'mmg', request_survey_creation: true }
+      put import_session_url(is_id), params: { import_type: 'mmg', request_survey_creation: true }
     end
     import_session = ImportSession.find is_id
     survey = Survey.last
@@ -37,16 +37,18 @@ class ImportSessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'create an import session and create a generic survey' do
-    post import_sessions_url(format: :json), params: { file: fixture_file_upload('./test/fixtures/files/TestGenericTemplate.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', :binary), import_type: 'generic' }
+    post import_sessions_url(format: :json), params: { file: fixture_file_upload('./test/fixtures/files/TestGenericTemplateMini.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', :binary), import_type: 'generic' }
     assert_response :success
     response_json = JSON.parse(@response.body)
     is_id = response_json['id']
     assert_difference 'Survey.count' do
-      put import_session_url(is_id), params: {  import_type: 'generic', request_survey_creation: true }
+      assert_difference('Response.count', 4) do
+        put import_session_url(is_id), params: { import_type: 'generic', request_survey_creation: true }
+      end
     end
     import_session = ImportSession.find is_id
     survey = Survey.last
     assert_equal import_session.survey_id, survey.id
-    assert_equal 7, survey.sections.count
+    assert_equal 1, survey.sections.count
   end
 end
