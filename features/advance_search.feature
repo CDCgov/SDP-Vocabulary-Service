@@ -32,6 +32,15 @@ Feature: Advanced Search
     And I should see "7/29/2017"
     And I should see "Clear Adv. Filters"
 
+  Scenario: Filter search by omb approval date
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I fill in the "omb-date" field with "06/10/2017"
+    And I click on the "Close" button
+    Then I should see "Filtering to surveys with OMB approval date after:"
+    And I should see "6/10/2017"
+    And I should see "Clear Adv. Filters"
+
   Scenario: Filter search by source
     And I am on the "/" page
     When I click on the "Advanced" link

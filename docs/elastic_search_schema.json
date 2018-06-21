@@ -1078,6 +1078,9 @@
           "type": "text",
           "analyzer": "sdp"
         },
+        "ombApprovalDate": {
+          "type": "date"
+        },
         "groups": {
           "type": "text"
         },

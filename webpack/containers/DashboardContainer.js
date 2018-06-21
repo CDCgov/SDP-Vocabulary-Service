@@ -42,6 +42,7 @@ class DashboardContainer extends SearchManagerComponent {
       methodsFilter: [],
       mostRecentFilter: false,
       contentSince: null,
+      ombDate: null,
       sourceFilter: '',
       statusFilter: '',
       categoryFilter: '',

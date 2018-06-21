@@ -46,6 +46,7 @@ class DashboardSearch extends SearchStateComponent {
     this.programSearch = this.programSearch.bind(this);
     this.systemSearch  = this.systemSearch.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleOmbDateChange = this.handleOmbDateChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -85,6 +86,7 @@ class DashboardSearch extends SearchStateComponent {
       methodsFilter: [],
       mostRecentFilter: false,
       contentSince: null,
+      ombDate: null,
       sourceFilter: '',
       statusFilter: '',
       categoryFilter: '',
@@ -118,6 +120,14 @@ class DashboardSearch extends SearchStateComponent {
 
   handleDateChange(date) {
     let newState = { contentSince: date };
+    this.setState(newState);
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
+  handleOmbDateChange(date) {
+    let newState = { ombDate: date };
     this.setState(newState);
     let newParams = Object.assign(this.currentSearchParameters(), newState);
     this.props.search(newParams);
@@ -317,6 +327,15 @@ class DashboardSearch extends SearchStateComponent {
                                     onFocusChange={({ focused }) => this.setState({ focused })}
                                     isOutsideRange={(day) => day.isAfter()}/>
                 </div>
+                <div>
+                  <label htmlFor='omb-date'>OMB Approval Date (Surveys Only): &nbsp;</label>
+                  <SingleDatePicker id="omb-date"
+                                    date={this.state.ombDate}
+                                    onDateChange={this.handleOmbDateChange}
+                                    focused={this.state.ombFocused}
+                                    onFocusChange={({ focused }) => this.setState({ ombFocused: focused })}
+                                    isOutsideRange={(day) => day.isAfter()}/>
+                </div>
                 <div className="col-md-12 question-form-group">
                   <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
                   <DataCollectionSelect onChangeFunc={this.selectMethods} methods={this.state.methodsFilter} />
@@ -378,7 +397,7 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.preferredFilter || this.state.contentSince || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.preferredFilter || this.state.contentSince || this.state.ombDate || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -413,6 +432,11 @@ class DashboardSearch extends SearchStateComponent {
             {this.state.contentSince &&
               <div className="adv-filter-list">Content Since Filter:
                 <row className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')}</row>
+              </div>
+            }
+            {this.state.ombDate &&
+              <div className="adv-filter-list">Filtering to surveys with OMB approval date after:
+                <row className="adv-filter-list-item col-md-12">{this.state.ombDate.format('M/D/YYYY')}</row>
               </div>
             }
             {this.state.sort !== '' &&

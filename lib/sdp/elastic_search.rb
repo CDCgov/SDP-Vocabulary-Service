@@ -153,6 +153,12 @@ module SDP
                      {}
                    end
 
+      ombd_terms = if must_filters['omb_approval_date'].present?
+                     { range: { ombApprovalDate: { gte: must_filters['omb_approval_date'] } } }
+                   else
+                     {}
+                   end
+
       preferred_terms = if must_filters['preferred']
                           { term: { 'preferred': true } }
                         else
@@ -224,7 +230,7 @@ module SDP
           bool: {
             filter: { bool: {
               filter: [filter_body, version_filter, group_filter],
-              must: [prog_terms, sys_terms, date_terms, preferred_terms, status_terms, source_terms, rt_terms, category_terms, methods_terms],
+              must: [prog_terms, sys_terms, date_terms, ombd_terms, preferred_terms, status_terms, source_terms, rt_terms, category_terms, methods_terms],
               must_not: [ns_terms]
             } },
             must: must_body
