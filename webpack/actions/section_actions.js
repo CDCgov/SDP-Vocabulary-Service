@@ -12,6 +12,7 @@ import {
   SAVE_DRAFT_SECTION,
   CREATE_SECTION,
   PUBLISH_SECTION,
+  RETIRE_SECTION,
   ADD_SECTION_TO_GROUP,
   REMOVE_SECTION_FROM_GROUP,
   DELETE_SECTION,
@@ -77,6 +78,15 @@ export function publishSection(id) {
   return {
     type: PUBLISH_SECTION,
     payload: axios.put(routes.publishSectionPath(id),
+     {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function retireSection(id) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: RETIRE_SECTION,
+    payload: axios.put(routes.retireSectionPath(id),
      {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }

@@ -17,7 +17,7 @@ import TagModal from "../TagModal";
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 import ResultStyleControl from '../shared_show/ResultStyleControl';
 
 const PAGE_SIZE = 10;
@@ -179,6 +179,13 @@ class SectionShow extends Component {
                 return false;
               }}>Publish</a>
           }
+          {isRetirable(section, this.props.currentUser) &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.retireSection(section.id);
+                return false;
+              }}>Retire</a>
+          }
           {this.props.currentUser && this.props.currentUser.admin && !section.preferred &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
@@ -237,6 +244,12 @@ class SectionShow extends Component {
                 <div className="box-content">
                   {section.description}
                 </div>
+                { section.contentStage &&
+                  <div className="box-content">
+                    <strong>Content Stage: </strong>
+                    {section.contentStage}
+                  </div>
+                }
                 { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
                 <div className="box-content">
                   <strong>Published By: </strong>
@@ -327,6 +340,7 @@ SectionShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishSection: PropTypes.func,
+  retireSection: PropTypes.func,
   deleteSection:  PropTypes.func.isRequired,
   addSectionToGroup: PropTypes.func,
   removeSectionFromGroup: PropTypes.func,

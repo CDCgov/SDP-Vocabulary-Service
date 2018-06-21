@@ -169,6 +169,21 @@ class ResponseSetsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ResponseSet.find(response_sets(:two).id).published_by.id, users(:publisher).id
   end
 
+  test 'publishers should be able to retire response_sets' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    assert_equal ResponseSet.find(response_sets(:two).id).content_stage, 'Draft'
+    put publish_response_set_path(response_sets(:two), format: :json)
+    assert_response :success
+    assert_equal ResponseSet.find(response_sets(:two).id).content_stage, 'Published'
+    assert_equal ResponseSet.find(response_sets(:two).id).status, PUBLISHED
+    assert_equal ResponseSet.find(response_sets(:two).id).published_by.id, users(:publisher).id
+    put retire_response_set_path(response_sets(:two), format: :json)
+    assert_response :success
+    assert_equal ResponseSet.find(response_sets(:two).id).content_stage, 'Retired'
+  end
+
   test 'authors should not be able to publish response_sets' do
     put publish_response_set_path(response_sets(:two), format: :json)
     assert_response :forbidden

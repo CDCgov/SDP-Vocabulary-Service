@@ -82,7 +82,7 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     Then I should not see "Test Response Set"
 
-  Scenario: Publish a Draft Response Set
+  Scenario: Publish and retire a Draft Response Set
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
     And I am the publisher test_author@gmail.com
     When I go to the list of Response Sets
@@ -98,6 +98,10 @@ Feature: Manage Response Sets
     And I should see "Published By: test_author@gmail.com"
     And I should not see "Edit"
     And I should not see a "Publish" link
+    And I should see "Retire"
+    When I click on the "Retire" link
+    Then I should see "Content Stage: Retired"
+    And I should not see a "Retire" link
 
   Scenario: Revise Response Set
     Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"

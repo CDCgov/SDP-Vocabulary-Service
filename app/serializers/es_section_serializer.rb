@@ -6,6 +6,7 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :version_independent_id
   attribute :version
   attribute :status
+  attribute :content_stage
   attribute :category
   attribute :description
   attribute :updated_at, key: :updatedAt

@@ -14,7 +14,7 @@ import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
 
 export default class ResponseSetShow extends Component {
   constructor(props){
@@ -91,6 +91,13 @@ export default class ResponseSetShow extends Component {
             }
             {isExtendable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
+            }
+            {isRetirable(responseSet, this.props.currentUser) &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.retireResponseSet(responseSet.id);
+                return false;
+              }}>Retire</a>
             }
             {isPublishable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -176,6 +183,12 @@ export default class ResponseSetShow extends Component {
                     {this.sourceLink(responseSet)}
                   </div>
                 }
+                { responseSet.contentStage &&
+                  <div className="box-content">
+                    <strong>Content Stage: </strong>
+                    {responseSet.contentStage}
+                  </div>
+                }
                 { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
                 <div className="box-content">
                   <strong>Published By: </strong>
@@ -217,6 +230,7 @@ ResponseSetShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
+  retireResponseSet: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
   removeResponseSetFromGroup: PropTypes.func,

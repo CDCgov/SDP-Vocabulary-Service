@@ -9,6 +9,7 @@ import {
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,
   PUBLISH_SURVEY,
+  RETIRE_SURVEY,
   ADD_SURVEY_TO_GROUP,
   REMOVE_SURVEY_FROM_GROUP,
   DELETE_SURVEY,
@@ -66,6 +67,15 @@ export function publishSurvey(id) {
   return {
     type: PUBLISH_SURVEY,
     payload: axios.put(routes.publishSurveyPath(id),
+     {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function retireSurvey(id) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: RETIRE_SURVEY,
+    payload: axios.put(routes.retireSurveyPath(id),
      {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }

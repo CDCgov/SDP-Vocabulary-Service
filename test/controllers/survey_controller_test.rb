@@ -112,6 +112,20 @@ class SurveysControllerTest < ActionDispatch::IntegrationTest
     assert_equal Survey.find(surveys(:four).id).published_by.id, users(:publisher).id
   end
 
+  test 'publishers should be able to retire surveys' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    assert_equal Survey.find(surveys(:four).id).content_stage, 'Draft'
+    put publish_survey_path(surveys(:four), format: :json, params: { survey: surveys(:four) })
+    assert_response :success
+    assert_equal Survey.find(surveys(:four).id).content_stage, 'Published'
+    assert_equal Survey.find(surveys(:four).id).status, PUBLISHED
+    assert_equal Survey.find(surveys(:four).id).published_by.id, users(:publisher).id
+    put retire_survey_path(surveys(:four), format: :json, params: { survey: surveys(:four) })
+    assert_equal Survey.find(surveys(:four).id).content_stage, 'Retired'
+  end
+
   test 'can revise something you share a group with' do
     survey_json = { survey: { name: @survey.name, version_independent_id: 'SURV-1337' } }.to_json
     post surveys_url, params: survey_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }

@@ -281,6 +281,9 @@
         "status": {
           "type": "text"
         },
+        "contentStage": {
+          "type": "text"
+        },
         "suggest": {
           "type": "completion",
           "analyzer": "simple",
@@ -473,6 +476,9 @@
           "type": "text"
         },
         "dataCollectionMethods": {
+          "type": "text"
+        },
+        "contentStage": {
           "type": "text"
         },
         "id": {
@@ -842,6 +848,9 @@
         "status": {
           "type": "text"
         },
+        "contentStage": {
+          "type": "text"
+        },
         "suggest": {
           "type": "completion",
           "analyzer": "simple",
@@ -1170,6 +1179,9 @@
           }
         },
         "status": {
+          "type": "text"
+        },
+        "contentStage": {
           "type": "text"
         },
         "suggest": {

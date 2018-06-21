@@ -9,6 +9,7 @@ import {
   SAVE_QUESTION,
   SAVE_DRAFT_QUESTION,
   PUBLISH_QUESTION,
+  RETIRE_QUESTION,
   ADD_QUESTION_TO_GROUP,
   REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
@@ -119,6 +120,21 @@ export function publishQuestion(id, callback=null) {
   }
   return {
     type: PUBLISH_QUESTION,
+    payload: putPromise
+  };
+}
+
+export function retireQuestion(id, callback=null) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.retire_question_path(id),
+    {authenticityToken},
+    {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}
+    });
+  if (callback) {
+    putPromise.then(callback);
+  }
+  return {
+    type: RETIRE_QUESTION,
     payload: putPromise
   };
 }

@@ -92,7 +92,7 @@ Feature: Manage Surveys
   When I go to the list of Surveys
   Then I should not see "Test Survey"
 
- Scenario: Publish a draft Survey
+ Scenario: Publish and Retire a draft Survey
    Given I have a Survey with the name "Test Survey" and the description "Survey description"
    And I am the publisher test_author@gmail.com
    When I go to the list of Surveys
@@ -101,10 +101,13 @@ Feature: Manage Surveys
    Then I should see "Test Survey"
    Then I should see "Survey description"
    When I click on the "Publish" link
-   And I should see "Revise"
+   Then I should see "Revise"
    And I should see "Published By: test_author@gmail.com"
    And I should not see "Edit"
    And I should not see a "Publish" link
+   And I should see "Retire"
+   When I click on the "Retire" link
+   Then I should see "Content Stage: Retired"
 
   Scenario: Edit a draft Survey
     Given I have a Surveillance System with the name "National Violent Death Reporting System"

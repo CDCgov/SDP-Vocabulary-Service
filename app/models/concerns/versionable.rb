@@ -87,6 +87,7 @@ module Versionable
     cascading_action do |element|
       if element.status == 'draft'
         element.status = 'published'
+        element.content_stage = 'Published'
         element.published_by = publisher
         element.save!
         if element.version > 1
@@ -95,6 +96,13 @@ module Versionable
           UpdateIndexJob.perform_later(element.class.to_s.underscore, prev_version.id)
         end
       end
+    end
+  end
+
+  def retire
+    if status == 'published'
+      self.content_stage = 'Retired'
+      save!
     end
   end
 
