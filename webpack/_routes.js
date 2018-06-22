@@ -750,6 +750,18 @@ Based on Rails routes of Vocabulary::Application
 // response_types => /response_types(.:format)
   // function(options)
   response_types_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"response_types",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// retire_question => /questions/:id/retire(.:format)
+  // function(id, options)
+  retire_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"retire",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// retire_response_set => /response_sets/:id/retire(.:format)
+  // function(id, options)
+  retire_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"retire",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// retire_section => /sections/:id/retire(.:format)
+  // function(id, options)
+  retire_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"retire",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// retire_survey => /surveys/:id/retire(.:format)
+  // function(id, options)
+  retire_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"retire",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // revise_question => /questions/:id/revise(.:format)
   // function(id, options)
   revise_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"revise",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

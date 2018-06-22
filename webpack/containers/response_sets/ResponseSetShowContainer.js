@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchResponseSet, publishResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
+import { fetchResponseSet, publishResponseSet, retireResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -93,7 +93,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
-    addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage}, dispatch);
+    addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage, retireResponseSet}, dispatch);
 }
 
 ResponseSetShowContainer.propTypes = {
@@ -101,6 +101,7 @@ ResponseSetShowContainer.propTypes = {
   currentUser: currentUserProps,
   fetchResponseSet: PropTypes.func,
   publishResponseSet: PropTypes.func,
+  retireResponseSet: PropTypes.func,
   fetchResponseSetUsage: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,

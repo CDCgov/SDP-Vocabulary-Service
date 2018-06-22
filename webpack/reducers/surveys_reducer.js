@@ -1,5 +1,6 @@
 import {
   PUBLISH_SURVEY_FULFILLED,
+  RETIRE_SURVEY_FULFILLED,
   SAVE_DRAFT_SURVEY_FULFILLED,
   DELETE_SURVEY_FULFILLED,
   ADD_SECTION,
@@ -19,6 +20,7 @@ export default function surveys(state = {}, action) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.surveys);
     case PUBLISH_SURVEY_FULFILLED:
+    case RETIRE_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:
     case UPDATE_SURVEY_TAGS_FULFILLED:
     case ADD_SURVEY_TO_GROUP_FULFILLED:

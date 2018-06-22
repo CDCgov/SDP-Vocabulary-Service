@@ -158,8 +158,23 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should publish a draft section' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
     put publish_section_url(sections(:draft)), xhr: true, params: nil
     assert_response :success
+  end
+
+  test 'should retire a published section' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    assert_equal Section.find(sections(:draft).id).content_stage, 'Draft'
+    put publish_section_url(sections(:draft)), xhr: true, params: nil
+    assert_response :success
+    assert_equal Section.find(sections(:draft).id).content_stage, 'Published'
+    put retire_section_url(sections(:draft)), xhr: true, params: nil
+    assert_equal Section.find(sections(:draft).id).content_stage, 'Retired'
   end
 
   test 'should get export' do

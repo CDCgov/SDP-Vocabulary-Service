@@ -1,5 +1,6 @@
 import {
   PUBLISH_SECTION_FULFILLED,
+  RETIRE_SECTION_FULFILLED,
   DELETE_SECTION_FULFILLED,
   SAVE_DRAFT_SECTION_FULFILLED,
   ADD_NESTED_ITEM,
@@ -20,6 +21,7 @@ export default function sections(state = {}, action) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.sections);
     case PUBLISH_SECTION_FULFILLED:
+    case RETIRE_SECTION_FULFILLED:
     case SAVE_DRAFT_SECTION_FULFILLED:
     case UPDATE_SECTION_TAGS_FULFILLED:
     case UPDATE_PDV_FULFILLED:

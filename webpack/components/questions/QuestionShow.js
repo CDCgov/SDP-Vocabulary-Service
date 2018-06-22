@@ -19,7 +19,7 @@ import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 export default class QuestionShow extends Component {
   constructor(props) {
@@ -126,6 +126,9 @@ export default class QuestionShow extends Component {
             {isExtendable(question, this.props.currentUser) &&
               <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
             }
+            {isRetirable(question, this.props.currentUser) &&
+              <button className="btn btn-primary" onClick={() => this.props.retireQuestion(question.id) }>Retire</button>
+            }
             {isPublishable(question, this.props.currentUser) &&
               <button className="btn btn-primary" onClick={() => this.props.handlePublish(question) }>Publish</button>
             }
@@ -184,6 +187,10 @@ export default class QuestionShow extends Component {
                   <strong>Created: </strong>
                   { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
                 </div>
+                {question.contentStage && <div className="box-content">
+                  <strong>Content Stage: </strong>
+                  {question.contentStage}
+                </div>}
                 { question.parent &&
                   <div className="box-content">
                     <strong>Extended from: </strong>
@@ -324,6 +331,7 @@ QuestionShow.propTypes = {
   currentUser:   currentUserProps,
   router: PropTypes.object,
   handlePublish:  PropTypes.func,
+  retireQuestion: PropTypes.func,
   deleteQuestion: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
   removeQuestionFromGroup: PropTypes.func,

@@ -17,7 +17,7 @@ import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component {
   constructor(props) {
@@ -106,6 +106,13 @@ class SurveyShow extends Component {
           {isGroupable(this.props.survey, this.props.currentUser) &&
             <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} removeFunc={this.props.removeSurveyFromGroup} currentUser={this.props.currentUser} />
           }
+          {isRetirable(this.props.survey, this.props.currentUser) &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.props.retireSurvey(this.props.survey.id);
+              return false;
+            }}>Retire</a>
+          }
           {isPublishable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
@@ -180,6 +187,12 @@ class SurveyShow extends Component {
                 <div className="box-content">
                   <strong>Published By: </strong>
                   {this.props.survey.publishedBy.email}
+                </div>
+                }
+                { this.props.survey.contentStage &&
+                <div className="box-content">
+                  <strong>Content Stage: </strong>
+                  {this.props.survey.contentStage}
                 </div>
                 }
                 { this.props.survey.parent &&
@@ -280,6 +293,7 @@ SurveyShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,
+  retireSurvey: PropTypes.func,
   deleteSurvey:  PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,

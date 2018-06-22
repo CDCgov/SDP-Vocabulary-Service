@@ -101,6 +101,20 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /response_sets/1/retire
+  def retire
+    if @response_set.status == 'published'
+      if @current_user.publisher?
+        @response_set.retire
+        render :show, status: :ok, location: @response_set
+      else
+        render json: @response_set, status: :forbidden
+      end
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /response_sets/1
   # PATCH/PUT /response_sets/1.json
   def update

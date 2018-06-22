@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { fetchSection, publishSection, retireSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
@@ -70,6 +70,7 @@ class SectionShowContainer extends Component {
                       router={this.props.router}
                       currentUser={this.props.currentUser}
                       publishSection={this.props.publishSection}
+                      retireSection={this.props.retireSection}
                       stats={this.props.stats}
                       setStats={this.props.setStats}
                       deleteSection={this.props.deleteSection}
@@ -107,7 +108,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
-    removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl}, dispatch);
+    removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl, retireSection}, dispatch);
 }
 
 SectionShowContainer.propTypes = {
@@ -126,6 +127,7 @@ SectionShowContainer.propTypes = {
   removePreferred: PropTypes.func,
   updateSectionTags: PropTypes.func,
   publishSection: PropTypes.func,
+  retireSection: PropTypes.func,
   publishers: publishersProps,
   hideResultControl: PropTypes.func,
   toggleResultControl: PropTypes.func,

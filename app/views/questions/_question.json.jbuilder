@@ -1,16 +1,16 @@
 json.extract! question, :id, :content, :created_at, :created_by, :created_by_id, :updated_at, :category_id, :concepts, :description, :status, \
               :category, :version, :version_independent_id, :other_versions, :most_recent, :response_sets, :response_type, :data_collection_methods, \
-              :parent, :other_allowed, :published_by, :most_recent_published, :subcategory, :groups, :linked_response_sets, :preferred
+              :parent, :other_allowed, :published_by, :most_recent_published, :subcategory, :groups, :linked_response_sets, :preferred, :content_stage
 json.url question_url(question, format: :json)
 
 json.sections question.sections do |s|
   json.extract! s, :id, :name, :description, :created_at, :updated_at, \
                 :version_independent_id, :version, :most_recent, :most_recent_published, \
-                :section_nested_items, :status, :created_by_id, :groups
+                :section_nested_items, :status, :content_stage, :created_by_id, :groups
 end
 
 json.all_versions question.all_versions do |q|
-  json.extract! q, :id, :content, :created_by_id, :version_independent_id, :version, :groups, :status, :most_recent
+  json.extract! q, :id, :content, :created_by_id, :version_independent_id, :version, :groups, :status, :content_stage, :most_recent
 end
 
 json.versions question.paper_trail_versions do |version|

@@ -14,6 +14,13 @@ export function isPublishable(object, currentUser) {
     currentUser.publisher;
 }
 
+export function isRetirable(object, currentUser) {
+  return currentUser && currentUser.id &&
+    object.status === 'published' &&
+    object.contentStage !== 'Retired' &&
+    currentUser.publisher;
+}
+
 export function isEditable(object, currentUser) {
   return currentUser && currentUser.id &&
     object.mostRecent === object.version &&
