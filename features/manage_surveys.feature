@@ -288,7 +288,6 @@ Feature: Manage Surveys
     Then I should see "Select & Replace Confirmation"
     When I click on the "Confirm Replace" button
     Then I should see "Successfully replaced: Gender Partial with Gender Partial dupe"
-    Then I wait 10 seconds
    
   Scenario: A Section when added to a Survey should inherit the group assigned to Survey
     Given I have a Survey with the name "Search Survey Test" and the description "Test"
