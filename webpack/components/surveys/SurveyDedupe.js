@@ -51,6 +51,7 @@ class SurveyDedupe extends Component {
     }
   }
 
+
   deleteModal() {
     let dupeItem = this.state.selectedDupe;
     let draft = this.state.selectedDraft;
@@ -69,7 +70,7 @@ class SurveyDedupe extends Component {
           <Modal.Footer>
             <Button onClick={() => {
               this.props.markAsDuplicate(draft.id, dupeItem.id, this.props.survey.id, this.state.viewType);
-              this.setState({viewPage: 'all', showDeleteModal: false});
+              this.setState({viewPage: 'all', showDeleteModal: false, success: {msg: `Successfully replaced:  ${draft.content || draft.name } with `, id: dupeItem.id, name: dupeItem.name}, warning: {} });
             }} bsStyle="primary">Replace</Button>
             <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
@@ -81,6 +82,22 @@ class SurveyDedupe extends Component {
   viewAllDupes(qCount) {
     return (
       <div>
+        {this.state.error && this.state.error.msg &&
+          <div className="alert alert-danger">
+            {this.state.error.msg}
+          </div>
+        }
+        {this.state.warning && this.state.warning.msg &&
+          <div className="alert alert-warning">
+            {this.state.warning.msg}
+          </div>
+        }
+        {this.state.success && this.state.success.msg &&
+          <div className="alert alert-success">
+            {this.state.success.msg}
+            <a href={`/#/questions/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>
+          </div>
+        }
         <h2 className="h4">Potential Duplicate Questions ({qCount})</h2>
         <table className="table table-dark-header">
           <caption className="sr-only">Information about potential duplicate draft questions in this survey</caption>
@@ -119,6 +136,22 @@ class SurveyDedupe extends Component {
   viewAllRSDupes(rsCount) {
     return (
       <div>
+        {this.state.error && this.state.error.msg &&
+          <div className="alert alert-danger">
+            {this.state.error.msg}
+          </div>
+        }
+        {this.state.warning && this.state.warning.msg &&
+          <div className="alert alert-warning">
+            {this.state.warning.msg}
+          </div>
+        }
+        {this.state.success && this.state.success.msg &&
+          <div className="alert alert-success">
+            {this.state.success.msg}
+            <a href={`/#/responseSets/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>            
+          </div>
+        }
         <h2 className="h4">Potential Duplicate Response Sets ({rsCount})</h2>
         <table className="table table-dark-header">
           <caption className="sr-only">Information about potential duplicate draft response sets in this survey</caption>
