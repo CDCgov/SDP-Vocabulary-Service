@@ -71,7 +71,7 @@ class SurveyDedupe extends Component {
             <Button onClick={() => {
               this.props.markAsDuplicate(draft.id, dupeItem.id, this.props.survey.id, this.state.viewType);
               this.setState({viewPage: 'all', showDeleteModal: false, success: {msg: `Successfully replaced:  ${draft.content || draft.name } with `, id: dupeItem.id, name: dupeItem.name}, warning: {} });
-            }} bsStyle="primary">Replace</Button>
+            }} bsStyle="primary">Confirm Replace</Button>
             <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
@@ -149,7 +149,7 @@ class SurveyDedupe extends Component {
         {this.state.success && this.state.success.msg &&
           <div className="alert alert-success">
             {this.state.success.msg}
-            <a href={`/#/responseSets/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>            
+            <a href={`/#/responseSets/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>
           </div>
         }
         <h2 className="h4">Potential Duplicate Response Sets ({rsCount})</h2>
