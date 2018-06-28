@@ -154,7 +154,25 @@ export default class SearchResult extends Component {
       </li>
     );
   }
+  
+  resultSetSourceInfo(result) {
+    return (
+      <li className="result-analytics-item">
+        <span><text className="sr-only">Result set source: </text>{this.responseSetSourceLink(result)}</span>
+        <p className="item-description" aria-hidden="true">Source</p>
+      </li>
+    );
+  }
 
+  responseSetSourceLink(responseSet) {
+    if(responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent) {
+      return <a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">PHIN VADS</a>;
+    } else if (responseSet.source === 'PHIN_VADS') {
+      return <a href="https://phinvads.cdc.gov">PHIN VADS</a>;
+    } else {
+      return <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>;
+    }
+  }
   selectResultButton(result, isSelected, handleSelectSearchResult, type) {
     if(isSelected){
       return (
@@ -453,6 +471,7 @@ export default class SearchResult extends Component {
                     </p>
                   )}
                 </li>
+               { result.source && this.resultSetSourceInfo(result)}
               </ul>
             </div>
           </div>
