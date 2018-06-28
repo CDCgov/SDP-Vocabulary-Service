@@ -316,7 +316,7 @@ class DashboardSearch extends SearchStateComponent {
                 <h3 className="h4 col-xs-12">Additonal Filters:</h3>
 
                 <Col sm="6">
-                  <FormGroup row>
+                  <FormGroup>
                     <label htmlFor="most-recent-filter">
                       <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
                       Most Recent Versions Only
