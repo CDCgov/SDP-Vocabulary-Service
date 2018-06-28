@@ -286,7 +286,9 @@ Feature: Manage Surveys
     Then I should see "Suggested Replacement Response Sets ("
     When I click on the "select-response-set-Gender Partial dupe" button
     Then I should see "Select & Replace Confirmation"
-
+    When I click on the "Confirm Replace" button
+    Then I should see "Successfully replaced: Gender Partial with Gender Partial dupe"
+   
   Scenario: A Section when added to a Survey should inherit the group assigned to Survey
     Given I have a Survey with the name "Search Survey Test" and the description "Test"
     And I have a Section with the name "New Section" and the description "New section description"
