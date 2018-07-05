@@ -78,7 +78,7 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   componentDidMount() {
-    $(document).off('click.bs.button.data-api', '[data-toggle^="button"]')
+    $(document).off('click.bs.button.data-api', '[data-toggle^="button"]');
   }
 
   showAdvSearch() {
@@ -312,7 +312,6 @@ class DashboardSearch extends SearchStateComponent {
                 </Col>
               </Row>
               <Row className="additional-filters">
-                
                 <h3 className="h4 col-xs-12">Additonal Filters:</h3>
 
                 <Col sm="6">
