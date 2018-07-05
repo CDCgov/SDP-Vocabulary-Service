@@ -130,6 +130,15 @@ When(/^I select the "([^"]*)" radio button$/) do |name|
   choose(name)
 end
 
+When(/^I tab out of the "([^"]*)" field$/) do |field_name|
+  fill_in(field_name, with: "\t")
+end
+
+When(/^I click the "([^"]*)" option button$/) do |name|
+  #  fill_in "content-since", with: "\t"
+  page.find('label', text: name).click
+end
+
 When(/^I fill in the "([^"]*)" field with "([^"]*)"$/) do |field_name, new_value|
   fill_in(field_name, with: new_value)
 end
