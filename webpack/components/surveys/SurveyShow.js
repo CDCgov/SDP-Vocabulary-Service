@@ -221,6 +221,16 @@ class SurveyShow extends Component {
                   {this.props.survey.contentStage}
                 </div>
                 }
+                { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Published (publically available)
+                </div>
+                }
+                { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'draft' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Draft (authors and publishers only)
+                </div>
+                }
                 { this.props.survey.parent &&
                 <div className="box-content">
                   <strong>Extended from: </strong>
@@ -303,7 +313,7 @@ class SurveyShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Survey Details {survey.status && (<text>[{survey.status.toUpperCase()}]</text>)}</h1></li>
+            <li className="showpage_title"><h1>Survey Details {survey.contentStage && (<text>[{survey.contentStage.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar()}
