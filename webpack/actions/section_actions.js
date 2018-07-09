@@ -21,6 +21,7 @@ import {
   UPDATE_PDV,
   ADD_NESTED_ITEM,
   REORDER_NESTED_ITEM,
+  UPDATE_STAGE_SECTION,
   REMOVE_NESTED_ITEM
 } from './types';
 
@@ -88,6 +89,15 @@ export function retireSection(id) {
     type: RETIRE_SECTION,
     payload: axios.put(routes.retireSectionPath(id),
      {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function updateStageSection(id, stage) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: UPDATE_STAGE_SECTION,
+    payload: axios.put(routes.updateStageSectionPath(id),
+     {authenticityToken, stage}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 

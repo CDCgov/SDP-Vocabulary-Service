@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
+import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -87,6 +87,7 @@ class QuestionShowContainer extends Component {
                              deleteQuestion={this.props.deleteQuestion}
                              addQuestionToGroup={this.props.addQuestionToGroup}
                              removeQuestionFromGroup={this.props.removeQuestionFromGroup}
+                             updateStageQuestion={this.props.updateStageQuestion}
                              fetchQuestion={this.props.fetchQuestion}
                              addPreferred={this.props.addPreferred}
                              removePreferred={this.props.removePreferred}
@@ -111,7 +112,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred,
+  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
     removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags, retireQuestion}, dispatch);
 }
 
@@ -124,6 +125,7 @@ QuestionShowContainer.propTypes = {
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
   updateQuestionTags: PropTypes.func,
+  updateStageQuestion: PropTypes.func,
   retireQuestion: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,

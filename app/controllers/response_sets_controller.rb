@@ -34,6 +34,15 @@ class ResponseSetsController < ApplicationController
     @response_set.updated_by = current_user
   end
 
+  def update_stage
+    if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
+      @response_set.update_stage(params[:stage])
+      render :show
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   def add_to_group
     group = Group.find(params[:group])
     if current_user.groups.include?(group)

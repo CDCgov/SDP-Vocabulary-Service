@@ -14,7 +14,7 @@ import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
-import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isSimpleEditable, isGroupable } from '../../utilities/componentHelpers';
 
 export default class ResponseSetShow extends Component {
   constructor(props){
@@ -98,6 +98,32 @@ export default class ResponseSetShow extends Component {
                 this.props.retireResponseSet(responseSet.id);
                 return false;
               }}>Retire</a>
+            }
+            {isSimpleEditable(responseSet, this.props.currentUser) &&
+              <div className="btn-group">
+                <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span className="fa fa-sitemap"></span> Stage <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                  <li key="header" className="dropdown-header">Update Content Stage:</li>
+                  <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageResponseSet(responseSet.id, 'Comment Only');
+                  }}>Comment Only</a></li>
+                  <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageResponseSet(responseSet.id, 'Trial Use');
+                  }}>Trial Use</a></li>
+                  {responseSet.status === 'draft' && <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageResponseSet(responseSet.id, 'Draft');
+                  }}>Draft</a></li>}
+                  {responseSet.status === 'published' && <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageResponseSet(responseSet.id, 'Published');
+                  }}>Published</a></li>}
+                </ul>
+              </div>
             }
             {isPublishable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -236,6 +262,7 @@ ResponseSetShow.propTypes = {
   removeResponseSetFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
+  updateStageResponseSet: PropTypes.func,
   fetchResponseSet: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

@@ -113,6 +113,32 @@ class SurveyShow extends Component {
               return false;
             }}>Retire</a>
           }
+          {isSimpleEditable(this.props.survey, this.props.currentUser) &&
+            <div className="btn-group">
+              <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span className="fa fa-sitemap"></span> Stage <span className="caret"></span>
+              </button>
+              <ul className="dropdown-menu">
+                <li key="header" className="dropdown-header">Update Content Stage:</li>
+                <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Comment Only');
+                }}>Comment Only</a></li>
+                <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Trial Use');
+                }}>Trial Use</a></li>
+                {this.props.survey.status === 'draft' && <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Draft');
+                }}>Draft</a></li>}
+                {this.props.survey.status === 'published' && <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Published');
+                }}>Published</a></li>}
+              </ul>
+            </div>
+          }
           {isPublishable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
@@ -297,6 +323,7 @@ SurveyShow.propTypes = {
   deleteSurvey:  PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
+  updateStageSurvey: PropTypes.func,
   fetchSurvey: PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,

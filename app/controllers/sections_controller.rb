@@ -114,6 +114,15 @@ class SectionsController < ApplicationController
     end
   end
 
+  def update_stage
+    if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
+      @section.update_stage(params[:stage])
+      render :show
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
+  end
+
   def add_to_group
     group = Group.find(params[:group])
     if current_user.groups.include?(group)

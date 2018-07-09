@@ -801,6 +801,18 @@ Based on Rails routes of Vocabulary::Application
 // update_pdv_section => /sections/:id/update_pdv(.:format)
   // function(id, options)
   update_pdv_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_pdv",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// update_stage_question => /questions/:id/update_stage(.:format)
+  // function(id, options)
+  update_stage_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_stage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// update_stage_response_set => /response_sets/:id/update_stage(.:format)
+  // function(id, options)
+  update_stage_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_stage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// update_stage_section => /sections/:id/update_stage(.:format)
+  // function(id, options)
+  update_stage_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_stage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// update_stage_survey => /surveys/:id/update_stage(.:format)
+  // function(id, options)
+  update_stage_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_stage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // update_tags_question => /questions/:id/update_tags(.:format)
   // function(id, options)
   update_tags_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"update_tags",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
