@@ -60,7 +60,7 @@ Feature: Manage Surveys
    Then I should see "Revised Description"
    When I click on the "Linked Sections" link
    And I should see "Test Gender Section"
-   And I should not see "Publish"
+   And I should see "(Published)"
    And I should see "Edit"
    When I click on the "Test Gender Section" link
    And I click on the "Linked Surveys" link
@@ -112,7 +112,6 @@ Feature: Manage Surveys
    Then I should see "Revise"
    And I should see "Published By: test_author@gmail.com"
    And I should not see "Edit"
-   And I should not see a "Publish" link
    And I should see "Retire"
    When I click on the "Retire" link
    Then I should see "Content Stage: Retired"

@@ -64,7 +64,6 @@ Feature: Edit Sections
     When I click on the "Linked Questions and Sections" link
     And I should see "What is your gender?"
     And I should see "Nested Section"
-    And I should not see "Publish"
     And I should see "Edit"
     And I should see "TEST VAR EDIT"
     When I click on the "Item program defined variable: Test Var Edit" link
