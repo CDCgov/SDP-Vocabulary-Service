@@ -45,8 +45,9 @@
 .action_bar {
   text-align: right;
   border-bottom: 1px solid $light-gray;
-  height: 42px;
+  min-height: 38px;
   padding-top: 4px;
+  padding-bottom: 4px;
   .btn {
     margin-right: 5px;
     background-color: $dark-gray;
