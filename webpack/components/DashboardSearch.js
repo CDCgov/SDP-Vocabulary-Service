@@ -77,10 +77,6 @@ class DashboardSearch extends SearchStateComponent {
     }
   }
 
-  componentDidMount() {
-    $(document).off('click.bs.button.data-api', '[data-toggle^="button"]');
-  }
-
   showAdvSearch() {
     this.setState({ showAdvSearchModal: true });
   }
@@ -289,13 +285,12 @@ class DashboardSearch extends SearchStateComponent {
                     <ToggleButtonGroup
                       type="radio"
                       name="sort-by"
-                      onChange={this.toggleSort}
-                      value={this.state.sort}
+                      defaultValue={this.state.sort}
                       className="form-btn-group"
                       >
-                      <ToggleButton value={''}>Default</ToggleButton>
-                      <ToggleButton value={'System Usage'}>System Usage</ToggleButton>
-                      <ToggleButton value={'Program Usage'}>Program Usage</ToggleButton>
+                      <ToggleButton value={''} onClick={() => this.toggleSort('')}>Default</ToggleButton>
+                      <ToggleButton value={'System Usage'} onClick={() => this.toggleSort('System Usage')}>System Usage</ToggleButton>
+                      <ToggleButton value={'Program Usage'} onClick={() => this.toggleSort('Program Usage')}>Program Usage</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                 </Col>
@@ -333,13 +328,12 @@ class DashboardSearch extends SearchStateComponent {
                     <ToggleButtonGroup
                       type="radio"
                       name="status-filter"
-                      onChange={this.toggleStatus}
-                      value={this.state.statusFilter}
+                      defaultValue={this.state.statusFilter}
                       className="form-btn-group"
                       >
-                      <ToggleButton value={''}>Any</ToggleButton>
-                      <ToggleButton value={'draft'}>Draft</ToggleButton>
-                      <ToggleButton value={'published'}>Published</ToggleButton>
+                      <ToggleButton value={''} onClick={() => this.toggleStatus('')}>Any</ToggleButton>
+                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Draft</ToggleButton>
+                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Published</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>
