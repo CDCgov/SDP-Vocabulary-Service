@@ -48,6 +48,7 @@ class DashboardContainer extends SearchManagerComponent {
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
+      ombFilter: false,
       signUpOpen: false,
       firstTimeOpen: false,
       myStuffFilter: false,

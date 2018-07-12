@@ -16,12 +16,14 @@ Feature: Advanced Search
     When I select the "Influenza" option in the "select-prog" list
     And I check the "most-recent-filter" checkbox
     And I check the "preferred-filter" checkbox
+    And I check the "omb-filter" checkbox
     And I click on the "Close" button
     Then I should see "Program Filters:"
     And I should see "Influenza"
     And I should see "Clear Adv. Filters"
     And I should see "Filtering by most recent version"
     And I should see "Filtering by CDC preferred content"
+    And I should see "Filtering by OMB approved content"
 
   Scenario: Filter search by date
     And I am on the "/" page

@@ -101,8 +101,7 @@ Feature: Manage Sections
     And I should not see "Revise"
     And I should see "Published By: test_publisher@gmail.com"
     And I should not see "Edit"
-    And I should not see a "Publish" link
     And I should see "Retire"
     When I click on the "Retire" link
     Then I should see "Content Stage: Retired"
-    And I should not see a "Retire" link
+    And I should see "(Retired)"

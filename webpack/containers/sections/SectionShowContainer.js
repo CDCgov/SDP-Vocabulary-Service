@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSection, publishSection, retireSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
@@ -80,6 +80,7 @@ class SectionShowContainer extends Component {
                       removePreferred={this.props.removePreferred}
                       fetchSection={this.props.fetchSection}
                       updateSectionTags={this.props.updateSectionTags}
+                      updateStageSection={this.props.updateStageSection}
                       publishers ={this.props.publishers}
                       resultStyle={this.props.resultStyle}
                       resultControlVisibility={this.props.resultControlVisibility}
@@ -108,7 +109,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
-    removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl, retireSection}, dispatch);
+    removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, updateStageSection, toggleResultControl, retireSection}, dispatch);
 }
 
 SectionShowContainer.propTypes = {
@@ -126,6 +127,7 @@ SectionShowContainer.propTypes = {
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
   updateSectionTags: PropTypes.func,
+  updateStageSection: PropTypes.func,
   publishSection: PropTypes.func,
   retireSection: PropTypes.func,
   publishers: publishersProps,

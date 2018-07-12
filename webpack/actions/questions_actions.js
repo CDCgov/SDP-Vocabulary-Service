@@ -15,6 +15,7 @@ import {
   FETCH_QUESTION_USAGE,
   ADD_ENTITIES,
   UPDATE_QUESTION_TAGS,
+  UPDATE_STAGE_QUESTION,
   MARK_AS_DUPLICATE
 } from './types';
 
@@ -136,6 +137,15 @@ export function retireQuestion(id, callback=null) {
   return {
     type: RETIRE_QUESTION,
     payload: putPromise
+  };
+}
+
+export function updateStageQuestion(id, stage) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: UPDATE_STAGE_QUESTION,
+    payload: axios.put(routes.updateStageQuestionPath(id),
+     {authenticityToken, stage}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 

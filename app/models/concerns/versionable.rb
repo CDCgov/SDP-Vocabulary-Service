@@ -106,6 +106,11 @@ module Versionable
     end
   end
 
+  def update_stage(stage)
+    self.content_stage = stage
+    save!
+  end
+
   def as_json(options = {})
     super((options || {}).merge(methods: [:most_recent]))
   end

@@ -42,7 +42,7 @@ class SectionShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Section Details {section.status && (<text>[{section.status.toUpperCase()}]</text>)}</h1></li>
+            <li className="showpage_title"><h1>Section Details {section.contentStage && (<text>[{section.contentStage.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar(section)}
@@ -186,6 +186,32 @@ class SectionShow extends Component {
                 return false;
               }}>Retire</a>
           }
+          {isSimpleEditable(section, this.props.currentUser) &&
+            <div className="btn-group">
+              <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span className="fa fa-sitemap"></span> Stage <span className="caret"></span>
+              </button>
+              <ul className="dropdown-menu">
+                <li key="header" className="dropdown-header">Update Content Stage:</li>
+                <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSection(section.id, 'Comment Only');
+                }}>Comment Only</a></li>
+                <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSection(section.id, 'Trial Use');
+                }}>Trial Use</a></li>
+                {section.status === 'draft' && <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSection(section.id, 'Draft');
+                }}>Draft</a></li>}
+                {section.status === 'published' && <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSection(section.id, 'Published');
+                }}>Published</a></li>}
+              </ul>
+            </div>
+          }
           {this.props.currentUser && this.props.currentUser.admin && !section.preferred &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
@@ -249,6 +275,16 @@ class SectionShow extends Component {
                     <strong>Content Stage: </strong>
                     {section.contentStage}
                   </div>
+                }
+                { this.props.currentUser && section.status && section.status === 'published' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Published (publically available)
+                </div>
+                }
+                { this.props.currentUser && section.status && section.status === 'draft' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Draft (authors and publishers only)
+                </div>
                 }
                 { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
                 <div className="box-content">
@@ -348,6 +384,7 @@ SectionShow.propTypes = {
   removePreferred: PropTypes.func,
   fetchSection: PropTypes.func,
   updateSectionTags: PropTypes.func,
+  updateStageSection: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps,

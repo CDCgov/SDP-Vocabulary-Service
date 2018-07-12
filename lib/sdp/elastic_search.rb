@@ -159,6 +159,12 @@ module SDP
                      {}
                    end
 
+      omb_terms = if must_filters['omb']
+                    { term: { 'omb': true } }
+                  else
+                    {}
+                  end
+
       preferred_terms = if must_filters['preferred']
                           { term: { 'preferred': true } }
                         else
@@ -230,7 +236,11 @@ module SDP
           bool: {
             filter: { bool: {
               filter: [filter_body, version_filter, group_filter],
-              must: [prog_terms, sys_terms, date_terms, ombd_terms, preferred_terms, status_terms, source_terms, rt_terms, category_terms, methods_terms],
+              must: [
+                prog_terms, sys_terms, date_terms, omb_terms, ombd_terms,
+                preferred_terms, status_terms, source_terms, rt_terms,
+                category_terms, methods_terms
+              ],
               must_not: [ns_terms]
             } },
             must: must_body

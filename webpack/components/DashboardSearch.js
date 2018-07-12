@@ -33,6 +33,7 @@ class DashboardSearch extends SearchStateComponent {
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
+      ombFilter: false,
       showAdvSearchModal: false,
       mostRecentFilter: false,
       surveillancePrograms: {},
@@ -77,10 +78,6 @@ class DashboardSearch extends SearchStateComponent {
     }
   }
 
-  componentDidMount() {
-    $(document).off('click.bs.button.data-api', '[data-toggle^="button"]');
-  }
-
   showAdvSearch() {
     this.setState({ showAdvSearchModal: true });
   }
@@ -102,6 +99,7 @@ class DashboardSearch extends SearchStateComponent {
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
+      ombFilter: false,
       sort: '',
       groupFilterId: 0
     };
@@ -214,6 +212,15 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
+  toggleOmbFilter() {
+    let newState = {ombFilter: !this.state.ombFilter};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.ombFilter = newState.ombFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
   toggleSource(e) {
     let newState = {sourceFilter: e.target.value};
     this.setState(newState);
@@ -289,13 +296,12 @@ class DashboardSearch extends SearchStateComponent {
                     <ToggleButtonGroup
                       type="radio"
                       name="sort-by"
-                      onChange={this.toggleSort}
-                      value={this.state.sort}
+                      defaultValue={this.state.sort}
                       className="form-btn-group"
                       >
-                      <ToggleButton value={''}>Default</ToggleButton>
-                      <ToggleButton value={'System Usage'}>System Usage</ToggleButton>
-                      <ToggleButton value={'Program Usage'}>Program Usage</ToggleButton>
+                      <ToggleButton value={''} onClick={() => this.toggleSort('')}>Default</ToggleButton>
+                      <ToggleButton value={'System Usage'} onClick={() => this.toggleSort('System Usage')}>System Usage</ToggleButton>
+                      <ToggleButton value={'Program Usage'} onClick={() => this.toggleSort('Program Usage')}>Program Usage</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                 </Col>
@@ -325,6 +331,10 @@ class DashboardSearch extends SearchStateComponent {
                       <input type='checkbox' className='form-check-input' name='preferred-filter' id='preferred-filter' checked={this.state.preferredFilter} onChange={() => this.togglePreferredFilter()} />
                       CDC Preferred Content Only
                     </label>
+                    <label htmlFor="omb-filter">
+                      <input type='checkbox' className='form-check-input' name='omb-filter' id='omb-filter' checked={this.state.ombFilter} onChange={() => this.toggleOmbFilter()} />
+                      OMB Approved Content Only
+                    </label>
                   </FormGroup>
                 </Col>
                 <Col sm="6">
@@ -333,13 +343,12 @@ class DashboardSearch extends SearchStateComponent {
                     <ToggleButtonGroup
                       type="radio"
                       name="status-filter"
-                      onChange={this.toggleStatus}
-                      value={this.state.statusFilter}
+                      defaultValue={this.state.statusFilter}
                       className="form-btn-group"
                       >
-                      <ToggleButton value={''}>Any</ToggleButton>
-                      <ToggleButton value={'draft'}>Draft</ToggleButton>
-                      <ToggleButton value={'published'}>Published</ToggleButton>
+                      <ToggleButton value={''} onClick={() => this.toggleStatus('')}>Any</ToggleButton>
+                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Draft</ToggleButton>
+                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Published</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>
@@ -441,7 +450,7 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.preferredFilter || this.state.contentSince || this.state.ombDate || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.ombFilter || this.state.preferredFilter || this.state.contentSince || this.state.ombDate || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -472,6 +481,9 @@ class DashboardSearch extends SearchStateComponent {
             }
             {this.state.preferredFilter &&
               <div className="adv-filter-list">Filtering by CDC preferred content</div>
+            }
+            {this.state.ombFilter &&
+              <div className="adv-filter-list">Filtering by OMB approved content</div>
             }
             {this.state.contentSince &&
               <div className="adv-filter-list">Content Since Filter:

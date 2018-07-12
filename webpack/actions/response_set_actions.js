@@ -13,6 +13,7 @@ import {
   ADD_RESPONSE_SET_TO_GROUP,
   REMOVE_RESPONSE_SET_FROM_GROUP,
   DELETE_RESPONSE_SET,
+  UPDATE_STAGE_RESPONSE_SET,
   ADD_ENTITIES
 } from './types';
 
@@ -104,6 +105,15 @@ export function retireResponseSet(id, callback=null) {
   return {
     type: RETIRE_RESPONSE_SET,
     payload: putPromise
+  };
+}
+
+export function updateStageResponseSet(id, stage) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: UPDATE_STAGE_RESPONSE_SET,
+    payload: axios.put(routes.updateStageResponseSetPath(id),
+     {authenticityToken, stage}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 

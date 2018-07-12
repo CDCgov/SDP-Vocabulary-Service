@@ -38,7 +38,7 @@ export default class QuestionShow extends Component {
         <div className="showpage_header_container no-print">
           <ul className="list-inline">
             <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Question Details {question.status && (<text>[{question.status.toUpperCase()}]</text>)}</h1></li>
+            <li className="showpage_title"><h1>Question Details {question.contentStage && (<text>[{question.contentStage.toUpperCase()}]</text>)}</h1></li>
           </ul>
         </div>
         {this.historyBar(question)}
@@ -129,6 +129,32 @@ export default class QuestionShow extends Component {
             {isRetirable(question, this.props.currentUser) &&
               <button className="btn btn-primary" onClick={() => this.props.retireQuestion(question.id) }>Retire</button>
             }
+            {isSimpleEditable(question, this.props.currentUser) &&
+              <div className="btn-group">
+                <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span className="fa fa-sitemap"></span> Stage <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                  <li key="header" className="dropdown-header">Update Content Stage:</li>
+                  <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Comment Only');
+                  }}>Comment Only</a></li>
+                  <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Trial Use');
+                  }}>Trial Use</a></li>
+                  {question.status === 'draft' && <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Draft');
+                  }}>Draft</a></li>}
+                  {question.status === 'published' && <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Published');
+                  }}>Published</a></li>}
+                </ul>
+              </div>
+            }
             {isPublishable(question, this.props.currentUser) &&
               <button className="btn btn-primary" onClick={() => this.props.handlePublish(question) }>Publish</button>
             }
@@ -191,6 +217,16 @@ export default class QuestionShow extends Component {
                   <strong>Content Stage: </strong>
                   {question.contentStage}
                 </div>}
+                { this.props.currentUser && question.status && question.status === 'published' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Published (publically available)
+                </div>
+                }
+                { this.props.currentUser && question.status && question.status === 'draft' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Draft (authors and publishers only)
+                </div>
+                }
                 { question.parent &&
                   <div className="box-content">
                     <strong>Extended from: </strong>
@@ -339,6 +375,7 @@ QuestionShow.propTypes = {
   removePreferred: PropTypes.func,
   fetchQuestion: PropTypes.func,
   updateQuestionTags: PropTypes.func,
+  updateStageQuestion: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

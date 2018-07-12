@@ -1,5 +1,4 @@
 # rubocop:disable Metrics/AbcSize
-# rubocop:disable Metrics/MethodLength
 require 'elasticsearch'
 require 'sdp/elastic_search'
 require 'sdp/simple_search'
@@ -11,6 +10,18 @@ class ElasticsearchController < ApplicationController
     page = params[:page] ? params[:page].to_i : 1
     current_user_id = current_user ? current_user.id : -1
     groups = current_user ? current_user.groups : []
+    must_filters = must_filter_defaults(params)
+    results = if SDP::Elasticsearch.ping
+                SDP::Elasticsearch.search(type, query_string, page, query_size, must_filters, current_user_id, groups)
+              else
+                SDP::SimpleSearch.search(type, query_string, current_user_id,
+                                         query_size, page, must_filters['publisher'],
+                                         must_filters['mystuff'], must_filters['nested_section']).target!
+              end
+    render json: results
+  end
+
+  def must_filter_defaults(params)
     must_filters = {}
     must_filters['group_id'] = params[:groups] ? params[:groups].to_i : 0
     must_filters['publisher'] = current_user ? current_user.publisher? : false
@@ -22,20 +33,14 @@ class ElasticsearchController < ApplicationController
     must_filters['sort'] = params[:sort] ? params[:sort] : ''
     must_filters['nested_section'] = params[:nsfilter] ? params[:nsfilter] : nil
     must_filters['preferred'] = params[:preferred] ? params[:preferred] : false
+    must_filters['omb'] = params[:omb] ? params[:omb] : false
     must_filters['status'] = params[:status] ? params[:status] : ''
     must_filters['category'] = params[:category] ? params[:category].underscore.split(' ')[0] : ''
     must_filters['rt'] = params[:rt] ? params[:rt].underscore.split(' ')[0] : ''
     must_filters['source'] = params[:source] ? params[:source] : ''
     must_filters['data_collection_methods'] = params[:methods]
     must_filters['omb_approval_date'] = params[:ombDate]
-    results = if SDP::Elasticsearch.ping
-                SDP::Elasticsearch.search(type, query_string, page, query_size, must_filters, current_user_id, groups)
-              else
-                SDP::SimpleSearch.search(type, query_string, current_user_id,
-                                         query_size, page, must_filters['publisher'],
-                                         must_filters['mystuff'], must_filters['nested_section']).target!
-              end
-    render json: results
+    must_filters
   end
 
   def duplicate_questions
@@ -63,4 +68,3 @@ class ElasticsearchController < ApplicationController
   end
 end
 # rubocop:enable Metrics/AbcSize
-# rubocop:enable Metrics/MethodLength

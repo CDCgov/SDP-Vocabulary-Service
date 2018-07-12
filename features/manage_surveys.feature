@@ -22,6 +22,14 @@ Feature: Manage Surveys
     Then I should see "REDCap (XML)"
     And I should see "Epi Info (XML)"
     And I should see "Spreadsheet (XLSX)"
+    And I should see "Survey Details [DRAFT]"
+    When I click on the "Stage" button
+    Then I should see "Update Content Stage:"
+    And I should see "Comment Only"
+    When I click on the "Trial Use" link
+    Then I should see "Survey Details [TRIAL USE]"
+    And I should see "Version 1 (Trial Use)"
+    And I should see "Visibility: Draft (authors and publishers only)"
 
   Scenario: Send a Draft Survey to a Publisher
     Given I have a Survey with the name "Test Survey" and the description "Survey description"
@@ -52,7 +60,7 @@ Feature: Manage Surveys
    Then I should see "Revised Description"
    When I click on the "Linked Sections" link
    And I should see "Test Gender Section"
-   And I should not see "Publish"
+   And I should see "(Published)"
    And I should see "Edit"
    When I click on the "Test Gender Section" link
    And I click on the "Linked Surveys" link
@@ -104,7 +112,6 @@ Feature: Manage Surveys
    Then I should see "Revise"
    And I should see "Published By: test_author@gmail.com"
    And I should not see "Edit"
-   And I should not see a "Publish" link
    And I should see "Retire"
    When I click on the "Retire" link
    Then I should see "Content Stage: Retired"
@@ -288,7 +295,7 @@ Feature: Manage Surveys
     Then I should see "Select & Replace Confirmation"
     When I click on the "Confirm Replace" button
     Then I should see "Successfully replaced: Gender Partial with Gender Partial dupe"
-   
+
   Scenario: A Section when added to a Survey should inherit the group assigned to Survey
     Given I have a Survey with the name "Search Survey Test" and the description "Test"
     And I have a Section with the name "New Section" and the description "New section description"
