@@ -24,10 +24,15 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :most_recent
   attribute :groups
   attribute :preferred
+  attribute :omb
   attribute :data_collection_methods
 
   def most_recent
     object.most_recent?
+  end
+
+  def omb
+    object.omb_approved?
   end
 
   def sections

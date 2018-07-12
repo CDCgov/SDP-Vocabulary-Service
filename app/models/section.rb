@@ -36,6 +36,18 @@ class Section < ApplicationRecord
     surveys.empty? && parent.nil?
   end
 
+  def omb_approved?
+    omb_flag = false
+    surveys.each do |survey|
+      omb_flag = true if survey.omb_approved?
+    end
+    snis = SectionNestedItem.where(nested_section_id: id)
+    snis.each do |sni|
+      omb_flag = true if sni.section.omb_approved?
+    end
+    omb_flag
+  end
+
   # Returns the number of questions with potential duplicates on the section
   def q_with_dupes_count(current_user)
     count = 0

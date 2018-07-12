@@ -37,6 +37,12 @@ class ResponseSet < ApplicationRecord
     sections.empty? && questions.empty?
   end
 
+  def omb_approved?
+    omb_flag = false
+    sections.each { |s| omb_flag = true if s.omb_approved? }
+    omb_flag
+  end
+
   def self.most_recent_for_oid(oid)
     where(oid: oid).order(version: :desc).first
   end

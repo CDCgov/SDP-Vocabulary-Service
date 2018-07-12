@@ -33,6 +33,7 @@ class DashboardSearch extends SearchStateComponent {
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
+      ombFilter: false,
       showAdvSearchModal: false,
       mostRecentFilter: false,
       surveillancePrograms: {},
@@ -98,6 +99,7 @@ class DashboardSearch extends SearchStateComponent {
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
+      ombFilter: false,
       sort: '',
       groupFilterId: 0
     };
@@ -206,6 +208,15 @@ class DashboardSearch extends SearchStateComponent {
     this.setState(newState);
     let searchParams = this.currentSearchParameters();
     searchParams.preferredFilter = newState.preferredFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
+  toggleOmbFilter() {
+    let newState = {ombFilter: !this.state.ombFilter};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.ombFilter = newState.ombFilter;
     this.props.search(searchParams);
     this.props.changeFiltersCallback(newState);
   }
@@ -319,6 +330,10 @@ class DashboardSearch extends SearchStateComponent {
                     <label htmlFor="preferred-filter">
                       <input type='checkbox' className='form-check-input' name='preferred-filter' id='preferred-filter' checked={this.state.preferredFilter} onChange={() => this.togglePreferredFilter()} />
                       CDC Preferred Content Only
+                    </label>
+                    <label htmlFor="omb-filter">
+                      <input type='checkbox' className='form-check-input' name='omb-filter' id='omb-filter' checked={this.state.ombFilter} onChange={() => this.toggleOmbFilter()} />
+                      OMB Approved Content Only
                     </label>
                   </FormGroup>
                 </Col>
@@ -435,7 +450,7 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.preferredFilter || this.state.contentSince || this.state.ombDate || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.ombFilter || this.state.preferredFilter || this.state.contentSince || this.state.ombDate || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -466,6 +481,9 @@ class DashboardSearch extends SearchStateComponent {
             }
             {this.state.preferredFilter &&
               <div className="adv-filter-list">Filtering by CDC preferred content</div>
+            }
+            {this.state.ombFilter &&
+              <div className="adv-filter-list">Filtering by OMB approved content</div>
             }
             {this.state.contentSince &&
               <div className="adv-filter-list">Content Since Filter:

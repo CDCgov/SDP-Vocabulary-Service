@@ -34,6 +34,10 @@ class Survey < ApplicationRecord
     true
   end
 
+  def omb_approved?
+    control_number != nil
+  end
+
   # Returns the number of questions with potential duplicates on the survey
   def q_with_dupes_count(current_user)
     count = 0

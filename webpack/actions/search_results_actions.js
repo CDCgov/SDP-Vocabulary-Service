@@ -14,7 +14,7 @@ import {
   ADD_ENTITIES_FULFILLED
 } from './types';
 
-const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter', 'nsFilter',
+const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter', 'nsFilter', 'ombFilter',
   'rtFilter', 'sourceFilter', 'categoryFilter', 'preferredFilter', 'statusFilter', 'methodsFilter',
   'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId', 'ombDate'];
 
@@ -32,7 +32,7 @@ export class SearchParameters {
     const simpleMapping = {'searchTerms': 'search', 'type': 'type', 'programFilter': 'programs', 'sort': 'sort', 'groupFilterId': 'groups',
       'rtFilter': 'rt', 'sourceFilter': 'source', 'categoryFilter': 'category', 'preferredFilter': 'preferred', 'statusFilter': 'status',
       'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page', 'nsFilter': 'nsfilter',
-      'methodsFilter': 'methods'};
+      'methodsFilter': 'methods', 'ombFilter': 'omb'};
     const params = {};
     forEach(simpleMapping, (value, key) => {
       if (this[key]) {
