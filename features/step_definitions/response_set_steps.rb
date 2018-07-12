@@ -36,6 +36,11 @@ Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]
   ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user)
 end
 
+Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" with oid "([^"]*)"$/) do |set_name, desc, oid|
+  user = get_user 'test_author@gmail.com'
+  ResponseSet.create!(name: set_name, description: desc, version: 1, created_by: user, source: 'PHIN_VADS', oid: oid)
+end
+
 When(/^I go to the list of Response Sets$/) do
   Elastictest.fake_rs_search_results
   visit '/'
