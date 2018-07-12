@@ -88,11 +88,11 @@ function mapStateToProps(state, ownProps) {
       if (sectionWithNestedItems.sectionNestedItems) {
         sectionWithNestedItems.sectionNestedItems = sectionWithNestedItems.sectionNestedItems.map((sni) => {
           let fullNestedItem = {};
-          if (sni.questionId) {
+          if (sni.questionId && state.questions[sni.questionId]) {
             fullNestedItem = state.questions[sni.questionId];
             fullNestedItem.type = 'question';
             return fullNestedItem;
-          } else if (sni.nestedSectionId) {
+          } else if (sni.nestedSectionId && state.sections[sni.nestedSectionId]) {
             fullNestedItem = state.sections[sni.nestedSectionId];
             fullNestedItem.type = 'section';
             return fullNestedItem;
