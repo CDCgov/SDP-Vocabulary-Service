@@ -30,7 +30,7 @@ class Breadcrumb extends Component {
 
             if (i != lastIndex) {
               return (
-                <li key={`${type}-${s.id}-${i}`}>{i<1 && <a href="#"><span className={`fa ${iconMap[s.type]}`}></span></a>} <Link to={`/${type}s/${s.id}`}>{s.name}</Link></li>
+                <li key={`${type}-${s.id}-${i}`}>{i<1 && <Link to={`/${type}s/${s.id}`}><span className={`fa ${iconMap[s.type]}`}></span></Link>} <Link to={`/${type}s/${s.id}`}>{s.name}</Link></li>
               ) 
             } else { 
               return (
