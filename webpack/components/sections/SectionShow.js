@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import Pagination from 'rc-pagination';
 import $ from 'jquery';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import SurveyList from '../surveys/SurveyList';
@@ -13,7 +13,7 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import TagModal from "../TagModal";
-
+import Breadcrumb from "../Breadcrumb"
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
@@ -30,6 +30,10 @@ class SectionShow extends Component {
     this.pageChange = this.pageChange.bind(this);
   }
 
+  componentWillMount() {
+    this.props.addBreadcrumbItem({type:'section',id:this.props.section.id,name:this.props.section.name});
+  }
+
   render() {
     const {section} = this.props;
     if(!section){
@@ -38,22 +42,30 @@ class SectionShow extends Component {
       );
     }
     return (
-      <div id={"section_id_"+section.id}>
-        <div className="showpage_header_container no-print">
-          <ul className="list-inline">
-            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Section Details {section.contentStage && (<text>[{section.contentStage.toUpperCase()}]</text>)}</h1></li>
-          </ul>
-        </div>
-        {this.historyBar(section)}
-        {this.mainContent(section)}
+      <div>
+        <Row>
+        <Col sm={12}>
+          <div id={"section_id_"+section.id}>
+            <div className="showpage_header_container no-print">
+              <ul className="list-inline">
+                <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                <li className="showpage_title"><h1>Section Details {section.contentStage && (<text>[{section.contentStage.toUpperCase()}]</text>)}</h1></li>
+              </ul>
+            </div>
+          </div>
+        </Col>
+        </Row>
+        <Row className="no-inside-gutter">
+          {this.historyBar(section)}
+          {this.mainContent(section)}
+        </Row>
       </div>
     );
   }
 
   historyBar(section){
     return (
-      <div className="col-md-3 nopadding no-print">
+      <Col md={3} className="no-print">
         <h2 className="showpage_sidenav_subtitle">
           <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
@@ -62,7 +74,7 @@ class SectionShow extends Component {
           </ul>
         </h2>
         <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
-      </div>
+      </Col>
     );
   }
 
@@ -149,7 +161,7 @@ class SectionShow extends Component {
 
   mainContent(section) {
     return (
-      <div className="col-md-9 nopadding maincontent">
+      <Col md={9} className="maincontent">
         <div className="action_bar no-print">
           {isEditable(section, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
@@ -248,6 +260,7 @@ class SectionShow extends Component {
           }
         </div>
         <div className="maincontent-details">
+          <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
           <ul className="nav nav-tabs" role="tablist">
@@ -366,7 +379,7 @@ class SectionShow extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Col>
     );
   }
 }

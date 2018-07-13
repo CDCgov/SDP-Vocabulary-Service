@@ -6,8 +6,10 @@ import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
+import { Row, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import CodedSetTable from "../CodedSetTable";
+import Breadcrumb from "../Breadcrumb"
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
@@ -24,6 +26,10 @@ export default class ResponseSetShow extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.addBreadcrumbItem({type:'response_set',id:this.props.responseSet.id,name:this.props.responseSet.name});
+  }
+
   render() {
     const {responseSet} = this.props;
     if(responseSet === undefined || responseSet.name === undefined){
@@ -33,22 +39,26 @@ export default class ResponseSetShow extends Component {
     }
 
     return (
-      <div id={"response_set_id_"+responseSet.id}>
-        <div className="showpage_header_container no-print">
-          <ul className="list-inline">
-            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Response Set Details {responseSet.contentStage && (<text>[{responseSet.contentStage.toUpperCase()}]</text>)}</h1></li>
-          </ul>
+      <div>
+        <div id={"response_set_id_"+responseSet.id}>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Response Set Details {responseSet.contentStage && (<text>[{responseSet.contentStage.toUpperCase()}]</text>)}</h1></li>
+            </ul>
+          </div>
         </div>
-        {this.historyBar(responseSet)}
-        {this.mainContent(responseSet)}
+        <Row className="no-inside-gutter">
+          {this.historyBar(responseSet)}
+          {this.mainContent(responseSet)}
+        </Row>
       </div>
     );
   }
 
   historyBar(responseSet) {
     return (
-      <div className="col-md-3 nopadding no-print">
+      <Col md={3} className="no-print">
         <h2 className="showpage_sidenav_subtitle">
           <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
@@ -57,7 +67,7 @@ export default class ResponseSetShow extends Component {
           </ul>
         </h2>
         <VersionInfo versionable={responseSet} versionableType='ResponseSet' currentUser={this.props.currentUser} />
-      </div>
+      </Col>
     );
   }
 
@@ -73,7 +83,7 @@ export default class ResponseSetShow extends Component {
 
   mainContent(responseSet) {
     return (
-      <div className="col-md-9 nopadding maincontent">
+      <Col md={9} className="maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
             {isEditable(responseSet, this.props.currentUser) &&
@@ -170,6 +180,7 @@ export default class ResponseSetShow extends Component {
           </div>
         }
         <div className="maincontent-details">
+          <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${responseSet.preferred ? 'cdc-preferred-note' : ''}`}><strong>Response Set Name:</strong> {responseSet.name} {responseSet.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
           <ul className="nav nav-tabs" role="tablist">
@@ -256,7 +267,7 @@ export default class ResponseSetShow extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Col>
     );
   }
 }

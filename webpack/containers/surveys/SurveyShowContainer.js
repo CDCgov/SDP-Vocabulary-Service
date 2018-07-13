@@ -3,10 +3,13 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { fetchSurvey, publishSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
+import { setBreadcrumbPath, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
+
 import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
@@ -57,19 +60,19 @@ class SurveyShowContainer extends Component {
   render() {
     if(!this.props.survey){
       return (
-        <div>Loading..</div>
+        <Grid className="basic-bg">Loading..</Grid>
       );
     }
     return (
-      <div className="container">
-        <div className="row basic-bg">
-          <div className="col-md-12">
+      <Grid>
+        <Row className="basic-bg">
+          <Col md={12}>
             <SurveyShow {...this.props} />
-            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
+            <div className="showpage-comments-title">Public Comments:</div>
             <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }
@@ -113,7 +116,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, publishSurvey, retireSurvey, addSurveyToGroup, addPreferred, removePreferred,
-    removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags, updateStageSurvey}, dispatch);
+    removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags, updateStageSurvey, setBreadcrumbPath, addBreadcrumbItem}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {

@@ -282,15 +282,15 @@ class DashboardSearch extends SearchStateComponent {
             <div className="adv-filter-modal-body">
               <p>Select programs and systems to filter by. You may hold down control (CTRL), command (CMD), or shift on your keyboard to select multiple filters.</p>
               <Row>
-                <Col sm="6">
+                <Col sm={6}>
                   {this.surveillanceProgramsSelect()}
                 </Col>
-                <Col sm="6">
+                <Col sm={6}>
                   {this.surveillanceSystemsSelect()}
                 </Col>
               </Row>
               <Row>
-                <Col sm="6">
+                <Col sm={6}>
                   <FormGroup className="sort-by-group">
                     <ControlLabel htmlFor="sort-by">Sort By:</ControlLabel>
                     <ToggleButtonGroup
@@ -305,7 +305,7 @@ class DashboardSearch extends SearchStateComponent {
                     </ToggleButtonGroup>
                   </FormGroup>
                 </Col>
-                <Col sm="6">
+                <Col sm={6}>
                   <FormGroup>
                     <label htmlFor='content-since'>Content Changed Since:</label>
                     <SingleDatePicker id="content-since"
@@ -320,7 +320,7 @@ class DashboardSearch extends SearchStateComponent {
               <Row className="additional-filters">
                 <h3 className="h4 col-xs-12">Additonal Filters:</h3>
 
-                <Col sm="6">
+                <Col sm={6}>
                   <FormGroup>
                     <label htmlFor="most-recent-filter">
                       <input type='checkbox' className='form-check-input' name='most-recent-filter' id='most-recent-filter' checked={this.state.mostRecentFilter} onChange={() => this.toggleMostRecentFilter()} />
@@ -337,7 +337,7 @@ class DashboardSearch extends SearchStateComponent {
                     </label>
                   </FormGroup>
                 </Col>
-                <Col sm="6">
+                <Col sm={6}>
                   <FormGroup>
                     <ControlLabel htmlFor="status-filter">Status: </ControlLabel>
                     <ToggleButtonGroup
@@ -363,7 +363,7 @@ class DashboardSearch extends SearchStateComponent {
                 </Col>
               </Row>
               <Row>
-                <Col sm="6">
+                <Col sm={6}>
                   <FormGroup>
                     <label htmlFor="rt-filter">Response Type <span className="label-note">(Questions Only):</span></label>
                     <select className="input-select" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
@@ -382,7 +382,7 @@ class DashboardSearch extends SearchStateComponent {
                     </select>
                   </FormGroup>
                 </Col>
-                <Col sm="6">
+                <Col sm={6}>
                   <label htmlFor="source-filter">Source <span className="label-note">(Response Sets Only):</span></label>
                   <select className="input-select" name="source-filter" id="source-filter" value={this.state.sourceFilter} onChange={(e) => this.toggleSource(e)} >
                     <option value="">Select Source...</option>
@@ -419,8 +419,8 @@ class DashboardSearch extends SearchStateComponent {
     return (
     <form onSubmit={this.onFormSubmit}>
       {this.advSearchModal()}
-      <div className="row">
-        <div className="col-md-12">
+      <Row>
+        <Col md={12}>
           <div className="input-group search-group">
             <Autocomplete
               value={this.state.searchTerms}
@@ -460,19 +460,19 @@ class DashboardSearch extends SearchStateComponent {
             }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>
             {this.state.programFilter.length > 0 &&
               <div className="adv-filter-list">Program Filters: {this.state.programFilter.map((id, i) => {
-                return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</row>;
+                return <div key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</div>;
               })}
               </div>
             }
             {this.state.systemFilter.length > 0 &&
               <div className="adv-filter-list">System Filters: {this.state.systemFilter.map((id, i) => {
-                return <row key={i} className="adv-filter-list-item col-md-12">{this.props.surveillanceSystems[id].name}</row>;
+                return <div key={i} className="adv-filter-list-item col-md-12">{this.props.surveillanceSystems[id].name}</div>;
               })}
               </div>
             }
             {this.state.methodsFilter.length > 0 &&
               <div className="adv-filter-list">Data Collection Method Filters: {this.state.methodsFilter.map((method, i) => {
-                return <row key={i} className="adv-filter-list-item col-md-12">{method}</row>;
+                return <div key={i} className="adv-filter-list-item col-md-12">{method}</div>;
               })}
               </div>
             }
@@ -487,12 +487,12 @@ class DashboardSearch extends SearchStateComponent {
             }
             {this.state.contentSince &&
               <div className="adv-filter-list">Content Since Filter:
-                <row className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')}</row>
+                <div className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')}</div>
               </div>
             }
             {this.state.ombDate &&
               <div className="adv-filter-list">Filtering to surveys with OMB approval date after:
-                <row className="adv-filter-list-item col-md-12">{this.state.ombDate.format('M/D/YYYY')}</row>
+                <div className="adv-filter-list-item col-md-12">{this.state.ombDate.format('M/D/YYYY')}</div>
               </div>
             }
             {this.state.sort !== '' &&
@@ -511,8 +511,8 @@ class DashboardSearch extends SearchStateComponent {
               <div className="adv-filter-list">Filtering results by {this.state.rtFilter} response type</div>
             }
           </div><br/>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </form>
     );
   }
