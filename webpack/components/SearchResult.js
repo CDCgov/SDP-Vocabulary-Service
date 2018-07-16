@@ -154,7 +154,7 @@ export default class SearchResult extends Component {
       </li>
     );
   }
-  
+
   resultSetSourceInfo(result) {
     return (
       <li className="result-analytics-item">
