@@ -21,21 +21,20 @@ class Breadcrumb extends Component {
       );
     }
     const lastIndex = this.props.parents.length-1;
+    console.log(this.props.parents);
+    console.log(this.props.currentUser);
     return (
       <ol className="breadcrumb">
         {this.props.parents.map((s,i) => {
-          if (isShowable(s, this.props.currentUser)) {
-            var type = s.type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','');
-
-            if (i != lastIndex) {
-              return (
-                <li key={`${type}-${s.id}-${i}`}>{i<1 && <Link to={`/${type}s/${s.id}`}><span className={`fa ${iconMap[s.type]}`}></span></Link>} <Link to={`/${type}s/${s.id}`}>{s.name}</Link></li>
-              );
-            } else {
-              return (
-                <li key={`${type}-${s.id}-${i}`}>{i<1 && <span className={`fa ${iconMap[s.type]}`}></span>} {s.name}</li>
-              );
-            }
+          var type = s.type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','');
+          if (i != lastIndex) {
+            return (
+              <li key={`${type}-${s.id}-${i}`}>{i<1 && <Link to={`/${type}s/${s.id}`}><span className={`fa ${iconMap[s.type]}`}></span><text className="sr-only">Clink link to navigate to original item</text></Link>} <Link to={`/${type}s/${s.id}`}>{s.name}</Link></li>
+            );
+          } else {
+            return (
+              <li key={`${type}-${s.id}-${i}`}>{i<1 && <span className={`fa ${iconMap[s.type]}`}></span>} {s.name}</li>
+            );
           }
         })
       }
