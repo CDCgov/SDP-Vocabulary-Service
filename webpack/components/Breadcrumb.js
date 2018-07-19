@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { clearBreadcrumb, addBreadcrumbItem, setBreadcrumbPath, removeBreadcrumbItem } from '../actions/breadcrumb_actions';
-import { isShowable } from '../utilities/componentHelpers';
 import iconMap from '../styles/iconMap';
 
 class Breadcrumb extends Component {
@@ -21,8 +20,6 @@ class Breadcrumb extends Component {
       );
     }
     const lastIndex = this.props.parents.length-1;
-    console.log(this.props.parents);
-    console.log(this.props.currentUser);
     return (
       <ol className="breadcrumb">
         {this.props.parents.map((s,i) => {
