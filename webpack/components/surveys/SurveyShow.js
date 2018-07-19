@@ -9,7 +9,7 @@ import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
-import Breadcrumb from "../Breadcrumb"
+import Breadcrumb from "../Breadcrumb";
 
 import SectionList from "../sections/SectionList";
 
@@ -344,6 +344,7 @@ SurveyShow.propTypes = {
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
   updateStageSurvey: PropTypes.func,
+  setBreadcrumbPath: PropTypes.func,
   fetchSurvey: PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,

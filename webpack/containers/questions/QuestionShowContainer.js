@@ -126,6 +126,7 @@ QuestionShowContainer.propTypes = {
   fetchQuestionUsage: PropTypes.func,
   updateQuestionTags: PropTypes.func,
   updateStageQuestion: PropTypes.func,
+  addBreadcrumbItem: PropTypes.func,
   retireQuestion: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,

@@ -13,7 +13,7 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import TagModal from "../TagModal";
-import Breadcrumb from "../Breadcrumb"
+import Breadcrumb from "../Breadcrumb";
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
@@ -394,6 +394,7 @@ SectionShow.propTypes = {
   addSectionToGroup: PropTypes.func,
   removeSectionFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,
+  addBreadcrumbItem: PropTypes.func,
   removePreferred: PropTypes.func,
   fetchSection: PropTypes.func,
   updateSectionTags: PropTypes.func,

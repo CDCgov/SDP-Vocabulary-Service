@@ -9,7 +9,7 @@ import { hashHistory } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import CodedSetTable from "../CodedSetTable";
-import Breadcrumb from "../Breadcrumb"
+import Breadcrumb from "../Breadcrumb";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
@@ -278,6 +278,7 @@ ResponseSetShow.propTypes = {
   currentUser: currentUserProps,
   publishResponseSet: PropTypes.func,
   retireResponseSet: PropTypes.func,
+  addBreadcrumbItem: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
   removeResponseSetFromGroup: PropTypes.func,

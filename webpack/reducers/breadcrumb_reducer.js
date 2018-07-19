@@ -14,11 +14,13 @@ export default function breadcrumb(state = [], action) {
       if (state.length == 0) {
         return [data.item];
       }
-      const index = state.findIndex(s => {return (s.id == data.item.id && s.type == data.item.type)})
+      const index = state.findIndex(s => {
+        return (s.id == data.item.id && s.type == data.item.type);
+      });
       if (index == -1) {
         return [...state,data.item];
       } else {
-        return [...state.slice(0,index),data.item]
+        return [...state.slice(0,index),data.item];
       }
     case REMOVE_BREADCRUMB_ITEM:
       return [state.breadcrumbPath.filter(item => (item.id != data.item.id ||  item.type != data.item.type))];

@@ -14,7 +14,7 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import TagModal from "../TagModal";
-import Breadcrumb from "../Breadcrumb"
+import Breadcrumb from "../Breadcrumb";
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
@@ -380,6 +380,7 @@ QuestionShow.propTypes = {
   handlePublish:  PropTypes.func,
   retireQuestion: PropTypes.func,
   deleteQuestion: PropTypes.func,
+  addBreadcrumbItem: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
   removeQuestionFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,

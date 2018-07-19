@@ -8,8 +8,10 @@ describe('SurveyShow', () => {
     const props = {
       currentUser:{},
       publishSurvey: ()=> {},
+      setBreadcrumbPath: () => {},
       router: {},
       survey: {
+        id: 1,
         name: "Robot Questionaire",
         surveySections: [1,2,3]
       },
@@ -30,7 +32,7 @@ describe('SurveyShow', () => {
   });
 
   it('should render an empty list of sections', () => {
-    let emptyComponent = renderComponent(SurveyShow, {name: 'test'}, {});
+    let emptyComponent = renderComponent(SurveyShow, {survey: {id: 1, name: "Test"}, setBreadcrumbPath: () => {}, name: 'test'}, {});
     expect(emptyComponent[0].querySelectorAll('.survey-section').length).to.equal(0);
   });
 
