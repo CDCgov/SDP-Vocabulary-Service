@@ -82,7 +82,6 @@ pipeline {
                  "ES_HOST=http://${elastichost}:9200", 'RAILS_ENV=test']) {
           sh 'bundle exec rake db:seed'
           sh 'bundle exec rake admin:create_user[test@sdpv.local,testtest,false]'
-          sh 'bundle exec rake data:load_test[test@sdpv.local]'
           sh 'bundle exec rake es:test[test@sdpv.local]'
         }
       }
