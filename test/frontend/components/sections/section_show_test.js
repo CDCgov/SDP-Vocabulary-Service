@@ -2,7 +2,7 @@ import { expect, renderComponent } from '../../test_helper';
 import SectionShow from '../../../../webpack/components/sections/SectionShow';
 import MockRouter from '../../mock_router';
 
-describe('SectionNestedItemList', () => {
+describe('SectionShow', () => {
   let component;
 
   beforeEach(() => {
@@ -18,6 +18,7 @@ describe('SectionNestedItemList', () => {
       publishSection: ()=>{},
       deleteSection: ()=>{},
       sectionSubmitter:  ()=>{},
+      addBreadcrumbItem: () => {},
       router: router,
       currentUser: {id: 1, email: "test@test.com"}
     };

@@ -23,3 +23,27 @@ html, body  {
 .main-content {
   margin-top: 20px;
 }
+
+.no-gutter {
+    margin-left: 0;
+    margin-right: 0;    
+}
+
+.no-gutter > [class^="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.no-inside-gutter {
+  &>[class^="col-"] {
+      padding-left: 0;
+      padding-right: 0;
+  }
+  &>[class^="col-"]:first-child {
+    padding-left:15px;
+  }
+  &>[class^="col-"]:last-child {
+    padding-right:15px;
+  }
+
+}

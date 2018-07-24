@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { setSteps } from '../actions/tutorial_actions';
 import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync, fetchGroups,
          createGroup, addUserToGroup, removeUserFromGroup } from '../actions/admin_actions';
@@ -326,47 +327,49 @@ class AdminPanel extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="basic-bg">
-          <div className="showpage_header_container no-print">
-            <ul className="list-inline">
-              <li className="showpage_button"><span className="fa fa-cogs fa-2x" aria-hidden="true"></span></li>
-              <li className="showpage_title"><h1>Admin Panel</h1></li>
+      <Grid>
+        <Row className="basic-bg">
+          <Col md={12}>
+            <div className="showpage_header_container no-print">
+              <ul className="list-inline">
+                <li className="showpage_button"><span className="fa fa-cogs fa-2x" aria-hidden="true"></span></li>
+                <li className="showpage_title"><h1>Admin Panel</h1></li>
+              </ul>
+            </div>
+            <ul className="nav nav-tabs" role="tablist">
+              <li id="admin-list-tab" className="nav-item active" role="tab" onClick={() => this.selectTab('admin-list')} aria-selected={this.state.selectedTab === 'admin-list'} aria-controls="admin-list">
+                <a className="nav-link" data-toggle="tab" href="#admin-list" role="tab">Admin List</a>
+              </li>
+              <li id="publisher-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('publisher-list')} aria-selected={this.state.selectedTab === 'publisher-list'} aria-controls="publisher-list">
+                <a className="nav-link" data-toggle="tab" href="#publisher-list" role="tab">Publisher List</a>
+              </li>
+              <li id="program-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('program-list')} aria-selected={this.state.selectedTab === 'program-list'} aria-controls="program-list">
+                <a className="nav-link" data-toggle="tab" href="#program-list" role="tab">Program List</a>
+              </li>
+              <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
+                <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
+              </li>
+              <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
+                this.props.fetchGroups();
+                this.selectTab('group-list');
+              }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
+                <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+              </li>
+              <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
+                <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
+              </li>
             </ul>
-          </div>
-          <ul className="nav nav-tabs" role="tablist">
-            <li id="admin-list-tab" className="nav-item active" role="tab" onClick={() => this.selectTab('admin-list')} aria-selected={this.state.selectedTab === 'admin-list'} aria-controls="admin-list">
-              <a className="nav-link" data-toggle="tab" href="#admin-list" role="tab">Admin List</a>
-            </li>
-            <li id="publisher-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('publisher-list')} aria-selected={this.state.selectedTab === 'publisher-list'} aria-controls="publisher-list">
-              <a className="nav-link" data-toggle="tab" href="#publisher-list" role="tab">Publisher List</a>
-            </li>
-            <li id="program-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('program-list')} aria-selected={this.state.selectedTab === 'program-list'} aria-controls="program-list">
-              <a className="nav-link" data-toggle="tab" href="#program-list" role="tab">Program List</a>
-            </li>
-            <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
-              <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
-            </li>
-            <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
-              this.props.fetchGroups();
-              this.selectTab('group-list');
-            }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
-              <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
-            </li>
-            <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
-              <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
-            </li>
-          </ul>
-          <div className="tab-content">
-            {this.adminTab()}
-            {this.publisherTab()}
-            {this.programTab()}
-            {this.systemTab()}
-            {this.groupTab()}
-            {this.elasticTab()}
-          </div>
-        </div>
-      </div>
+            <div className="tab-content">
+              {this.adminTab()}
+              {this.publisherTab()}
+              {this.programTab()}
+              {this.systemTab()}
+              {this.groupTab()}
+              {this.elasticTab()}
+            </div>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -9,6 +9,7 @@ import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
+import Breadcrumb from "../Breadcrumb";
 
 import SectionList from "../sections/SectionList";
 
@@ -25,9 +26,13 @@ class SurveyShow extends Component {
     this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
+  componentWillMount() {
+    this.props.setBreadcrumbPath([{type:'survey',id:this.props.survey.id,name:this.props.survey.name}]);
+  }
+
   historyBar() {
     return (
-      <div className="col-md-3 nopadding no-print">
+      <Col md={3} className="no-print">
         <h2 className="showpage_sidenav_subtitle">
           <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
@@ -36,7 +41,7 @@ class SurveyShow extends Component {
           </ul>
         </h2>
         <VersionInfo versionable={this.props.survey} versionableType='survey' currentUser={this.props.currentUser} />
-      </div>
+      </Col>
     );
   }
 
@@ -82,7 +87,7 @@ class SurveyShow extends Component {
 
   mainContent() {
     return (
-      <div className="col-md-9 nopadding maincontent">
+      <Col md={9} className="maincontent">
         <div className="action_bar no-print">
           {isEditable(this.props.survey, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
@@ -185,6 +190,7 @@ class SurveyShow extends Component {
           }
         </div>
         <div className="maincontent-details">
+          <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${this.props.survey.preferred ? 'cdc-preferred-note' : ''}`}><strong>Survey Name:</strong> {this.props.survey.name} {this.props.survey.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
@@ -281,7 +287,7 @@ class SurveyShow extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Col>
     );
   }
 
@@ -309,15 +315,19 @@ class SurveyShow extends Component {
       );
     }
     return (
-      <div id={"survey_id_"+survey.id}>
-        <div className="showpage_header_container no-print">
-          <ul className="list-inline">
-            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Survey Details {survey.contentStage && (<text>[{survey.contentStage.toUpperCase()}]</text>)}</h1></li>
-          </ul>
+      <div>
+        <div id={"survey_id_"+survey.id}>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Survey Details {survey.contentStage && (<text>[{survey.contentStage.toUpperCase()}]</text>)}</h1></li>
+            </ul>
+          </div>
         </div>
-        {this.historyBar()}
-        {this.mainContent()}
+        <Row className="no-inside-gutter">
+          {this.historyBar()}
+          {this.mainContent()}
+        </Row>
       </div>
     );
   }
@@ -334,6 +344,7 @@ SurveyShow.propTypes = {
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
   updateStageSurvey: PropTypes.func,
+  setBreadcrumbPath: PropTypes.func,
   fetchSurvey: PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import compact from 'lodash/compact';
 import union from 'lodash/union';
 
@@ -258,18 +258,18 @@ class SectionEdit extends Component {
   addedNestedItems() {
     return (
       <div id="added-nested-items" aria-label="Added sections and questions">
-        <div className="row">
+        <Row>
           <div className="response-set-header">
-            <div className="col-md-5 response-set-label"><span><b>Questions &amp; Sections</b></span></div>
-            <div className="col-md-7 response-set-label">
+            <Col md={5} className="response-set-label"><span><b>Questions &amp; Sections</b></span></Col>
+            <Col md={7} className="response-set-label">
               <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
-            </div>
+            </Col>
           </div>
-        </div>
+        </Row>
         <div className="added-nested-item-group">
           {this.state.sectionNestedItems.map((sni, i) =>
-            <div className="row" key={sni.questionId || sni.nestedSectionId}>
-              <div className="col-md-11">
+            <Row key={sni.questionId || sni.nestedSectionId}>
+              <Col md={11}>
                 <AddedNestedItem index={i}
                                  item={sni.questionId ? this.props.questions[sni.questionId] : this.props.sections[sni.nestedSectionId]}
                                  itemType={sni.questionId ? 'question' : 'section'}
@@ -279,8 +279,8 @@ class SectionEdit extends Component {
                                  handleProgramVarChange={this.handleProgramVarChange}
                                  handleResponseSetChange ={this.handleResponseSetChangeEvent}
                                  handleSelectSearchResult={this.handleSelectSearchResult} />
-              </div>
-              <div className="col-md-1">
+              </Col>
+              <Col md={1}>
                 <div className="row section-nested-item-controls">
                   <button data-index={i} className="btn btn-small btn-default move-up" onClick={this.moveNestedItemUp}>
                     <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up item on section`}</span>
@@ -296,8 +296,8 @@ class SectionEdit extends Component {
                     <i data-index={i} className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Remove item from section`}</span>
                   </button>
                 </div>
-              </div>
-            </div>
+              </Col>
+            </Row>
           )}
         </div>
       </div>
@@ -311,51 +311,51 @@ class SectionEdit extends Component {
       );
     }
     return (
-      <div className="col-md-7 section-edit-details">
-      <div className="" id='section-div'>
-      <ModalDialog show ={this.state.showWarningModal}
-                   title="Warning"
-                   subTitle="Unsaved Changes"
-                   warning={true}
-                   message="You are about to leave a page with unsaved changes. How would you like to proceed?"
-                   secondaryButtonMessage="Continue Without Saving"
-                   primaryButtonMessage="Save & Leave"
-                   cancelButtonMessage="Cancel"
-                   primaryButtonAction={this.handleModalResponse}
-                   cancelButtonAction ={this.cancelLeaveModal}
-                   secondaryButtonAction={this.handleModalResponseAndLeave} />
-      <form onSubmit={this.handleSubmit}>
-        <Errors errors={this.state.errors} />
-          <div className="form-inline">
-            <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
-            <input tabIndex="3" className='btn btn-default pull-right' name="Save Section" type="submit" value={`Save`}/>
-            <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
-            {this.cancelButton()}
-          </div>
-          <hr />
-          <div className="section-group">
-            <label htmlFor="section-name" hidden>Name</label>
-            <input tabIndex="3" className="input-format" placeholder="Section Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
-          </div>
-          <div className="section-group">
-            <label htmlFor="section-description">Description</label>
-            <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
-          </div>
-          <div className="section-group">
-            <h2 className="tags-table-header"><strong>Tags</strong></h2>
-            <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
-                     initialItems={this.state.conceptsAttributes}
-                     parentName={'section'}
-                     childName={'tag'} />
-          </div>
-          {this.props.action === 'edit' && <div className="section-group">
-            <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
-            <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChangeComment}/>
-          </div>}
-        {this.addedNestedItems()}
-      </form>
-      </div>
-      </div>
+      <Col md={7} className="section-edit-details">
+        <div className="" id='section-div'>
+        <ModalDialog show ={this.state.showWarningModal}
+                     title="Warning"
+                     subTitle="Unsaved Changes"
+                     warning={true}
+                     message="You are about to leave a page with unsaved changes. How would you like to proceed?"
+                     secondaryButtonMessage="Continue Without Saving"
+                     primaryButtonMessage="Save & Leave"
+                     cancelButtonMessage="Cancel"
+                     primaryButtonAction={this.handleModalResponse}
+                     cancelButtonAction ={this.cancelLeaveModal}
+                     secondaryButtonAction={this.handleModalResponseAndLeave} />
+        <form onSubmit={this.handleSubmit}>
+          <Errors errors={this.state.errors} />
+            <div className="form-inline">
+              <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
+              <input tabIndex="3" className='btn btn-default pull-right' name="Save Section" type="submit" value={`Save`}/>
+              <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
+              {this.cancelButton()}
+            </div>
+            <hr />
+            <div className="section-group">
+              <label htmlFor="section-name" hidden>Name</label>
+              <input tabIndex="3" className="input-format" placeholder="Section Name" type="text" value={this.state.name} name="section-name" id="section-name" onChange={this.handleChangeName}/>
+            </div>
+            <div className="section-group">
+              <label htmlFor="section-description">Description</label>
+              <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
+            </div>
+            <div className="section-group">
+              <h2 className="tags-table-header"><strong>Tags</strong></h2>
+              <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
+                       initialItems={this.state.conceptsAttributes}
+                       parentName={'section'}
+                       childName={'tag'} />
+            </div>
+            {this.props.action === 'edit' && <div className="section-group">
+              <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
+              <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChangeComment}/>
+            </div>}
+          {this.addedNestedItems()}
+        </form>
+        </div>
+      </Col>
     );
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { denormalize } from 'normalizr';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sectionSchema } from '../../schema';
@@ -152,21 +152,21 @@ class SectionEditContainer extends Component {
                           router={this.props.router}
                           closeModal={this.closeResponseSetModal}
                           saveResponseSetSuccess={this.closeResponseSetModal} />
-        <div className="row">
+        <Row>
           <div className="panel panel-default">
             <div className="panel-heading">
               <h1 className="panel-title">{`${this.actionWord()} Section`}</h1>
             </div>
-            <div className="panel-body">
-              <div className="col-md-5">
-                <div className="row add-question">
+            <Row className="panel-body">
+              <Col md={5}>
+                <div className="add-question">
                   <Button tabIndex="4" onClick={this.showQuestionModal} bsStyle="primary">Add New Question</Button>
                 </div>
                 <SectionEditSearchContainer selectedQuestions={this.props.selectedQuestions}
                                             selectedSections={this.props.selectedSections}
                                             sectionId={this.props.section.id}
                                             handleSelectSearchResult={this.handleSelectSearchResult} />
-              </div>
+              </Col>
               <SectionEdit ref ='section'
                         section={this.props.section}
                         route ={this.props.route}
@@ -181,9 +181,9 @@ class SectionEditContainer extends Component {
                         removeNestedItem={this.props.removeNestedItem}
                         reorderNestedItem={this.props.reorderNestedItem}
                         showResponseSetModal={this.showResponseSetModal} />
-            </div>
+            </Row>
           </div>
-        </div>
+        </Row>
       </div>
     );
   }
