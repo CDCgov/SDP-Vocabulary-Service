@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import { Row, Col } from 'react-bootstrap';
+
 import { responseSetProps } from '../../prop-types/response_set_props';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
@@ -146,40 +148,40 @@ export default class ResponseSetEdit extends Component {
               <h1 className="panel-title">{`${this.actionWord()} Response Set`}</h1>
             </div>
             <div className="panel-body">
-                <div className="row">
-                  <div className="col-md-8 question-form-group">
+                <Row>
+                  <Col md={8} className="question-form-group">
                     <label className="input-label" htmlFor="response-set-name">Name</label>
                     <input className="input-format" tabIndex="3" type="text" value={this.state.name} name="response-set-name" id="response-set-name" onChange={this.handleChange('name')}/>
-                  </div>
+                  </Col>
 
                   <div className="hidden">
                     <input type="hidden" name="parentId" id="parentId" value={this.state.parentId} />
                   </div>
-                </div>
+                </Row>
 
-                <div className="row">
-                  <div className="col-md-8 question-form-group">
+                <Row>
+                  <Col md={8} className="question-form-group">
                     <label className="input-label"  htmlFor="response-set-description">Description</label>
                     <textarea className="input-format" tabIndex="3"  value={this.state.description} name="response-set-description" id="response-set-description" onChange={this.handleChange('description')}/>
-                  </div>
-                </div>
+                  </Col>
+                </Row>
 
-                <div className="row">
-                  <div className="col-md-12">
+                <Row>
+                  <Col md={12}>
                     <h2 className="tags-table-header"><strong>Responses</strong></h2>
-                  </div>
-                </div>
+                  </Col>
+                </Row>
                 <CodedSetTableEditContainer itemWatcher={(r) => this.handleResponsesChange(r)}
                                    initialItems={this.state.responsesAttributes}
                                    parentName={'response_set'}
                                    childName={'response'} />
 
-                {this.props.action === 'edit' && <div className="row">
-                  <div className="col-md-8 question-form-group">
+                {this.props.action === 'edit' && <Row>
+                  <Col md={8} className="question-form-group">
                     <label className="input-label"  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
                     <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." value={this.state.comment} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
-                  </div>
-                </div>}
+                  </Col>
+                </Row>}
             </div>
             <div className="panel-footer">
               <input className="btn btn-default" id='submit-response-set-form' type="submit" name="Save Response Set" value="Save" />

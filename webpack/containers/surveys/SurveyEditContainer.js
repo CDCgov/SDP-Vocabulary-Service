@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
-import { Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -98,11 +98,11 @@ class SurveyEditContainer extends Component {
   render() {
     if(!this.props.survey || !this.props.sections){
       return (
-        <div>Loading...</div>
+        <Grid className="basic-bg">Loading..</Grid>
       );
     }
     return (
-      <div className="survey-edit-container">
+      <Grid className="survey-edit-container">
         <Row>
           <div className="panel panel-default">
             <div className="panel-heading">
@@ -134,7 +134,7 @@ class SurveyEditContainer extends Component {
             </div>
           </div>
         </Row>
-      </div>
+      </Grid>
     );
   }
 }

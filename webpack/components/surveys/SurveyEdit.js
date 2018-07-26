@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import { Row, Col } from 'react-bootstrap';
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { sectionsProps } from '../../prop-types/section_props';
@@ -183,7 +184,7 @@ class SurveyEdit extends Component {
       return ('Loading');
     }
     return (
-      <div className="col-md-7 survey-edit-details">
+      <Col md={7} className="survey-edit-details">
         <div id='survey-div'>
         <ModalDialog  show ={this.state.showModal}
                       title="Warning"
@@ -211,12 +212,12 @@ class SurveyEdit extends Component {
             <label htmlFor="survey-name" hidden>Name</label>
             <input tabIndex="3" className="input-format" placeholder="Survey Name" type="text" value={this.state.name} name="survey-name" id="survey-name" onChange={this.handleChange('name')}/>
           </div>
-          <div className="row">
-            <div className="survey-group col-md-8">
+          <Row>
+            <Col md={8} className="survey-group">
               <label htmlFor="survey-description">Description</label>
               <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="survey-description" id="survey-description" onChange={this.handleChange('description')}/>
-            </div>
-            <div className="survey-group col-md-4">
+            </Col>
+            <Col md={4} className="survey-group">
               <label htmlFor="controlNumber">OMB Approval</label>
               <input tabIndex="3" className="input-format" placeholder="XXXX-XXXX" type="text" value={this.state.controlNumber || ''} name="controlNumber" id="controlNumber" onChange={this.handleChange('controlNumber')}/>
               { this.state.controlNumber !== '' && this.state.controlNumber !== null &&
@@ -225,9 +226,9 @@ class SurveyEdit extends Component {
                   <input tabIndex="3" className="input-format" type="date" placeholder="mm/dd/yyyy" value={this.state.ombApprovalDate || ''} name ="ombApprovalDate" id="ombApprovalDate" onChange={this.handleChange('ombApprovalDate')}/>
                 </div>
               }
-            </div>
-          </div>
-          <div className="row">
+            </Col>
+          </Row>
+          <Row>
             <ProgSysEditModal closer={() => this.setState({progSysModalOpen: false})}
               show={this.state.progSysModalOpen}
               update={(sid, pid) => this.setState({surveillanceSystemId: sid, surveillanceProgramId: pid, progSysModalOpen: false})}
@@ -236,21 +237,21 @@ class SurveyEdit extends Component {
               currentUser={this.props.currentUser}
               surveillanceSystems={this.props.surveillanceSystems}
               surveillancePrograms={this.props.surveillancePrograms} />
-            <div className="col-md-6 survey-group">
+            <Col md={6} className="survey-group">
               <strong>Program: </strong>
               <a className="tag-modal-link" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({ progSysModalOpen: true });
               }}> {this.props.surveillancePrograms && this.props.surveillancePrograms[this.state.surveillanceProgramId] && this.props.surveillancePrograms[this.state.surveillanceProgramId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit program</text></i></a>
-            </div>
-            <div className="col-md-6 survey-group">
+            </Col>
+            <Col md={6} className="survey-group">
               <strong>System: </strong>
               <a className="tag-modal-link" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({ progSysModalOpen: true });
               }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
-            </div>
-          </div>
+            </Col>
+          </Row>
           <h2 className="tags-table-header"><strong>Tags</strong></h2>
           <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                    initialItems={this.state.conceptsAttributes}
@@ -267,7 +268,7 @@ class SurveyEdit extends Component {
                           removeSection ={this.props.removeSection} />
         </form>
         </div>
-      </div>
+      </Col>
     );
   }
 }

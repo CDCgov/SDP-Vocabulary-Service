@@ -1,6 +1,5 @@
 .search-group {
   @extend .input-group;
-  margin-top: 14px;
   margin-bottom: 8px;
 }
 
@@ -148,6 +147,8 @@
     font-size: 13px;
     font-weight: normal;
     color: $dark-gray;
+    background-color:red !important;
+    padding-left:15px;
   }
 }
 

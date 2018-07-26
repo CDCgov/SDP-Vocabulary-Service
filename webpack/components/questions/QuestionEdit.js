@@ -215,9 +215,9 @@ class QuestionEdit extends Component {
                 </Row>
                 {categories && categories[state.categoryId] && categories[state.categoryId].subcategories && categories[state.categoryId].subcategories.length > 0 &&
                   <Row>
-                    <div className="col-md-8 question-form-group">
-                    </div>
-                    <div className="col-md-4 question-form-group">
+                    <Col md={8} className="question-form-group">
+                    </Col>
+                    <Col md={4} className="question-form-group">
                       <label className="input-label" htmlFor="subcategoryId">Subcategory</label>
                       <select className="input-select" tabIndex="3" name="subcategoryId" id="subcategoryId" value={state.subcategoryId || undefined} onChange={this.handleChange('subcategoryId')} >
                         <option value=""></option>
@@ -225,7 +225,7 @@ class QuestionEdit extends Component {
                           return <option key={s.id} value={s.id}>{s.name}</option>;
                         })}
                       </select>
-                    </div>
+                    </Col>
                   </Row>
                 }
                 <Row>

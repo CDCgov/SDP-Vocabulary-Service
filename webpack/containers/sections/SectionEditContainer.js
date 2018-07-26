@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { denormalize } from 'normalizr';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sectionSchema } from '../../schema';
@@ -137,12 +137,12 @@ class SectionEditContainer extends Component {
   render() {
     if(!this.props.section || !this.props.questions || !this.props.sections){
       return (
-        <div>Loading...</div>
+        <Grid className="basic-bg">Loading..</Grid>
       );
     }
 
     return (
-      <div className="section-edit-container">
+      <Grid className="section-edit-container">
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
@@ -184,7 +184,7 @@ class SectionEditContainer extends Component {
             </Row>
           </div>
         </Row>
-      </div>
+      </Grid>
     );
   }
 }
