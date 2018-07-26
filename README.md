@@ -11,7 +11,7 @@ This service is designed as part of the SDP and other services are available thr
 
 ### Prerequisites
 
-The SDP Vocabulary Service requires: Ruby (version 2.3 or later), bundler (version 1.13.6 or later), Yarn (version 0.27 or later), Node.js (version 5.5 or later), Postgres (version 9.6 or later) and optionally Elasticsearch (version 5.3.1 or later), Chrome (version 59 or later), and ChromeDriver (version  2.30 or later).
+The SDP Vocabulary Service requires: Ruby (version 2.3 or later), bundler (version 1.13.6 or later), Yarn (version 0.27 or later), Node.js (version 5.5 or later), Postgres (version 9.6 or later) and optionally Elasticsearch (version 5.3.1 to 5.X - version 6.0+ is not yet compatible), Chrome (version 59 or later), and ChromeDriver (version  2.30 or later).
 
 #### Ruby >= 2.3
 - We recommend using rbenv to install Ruby on Linux and MacOS: [Rbenv Installation Instructions](https://github.com/rbenv/rbenv#installation)
