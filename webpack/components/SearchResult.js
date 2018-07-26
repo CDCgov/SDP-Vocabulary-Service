@@ -82,26 +82,47 @@ export default class SearchResult extends Component {
     );
   }
 
-  resultStatus(status) {
-    if(status === 'published') {
+  resultStage(stage) {
+    if(stage === 'Published') {
       return(
         <li className="result-analytics-item">
           <span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span>
-          <p className="item-description"><text className="sr-only">Item visibility status: </text>published</p>
+          <p className="item-description"><text className="sr-only">Content stage: </text>published</p>
         </li>
       );
-    } else if (status === 'draft') {
+    } else if (stage === 'Draft') {
       return(
         <li className="result-analytics-item">
           <span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span>
-          <p className="item-description"><text className="sr-only">Item visibility status: </text>draft</p>
+          <p className="item-description"><text className="sr-only">Content stage: </text>draft</p>
+        </li>
+      );
+    } else if (stage === 'Comment Only') {
+      return(
+        <li className="result-analytics-item">
+          <span className="fa fa-comments fa-lg item-status-draft" aria-hidden="true"></span>
+          <p className="item-description"><text className="sr-only">Content stage: </text>comment only</p>
+        </li>
+      );
+    } else if (stage === 'Trial Use') {
+      return(
+        <li className="result-analytics-item">
+          <span className="fa fa-exclamation-circle fa-lg item-status-draft" aria-hidden="true"></span>
+          <p className="item-description"><text className="sr-only">Content stage: </text>trial use</p>
+        </li>
+      );
+    } else if (stage === 'Retired') {
+      return(
+        <li className="result-analytics-item">
+          <span className="fa fa-ban fa-lg item-status-draft" aria-hidden="true"></span>
+          <p className="item-description"><text className="sr-only">Content stage: </text>retired</p>
         </li>
       );
     } else {
       return(
         <li className="result-analytics-item">
           <span className="fa fa-question-circle fa-lg item-status-undefined" aria-hidden="true"></span>
-          <p className="item-description"><text className="sr-only">Item visibility status: </text>Undefined Status</p>
+          <p className="item-description"><text className="sr-only">Content stage: </text>Undefined Stage</p>
         </li>
       );
     }
@@ -446,7 +467,7 @@ export default class SearchResult extends Component {
                 </li>}
                 {result.surveillancePrograms && this.programsInfo(result)}
                 {result.surveillanceSystems && this.systemsInfo(result)}
-                {this.resultStatus(result.status)}
+                {this.resultStage(result.contentStage)}
                 {result.source && this.resultSetSourceInfo(result)}
                 <li className={`result-timestamp pull-right ${(this.props.programVar || isSimpleEditable(result, this.props.currentUser)) && 'list-program-var'}`}>
                   <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>

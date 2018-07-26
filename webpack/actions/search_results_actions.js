@@ -15,8 +15,8 @@ import {
 } from './types';
 
 const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter', 'nsFilter', 'ombFilter',
-  'rtFilter', 'sourceFilter', 'categoryFilter', 'preferredFilter', 'statusFilter', 'methodsFilter',
-  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId', 'ombDate'];
+  'rtFilter', 'sourceFilter', 'categoryFilter', 'preferredFilter', 'statusFilter', 'methodsFilter', 'stageFilter',
+  'myStuffFilter', 'mostRecentFilter', 'contentSince', 'page', 'sort', 'groupFilterId', 'ombDate', 'retiredFilter'];
 
 export class SearchParameters {
   constructor(params) {
@@ -32,7 +32,7 @@ export class SearchParameters {
     const simpleMapping = {'searchTerms': 'search', 'type': 'type', 'programFilter': 'programs', 'sort': 'sort', 'groupFilterId': 'groups',
       'rtFilter': 'rt', 'sourceFilter': 'source', 'categoryFilter': 'category', 'preferredFilter': 'preferred', 'statusFilter': 'status',
       'systemFilter': 'systems', 'myStuffFilter': 'mystuff', 'mostRecentFilter': 'mostrecent', 'page': 'page', 'nsFilter': 'nsfilter',
-      'methodsFilter': 'methods', 'ombFilter': 'omb'};
+      'methodsFilter': 'methods', 'ombFilter': 'omb', 'retiredFilter': 'retired', 'stageFilter': 'stage'};
     const params = {};
     forEach(simpleMapping, (value, key) => {
       if (this[key]) {
