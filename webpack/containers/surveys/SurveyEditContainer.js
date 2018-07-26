@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
+import { Row, Col } from 'react-bootstrap';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -101,19 +102,20 @@ class SurveyEditContainer extends Component {
       );
     }
     return (
-      <div className="container survey-edit-container">
-        <div className="row">
+      <div className="survey-edit-container">
+        <Row>
           <div className="panel panel-default">
             <div className="panel-heading">
               <h1 className="panel-title">{`${this.actionWord()} Survey`}</h1>
             </div>
             <div className="panel-body">
-              <div className="col-md-5">
+              <Row>
+              <Col md={5}>
                 <SectionSearchContainer survey  ={this.props.survey}
                                      allSections={values(this.props.sections)}
                                      currentUser={this.props.currentUser}
                                      selectedSearchResults={this.props.selectedSearchResults} />
-              </div>
+              </Col>
               <SurveyEdit ref='survey' survey={this.props.survey}
                           action={this.props.params.action || 'new'}
                           stats={this.props.stats}
@@ -128,9 +130,10 @@ class SurveyEditContainer extends Component {
                           surveillanceSystems={this.props.surveillanceSystems}
                           surveillancePrograms={this.props.surveillancePrograms}
                           surveySubmitter={this.state.selectedSurveySaver} />
+              </Row>
             </div>
           </div>
-        </div>
+        </Row>
       </div>
     );
   }

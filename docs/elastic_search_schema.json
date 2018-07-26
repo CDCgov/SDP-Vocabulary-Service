@@ -187,6 +187,9 @@
         "preferred": {
           "type": "boolean"
         },
+        "omb": {
+          "type": "boolean"
+        },
         "name": {
           "type": "text",
           "analyzer": "sdp"
@@ -279,6 +282,9 @@
           }
         },
         "status": {
+          "type": "text"
+        },
+        "contentStage": {
           "type": "text"
         },
         "suggest": {
@@ -475,6 +481,9 @@
         "dataCollectionMethods": {
           "type": "text"
         },
+        "contentStage": {
+          "type": "text"
+        },
         "id": {
           "type": "text"
         },
@@ -485,6 +494,9 @@
           "type": "boolean"
         },
         "preferred": {
+          "type": "boolean"
+        },
+        "omb": {
           "type": "boolean"
         },
         "name": {
@@ -813,6 +825,9 @@
         "preferred": {
           "type": "boolean"
         },
+        "omb": {
+          "type": "boolean"
+        },
         "name": {
           "type": "text",
           "analyzer": "sdp"
@@ -840,6 +855,9 @@
           }
         },
         "status": {
+          "type": "text"
+        },
+        "contentStage": {
           "type": "text"
         },
         "suggest": {
@@ -1096,6 +1114,9 @@
         "preferred": {
           "type": "boolean"
         },
+        "omb": {
+          "type": "boolean"
+        },
         "name": {
           "type": "text",
           "analyzer": "sdp"
@@ -1170,6 +1191,9 @@
           }
         },
         "status": {
+          "type": "text"
+        },
+        "contentStage": {
           "type": "text"
         },
         "suggest": {

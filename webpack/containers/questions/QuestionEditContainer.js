@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
+import { Grid } from 'react-bootstrap';
 import { questionSchema } from '../../schema';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../../actions/questions_actions';
 import { fetchPotentialDuplicateQuestions } from '../../actions/search_results_actions';
@@ -95,11 +96,11 @@ class QuestionEditContainer extends Component {
   render() {
     if(!this.props.question || !this.props.categories || !this.props.responseTypes){
       return (
-        <div>Loading...</div>
+        <Grid className="basic-bg">Loading...</Grid>
       );
     }
     return (
-      <div className="container">
+      <Grid>
         <QuestionEdit id={this.id}
                       action={this.action}
                       question={this.props.question}
@@ -115,7 +116,7 @@ class QuestionEditContainer extends Component {
                       router={this.props.router}
                       route={this.props.route}
                       currentUser={this.props.currentUser} />
-      </div>
+      </Grid>
     );
   }
 }

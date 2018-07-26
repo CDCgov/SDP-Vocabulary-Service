@@ -89,7 +89,7 @@ Feature: Manage Sections
     When I go to the list of Response Sets
     Then I should not see "Gender Partial"
 
-  Scenario: Publish a Draft Section
+  Scenario: Publish and retire a Draft Section
     Given I have a Section with the name "Test Section" and the description "Section description"
     And I am the publisher test_publisher@gmail.com
     When I go to the list of Sections
@@ -101,4 +101,7 @@ Feature: Manage Sections
     And I should not see "Revise"
     And I should see "Published By: test_publisher@gmail.com"
     And I should not see "Edit"
-    And I should not see a "Publish" link
+    And I should see "Retire"
+    When I click on the "Retire" link
+    Then I should see "Content Stage: Retired"
+    And I should see "(Retired)"

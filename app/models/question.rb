@@ -37,6 +37,12 @@ class Question < ApplicationRecord
     sections.empty?
   end
 
+  def omb_approved?
+    omb_flag = false
+    sections.each { |s| omb_flag = true if s.omb_approved? }
+    omb_flag
+  end
+
   def update_sections
     section_array = sections.to_a
     section_nested_items.destroy_all

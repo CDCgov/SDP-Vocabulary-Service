@@ -1,3 +1,6 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+
 .button {
   @extend .btn;
   border-radius: 0px;
@@ -11,13 +14,11 @@
 }
 
 .button-action {
-  @extend .btn-primary;
-  background-color: $cdc-blue;
+  @include button-variant($btn-primary-color, $cdc-blue, $btn-primary-border);
 }
 
 .button-submit {
-  @extend .btn-success;
-  background-color: $cdc-green;
+  @include button-variant($btn-success-color, $cdc-green, $btn-success-border);
 }
 
 .button-disabled {
@@ -37,11 +38,7 @@
   background-color: #e4e4e4;
 }
 
-a.dropdown-toggle{
-}
-
 a.widget-dropdown-toggle{
-  @extend .dropdown-toggle;
   padding-left: 5px;
   padding-right: 5px;
   &:focus {

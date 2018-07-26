@@ -3,10 +3,12 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchResponseSet, publishResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
+import { Grid } from 'react-bootstrap';
+import { fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
+import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import ResponseSetShow from '../../components/response_sets/ResponseSetShow';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import { responseSetSchema } from '../../schema';
@@ -65,19 +67,15 @@ class ResponseSetShowContainer extends Component {
   render() {
     if(this.props.responseSet === undefined || this.props.responseSet.name === undefined){
       return (
-        <div>Loading..</div>
+        <Grid className="basic-bg">Loading..</Grid>
       );
     }
     return (
-      <div className="container">
-        <div className="row basic-bg">
-          <div className="col-md-12">
-            <ResponseSetShow {...this.props} />
-            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
-            <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
-          </div>
-        </div>
-      </div>
+      <Grid className="basic-bg">
+        <ResponseSetShow {...this.props} />
+        <div className="showpage-comments-title">Public Comments:</div>
+        <CommentList commentableType='ResponseSet' commentableId={this.props.responseSet.id} />
+      </Grid>
     );
   }
 }
@@ -93,7 +91,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
-    addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage}, dispatch);
+    addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, updateStageResponseSet, fetchResponseSetUsage, retireResponseSet, addBreadcrumbItem}, dispatch);
 }
 
 ResponseSetShowContainer.propTypes = {
@@ -101,10 +99,12 @@ ResponseSetShowContainer.propTypes = {
   currentUser: currentUserProps,
   fetchResponseSet: PropTypes.func,
   publishResponseSet: PropTypes.func,
+  retireResponseSet: PropTypes.func,
   fetchResponseSetUsage: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
   removeResponseSetFromGroup: PropTypes.func,
+  updateStageResponseSet: PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
   setSteps: PropTypes.func,

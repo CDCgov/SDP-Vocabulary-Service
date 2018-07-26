@@ -16,12 +16,14 @@ Feature: Advanced Search
     When I select the "Influenza" option in the "select-prog" list
     And I check the "most-recent-filter" checkbox
     And I check the "preferred-filter" checkbox
+    And I check the "omb-filter" checkbox
     And I click on the "Close" button
     Then I should see "Program Filters:"
     And I should see "Influenza"
     And I should see "Clear Adv. Filters"
     And I should see "Filtering by most recent version"
     And I should see "Filtering by CDC preferred content"
+    And I should see "Filtering by OMB approved content"
 
   Scenario: Filter search by date
     And I am on the "/" page
@@ -52,7 +54,8 @@ Feature: Advanced Search
   Scenario: Filter search by status
     And I am on the "/" page
     When I click on the "Advanced" link
-    And I select the "Draft" option in the "Status:" list
+    And I tab out of the "content-since" field
+    And I click the "Draft" option button
     And I click on the "Close" button
     Then I should see "Filtering results by draft status"
     And I should see "Clear Adv. Filters"
@@ -76,12 +79,14 @@ Feature: Advanced Search
   Scenario: Sort by system and program usage
     Given I am on the "/" page
     When I click on the "Advanced" link
-    And I select the "System Usage" option in the "Sort By:" list
+    And I tab out of the "content-since" field
+    And I click the "System Usage" option button
     And I click on the "Close" button
     Then I should see "Sorting results by System Usage"
     When I click on the "Clear Adv. Filters" link
     And I click on the "Advanced" link
-    And I select the "Program Usage" option in the "Sort By:" list
+    And I tab out of the "content-since" field
+    And I click the "Program Usage" option button
     And I click on the "Close" button
     Then I should see "Sorting results by Program Usage"
     And I should see "Clear Adv. Filters"

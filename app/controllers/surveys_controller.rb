@@ -84,6 +84,29 @@ class SurveysController < ApplicationController
     end
   end
 
+  # PATCH/PUT /surveys/1/retire
+  def retire
+    if @survey.status == 'published'
+      if @current_user.publisher?
+        @survey.retire
+        render :show
+      else
+        render json: @survey.errors, status: :forbidden
+      end
+    else
+      render json: @survey.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update_stage
+    if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
+      @survey.update_stage(params[:stage])
+      render :show, status: :ok, location: @question
+    else
+      render json: @survey.errors, status: :unprocessable_entity
+    end
+  end
+
   def add_to_group
     group = Group.find(params[:group])
     if current_user.groups.include?(group)

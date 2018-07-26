@@ -8,10 +8,10 @@ export default class SearchResultList extends Component {
     return (
       <div className="search-result-list">
         {this.props.searchResults.hits &&
-          <row>
+          <div>
             <h1 className="search-result-heading">{this.title()} ({this.props.searchResults.hits && this.props.searchResults.hits.total && this.props.searchResults.hits.total})</h1>
             <hr/>
-          </row>
+          </div>
         }
         {this.props.searchResults.hits && this.props.searchResults.hits.hits.map((sr, i) => {
           return(

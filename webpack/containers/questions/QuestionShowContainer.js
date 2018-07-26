@@ -3,10 +3,12 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuestion, publishQuestion, addQuestionToGroup, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
+import { Grid } from 'react-bootstrap';
+import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
+import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import { questionProps } from "../../prop-types/question_props";
 import QuestionShow  from '../../components/questions/QuestionShow';
 import { questionSchema } from '../../schema';
@@ -74,28 +76,28 @@ class QuestionShowContainer extends Component {
       return null;
     }
     return (
-      <div className="container">
-        <div className="row basic-bg">
-          <div className="col-md-12">
-            <QuestionShow question={this.props.question}
-                             stats={this.props.stats}
-                             setStats={this.props.setStats}
-                             router={this.props.router}
-                             currentUser={this.props.currentUser}
-                             handlePublish={this.handlePublish.bind(this)}
-                             deleteQuestion={this.props.deleteQuestion}
-                             addQuestionToGroup={this.props.addQuestionToGroup}
-                             removeQuestionFromGroup={this.props.removeQuestionFromGroup}
-                             fetchQuestion={this.props.fetchQuestion}
-                             addPreferred={this.props.addPreferred}
-                             removePreferred={this.props.removePreferred}
-                             updateQuestionTags={this.props.updateQuestionTags}
-                             publishers={this.props.publishers} />
-            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
-            <CommentList commentableType='Question' commentableId={this.props.question.id} />
-          </div>
-        </div>
-      </div>
+      <Grid className="basic-bg">
+        <QuestionShow question={this.props.question}
+                         stats={this.props.stats}
+                         setStats={this.props.setStats}
+                         router={this.props.router}
+                         currentUser={this.props.currentUser}
+                         handlePublish={this.handlePublish.bind(this)}
+                         retireQuestion={this.props.retireQuestion}
+                         deleteQuestion={this.props.deleteQuestion}
+                         addQuestionToGroup={this.props.addQuestionToGroup}
+                         removeQuestionFromGroup={this.props.removeQuestionFromGroup}
+                         updateStageQuestion={this.props.updateStageQuestion}
+                         fetchQuestion={this.props.fetchQuestion}
+                         addPreferred={this.props.addPreferred}
+                         removePreferred={this.props.removePreferred}
+                         updateQuestionTags={this.props.updateQuestionTags}
+                         publishers={this.props.publishers}
+                         addBreadcrumbItem={this.props.addBreadcrumbItem}
+                        />
+        <div className="showpage-comments-title">Public Comments:</div>
+        <CommentList commentableType='Question' commentableId={this.props.question.id} />
+      </Grid>
     );
   }
 }
@@ -110,8 +112,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred,
-    removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags}, dispatch);
+  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
+    removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags, retireQuestion, addBreadcrumbItem}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -123,6 +125,9 @@ QuestionShowContainer.propTypes = {
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
   updateQuestionTags: PropTypes.func,
+  updateStageQuestion: PropTypes.func,
+  addBreadcrumbItem: PropTypes.func,
+  retireQuestion: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,

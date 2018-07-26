@@ -89,7 +89,34 @@ class SectionsController < ApplicationController
   # PATCH/PUT /sections/1/publish
   def publish
     if @section.status == 'draft'
-      @section.publish(current_user)
+      if @current_user.publisher?
+        @section.publish(current_user)
+        render :show
+      else
+        render json: @section.errors, status: :forbidden
+      end
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /sections/1/retire
+  def retire
+    if @section.status == 'published'
+      if @current_user.publisher?
+        @section.retire
+        render :show
+      else
+        render json: @section.errors, status: :forbidden
+      end
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update_stage
+    if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
+      @section.update_stage(params[:stage])
       render :show
     else
       render json: @section.errors, status: :unprocessable_entity

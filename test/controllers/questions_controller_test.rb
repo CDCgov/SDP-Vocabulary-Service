@@ -219,6 +219,19 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal Question.find(questions(:two).id).published_by.id, users(:publisher).id
   end
 
+  test 'publishers should be able to retire questions' do
+    sign_out @current_user
+    @current_publisher = users(:publisher)
+    sign_in @current_publisher
+    assert_equal Question.find(questions(:two).id).content_stage, 'Draft'
+    put publish_question_path(questions(:two), params: { question: questions(:two) }, format: :json)
+    assert_equal Question.find(questions(:two).id).content_stage, 'Published'
+    put retire_question_path(questions(:two), params: { question: questions(:two) }, format: :json)
+    assert_response :success
+    assert_equal Question.find(questions(:two).id).status, PUBLISHED
+    assert_equal Question.find(questions(:two).id).content_stage, 'Retired'
+  end
+
   test 'authors should not be able to publish questions' do
     put publish_question_path(questions(:two), format: :json, params: { question: questions(:two) })
     assert_response :forbidden

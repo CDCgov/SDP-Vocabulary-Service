@@ -8,7 +8,8 @@ describe('QuestionShow', () => {
     const question = {id: 1, concepts: [], content: "Is this a question?", createdBy: { email: "test@test.com" }, category: ""};
     const currentUser = {id: 1, email: "test@test.com"};
     const responseSets = [];
-    component = renderComponent(QuestionShow, {question, responseSets, currentUser});
+    const addBreadcrumbItem = () => {};
+    component = renderComponent(QuestionShow, {question, responseSets, currentUser, addBreadcrumbItem});
   });
 
   it('should display a question', () => {

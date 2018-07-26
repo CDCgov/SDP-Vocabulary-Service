@@ -82,7 +82,7 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     Then I should not see "Test Response Set"
 
-  Scenario: Publish a Draft Response Set
+  Scenario: Publish and retire a Draft Response Set
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
     And I am the publisher test_author@gmail.com
     When I go to the list of Response Sets
@@ -97,7 +97,10 @@ Feature: Manage Response Sets
     And I should see "Revise"
     And I should see "Published By: test_author@gmail.com"
     And I should not see "Edit"
-    And I should not see a "Publish" link
+    And I should see "Retire"
+    When I click on the "Retire" link
+    Then I should see "Content Stage: Retired"
+    And I should see "(Retired)"
 
   Scenario: Revise Response Set
     Given I have a published Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
@@ -225,3 +228,37 @@ Feature: Manage Response Sets
     Then I should see "Unsaved Changes"
     Then I press the key escape
     Then I should not see "Unsaved Changes"
+
+  Scenario: Create New Response Set PHIN VADS Source
+    Given I am logged in as test_author@gmail.com
+    Given I have a Response Set with the name "Birth Outcome (Rubella)" and the description "Response set description" with oid "2.16.840.1.114222.4.11.3323"
+    When I go to the list of Response Sets
+    When I click on the menu link for the Response Set with the name "Birth Outcome (Rubella)"
+    And I click on the option to Details the Response Set with the name "Birth Outcome (Rubella)"
+    Then I should see "Name: Birth Outcome (Rubella)"
+    And I should see "Source: PHIN VADS"
+    Then I go to the dashboard
+    When I go to the list of Response Sets
+    Then I should see "Birth Outcome (Rubella)"
+    When I go to the dashboard
+    And I fill in the "search" field with "Birth Outcome"
+    And I click on the "search-btn" button
+    Then I should see "Birth Outcome (Rubella)"
+    And I should see the "PHIN VADS" link
+    
+  Scenario: Create New Response Set Local Source
+    Given I am logged in as test_author@gmail.com
+    Given I have a Response Set with the name "Body Type" and the description "Body Type description"
+    When I go to the list of Response Sets
+    When I click on the menu link for the Response Set with the name "Body Type"
+    And I click on the option to Details the Response Set with the name "Body Type"
+    Then I should see "Name: Body Type"
+    And I should see "Source: Local"
+    Then I go to the dashboard
+    When I go to the list of Response Sets
+    Then I should see "Body Type"
+    When I go to the dashboard
+    And I fill in the "search" field with "Body Type"
+    And I click on the "search-btn" button
+    Then I should see "Body Type"
+    And I should not see a "PHIN VADS" link

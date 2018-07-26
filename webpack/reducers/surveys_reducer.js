@@ -1,5 +1,6 @@
 import {
   PUBLISH_SURVEY_FULFILLED,
+  RETIRE_SURVEY_FULFILLED,
   SAVE_DRAFT_SURVEY_FULFILLED,
   DELETE_SURVEY_FULFILLED,
   ADD_SECTION,
@@ -9,6 +10,7 @@ import {
   ADD_ENTITIES_FULFILLED,
   ADD_SURVEY_TO_GROUP_FULFILLED,
   REMOVE_SURVEY_FROM_GROUP_FULFILLED,
+  UPDATE_STAGE_SURVEY_FULFILLED,
   UPDATE_SURVEY_TAGS_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
@@ -19,8 +21,10 @@ export default function surveys(state = {}, action) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.surveys);
     case PUBLISH_SURVEY_FULFILLED:
+    case RETIRE_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:
     case UPDATE_SURVEY_TAGS_FULFILLED:
+    case UPDATE_STAGE_SURVEY_FULFILLED:
     case ADD_SURVEY_TO_GROUP_FULFILLED:
     case REMOVE_SURVEY_FROM_GROUP_FULFILLED:
       return helpers.fetchIndividual(state, action);

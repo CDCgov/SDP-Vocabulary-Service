@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import values from 'lodash/values';
 import $ from 'jquery';
+import { Row, Col } from 'react-bootstrap';
 
 import { questionProps } from '../../prop-types/question_props';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -191,19 +192,18 @@ class QuestionEdit extends Component {
                           closeModal={() => this.setState({showResponseSetModal: false})}
                           saveResponseSetSuccess={this.handleResponseSetSuccess} />
         <Errors errors={this.state.errors} />
-        <div className="row">
-          <div>
+        <Row>
             <div className="panel panel-default">
               <div className="panel-heading">
                 <h1 className="panel-title">{`${this.actionWord()} Question`}</h1>
               </div>
               <div className="panel-body">
-                <div className="row">
-                    <div className="col-md-8 question-form-group">
+                <Row>
+                    <Col md={8} className="question-form-group">
                       <label className="input-label" htmlFor="content">Question</label>
                       <input className="input-format" tabIndex="3" placeholder="Question text" type="text" name="content" id="content" defaultValue={state.content} onChange={this.handleChange('content')} />
-                    </div>
-                    <div className="col-md-4 question-form-group">
+                    </Col>
+                    <Col md={4} className="question-form-group">
                       <label className="input-label" htmlFor="categoryId">Category</label>
                       <select className="input-select" tabIndex="3" name="categoryId" id="categoryId" value={state.categoryId || undefined} onChange={this.handleChange('categoryId')} >
                         <option value=""></option>
@@ -211,10 +211,10 @@ class QuestionEdit extends Component {
                           return <option key={ct.id} value={ct.id}>{ct.name}</option>;
                         })}
                       </select>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 {categories && categories[state.categoryId] && categories[state.categoryId].subcategories && categories[state.categoryId].subcategories.length > 0 &&
-                  <div className="row">
+                  <Row>
                     <div className="col-md-8 question-form-group">
                     </div>
                     <div className="col-md-4 question-form-group">
@@ -226,49 +226,49 @@ class QuestionEdit extends Component {
                         })}
                       </select>
                     </div>
-                  </div>
+                  </Row>
                 }
-                <div className="row ">
-                  <div className="col-md-8 question-form-group">
+                <Row>
+                  <Col md={8} className="question-form-group">
                     <label className="input-label" htmlFor="question-description">Description</label>
                     <textarea className="input-format" tabIndex="3" placeholder="Question description" type="text" name="question-description" id="question-description" defaultValue={state.description} onChange={this.handleChange('description')} />
-                  </div>
+                  </Col>
 
-                  <div className="col-md-4 question-form-group">
+                  <Col md={4} className="question-form-group">
                     <label className="input-label" htmlFor="responseTypeId">Response Type</label>
                     <select name="responseTypeId" tabIndex="3" id="responseTypeId" className="input-select" value={state.responseTypeId || undefined} onChange={this.handleResponseTypeChange()} >
                       {this.sortedResponseTypes(this.props.responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
                       })}
                     </select>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-8 question-form-group">
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} className="question-form-group">
                     <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method</label>
                     <DataCollectionSelect onChangeFunc={this.handleDataCollectionMethodsChange()} methods={state.dataCollectionMethods} />
-                  </div>
-                </div>
+                  </Col>
+                </Row>
                 {this.otherAllowedBox()}
-                <div className="row ">
-                  <div className="col-md-12 ">
+                <Row>
+                  <Col md={12}>
                     <h2 className="tags-table-header"><strong>Tags</strong></h2>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
                              childName={'tag'} />
-                  </div>
-                </div>
+                  </Col>
+                </Row>
                 { this.isChoiceType() ?
-                <div className="row response-set-row">
-                  <div className="col-md-6 response-set-label">
+                <Row className="response-set-row">
+                  <Col md={6} className="response-set-label">
                     <h2>Response Sets</h2>
-                  </div>
-                  <div className="col-md-6 response-set-label">
+                  </Col>
+                  <Col md={6} className="response-set-label">
                     <h2>Selected Response Sets</h2>
                     <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
-                  </div>
-                </div>
+                  </Col>
+                </Row>
                 : ''}
                 { this.isChoiceType() ?
                   <ResponseSetDragWidget handleResponseSetsChange={this.handleResponseSetsChange}
@@ -282,12 +282,12 @@ class QuestionEdit extends Component {
                                       title="Potential Duplicate Questions"/>
                   }
                 </div>
-                {this.props.action === 'edit' && <div className="row">
-                  <div className="col-md-8 question-form-group">
+                {this.props.action === 'edit' && <Row>
+                  <Col md={8} className="question-form-group">
                     <label className="input-label"  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
                     <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." value={state.comment} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
-                  </div>
-                </div>}
+                  </Col>
+                </Row>}
               </div>
               <div className="panel-footer">
                 <div className="actions form-group">
@@ -296,8 +296,7 @@ class QuestionEdit extends Component {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+        </Row>
       </form>
     );
   }
@@ -400,13 +399,13 @@ class QuestionEdit extends Component {
   otherAllowedBox() {
     if (this.state.responseTypeId && this.props.responseTypes[this.state.responseTypeId].code === 'choice') {
       return (
-        <div className="row">
-          <div className="col-md-8" />
-          <div className="col-md-4 question-form-group">
+        <Row>
+          <Col md={8}/>
+          <Col md={4} className="question-form-group">
             <label className="input-label" htmlFor="otherAllowed">Other Allowed: </label>
             <input className="form-check-input" tabIndex="3" type="checkbox" name="otherAllowed" id="otherAllowed" checked={this.state.otherAllowed} onChange={() => this.toggleOtherAllowed()} />
-          </div>
-        </div>
+          </Col>
+        </Row>
       );
     } else {
       return '';

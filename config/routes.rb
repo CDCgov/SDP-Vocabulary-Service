@@ -45,6 +45,8 @@ Rails.application.routes.draw do
     get :redcap, on: :member
     get :epi_info, on: :member
     put :publish, on: :member
+    put :retire, on: :member
+    put :update_stage, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :update_tags, on: :member
@@ -53,6 +55,8 @@ Rails.application.routes.draw do
   resources :surveys, except: [:edit], defaults: { format: :json } do
     get :revise, on: :member
     put :publish, on: :member
+    put :retire, on: :member
+    put :update_stage, on: :member
     get :redcap, on: :member
     get :epi_info, on: :member
     get :duplicates, on: :member
@@ -65,6 +69,8 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     put :publish, on: :member
+    put :retire, on: :member
+    put :update_stage, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :mark_as_duplicate, on: :member
@@ -78,6 +84,8 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     put :publish, on: :member
+    put :retire, on: :member
+    put :update_stage, on: :member
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :mark_as_duplicate, on: :member

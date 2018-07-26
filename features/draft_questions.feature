@@ -60,7 +60,7 @@ Feature: Draft, Publish, and Revise Questions
     And I should see "Published By: test_author@gmail.com"
     And I should see "Revise"
     And I should not see "Edit"
-    And I should not see a "Publish" link
+    And I should see "Stage"
 
   Scenario: Revise a published question
     Given I have a Question with the content "What is your gender?" and the type "MC"

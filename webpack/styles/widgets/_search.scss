@@ -2,8 +2,6 @@
   @extend .input-group;
   margin-top: 14px;
   margin-bottom: 8px;
-  margin-left: 20px;
-  margin-right: 20px;
 }
 
 .nested-search-group {
@@ -18,8 +16,6 @@
 }
 
 .search-result-list {
-  margin-left: 20px;
-  margin-right: 20px;
   padding-bottom: 20px;
 }
 
@@ -103,9 +99,10 @@
   @extend .btn;
   border-left: none;
   border-right: 1px solid $cdc-blue;
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
   padding: 6px 12px 7px 12px;
+  left:-2px;
   &:hover {
     background-color: $hover-blue;
     border: 1px solid $cdc-blue;
@@ -121,11 +118,17 @@
 }
 
 .adv-filter-modal-body {
-  min-height: 960px;
+  .form-group>label {margin-right:10px}
+  .DateInput_input {padding:4px 12px;font-size:17px;}
+  .sort-by-group {margin-top:2px}
+}
+.additional-filters {
+  border-top:1px solid #ddd;
 }
 
-.adv-filter-instr {
-  margin-bottom: 15px;
+.form-btn-group .btn-default.active {
+  background-color:#057BB6;
+  color:white;
 }
 
 .adv-search-link {

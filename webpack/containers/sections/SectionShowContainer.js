@@ -3,11 +3,13 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchSection, publishSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { Grid } from 'react-bootstrap';
+import { fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
+import { clearBreadcrumb, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
 import { sectionSchema } from '../../schema';
@@ -59,36 +61,35 @@ class SectionShowContainer extends Component {
   render() {
     if(!this.props.section){
       return (
-        <div>Loading..</div>
+        <Grid className="basic-bg">Loading..</Grid>
       );
     }
     return (
-      <div className="container">
-        <div className="row basic-bg">
-          <div className="col-md-12">
-            <SectionShow section={this.props.section}
-                      router={this.props.router}
-                      currentUser={this.props.currentUser}
-                      publishSection={this.props.publishSection}
-                      stats={this.props.stats}
-                      setStats={this.props.setStats}
-                      deleteSection={this.props.deleteSection}
-                      addSectionToGroup={this.props.addSectionToGroup}
-                      removeSectionFromGroup={this.props.removeSectionFromGroup}
-                      addPreferred={this.props.addPreferred}
-                      removePreferred={this.props.removePreferred}
-                      fetchSection={this.props.fetchSection}
-                      updateSectionTags={this.props.updateSectionTags}
-                      publishers ={this.props.publishers}
-                      resultStyle={this.props.resultStyle}
-                      resultControlVisibility={this.props.resultControlVisibility}
-                      toggleResultControl={this.props.toggleResultControl}
-                     />
-            <div className="col-md-12 showpage-comments-title">Public Comments:</div>
-            <CommentList commentableType='Section' commentableId={this.props.section.id} />
-          </div>
-        </div>
-      </div>
+      <Grid className="basic-bg">
+        <SectionShow section={this.props.section}
+                  router={this.props.router}
+                  currentUser={this.props.currentUser}
+                  publishSection={this.props.publishSection}
+                  retireSection={this.props.retireSection}
+                  stats={this.props.stats}
+                  setStats={this.props.setStats}
+                  deleteSection={this.props.deleteSection}
+                  addSectionToGroup={this.props.addSectionToGroup}
+                  removeSectionFromGroup={this.props.removeSectionFromGroup}
+                  addPreferred={this.props.addPreferred}
+                  removePreferred={this.props.removePreferred}
+                  fetchSection={this.props.fetchSection}
+                  updateSectionTags={this.props.updateSectionTags}
+                  updateStageSection={this.props.updateStageSection}
+                  publishers ={this.props.publishers}
+                  resultStyle={this.props.resultStyle}
+                  resultControlVisibility={this.props.resultControlVisibility}
+                  toggleResultControl={this.props.toggleResultControl}
+                  addBreadcrumbItem={this.props.addBreadcrumbItem}
+                 />
+        <div className="showpage-comments-title">Public Comments:</div>
+        <CommentList commentableType='Section' commentableId={this.props.section.id} />
+      </Grid>
     );
   }
 }
@@ -107,7 +108,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
-    removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, toggleResultControl}, dispatch);
+    removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, updateStageSection, toggleResultControl, retireSection, clearBreadcrumb, addBreadcrumbItem}, dispatch);
 }
 
 SectionShowContainer.propTypes = {
@@ -125,13 +126,16 @@ SectionShowContainer.propTypes = {
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
   updateSectionTags: PropTypes.func,
+  updateStageSection: PropTypes.func,
   publishSection: PropTypes.func,
+  retireSection: PropTypes.func,
   publishers: publishersProps,
   hideResultControl: PropTypes.func,
   toggleResultControl: PropTypes.func,
   displayStyle: PropTypes.object,
   resultStyle: PropTypes.string,
-  resultControlVisibility: PropTypes.string
+  resultControlVisibility: PropTypes.string,
+  addBreadcrumbItem: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SectionShowContainer);

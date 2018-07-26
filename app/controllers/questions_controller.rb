@@ -70,6 +70,29 @@ class QuestionsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /questions/1/retire
+  def retire
+    if @question.status == 'published'
+      if @current_user.publisher?
+        @question.retire
+        render :show, status: :ok, location: @question
+      else
+        render json: @question, status: :forbidden
+      end
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update_stage
+    if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
+      @question.update_stage(params[:stage])
+      render :show
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   def add_to_group
     group = Group.find(params[:group])
     if current_user.groups.include?(group)

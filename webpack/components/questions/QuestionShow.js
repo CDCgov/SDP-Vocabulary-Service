@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Grid, Row, Col } from 'react-bootstrap';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
@@ -14,12 +14,13 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import TagModal from "../TagModal";
+import Breadcrumb from "../Breadcrumb";
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 export default class QuestionShow extends Component {
   constructor(props) {
@@ -27,22 +28,31 @@ export default class QuestionShow extends Component {
     this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
+  componentWillMount() {
+    const _name = this.props.question.content ? this.props.question.content : this.props.question.name;
+    this.props.addBreadcrumbItem({type:'question',id:this.props.question.id,name:_name});
+  }
+
   render() {
     const {question} = this.props;
     if(question === undefined || question.content === undefined){
-      return (<div>Loading...</div>);
+      return (<Grid className="basic-bg">Loading...</Grid>);
     }
 
     return (
-      <div id={"question_id_"+question.id}>
-        <div className="showpage_header_container no-print">
-          <ul className="list-inline">
-            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Question Details {question.status && (<text>[{question.status.toUpperCase()}]</text>)}</h1></li>
-          </ul>
+      <div>
+        <div id={"question_id_"+question.id}>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Question Details {question.contentStage && (<text>[{question.contentStage.toUpperCase()}]</text>)}</h1></li>
+            </ul>
+          </div>
         </div>
-        {this.historyBar(question)}
-        {this.mainContent(question)}
+        <Row className="no-inside-gutter">
+          {this.historyBar(question)}
+          {this.mainContent(question)}
+        </Row>
       </div>
     );
   }
@@ -107,7 +117,7 @@ export default class QuestionShow extends Component {
 
   mainContent(question) {
     return (
-      <div className="col-md-9 nopadding maincontent">
+      <Col md={9} className="maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
             {isEditable(question, this.props.currentUser) &&
@@ -125,6 +135,35 @@ export default class QuestionShow extends Component {
             }
             {isExtendable(question, this.props.currentUser) &&
               <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
+            }
+            {isRetirable(question, this.props.currentUser) &&
+              <button className="btn btn-primary" onClick={() => this.props.retireQuestion(question.id) }>Retire</button>
+            }
+            {isSimpleEditable(question, this.props.currentUser) &&
+              <div className="btn-group">
+                <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span className="fa fa-sitemap"></span> Stage <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                  <li key="header" className="dropdown-header">Update Content Stage:</li>
+                  <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Comment Only');
+                  }}>Comment Only</a></li>
+                  <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Trial Use');
+                  }}>Trial Use</a></li>
+                  {question.status === 'draft' && <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Draft');
+                  }}>Draft</a></li>}
+                  {question.status === 'published' && <li><a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    this.props.updateStageQuestion(question.id, 'Published');
+                  }}>Published</a></li>}
+                </ul>
+              </div>
             }
             {isPublishable(question, this.props.currentUser) &&
               <button className="btn btn-primary" onClick={() => this.props.handlePublish(question) }>Publish</button>
@@ -157,6 +196,7 @@ export default class QuestionShow extends Component {
           </div>
         }
         <div className="maincontent-details">
+          <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
           <ul className="nav nav-tabs" role="tablist">
@@ -184,6 +224,20 @@ export default class QuestionShow extends Component {
                   <strong>Created: </strong>
                   { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
                 </div>
+                {question.contentStage && <div className="box-content">
+                  <strong>Content Stage: </strong>
+                  {question.contentStage}
+                </div>}
+                { this.props.currentUser && question.status && question.status === 'published' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Published (publically available)
+                </div>
+                }
+                { this.props.currentUser && question.status && question.status === 'draft' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Draft (authors and publishers only)
+                </div>
+                }
                 { question.parent &&
                   <div className="box-content">
                     <strong>Extended from: </strong>
@@ -299,13 +353,13 @@ export default class QuestionShow extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Col>
     );
   }
 
   historyBar(question) {
     return (
-      <div className="col-md-3 nopadding no-print">
+      <Col md={3} className="no-print">
         <h2 className="showpage_sidenav_subtitle">
           <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
@@ -314,7 +368,7 @@ export default class QuestionShow extends Component {
           </ul>
         </h2>
         <VersionInfo versionable={question} versionableType='Question' currentUser={this.props.currentUser} />
-      </div>
+      </Col>
     );
   }
 }
@@ -324,13 +378,16 @@ QuestionShow.propTypes = {
   currentUser:   currentUserProps,
   router: PropTypes.object,
   handlePublish:  PropTypes.func,
+  retireQuestion: PropTypes.func,
   deleteQuestion: PropTypes.func,
+  addBreadcrumbItem: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
   removeQuestionFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
   fetchQuestion: PropTypes.func,
   updateQuestionTags: PropTypes.func,
+  updateStageQuestion: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   publishers: publishersProps

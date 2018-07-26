@@ -4,7 +4,9 @@ import * as helpers from './helpers';
 
 import {
   SAVE_QUESTION_FULFILLED,
+  RETIRE_QUESTION_FULFILLED,
   UPDATE_QUESTION_TAGS_FULFILLED,
+  UPDATE_STAGE_QUESTION_FULFILLED,
   FETCH_QUESTION_USAGE_FULFILLED,
   DELETE_QUESTION_FULFILLED,
   ADD_ENTITIES_FULFILLED,
@@ -30,7 +32,9 @@ export default function questions(state = {}, action) {
       return Object.assign({}, state, action.payload.questions);
     case SAVE_QUESTION_FULFILLED:
     case UPDATE_QUESTION_TAGS_FULFILLED:
+    case UPDATE_STAGE_QUESTION_FULFILLED:
     case ADD_QUESTION_TO_GROUP_FULFILLED:
+    case RETIRE_QUESTION_FULFILLED:
     case REMOVE_QUESTION_FROM_GROUP_FULFILLED:
       return addQuestionToState(action, state);
     case DELETE_QUESTION_FULFILLED:

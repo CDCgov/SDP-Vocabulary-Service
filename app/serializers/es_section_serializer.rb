@@ -6,6 +6,7 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :version_independent_id
   attribute :version
   attribute :status
+  attribute :content_stage
   attribute :category
   attribute :description
   attribute :updated_at, key: :updatedAt
@@ -20,10 +21,15 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :surveillance_systems
   attribute :most_recent
   attribute :groups
+  attribute :omb
   attribute :preferred
 
   def most_recent
     object.most_recent?
+  end
+
+  def omb
+    object.omb_approved?
   end
 
   def codes

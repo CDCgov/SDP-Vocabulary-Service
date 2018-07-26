@@ -155,6 +155,24 @@ export default class SearchResult extends Component {
     );
   }
 
+  resultSetSourceInfo(result) {
+    return (
+      <li className="result-analytics-item">
+        <span className="small"><text className="sr-only">Result set source: </text>{this.responseSetSourceLink(result)}</span>
+        <p className="item-description" aria-hidden="true">Source</p>
+      </li>
+    );
+  }
+
+  responseSetSourceLink(responseSet) {
+    if(responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent) {
+      return <a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">PHIN VADS</a>;
+    } else if (responseSet.source === 'PHIN_VADS') {
+      return <a href="https://phinvads.cdc.gov">PHIN VADS</a>;
+    } else {
+      return <text>{responseSet.source[0].toUpperCase() + responseSet.source.slice(1)}</text>;
+    }
+  }
   selectResultButton(result, isSelected, handleSelectSearchResult, type) {
     if(isSelected){
       return (
@@ -429,6 +447,7 @@ export default class SearchResult extends Component {
                 {result.surveillancePrograms && this.programsInfo(result)}
                 {result.surveillanceSystems && this.systemsInfo(result)}
                 {this.resultStatus(result.status)}
+                {result.source && this.resultSetSourceInfo(result)}
                 <li className={`result-timestamp pull-right ${(this.props.programVar || isSimpleEditable(result, this.props.currentUser)) && 'list-program-var'}`}>
                   <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
                   <p><text className="sr-only">Item Version Number: </text>version {displayVersion(result.version, result.mostRecentPublished)} | <text className="sr-only">Item type: </text>{type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}</p>

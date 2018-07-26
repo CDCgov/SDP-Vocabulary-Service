@@ -9,6 +9,7 @@ import {
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,
   PUBLISH_SURVEY,
+  RETIRE_SURVEY,
   ADD_SURVEY_TO_GROUP,
   REMOVE_SURVEY_FROM_GROUP,
   DELETE_SURVEY,
@@ -17,6 +18,7 @@ import {
   CREATE_IMPORT_SESSION,
   UPDATE_IMPORT_SESSION,
   ATTEMPT_IMPORT_FILE,
+  UPDATE_STAGE_SURVEY,
   FETCH_DUPLICATES
 } from './types';
 
@@ -67,6 +69,24 @@ export function publishSurvey(id) {
     type: PUBLISH_SURVEY,
     payload: axios.put(routes.publishSurveyPath(id),
      {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function retireSurvey(id) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: RETIRE_SURVEY,
+    payload: axios.put(routes.retireSurveyPath(id),
+     {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function updateStageSurvey(id, stage) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: UPDATE_STAGE_SURVEY,
+    payload: axios.put(routes.updateStageSurveyPath(id),
+     {authenticityToken, stage}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 

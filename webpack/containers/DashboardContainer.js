@@ -10,6 +10,8 @@ import { setSteps } from '../actions/tutorial_actions';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchCategories } from '../actions/category_actions';
 import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
+import { clearBreadcrumb } from '../actions/breadcrumb_actions';
+
 import DashboardSearch from '../components/DashboardSearch';
 import SearchManagerComponent from '../components/SearchManagerComponent';
 import SignUpModal from '../components/accounts/SignUpModal';
@@ -48,6 +50,7 @@ class DashboardContainer extends SearchManagerComponent {
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
+      ombFilter: false,
       signUpOpen: false,
       firstTimeOpen: false,
       myStuffFilter: false,
@@ -68,6 +71,7 @@ class DashboardContainer extends SearchManagerComponent {
     this.props.fetchCategories();
     this.props.fetchResponseTypes();
     this.setState(searchParameters);
+    this.props.clearBreadcrumb();
   }
 
   componentDidUpdate(prevProps) {
@@ -148,7 +152,7 @@ class DashboardContainer extends SearchManagerComponent {
     const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     const groupObj = this.props.currentUser.groups && this.props.currentUser.groups.find((g) => g.id === parseInt(this.state.groupFilterId, 10));
     return (
-      <div className="container-fluid">
+      <div>
         {!loggedIn &&
           <div className="row">
             <SignUpModal signUp={this.props.signUp} show={this.state.signUpOpen}
@@ -174,7 +178,7 @@ class DashboardContainer extends SearchManagerComponent {
           </div>
         }
         <div className="container">
-          <div className="row dashboard">
+          <div className="row basic-bg">
             <div className={loggedIn ? ("col-md-8") : ("col-md-12")}>
               <div className="dashboard-details">
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
@@ -415,7 +419,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchResponseTypes, fetchCategories, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp}, dispatch);
+  return bindActionCreators({setSteps, fetchResponseTypes, fetchCategories, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -443,7 +447,8 @@ DashboardContainer.propTypes = {
   searchResults: PropTypes.object,
   suggestions: PropTypes.array,
   surveillanceSystems: surveillanceSystemsProps,
-  surveillancePrograms: surveillanceProgramsProps
+  surveillancePrograms: surveillanceProgramsProps,
+  clearBreadcrumb: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

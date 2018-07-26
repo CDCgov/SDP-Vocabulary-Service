@@ -22,6 +22,14 @@ Feature: Manage Surveys
     Then I should see "REDCap (XML)"
     And I should see "Epi Info (XML)"
     And I should see "Spreadsheet (XLSX)"
+    And I should see "Survey Details [DRAFT]"
+    When I click on the "Stage" button
+    Then I should see "Update Content Stage:"
+    And I should see "Comment Only"
+    When I click on the "Trial Use" link
+    Then I should see "Survey Details [TRIAL USE]"
+    And I should see "Version 1 (Trial Use)"
+    And I should see "Visibility: Draft (authors and publishers only)"
 
   Scenario: Send a Draft Survey to a Publisher
     Given I have a Survey with the name "Test Survey" and the description "Survey description"
@@ -52,7 +60,7 @@ Feature: Manage Surveys
    Then I should see "Revised Description"
    When I click on the "Linked Sections" link
    And I should see "Test Gender Section"
-   And I should not see "Publish"
+   And I should see "(Published)"
    And I should see "Edit"
    When I click on the "Test Gender Section" link
    And I click on the "Linked Surveys" link
@@ -92,7 +100,7 @@ Feature: Manage Surveys
   When I go to the list of Surveys
   Then I should not see "Test Survey"
 
- Scenario: Publish a draft Survey
+ Scenario: Publish and Retire a draft Survey
    Given I have a Survey with the name "Test Survey" and the description "Survey description"
    And I am the publisher test_author@gmail.com
    When I go to the list of Surveys
@@ -101,10 +109,12 @@ Feature: Manage Surveys
    Then I should see "Test Survey"
    Then I should see "Survey description"
    When I click on the "Publish" link
-   And I should see "Revise"
+   Then I should see "Revise"
    And I should see "Published By: test_author@gmail.com"
    And I should not see "Edit"
-   And I should not see a "Publish" link
+   And I should see "Retire"
+   When I click on the "Retire" link
+   Then I should see "Content Stage: Retired"
 
   Scenario: Edit a draft Survey
     Given I have a Surveillance System with the name "National Violent Death Reporting System"
@@ -283,6 +293,42 @@ Feature: Manage Surveys
     Then I should see "Suggested Replacement Response Sets ("
     When I click on the "select-response-set-Gender Partial dupe" button
     Then I should see "Select & Replace Confirmation"
+    When I click on the "Confirm Replace" button
+    Then I should see "Successfully replaced: Gender Partial with Gender Partial dupe"
+
+  Scenario: See survey breadcrumb
+    Given I have a Section with the name "Test Section"
+    And I have a Survey with the name "Test Survey" and the description "Survey description"
+    And I have a Question with the content "What is your gender?" and the type "MC"
+    And I have a Response Set with the name "Gender Partial"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Sections
+    And I click on the menu link for the Section with the name "Test Section"
+    And I click on the option to Edit the Section with the name "Test Section"
+    And I fill in the "search" field with "What"
+    And I set search filter to "question"
+    And I click on the "search-btn" button
+    And I use the question search to select "What is your gender?"
+    And I use the response set search modal to select "Gender Partial"
+    And I click on the "Save" button
+    Then I wait 1 seconds
+    When I go to the dashboard
+    And I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Edit the Survey with the name "Test Survey"
+    And I fill in the "search" field with "Test"
+    And I set search filter to "section"
+    And I click on the "search-btn" button
+    And I use the section search to select "Test Section"
+    And I click on the "Save" button
+    Then I wait 1 seconds
+    And I click on the "Linked Sections" link
+    And I click on the "Test Section" link
+    Then I should see "Test Survey"
+    When I click on the "Linked Questions and Sections" link
+    And I click on the "What is your gender?" link
+    Then I should see "Test Survey"
+    And I should see "Test Section"
 
   Scenario: A Section when added to a Survey should inherit the group assigned to Survey
     Given I have a Survey with the name "Search Survey Test" and the description "Test"

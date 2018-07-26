@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -9,6 +9,7 @@ import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
+import Breadcrumb from "../Breadcrumb";
 
 import SectionList from "../sections/SectionList";
 
@@ -17,7 +18,7 @@ import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
 
-import { isEditable, isRevisable, isPublishable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
+import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 class SurveyShow extends Component {
   constructor(props) {
@@ -25,9 +26,13 @@ class SurveyShow extends Component {
     this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
+  componentWillMount() {
+    this.props.setBreadcrumbPath([{type:'survey',id:this.props.survey.id,name:this.props.survey.name}]);
+  }
+
   historyBar() {
     return (
-      <div className="col-md-3 nopadding no-print">
+      <Col md={3} className="no-print">
         <h2 className="showpage_sidenav_subtitle">
           <text className="sr-only">Version History Navigation Links</text>
           <ul className="list-inline">
@@ -36,7 +41,7 @@ class SurveyShow extends Component {
           </ul>
         </h2>
         <VersionInfo versionable={this.props.survey} versionableType='survey' currentUser={this.props.currentUser} />
-      </div>
+      </Col>
     );
   }
 
@@ -82,7 +87,7 @@ class SurveyShow extends Component {
 
   mainContent() {
     return (
-      <div className="col-md-9 nopadding maincontent">
+      <Col md={9} className="maincontent">
         <div className="action_bar no-print">
           {isEditable(this.props.survey, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
@@ -105,6 +110,39 @@ class SurveyShow extends Component {
           </div>
           {isGroupable(this.props.survey, this.props.currentUser) &&
             <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} removeFunc={this.props.removeSurveyFromGroup} currentUser={this.props.currentUser} />
+          }
+          {isRetirable(this.props.survey, this.props.currentUser) &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.props.retireSurvey(this.props.survey.id);
+              return false;
+            }}>Retire</a>
+          }
+          {isSimpleEditable(this.props.survey, this.props.currentUser) &&
+            <div className="btn-group">
+              <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span className="fa fa-sitemap"></span> Stage <span className="caret"></span>
+              </button>
+              <ul className="dropdown-menu">
+                <li key="header" className="dropdown-header">Update Content Stage:</li>
+                <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Comment Only');
+                }}>Comment Only</a></li>
+                <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Trial Use');
+                }}>Trial Use</a></li>
+                {this.props.survey.status === 'draft' && <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Draft');
+                }}>Draft</a></li>}
+                {this.props.survey.status === 'published' && <li><a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.props.updateStageSurvey(this.props.survey.id, 'Published');
+                }}>Published</a></li>}
+              </ul>
+            </div>
           }
           {isPublishable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
@@ -152,6 +190,7 @@ class SurveyShow extends Component {
           }
         </div>
         <div className="maincontent-details">
+          <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${this.props.survey.preferred ? 'cdc-preferred-note' : ''}`}><strong>Survey Name:</strong> {this.props.survey.name} {this.props.survey.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
@@ -180,6 +219,22 @@ class SurveyShow extends Component {
                 <div className="box-content">
                   <strong>Published By: </strong>
                   {this.props.survey.publishedBy.email}
+                </div>
+                }
+                { this.props.survey.contentStage &&
+                <div className="box-content">
+                  <strong>Content Stage: </strong>
+                  {this.props.survey.contentStage}
+                </div>
+                }
+                { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Published (publically available)
+                </div>
+                }
+                { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'draft' &&
+                <div className="box-content">
+                  <strong>Visibility: </strong>Draft (authors and publishers only)
                 </div>
                 }
                 { this.props.survey.parent &&
@@ -232,7 +287,7 @@ class SurveyShow extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Col>
     );
   }
 
@@ -260,15 +315,19 @@ class SurveyShow extends Component {
       );
     }
     return (
-      <div id={"survey_id_"+survey.id}>
-        <div className="showpage_header_container no-print">
-          <ul className="list-inline">
-            <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-            <li className="showpage_title"><h1>Survey Details {survey.status && (<text>[{survey.status.toUpperCase()}]</text>)}</h1></li>
-          </ul>
+      <div>
+        <div id={"survey_id_"+survey.id}>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Survey Details {survey.contentStage && (<text>[{survey.contentStage.toUpperCase()}]</text>)}</h1></li>
+            </ul>
+          </div>
         </div>
-        {this.historyBar()}
-        {this.mainContent()}
+        <Row className="no-inside-gutter">
+          {this.historyBar()}
+          {this.mainContent()}
+        </Row>
       </div>
     );
   }
@@ -280,9 +339,12 @@ SurveyShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,
+  retireSurvey: PropTypes.func,
   deleteSurvey:  PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
+  updateStageSurvey: PropTypes.func,
+  setBreadcrumbPath: PropTypes.func,
   fetchSurvey: PropTypes.func,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,

@@ -9,9 +9,11 @@ import {
   SAVE_RESPONSE_SET,
   SAVE_DRAFT_RESPONSE_SET,
   PUBLISH_RESPONSE_SET,
+  RETIRE_RESPONSE_SET,
   ADD_RESPONSE_SET_TO_GROUP,
   REMOVE_RESPONSE_SET_FROM_GROUP,
   DELETE_RESPONSE_SET,
+  UPDATE_STAGE_RESPONSE_SET,
   ADD_ENTITIES
 } from './types';
 
@@ -88,6 +90,30 @@ export function publishResponseSet(id, callback=null) {
   return {
     type: PUBLISH_RESPONSE_SET,
     payload: putPromise
+  };
+}
+
+export function retireResponseSet(id, callback=null) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.retireResponseSetPath(id),
+    {authenticityToken},
+    {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}
+    });
+  if (callback) {
+    putPromise.then(callback);
+  }
+  return {
+    type: RETIRE_RESPONSE_SET,
+    payload: putPromise
+  };
+}
+
+export function updateStageResponseSet(id, stage) {
+  const authenticityToken = getCSRFToken();
+  return {
+    type: UPDATE_STAGE_RESPONSE_SET,
+    payload: axios.put(routes.updateStageResponseSetPath(id),
+     {authenticityToken, stage}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
   };
 }
 

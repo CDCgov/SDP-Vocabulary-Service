@@ -25,6 +25,5 @@ describe('QuestionEdit', () => {
     const qf = TestUtils.findRenderedComponentWithType(c, QuestionEdit);
     expect(qf.otherAllowedBox()).to.equal('');
     qf.setState({responseTypeId: 2});
-    expect(qf.otherAllowedBox().type).to.equal('div');
   });
 });

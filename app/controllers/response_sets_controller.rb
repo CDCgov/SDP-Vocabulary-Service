@@ -34,6 +34,15 @@ class ResponseSetsController < ApplicationController
     @response_set.updated_by = current_user
   end
 
+  def update_stage
+    if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
+      @response_set.update_stage(params[:stage])
+      render :show
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   def add_to_group
     group = Group.find(params[:group])
     if current_user.groups.include?(group)
@@ -92,6 +101,20 @@ class ResponseSetsController < ApplicationController
     if @response_set.status == 'draft'
       if @current_user.publisher?
         @response_set.publish(@current_user)
+        render :show, status: :ok, location: @response_set
+      else
+        render json: @response_set, status: :forbidden
+      end
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /response_sets/1/retire
+  def retire
+    if @response_set.status == 'published'
+      if @current_user.publisher?
+        @response_set.retire
         render :show, status: :ok, location: @response_set
       else
         render json: @response_set, status: :forbidden
