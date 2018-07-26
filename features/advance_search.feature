@@ -71,6 +71,15 @@ Feature: Advanced Search
     Then I should see "Filtering results by Trial Use content stage"
     And I should see "Clear Adv. Filters"
 
+  Scenario: Filter search by stage
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I tab out of the "content-since" field
+    And I click the "Trial" option button
+    And I click on the "Close" button
+    Then I should see "Filtering results by Trial Use content stage"
+    And I should see "Clear Adv. Filters"
+
   Scenario: Filter search by category
     And I am on the "/" page
     When I click on the "Advanced" link
