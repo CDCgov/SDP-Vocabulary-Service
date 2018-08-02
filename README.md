@@ -18,7 +18,7 @@ This service is designed as part of the SDP and other services are available thr
 - [Start the service](#start-the-service)
 - [Running the Tests](#running-the-tests)
 - [Pull Requests and Git Conventions](#pull-requests-and-git-conventions)
-- [Common Developer Issues](#common-developer issues)
+- [Common Developer Issues](#common-developer-issues)
 - [Other Useful Commands](#other-useful-commands)
 - [Database Diagram](#database-model)
 - [License](#license)
