@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Grid, Row } from 'react-bootstrap';
+
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../../actions/response_set_actions';
@@ -75,7 +77,7 @@ class ResponseSetEditContainer extends Component {
   render() {
     if(!this.props.responseSet){
       return (
-        <div>Loading..</div>
+        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
       );
     }
     let action = this.props.params.action;
@@ -83,7 +85,7 @@ class ResponseSetEditContainer extends Component {
       action = 'new';
     }
     return (
-      <div className="container">
+      <Grid>
         <ResponseSetEdit responseSet={this.props.responseSet}
                          responseSetSubmitter={this.state.selectedResponseSetSaver}
                          action={action}
@@ -91,7 +93,7 @@ class ResponseSetEditContainer extends Component {
                          setStats={this.props.setStats}
                          route ={this.props.route}
                          router={this.props.router} />
-      </div>
+      </Grid>
     );
   }
 }

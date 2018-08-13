@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid } from 'react-bootstrap';
-import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
+import { resetQuestionRequest, loadQuestion, fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import { questionProps } from "../../prop-types/question_props";
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import QuestionShow  from '../../components/questions/QuestionShow';
 import { questionSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
@@ -19,7 +21,13 @@ import { publishersProps } from "../../prop-types/publisher_props";
 class QuestionShowContainer extends Component {
 
   componentWillMount() {
-    this.props.fetchQuestion(this.props.params.qId);
+   // this.props.fetchQuestion(this.props.params.qId);
+   this.props.resetQuestionRequest();
+   this.props.loadQuestion(this.props.params.qId);
+  }
+
+  componentWillUnmount() {
+    this.props.resetQuestionRequest();
   }
 
   componentDidMount() {
@@ -56,7 +64,7 @@ class QuestionShowContainer extends Component {
 
   componentDidUpdate(prevProps){
     if(prevProps.params.qId !== this.props.params.qId){
-      this.props.fetchQuestion(this.props.params.qId);
+       this.props.loadQuestion(this.props.params.qId);
     } else {
       if (this.props.question && this.props.question.status === 'published' &&
           this.props.question.surveillancePrograms === undefined) {
@@ -72,9 +80,30 @@ class QuestionShowContainer extends Component {
   }
 
   render() {
+
+   // if(this.props.isLoading && !this.props.question){
+   //   return (
+   //           <Grid className="basic-bg questionShowContainer">
+   //             <LoadingSpinner msg="QuestionShowContainer Loading spinner..." />
+   //             Load Status : *{this.props.loadStatus}*
+   //           </Grid>
+   //   );
+   // }
+
     if(!this.props.question){
-      return null;
+      return (
+              <Grid className="basic-bg questionShowContainer">
+                {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
+                {this.props.loadStatus == 'failure' &&
+                  <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                }
+                {this.props.loadStatus == 'success' &&
+                 <BasicAlert msg="QSC: Sorry, there is a problem loading this question." severity='warning' />
+                }
+              </Grid>
+      );
     }
+
     return (
       <Grid className="basic-bg">
         <QuestionShow question={this.props.question}
@@ -89,11 +118,15 @@ class QuestionShowContainer extends Component {
                          removeQuestionFromGroup={this.props.removeQuestionFromGroup}
                          updateStageQuestion={this.props.updateStageQuestion}
                          fetchQuestion={this.props.fetchQuestion}
+                         loadQuestion={this.props.loadQuestion}
                          addPreferred={this.props.addPreferred}
                          removePreferred={this.props.removePreferred}
                          updateQuestionTags={this.props.updateQuestionTags}
                          publishers={this.props.publishers}
                          addBreadcrumbItem={this.props.addBreadcrumbItem}
+                         isLoading={this.props.isLoading}
+                         loadStatus={this.props.loadStatus}
+                         loadStatusText={this.props.loadStatusText}
                         />
         <div className="showpage-comments-title">Public Comments:</div>
         <CommentList commentableType='Question' commentableId={this.props.question.id} />
@@ -108,11 +141,14 @@ function mapStateToProps(state, ownProps) {
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
+  props.isLoading = state.questions.isLoading;
+  props.loadStatus = state.questions.loadStatus;
+  props.loadStatusText = state.questions.loadStatusText;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
+  return bindActionCreators({resetQuestionRequest,loadQuestion, fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
     removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags, retireQuestion, addBreadcrumbItem}, dispatch);
 }
 
@@ -123,6 +159,8 @@ QuestionShowContainer.propTypes = {
   router:   PropTypes.object,
   currentUser:   currentUserProps,
   fetchQuestion: PropTypes.func,
+  loadQuestion: PropTypes.func,
+  resetQuestionRequest : PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
   updateQuestionTags: PropTypes.func,
   updateStageQuestion: PropTypes.func,
@@ -136,6 +174,9 @@ QuestionShowContainer.propTypes = {
   removeQuestionFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };
 

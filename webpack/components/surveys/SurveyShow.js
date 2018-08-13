@@ -10,6 +10,7 @@ import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 import SectionList from "../sections/SectionList";
 
@@ -311,7 +312,7 @@ class SurveyShow extends Component {
     let {survey, sections} = this.props;
     if(!survey || !sections){
       return (
-        <div>Loading...</div>
+        <div><LoadingSpinner msg="Loading..." /></div>
       );
     }
     return (

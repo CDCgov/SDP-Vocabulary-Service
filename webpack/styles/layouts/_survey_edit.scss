@@ -23,20 +23,27 @@
     }
   }
 
-  .section-group-controls{
-    float: right;
-  }
-
   .section-result{
     margin: 0px;
+    background-color: red !important;
   }
 
   .survey-section-controls{
-    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding:5px;
+
+    button {
+      margin-bottom:10px;
+    }
   }
 
   .delete-section{
-    font-size: 17px;
+    font-size: 18px;
+    padding:4px 11px;
   }
 
   .section-container {

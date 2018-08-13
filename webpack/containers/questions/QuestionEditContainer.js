@@ -96,7 +96,7 @@ class QuestionEditContainer extends Component {
   render() {
     if(!this.props.question || !this.props.categories || !this.props.responseTypes){
       return (
-        <Grid className="basic-bg">Loading...</Grid>
+        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
       );
     }
     return (

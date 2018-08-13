@@ -142,7 +142,7 @@ export default class ResponseSetEdit extends Component {
                 }}
                 secondaryButtonAction={()=> this.handleModalResponse(true)} />
         <Errors errors={this.state.errors} />
-        <div>
+        <Row>
           <div className="panel panel-default">
             <div className="panel-heading">
               <h1 className="panel-title">{`${this.actionWord()} Response Set`}</h1>
@@ -188,7 +188,7 @@ export default class ResponseSetEdit extends Component {
               {this.cancelButton()}
             </div>
           </div>
-        </div>
+        </Row>
       </form>
     );
   }

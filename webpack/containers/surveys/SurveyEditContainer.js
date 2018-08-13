@@ -14,6 +14,7 @@ import { questionsProps }  from '../../prop-types/question_props';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveillanceSystemsProps } from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import SurveyEdit from '../../components/surveys/SurveyEdit';
 import currentUserProps from "../../prop-types/current_user_props";
 import SectionSearchContainer from '../sections/SectionSearchContainer';
@@ -98,7 +99,7 @@ class SurveyEditContainer extends Component {
   render() {
     if(!this.props.survey || !this.props.sections){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
       );
     }
     return (

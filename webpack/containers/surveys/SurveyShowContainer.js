@@ -10,6 +10,7 @@ import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { setBreadcrumbPath, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 
+import LoadingSpinner from '../../components/LoadingSpinner';
 import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
@@ -61,7 +62,7 @@ class SurveyShowContainer extends Component {
   render() {
     if(!this.props.survey){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
       );
     }
     return (

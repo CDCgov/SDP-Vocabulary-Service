@@ -22,15 +22,14 @@ class SurveySectionList extends Component {
               );
             } else {
               return (
-                      <Row className="survey-section" key={i}>
-                        <Col md={12}>
+                      <div className="survey-section" key={i}>
                           <SearchResult type  ='survey_section'
                                         result={{Source: sect}}
                                         currentUser={{id: -1}}
                                         isEditPage ={true}
                                         index={i} />
 
-                        <div>
+                        <div className="survey-section-controls">
                               <button className="btn btn-small btn-default move-up"
                                    onClick={(event) => {
                                      event.preventDefault();
@@ -54,8 +53,7 @@ class SurveySectionList extends Component {
                                 <i className="fa fa fa-trash" title="Remove"></i><span className="sr-only">{`Delete section ${sect.name} on survey`}</span>
                               </button>
                           </div>
-                        </Col>
-                      </Row>
+                      </div>
               );
             }
           }

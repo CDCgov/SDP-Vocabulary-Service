@@ -11,6 +11,8 @@ import { questionsProps } from '../../prop-types/question_props';
 
 import AddedNestedItem from '../../containers/sections/AddedNestedItem';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
+import LoadingSpinner from '../../components/LoadingSpinner';
+
 import ModalDialog  from '../ModalDialog';
 import Errors from '../Errors';
 
@@ -307,7 +309,7 @@ class SectionEdit extends Component {
   render() {
     if(!this.props.questions || !this.props.responseSets || !this.props.sections){
       return (
-        <div>Loading...</div>
+        <div><LoadingSpinner msg="Loading..." /></div>
       );
     }
     return (

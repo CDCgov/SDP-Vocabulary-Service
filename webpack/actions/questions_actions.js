@@ -14,6 +14,11 @@ import {
   REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
   ADD_ENTITIES,
+  ADD_ENTITIES_REJECTED,
+  QUESTION_REQUEST,
+  LOAD_QUESTION_SUCCESS,
+  LOAD_QUESTION_FAILURE,
+  RESET_QUESTION_REQUEST,
   UPDATE_QUESTION_TAGS,
   UPDATE_STAGE_QUESTION,
   MARK_AS_DUPLICATE,
@@ -70,6 +75,16 @@ export function fetchQuestion(id) {
       const normalizedData = normalize(response.data, questionSchema);
       return normalizedData.entities;
     })
+    .catch(error => {throw(error)})
+  };
+}
+
+
+function fetchQuestionFailure(error) {
+  return {
+    type: ADD_ENTITIES_REJECTED,
+    status: error.message,
+    statusText: error.stack
   };
 }
 
@@ -182,5 +197,61 @@ export function removeQuestionFromGroup(id, group) {
     type: REMOVE_QUESTION_FROM_GROUP,
     payload: axios.put(routes.removeFromGroupQuestionPath(id),
      {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+function requestQuestion() {
+  return {
+    type: QUESTION_REQUEST
+  };
+}
+
+export function resetQuestionRequest() {
+  return {
+    type: RESET_QUESTION_REQUEST
+  };
+}
+
+function loadQuestionSuccess(question) {
+  const normalizedData = normalize(question, questionSchema);
+  return {
+    type: LOAD_QUESTION_SUCCESS,
+    payload: normalizedData.entities
+  };
+}
+
+function loadQuestionFailure(error) {
+  let status, statusText;
+  if (!error.response) {
+    status = `${error.message}`;
+    statusText = `${error.stack}`;
+  } else {
+    status = `${error.response.status}`;
+    statusText = `${error.response.statusText}`;
+  }
+  return {
+    type: LOAD_QUESTION_FAILURE,
+    status,
+    statusText
+  };
+}
+
+function sendQuestionRequest(id) {
+  return new Promise((resolve,reject) => {
+    axios.get(routes.questionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout:1000*60*5
+    })
+      .then(result => resolve(result.data))
+      .catch(error => reject(error));
+  });
+}
+
+export function loadQuestion(id) {
+  return (dispatch,getState) => {
+    dispatch(requestQuestion(id));
+    return sendQuestionRequest(id)
+      .then(data => dispatch(loadQuestionSuccess(data)))
+      .catch(error => dispatch(loadQuestionFailure(error)));
   };
 }

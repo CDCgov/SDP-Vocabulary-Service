@@ -12,6 +12,8 @@ import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
+import LoadingSpinner from '../../components/LoadingSpinner';
+
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
 import { sectionProps } from '../../prop-types/section_props';
@@ -38,7 +40,7 @@ class SectionShow extends Component {
     const {section} = this.props;
     if(!section){
       return (
-        <div>Loading...</div>
+        <div><LoadingSpinner msg="Loading..." /></div>
       );
     }
     return (

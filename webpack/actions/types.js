@@ -220,6 +220,15 @@ export const ES_SYNC_FULFILLED = 'ES_SYNC_FULFILLED';
 // Normalized types
 export const ADD_ENTITIES = 'ADD_ENTITIES';
 export const ADD_ENTITIES_FULFILLED = 'ADD_ENTITIES_FULFILLED';
+export const ADD_ENTITIES_PENDING = 'ADD_ENTITIES_PENDING';
+export const ADD_ENTITIES_REJECTED = 'ADD_ENTITIES_REJECTED';
+
+// Question types
+// ------------------------- QUESTIONS -------------------------------- //
+export const QUESTION_REQUEST = "QUESTION_REQUEST";
+export const LOAD_QUESTION_SUCCESS = "LOAD_QUESTION_SUCCESS";
+export const LOAD_QUESTION_FAILURE = "LOAD_QUESTION_FAILURE";
+export const RESET_QUESTION_REQUEST = "RESET_QUESTION_REQUEST";
 
 // UI Action types
 export const SET_RESULT_STYLE = 'SET_RESULT_STYLE';

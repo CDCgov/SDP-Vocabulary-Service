@@ -8,6 +8,8 @@ import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
+import LoadingSpinner from '../../components/LoadingSpinner';
+
 import CodedSetTable from "../CodedSetTable";
 import Breadcrumb from "../Breadcrumb";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
@@ -34,7 +36,7 @@ export default class ResponseSetShow extends Component {
     const {responseSet} = this.props;
     if(responseSet === undefined || responseSet.name === undefined){
       return (
-        <div>Loading...</div>
+        <div><LoadingSpinner msg="Loading..." /></div>
       );
     }
 

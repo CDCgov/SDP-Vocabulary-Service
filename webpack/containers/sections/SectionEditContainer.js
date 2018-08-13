@@ -137,7 +137,7 @@ class SectionEditContainer extends Component {
   render() {
     if(!this.props.section || !this.props.questions || !this.props.sections){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
       );
     }
 

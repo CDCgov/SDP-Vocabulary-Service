@@ -15,6 +15,8 @@ import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
+import BasicAlert from '../../components/BasicAlert';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
@@ -36,7 +38,31 @@ export default class QuestionShow extends Component {
   render() {
     const {question} = this.props;
     if(question === undefined || question.content === undefined){
-      return (<Grid className="basic-bg">Loading...</Grid>);
+      return (
+      <div>
+        <div>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Question Details</h1></li>
+            </ul>
+          </div>
+        </div>
+        <Row>
+          <Col xs={12}>
+              <div className="main-content">
+                {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
+                {this.props.loadStatus == 'failure' &&
+                  <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                }
+                {this.props.loadStatus == 'success' &&
+                 <BasicAlert msg="QS: Sorry, there is a problem loading this question." severity='warning' />
+                }
+              </div>
+          </Col>
+        </Row>
+      </div>
+      );
     }
 
     return (
@@ -172,7 +198,7 @@ export default class QuestionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.addPreferred(question.id, 'Question', () => {
-                  this.props.fetchQuestion(question.id);
+                  this.props.loadQuestion(question.id);
                 });
                 return false;
               }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -181,7 +207,7 @@ export default class QuestionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.removePreferred(question.id, 'Question', () => {
-                  this.props.fetchQuestion(question.id);
+                  this.props.loadQuestion(question.id);
                 });
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
@@ -395,5 +421,8 @@ QuestionShow.propTypes = {
   updateStageQuestion: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
-  publishers: publishersProps
+  publishers: publishersProps,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText: PropTypes.string
 };

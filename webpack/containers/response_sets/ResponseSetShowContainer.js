@@ -9,7 +9,9 @@ import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import ResponseSetShow from '../../components/response_sets/ResponseSetShow';
+
 import { responseSetProps } from '../../prop-types/response_set_props';
 import { responseSetSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
@@ -67,7 +69,7 @@ class ResponseSetShowContainer extends Component {
   render() {
     if(this.props.responseSet === undefined || this.props.responseSet.name === undefined){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
       );
     }
     return (

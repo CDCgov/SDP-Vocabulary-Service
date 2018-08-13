@@ -476,7 +476,7 @@ export default class SearchResult extends Component {
                 {result.surveillanceSystems && this.systemsInfo(result)}
                 {this.resultStage(result.contentStage)}
                 {result.source && this.resultSetSourceInfo(result)}
-                <li className={`result-timestamp pull-right ${(this.props.programVar || isSimpleEditable(result, this.props.currentUser)) && 'list-program-var'}`}>
+                <li className={`result-timestamp ${(this.props.programVar || isSimpleEditable(result, this.props.currentUser)) && 'list-program-var'}`}>
                   <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
                   <p><text className="sr-only">Item Version Number: </text>version {displayVersion(result.version, result.mostRecentPublished)} | <text className="sr-only">Item type: </text>{type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}</p>
                   {isSimpleEditable(result, this.props.currentUser) ? (

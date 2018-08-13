@@ -10,6 +10,7 @@ import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { clearBreadcrumb, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
 import { sectionSchema } from '../../schema';
@@ -61,7 +62,7 @@ class SectionShowContainer extends Component {
   render() {
     if(!this.props.section){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
       );
     }
     return (
