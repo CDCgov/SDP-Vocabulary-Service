@@ -13,11 +13,9 @@ import {
   ADD_QUESTION_TO_GROUP,
   REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
-  ADD_ENTITIES,
-  ADD_ENTITIES_REJECTED,
   QUESTION_REQUEST,
-  LOAD_QUESTION_SUCCESS,
-  LOAD_QUESTION_FAILURE,
+  FETCH_QUESTION_SUCCESS,
+  FETCH_QUESTION_FAILURE,
   RESET_QUESTION_REQUEST,
   UPDATE_QUESTION_TAGS,
   UPDATE_STAGE_QUESTION,
@@ -63,28 +61,6 @@ export function linkToDuplicate(id, replacement, survey, type) {
   return {
     type: LINK_TO_DUPLICATE,
     payload: putPromise
-  };
-}
-
-export function fetchQuestion(id) {
-  return {
-    type: ADD_ENTITIES,
-    payload: axios.get(routes.questionPath(id), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
-    }).then((response) => {
-      const normalizedData = normalize(response.data, questionSchema);
-      return normalizedData.entities;
-    })
-    .catch(error => {throw(error)})
-  };
-}
-
-
-function fetchQuestionFailure(error) {
-  return {
-    type: ADD_ENTITIES_REJECTED,
-    status: error.message,
-    statusText: error.stack
   };
 }
 
@@ -212,15 +188,15 @@ export function resetQuestionRequest() {
   };
 }
 
-function loadQuestionSuccess(question) {
+function fetchQuestionSuccess(question) {
   const normalizedData = normalize(question, questionSchema);
   return {
-    type: LOAD_QUESTION_SUCCESS,
+    type: FETCH_QUESTION_SUCCESS,
     payload: normalizedData.entities
   };
 }
 
-function loadQuestionFailure(error) {
+function fetchQuestionFailure(error) {
   let status, statusText;
   if (!error.response) {
     status = `${error.message}`;
@@ -230,7 +206,7 @@ function loadQuestionFailure(error) {
     statusText = `${error.response.statusText}`;
   }
   return {
-    type: LOAD_QUESTION_FAILURE,
+    type: FETCH_QUESTION_FAILURE,
     status,
     statusText
   };
@@ -240,18 +216,18 @@ function sendQuestionRequest(id) {
   return new Promise((resolve,reject) => {
     axios.get(routes.questionPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      timeout:1000*60*5
+      timeout:1000*60*5 // 5 minutes
     })
       .then(result => resolve(result.data))
       .catch(error => reject(error));
   });
 }
 
-export function loadQuestion(id) {
+export function fetchQuestion(id) {
   return (dispatch,getState) => {
     dispatch(requestQuestion(id));
     return sendQuestionRequest(id)
-      .then(data => dispatch(loadQuestionSuccess(data)))
-      .catch(error => dispatch(loadQuestionFailure(error)));
+      .then(data => dispatch(fetchQuestionSuccess(data)))
+      .catch(error => dispatch(fetchQuestionFailure(error)));
   };
 }

@@ -14,8 +14,8 @@ import {
   ADD_ENTITIES_REJECTED,
   QUESTION_REQUEST,
   RESET_QUESTION_REQUEST,
-  LOAD_QUESTION_SUCCESS,
-  LOAD_QUESTION_FAILURE,
+  FETCH_QUESTION_SUCCESS,
+  FETCH_QUESTION_FAILURE,
   ADD_QUESTION_TO_GROUP_FULFILLED,
   REMOVE_QUESTION_FROM_GROUP_FULFILLED
 } from '../actions/types';
@@ -40,33 +40,25 @@ function addQuestionToState(action, state){
 export default function questions(state = defaultState, action) {
   let loadStatusText;
   switch (action.type) {
-    case LOAD_QUESTION_SUCCESS:
-      console.log("LOAD_QUESTION_SUCCESS");
-      return Object.assign({}, state, action.payload.questions, { isLoading: false, loadStatus: 'success' });
-    case LOAD_QUESTION_FAILURE:
-      console.log("Failure");
-      loadStatusText = `Loading Error: ${action.status} ${action.statusText}`
+    case FETCH_QUESTION_SUCCESS:
+      return Object.assign({}, state, action.payload.questions, { isLoading: false, loadStatus: 'success', loadStatusText : '' });
+    case FETCH_QUESTION_FAILURE:
+      loadStatusText = `An error occurred while trying to load this question: ${action.status} / ${action.statusText}`
       return Object.assign({},state,{
         isLoading: false,
         loadStatus : 'failure',
         loadStatusText
       });
-//      return Object.assign({},state,{isLoading:false, loadStatus : 'failure' });
     case QUESTION_REQUEST:
-      console.log("QUESTION_REQUEST");
-      return Object.assign({},state,{ isLoading: true, loadStatus: null });
+      return Object.assign({},state,{ isLoading: true, loadStatus: null, loadStatusText:'' });
     case RESET_QUESTION_REQUEST:
-      console.log("RESET_QUESTION_REQUEST");
       return Object.assign({},state,{ isLoading: false, loadStatus: null, loadStatusText:""});
     case ADD_ENTITIES_FULFILLED:
-      console.log("ADD_ENTITIES_FULFILLED");
       return Object.assign({}, state, action.payload.questions, {isLoading:false});
     case ADD_ENTITIES_REJECTED:
-      console.log("ADD_ENTITIES_REJECTED");
-      return Object.assign({},state,{isLoading:false,status:action.payload.message,statusText:action.payload.stack});
+      return Object.assign({},state,{isLoading:false,loadStatus:action.payload.message,loadStatusText:action.payload.stack});
     case ADD_ENTITIES_PENDING:
-      console.log("ADD_ENTITIES_PENDING");
-      return Object.assign({},state,{isLoading:true});
+      return Object.assign({},state,{ isLoading: true, loadStatus: null, loadStatusText:'' });
     case SAVE_QUESTION_FULFILLED:
     case UPDATE_QUESTION_TAGS_FULFILLED:
     case UPDATE_STAGE_QUESTION_FULFILLED:

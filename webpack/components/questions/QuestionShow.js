@@ -55,8 +55,8 @@ export default class QuestionShow extends Component {
                 {this.props.loadStatus == 'failure' &&
                   <BasicAlert msg={this.props.loadStatusText} severity='danger' />
                 }
-                {this.props.loadStatus == 'success' &&
-                 <BasicAlert msg="QS: Sorry, there is a problem loading this question." severity='warning' />
+                {this.props.loadStatus == 'success' && question === undefined &&
+                 <BasicAlert msg="Sorry, there is a problem loading this question." severity='warning' />
                 }
               </div>
           </Col>
@@ -198,7 +198,7 @@ export default class QuestionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.addPreferred(question.id, 'Question', () => {
-                  this.props.loadQuestion(question.id);
+                  this.props.fetchQuestion(question.id);
                 });
                 return false;
               }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -207,7 +207,7 @@ export default class QuestionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.removePreferred(question.id, 'Question', () => {
-                  this.props.loadQuestion(question.id);
+                  this.props.fetchQuestion(question.id);
                 });
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>

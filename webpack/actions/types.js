@@ -226,8 +226,8 @@ export const ADD_ENTITIES_REJECTED = 'ADD_ENTITIES_REJECTED';
 // Question types
 // ------------------------- QUESTIONS -------------------------------- //
 export const QUESTION_REQUEST = "QUESTION_REQUEST";
-export const LOAD_QUESTION_SUCCESS = "LOAD_QUESTION_SUCCESS";
-export const LOAD_QUESTION_FAILURE = "LOAD_QUESTION_FAILURE";
+export const FETCH_QUESTION_SUCCESS = "FETCH_QUESTION_SUCCESS";
+export const FETCH_QUESTION_FAILURE = "FETCH_QUESTION_FAILURE";
 export const RESET_QUESTION_REQUEST = "RESET_QUESTION_REQUEST";
 
 // UI Action types

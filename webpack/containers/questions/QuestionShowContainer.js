@@ -3,8 +3,10 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid } from 'react-bootstrap';
-import { resetQuestionRequest, loadQuestion, fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { hashHistory, Link } from 'react-router';
+
+import { resetQuestionRequest, fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -23,7 +25,7 @@ class QuestionShowContainer extends Component {
   componentWillMount() {
    // this.props.fetchQuestion(this.props.params.qId);
    this.props.resetQuestionRequest();
-   this.props.loadQuestion(this.props.params.qId);
+   this.props.fetchQuestion(this.props.params.qId);
   }
 
   componentWillUnmount() {
@@ -64,7 +66,8 @@ class QuestionShowContainer extends Component {
 
   componentDidUpdate(prevProps){
     if(prevProps.params.qId !== this.props.params.qId){
-       this.props.loadQuestion(this.props.params.qId);
+       this.props.resetQuestionRequest();
+       this.props.fetchQuestion(this.props.params.qId);
     } else {
       if (this.props.question && this.props.question.status === 'published' &&
           this.props.question.surveillancePrograms === undefined) {
@@ -93,13 +96,27 @@ class QuestionShowContainer extends Component {
     if(!this.props.question){
       return (
               <Grid className="basic-bg questionShowContainer">
-                {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
-                {this.props.loadStatus == 'failure' &&
-                  <BasicAlert msg={this.props.loadStatusText} severity='danger' />
-                }
-                {this.props.loadStatus == 'success' &&
-                 <BasicAlert msg="QSC: Sorry, there is a problem loading this question." severity='warning' />
-                }
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>QSC: Question Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                        {this.props.loadStatus == 'success' &&
+                         <BasicAlert msg="Sorry, there is a problem loading this question." severity='warning' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
               </Grid>
       );
     }
@@ -118,7 +135,6 @@ class QuestionShowContainer extends Component {
                          removeQuestionFromGroup={this.props.removeQuestionFromGroup}
                          updateStageQuestion={this.props.updateStageQuestion}
                          fetchQuestion={this.props.fetchQuestion}
-                         loadQuestion={this.props.loadQuestion}
                          addPreferred={this.props.addPreferred}
                          removePreferred={this.props.removePreferred}
                          updateQuestionTags={this.props.updateQuestionTags}
@@ -148,7 +164,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({resetQuestionRequest,loadQuestion, fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
+  return bindActionCreators({resetQuestionRequest, fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
     removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags, retireQuestion, addBreadcrumbItem}, dispatch);
 }
 
@@ -159,7 +175,6 @@ QuestionShowContainer.propTypes = {
   router:   PropTypes.object,
   currentUser:   currentUserProps,
   fetchQuestion: PropTypes.func,
-  loadQuestion: PropTypes.func,
   resetQuestionRequest : PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
   updateQuestionTags: PropTypes.func,
