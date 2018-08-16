@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setSteps } from '../../actions/tutorial_actions';
-import { resetSurveyRequest, fetchSurvey, fetchDuplicates } from '../../actions/survey_actions';
+import { fetchSurvey, fetchDuplicates } from '../../actions/survey_actions';
 import { markAsDuplicate, linkToDuplicate } from '../../actions/questions_actions';
 import { surveyProps } from '../../prop-types/survey_props';
 import SurveyDedupe from '../../components/surveys/SurveyDedupe';
@@ -71,7 +71,7 @@ class SurveyDedupeContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, resetSurveyRequest, fetchSurvey, fetchDuplicates, markAsDuplicate, linkToDuplicate}, dispatch);
+  return bindActionCreators({setSteps, fetchSurvey, fetchDuplicates, markAsDuplicate, linkToDuplicate}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {

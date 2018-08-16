@@ -69,6 +69,25 @@ export function linkToDuplicate(id, replacement, survey, type) {
   };
 }
 
+export function fetchQuestion(id) {
+  store.dispatch({type:FETCH_QUESTION_PENDING});
+  return {
+    type: ADD_ENTITIES,
+    payload: axios.get(routes.questionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout:AJAX_TIMEOUT
+    }).then((response) => {
+      const normalizedData = normalize(response.data, questionSchema);
+      store.dispatch(fetchQuestionSuccess(response.data));
+      return normalizedData.entities;
+    })
+    .catch( (error) => {
+      store.dispatch(fetchQuestionFailure(error));
+      throw(new Error(error));
+    })
+  };
+}
+
 export function fetchQuestionUsage(id) {
   return {
     type: FETCH_QUESTION_USAGE,
@@ -178,25 +197,6 @@ export function removeQuestionFromGroup(id, group) {
     type: REMOVE_QUESTION_FROM_GROUP,
     payload: axios.put(routes.removeFromGroupQuestionPath(id),
      {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
-  };
-}
-
-export function fetchQuestion(id) {
-  store.dispatch({type:FETCH_QUESTION_PENDING});
-  return {
-    type: ADD_ENTITIES,
-    payload: axios.get(routes.questionPath(id), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      timeout:AJAX_TIMEOUT
-    }).then((response) => {
-      const normalizedData = normalize(response.data, questionSchema);
-      store.dispatch(fetchQuestionSuccess(response.data));
-      return normalizedData.entities;
-    })
-    .catch( (error) => {
-      store.dispatch(fetchQuestionFailure(error));
-      throw(new Error(error));
-    })
   };
 }
 
