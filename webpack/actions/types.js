@@ -230,6 +230,28 @@ export const FETCH_QUESTION_SUCCESS = "FETCH_QUESTION_SUCCESS";
 export const FETCH_QUESTION_FAILURE = "FETCH_QUESTION_FAILURE";
 export const RESET_QUESTION_REQUEST = "RESET_QUESTION_REQUEST";
 
+// ResultSet types
+// ------------------------- RESULT_SETS -------------------------------- //
+export const RESULT_SET_REQUEST = "RESULT_SET_REQUEST";
+export const FETCH_RESULT_SET_SUCCESS = "FETCH_RESULT_SET_SUCCESS";
+export const FETCH_RESULT_SET_FAILURE = "FETCH_RESULT_SET_FAILURE";
+export const RESET_RESULT_SET_REQUEST = "RESET_RESULT_SET_REQUEST";
+
+// Section types
+// ------------------------- SECTIONS -------------------------------- //
+export const SECTION_REQUEST = "SECTION_REQUEST";
+export const FETCH_SECTION_SUCCESS = "FETCH_SECTION_SUCCESS";
+export const FETCH_SECTION_FAILURE = "FETCH_SECTION_FAILURE";
+export const RESET_SECTION_REQUEST = "RESET_SECTION_REQUEST";
+
+// Survey types
+// ------------------------- SURVEYS -------------------------------- //
+export const SURVEY_REQUEST = "SURVEY_REQUEST";
+export const FETCH_SURVEY_SUCCESS = "FETCH_SURVEY_SUCCESS";
+export const FETCH_SURVEY_FAILURE = "FETCH_SURVEY_FAILURE";
+export const RESET_SURVEY_REQUEST = "RESET_SURVEY_REQUEST";
+
+
 // UI Action types
 export const SET_RESULT_STYLE = 'SET_RESULT_STYLE';
 export const SHOW_RESULT_CONTROL = 'SHOW_RESULT_CONTROL';

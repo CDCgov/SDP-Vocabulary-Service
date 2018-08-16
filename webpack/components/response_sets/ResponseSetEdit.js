@@ -7,6 +7,8 @@ import { responseSetProps } from '../../prop-types/response_set_props';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 export default class ResponseSetEdit extends Component {
   constructor(props) {
@@ -243,6 +245,9 @@ ResponseSetEdit.propTypes = {
   responseSetSubmitter: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
   setStats: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   stats: PropTypes.object,
   route:  PropTypes.object,
   router: PropTypes.object

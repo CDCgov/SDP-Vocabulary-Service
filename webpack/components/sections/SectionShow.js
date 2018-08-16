@@ -13,6 +13,7 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
@@ -399,6 +400,9 @@ SectionShow.propTypes = {
   addBreadcrumbItem: PropTypes.func,
   removePreferred: PropTypes.func,
   fetchSection: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   updateSectionTags: PropTypes.func,
   updateStageSection: PropTypes.func,
   setStats: PropTypes.func,

@@ -7,6 +7,9 @@ import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../../actions/response_set_actions';
 import ResponseSetEdit from '../../components/response_sets/ResponseSetEdit';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
+
 import { responseSetProps } from '../../prop-types/response_set_props';
 
 class ResponseSetEditContainer extends Component {
@@ -115,6 +118,9 @@ ResponseSetEditContainer.propTypes = {
   setStats: PropTypes.func,
   stats: PropTypes.object,
   fetchResponseSet: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   saveResponseSet: PropTypes.func,
   saveDraftResponseSet: PropTypes.func,
   params: PropTypes.object,

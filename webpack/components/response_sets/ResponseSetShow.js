@@ -9,6 +9,7 @@ import { hashHistory } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 import CodedSetTable from "../CodedSetTable";
 import Breadcrumb from "../Breadcrumb";
@@ -295,5 +296,8 @@ ResponseSetShow.propTypes = {
   fetchResponseSet: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };

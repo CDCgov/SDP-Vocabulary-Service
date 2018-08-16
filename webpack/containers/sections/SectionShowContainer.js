@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid } from 'react-bootstrap';
-import { fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { resetSectionRequest, fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { clearBreadcrumb, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
 import { sectionSchema } from '../../schema';
@@ -102,13 +103,16 @@ function mapStateToProps(state, ownProps) {
     section: denormalize(state.sections[ownProps.params.sectionId], sectionSchema, state),
     publishers: state.publishers,
     resultControlVisibility : state.displayStyle.resultControlVisibility,
-    resultStyle : state.displayStyle.resultStyle
+    resultStyle : state.displayStyle.resultStyle,
+    isLoading : state.sections.isLoading,
+    loadStatus : state.sections.loadStatus,
+    loadStatusText : state.sections.loadStatusText
   };
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, resetSectionRequest, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
     removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, updateStageSection, toggleResultControl, retireSection, clearBreadcrumb, addBreadcrumbItem}, dispatch);
 }
 
@@ -136,6 +140,9 @@ SectionShowContainer.propTypes = {
   displayStyle: PropTypes.object,
   resultStyle: PropTypes.string,
   resultControlVisibility: PropTypes.string,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   addBreadcrumbItem: PropTypes.func
 };
 

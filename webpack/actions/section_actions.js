@@ -22,7 +22,11 @@ import {
   ADD_NESTED_ITEM,
   REORDER_NESTED_ITEM,
   UPDATE_STAGE_SECTION,
-  REMOVE_NESTED_ITEM
+  REMOVE_NESTED_ITEM,
+  SECTION_REQUEST,
+  FETCH_SECTION_SUCCESS,
+  FETCH_SECTION_FAILURE,
+  RESET_SECTION_REQUEST
 } from './types';
 
 export function newSection() {
@@ -59,7 +63,7 @@ export function deleteSection(id, cascade, callback=null) {
   };
 }
 
-export function fetchSection(id) {
+export function oldfetchSection(id) {
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.sectionPath(id), {
@@ -71,6 +75,62 @@ export function fetchSection(id) {
       const normalizedData = normalize(response.data, sectionSchema);
       return normalizedData.entities;
     })
+  };
+}
+
+function requestSection() {
+  return {
+    type: SECTION_REQUEST
+  };
+}
+
+export function resetSectionRequest() {
+  return {
+    type: RESET_SECTION_REQUEST
+  };
+}
+
+function fetchSectionSuccess(section) {
+  const normalizedData = normalize(section, sectionSchema);
+  return {
+    type: FETCH_SECTION_SUCCESS,
+    payload: normalizedData.entities
+  };
+}
+
+function fetchSectionFailure(error) {
+  let status, statusText;
+  if (!error.response) {
+    status = `${error.message}`;
+    statusText = `${error.stack}`;
+  } else {
+    status = `${error.response.status}`;
+    statusText = `${error.response.statusText}`;
+  }
+  return {
+    type: FETCH_SECTION_FAILURE,
+    status,
+    statusText
+  };
+}
+
+function sendSectionRequest(id) {
+  return new Promise((resolve,reject) => {
+    axios.get(routes.sectionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout:1000*60*5 // 5 minutes
+    })
+      .then(result => resolve(result.data))
+      .catch(error => reject(error));
+  });
+}
+
+export function fetchSection(id) {
+  return (dispatch,getState) => {
+    dispatch(requestSection(id));
+    return sendSectionRequest(id)
+      .then(data => dispatch(fetchSectionSuccess(data)))
+      .catch(error => dispatch(fetchSectionFailure(error)));
   };
 }
 

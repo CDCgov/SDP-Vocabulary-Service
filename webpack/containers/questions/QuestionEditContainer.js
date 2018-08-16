@@ -8,6 +8,10 @@ import { questionSchema } from '../../schema';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../../actions/questions_actions';
 import { fetchPotentialDuplicateQuestions } from '../../actions/search_results_actions';
 import QuestionEdit from '../../components/questions/QuestionEdit';
+
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
+
 import { questionProps } from '../../prop-types/question_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
@@ -138,6 +142,9 @@ function mapStateToProps(state, ownProps) {
   props.potentialDuplicates = state.searchResults[DUPLICATE_QUESTION_CONTEXT] || {};
   props.stats = state.stats;
   props.currentUser = state.currentUser;
+  props.isLoading = state.questions.isLoading;
+  props.loadStatus = state.questions.loadStatus;
+  props.loadStatusText = state.questions.loadStatusText;
   return props;
 }
 
@@ -166,6 +173,9 @@ QuestionEditContainer.propTypes = {
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   potentialDuplicates: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   currentUser: currentUserProps
 };
 

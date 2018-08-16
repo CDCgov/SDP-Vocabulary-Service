@@ -20,6 +20,10 @@ import {
   ATTEMPT_IMPORT_FILE,
   UPDATE_STAGE_SURVEY,
   FETCH_DUPLICATES,
+  SURVEY_REQUEST,
+  FETCH_SURVEY_SUCCESS,
+  FETCH_SURVEY_FAILURE,
+  RESET_SURVEY_REQUEST,
   FETCH_DUPLICATE_COUNT
 } from './types';
 
@@ -37,7 +41,7 @@ export function deleteSurvey(id, cascade, callback=null) {
   };
 }
 
-export function fetchSurvey(id) {
+export function oldfetchSurvey(id) {
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.surveyPath(id), {
@@ -52,6 +56,61 @@ export function fetchSurvey(id) {
   };
 }
 
+function requestSurvey() {
+  return {
+    type: SURVEY_REQUEST
+  };
+}
+
+export function resetSurveyRequest() {
+  return {
+    type: RESET_SURVEY_REQUEST
+  };
+}
+
+function fetchSurveySuccess(survey) {
+  const normalizedData = normalize(survey, surveySchema);
+  return {
+    type: FETCH_SURVEY_SUCCESS,
+    payload: normalizedData.entities
+  };
+}
+
+function fetchSurveyFailure(error) {
+  let status, statusText;
+  if (!error.response) {
+    status = `${error.message}`;
+    statusText = `${error.stack}`;
+  } else {
+    status = `${error.response.status}`;
+    statusText = `${error.response.statusText}`;
+  }
+  return {
+    type: FETCH_SURVEY_FAILURE,
+    status,
+    statusText
+  };
+}
+
+function sendSurveyRequest(id) {
+  return new Promise((resolve,reject) => {
+    axios.get(routes.surveyPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout:1000*60*5 // 5 minutes
+    })
+      .then(result => resolve(result.data))
+      .catch(error => reject(error));
+  });
+}
+
+export function fetchSurvey(id) {
+  return (dispatch,getState) => {
+    dispatch(requestSurvey(id));
+    return sendSurveyRequest(id)
+      .then(data => dispatch(fetchSurveySuccess(data)))
+      .catch(error => dispatch(fetchSurveyFailure(error)));
+  };
+}
 export function fetchDuplicates(id) {
   return {
     type: FETCH_DUPLICATES,

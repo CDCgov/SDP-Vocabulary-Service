@@ -5,6 +5,8 @@ import join from 'lodash/join';
 
 import { surveyProps } from '../../prop-types/survey_props';
 import currentUserProps from "../../prop-types/current_user_props";
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 import iconMap from '../../styles/iconMap';
 
@@ -495,6 +497,9 @@ SurveyDedupe.propTypes = {
   survey: surveyProps,
   potentialDupes: PropTypes.array,
   markAsDuplicate: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   linkToDuplicate: PropTypes.func,
   currentUser: currentUserProps,
 };

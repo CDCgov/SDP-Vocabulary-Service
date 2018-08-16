@@ -11,6 +11,7 @@ import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 import SectionList from "../sections/SectionList";
 
@@ -312,7 +313,29 @@ class SurveyShow extends Component {
     let {survey, sections} = this.props;
     if(!survey || !sections){
       return (
-        <div><LoadingSpinner msg="Loading..." /></div>
+      <div>
+        <div>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Survey Details</h1></li>
+            </ul>
+          </div>
+        </div>
+        <Row>
+          <Col xs={12}>
+              <div className="main-content">
+                {this.props.isLoading && <LoadingSpinner msg="Loading survey..." />}
+                {this.props.loadStatus == 'failure' &&
+                  <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                }
+                {this.props.loadStatus == 'success' && survey === undefined &&
+                 <BasicAlert msg="Sorry, there is a problem loading this survey." severity='warning' />
+                }
+              </div>
+          </Col>
+        </Row>
+      </div>
       );
     }
     return (
@@ -353,6 +376,9 @@ SurveyShow.propTypes = {
   removeSurveyFromGroup: PropTypes.func,
   updateSurveyTags: PropTypes.func,
   stats: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };
 

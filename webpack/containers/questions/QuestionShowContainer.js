@@ -84,15 +84,6 @@ class QuestionShowContainer extends Component {
 
   render() {
 
-   // if(this.props.isLoading && !this.props.question){
-   //   return (
-   //           <Grid className="basic-bg questionShowContainer">
-   //             <LoadingSpinner msg="QuestionShowContainer Loading spinner..." />
-   //             Load Status : *{this.props.loadStatus}*
-   //           </Grid>
-   //   );
-   // }
-
     if(!this.props.question){
       return (
               <Grid className="basic-bg questionShowContainer">

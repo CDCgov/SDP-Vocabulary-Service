@@ -37,7 +37,7 @@ function addQuestionToState(action, state){
   return questionsClone;
 }
 
-export default function questions(state = defaultState, action) {
+export default function questions(state = {}, action) {
   let loadStatusText;
   switch (action.type) {
     case FETCH_QUESTION_SUCCESS:
@@ -54,11 +54,11 @@ export default function questions(state = defaultState, action) {
     case RESET_QUESTION_REQUEST:
       return Object.assign({},state,{ isLoading: false, loadStatus: null, loadStatusText:""});
     case ADD_ENTITIES_FULFILLED:
-      return Object.assign({}, state, action.payload.questions, {isLoading:false});
+      return Object.assign({}, state, action.payload.questions);
     case ADD_ENTITIES_REJECTED:
-      return Object.assign({},state,{isLoading:false,loadStatus:action.payload.message,loadStatusText:action.payload.stack});
+      return Object.assign({},state);
     case ADD_ENTITIES_PENDING:
-      return Object.assign({},state,{ isLoading: true, loadStatus: null, loadStatusText:'' });
+      return Object.assign({},state);
     case SAVE_QUESTION_FULFILLED:
     case UPDATE_QUESTION_TAGS_FULFILLED:
     case UPDATE_STAGE_QUESTION_FULFILLED:

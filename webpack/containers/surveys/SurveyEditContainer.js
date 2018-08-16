@@ -15,6 +15,7 @@ import { surveyProps } from '../../prop-types/survey_props';
 import { surveillanceSystemsProps } from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import SurveyEdit from '../../components/surveys/SurveyEdit';
 import currentUserProps from "../../prop-types/current_user_props";
 import SectionSearchContainer from '../sections/SectionSearchContainer';
@@ -99,7 +100,19 @@ class SurveyEditContainer extends Component {
   render() {
     if(!this.props.survey || !this.props.sections){
       return (
-        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading survey..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this survey." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
       );
     }
     return (
@@ -180,7 +193,10 @@ function mapStateToProps(state, ownProps) {
     currentUser: state.currentUser,
     surveillanceSystems:  state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
-    selectedSearchResults: selectedSearchResults
+    selectedSearchResults: selectedSearchResults,
+    isLoading: state.surveys.isLoading,
+    loadStatus: state.surveys.loadStatus,
+    loadStatusText : state.surveys.loadStatusText
   };
 }
 
@@ -197,6 +213,9 @@ SurveyEditContainer.propTypes = {
   newSurvey:   PropTypes.func,
   saveSurvey:  PropTypes.func,
   fetchSurvey: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   removeSection:  PropTypes.func,
   reorderSection: PropTypes.func,
   currentUser: currentUserProps,

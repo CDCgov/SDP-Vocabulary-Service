@@ -3,13 +3,16 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { hashHistory, Link } from 'react-router';
+
 import { Grid } from 'react-bootstrap';
-import { fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
+import { resetResponseSetRequest, fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import ResponseSetShow from '../../components/response_sets/ResponseSetShow';
 
 import { responseSetProps } from '../../prop-types/response_set_props';
@@ -20,7 +23,12 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
+    this.props.resetResponseSetRequest();
     this.props.fetchResponseSet(this.props.params.rsId);
+  }
+
+  componentWillUnmount() {
+    this.props.resetResponseSetRequest();
   }
 
   componentDidMount() {
@@ -57,6 +65,7 @@ class ResponseSetShowContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.params.rsId != this.props.params.rsId){
+      this.props.resetResponseSetRequest();
       this.props.fetchResponseSet(this.props.params.rsId);
     } else {
       if (this.props.responseSet && this.props.responseSet.status === 'published' &&
@@ -69,8 +78,29 @@ class ResponseSetShowContainer extends Component {
   render() {
     if(this.props.responseSet === undefined || this.props.responseSet.name === undefined){
       return (
-        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
-      );
+              <Grid className="basic-bg">
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>Response Set Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading response set..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                        {this.props.loadStatus == 'success' &&
+                         <BasicAlert msg="Sorry, there is a problem loading this response set." severity='warning' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
+              </Grid>      );
     }
     return (
       <Grid className="basic-bg">
@@ -88,11 +118,14 @@ function mapStateToProps(state, ownProps) {
   props.responseSet = denormalize(state.responseSets[ownProps.params.rsId], responseSetSchema, state);
   props.publishers = state.publishers;
   props.stats = state.stats;
+  props.isLoading = state.responseSets.isLoading;
+  props.loadStatus = state.responseSets.loadStatus;
+  props.loadStatusText = state.responseSets.loadStatusText;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, resetResponseSetRequest, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
     addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, updateStageResponseSet, fetchResponseSetUsage, retireResponseSet, addBreadcrumbItem}, dispatch);
 }
 
@@ -114,6 +147,9 @@ ResponseSetShowContainer.propTypes = {
   stats: PropTypes.object,
   params: PropTypes.object,
   router: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };
 

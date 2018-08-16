@@ -17,6 +17,8 @@ import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { questionsProps } from '../../prop-types/question_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 class SectionEditContainer extends Component {
 
@@ -233,6 +235,9 @@ SectionEditContainer.propTypes = {
   newSection:  PropTypes.func,
   saveSection: PropTypes.func,
   fetchSection: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   addNestedItem: PropTypes.func,
   saveDraftSection: PropTypes.func,
   fetchQuestion: PropTypes.func,
