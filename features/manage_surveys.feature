@@ -247,7 +247,7 @@ Feature: Manage Surveys
     And I have a Question with the content "What is your gender?" and the type "MC"
     And I have a Question with the content "What is your name?" and the type "MC"
     And I have a Question with the content "What is your name? Dupe" and the type "MC"
-    And I have a Response Set with the name "Gender Partial"
+    And I have a published Response Set with the name "Gender Partial"
     And I have a Response Set with the name "Gender Partial dupe"
     And I have a Response Set with the name "Gender Partial again"
     And I am logged in as test_author@gmail.com
@@ -292,9 +292,9 @@ Feature: Manage Surveys
     And I click on the "view-single-Gender Partial" button
     Then I should see "Suggested Replacement Response Sets ("
     When I click on the "select-response-set-Gender Partial dupe" button
-    Then I should see "Select & Replace Confirmation"
-    When I click on the "Confirm Replace" button
-    Then I should see "Successfully replaced: Gender Partial with Gender Partial dupe"
+    Then I should see "Mark & Link Confirmation"
+    When I click on the "Confirm Link" button
+    Then I should see "Successfully linked: Gender Partial with Gender Partial dupe"
 
   Scenario: See survey breadcrumb
     Given I have a Section with the name "Test Section"

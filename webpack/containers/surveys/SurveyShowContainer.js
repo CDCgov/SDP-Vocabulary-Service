@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { fetchSurvey, publishSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
+import { fetchSurvey, fetchDuplicateCount, publishSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -21,6 +21,7 @@ import { publishersProps } from "../../prop-types/publisher_props";
 class SurveyShowContainer extends Component {
   componentWillMount() {
     this.props.fetchSurvey(this.props.params.surveyId);
+    this.props.fetchDuplicateCount(this.props.params.surveyId);
   }
 
   componentDidMount() {
@@ -82,6 +83,7 @@ function mapStateToProps(state, ownProps) {
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
+  props.dupeCount = state.dupeCount;
   props.survey = denormalize(state.surveys[ownProps.params.surveyId], surveySchema, state);
   if (props.survey && props.survey.surveySections) {
     props.sections = props.survey.surveySections.map((section) => state.sections[section.sectionId]);
@@ -115,7 +117,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, publishSurvey, retireSurvey, addSurveyToGroup, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, publishSurvey, retireSurvey, addSurveyToGroup, addPreferred, removePreferred, fetchDuplicateCount,
     removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags, updateStageSurvey, setBreadcrumbPath, addBreadcrumbItem}, dispatch);
 }
 
@@ -124,6 +126,8 @@ SurveyShowContainer.propTypes = {
   sections: PropTypes.arrayOf(sectionProps),
   currentUser: currentUserProps,
   fetchSurvey: PropTypes.func,
+  fetchDuplicateCount: PropTypes.func,
+  dupeCount: PropTypes.number,
   publishSurvey: PropTypes.func,
   retireSurvey: PropTypes.func,
   addSurveyToGroup: PropTypes.func,

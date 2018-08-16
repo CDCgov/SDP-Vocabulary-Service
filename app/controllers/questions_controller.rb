@@ -124,6 +124,15 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def link_to_duplicate
+    @question.link_to_duplicate(params[:replacement])
+    if @question.save!
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update

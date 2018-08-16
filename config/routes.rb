@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     get :redcap, on: :member
     get :epi_info, on: :member
     get :duplicates, on: :member
+    get :duplicate_count, on: :member
     get :spreadsheet, on: :member, defaults: { format: :xlsx }
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
@@ -74,6 +75,7 @@ Rails.application.routes.draw do
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :mark_as_duplicate, on: :member
+    put :link_to_duplicate, on: :member
     put :update_tags, on: :member
   end
   resources :comments do
@@ -89,6 +91,7 @@ Rails.application.routes.draw do
     put :add_to_group, on: :member
     put :remove_from_group, on: :member
     put :mark_as_duplicate, on: :member
+    put :link_to_duplicate, on: :member
   end
 
   get 'notifications', to: 'notifications#index', as: :notifications

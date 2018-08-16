@@ -74,6 +74,15 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  def link_to_duplicate
+    @response_set.link_to_duplicate(params[:replacement])
+    if @response_set.save!
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create

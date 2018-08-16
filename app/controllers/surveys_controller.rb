@@ -137,6 +137,15 @@ class SurveysController < ApplicationController
   end
 
   # GET /surveys/1/duplicates
+  def duplicate_count
+    if ::SDP::Elasticsearch.ping
+      render json: @survey.q_with_dupes_count(current_user), status: :ok
+    else
+      render json: { msg: 'Request cannot be processed as Elasticsearch appears to be down.' }, status: :unprocessable_entity
+    end
+  end
+
+  # GET /surveys/1/duplicates
   def duplicates
     if ::SDP::Elasticsearch.ping
       render json: @survey.potential_duplicates(current_user), status: :ok

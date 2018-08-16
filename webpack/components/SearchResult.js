@@ -107,8 +107,15 @@ export default class SearchResult extends Component {
     } else if (stage === 'Trial Use') {
       return(
         <li className="result-analytics-item">
-          <span className="fa fa-exclamation-circle fa-lg item-status-draft" aria-hidden="true"></span>
+          <span className="fa fa-gavel fa-lg item-status-draft" aria-hidden="true"></span>
           <p className="item-description"><text className="sr-only">Content stage: </text>trial use</p>
+        </li>
+      );
+    } else if (stage === 'Duplicate') {
+      return(
+        <li className="result-analytics-item">
+          <span className="fa fa-files-o fa-lg item-status-draft" aria-hidden="true"></span>
+          <p className="item-description"><text className="sr-only">Content stage: </text>Duplicate</p>
         </li>
       );
     } else if (stage === 'Retired') {

@@ -19,7 +19,8 @@ import {
   UPDATE_IMPORT_SESSION,
   ATTEMPT_IMPORT_FILE,
   UPDATE_STAGE_SURVEY,
-  FETCH_DUPLICATES
+  FETCH_DUPLICATES,
+  FETCH_DUPLICATE_COUNT
 } from './types';
 
 
@@ -55,6 +56,18 @@ export function fetchDuplicates(id) {
   return {
     type: FETCH_DUPLICATES,
     payload: axios.get(routes.duplicatesSurveyPath(id), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      }
+    })
+  };
+}
+
+export function fetchDuplicateCount(id) {
+  return {
+    type: FETCH_DUPLICATE_COUNT,
+    payload: axios.get(routes.duplicateCountSurveyPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'
