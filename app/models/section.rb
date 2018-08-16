@@ -55,11 +55,11 @@ class Section < ApplicationRecord
       current_user_id = current_user ? current_user.id : nil
       current_user_groups = current_user ? current_user.groups : []
       flatten_questions.each do |sni|
-        if sni.question && sni.question.status == 'draft'
+        if sni.question
           results = SDP::Elasticsearch.find_duplicates(sni.question, current_user_id, current_user_groups)
           count += 1 if results && results['hits'] && results['hits']['total'] > 0
         end
-        if sni.response_set && sni.response_set.status == 'draft'
+        if sni.response_set
           rs_results = SDP::Elasticsearch.find_duplicates(sni.response_set, current_user_id, current_user_groups)
           count += 1 if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
         end

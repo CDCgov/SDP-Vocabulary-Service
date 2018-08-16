@@ -16,7 +16,8 @@ import {
   ADD_ENTITIES,
   UPDATE_QUESTION_TAGS,
   UPDATE_STAGE_QUESTION,
-  MARK_AS_DUPLICATE
+  MARK_AS_DUPLICATE,
+  LINK_TO_DUPLICATE
 } from './types';
 
 export function deleteQuestion(id, cascade=false, callback=null) {
@@ -39,6 +40,23 @@ export function markAsDuplicate(id, replacement, survey, type) {
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: MARK_AS_DUPLICATE,
+    payload: putPromise
+  };
+}
+
+export function linkToDuplicate(id, replacement, survey, type) {
+  const authenticityToken = getCSRFToken();
+  let route = '';
+  if (type === 'question'){
+    route = routes.link_to_duplicate_question_path(id);
+  } else {
+    route = routes.link_to_duplicate_response_set_path(id);
+  }
+  const putPromise = axios.put(route,
+                      {replacement, survey, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: LINK_TO_DUPLICATE,
     payload: putPromise
   };
 }

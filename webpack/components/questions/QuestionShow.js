@@ -228,6 +228,11 @@ export default class QuestionShow extends Component {
                   <strong>Content Stage: </strong>
                   {question.contentStage}
                 </div>}
+                {question.duplicateOf && question.contentStage && question.contentStage === 'Duplicate' &&
+                <div className="box-content">
+                  <strong>Duplicate of: </strong><Link to={`/questions/${question.duplicateOf}`}>Question #{question.duplicateOf}</Link>
+                </div>
+                }
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="box-content">
                   <strong>Visibility: </strong>Published (publically available)
@@ -262,7 +267,7 @@ export default class QuestionShow extends Component {
                   <strong>Response Type: </strong>
                   {question.responseType.name && question.responseType.name}
                 </div>}
-                {question.dataCollectionMethods && <div className="box-content">
+                {question.dataCollectionMethods && question.dataCollectionMethods.length > 0 && <div className="box-content">
                   <strong>Data Collection Methods: </strong>
                   <ul>
                     {question.dataCollectionMethods.map((dcm, i) => {

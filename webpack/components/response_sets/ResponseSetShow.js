@@ -226,6 +226,11 @@ export default class ResponseSetShow extends Component {
                     {responseSet.contentStage}
                   </div>
                 }
+                {responseSet.duplicateOf && responseSet.contentStage && responseSet.contentStage === 'Duplicate' &&
+                  <div className="box-content">
+                    <strong>Duplicate of: </strong><Link to={`/responseSets/${responseSet.duplicateOf}`}>Response Set #{responseSet.duplicateOf}</Link>
+                  </div>
+                }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
                 <div className="box-content">
                   <strong>Visibility: </strong>Published (publically available)

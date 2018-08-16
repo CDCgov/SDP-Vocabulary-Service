@@ -19,6 +19,7 @@ class SurveyDedupe extends Component {
       viewQuestionIndex: 0,
       viewResponseSetIndex: 0,
       showDeleteModal: false,
+      showLinkModal: false,
       selectedDupe: {},
       selectedDraft: {}
     };
@@ -32,6 +33,7 @@ class SurveyDedupe extends Component {
       viewQuestionIndex: 0,
       viewResponseSetIndex: 0,
       showDeleteModal: false,
+      showLinkModal: false,
     });
   }
 
@@ -73,6 +75,37 @@ class SurveyDedupe extends Component {
               this.setState({viewPage: 'all', showDeleteModal: false, success: {msg: `Successfully replaced:  ${draft.content || draft.name } with `, id: dupeItem.id, name: dupeItem.name}, warning: {} });
             }} bsStyle="primary">Confirm Replace</Button>
             <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
+  linkModal() {
+    let dupeItem = this.state.selectedDupe;
+    let draft = this.state.selectedDraft;
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showLinkModal} onHide={()=>this.setState({showLinkModal: false})} role="dialog" aria-label="Link Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Mark &amp; Link Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to make the following changes:</p>
+            <ul>
+              <li>The {this.state.viewType} from your survey will be moved to the "Duplicate" content stage and marked as such on its details page.</li>
+              <li>"{draft.content || draft.name}" from your survey will provide a link to the preferred "{dupeItem.name}" on its details page under the "Duplicate of:" field.</li>
+            </ul>
+            <p><strong>NOTE: </strong>This is a <strong>published</strong> item. Accordingly, this action WILL NOT replace the item marked as duplicate with the linked item on any published surveys or sections. An author must revise these published items. This action allows you to indicate which item is a preferred replacement to promote harmonization and reduce redundancy.</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => {
+              this.props.linkToDuplicate(draft.id, dupeItem.id, this.props.survey.id, this.state.viewType);
+              this.setState({viewPage: 'all', showLinkModal: false, success: {msg: `Successfully linked:  ${draft.content || draft.name } with `, id: dupeItem.id, name: dupeItem.name}, warning: {} });
+            }} bsStyle="primary">Confirm Link</Button>
+            <Button onClick={()=>this.setState({showLinkModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -304,11 +337,16 @@ class SurveyDedupe extends Component {
                       <td headers="response-type-column"><i className='fa $fa-comments' aria-hidden="true"></i> {dupe.Source.responseType && dupe.Source.responseType.name}</td>
                       <td headers="category-column">{dupe.Source.category && dupe.Source.category.name}</td>
                       <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                      <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                      {question.draftQuestion && question.draftQuestion.status && question.draftQuestion.status === 'draft' && <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
                         e.preventDefault();
                         this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
                         return false;
-                      }}>Replace</button></td>
+                      }}>Replace</button></td>}
+                      {question.draftQuestion && question.draftQuestion.status && question.draftQuestion.status === 'published' && <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({showLinkModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
+                        return false;
+                      }}>Link</button></td>}
                     </tr>
                   );
                 })}
@@ -378,11 +416,16 @@ class SurveyDedupe extends Component {
                       <td scope="row" headers="name-desc-column"><a href={`/#/responseSets/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
                       <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
                       <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                      <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                      {responseSet.draftResponseSet && responseSet.draftResponseSet.status && responseSet.draftResponseSet.status === 'draft' && <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
                         e.preventDefault();
                         this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: responseSet.draftResponseSet});
                         return false;
-                      }}>Replace</button></td>
+                      }}>Replace</button></td>}
+                      {responseSet.draftResponseSet && responseSet.draftResponseSet.status && responseSet.draftResponseSet.status === 'published' && <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({showLinkModal: true, selectedDupe: dupe.Source, selectedDraft: responseSet.draftResponseSet});
+                        return false;
+                      }}>Link</button></td>}
                     </tr>
                   );
                 })}
@@ -408,6 +451,7 @@ class SurveyDedupe extends Component {
       <div>
         <div className="maincontent-details">
           {this.deleteModal()}
+          {this.linkModal()}
           <h1 className="maincontent-item-name"><strong>Survey Name:</strong> <a href={`/#/surveys/${this.props.survey.id}`}>{this.props.survey.name}</a> </h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
@@ -451,6 +495,7 @@ SurveyDedupe.propTypes = {
   survey: surveyProps,
   potentialDupes: PropTypes.array,
   markAsDuplicate: PropTypes.func,
+  linkToDuplicate: PropTypes.func,
   currentUser: currentUserProps,
 };
 
