@@ -115,6 +115,7 @@ Feature: Edit Sections
     And I set search filter to "question"
     And I click on the "search-btn" button
     And I should not see "Result Already Added"
+    And I wait 1 seconds
     And I use the question search to select "What is your gender?"
     And I use the response set search modal to select "Gender Partial"
     When I select the add program variable option for the Question "What is your gender?"
