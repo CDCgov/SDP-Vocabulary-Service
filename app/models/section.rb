@@ -10,6 +10,7 @@ class Section < ApplicationRecord
   has_many :response_sets, through: :section_nested_items
   has_many :survey_sections
   has_many :surveys, through: :survey_sections
+  has_many :parent_section_nested_items, foreign_key: :nested_section_id, class_name: SectionNestedItem
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
@@ -23,6 +24,7 @@ class Section < ApplicationRecord
 
   after_destroy :update_surveys
   after_destroy :update_nested_sections
+  after_destroy :update_parent_sections
 
   after_commit :index, on: [:create, :update]
   after_commit :es_destroy, on: [:destroy]
@@ -77,6 +79,16 @@ class Section < ApplicationRecord
     current_user_id = current_user ? current_user.id : nil
     current_user_groups = current_user ? current_user.groups : []
     bdf.execute(current_user_id, current_user_groups)
+  end
+
+  def parent_sections
+    parent_section_nested_items.map(&:section)
+  end
+
+  def update_parent_sections
+    section_array = parent_sections.to_a
+    parent_section_nested_items.destroy_all
+    section_array.each(&:update_item_positions)
   end
 
   def update_surveys
