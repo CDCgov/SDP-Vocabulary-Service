@@ -39,6 +39,7 @@ erd.pdf
 
 # ignore test reports directory
 reports
+rerun.txt
 
 config/settings.local.yml
 config/settings/*.local.yml
