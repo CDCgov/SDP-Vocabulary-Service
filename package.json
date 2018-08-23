@@ -11,6 +11,9 @@
     "type": "git",
     "url": "https://github.com/CDCgov/SDP-Vocabulary-Service"
   },
+  "engines": {
+    "node": ">=8.9.0"
+  },
   "dependencies": {
     "autoprefixer": "^7.1.4",
     "axios": "^0.13.1",
@@ -65,7 +68,7 @@
     "strict-uri-encode": "1.1.0",
     "style-loader": "^0.18.2",
     "swagger-cli": "^1.0.0-beta.2",
-    "url-loader": "^0.5.7",
+    "url-loader": "^1.1.1",
     "webpack": "^3.6.0",
     "webpack-dev-middleware": "1.7.0",
     "webpack-dev-server": "^2.8.2",
@@ -76,12 +79,12 @@
     "bootstrap-sass": "^3.3.7",
     "chai": "^3.5.0",
     "chai-jquery": "^2.0.0",
-    "chai-spies": "",
+    "chai-spies": "*",
     "enzyme": "2.9.1",
     "eslint": "^3.10.2",
     "eslint-plugin-react": "^6.7.1",
     "jsdom": "^9.8.3",
-    "mocha": "^3.2.0",
+    "mocha": "^5.2.0",
     "react-test-renderer": "^15.6.1",
     "webpack-bundle-analyzer": "^2.8.2"
   }
