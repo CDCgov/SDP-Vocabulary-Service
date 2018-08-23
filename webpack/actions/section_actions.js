@@ -4,6 +4,8 @@ import { sectionSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
+import store from '../store/configure_store';
+
 import {
   ADD_SECTION,
   REMOVE_SECTION,
@@ -16,6 +18,7 @@ import {
   ADD_SECTION_TO_GROUP,
   REMOVE_SECTION_FROM_GROUP,
   DELETE_SECTION,
+  FETCH_SECTION,
   ADD_ENTITIES,
   UPDATE_SECTION_TAGS,
   UPDATE_PDV,
@@ -63,9 +66,28 @@ export function deleteSection(id, cascade, callback=null) {
   };
 }
 
-export function oldfetchSection(id) {
+export function fetchSection(id) {
   return {
     type: ADD_ENTITIES,
+    payload: axios.get(routes.sectionPath(id), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      }
+    }).then((response) => {
+      const normalizedData = normalize(response.data, sectionSchema);
+      store.dispatch(fetchSectionSuccess(response.data));
+      return normalizedData.entities;
+    }).catch( (error) => {
+      store.dispatch(fetchSectionFailure(error));
+      throw(new Error(error));
+    })
+  };
+}
+
+export function newfetchSection(id) {
+  return {
+    type: FETCH_SECTION,
     payload: axios.get(routes.sectionPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
@@ -125,7 +147,7 @@ function sendSectionRequest(id) {
   });
 }
 
-export function fetchSection(id) {
+export function newThunkfetchSection(id) {
   return (dispatch,getState) => {
     dispatch(requestSection(id));
     return sendSectionRequest(id)

@@ -23,7 +23,6 @@ import { publishersProps } from "../../prop-types/publisher_props";
 class QuestionShowContainer extends Component {
 
   componentWillMount() {
-   // this.props.fetchQuestion(this.props.params.qId);
    this.props.resetQuestionRequest();
    this.props.fetchQuestion(this.props.params.qId);
   }

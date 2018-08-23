@@ -230,12 +230,12 @@ export const FETCH_QUESTION_SUCCESS = "FETCH_QUESTION_SUCCESS";
 export const FETCH_QUESTION_FAILURE = "FETCH_QUESTION_FAILURE";
 export const RESET_QUESTION_REQUEST = "RESET_QUESTION_REQUEST";
 
-// ResultSet types
-// ------------------------- RESULT_SETS -------------------------------- //
-export const RESULT_SET_REQUEST = "RESULT_SET_REQUEST";
-export const FETCH_RESULT_SET_SUCCESS = "FETCH_RESULT_SET_SUCCESS";
-export const FETCH_RESULT_SET_FAILURE = "FETCH_RESULT_SET_FAILURE";
-export const RESET_RESULT_SET_REQUEST = "RESET_RESULT_SET_REQUEST";
+// Response Set types
+// ------------------------- RESPONSE_SETS -------------------------------- //
+export const RESPONSE_SET_REQUEST = "RESPONSE_SET_REQUEST";
+export const FETCH_RESPONSE_SET_SUCCESS = "FETCH_RESPONSE_SET_SUCCESS";
+export const FETCH_RESPONSE_SET_FAILURE = "FETCH_RESPONSE_SET_FAILURE";
+export const RESET_RESPONSE_SET_REQUEST = "RESET_RESPONSE_SET_REQUEST";
 
 // Section types
 // ------------------------- SECTIONS -------------------------------- //
@@ -243,6 +243,10 @@ export const SECTION_REQUEST = "SECTION_REQUEST";
 export const FETCH_SECTION_SUCCESS = "FETCH_SECTION_SUCCESS";
 export const FETCH_SECTION_FAILURE = "FETCH_SECTION_FAILURE";
 export const RESET_SECTION_REQUEST = "RESET_SECTION_REQUEST";
+export const FETCH_SECTION_PENDING = "FETCH_SECTION_PENDING";
+export const FETCH_SECTION = "FETCH_SECTION";
+export const FETCH_SECTION_FULFILLED = "FETCH_SECTION_FULFILLED";
+export const FETCH_SECTION_REJECTED = "FETCH_SECTION_REJECTED";
 
 // Survey types
 // ------------------------- SURVEYS -------------------------------- //

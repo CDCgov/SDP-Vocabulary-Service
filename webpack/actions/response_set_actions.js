@@ -15,10 +15,10 @@ import {
   DELETE_RESPONSE_SET,
   UPDATE_STAGE_RESPONSE_SET,
   ADD_ENTITIES,
-  RESULT_SET_REQUEST,
-  FETCH_RESULT_SET_SUCCESS,
-  FETCH_RESULT_SET_FAILURE,
-  RESET_RESULT_SET_REQUEST
+  RESPONSE_SET_REQUEST,
+  FETCH_RESPONSE_SET_SUCCESS,
+  FETCH_RESPONSE_SET_FAILURE,
+  RESET_RESPONSE_SET_REQUEST
 } from './types';
 
 export function deleteResponseSet(id, callback=null) {
@@ -53,7 +53,7 @@ export function resetResponseSetRequest() {
 }
 
 function fetchResponseSetSuccess(rsResponse) {
-  const normalizedData = normalize(rsResponse.data, responseSetSchema);
+  const normalizedData = normalize(rsResponse, responseSetSchema);
   return {
     type: FETCH_RESPONSE_SET_SUCCESS,
     payload: normalizedData.entities

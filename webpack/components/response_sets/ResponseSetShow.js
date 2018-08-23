@@ -37,7 +37,29 @@ export default class ResponseSetShow extends Component {
     const {responseSet} = this.props;
     if(responseSet === undefined || responseSet.name === undefined){
       return (
-        <div><LoadingSpinner msg="Loading..." /></div>
+              <Grid className="basic-bg">
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>Response Set Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading response set..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                        {this.props.loadStatus == 'success' &&
+                         <BasicAlert msg="Sorry, there is a problem loading this response set." severity='warning' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
+              </Grid>
       );
     }
 

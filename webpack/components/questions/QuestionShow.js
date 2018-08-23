@@ -30,7 +30,7 @@ export default class QuestionShow extends Component {
     this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const _name = this.props.question.content ? this.props.question.content : this.props.question.name;
     this.props.addBreadcrumbItem({type:'question',id:this.props.question.id,name:_name});
   }

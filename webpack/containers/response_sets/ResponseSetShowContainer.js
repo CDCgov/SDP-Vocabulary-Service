@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { hashHistory, Link } from 'react-router';
 
-import { Grid } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { resetResponseSetRequest, fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -23,12 +23,12 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 class ResponseSetShowContainer extends Component {
   componentWillMount() {
-    this.props.resetResponseSetRequest();
+    // this.props.resetResponseSetRequest();
     this.props.fetchResponseSet(this.props.params.rsId);
   }
 
   componentWillUnmount() {
-    this.props.resetResponseSetRequest();
+     this.props.resetResponseSetRequest();
   }
 
   componentDidMount() {
@@ -100,7 +100,8 @@ class ResponseSetShowContainer extends Component {
                       </div>
                   </Col>
                 </Row>
-              </Grid>      );
+              </Grid>
+          );
     }
     return (
       <Grid className="basic-bg">

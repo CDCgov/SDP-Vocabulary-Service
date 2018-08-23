@@ -33,31 +33,63 @@ class SectionShow extends Component {
     this.pageChange = this.pageChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.addBreadcrumbItem({type:'section',id:this.props.section.id,name:this.props.section.name});
   }
 
   render() {
     const {section} = this.props;
-    if(!section){
+    if(!section || this.props.loadStatus == 'failure'){
       return (
-        <div><LoadingSpinner msg="Loading..." /></div>
+          <div>
+            <div>
+              <div className="showpage_header_container no-print">
+                <ul className="list-inline">
+                  <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                  <li className="showpage_title"><h1>Section Details</h1></li>
+                </ul>
+              </div>
+            </div>
+            <Row>
+              <Col xs={12}>
+                  <div className="main-content">
+                    {this.props.isLoading && <LoadingSpinner msg="Loading section..." />}
+                    {this.props.loadStatus == 'failure' &&
+                      <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                    }
+                    {this.props.loadStatus == 'success' &&
+                     <BasicAlert msg="Sorry, there is a problem loading this section." severity='warning' />
+                    }
+                  </div>
+              </Col>
+            </Row>
+          </div>
       );
     }
     return (
       <div>
         <Row>
-        <Col sm={12}>
-          <div id={"section_id_"+section.id}>
-            <div className="showpage_header_container no-print">
-              <ul className="list-inline">
-                <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-                <li className="showpage_title"><h1>Section Details {section.contentStage && (<text>[{section.contentStage.toUpperCase()}]</text>)}</h1></li>
-              </ul>
+          <Col sm={12}>
+            <div id={"section_id_"+section.id}>
+              <div className="showpage_header_container no-print">
+                <ul className="list-inline">
+                  <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                  <li className="showpage_title"><h1>Section Details {section.contentStage && (<text>[{section.contentStage.toUpperCase()}]</text>)}</h1></li>
+                </ul>
+              </div>
             </div>
-          </div>
-        </Col>
+          </Col>
         </Row>
+        {this.props.loadStatus == 'failure' &&
+          <Row>
+            <Col xs={12}>
+              <div className="main-content">
+               <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+               xxx
+              </div>
+            </Col>
+          </Row>
+        }
         <Row className="no-inside-gutter">
           {this.historyBar(section)}
           {this.mainContent(section)}
@@ -76,7 +108,7 @@ class SectionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
+        VersionInfo: <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
       </Col>
     );
   }

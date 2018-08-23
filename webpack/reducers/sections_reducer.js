@@ -8,7 +8,16 @@ import {
   REMOVE_NESTED_ITEM,
   REORDER_NESTED_ITEM,
   CREATE_SECTION,
+  FETCH_SECTION_SUCCESS,
+  FETCH_SECTION_FAILURE,
+  FETCH_SECTION_FULFILLED,
+  FETCH_SECTION_PENDING,
+  FETCH_SECTION_REJECTED,
+  SECTION_REQUEST,
+  RESET_SECTION_REQUEST,
   ADD_ENTITIES_FULFILLED,
+  ADD_ENTITIES_PENDING,
+  ADD_ENTITIES_REJECTED,
   ADD_SECTION_TO_GROUP_FULFILLED,
   REMOVE_SECTION_FROM_GROUP_FULFILLED,
   UPDATE_SECTION_TAGS_FULFILLED,
@@ -17,10 +26,16 @@ import {
 import * as helpers from './helpers';
 
 export default function sections(state = {}, action) {
-  let section, newState, newSection, responseSetId, sni, sniType, qid, nsid;
+  let section, newState, newSection, responseSetId, sni, sniType, qid, nsid, loadStatusText;
   switch (action.type) {
+    case ADD_ENTITIES_PENDING:
+    case FETCH_SECTION_PENDING:
+      return Object.assign({},state);
     case ADD_ENTITIES_FULFILLED:
+    case FETCH_SECTION_FULFILLED:
       return Object.assign({}, state, action.payload.sections);
+    case ADD_ENTITIES_REJECTED:
+      return Object.assign({}, state);
     case PUBLISH_SECTION_FULFILLED:
     case RETIRE_SECTION_FULFILLED:
     case SAVE_DRAFT_SECTION_FULFILLED:
