@@ -28,6 +28,6 @@ end
 
 namespace :swagger do
   task :validate do
-    sh('node node_modules/swagger-cli/bin/swagger.js validate public/api/vocab.yaml')
+    sh('node node_modules/swagger-cli/bin/swagger-cli.js validate public/api/vocab.yaml')
   end
 end
