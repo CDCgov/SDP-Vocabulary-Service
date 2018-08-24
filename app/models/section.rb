@@ -10,7 +10,7 @@ class Section < ApplicationRecord
   has_many :response_sets, through: :section_nested_items
   has_many :survey_sections
   has_many :surveys, through: :survey_sections
-  has_many :parent_section_nested_items, foreign_key: :nested_section_id, class_name: SectionNestedItem
+  has_many :parent_section_nested_items, foreign_key: :nested_section_id, class_name: 'SectionNestedItem'
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :published_by, class_name: 'User'
