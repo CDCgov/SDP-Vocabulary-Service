@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 
-import { resetSurveyRequest, fetchSurvey, fetchDuplicateCount, publishSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
+import { fetchSurvey, fetchDuplicateCount, publishSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -24,13 +24,8 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 class SurveyShowContainer extends Component {
   componentWillMount() {
-    this.props.resetSurveyRequest();
     this.props.fetchSurvey(this.props.params.surveyId);
     this.props.fetchDuplicateCount(this.props.params.surveyId);
-  }
-
-  componentWillUnmount() {
-    this.props.resetSurveyRequest();
   }
 
   componentDidMount() {
@@ -63,13 +58,12 @@ class SurveyShowContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.params.surveyId != this.props.params.surveyId){
-      this.props.resetSurveyRequest();
       this.props.fetchSurvey(this.props.params.surveyId);
     }
   }
 
   render() {
-    if(!this.props.survey){
+    if(!this.props.survey || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
               <Grid className="basic-bg">
                 <div>
@@ -87,9 +81,6 @@ class SurveyShowContainer extends Component {
                         {this.props.loadStatus == 'failure' &&
                           <BasicAlert msg={this.props.loadStatusText} severity='danger' />
                         }
-                        {this.props.loadStatus == 'success' &&
-                         <BasicAlert msg="Sorry, there is a problem loading this survey." severity='warning' />
-                        }
                       </div>
                   </Col>
                 </Row>
@@ -97,14 +88,10 @@ class SurveyShowContainer extends Component {
             );
     }
     return (
-      <Grid>
-        <Row className="basic-bg">
-          <Col md={12}>
-            <SurveyShow {...this.props} />
-            <div className="showpage-comments-title">Public Comments:</div>
-            <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
-          </Col>
-        </Row>
+      <Grid className="basic-bg">
+        <SurveyShow {...this.props} />
+        <div className="showpage-comments-title">Public Comments:</div>
+        <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
       </Grid>
     );
   }
@@ -145,15 +132,15 @@ function mapStateToProps(state, ownProps) {
       props.survey.surveillanceProgram = state.surveillancePrograms[props.survey.surveillanceProgramId];
     }
   }
-  props.isLoading = state.surveys.isLoading;
-  props.loadStatus = state.surveys.loadStatus;
-  props.loadStatusText = state.surveys.loadStatusText;
+  props.isLoading = state.ajaxStatus.survey.isLoading;
+  props.loadStatus = state.ajaxStatus.survey.loadStatus;
+  props.loadStatusText = state.ajaxStatus.survey.loadStatusText;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, publishSurvey, retireSurvey, addSurveyToGroup, addPreferred, removePreferred, fetchDuplicateCount,
-    removeSurveyFromGroup, resetSurveyRequest, fetchSurvey, deleteSurvey, updateSurveyTags, updateStageSurvey, setBreadcrumbPath, addBreadcrumbItem}, dispatch);
+    removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags, updateStageSurvey, setBreadcrumbPath, addBreadcrumbItem}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {

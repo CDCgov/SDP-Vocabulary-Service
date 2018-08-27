@@ -28,7 +28,7 @@ class SurveyShow extends Component {
     this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.setBreadcrumbPath([{type:'survey',id:this.props.survey.id,name:this.props.survey.name}]);
   }
 

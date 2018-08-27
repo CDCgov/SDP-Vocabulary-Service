@@ -98,7 +98,7 @@ class SurveyEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.survey || !this.props.sections){
+    if(!this.props.survey || !this.props.sections || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
         <Grid className="basic-bg">
           <Row>
@@ -115,6 +115,7 @@ class SurveyEditContainer extends Component {
         </Grid>
       );
     }
+
     return (
       <Grid className="survey-edit-container">
         <Row>
@@ -194,9 +195,9 @@ function mapStateToProps(state, ownProps) {
     surveillanceSystems:  state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
     selectedSearchResults: selectedSearchResults,
-    isLoading: state.surveys.isLoading,
-    loadStatus: state.surveys.loadStatus,
-    loadStatusText : state.surveys.loadStatusText
+    isLoading: state.ajaxStatus.survey.isLoading,
+    loadStatus: state.ajaxStatus.survey.loadStatus,
+    loadStatusText : state.ajaxStatus.survey.loadStatusText
   };
 }
 

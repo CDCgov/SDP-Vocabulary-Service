@@ -7,11 +7,11 @@ import {
   PUBLISH_RESPONSE_SET_FULFILLED,
   RETIRE_RESPONSE_SET_FULFILLED,
   ADD_ENTITIES_FULFILLED,
+  ADD_ENTITIES_PENDING,
+  ADD_ENTITIES_REJECTED,
   ADD_RESPONSE_SET_TO_GROUP_FULFILLED,
   UPDATE_STAGE_RESPONSE_SET_FULFILLED,
   REMOVE_RESPONSE_SET_FROM_GROUP_FULFILLED,
-  RESPONSE_SET_REQUEST,
-  RESET_RESPONSE_SET_REQUEST,
   FETCH_RESPONSE_SET_SUCCESS,
   FETCH_RESPONSE_SET_FAILURE
 } from '../actions/types';
@@ -19,21 +19,12 @@ import {
 export default function responseSets(state = {}, action) {
   let responseSetClone, loadStatusText;
   switch (action.type) {
-    case FETCH_RESPONSE_SET_SUCCESS:
-      return Object.assign({}, state, action.payload.responseSets, { isLoading: false, loadStatus: 'success', loadStatusText : '' });
-    case FETCH_RESPONSE_SET_FAILURE:
-      loadStatusText = `An error occurred while trying to load this response set: ${action.status} / ${action.statusText}`
-      return Object.assign({},state,{
-        isLoading: false,
-        loadStatus : 'failure',
-        loadStatusText
-      });
-    case RESPONSE_SET_REQUEST:
-      return Object.assign({},state,{ isLoading: true, loadStatus: null, loadStatusText:'' });
-    case RESET_RESPONSE_SET_REQUEST:
-      return Object.assign({},state,{ isLoading: false, loadStatus: null, loadStatusText:''});
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.responseSets);
+    case ADD_ENTITIES_REJECTED:
+      return Object.assign({},state);
+    case ADD_ENTITIES_PENDING:
+      return Object.assign({},state);
     case SAVE_DRAFT_RESPONSE_SET_FULFILLED:
     case PUBLISH_RESPONSE_SET_FULFILLED:
     case RETIRE_RESPONSE_SET_FULFILLED:

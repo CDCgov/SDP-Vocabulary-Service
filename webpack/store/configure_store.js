@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import createLogger from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
 
 import unauthenticatedResponse from '../middleware/unauthenticated_response';
 
@@ -11,7 +10,6 @@ export function configureStore(initialState) {
   let middleware = applyMiddleware(
     promiseMiddleware(),
     createLogger(),
-    thunkMiddleware,
     unauthenticatedResponse
   );
 

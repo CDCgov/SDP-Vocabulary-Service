@@ -137,9 +137,21 @@ class SectionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.section || !this.props.questions || !this.props.sections){
+    if(!this.props.section || !this.props.questions || !this.props.sections || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading section..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this section." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
       );
     }
 
@@ -217,7 +229,10 @@ function mapStateToProps(state, ownProps) {
     sections: state.sections,
     stats: state.stats,
     selectedQuestions: selectedQuestions,
-    selectedSections: selectedSections
+    selectedSections: selectedSections,
+    isLoading : state.ajaxStatus.section.isLoading,
+    loadStatus : state.ajaxStatus.section.loadStatus,
+    loadStatusText : state.ajaxStatus.section.loadStatusText
   };
 }
 

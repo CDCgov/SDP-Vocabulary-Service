@@ -18,7 +18,6 @@ import {
   ADD_SECTION_TO_GROUP,
   REMOVE_SECTION_FROM_GROUP,
   DELETE_SECTION,
-  FETCH_SECTION,
   ADD_ENTITIES,
   UPDATE_SECTION_TAGS,
   UPDATE_PDV,
@@ -26,11 +25,12 @@ import {
   REORDER_NESTED_ITEM,
   UPDATE_STAGE_SECTION,
   REMOVE_NESTED_ITEM,
-  SECTION_REQUEST,
+  FETCH_SECTION_PENDING,
   FETCH_SECTION_SUCCESS,
-  FETCH_SECTION_FAILURE,
-  RESET_SECTION_REQUEST
+  FETCH_SECTION_FAILURE
 } from './types';
+
+const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
 
 export function newSection() {
   return {
@@ -67,13 +67,15 @@ export function deleteSection(id, cascade, callback=null) {
 }
 
 export function fetchSection(id) {
+  store.dispatch({type:FETCH_SECTION_PENDING});
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.sectionPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'
-      }
+      },
+      timeout:AJAX_TIMEOUT
     }).then((response) => {
       const normalizedData = normalize(response.data, sectionSchema);
       store.dispatch(fetchSectionSuccess(response.data));
@@ -82,33 +84,6 @@ export function fetchSection(id) {
       store.dispatch(fetchSectionFailure(error));
       throw(new Error(error));
     })
-  };
-}
-
-export function newfetchSection(id) {
-  return {
-    type: FETCH_SECTION,
-    payload: axios.get(routes.sectionPath(id), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      }
-    }).then((response) => {
-      const normalizedData = normalize(response.data, sectionSchema);
-      return normalizedData.entities;
-    })
-  };
-}
-
-function requestSection() {
-  return {
-    type: SECTION_REQUEST
-  };
-}
-
-export function resetSectionRequest() {
-  return {
-    type: RESET_SECTION_REQUEST
   };
 }
 
@@ -133,26 +108,6 @@ function fetchSectionFailure(error) {
     type: FETCH_SECTION_FAILURE,
     status,
     statusText
-  };
-}
-
-function sendSectionRequest(id) {
-  return new Promise((resolve,reject) => {
-    axios.get(routes.sectionPath(id), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      timeout:1000*60*5 // 5 minutes
-    })
-      .then(result => resolve(result.data))
-      .catch(error => reject(error));
-  });
-}
-
-export function newThunkfetchSection(id) {
-  return (dispatch,getState) => {
-    dispatch(requestSection(id));
-    return sendSectionRequest(id)
-      .then(data => dispatch(fetchSectionSuccess(data)))
-      .catch(error => dispatch(fetchSectionFailure(error)));
   };
 }
 

@@ -4,6 +4,8 @@ import { responseSetSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
+import store from '../store/configure_store';
+
 import {
   FETCH_RESPONSE_SET_USAGE,
   SAVE_RESPONSE_SET,
@@ -15,11 +17,12 @@ import {
   DELETE_RESPONSE_SET,
   UPDATE_STAGE_RESPONSE_SET,
   ADD_ENTITIES,
-  RESPONSE_SET_REQUEST,
+  FETCH_RESPONSE_SET_PENDING,
   FETCH_RESPONSE_SET_SUCCESS,
-  FETCH_RESPONSE_SET_FAILURE,
-  RESET_RESPONSE_SET_REQUEST
+  FETCH_RESPONSE_SET_FAILURE
 } from './types';
+
+const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
 
 export function deleteResponseSet(id, callback=null) {
   return {
@@ -28,27 +31,23 @@ export function deleteResponseSet(id, callback=null) {
   };
 }
 
-export function oldfetchResponseSet(id) {
+export function fetchResponseSet(id) {
+  store.dispatch({type:FETCH_RESPONSE_SET_PENDING});
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.responseSetPath(id), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout : AJAX_TIMEOUT
     }).then((rsResponse) => {
       const normalizedData = normalize(rsResponse.data, responseSetSchema);
+      store.dispatch(fetchResponseSetSuccess(response.data));
       return normalizedData.entities;
     })
-  };
-}
+    .catch( (error) => {
+      store.dispatch(fetchResponseSetFailure(error));
+      throw(new Error(error));
+    })
 
-function requestResponseSet() {
-  return {
-    type: RESPONSE_SET_REQUEST
-  };
-}
-
-export function resetResponseSetRequest() {
-  return {
-    type: RESET_RESPONSE_SET_REQUEST
   };
 }
 
@@ -73,26 +72,6 @@ function fetchResponseSetFailure(error) {
     type: FETCH_RESPONSE_SET_FAILURE,
     status,
     statusText
-  };
-}
-
-function sendResponseSetRequest(id) {
-  return new Promise((resolve,reject) => {
-    axios.get(routes.responseSetPath(id), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      timeout:1000*60*5 // 5 minutes
-    })
-      .then(result => resolve(result.data))
-      .catch(error => reject(error));
-  });
-}
-
-export function fetchResponseSet(id) {
-  return (dispatch,getState) => {
-    dispatch(requestResponseSet(id));
-    return sendResponseSetRequest(id)
-      .then(data => dispatch(fetchResponseSetSuccess(data)))
-      .catch(error => dispatch(fetchResponseSetFailure(error)));
   };
 }
 

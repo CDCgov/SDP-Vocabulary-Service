@@ -4,6 +4,8 @@ import { surveySchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
+import store from '../store/configure_store';
+
 import {
   SAVE_SURVEY,
   SAVE_DRAFT_SURVEY,
@@ -20,13 +22,14 @@ import {
   ATTEMPT_IMPORT_FILE,
   UPDATE_STAGE_SURVEY,
   FETCH_DUPLICATES,
-  SURVEY_REQUEST,
+  FETCH_SURVEY_PENDING,
   FETCH_SURVEY_SUCCESS,
   FETCH_SURVEY_FAILURE,
   RESET_SURVEY_REQUEST,
   FETCH_DUPLICATE_COUNT
 } from './types';
 
+const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
 
 export function newSurvey() {
   return {
@@ -41,30 +44,24 @@ export function deleteSurvey(id, cascade, callback=null) {
   };
 }
 
-export function oldfetchSurvey(id) {
+export function fetchSurvey(id) {
+  store.dispatch({type:FETCH_SURVEY_PENDING});
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.surveyPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'
-      }
+      },
+      timeout:AJAX_TIMEOUT
     }).then((surveyResponse) => {
       const normalizedData = normalize(surveyResponse.data, surveySchema);
+      store.dispatch(fetchSurveySuccess(surveyResponse.data));
       return normalizedData.entities;
+    }).catch( (error) => {
+      store.dispatch(fetchSurveyFailure(error));
+      throw(new Error(error));
     })
-  };
-}
-
-function requestSurvey() {
-  return {
-    type: SURVEY_REQUEST
-  };
-}
-
-export function resetSurveyRequest() {
-  return {
-    type: RESET_SURVEY_REQUEST
   };
 }
 
@@ -92,25 +89,6 @@ function fetchSurveyFailure(error) {
   };
 }
 
-function sendSurveyRequest(id) {
-  return new Promise((resolve,reject) => {
-    axios.get(routes.surveyPath(id), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      timeout:1000*60*5 // 5 minutes
-    })
-      .then(result => resolve(result.data))
-      .catch(error => reject(error));
-  });
-}
-
-export function fetchSurvey(id) {
-  return (dispatch,getState) => {
-    dispatch(requestSurvey(id));
-    return sendSurveyRequest(id)
-      .then(data => dispatch(fetchSurveySuccess(data)))
-      .catch(error => dispatch(fetchSurveyFailure(error)));
-  };
-}
 export function fetchDuplicates(id) {
   return {
     type: FETCH_DUPLICATES,

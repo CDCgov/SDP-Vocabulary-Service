@@ -29,7 +29,7 @@ export default class ResponseSetShow extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.addBreadcrumbItem({type:'response_set',id:this.props.responseSet.id,name:this.props.responseSet.name});
   }
 

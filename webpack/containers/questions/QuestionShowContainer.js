@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory, Link } from 'react-router';
 
-import { resetQuestionRequest, fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
+import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -23,12 +23,7 @@ import { publishersProps } from "../../prop-types/publisher_props";
 class QuestionShowContainer extends Component {
 
   componentWillMount() {
-   this.props.resetQuestionRequest();
    this.props.fetchQuestion(this.props.params.qId);
-  }
-
-  componentWillUnmount() {
-    this.props.resetQuestionRequest();
   }
 
   componentDidMount() {
@@ -65,7 +60,6 @@ class QuestionShowContainer extends Component {
 
   componentDidUpdate(prevProps){
     if(prevProps.params.qId !== this.props.params.qId){
-       this.props.resetQuestionRequest();
        this.props.fetchQuestion(this.props.params.qId);
     } else {
       if (this.props.question && this.props.question.status === 'published' &&
@@ -83,14 +77,14 @@ class QuestionShowContainer extends Component {
 
   render() {
 
-    if(!this.props.question){
+    if(!this.props.question || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
               <Grid className="basic-bg questionShowContainer">
                 <div>
                   <div className="showpage_header_container no-print">
                     <ul className="list-inline">
                       <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-                      <li className="showpage_title"><h1>QSC: Question Details</h1></li>
+                      <li className="showpage_title"><h1>Question Details</h1></li>
                     </ul>
                   </div>
                 </div>
@@ -147,14 +141,14 @@ function mapStateToProps(state, ownProps) {
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
-  props.isLoading = state.questions.isLoading;
-  props.loadStatus = state.questions.loadStatus;
-  props.loadStatusText = state.questions.loadStatusText;
+  props.isLoading = state.ajaxStatus.question.isLoading;
+  props.loadStatus = state.ajaxStatus.question.loadStatus;
+  props.loadStatusText = state.ajaxStatus.question.loadStatusText;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({resetQuestionRequest, fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
+  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
     removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags, retireQuestion, addBreadcrumbItem}, dispatch);
 }
 
@@ -165,7 +159,6 @@ QuestionShowContainer.propTypes = {
   router:   PropTypes.object,
   currentUser:   currentUserProps,
   fetchQuestion: PropTypes.func,
-  resetQuestionRequest : PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
   updateQuestionTags: PropTypes.func,
   updateStageQuestion: PropTypes.func,

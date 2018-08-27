@@ -58,7 +58,6 @@
     "redux-devtools": "^3.3.1",
     "redux-logger": "^2.7.4",
     "redux-promise-middleware": "^4.2.1",
-    "redux-thunk": "^2.3.0",
     "reselect": "^2.5.4",
     "resolve-url-loader": "^2.1.0",
     "sass-loader": "^6.0.6",

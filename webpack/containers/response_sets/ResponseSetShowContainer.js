@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { hashHistory, Link } from 'react-router';
 
 import { Grid, Row, Col } from 'react-bootstrap';
-import { resetResponseSetRequest, fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
+import { fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -22,13 +22,9 @@ import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
 class ResponseSetShowContainer extends Component {
-  componentWillMount() {
-    // this.props.resetResponseSetRequest();
-    this.props.fetchResponseSet(this.props.params.rsId);
-  }
 
-  componentWillUnmount() {
-     this.props.resetResponseSetRequest();
+  componentWillMount() {
+    this.props.fetchResponseSet(this.props.params.rsId);
   }
 
   componentDidMount() {
@@ -65,7 +61,6 @@ class ResponseSetShowContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.params.rsId != this.props.params.rsId){
-      this.props.resetResponseSetRequest();
       this.props.fetchResponseSet(this.props.params.rsId);
     } else {
       if (this.props.responseSet && this.props.responseSet.status === 'published' &&
@@ -76,7 +71,7 @@ class ResponseSetShowContainer extends Component {
   }
 
   render() {
-    if(this.props.responseSet === undefined || this.props.responseSet.name === undefined){
+    if(this.props.responseSet === undefined || this.props.responseSet.name === undefined || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
               <Grid className="basic-bg">
                 <div>
@@ -119,14 +114,14 @@ function mapStateToProps(state, ownProps) {
   props.responseSet = denormalize(state.responseSets[ownProps.params.rsId], responseSetSchema, state);
   props.publishers = state.publishers;
   props.stats = state.stats;
-  props.isLoading = state.responseSets.isLoading;
-  props.loadStatus = state.responseSets.loadStatus;
-  props.loadStatusText = state.responseSets.loadStatusText;
+  props.isLoading = state.ajaxStatus.responseSet.isLoading;
+  props.loadStatus = state.ajaxStatus.responseSet.loadStatus;
+  props.loadStatusText = state.ajaxStatus.responseSet.loadStatusText;
   return props;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, resetResponseSetRequest, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
     addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, updateStageResponseSet, fetchResponseSetUsage, retireResponseSet, addBreadcrumbItem}, dispatch);
 }
 

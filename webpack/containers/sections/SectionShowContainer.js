@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 
-import { resetSectionRequest, fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
@@ -141,7 +141,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, resetSectionRequest, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
     removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, updateStageSection, toggleResultControl, retireSection, clearBreadcrumb, addBreadcrumbItem}, dispatch);
 }
 

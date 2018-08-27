@@ -12,18 +12,9 @@ import {
   ADD_ENTITIES_FULFILLED,
   ADD_ENTITIES_PENDING,
   ADD_ENTITIES_REJECTED,
-  QUESTION_REQUEST,
-  RESET_QUESTION_REQUEST,
-  FETCH_QUESTION_SUCCESS,
-  FETCH_QUESTION_FAILURE,
   ADD_QUESTION_TO_GROUP_FULFILLED,
   REMOVE_QUESTION_FROM_GROUP_FULFILLED
 } from '../actions/types';
-
-const defaultState = {
-  isLoading : false,
-  loadStatus : null
-};
 
 function addQuestionToState(action, state){
   const questionsClone = Object.assign({}, state);
@@ -40,19 +31,6 @@ function addQuestionToState(action, state){
 export default function questions(state = {}, action) {
   let loadStatusText;
   switch (action.type) {
-    case FETCH_QUESTION_SUCCESS:
-      return Object.assign({}, state, action.payload.questions, { isLoading: false, loadStatus: 'success', loadStatusText : '' });
-    case FETCH_QUESTION_FAILURE:
-      loadStatusText = `An error occurred while trying to load this question: ${action.status} / ${action.statusText}`
-      return Object.assign({},state,{
-        isLoading: false,
-        loadStatus : 'failure',
-        loadStatusText
-      });
-    case QUESTION_REQUEST:
-      return Object.assign({},state,{ isLoading: true, loadStatus: null, loadStatusText:'' });
-    case RESET_QUESTION_REQUEST:
-      return Object.assign({},state,{ isLoading: false, loadStatus: null, loadStatusText:""});
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.questions);
     case ADD_ENTITIES_REJECTED:

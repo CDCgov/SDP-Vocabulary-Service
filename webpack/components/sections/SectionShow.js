@@ -80,16 +80,6 @@ class SectionShow extends Component {
             </div>
           </Col>
         </Row>
-        {this.props.loadStatus == 'failure' &&
-          <Row>
-            <Col xs={12}>
-              <div className="main-content">
-               <BasicAlert msg={this.props.loadStatusText} severity='danger' />
-               xxx
-              </div>
-            </Col>
-          </Row>
-        }
         <Row className="no-inside-gutter">
           {this.historyBar(section)}
           {this.mainContent(section)}
@@ -108,7 +98,7 @@ class SectionShow extends Component {
             <li className="subtitle">History</li>
           </ul>
         </h2>
-        VersionInfo: <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
+        <VersionInfo versionable={section} versionableType='section' currentUser={this.props.currentUser} />
       </Col>
     );
   }

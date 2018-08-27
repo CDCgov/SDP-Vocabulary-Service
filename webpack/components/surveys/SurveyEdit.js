@@ -15,8 +15,6 @@ import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContai
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 import ProgSysEditModal from './ProgSysEditModal';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import BasicAlert from '../../components/BasicAlert';
 
 class SurveyEdit extends Component {
 

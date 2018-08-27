@@ -98,9 +98,22 @@ class QuestionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.question || !this.props.categories || !this.props.responseTypes){
+    if(!this.props.question || !this.props.categories || !this.props.responseTypes || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this question." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
+
       );
     }
     return (

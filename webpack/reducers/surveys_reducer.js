@@ -8,35 +8,26 @@ import {
   REORDER_SECTION,
   CREATE_SURVEY,
   ADD_ENTITIES_FULFILLED,
+  ADD_ENTITIES_PENDING,
+  ADD_ENTITIES_REJECTED,
   ADD_SURVEY_TO_GROUP_FULFILLED,
   REMOVE_SURVEY_FROM_GROUP_FULFILLED,
   UPDATE_STAGE_SURVEY_FULFILLED,
   UPDATE_SURVEY_TAGS_FULFILLED,
-  SURVEY_REQUEST,
   FETCH_SURVEY_SUCCESS,
-  FETCH_SURVEY_FAILURE,
-  RESET_SURVEY_REQUEST
+  FETCH_SURVEY_FAILURE
 } from '../actions/types';
 import * as helpers from './helpers';
 
 export default function surveys(state = {}, action) {
   let survey, newState, newSurvey, section, loadStatusText;
   switch (action.type) {
-    case FETCH_SURVEY_SUCCESS:
-      return Object.assign({}, state, action.payload.surveys, { isLoading: false, loadStatus: 'success', loadStatusText : '' });
-    case FETCH_SURVEY_FAILURE:
-      loadStatusText = `An error occurred while trying to load this survey: ${action.status} / ${action.statusText}`
-      return Object.assign({},state,{
-        isLoading: false,
-        loadStatus : 'failure',
-        loadStatusText
-      });
-    case SURVEY_REQUEST:
-      return Object.assign({},state,{ isLoading: true, loadStatus: null, loadStatusText:'' });
-    case RESET_SURVEY_REQUEST:
-      return Object.assign({},state,{ isLoading: false, loadStatus: null, loadStatusText:''});
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.surveys);
+    case ADD_ENTITIES_REJECTED:
+      return Object.assign({},state);
+    case ADD_ENTITIES_PENDING:
+      return Object.assign({},state);
     case PUBLISH_SURVEY_FULFILLED:
     case RETIRE_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:

@@ -78,11 +78,25 @@ class ResponseSetEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.responseSet){
+    if(!this.props.responseSet || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <Grid className="basic-bg"><LoadingSpinner msg="Loading..." /></Grid>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading response set..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this response set." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
       );
     }
+
+
     let action = this.props.params.action;
     if (action === undefined) {
       action = 'new';
@@ -109,6 +123,9 @@ function mapStateToProps(state, ownProps) {
     props.responseSet = {version: 1};
   }
   props.stats = state.stats;
+  props.isLoading = state.ajaxStatus.responseSet.isLoading;
+  props.loadStatus = state.ajaxStatus.responseSet.loadStatus;
+  props.loadStatusText = state.ajaxStats.responseSet.loadStatusText;
   return props;
 }
 
