@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
 
 import { saveQuestion } from '../../actions/questions_actions';
@@ -70,14 +70,14 @@ class QuestionModalContainer extends Component {
     return (
       <div className={this.state.showResponseSetWidget ? '' : 'hidden'}>
         <Modal.Body bsStyle='response-set'>
-          <div className="row response-set-row">
-            <div className="col-md-6 response-set-label">
+          <Row className="response-set-row">
+            <Col md={6} className="response-set-label">
               <h2>Response Sets</h2>
-            </div>
-            <div className="col-md-6 response-set-label">
+            </Col>
+            <Col md={6} className="response-set-label">
               <h2 className="tags-table-header">Selected Response Sets</h2>
-            </div>
-          </div>
+            </Col>
+          </Row>
           <ResponseSetDragWidget selectedResponseSets={this.state.linkedResponseSets}
                                  handleResponseSetsChange={this.handleResponseSetsChange} />
         </Modal.Body>
@@ -114,18 +114,18 @@ class QuestionModalContainer extends Component {
     );
     if(this.state.showResponseSets){
       responseSetsDiv = (
-        <div className="row selected_response_sets">
-          <div className="col-md-12 response-set-label">
+        <Row className="selected_response_sets">
+          <Col md={12} className="response-set-label">
             <h2>Response Sets</h2>
-          </div>
-          <div className="col-md-8">
+          </Col>
+          <Col md={8}>
               <div className="panel panel-default">
                 <div className="panel-body">
                   {this.state.linkedResponseSets.length > 0 ? <ResponseSetList responseSets={this.state.linkedResponseSets} /> : 'No Response Sets selected'}
                 </div>
               </div>
-          </div>
-        </div>
+          </Col>
+        </Row>
       );
       footer = (
         <Modal.Footer>

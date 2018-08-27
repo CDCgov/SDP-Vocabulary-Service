@@ -443,7 +443,7 @@ class SurveyDedupe extends Component {
 
   render() {
     if(!this.props.survey || !this.props.potentialDupes){
-      return ('Loading...');
+      return <LoadingSpinner msg="Loading survey..." />;
     }
     let qCountArray = this.props.potentialDupes.map((s) => s.qCount);
     let rsCountArray = this.props.potentialDupes.map((s) => s.rsCount);

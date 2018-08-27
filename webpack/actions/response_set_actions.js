@@ -40,7 +40,7 @@ export function fetchResponseSet(id) {
       timeout : AJAX_TIMEOUT
     }).then((rsResponse) => {
       const normalizedData = normalize(rsResponse.data, responseSetSchema);
-      store.dispatch(fetchResponseSetSuccess(response.data));
+      store.dispatch(fetchResponseSetSuccess(rsResponse.data));
       return normalizedData.entities;
     })
     .catch( (error) => {

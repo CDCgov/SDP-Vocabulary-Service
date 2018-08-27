@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, Row } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -125,7 +125,7 @@ function mapStateToProps(state, ownProps) {
   props.stats = state.stats;
   props.isLoading = state.ajaxStatus.responseSet.isLoading;
   props.loadStatus = state.ajaxStatus.responseSet.loadStatus;
-  props.loadStatusText = state.ajaxStats.responseSet.loadStatusText;
+  props.loadStatusText = state.ajaxStatus.responseSet.loadStatusText;
   return props;
 }
 
