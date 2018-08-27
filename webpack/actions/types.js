@@ -243,7 +243,7 @@ export const FETCH_SECTION_PENDING = "FETCH_SECTION_PENDING";
 
 // Survey types
 // ------------------------- SURVEYS -------------------------------- //
-export const FETCH_SURVEY_PENDING = "FETCH_SUEVEY_PENDING";
+export const FETCH_SURVEY_PENDING = "FETCH_SURVEY_PENDING";
 export const FETCH_SURVEY_SUCCESS = "FETCH_SURVEY_SUCCESS";
 export const FETCH_SURVEY_FAILURE = "FETCH_SURVEY_FAILURE";
 

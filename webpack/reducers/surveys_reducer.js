@@ -37,7 +37,7 @@ export default function surveys(state = {}, action) {
     case REMOVE_SURVEY_FROM_GROUP_FULFILLED:
       return helpers.fetchIndividual(state, action);
     case CREATE_SURVEY:
-      newState = Object.assign({}, state,{isLoading: false, loadStatus: null, loadStatusText:''});
+      newState = Object.assign({}, state);
       newState[0] = {surveySections: [], sections: [], version: 1, id: 0};
       return newState;
     case ADD_SECTION:
