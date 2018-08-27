@@ -89,7 +89,7 @@ class SurveyEditContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.params.surveyId != this.props.params.surveyId){
+    if(this.props.params.surveyId && (prevProps.params.surveyId != this.props.params.surveyId)){
       this.props.fetchSurvey(this.props.params.surveyId);
     }
     if(this.props.survey && this.props.survey.surveySections) {
@@ -117,7 +117,7 @@ class SurveyEditContainer extends Component {
     }
 
     return (
-      <Grid className="survey-edit-container">
+      <Grid className="survey-edit-container xxx">
         <Row>
           <div className="panel panel-default">
             <div className="panel-heading">

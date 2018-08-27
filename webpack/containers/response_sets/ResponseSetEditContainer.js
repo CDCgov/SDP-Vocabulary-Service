@@ -72,7 +72,7 @@ class ResponseSetEditContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.params.rsId != this.props.params.rsId || prevProps.params.action != this.props.params.action) {
+    if(this.props.params.rsId && (prevProps.params.rsId != this.props.params.rsId || prevProps.params.action != this.props.params.action)) {
       this.props.fetchResponseSet(this.props.params.rsId);
     }
   }

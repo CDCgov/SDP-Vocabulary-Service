@@ -22,7 +22,12 @@ const defaultState = {
   survey:       { isLoading: false, loadStatus: null, loadStatusText:''}
 };
 
-export default function ajaxStatus(state = defaultState, action) {
+export default function ajaxStatus(state = {
+  question:     { isLoading: false, loadStatus: null, loadStatusText:''},
+  responseSet : { isLoading: false, loadStatus: null, loadStatusText:''},
+  section:      { isLoading: false, loadStatus: null, loadStatusText:''},
+  survey:       { isLoading: false, loadStatus: null, loadStatusText:''}
+}, action) {
   let loadStatusText;
   switch (action.type) {
     case FETCH_SECTION_SUCCESS:
