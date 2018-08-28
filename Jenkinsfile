@@ -150,10 +150,12 @@ pipeline {
       post {
         success {
           updateSlack('#00FF00', 'Finished building for development environment')
+          updateEmail('Finished building for development environment', 'Finished building for development environment.')
         }
 
         failure {
           updateSlack('#FF0000', 'Failed to build for development environment')
+          updateEmail('Failed to build for development environment', 'Failed to build for development environment.')
         }
       }
     }
@@ -206,4 +208,8 @@ def updateSlack(String colorHex, String messageText) {
   if (env.BRANCH_NAME == 'development' || env.CHANGE_ID) {
     slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
   }
+}
+
+def updateEmail(String subjectText, String messageText) {
+  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", from: 'no-reply@mitre.org', replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
 }
