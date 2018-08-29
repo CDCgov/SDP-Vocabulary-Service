@@ -8,7 +8,8 @@ const BasicAlert = ({msg="An error has occurred...",severity='danger'}) => (
 );
 
 BasicAlert.propTypes = {
-  msg: PropTypes.string
+  msg: PropTypes.string,
+  severity: PropTypes.string
 };
 
 export default BasicAlert;

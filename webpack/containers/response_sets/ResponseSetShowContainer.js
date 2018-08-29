@@ -3,7 +3,7 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { hashHistory, Link } from 'react-router';
+import { hashHistory } from 'react-router';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 import { fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
@@ -96,7 +96,7 @@ class ResponseSetShowContainer extends Component {
                   </Col>
                 </Row>
               </Grid>
-          );
+      );
     }
     return (
       <Grid className="basic-bg">

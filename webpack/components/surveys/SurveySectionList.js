@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid } from 'react-bootstrap';
 import { sectionsProps } from "../../prop-types/section_props";
 import { questionsProps } from "../../prop-types/question_props";
 import SearchResult from '../SearchResult';

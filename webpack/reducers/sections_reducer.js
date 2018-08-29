@@ -19,7 +19,7 @@ import {
 import * as helpers from './helpers';
 
 export default function sections(state = {}, action) {
-  let section, newState, newSection, responseSetId, sni, sniType, qid, nsid, loadStatusText;
+  let section, newState, newSection, responseSetId, sni, sniType, qid, nsid;
   switch (action.type) {
     case ADD_ENTITIES_PENDING:
       return Object.assign({},state);

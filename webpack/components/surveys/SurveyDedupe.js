@@ -6,7 +6,6 @@ import join from 'lodash/join';
 import { surveyProps } from '../../prop-types/survey_props';
 import currentUserProps from "../../prop-types/current_user_props";
 import LoadingSpinner from '../../components/LoadingSpinner';
-import BasicAlert from '../../components/BasicAlert';
 
 import iconMap from '../../styles/iconMap';
 

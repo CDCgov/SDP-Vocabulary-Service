@@ -6,7 +6,7 @@ import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Grid, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';

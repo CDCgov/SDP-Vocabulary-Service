@@ -29,6 +29,9 @@ export const FETCH_COMMENTS_FULFILLED = 'FETCH_COMMENTS_FULFILLED';
 // Tutorial Info
 export const SET_STEPS = 'SET_STEPS';
 
+// Error Clearing
+export const CLEAR_AJAX_STATUS = 'CLEAR_AJAX_STATUS';
+
 // Landing types
 export const FETCH_STATS = 'FETCH_STATS';
 export const FETCH_STATS_FULFILLED = 'FETCH_STATS_FULFILLED';

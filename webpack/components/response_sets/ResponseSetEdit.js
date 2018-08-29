@@ -7,8 +7,6 @@ import { responseSetProps } from '../../prop-types/response_set_props';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import BasicAlert from '../../components/BasicAlert';
 
 export default class ResponseSetEdit extends Component {
   constructor(props) {

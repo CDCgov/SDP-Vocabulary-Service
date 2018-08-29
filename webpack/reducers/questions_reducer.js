@@ -29,7 +29,6 @@ function addQuestionToState(action, state){
 }
 
 export default function questions(state = {}, action) {
-  let loadStatusText;
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.questions);

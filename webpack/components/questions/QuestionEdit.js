@@ -11,9 +11,6 @@ import currentUserProps from '../../prop-types/current_user_props';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 
-import LoadingSpinner from '../../components/LoadingSpinner';
-import BasicAlert from '../../components/BasicAlert';
-
 import ResponseSetModal from '../../containers/response_sets/ResponseSetModal';
 import ResponseSetDragWidget from '../../containers/response_sets/ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';

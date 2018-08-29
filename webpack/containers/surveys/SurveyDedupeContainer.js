@@ -49,7 +49,7 @@ class SurveyDedupeContainer extends Component {
         <Grid className="basic-bg">
           <Row>
             <Col xs={12}>
-              {this.props.isLoading && 
+              {this.props.isLoading &&
                 <div>
                   <LoadingSpinner msg="Loading survey..." />
                   <p>If not redirected there may no longer be any duplicates detected for this survey - try refreshing or contacting an administrator)</p>

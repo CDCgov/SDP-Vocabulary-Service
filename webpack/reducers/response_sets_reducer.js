@@ -11,13 +11,11 @@ import {
   ADD_ENTITIES_REJECTED,
   ADD_RESPONSE_SET_TO_GROUP_FULFILLED,
   UPDATE_STAGE_RESPONSE_SET_FULFILLED,
-  REMOVE_RESPONSE_SET_FROM_GROUP_FULFILLED,
-  FETCH_RESPONSE_SET_SUCCESS,
-  FETCH_RESPONSE_SET_FAILURE
+  REMOVE_RESPONSE_SET_FROM_GROUP_FULFILLED
 } from '../actions/types';
 
 export default function responseSets(state = {}, action) {
-  let responseSetClone, loadStatusText;
+  let responseSetClone;
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.responseSets);

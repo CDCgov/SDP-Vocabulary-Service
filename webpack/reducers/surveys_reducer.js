@@ -13,14 +13,12 @@ import {
   ADD_SURVEY_TO_GROUP_FULFILLED,
   REMOVE_SURVEY_FROM_GROUP_FULFILLED,
   UPDATE_STAGE_SURVEY_FULFILLED,
-  UPDATE_SURVEY_TAGS_FULFILLED,
-  FETCH_SURVEY_SUCCESS,
-  FETCH_SURVEY_FAILURE
+  UPDATE_SURVEY_TAGS_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
 export default function surveys(state = {}, action) {
-  let survey, newState, newSurvey, section, loadStatusText;
+  let survey, newState, newSurvey, section;
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.surveys);

@@ -124,8 +124,6 @@ class SectionShowContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  let denormalizedsection = denormalize(state.sections[ownProps.params.sectionId], sectionSchema, state);
-
   const props = {
     currentUser: state.currentUser,
     stats: state.stats,

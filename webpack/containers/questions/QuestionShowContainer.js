@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { hashHistory, Link } from 'react-router';
+import { hashHistory } from 'react-router';
 
 import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
@@ -23,7 +23,7 @@ import { publishersProps } from "../../prop-types/publisher_props";
 class QuestionShowContainer extends Component {
 
   componentWillMount() {
-   this.props.fetchQuestion(this.props.params.qId);
+    this.props.fetchQuestion(this.props.params.qId);
   }
 
   componentDidMount() {
@@ -60,7 +60,7 @@ class QuestionShowContainer extends Component {
 
   componentDidUpdate(prevProps){
     if(prevProps.params.qId !== this.props.params.qId){
-       this.props.fetchQuestion(this.props.params.qId);
+      this.props.fetchQuestion(this.props.params.qId);
     } else {
       if (this.props.question && this.props.question.status === 'published' &&
           this.props.question.surveillancePrograms === undefined) {

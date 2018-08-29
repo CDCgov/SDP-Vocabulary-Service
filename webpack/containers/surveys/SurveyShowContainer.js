@@ -85,7 +85,7 @@ class SurveyShowContainer extends Component {
                   </Col>
                 </Row>
               </Grid>
-            );
+      );
     }
     return (
       <Grid className="basic-bg">

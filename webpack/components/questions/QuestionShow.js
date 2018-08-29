@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
-import { Modal, Button, Grid, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
