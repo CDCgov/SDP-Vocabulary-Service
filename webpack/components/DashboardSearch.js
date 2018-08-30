@@ -398,22 +398,6 @@ class DashboardSearch extends SearchStateComponent {
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>
-                    <ControlLabel htmlFor="stage-filter">Content Stage: </ControlLabel>
-                    <ToggleButtonGroup
-                      type="radio"
-                      name="stage-filter"
-                      defaultValue={this.state.stageFilter}
-                      className="form-btn-group"
-                      >
-                      <ToggleButton value={''} onClick={() => this.toggleStageFilter('')}>Any</ToggleButton>
-                      <ToggleButton value={'Draft'} onClick={() => this.toggleStageFilter('Draft')}>Draft</ToggleButton>
-                      <ToggleButton value={'Comment Only'} onClick={() => this.toggleStageFilter('Comment Only')}>Comment</ToggleButton>
-                      <ToggleButton value={'Trial Use'} onClick={() => this.toggleStageFilter('Trial Use')}>Trial</ToggleButton>
-                      <ToggleButton value={'Published'} onClick={() => this.toggleStageFilter('Published')}>Published</ToggleButton>
-                      <ToggleButton value={'Retired'} onClick={() => this.toggleStageFilter('Retired')}>Retired</ToggleButton>
-                    </ToggleButtonGroup>
-                  </FormGroup>
-                  <FormGroup>
                     <label htmlFor='omb-date'>OMB Approval Date (Surveys Only):</label>
                     <SingleDatePicker id="omb-date"
                                       date={this.state.ombDate}
