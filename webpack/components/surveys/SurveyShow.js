@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import Linkify from 'react-linkify';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -215,7 +216,7 @@ class SurveyShow extends Component {
                   <h2 className="panel-title">Description</h2>
                 </div>
                 <div className="box-content">
-                  {this.props.survey.description}
+                  <Linkify>{this.props.survey.description}</Linkify>
                 </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="box-content">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
+import Linkify from 'react-linkify';
 import Pagination from 'rc-pagination';
 import $ from 'jquery';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
@@ -306,7 +307,7 @@ class SectionShow extends Component {
                   <h2 className="panel-title">Description</h2>
                 </div>
                 <div className="box-content">
-                  {section.description}
+                  <Linkify>{section.description}</Linkify>
                 </div>
                 { section.contentStage &&
                   <div className="box-content">

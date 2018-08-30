@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
+import Linkify from 'react-linkify';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import VersionInfo from "../VersionInfo";
@@ -244,7 +245,7 @@ export default class QuestionShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
-                  {question.description}
+                  <Linkify>{question.description}</Linkify>
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>

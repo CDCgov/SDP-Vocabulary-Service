@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import Linkify from 'react-linkify';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
@@ -227,7 +228,7 @@ export default class ResponseSetShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
-                  {responseSet.description}
+                  <Linkify>{responseSet.description}</Linkify>
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>
