@@ -50,3 +50,6 @@ config/environments/*.local.yml
 
 # ignore error logs
 yarn-error.log
+
+# ignore RubyMine
+.idea/
