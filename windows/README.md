@@ -191,14 +191,15 @@ rake cdc:import_programs[<your csv file with programs.csv>]
 
 // An excel file with programs and systems
 cdc:import_excel[<your excel file with programs and systems.xlsx>]
+
 ````
 
-Add admin user
+Create a user, set ADMIN to true if it is an admin user.
 ````sh
- bundle exec rake admin:create_user[‘EMAIL’,’PASSWORD’,’true|false’]
+ bundle exec rake admin:create_user[‘EMAIL’,’PASSWORD’,’ADMIN']
 ````
 
-Grand admin role to user
+Grant admin role to user.
 ````sh
 bundle exec rake admin:grant_admin[‘EMAIL’]
 ````
