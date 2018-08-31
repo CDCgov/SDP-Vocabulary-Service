@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "NODE_ENV=test mocha --compilers js:babel-core/register --require ./test/frontend/test_helper.js --recursive ./test/frontend",
+    "test": "mocha --compilers js:babel-core/register --require ./test/frontend/test_helper.js --recursive ./test/frontend",
+    "test-win": "SET NODE_ENV=test && npm run test",
+    "test-osx": "NODE_ENV=test && npm run test",
     "lint": "eslint webpack",
     "lint-auto": "eslint webpack --fix"
   },
