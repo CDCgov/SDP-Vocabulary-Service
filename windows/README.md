@@ -178,7 +178,7 @@ The above commands will wipe any data in your database - therefore in the future
 Load some surveillance programs and systems using files in test/fixtures/files
 ````sh
 > rake cdc:import_systems["test/fixtures/files/surveillance_systems.csv"]
-> rake cdc:import_programs["surveillance_systems.csv"]
+> rake cdc:import_programs["test/fixtures/files/surveillance_systems.csv"]
 ````
 If you have your own programs and systems you would like to import, you can use these commands:
 > Need to provide relative path and rake arguments go in curly braces separated by commas with no spaces between commas.
