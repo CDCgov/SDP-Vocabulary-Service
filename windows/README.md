@@ -1,7 +1,7 @@
 # Getting Started on Windows
 This reference will show you how to install and get the application up and running in a local Microsoft Windows development environment.
 
-If you’re not on Windows, use the [Getting Started on Mac or Linux] guide.
+If you’re not on Windows, please refer to the [Getting Started on Mac or Linux].
 
 ## Tech 
 The following technologies are used to built the SDP Vocabulary Service.
@@ -264,7 +264,7 @@ Run these commands to start webpack dev server.
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
-
+   [Getting Started on Mac or Linux]: <https://github.com/CDCgov/SDP-Vocabulary-Service>
    [Ruby Lang]: <https://www.ruby-lang.org/>
    [Ruby installer]: <https://rubyinstaller.org/downloads/>
    [Ruby on Rails]: <https://rubyonrails.org/>
