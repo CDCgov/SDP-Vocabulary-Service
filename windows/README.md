@@ -1,5 +1,5 @@
 # Getting Started on Windows
-This reference will show you how to install and get the application up and running in a local Microsoft Windows development environmen.
+This reference will show you how to install and get the application up and running in a local Microsoft Windows development environment.
 
 If you’re not on Windows, use the [Getting Started on Mac or Linux] guide.
 
