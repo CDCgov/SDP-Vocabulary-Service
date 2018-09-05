@@ -17,9 +17,9 @@ import {
 
 function getLoadStatusText(action,type) {
   if (action.status == '403') {
-    return "You do not have access to this resource."
+    return "You do not have access to this resource.";
   }
-  return `An error occurred while trying to load this ${type}: ${action.status} / ${action.statusText}`
+  return `An error occurred while trying to load this ${type}: ${action.status} / ${action.statusText}`;
 }
 
 export default function ajaxStatus(state = {
@@ -28,7 +28,6 @@ export default function ajaxStatus(state = {
   section:      { isLoading: false, loadStatus: null, loadStatusText:''},
   survey:       { isLoading: false, loadStatus: null, loadStatusText:''}
 }, action) {
-  let loadStatusText;
   switch (action.type) {
     case CLEAR_AJAX_STATUS:
       return Object.assign({}, state, {
