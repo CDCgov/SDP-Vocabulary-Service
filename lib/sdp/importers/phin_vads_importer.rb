@@ -81,12 +81,12 @@ module SDP
           # need to force encode name and definitionText fields due to the way the hessian lib works
           # some ugly chars come across in the fields at times and need to be dealt with before
           # saving to the database
-          rset = ResponseSet.new(name: (vset.name || '').force_encoding('ISO-8859-1').encode('UTF-8'),
-                                 description: (vset.definitionText || '').force_encoding('ISO-8859-1').encode('UTF-8'),
+          rset = ResponseSet.new(name: (vset.name || '').force_encoding('ISO-8859-1').encode('UTF-8').delete("\u0000"),
+                                 description: (vset.definitionText || '').force_encoding('ISO-8859-1').encode('UTF-8').delete("\u0000"),
                                  parent_id: nil,
-                                 oid: vset.oid,
+                                 oid: vset.oid.delete("\u0000"),
                                  version: ver.versionNumber,
-                                 status: status,
+                                 status: status.delete("\u0000"),
                                  created_by: user,
                                  parent: prev,
                                  version_independent_id: prev ? prev.version_independent_id : nil,
@@ -111,16 +111,15 @@ module SDP
         loop do
           dto = vads_client.getValueSetConceptsByValueSetVersionId(version_id, (page += 1), limit)
           if dto.getTotalResults > params[:max_vs_length]
-            logger.debug('Valueset has too many results to import')
-            break
+            puts 'Valueset has greater than 100 values'
           end
           length = dto.getValueSetConcepts ? dto.getValueSetConcepts.length : 0
           logger.debug "getting vs codes #{count} to #{count + length} of #{dto.getTotalResults} "
           count += length
           dto.getValueSetConcepts.each do |code|
-            rset.responses << Response.new(value: code.conceptCode,
-                                           code_system: code.codeSystemOid,
-                                           display_name: (code.codeSystemConceptName || '').force_encoding('ISO-8859-1').encode('UTF-8'))
+            rset.responses << Response.new(value: code.conceptCode.delete("\u0000"),
+                                           code_system: code.codeSystemOid.delete("\u0000"),
+                                           display_name: (code.codeSystemConceptName || '').force_encoding('ISO-8859-1').encode('UTF-8').delete("\u0000"))
           end
           break if count >= dto.getTotalResults
         end
