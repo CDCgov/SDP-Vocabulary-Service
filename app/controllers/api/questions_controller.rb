@@ -29,7 +29,7 @@ module Api
     end
 
     def usage
-      @question = Question.by_id_and_version(params[:id, params[:version]])
+      @question = Question.by_id_and_version(params[:id], params[:version])
       if @question.nil?
         not_found
         return

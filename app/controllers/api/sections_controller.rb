@@ -29,7 +29,7 @@ module Api
     end
 
     def usage
-      @section = Section.by_id_and_version(params[:id, params[:version]])
+      @section = Section.by_id_and_version(params[:id], params[:version])
       if @section.nil?
         not_found
         return

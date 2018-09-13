@@ -15,6 +15,7 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets/1
   # GET /response_sets/1.json
   def show
+    @is_edit = params['isEdit'] || false
   end
 
   def usage

@@ -433,7 +433,7 @@ class DashboardSearch extends SearchStateComponent {
                   <select className="input-select" name="source-filter" id="source-filter" value={this.state.sourceFilter} onChange={(e) => this.toggleSource(e)} >
                     <option value="">Select Source...</option>
                     <option value="local">SDPV Local</option>
-                    <option value="PHIN_VADS">PHIN VADS</option>
+                    <option value="phin_vads">PHIN VADS</option>
                   </select>
                   <br />
                   <label htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>

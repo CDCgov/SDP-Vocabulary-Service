@@ -31,13 +31,15 @@ export function deleteResponseSet(id, callback=null) {
   };
 }
 
-export function fetchResponseSet(id) {
+export function fetchResponseSet(id, isEdit=null) {
   store.dispatch({type:FETCH_RESPONSE_SET_PENDING});
+  var params  = {isEdit: isEdit};
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.responseSetPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      timeout : AJAX_TIMEOUT
+      timeout : AJAX_TIMEOUT,
+      params
     }).then((rsResponse) => {
       const normalizedData = normalize(rsResponse.data, responseSetSchema);
       store.dispatch(fetchResponseSetSuccess(rsResponse.data));

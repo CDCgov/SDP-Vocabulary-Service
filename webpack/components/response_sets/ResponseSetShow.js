@@ -227,6 +227,9 @@ export default class ResponseSetShow extends Component {
                   <h2 className="panel-title">Details</h2>
                 </div>
                 <div className="box-content">
+                  <strong>Version Independent ID: </strong>{responseSet.versionIndependentId}
+                </div>
+                <div className="box-content">
                   <strong>Description: </strong>
                   <Linkify>{responseSet.description}</Linkify>
                 </div>
@@ -279,7 +282,21 @@ export default class ResponseSetShow extends Component {
                   <h2 className="panel-title">Responses</h2>
                 </div>
                 <div className="box-content">
-                <CodedSetTable items={responseSet.responses} itemName={'Response'} />
+                  {responseSet.responseCount && responseSet.responseCount > 25 &&
+                    <p>
+                      This response set has a large amount of responses. The table below is a sample of 25 of the {responseSet.responseCount} responses. To access an exhaustive list please choose from the following options:
+                      <ul>
+                        <li><a href={`/api/valueSets/${responseSet.versionIndependentId}`} target="_blank">Click here to visit our API endpoint with the full list of responses</a></li>
+                        {responseSet.source && responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent &&
+                          <li><a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">Click here to visit import source list in PHIN VADS UI</a></li>
+                        }
+                      </ul>
+                    </p>
+                  }
+                  <CodedSetTable items={responseSet.responses} itemName={'Response'} />
+                  {responseSet.responseCount && responseSet.responseCount > 25 &&
+                    <p><a href={`/api/valueSets/${responseSet.versionIndependentId}`} target="_blank">... See the full list in our API by clicking here</a></p>
+                  }
                 </div>
               </div>
               {responseSet.questions && responseSet.questions.length > 0 &&

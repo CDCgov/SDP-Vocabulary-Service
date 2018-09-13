@@ -244,6 +244,9 @@ export default class QuestionShow extends Component {
                   <h2 className="panel-title">Details</h2>
                 </div>
                 <div className="box-content">
+                  <strong>Version Independent ID: </strong>{question.versionIndependentId}
+                </div>
+                <div className="box-content">
                   <strong>Description: </strong>
                   <Linkify>{question.description}</Linkify>
                 </div>

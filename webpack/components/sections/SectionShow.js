@@ -309,6 +309,9 @@ class SectionShow extends Component {
                 <div className="box-content">
                   <Linkify>{section.description}</Linkify>
                 </div>
+                <div className="box-content">
+                  <strong>Version Independent ID: </strong>{section.versionIndependentId}
+                </div>
                 { section.contentStage &&
                   <div className="box-content">
                     <strong>Content Stage: </strong>
