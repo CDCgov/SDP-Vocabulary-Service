@@ -5,6 +5,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import { sectionProps } from "../../prop-types/section_props";
 import { isShowable } from '../../utilities/componentHelpers';
 import SearchResult from '../SearchResult';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 class SectionList extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -14,7 +15,7 @@ class SectionList extends Component {
   render() {
     if(!this.props.sections){
       return (
-        <div>Loading...</div>
+        <div><LoadingSpinner msg="Loading..." /></div>
       );
     }
     return (

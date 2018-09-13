@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { denormalize } from 'normalizr';
-import { Grid } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { questionSchema } from '../../schema';
 import { fetchQuestion, saveQuestion, saveDraftQuestion, publishQuestion, deleteQuestion } from '../../actions/questions_actions';
 import { fetchPotentialDuplicateQuestions } from '../../actions/search_results_actions';
 import QuestionEdit from '../../components/questions/QuestionEdit';
+
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
+
 import { questionProps } from '../../prop-types/question_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { fetchResponseTypes } from '../../actions/response_type_actions';
@@ -94,9 +98,22 @@ class QuestionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.question || !this.props.categories || !this.props.responseTypes){
+    if(!this.props.question || !this.props.categories || !this.props.responseTypes || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <Grid className="basic-bg">Loading...</Grid>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this question." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
+
       );
     }
     return (
@@ -138,6 +155,9 @@ function mapStateToProps(state, ownProps) {
   props.potentialDuplicates = state.searchResults[DUPLICATE_QUESTION_CONTEXT] || {};
   props.stats = state.stats;
   props.currentUser = state.currentUser;
+  props.isLoading = state.questions.isLoading;
+  props.loadStatus = state.questions.loadStatus;
+  props.loadStatusText = state.questions.loadStatusText;
   return props;
 }
 
@@ -166,6 +186,9 @@ QuestionEditContainer.propTypes = {
   route:  PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   potentialDuplicates: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   currentUser: currentUserProps
 };
 

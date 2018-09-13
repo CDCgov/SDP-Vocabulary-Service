@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
-import { Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -14,6 +14,8 @@ import { questionsProps }  from '../../prop-types/question_props';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveillanceSystemsProps } from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import SurveyEdit from '../../components/surveys/SurveyEdit';
 import currentUserProps from "../../prop-types/current_user_props";
 import SectionSearchContainer from '../sections/SectionSearchContainer';
@@ -87,7 +89,7 @@ class SurveyEditContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.params.surveyId != this.props.params.surveyId){
+    if(this.props.params.surveyId && (prevProps.params.surveyId != this.props.params.surveyId)){
       this.props.fetchSurvey(this.props.params.surveyId);
     }
     if(this.props.survey && this.props.survey.surveySections) {
@@ -96,13 +98,26 @@ class SurveyEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.survey || !this.props.sections){
+    if(!this.props.survey || !this.props.sections || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <div>Loading...</div>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading survey..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this survey." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
       );
     }
+
     return (
-      <div className="survey-edit-container">
+      <Grid className="survey-edit-container xxx">
         <Row>
           <div className="panel panel-default">
             <div className="panel-heading">
@@ -134,7 +149,7 @@ class SurveyEditContainer extends Component {
             </div>
           </div>
         </Row>
-      </div>
+      </Grid>
     );
   }
 }
@@ -179,7 +194,10 @@ function mapStateToProps(state, ownProps) {
     currentUser: state.currentUser,
     surveillanceSystems:  state.surveillanceSystems,
     surveillancePrograms: state.surveillancePrograms,
-    selectedSearchResults: selectedSearchResults
+    selectedSearchResults: selectedSearchResults,
+    isLoading: state.ajaxStatus.survey.isLoading,
+    loadStatus: state.ajaxStatus.survey.loadStatus,
+    loadStatusText : state.ajaxStatus.survey.loadStatusText
   };
 }
 
@@ -196,6 +214,9 @@ SurveyEditContainer.propTypes = {
   newSurvey:   PropTypes.func,
   saveSurvey:  PropTypes.func,
   fetchSurvey: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   removeSection:  PropTypes.func,
   reorderSection: PropTypes.func,
   currentUser: currentUserProps,

@@ -10,6 +10,8 @@ import {
   FETCH_QUESTION_USAGE_FULFILLED,
   DELETE_QUESTION_FULFILLED,
   ADD_ENTITIES_FULFILLED,
+  ADD_ENTITIES_PENDING,
+  ADD_ENTITIES_REJECTED,
   ADD_QUESTION_TO_GROUP_FULFILLED,
   REMOVE_QUESTION_FROM_GROUP_FULFILLED
 } from '../actions/types';
@@ -30,6 +32,10 @@ export default function questions(state = {}, action) {
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.questions);
+    case ADD_ENTITIES_REJECTED:
+      return Object.assign({},state);
+    case ADD_ENTITIES_PENDING:
+      return Object.assign({},state);
     case SAVE_QUESTION_FULFILLED:
     case UPDATE_QUESTION_TAGS_FULFILLED:
     case UPDATE_STAGE_QUESTION_FULFILLED:

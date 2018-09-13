@@ -3,13 +3,17 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { hashHistory } from 'react-router';
+
 import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import { questionProps } from "../../prop-types/question_props";
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import QuestionShow  from '../../components/questions/QuestionShow';
 import { questionSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
@@ -72,9 +76,35 @@ class QuestionShowContainer extends Component {
   }
 
   render() {
-    if(!this.props.question){
-      return null;
+
+    if(!this.props.question || this.props.isLoading || this.props.loadStatus == 'failure'){
+      return (
+              <Grid className="basic-bg questionShowContainer">
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>Question Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                        {this.props.loadStatus == 'success' &&
+                         <BasicAlert msg="Sorry, there is a problem loading this question." severity='warning' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
+              </Grid>
+      );
     }
+
     return (
       <Grid className="basic-bg">
         <QuestionShow question={this.props.question}
@@ -94,6 +124,9 @@ class QuestionShowContainer extends Component {
                          updateQuestionTags={this.props.updateQuestionTags}
                          publishers={this.props.publishers}
                          addBreadcrumbItem={this.props.addBreadcrumbItem}
+                         isLoading={this.props.isLoading}
+                         loadStatus={this.props.loadStatus}
+                         loadStatusText={this.props.loadStatusText}
                         />
         <div className="showpage-comments-title">Public Comments:</div>
         <CommentList commentableType='Question' commentableId={this.props.question.id} />
@@ -108,6 +141,9 @@ function mapStateToProps(state, ownProps) {
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
+  props.isLoading = state.ajaxStatus.question.isLoading;
+  props.loadStatus = state.ajaxStatus.question.loadStatus;
+  props.loadStatusText = state.ajaxStatus.question.loadStatusText;
   return props;
 }
 
@@ -136,6 +172,9 @@ QuestionShowContainer.propTypes = {
   removeQuestionFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };
 

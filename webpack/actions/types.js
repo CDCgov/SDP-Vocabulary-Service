@@ -29,6 +29,9 @@ export const FETCH_COMMENTS_FULFILLED = 'FETCH_COMMENTS_FULFILLED';
 // Tutorial Info
 export const SET_STEPS = 'SET_STEPS';
 
+// Error Clearing
+export const CLEAR_AJAX_STATUS = 'CLEAR_AJAX_STATUS';
+
 // Landing types
 export const FETCH_STATS = 'FETCH_STATS';
 export const FETCH_STATS_FULFILLED = 'FETCH_STATS_FULFILLED';
@@ -220,6 +223,32 @@ export const ES_SYNC_FULFILLED = 'ES_SYNC_FULFILLED';
 // Normalized types
 export const ADD_ENTITIES = 'ADD_ENTITIES';
 export const ADD_ENTITIES_FULFILLED = 'ADD_ENTITIES_FULFILLED';
+export const ADD_ENTITIES_PENDING = 'ADD_ENTITIES_PENDING';
+export const ADD_ENTITIES_REJECTED = 'ADD_ENTITIES_REJECTED';
+
+// Question types
+// ------------------------- QUESTIONS -------------------------------- //
+export const FETCH_QUESTION_PENDING = "FETCH_QUESTION_PENDING";
+export const FETCH_QUESTION_SUCCESS = "FETCH_QUESTION_SUCCESS";
+export const FETCH_QUESTION_FAILURE = "FETCH_QUESTION_FAILURE";
+
+// Response Set types
+// ------------------------- RESPONSE_SETS -------------------------------- //
+export const FETCH_RESPONSE_SET_PENDING = "FETCH_RESPONSE_SET_PENDING";
+export const FETCH_RESPONSE_SET_SUCCESS = "FETCH_RESPONSE_SET_SUCCESS";
+export const FETCH_RESPONSE_SET_FAILURE = "FETCH_RESPONSE_SET_FAILURE";
+
+// Section types
+// ------------------------- SECTIONS -------------------------------- //
+export const FETCH_SECTION_SUCCESS = "FETCH_SECTION_SUCCESS";
+export const FETCH_SECTION_FAILURE = "FETCH_SECTION_FAILURE";
+export const FETCH_SECTION_PENDING = "FETCH_SECTION_PENDING";
+
+// Survey types
+// ------------------------- SURVEYS -------------------------------- //
+export const FETCH_SURVEY_PENDING = "FETCH_SURVEY_PENDING";
+export const FETCH_SURVEY_SUCCESS = "FETCH_SURVEY_SUCCESS";
+export const FETCH_SURVEY_FAILURE = "FETCH_SURVEY_FAILURE";
 
 // UI Action types
 export const SET_RESULT_STYLE = 'SET_RESULT_STYLE';

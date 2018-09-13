@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import Linkify from 'react-linkify';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Grid, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
+
 import CodedSetTable from "../CodedSetTable";
 import Breadcrumb from "../Breadcrumb";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
@@ -26,7 +30,7 @@ export default class ResponseSetShow extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.addBreadcrumbItem({type:'response_set',id:this.props.responseSet.id,name:this.props.responseSet.name});
   }
 
@@ -34,7 +38,29 @@ export default class ResponseSetShow extends Component {
     const {responseSet} = this.props;
     if(responseSet === undefined || responseSet.name === undefined){
       return (
-        <div>Loading...</div>
+              <Grid className="basic-bg">
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>Response Set Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading response set..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                        {this.props.loadStatus == 'success' &&
+                         <BasicAlert msg="Sorry, there is a problem loading this response set." severity='warning' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
+              </Grid>
       );
     }
 
@@ -202,7 +228,7 @@ export default class ResponseSetShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
-                  {responseSet.description}
+                  <Linkify>{responseSet.description}</Linkify>
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>
@@ -293,5 +319,8 @@ ResponseSetShow.propTypes = {
   fetchResponseSet: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };

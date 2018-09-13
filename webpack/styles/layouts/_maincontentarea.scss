@@ -1,5 +1,6 @@
 .maincontent {
   border-left: 1px solid $light-gray;
+  padding-left:12px;
 }
 
 .maincontent-details {
@@ -7,6 +8,11 @@
   padding-top: 15px;
 }
 
+@media (max-width: $screen-sm-max) {
+.maincontent-details {
+  padding-left:0;
+  }
+}
 .maincontent-item-name {
   margin-top: 0px;
   font-size: 24px;

@@ -20,6 +20,7 @@ import currentUserProps from '../prop-types/current_user_props';
 import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import { signUp } from '../actions/current_user_actions';
+import { clearAjaxStatus } from '../actions/landing';
 
 
 const DASHBOARD_CONTEXT = 'DASHBOARD_CONTEXT';
@@ -72,6 +73,7 @@ class DashboardContainer extends SearchManagerComponent {
     }
     this.props.fetchCategories();
     this.props.fetchResponseTypes();
+    this.props.clearAjaxStatus();
     this.setState(searchParameters);
     this.props.clearBreadcrumb();
   }
@@ -421,7 +423,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchResponseTypes, fetchCategories, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
+  return bindActionCreators({setSteps, clearAjaxStatus, fetchResponseTypes, fetchCategories, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -434,6 +436,7 @@ DashboardContainer.propTypes = {
   myResponseSetCount: PropTypes.number,
   mySurveyCount: PropTypes.number,
   setSteps: PropTypes.func,
+  clearAjaxStatus: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   fetchCategories: PropTypes.func,
   fetchSearchResults: PropTypes.func,

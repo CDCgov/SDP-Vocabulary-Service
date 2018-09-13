@@ -3,13 +3,17 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { hashHistory } from 'react-router';
+
 import { fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { clearBreadcrumb, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
 import { sectionSchema } from '../../schema';
@@ -59,9 +63,31 @@ class SectionShowContainer extends Component {
   }
 
   render() {
-    if(!this.props.section){
+    if(!this.props.section || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+              <Grid className="basic-bg">
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>Section Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading section..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                        {this.props.loadStatus == 'success' &&
+                         <BasicAlert msg="Sorry, there is a problem loading this section." severity='warning' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
+              </Grid>
       );
     }
     return (
@@ -86,6 +112,9 @@ class SectionShowContainer extends Component {
                   resultControlVisibility={this.props.resultControlVisibility}
                   toggleResultControl={this.props.toggleResultControl}
                   addBreadcrumbItem={this.props.addBreadcrumbItem}
+                  isLoading={this.props.isLoading}
+                  loadStatus={this.props.loadStatus}
+                  loadStatusText={this.props.loadStatusText}
                  />
         <div className="showpage-comments-title">Public Comments:</div>
         <CommentList commentableType='Section' commentableId={this.props.section.id} />
@@ -101,7 +130,10 @@ function mapStateToProps(state, ownProps) {
     section: denormalize(state.sections[ownProps.params.sectionId], sectionSchema, state),
     publishers: state.publishers,
     resultControlVisibility : state.displayStyle.resultControlVisibility,
-    resultStyle : state.displayStyle.resultStyle
+    resultStyle : state.displayStyle.resultStyle,
+    isLoading : state.ajaxStatus.section.isLoading,
+    loadStatus : state.ajaxStatus.section.loadStatus,
+    loadStatusText : state.ajaxStatus.section.loadStatusText
   };
   return props;
 }
@@ -135,6 +167,9 @@ SectionShowContainer.propTypes = {
   displayStyle: PropTypes.object,
   resultStyle: PropTypes.string,
   resultControlVisibility: PropTypes.string,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   addBreadcrumbItem: PropTypes.func
 };
 

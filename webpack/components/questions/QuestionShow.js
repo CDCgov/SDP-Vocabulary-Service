@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
-import { Modal, Button, Grid, Row, Col } from 'react-bootstrap';
+import Linkify from 'react-linkify';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
@@ -15,6 +16,8 @@ import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
+import BasicAlert from '../../components/BasicAlert';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 import { questionProps } from "../../prop-types/question_props";
 import currentUserProps from "../../prop-types/current_user_props";
@@ -28,7 +31,7 @@ export default class QuestionShow extends Component {
     this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const _name = this.props.question.content ? this.props.question.content : this.props.question.name;
     this.props.addBreadcrumbItem({type:'question',id:this.props.question.id,name:_name});
   }
@@ -36,7 +39,31 @@ export default class QuestionShow extends Component {
   render() {
     const {question} = this.props;
     if(question === undefined || question.content === undefined){
-      return (<Grid className="basic-bg">Loading...</Grid>);
+      return (
+      <div>
+        <div>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Question Details</h1></li>
+            </ul>
+          </div>
+        </div>
+        <Row>
+          <Col xs={12}>
+              <div className="main-content">
+                {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
+                {this.props.loadStatus == 'failure' &&
+                  <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                }
+                {this.props.loadStatus == 'success' && question === undefined &&
+                 <BasicAlert msg="Sorry, there is a problem loading this question." severity='warning' />
+                }
+              </div>
+          </Col>
+        </Row>
+      </div>
+      );
     }
 
     return (
@@ -218,7 +245,7 @@ export default class QuestionShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
-                  {question.description}
+                  <Linkify>{question.description}</Linkify>
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>
@@ -395,5 +422,8 @@ QuestionShow.propTypes = {
   updateStageQuestion: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
-  publishers: publishersProps
+  publishers: publishersProps,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText: PropTypes.string
 };

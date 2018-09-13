@@ -4,12 +4,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
+import { hashHistory } from 'react-router';
+
 import { fetchSurvey, fetchDuplicateCount, publishSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { setBreadcrumbPath, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
@@ -59,20 +63,35 @@ class SurveyShowContainer extends Component {
   }
 
   render() {
-    if(!this.props.survey){
+    if(!this.props.survey || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+              <Grid className="basic-bg">
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>Survey Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading survey..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
+              </Grid>
       );
     }
     return (
-      <Grid>
-        <Row className="basic-bg">
-          <Col md={12}>
-            <SurveyShow {...this.props} />
-            <div className="showpage-comments-title">Public Comments:</div>
-            <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
-          </Col>
-        </Row>
+      <Grid className="basic-bg">
+        <SurveyShow {...this.props} />
+        <div className="showpage-comments-title">Public Comments:</div>
+        <CommentList commentableType='Survey' commentableId={this.props.survey.id} />
       </Grid>
     );
   }
@@ -113,6 +132,9 @@ function mapStateToProps(state, ownProps) {
       props.survey.surveillanceProgram = state.surveillancePrograms[props.survey.surveillanceProgramId];
     }
   }
+  props.isLoading = state.ajaxStatus.survey.isLoading;
+  props.loadStatus = state.ajaxStatus.survey.loadStatus;
+  props.loadStatusText = state.ajaxStatus.survey.loadStatusText;
   return props;
 }
 
@@ -142,6 +164,9 @@ SurveyShowContainer.propTypes = {
   params: PropTypes.object,
   router: PropTypes.object,
   stats: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };
 

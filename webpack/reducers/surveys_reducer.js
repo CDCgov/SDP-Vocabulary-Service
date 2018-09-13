@@ -8,6 +8,8 @@ import {
   REORDER_SECTION,
   CREATE_SURVEY,
   ADD_ENTITIES_FULFILLED,
+  ADD_ENTITIES_PENDING,
+  ADD_ENTITIES_REJECTED,
   ADD_SURVEY_TO_GROUP_FULFILLED,
   REMOVE_SURVEY_FROM_GROUP_FULFILLED,
   UPDATE_STAGE_SURVEY_FULFILLED,
@@ -20,6 +22,10 @@ export default function surveys(state = {}, action) {
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.surveys);
+    case ADD_ENTITIES_REJECTED:
+      return Object.assign({},state);
+    case ADD_ENTITIES_PENDING:
+      return Object.assign({},state);
     case PUBLISH_SURVEY_FULFILLED:
     case RETIRE_SURVEY_FULFILLED:
     case SAVE_DRAFT_SURVEY_FULFILLED:

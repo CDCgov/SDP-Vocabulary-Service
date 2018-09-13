@@ -19,7 +19,7 @@ module SDP
       def execute(current_user_id = nil, groups = [])
         batch_results = {}
         result = SDP::Elasticsearch.batch_find_duplicates(@potential_duplicates.map { |pd| pd[:object] }, current_user_id, groups)
-        if result['responses']
+        if !result.nil? && result['responses']
           result['responses'].each_with_index do |resp, i|
             pd = @potential_duplicates[i]
             filter_result = pd[:filter].call(resp)
@@ -393,7 +393,7 @@ module SDP
         search_body << individual_search_body
       end
       with_client do |client|
-        client.msearch(body: search_body)
+        client.msearch(body: search_body) unless search_body.empty?
       end
     end
 

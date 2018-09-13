@@ -7,6 +7,8 @@ import {
   PUBLISH_RESPONSE_SET_FULFILLED,
   RETIRE_RESPONSE_SET_FULFILLED,
   ADD_ENTITIES_FULFILLED,
+  ADD_ENTITIES_PENDING,
+  ADD_ENTITIES_REJECTED,
   ADD_RESPONSE_SET_TO_GROUP_FULFILLED,
   UPDATE_STAGE_RESPONSE_SET_FULFILLED,
   REMOVE_RESPONSE_SET_FROM_GROUP_FULFILLED
@@ -17,6 +19,10 @@ export default function responseSets(state = {}, action) {
   switch (action.type) {
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.responseSets);
+    case ADD_ENTITIES_REJECTED:
+      return Object.assign({},state);
+    case ADD_ENTITIES_PENDING:
+      return Object.assign({},state);
     case SAVE_DRAFT_RESPONSE_SET_FULFILLED:
     case PUBLISH_RESPONSE_SET_FULFILLED:
     case RETIRE_RESPONSE_SET_FULFILLED:

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 export default class FHIRDoc extends Component {
   render() {
     return (
-      <div className="container">
-        <div className="row basic-bg">
-          <div className="col-md-12">
+      <Grid>
+        <Row className="basic-bg">
+          <Col md={12}>
             <div className="showpage_header_container no-print">
               <ul className="list-inline">
                 <li className="showpage_button"><span className="fa fa-question-circle fa-2x" aria-hidden="true"></span></li>
                 <li className="showpage_title"><h1>FHIR Documentation</h1></li>
               </ul>
             </div>
-            <div className="container col-md-12">
+            <div className="main-content">
               <p>The Vocabulary Service provides a <a href="http://hl7.org/fhir">Fast Healthcare Interoperability Resources (FHIR)</a> API.
               This feature lets software developers create programs that can directly use information from the Vocabulary Service.
               </p>
@@ -52,9 +53,9 @@ export default class FHIRDoc extends Component {
                 then the Vocabulary Service generated id will be used.
               </p>
             </div>
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }
