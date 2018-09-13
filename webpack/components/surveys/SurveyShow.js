@@ -218,6 +218,9 @@ class SurveyShow extends Component {
                 <div className="box-content">
                   <Linkify>{this.props.survey.description}</Linkify>
                 </div>
+                <div className="box-content">
+                  <strong>Version Independent ID: </strong>{this.props.survey.versionIndependentId}
+                </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="box-content">
                   <strong>Published By: </strong>

@@ -227,6 +227,9 @@ export default class ResponseSetShow extends Component {
                   <h2 className="panel-title">Details</h2>
                 </div>
                 <div className="box-content">
+                  <strong>Version Independent ID: </strong>{responseSet.versionIndependentId}
+                </div>
+                <div className="box-content">
                   <strong>Description: </strong>
                   <Linkify>{responseSet.description}</Linkify>
                 </div>
