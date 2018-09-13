@@ -94,6 +94,19 @@ class ResponseSetTest < ActiveSupport::TestCase
     assert_includes sp.map(&:name), 'Generic Surveillance Program'
   end
 
+  test 'link to duplicate' do
+    rs = response_sets(:search_1)
+    rs2 = response_sets(:three)
+    assert_not_equal rs.content_stage, 'Duplicate'
+    assert_equal rs.duplicates_replaced_count, 0
+    assert_not_equal rs.duplicate_of, rs2.id
+    rs.link_to_duplicate(rs2.id)
+    assert rs.save!
+    assert_equal rs.content_stage, 'Duplicate'
+    assert_equal rs.duplicates_replaced_count, 1
+    assert_equal rs.duplicate_of, rs2.id
+  end
+
   test 'mark as duplicate' do
     user = users(:admin)
     rs = ResponseSet.new(name: 'Test rs', created_by: user)

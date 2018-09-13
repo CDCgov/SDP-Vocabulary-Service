@@ -10,7 +10,9 @@ module SDP
                    proxy: {}}.freeze
       RS_STATUS_MAPPING = { 'Un-Published' => 'draft', 'Published' => 'published', 'Retired' => 'deprecated' }.freeze
       def initialize(args = {})
-        @params = args.merge(DEFAULTS)
+        @params = DEFAULTS.merge(args)
+        puts 'Initializing PhinVadsImporter with params:'
+        puts @params
       end
 
       attr_reader :params
@@ -130,6 +132,8 @@ module SDP
       end
 
       def vads_client
+        puts 'Establishing vads client and fetching batch with proxy:'
+        puts params[:proxy]
         @vads_client ||= Hessian::HessianClient.new(params[:vads_uri], params[:proxy] || {})
       end
 

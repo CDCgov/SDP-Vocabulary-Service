@@ -17,6 +17,7 @@ Feature: Advanced Search
     And I check the "most-recent-filter" checkbox
     And I check the "preferred-filter" checkbox
     And I check the "omb-filter" checkbox
+    And I check the "retired-filter" checkbox
     And I click on the "Close" button
     Then I should see "Program Filters:"
     And I should see "Influenza"
@@ -24,6 +25,7 @@ Feature: Advanced Search
     And I should see "Filtering by most recent version"
     And I should see "Filtering by CDC preferred content"
     And I should see "Filtering by OMB approved content"
+    And I should see "Including retired content in search results"
 
   Scenario: Filter search by date
     And I am on the "/" page
@@ -55,9 +57,27 @@ Feature: Advanced Search
     And I am on the "/" page
     When I click on the "Advanced" link
     And I tab out of the "content-since" field
-    And I click the "Draft" option button
+    And I click the "Draft (Authors Only)" option button
     And I click on the "Close" button
-    Then I should see "Filtering results by draft status"
+    Then I should see "Filtering results by draft visibility status"
+    And I should see "Clear Adv. Filters"
+
+  Scenario: Filter search by stage
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I tab out of the "content-since" field
+    And I click the "Trial" option button
+    And I click on the "Close" button
+    Then I should see "Filtering results by Trial Use content stage"
+    And I should see "Clear Adv. Filters"
+
+  Scenario: Filter search by stage
+    And I am on the "/" page
+    When I click on the "Advanced" link
+    And I tab out of the "content-since" field
+    And I click the "Trial" option button
+    And I click on the "Close" button
+    Then I should see "Filtering results by Trial Use content stage"
     And I should see "Clear Adv. Filters"
 
   Scenario: Filter search by category

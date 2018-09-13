@@ -17,6 +17,8 @@ export const UPDATE_QUESTION_TAGS = 'UPDATE_QUESTION_TAGS';
 export const UPDATE_QUESTION_TAGS_FULFILLED = 'UPDATE_QUESTION_TAGS_FULFILLED';
 export const MARK_AS_DUPLICATE = 'MARK_AS_DUPLICATE';
 export const MARK_AS_DUPLICATE_FULFILLED = 'MARK_AS_DUPLICATE_FULFILLED';
+export const LINK_TO_DUPLICATE = 'LINK_TO_DUPLICATE';
+export const LINK_TO_DUPLICATE_FULFILLED = 'LINK_TO_DUPLICATE_FULFILLED';
 
 // Comment types
 export const ADD_COMMENT = 'ADD_COMMENT';
@@ -26,6 +28,9 @@ export const FETCH_COMMENTS_FULFILLED = 'FETCH_COMMENTS_FULFILLED';
 
 // Tutorial Info
 export const SET_STEPS = 'SET_STEPS';
+
+// Error Clearing
+export const CLEAR_AJAX_STATUS = 'CLEAR_AJAX_STATUS';
 
 // Landing types
 export const FETCH_STATS = 'FETCH_STATS';
@@ -189,6 +194,8 @@ export const UPDATE_IMPORT_SESSION = 'UPDATE_IMPORT_SESSION';
 export const ATTEMPT_IMPORT_FILE = 'ATTEMPT_IMPORT_FILE';
 export const FETCH_DUPLICATES = 'FETCH_DUPLICATES';
 export const FETCH_DUPLICATES_FULFILLED = 'FETCH_DUPLICATES_FULFILLED';
+export const FETCH_DUPLICATE_COUNT = 'FETCH_DUPLICATE_COUNT';
+export const FETCH_DUPLICATE_COUNT_FULFILLED = 'FETCH_DUPLICATE_COUNT_FULFILLED';
 
 // Current User
 export const LOG_OUT = 'LOG_OUT';
@@ -216,6 +223,32 @@ export const ES_SYNC_FULFILLED = 'ES_SYNC_FULFILLED';
 // Normalized types
 export const ADD_ENTITIES = 'ADD_ENTITIES';
 export const ADD_ENTITIES_FULFILLED = 'ADD_ENTITIES_FULFILLED';
+export const ADD_ENTITIES_PENDING = 'ADD_ENTITIES_PENDING';
+export const ADD_ENTITIES_REJECTED = 'ADD_ENTITIES_REJECTED';
+
+// Question types
+// ------------------------- QUESTIONS -------------------------------- //
+export const FETCH_QUESTION_PENDING = "FETCH_QUESTION_PENDING";
+export const FETCH_QUESTION_SUCCESS = "FETCH_QUESTION_SUCCESS";
+export const FETCH_QUESTION_FAILURE = "FETCH_QUESTION_FAILURE";
+
+// Response Set types
+// ------------------------- RESPONSE_SETS -------------------------------- //
+export const FETCH_RESPONSE_SET_PENDING = "FETCH_RESPONSE_SET_PENDING";
+export const FETCH_RESPONSE_SET_SUCCESS = "FETCH_RESPONSE_SET_SUCCESS";
+export const FETCH_RESPONSE_SET_FAILURE = "FETCH_RESPONSE_SET_FAILURE";
+
+// Section types
+// ------------------------- SECTIONS -------------------------------- //
+export const FETCH_SECTION_SUCCESS = "FETCH_SECTION_SUCCESS";
+export const FETCH_SECTION_FAILURE = "FETCH_SECTION_FAILURE";
+export const FETCH_SECTION_PENDING = "FETCH_SECTION_PENDING";
+
+// Survey types
+// ------------------------- SURVEYS -------------------------------- //
+export const FETCH_SURVEY_PENDING = "FETCH_SURVEY_PENDING";
+export const FETCH_SURVEY_SUCCESS = "FETCH_SURVEY_SUCCESS";
+export const FETCH_SURVEY_FAILURE = "FETCH_SURVEY_FAILURE";
 
 // UI Action types
 export const SET_RESULT_STYLE = 'SET_RESULT_STYLE';

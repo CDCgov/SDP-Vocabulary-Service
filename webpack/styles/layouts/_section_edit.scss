@@ -1,9 +1,7 @@
 .section-edit-container {
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 1170px;
+  .section-edit-search-tabs {
+    margin-bottom:15px;
+  }
   .added-nested-item-group{
     min-height: 500px;
     max-height: 1000px;
@@ -77,7 +75,7 @@
 .duplicate-row td {background-color:#fffcd9;}
 
 .linked-section {
-    font-size:$font-size-base;
+  font-size:$font-size-base;
 }
 
 .suggested-replacements {

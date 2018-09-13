@@ -78,6 +78,19 @@ class QuestionTest < ActiveSupport::TestCase
     assert_includes sp.map(&:name), 'Generic Surveillance Program'
   end
 
+  test 'link to duplicate' do
+    q = questions(:one)
+    q2 = questions(:two)
+    assert_not_equal q.content_stage, 'Duplicate'
+    assert_equal q.duplicates_replaced_count, 0
+    assert_not_equal q.duplicate_of, q2.id
+    q.link_to_duplicate(q2.id)
+    assert q.save
+    assert_equal q.content_stage, 'Duplicate'
+    assert_equal q.duplicates_replaced_count, 1
+    assert_equal q.duplicate_of, q2.id
+  end
+
   test 'mark as duplicate' do
     user = users(:admin)
     rs = ResponseSet.new(name: 'Test rs', created_by: user)

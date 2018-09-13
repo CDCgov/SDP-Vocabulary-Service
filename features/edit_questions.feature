@@ -34,6 +34,7 @@ Feature: Edit Questions
     Then I should see "No changes have been made to this version."
     And I should not see "Changes by"
     When I click on the "Publish" button
+    Then I click on the "Change History" link
     Then I should see "Changes by test_author@gmail.com"
     And I should see "field changed from"
     And I should not see "No changes have been made to this version."

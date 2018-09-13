@@ -69,7 +69,6 @@ namespace :admin do
     end
     proxy = ENV['http_proxy'] || ENV['https_proxy'] || ENV['HTTP_PROXY'] || ENV['HTTPS_PROXY']
     params = { user: user, force_reload: (args.force_reload == 'true') }
-    puts params
     if proxy
       uri = URI(proxy)
       params[:proxy] = { host: uri.host, port: uri.port }

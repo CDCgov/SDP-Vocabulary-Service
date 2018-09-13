@@ -30,8 +30,10 @@ class DashboardSearch extends SearchStateComponent {
       sort: '',
       sourceFilter: '',
       statusFilter: '',
+      stageFilter: '',
       categoryFilter: '',
       rtFilter: '',
+      retiredFilter: false,
       preferredFilter: false,
       ombFilter: false,
       showAdvSearchModal: false,
@@ -96,9 +98,11 @@ class DashboardSearch extends SearchStateComponent {
       ombDate: null,
       sourceFilter: '',
       statusFilter: '',
+      stageFilter: '',
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
+      retiredFilter: false,
       ombFilter: false,
       sort: '',
       groupFilterId: 0
@@ -212,6 +216,15 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
+  toggleRetiredFilter() {
+    let newState = {retiredFilter: !this.state.retiredFilter};
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.retiredFilter = newState.retiredFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
   toggleOmbFilter() {
     let newState = {ombFilter: !this.state.ombFilter};
     this.setState(newState);
@@ -235,6 +248,19 @@ class DashboardSearch extends SearchStateComponent {
     this.setState(newState);
     let searchParams = this.currentSearchParameters();
     searchParams.statusFilter = newState.statusFilter;
+    this.props.search(searchParams);
+    this.props.changeFiltersCallback(newState);
+  }
+
+  toggleStageFilter(val) {
+    let newState = {stageFilter: val, retiredFilter: this.state.retiredFilter};
+    if (val === 'Retired' && !this.state.retiredFilter) {
+      newState['retiredFilter'] = true;
+    }
+    this.setState(newState);
+    let searchParams = this.currentSearchParameters();
+    searchParams.stageFilter = newState.stageFilter;
+    searchParams.retiredFilter = newState.retiredFilter;
     this.props.search(searchParams);
     this.props.changeFiltersCallback(newState);
   }
@@ -331,6 +357,10 @@ class DashboardSearch extends SearchStateComponent {
                       <input type='checkbox' className='form-check-input' name='preferred-filter' id='preferred-filter' checked={this.state.preferredFilter} onChange={() => this.togglePreferredFilter()} />
                       CDC Preferred Content Only
                     </label>
+                    <label htmlFor="retired-filter">
+                      <input type='checkbox' className='form-check-input' name='retired-filter' id='retired-filter' checked={this.state.retiredFilter} onChange={() => this.toggleRetiredFilter()} />
+                      Include Retired Content
+                    </label>
                     <label htmlFor="omb-filter">
                       <input type='checkbox' className='form-check-input' name='omb-filter' id='omb-filter' checked={this.state.ombFilter} onChange={() => this.toggleOmbFilter()} />
                       OMB Approved Content Only
@@ -339,7 +369,7 @@ class DashboardSearch extends SearchStateComponent {
                 </Col>
                 <Col sm={6}>
                   <FormGroup>
-                    <ControlLabel htmlFor="status-filter">Status: </ControlLabel>
+                    <ControlLabel htmlFor="status-filter">Visibility Status: </ControlLabel>
                     <ToggleButtonGroup
                       type="radio"
                       name="status-filter"
@@ -347,8 +377,24 @@ class DashboardSearch extends SearchStateComponent {
                       className="form-btn-group"
                       >
                       <ToggleButton value={''} onClick={() => this.toggleStatus('')}>Any</ToggleButton>
-                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Draft</ToggleButton>
-                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Published</ToggleButton>
+                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Draft (Authors Only)</ToggleButton>
+                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Published (Public)</ToggleButton>
+                    </ToggleButtonGroup>
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel htmlFor="stage-filter">Content Stage: </ControlLabel>
+                    <ToggleButtonGroup
+                      type="radio"
+                      name="stage-filter"
+                      defaultValue={this.state.stageFilter}
+                      className="form-btn-group"
+                      >
+                      <ToggleButton value={''} onClick={() => this.toggleStageFilter('')}>Any</ToggleButton>
+                      <ToggleButton value={'Draft'} onClick={() => this.toggleStageFilter('Draft')}>Draft</ToggleButton>
+                      <ToggleButton value={'Comment Only'} onClick={() => this.toggleStageFilter('Comment Only')}>Comment</ToggleButton>
+                      <ToggleButton value={'Trial Use'} onClick={() => this.toggleStageFilter('Trial Use')}>Trial</ToggleButton>
+                      <ToggleButton value={'Published'} onClick={() => this.toggleStageFilter('Published')}>Published</ToggleButton>
+                      <ToggleButton value={'Retired'} onClick={() => this.toggleStageFilter('Retired')}>Retired</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>
@@ -450,7 +496,7 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.ombFilter || this.state.preferredFilter || this.state.contentSince || this.state.ombDate || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
+            {(this.state.programFilter.length > 0 || this.state.systemFilter.length > 0 || this.state.methodsFilter.length > 0 || this.state.mostRecentFilter || this.state.ombFilter || this.state.preferredFilter || this.state.retiredFilter || this.state.contentSince || this.state.ombDate || this.state.sort !== '' || this.state.statusFilter !== '' || this.state.stageFilter !== '' || this.state.sourceFilter !== '' || this.state.categoryFilter !== '' || this.state.rtFilter !== '') && <a href="#" tabIndex="4" className="adv-search-link pull-right" onClick={(e) => {
               e.preventDefault();
               this.clearAdvSearch();
             }}>Clear Adv. Filters</a>}
@@ -482,6 +528,9 @@ class DashboardSearch extends SearchStateComponent {
             {this.state.preferredFilter &&
               <div className="adv-filter-list">Filtering by CDC preferred content</div>
             }
+            {this.state.retiredFilter &&
+              <div className="adv-filter-list">Including retired content in search results</div>
+            }
             {this.state.ombFilter &&
               <div className="adv-filter-list">Filtering by OMB approved content</div>
             }
@@ -502,7 +551,10 @@ class DashboardSearch extends SearchStateComponent {
               <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category</div>
             }
             {this.state.statusFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.statusFilter} status</div>
+              <div className="adv-filter-list">Filtering results by {this.state.statusFilter} visibility status</div>
+            }
+            {this.state.stageFilter !== '' &&
+              <div className="adv-filter-list">Filtering results by {this.state.stageFilter} content stage</div>
             }
             {this.state.sourceFilter !== '' &&
               <div className="adv-filter-list">Filtering results by {this.state.sourceFilter} source</div>

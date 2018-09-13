@@ -186,6 +186,9 @@
       bottom: 0;
       width: 40px;
     }
+    .fa-check-square {
+      color:#3a3;
+    }
   }
   .result-analytics {
     margin-top: 8px;
@@ -224,6 +227,7 @@
     font-size: 11px;
     color: $medium-gray;
     text-align: right;
+    float:right;
   }
   .result-linked-details {
     @extend .panel-body;
@@ -261,6 +265,26 @@
       font-size: 14px;
       i {
         padding: 0px 10px 0px 0px;
+      }
+    }
+  }
+}
+/* reposition the timestamp information for md screen sizes so it doesn't
+conflict with other elements of the search results widget. This is only
+needed in the medium grid size because smaller sizes use 100% width */
+@media (max-width: $screen-md-max) and (min-width: $screen-md-min) {
+  .u-result-group {
+    .result-timestamp {
+      float:none;
+      margin:5px 0;
+      p {
+        margin-bottom:0;
+        display:inline-block;
+      }
+      p:last-child {
+        margin-left:5px;
+        padding-left:5px;
+        border-left:1px solid #ace;
       }
     }
   }

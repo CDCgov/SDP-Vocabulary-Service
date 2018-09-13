@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import Linkify from 'react-linkify';
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -10,6 +11,8 @@ import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 import SectionList from "../sections/SectionList";
 
@@ -26,7 +29,7 @@ class SurveyShow extends Component {
     this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.setBreadcrumbPath([{type:'survey',id:this.props.survey.id,name:this.props.survey.name}]);
   }
 
@@ -185,8 +188,8 @@ class SurveyShow extends Component {
           {isExtendable(this.props.survey, this.props.currentUser) &&
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
           }
-          {isEditable(this.props.survey, this.props.currentUser) && this.props.survey.dupeCount > 0 &&
-              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`}>Curate ({this.props.survey.dupeCount})</Link>
+          {(isEditable(this.props.survey, this.props.currentUser) || (isRevisable(this.props.survey, this.props.currentUser))) && this.props.dupeCount > 0 &&
+              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`}>Curate ({this.props.dupeCount})</Link>
           }
         </div>
         <div className="maincontent-details">
@@ -213,7 +216,7 @@ class SurveyShow extends Component {
                   <h2 className="panel-title">Description</h2>
                 </div>
                 <div className="box-content">
-                  {this.props.survey.description}
+                  <Linkify>{this.props.survey.description}</Linkify>
                 </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="box-content">
@@ -311,7 +314,29 @@ class SurveyShow extends Component {
     let {survey, sections} = this.props;
     if(!survey || !sections){
       return (
-        <div>Loading...</div>
+      <div>
+        <div>
+          <div className="showpage_header_container no-print">
+            <ul className="list-inline">
+              <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+              <li className="showpage_title"><h1>Survey Details</h1></li>
+            </ul>
+          </div>
+        </div>
+        <Row>
+          <Col xs={12}>
+              <div className="main-content">
+                {this.props.isLoading && <LoadingSpinner msg="Loading survey..." />}
+                {this.props.loadStatus == 'failure' &&
+                  <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                }
+                {this.props.loadStatus == 'success' && survey === undefined &&
+                 <BasicAlert msg="Sorry, there is a problem loading this survey." severity='warning' />
+                }
+              </div>
+          </Col>
+        </Row>
+      </div>
       );
     }
     return (
@@ -346,11 +371,15 @@ SurveyShow.propTypes = {
   updateStageSurvey: PropTypes.func,
   setBreadcrumbPath: PropTypes.func,
   fetchSurvey: PropTypes.func,
+  dupeCount: PropTypes.number,
   setStats: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
   removeSurveyFromGroup: PropTypes.func,
   updateSurveyTags: PropTypes.func,
   stats: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };
 

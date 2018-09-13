@@ -183,7 +183,7 @@ module SDP
       DEFAULT_CONFIG = {
         mmg: true,
         de_tab_name: 'Data Elements',
-        de_coded_type: ['Coded'],
+        de_coded_type: ['Coded', 'Choice', 'Open Choice'],
         phin_vads_oid_regex: '.*oid=(.*)(&.*)*',
         de_columns: {
           section_name: 'PHIN Variable',
@@ -394,7 +394,7 @@ module SDP
 
             if item.data_element.value_set_oid
               rs = response_set_for_vads(item.data_element)
-            elsif item.data_element.value_set_tab_name.present?
+            elsif item.data_element.value_set_tab_name.present? && item.data_element.coded?
               rs = response_set_for_local(item.data_element)
             end
             if item.data_element.tag_tab_name.present?

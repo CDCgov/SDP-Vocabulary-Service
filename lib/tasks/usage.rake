@@ -1,11 +1,44 @@
+# rubocop:disable Metrics/BlockLength
+# rubocop:disable Metrics/LineLength
+# Disabling the above metrics because this is an admin rake task not actual large code base.
 namespace :usage do
   # Create a new user for the system
   task metrics: :environment do
-    puts 'Reuse:'
+    puts 'Counting Question Reuse...'
+    count_q = 0
+    Question.all.map do |q|
+      if q.sections.count > 1 || (q.sections.count == 1 && ((SectionNestedItem.where(nested_section_id: q.sections.first.id).count + SurveySection.where(section_id: q.sections.first.id).count) > 1))
+        count_q += 1
+      end
+    end
+
+    puts 'Counting Response Set Reuse...'
+    count_rs = 0
+    ResponseSet.all.map do |rs|
+      if rs.sections.count > 1 || (rs.sections.count == 1 && ((SectionNestedItem.where(nested_section_id: rs.sections.first.id).count + SurveySection.where(section_id: rs.sections.first.id).count) > 1))
+        count_rs += 1
+      end
+    end
+
+    puts 'Counting Section Reuse...'
+    count_s = 0
+    Section.all.map do |s|
+      if s.surveys.count > 1 || ((SectionNestedItem.where(nested_section_id: s.id).count + SurveySection.where(section_id: s.id).count) > 1)
+        count_s += 1
+      end
+    end
+    puts "\nMetrics:"
+    puts 'Total number of objects in the system:'
     puts '-------'
-    puts "Response Sets: #{QuestionResponseSet.group(:response_set_id).having('count(question_id) > 1').count.count}"
-    puts "Questions: #{SectionNestedItem.group(:question_id).having('count(section_id) > 1').count.count}"
-    puts "Sections: #{SurveySection.group(:section_id).having('count(survey_id) > 1').count.count}"
+    puts "Response Sets: #{ResponseSet.all.count}"
+    puts "Questions: #{Question.all.count}"
+    puts "Sections: #{Section.all.count}"
+    puts "Surveys: #{Survey.all.count}"
+    puts "\nNumber of objects being reused (i.e. if the same question is used on 5 surveys it counts as 1 question being reused):"
+    puts '-------'
+    puts "Response Sets: #{count_rs}"
+    puts "Questions: #{count_q}"
+    puts "Sections: #{count_s}"
     puts "\nExtensions:"
     puts '-----------'
     puts "Response Sets: #{ResponseSet.where.not(parent_id: nil).count}"

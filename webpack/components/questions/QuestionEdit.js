@@ -10,6 +10,7 @@ import currentUserProps from '../../prop-types/current_user_props';
 
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
+
 import ResponseSetModal from '../../containers/response_sets/ResponseSetModal';
 import ResponseSetDragWidget from '../../containers/response_sets/ResponseSetDragWidget';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
@@ -170,7 +171,8 @@ class QuestionEdit extends Component {
     const {question, categories, responseTypes} = this.props;
     const state = this.state;
     if(!question || !categories || !responseTypes){
-      return (<div>Loading....</div>);
+      return (
+      <div>Loading....</div>);
     }
     return (
       <form id="question-edit-form" onSubmit={(e) => this.handleSubmit(e)}>
@@ -215,9 +217,9 @@ class QuestionEdit extends Component {
                 </Row>
                 {categories && categories[state.categoryId] && categories[state.categoryId].subcategories && categories[state.categoryId].subcategories.length > 0 &&
                   <Row>
-                    <div className="col-md-8 question-form-group">
-                    </div>
-                    <div className="col-md-4 question-form-group">
+                    <Col md={8} className="question-form-group">
+                    </Col>
+                    <Col md={4} className="question-form-group">
                       <label className="input-label" htmlFor="subcategoryId">Subcategory</label>
                       <select className="input-select" tabIndex="3" name="subcategoryId" id="subcategoryId" value={state.subcategoryId || undefined} onChange={this.handleChange('subcategoryId')} >
                         <option value=""></option>
@@ -225,7 +227,7 @@ class QuestionEdit extends Component {
                           return <option key={s.id} value={s.id}>{s.name}</option>;
                         })}
                       </select>
-                    </div>
+                    </Col>
                   </Row>
                 }
                 <Row>
@@ -451,6 +453,9 @@ QuestionEdit.propTypes = {
   handleResponseTypeChange: PropTypes.func,
   fetchPotentialDuplicateQuestions: PropTypes.func,
   potentialDuplicates: PropTypes.object,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   currentUser: currentUserProps
 };
 

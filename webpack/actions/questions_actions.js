@@ -4,6 +4,8 @@ import { questionSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
+import store from '../store/configure_store';
+
 import {
   DELETE_QUESTION,
   SAVE_QUESTION,
@@ -16,8 +18,14 @@ import {
   ADD_ENTITIES,
   UPDATE_QUESTION_TAGS,
   UPDATE_STAGE_QUESTION,
-  MARK_AS_DUPLICATE
+  MARK_AS_DUPLICATE,
+  FETCH_QUESTION_SUCCESS,
+  FETCH_QUESTION_FAILURE,
+  FETCH_QUESTION_PENDING,
+  LINK_TO_DUPLICATE
 } from './types';
+
+const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
 
 export function deleteQuestion(id, cascade=false, callback=null) {
   return {
@@ -43,14 +51,38 @@ export function markAsDuplicate(id, replacement, survey, type) {
   };
 }
 
+export function linkToDuplicate(id, replacement, survey, type) {
+  const authenticityToken = getCSRFToken();
+  let route = '';
+  if (type === 'question'){
+    route = routes.link_to_duplicate_question_path(id);
+  } else {
+    route = routes.link_to_duplicate_response_set_path(id);
+  }
+  const putPromise = axios.put(route,
+                      {replacement, survey, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: LINK_TO_DUPLICATE,
+    payload: putPromise
+  };
+}
+
 export function fetchQuestion(id) {
+  store.dispatch({type:FETCH_QUESTION_PENDING});
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.questionPath(id), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout:AJAX_TIMEOUT
     }).then((response) => {
       const normalizedData = normalize(response.data, questionSchema);
+      store.dispatch(fetchQuestionSuccess(response.data));
       return normalizedData.entities;
+    })
+    .catch( (error) => {
+      store.dispatch(fetchQuestionFailure(error));
+      throw(new Error(error));
     })
   };
 }
@@ -164,5 +196,29 @@ export function removeQuestionFromGroup(id, group) {
     type: REMOVE_QUESTION_FROM_GROUP,
     payload: axios.put(routes.removeFromGroupQuestionPath(id),
      {authenticityToken, group}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+function fetchQuestionSuccess(question) {
+  const normalizedData = normalize(question, questionSchema);
+  return {
+    type: FETCH_QUESTION_SUCCESS,
+    payload: normalizedData.entities
+  };
+}
+
+function fetchQuestionFailure(error) {
+  let status, statusText;
+  if (!error.response) {
+    status = `${error.message}`;
+    statusText = `${error.stack}`;
+  } else {
+    status = `${error.response.status}`;
+    statusText = `${error.response.statusText}`;
+  }
+  return {
+    type: FETCH_QUESTION_FAILURE,
+    status,
+    statusText
   };
 }

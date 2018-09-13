@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Grid, Row, Col } from 'react-bootstrap';
+
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { fetchResponseSet, saveResponseSet, saveDraftResponseSet } from '../../actions/response_set_actions';
 import ResponseSetEdit from '../../components/response_sets/ResponseSetEdit';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
+
 import { responseSetProps } from '../../prop-types/response_set_props';
 
 class ResponseSetEditContainer extends Component {
@@ -67,23 +72,37 @@ class ResponseSetEditContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.params.rsId != this.props.params.rsId || prevProps.params.action != this.props.params.action) {
+    if(this.props.params.rsId && (prevProps.params.rsId != this.props.params.rsId || prevProps.params.action != this.props.params.action)) {
       this.props.fetchResponseSet(this.props.params.rsId);
     }
   }
 
   render() {
-    if(!this.props.responseSet){
+    if(!this.props.responseSet || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <div>Loading..</div>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading response set..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this response set." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
       );
     }
+
+
     let action = this.props.params.action;
     if (action === undefined) {
       action = 'new';
     }
     return (
-      <div className="container">
+      <Grid>
         <ResponseSetEdit responseSet={this.props.responseSet}
                          responseSetSubmitter={this.state.selectedResponseSetSaver}
                          action={action}
@@ -91,7 +110,7 @@ class ResponseSetEditContainer extends Component {
                          setStats={this.props.setStats}
                          route ={this.props.route}
                          router={this.props.router} />
-      </div>
+      </Grid>
     );
   }
 }
@@ -104,6 +123,9 @@ function mapStateToProps(state, ownProps) {
     props.responseSet = {version: 1};
   }
   props.stats = state.stats;
+  props.isLoading = state.ajaxStatus.responseSet.isLoading;
+  props.loadStatus = state.ajaxStatus.responseSet.loadStatus;
+  props.loadStatusText = state.ajaxStatus.responseSet.loadStatusText;
   return props;
 }
 
@@ -113,6 +135,9 @@ ResponseSetEditContainer.propTypes = {
   setStats: PropTypes.func,
   stats: PropTypes.object,
   fetchResponseSet: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   saveResponseSet: PropTypes.func,
   saveDraftResponseSet: PropTypes.func,
   params: PropTypes.object,

@@ -4,6 +4,8 @@ import { sectionSchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
+import store from '../store/configure_store';
+
 import {
   ADD_SECTION,
   REMOVE_SECTION,
@@ -22,8 +24,13 @@ import {
   ADD_NESTED_ITEM,
   REORDER_NESTED_ITEM,
   UPDATE_STAGE_SECTION,
-  REMOVE_NESTED_ITEM
+  REMOVE_NESTED_ITEM,
+  FETCH_SECTION_PENDING,
+  FETCH_SECTION_SUCCESS,
+  FETCH_SECTION_FAILURE
 } from './types';
+
+const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
 
 export function newSection() {
   return {
@@ -60,17 +67,47 @@ export function deleteSection(id, cascade, callback=null) {
 }
 
 export function fetchSection(id) {
+  store.dispatch({type:FETCH_SECTION_PENDING});
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.sectionPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'
-      }
+      },
+      timeout:AJAX_TIMEOUT
     }).then((response) => {
       const normalizedData = normalize(response.data, sectionSchema);
+      store.dispatch(fetchSectionSuccess(response.data));
       return normalizedData.entities;
+    }).catch( (error) => {
+      store.dispatch(fetchSectionFailure(error));
+      throw(new Error(error));
     })
+  };
+}
+
+function fetchSectionSuccess(section) {
+  const normalizedData = normalize(section, sectionSchema);
+  return {
+    type: FETCH_SECTION_SUCCESS,
+    payload: normalizedData.entities
+  };
+}
+
+function fetchSectionFailure(error) {
+  let status, statusText;
+  if (!error.response) {
+    status = `${error.message}`;
+    statusText = `${error.stack}`;
+  } else {
+    status = `${error.response.status}`;
+    statusText = `${error.response.statusText}`;
+  }
+  return {
+    type: FETCH_SECTION_FAILURE,
+    status,
+    statusText
   };
 }
 

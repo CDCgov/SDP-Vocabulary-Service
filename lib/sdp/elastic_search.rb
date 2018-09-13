@@ -19,7 +19,7 @@ module SDP
       def execute(current_user_id = nil, groups = [])
         batch_results = {}
         result = SDP::Elasticsearch.batch_find_duplicates(@potential_duplicates.map { |pd| pd[:object] }, current_user_id, groups)
-        if result['responses']
+        if !result.nil? && result['responses']
           result['responses'].each_with_index do |resp, i|
             pd = @potential_duplicates[i]
             filter_result = pd[:filter].call(resp)
@@ -96,7 +96,8 @@ module SDP
                       { match: { subcategory: { query: query_string } } },
                       { match: { 'createdBy.email': { query: query_string } } },
                       { match: { 'createdBy.name': { query: query_string } } },
-                      { match: { status: { query: query_string } } }
+                      { match: { status: { query: query_string } } },
+                      { match: { content_stage: { query: query_string } } }
                     ] } }
                   end
 
@@ -119,6 +120,12 @@ module SDP
                  else
                    { term: { 'id': must_filters['nested_section'] } }
                  end
+
+      retired_terms = if must_filters['retired'].blank?
+                        { match: { content_stage: 'Retired' } }
+                      else
+                        {}
+                      end
 
       must_filters['data_collection_methods'] = must_filters['data_collection_methods'] || []
       methods_terms = if must_filters['data_collection_methods'].empty?
@@ -176,6 +183,12 @@ module SDP
                      else
                        { term: { 'status': must_filters['status'] } }
                      end
+
+      stage_terms = if must_filters['stage'].blank?
+                      {}
+                    else
+                      { match: { content_stage: must_filters['stage'] } }
+                    end
 
       category_terms = if must_filters['category'].blank?
                          {}
@@ -239,9 +252,9 @@ module SDP
               must: [
                 prog_terms, sys_terms, date_terms, omb_terms, ombd_terms,
                 preferred_terms, status_terms, source_terms, rt_terms,
-                category_terms, methods_terms
+                category_terms, methods_terms, stage_terms
               ],
-              must_not: [ns_terms]
+              must_not: [ns_terms, retired_terms]
             } },
             must: must_body
           }
@@ -380,7 +393,7 @@ module SDP
         search_body << individual_search_body
       end
       with_client do |client|
-        client.msearch(body: search_body)
+        client.msearch(body: search_body) unless search_body.empty?
       end
     end
 

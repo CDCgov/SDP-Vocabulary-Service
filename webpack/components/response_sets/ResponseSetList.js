@@ -4,6 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 
 import { responseSetProps } from '../../prop-types/response_set_props';
 import SearchResult from '../SearchResult';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default class ResponseSetList extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -13,7 +14,7 @@ export default class ResponseSetList extends Component {
   render() {
     if(!this.props.responseSets){
       return (
-        <div>Loading...</div>
+        <div><LoadingSpinner msg="Loading..." /></div>
       );
     }
     return (

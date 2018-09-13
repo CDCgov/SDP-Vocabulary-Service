@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
+import Linkify from 'react-linkify';
 import Pagination from 'rc-pagination';
 import $ from 'jquery';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
@@ -12,6 +13,9 @@ import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
+
 import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
 import { sectionProps } from '../../prop-types/section_props';
@@ -30,30 +34,52 @@ class SectionShow extends Component {
     this.pageChange = this.pageChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.addBreadcrumbItem({type:'section',id:this.props.section.id,name:this.props.section.name});
   }
 
   render() {
     const {section} = this.props;
-    if(!section){
+    if(!section || this.props.loadStatus == 'failure'){
       return (
-        <div>Loading...</div>
+          <div>
+            <div>
+              <div className="showpage_header_container no-print">
+                <ul className="list-inline">
+                  <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                  <li className="showpage_title"><h1>Section Details</h1></li>
+                </ul>
+              </div>
+            </div>
+            <Row>
+              <Col xs={12}>
+                  <div className="main-content">
+                    {this.props.isLoading && <LoadingSpinner msg="Loading section..." />}
+                    {this.props.loadStatus == 'failure' &&
+                      <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                    }
+                    {this.props.loadStatus == 'success' &&
+                     <BasicAlert msg="Sorry, there is a problem loading this section." severity='warning' />
+                    }
+                  </div>
+              </Col>
+            </Row>
+          </div>
       );
     }
     return (
       <div>
         <Row>
-        <Col sm={12}>
-          <div id={"section_id_"+section.id}>
-            <div className="showpage_header_container no-print">
-              <ul className="list-inline">
-                <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
-                <li className="showpage_title"><h1>Section Details {section.contentStage && (<text>[{section.contentStage.toUpperCase()}]</text>)}</h1></li>
-              </ul>
+          <Col sm={12}>
+            <div id={"section_id_"+section.id}>
+              <div className="showpage_header_container no-print">
+                <ul className="list-inline">
+                  <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                  <li className="showpage_title"><h1>Section Details {section.contentStage && (<text>[{section.contentStage.toUpperCase()}]</text>)}</h1></li>
+                </ul>
+              </div>
             </div>
-          </div>
-        </Col>
+          </Col>
         </Row>
         <Row className="no-inside-gutter">
           {this.historyBar(section)}
@@ -281,7 +307,7 @@ class SectionShow extends Component {
                   <h2 className="panel-title">Description</h2>
                 </div>
                 <div className="box-content">
-                  {section.description}
+                  <Linkify>{section.description}</Linkify>
                 </div>
                 { section.contentStage &&
                   <div className="box-content">
@@ -397,6 +423,9 @@ SectionShow.propTypes = {
   addBreadcrumbItem: PropTypes.func,
   removePreferred: PropTypes.func,
   fetchSection: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   updateSectionTags: PropTypes.func,
   updateStageSection: PropTypes.func,
   setStats: PropTypes.func,

@@ -64,7 +64,7 @@ class SectionEditSearchContainer extends SearchManagerComponent {
     const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     return (
       <div>
-        <ul className="nav nav-tabs" role="tablist">
+        <ul className="nav nav-tabs section-edit-search-tabs" role="tablist">
           <li id="question-search-tab" className={`nav-item ${this.state.searchType === 'question' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('question')} aria-selected={this.state.searchType === 'question'}>
             <a className="nav-link" href="#" tabIndex="4" onClick={(e) => e.preventDefault()} role="tab"><i className="fa fa-tasks" aria-hidden="true"><text className='sr-only' aria-hidden="true">Click to filter search by</text></i> Questions</a>
           </li>

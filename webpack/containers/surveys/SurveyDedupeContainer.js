@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { fetchSurvey, fetchDuplicates } from '../../actions/survey_actions';
-import { markAsDuplicate } from '../../actions/questions_actions';
+import { markAsDuplicate, linkToDuplicate } from '../../actions/questions_actions';
 import { surveyProps } from '../../prop-types/survey_props';
 import SurveyDedupe from '../../components/surveys/SurveyDedupe';
 import currentUserProps from "../../prop-types/current_user_props";
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 class SurveyDedupeContainer extends Component {
   constructor(props) {
@@ -43,32 +46,52 @@ class SurveyDedupeContainer extends Component {
   render() {
     if(!this.props.survey || !this.props.potentialDupes){
       return (
-        <div>Loading... (If not redirected there may no longer be any duplicates detected for this survey - try refreshing or contacting an administrator)</div>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading &&
+                <div>
+                  <LoadingSpinner msg="Loading survey..." />
+                  <p>If not redirected there may no longer be any duplicates detected for this survey - try refreshing or contacting an administrator)</p>
+                </div>
+              }
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+            </Col>
+          </Row>
+        </Grid>
+
       );
     }
     return (
-      <div className="container survey-edit-container">
-        <div className="row">
+      <Grid className="survey-edit-container">
+        <Row>
           <div className="panel panel-default">
             <div className="panel-heading">
               <h1 className="panel-title">Curate Survey Content</h1>
             </div>
             <div className="panel-body">
-              <SurveyDedupe ref='survey'
-                            survey={this.props.survey}
-                            potentialDupes={this.props.potentialDupes}
-                            markAsDuplicate={this.props.markAsDuplicate}
-                            currentUser={this.props.currentUser} />
+              <Row>
+                <Col md={12}>
+                  <SurveyDedupe ref='survey'
+                                survey={this.props.survey}
+                                potentialDupes={this.props.potentialDupes}
+                                markAsDuplicate={this.props.markAsDuplicate}
+                                linkToDuplicate={this.props.linkToDuplicate}
+                                currentUser={this.props.currentUser} />
+                </Col>
+              </Row>
             </div>
           </div>
-        </div>
-      </div>
+        </Row>
+      </Grid>
     );
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchSurvey, fetchDuplicates, markAsDuplicate}, dispatch);
+  return bindActionCreators({setSteps, fetchSurvey, fetchDuplicates, markAsDuplicate, linkToDuplicate}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {
@@ -77,6 +100,10 @@ function mapStateToProps(state, ownProps) {
     survey: survey,
     potentialDupes: state.potentialDupes,
     currentUser: state.currentUser,
+    isLoading : state.ajaxStatus.survey.isLoading,
+    loadStatus : state.ajaxStatus.survey.loadStatus,
+    loadStatusText : state.ajaxStatus.survey.loadStatusText
+
   };
 }
 
@@ -88,6 +115,10 @@ SurveyDedupeContainer.propTypes = {
   fetchSurvey: PropTypes.func,
   fetchDuplicates: PropTypes.func,
   markAsDuplicate: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
+  linkToDuplicate: PropTypes.func,
   currentUser: currentUserProps,
 };
 

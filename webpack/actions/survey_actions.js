@@ -4,6 +4,8 @@ import { surveySchema } from '../schema';
 import routes from '../routes';
 import { deleteObject } from './action_helpers';
 import { getCSRFToken } from './index';
+import store from '../store/configure_store';
+
 import {
   SAVE_SURVEY,
   SAVE_DRAFT_SURVEY,
@@ -19,9 +21,14 @@ import {
   UPDATE_IMPORT_SESSION,
   ATTEMPT_IMPORT_FILE,
   UPDATE_STAGE_SURVEY,
-  FETCH_DUPLICATES
+  FETCH_DUPLICATES,
+  FETCH_SURVEY_PENDING,
+  FETCH_SURVEY_SUCCESS,
+  FETCH_SURVEY_FAILURE,
+  FETCH_DUPLICATE_COUNT
 } from './types';
 
+const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
 
 export function newSurvey() {
   return {
@@ -37,17 +44,47 @@ export function deleteSurvey(id, cascade, callback=null) {
 }
 
 export function fetchSurvey(id) {
+  store.dispatch({type:FETCH_SURVEY_PENDING});
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.surveyPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'
-      }
+      },
+      timeout:AJAX_TIMEOUT
     }).then((surveyResponse) => {
       const normalizedData = normalize(surveyResponse.data, surveySchema);
+      store.dispatch(fetchSurveySuccess(surveyResponse.data));
       return normalizedData.entities;
+    }).catch( (error) => {
+      store.dispatch(fetchSurveyFailure(error));
+      throw(new Error(error));
     })
+  };
+}
+
+function fetchSurveySuccess(survey) {
+  const normalizedData = normalize(survey, surveySchema);
+  return {
+    type: FETCH_SURVEY_SUCCESS,
+    payload: normalizedData.entities
+  };
+}
+
+function fetchSurveyFailure(error) {
+  let status, statusText;
+  if (!error.response) {
+    status = `${error.message}`;
+    statusText = `${error.stack}`;
+  } else {
+    status = `${error.response.status}`;
+    statusText = `${error.response.statusText}`;
+  }
+  return {
+    type: FETCH_SURVEY_FAILURE,
+    status,
+    statusText
   };
 }
 
@@ -55,6 +92,18 @@ export function fetchDuplicates(id) {
   return {
     type: FETCH_DUPLICATES,
     payload: axios.get(routes.duplicatesSurveyPath(id), {
+      headers: {
+        'X-Key-Inflection': 'camel',
+        'Accept': 'application/json'
+      }
+    })
+  };
+}
+
+export function fetchDuplicateCount(id) {
+  return {
+    type: FETCH_DUPLICATE_COUNT,
+    payload: axios.get(routes.duplicateCountSurveyPath(id), {
       headers: {
         'X-Key-Inflection': 'camel',
         'Accept': 'application/json'

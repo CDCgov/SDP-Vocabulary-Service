@@ -20,7 +20,7 @@ module Versionable
     if self.class.to_s != 'Survey' && oid && version > 1
       prev_version = self.class.find_by(version_independent_id: version_independent_id,
                                         version: version - 1)
-      errors.add(:oid, 'OID has to be the same as previous version') if prev_version.oid && prev_version.oid != oid
+      errors.add(:oid, 'OID has to be the same as previous version') if prev_version && prev_version.oid && prev_version.oid != oid
     end
   end
 

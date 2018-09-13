@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { denormalize } from 'normalizr';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sectionSchema } from '../../schema';
@@ -17,6 +17,8 @@ import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { questionsProps } from '../../prop-types/question_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
 
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 
 class SectionEditContainer extends Component {
 
@@ -135,14 +137,26 @@ class SectionEditContainer extends Component {
   }
 
   render() {
-    if(!this.props.section || !this.props.questions || !this.props.sections){
+    if(!this.props.section || !this.props.questions || !this.props.sections || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <div>Loading...</div>
+        <Grid className="basic-bg">
+          <Row>
+            <Col xs={12}>
+              {this.props.isLoading && <LoadingSpinner msg="Loading section..." />}
+              {this.props.loadStatus == 'failure' &&
+                <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+              }
+              {this.props.loadStatus == 'success' &&
+               <BasicAlert msg="Sorry, there is a problem loading this section." severity='warning' />
+              }
+            </Col>
+          </Row>
+        </Grid>
       );
     }
 
     return (
-      <div className="section-edit-container">
+      <Grid className="section-edit-container">
         <QuestionModalContainer route ={this.props.route}
                                 router={this.props.router}
                                 showModal={this.state.showQuestionModal}
@@ -184,7 +198,7 @@ class SectionEditContainer extends Component {
             </Row>
           </div>
         </Row>
-      </div>
+      </Grid>
     );
   }
 }
@@ -215,7 +229,10 @@ function mapStateToProps(state, ownProps) {
     sections: state.sections,
     stats: state.stats,
     selectedQuestions: selectedQuestions,
-    selectedSections: selectedSections
+    selectedSections: selectedSections,
+    isLoading : state.ajaxStatus.section.isLoading,
+    loadStatus : state.ajaxStatus.section.loadStatus,
+    loadStatusText : state.ajaxStatus.section.loadStatusText
   };
 }
 
@@ -233,6 +250,9 @@ SectionEditContainer.propTypes = {
   newSection:  PropTypes.func,
   saveSection: PropTypes.func,
   fetchSection: PropTypes.func,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   addNestedItem: PropTypes.func,
   saveDraftSection: PropTypes.func,
   fetchQuestion: PropTypes.func,

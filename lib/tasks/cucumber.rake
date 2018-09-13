@@ -10,6 +10,15 @@ unless ARGV.any? {|a| a =~ /^gems/} # Don't load anything when running the gems:
 vendored_cucumber_bin = Dir["#{Rails.root}/vendor/{gems,plugins}/cucumber*/bin/cucumber"].first
 $LOAD_PATH.unshift(File.dirname(vendored_cucumber_bin) + '/../lib') unless vendored_cucumber_bin.nil?
 
+def run_rake_task(name)
+  begin
+    Rake::Task[name].invoke
+  rescue Exception => e
+    return false
+  end
+  true
+end
+
 begin
   require 'cucumber/rake/task'
 
@@ -18,6 +27,7 @@ begin
       t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
       t.fork = true # You may get faster startup if you set this to false
       t.profile = 'default'
+      t.cucumber_opts = ["--format rerun --out rerun.txt"]
     end
 
     Cucumber::Rake::Task.new({:wip => 'test:prepare'}, 'Run features that are being worked on') do |t|
@@ -29,7 +39,7 @@ begin
     Cucumber::Rake::Task.new({:rerun => 'test:prepare'}, 'Record failing features and run only them if any exist') do |t|
       t.binary = vendored_cucumber_bin
       t.fork = true # You may get faster startup if you set this to false
-      t.profile = 'rerun'
+      t.cucumber_opts = ["@rerun.txt"]
     end
 
     desc 'Run all features'
@@ -50,8 +60,18 @@ begin
       end
     end
   end
+
   desc 'Alias for cucumber:ok'
-  task :cucumber => 'cucumber:ok'
+  task :cucumber do
+    first_successful = run_rake_task('cucumber:ok')
+    rerun_successful = true
+    unless first_successful
+      rerun_successful = run_rake_task('cucumber:rerun')
+    end
+    unless first_successful || rerun_successful
+      raise 'Cucumber tests failed!'
+    end
+  end
 
   task :features => :cucumber do
     STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
@@ -70,11 +90,10 @@ begin
     t.cucumber_opts = "features --profile html_report"
   end
 
-rescue LoadError
-  desc 'cucumber rake task not available (cucumber not installed)'
-  task :cucumber do
-    abort 'Cucumber rake task is not available. Be sure to install cucumber as a gem or plugin'
+  rescue LoadError
+    desc 'cucumber rake task not available (cucumber not installed)'
+    task :cucumber do
+      abort 'Cucumber rake task is not available. Be sure to install cucumber as a gem or plugin'
+    end
   end
-end
-
 end

@@ -9,6 +9,8 @@ import {
   REORDER_NESTED_ITEM,
   CREATE_SECTION,
   ADD_ENTITIES_FULFILLED,
+  ADD_ENTITIES_PENDING,
+  ADD_ENTITIES_REJECTED,
   ADD_SECTION_TO_GROUP_FULFILLED,
   REMOVE_SECTION_FROM_GROUP_FULFILLED,
   UPDATE_SECTION_TAGS_FULFILLED,
@@ -19,8 +21,12 @@ import * as helpers from './helpers';
 export default function sections(state = {}, action) {
   let section, newState, newSection, responseSetId, sni, sniType, qid, nsid;
   switch (action.type) {
+    case ADD_ENTITIES_PENDING:
+      return Object.assign({},state);
     case ADD_ENTITIES_FULFILLED:
       return Object.assign({}, state, action.payload.sections);
+    case ADD_ENTITIES_REJECTED:
+      return Object.assign({}, state);
     case PUBLISH_SECTION_FULFILLED:
     case RETIRE_SECTION_FULFILLED:
     case SAVE_DRAFT_SECTION_FULFILLED:

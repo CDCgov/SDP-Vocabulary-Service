@@ -3,13 +3,18 @@ import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid } from 'react-bootstrap';
+import { hashHistory } from 'react-router';
+
+import { Grid, Row, Col } from 'react-bootstrap';
 import { fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BasicAlert from '../../components/BasicAlert';
 import ResponseSetShow from '../../components/response_sets/ResponseSetShow';
+
 import { responseSetProps } from '../../prop-types/response_set_props';
 import { responseSetSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
@@ -17,6 +22,7 @@ import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 
 class ResponseSetShowContainer extends Component {
+
   componentWillMount() {
     this.props.fetchResponseSet(this.props.params.rsId);
   }
@@ -65,9 +71,31 @@ class ResponseSetShowContainer extends Component {
   }
 
   render() {
-    if(this.props.responseSet === undefined || this.props.responseSet.name === undefined){
+    if(this.props.responseSet === undefined || this.props.responseSet.name === undefined || this.props.isLoading || this.props.loadStatus == 'failure'){
       return (
-        <Grid className="basic-bg">Loading..</Grid>
+              <Grid className="basic-bg">
+                <div>
+                  <div className="showpage_header_container no-print">
+                    <ul className="list-inline">
+                      <li className="showpage_button"><span className="fa fa-arrow-left fa-2x" aria-hidden="true" onClick={hashHistory.goBack}></span></li>
+                      <li className="showpage_title"><h1>Response Set Details</h1></li>
+                    </ul>
+                  </div>
+                </div>
+                <Row>
+                  <Col xs={12}>
+                      <div className="main-content">
+                        {this.props.isLoading && <LoadingSpinner msg="Loading response set..." />}
+                        {this.props.loadStatus == 'failure' &&
+                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                        }
+                        {this.props.loadStatus == 'success' &&
+                         <BasicAlert msg="Sorry, there is a problem loading this response set." severity='warning' />
+                        }
+                      </div>
+                  </Col>
+                </Row>
+              </Grid>
       );
     }
     return (
@@ -86,6 +114,9 @@ function mapStateToProps(state, ownProps) {
   props.responseSet = denormalize(state.responseSets[ownProps.params.rsId], responseSetSchema, state);
   props.publishers = state.publishers;
   props.stats = state.stats;
+  props.isLoading = state.ajaxStatus.responseSet.isLoading;
+  props.loadStatus = state.ajaxStatus.responseSet.loadStatus;
+  props.loadStatusText = state.ajaxStatus.responseSet.loadStatusText;
   return props;
 }
 
@@ -112,6 +143,9 @@ ResponseSetShowContainer.propTypes = {
   stats: PropTypes.object,
   params: PropTypes.object,
   router: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool,
+  loadStatus : PropTypes.string,
+  loadStatusText : PropTypes.string,
   publishers: publishersProps
 };
 

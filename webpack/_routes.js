@@ -597,6 +597,9 @@ Based on Rails routes of Vocabulary::Application
 // destroy_user_session => /users/sign_out(.:format)
   // function(options)
   destroy_user_session_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"sign_out",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// duplicate_count_survey => /surveys/:id/duplicate_count(.:format)
+  // function(id, options)
+  duplicate_count_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"duplicate_count",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // duplicates_survey => /surveys/:id/duplicates(.:format)
   // function(id, options)
   duplicates_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"duplicates",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -645,6 +648,12 @@ Based on Rails routes of Vocabulary::Application
 // landing_stats => /landing/stats(.:format)
   // function(options)
   landing_stats_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"landing",false],[2,[7,"/",false],[2,[6,"stats",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// link_to_duplicate_question => /questions/:id/link_to_duplicate(.:format)
+  // function(id, options)
+  link_to_duplicate_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"link_to_duplicate",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// link_to_duplicate_response_set => /response_sets/:id/link_to_duplicate(.:format)
+  // function(id, options)
+  link_to_duplicate_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"link_to_duplicate",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // mark_as_duplicate_question => /questions/:id/mark_as_duplicate(.:format)
   // function(id, options)
   mark_as_duplicate_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"mark_as_duplicate",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
