@@ -10,7 +10,7 @@ export default class CodedSetTable extends Component {
     }
     return (
       <table className="table table-striped coded-set-table">
-        <caption>Information about associated {this.props.itemName}s:</caption>
+        <caption>Table of {this.props.itemName}s:</caption>
         <thead>
           <tr>
             <th scope="col" id="display-name-column">{this.props.itemName === 'Response' ? 'Display Name' : `${this.props.itemName} Name`}</th>

@@ -8,7 +8,8 @@ module SDP
                    max_vs_length: 100,
                    user_latest: true ,
                    proxy: {}}.freeze
-      RS_STATUS_MAPPING = { 'Un-Published' => 'draft', 'Published' => 'published', 'Retired' => 'deprecated' }.freeze
+      RS_STATUS_MAPPING = { 'Un-Published' => 'draft', 'Published' => 'published', 'Retired' => 'published' }.freeze
+      RS_STAGE_MAPPING = { 'Un-Published' => 'Draft', 'Published' => 'Published', 'Retired' => 'Retired' }.freeze
       def initialize(args = {})
         @params = DEFAULTS.merge(args)
         puts 'Initializing PhinVadsImporter with params:'
@@ -78,6 +79,7 @@ module SDP
           prev = ResponseSet.where(oid: vset.oid, version: ver.versionNumber - 1).first
           # are there already response sets in the db for the valueset oid
           status = RS_STATUS_MAPPING[ver.status] || 'draft'
+          stage = RS_STAGE_MAPPING[ver.status] || 'Draft'
           # need to force encode name and definitionText fields due to the way the hessian lib works
           # some ugly chars come across in the fields at times and need to be dealt with before
           # saving to the database
@@ -87,6 +89,7 @@ module SDP
                                  oid: vset.oid.delete("\u0000"),
                                  version: ver.versionNumber,
                                  status: status.delete("\u0000"),
+                                 content_stage: stage.delete("\u0000"),
                                  created_by: user,
                                  parent: prev,
                                  version_independent_id: prev ? prev.version_independent_id : nil,

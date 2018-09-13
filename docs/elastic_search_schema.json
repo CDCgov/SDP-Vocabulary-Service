@@ -716,6 +716,9 @@
             }
           }
         },
+        "responseCount": {
+          "type": "long"
+        },
         "codes": {
           "properties": {
             "code": {

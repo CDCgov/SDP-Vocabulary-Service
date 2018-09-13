@@ -23,6 +23,7 @@ class ESResponseSetSerializer < ActiveModel::Serializer
   attribute :preferred
   attribute :omb
   attribute :source
+  attribute :response_count
 
   def most_recent
     object.most_recent?
@@ -32,8 +33,16 @@ class ESResponseSetSerializer < ActiveModel::Serializer
     object.omb_approved?
   end
 
+  def response_count
+    object.responses.count
+  end
+
   def codes
-    object.responses.collect { |c| CodeSerializer.new(c).as_json }
+    if object.responses.count <= 25
+      object.responses.collect { |c| CodeSerializer.new(c).as_json }
+    else
+      object.responses.first(25).collect { |c| CodeSerializer.new(c).as_json }
+    end
   end
 
   def groups

@@ -17,7 +17,7 @@ class ResponseSetEditContainer extends Component {
     super(props);
     let selectedResponseSetSaver = this.props.saveResponseSet;
     if (this.props.params.rsId) {
-      this.props.fetchResponseSet(this.props.params.rsId);
+      this.props.fetchResponseSet(this.props.params.rsId, true);
       if (this.props.params.action === 'edit') {
         selectedResponseSetSaver = this.props.saveDraftResponseSet;
       }
@@ -73,7 +73,7 @@ class ResponseSetEditContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if(this.props.params.rsId && (prevProps.params.rsId != this.props.params.rsId || prevProps.params.action != this.props.params.action)) {
-      this.props.fetchResponseSet(this.props.params.rsId);
+      this.props.fetchResponseSet(this.props.params.rsId, true);
     }
   }
 
