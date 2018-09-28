@@ -17,6 +17,8 @@ end
 
 json.versions @survey.paper_trail_versions do |version|
   json.extract! version, :created_at, :comment
+  json.tags JSON.parse(version.associations['tags'].gsub('=>', ':')) if version.associations['tags']
+  json.sections JSON.parse(version.associations['sections'].gsub('=>', ':')) if version.associations['sections']
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
   version.changeset.each_pair do |field, arr|
@@ -24,6 +26,8 @@ json.versions @survey.paper_trail_versions do |version|
       before_name = field.chomp('_id').camelize.constantize.find(arr[0]).name if arr[0]
       after_name = field.chomp('_id').camelize.constantize.find(arr[1]).name if arr[1]
       temp_hash[field.chomp('_id').humanize] = [before_name, after_name]
+    elsif field == 'minor_change_count'
+      next
     else
       temp_hash[field.humanize] = arr
     end

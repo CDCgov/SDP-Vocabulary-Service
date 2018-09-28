@@ -68,15 +68,17 @@ module SDP
       # Create a new ResponseSet set based on the the PHIN VADS Valueset and Version
       def create_vs_and_responses(vset, ver)
         # make sure it doesn't exist yet
-        rset = ResponseSet.where(oid: vset.oid, version: ver.versionNumber).first
+        rset = ResponseSet.where(oid: vset.oid.strip, version: ver.versionNumber).first
         if rset && !params[:force_reload]
           logger.debug "Valueset #{vset.oid} version: #{ver.versionNumber} already exists in systems "
         elsif rset && params[:force_reload]
+          rset.name = (vset.name || '').force_encoding('ISO-8859-1').encode('UTF-8').delete("\u0000")
+          rset.description = (vset.definitionText || '').force_encoding('ISO-8859-1').encode('UTF-8').delete("\u0000")
           rset.responses = []
           import_valueset_codes(rset, ver.id)
           rset.save
         else
-          prev = ResponseSet.where(oid: vset.oid, version: ver.versionNumber - 1).first
+          prev = ResponseSet.where(oid: vset.oid.strip, version: ver.versionNumber - 1).first
           # are there already response sets in the db for the valueset oid
           status = RS_STATUS_MAPPING[ver.status] || 'draft'
           stage = RS_STAGE_MAPPING[ver.status] || 'Draft'
@@ -86,7 +88,7 @@ module SDP
           rset = ResponseSet.new(name: (vset.name || '').force_encoding('ISO-8859-1').encode('UTF-8').delete("\u0000"),
                                  description: (vset.definitionText || '').force_encoding('ISO-8859-1').encode('UTF-8').delete("\u0000"),
                                  parent_id: nil,
-                                 oid: vset.oid.delete("\u0000"),
+                                 oid: vset.oid.strip.delete("\u0000"),
                                  version: ver.versionNumber,
                                  status: status.delete("\u0000"),
                                  content_stage: stage.delete("\u0000"),

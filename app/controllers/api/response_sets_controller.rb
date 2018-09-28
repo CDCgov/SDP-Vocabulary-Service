@@ -15,7 +15,7 @@ module Api
     end
 
     def show
-      @value_set = ResponseSet.by_id_and_version(params[:id], params[:version])
+      @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
         not_found
         return
@@ -24,7 +24,7 @@ module Api
     end
 
     def usage
-      @value_set = ResponseSet.by_id_and_version(params[:id], params[:version])
+      @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
         not_found
         return

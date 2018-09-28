@@ -11,6 +11,10 @@ end
 
 json.versions section.paper_trail_versions do |version|
   json.extract! version, :created_at, :comment
+  json.tags JSON.parse(version.associations['tags'].gsub('=>', ':')) if version.associations['tags']
+  json.nested_items JSON.parse(version.associations['nested items'].gsub('=>', ':')) if version.associations['nested items']
+  json.pdv JSON.parse(version.associations['pdv'].gsub('=>', ':')) if version.associations['pdv']
+  json.response_sets JSON.parse(version.associations['response sets'].gsub('=>', ':')) if version.associations['response sets']
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
   version.changeset.each_pair do |field, arr|
@@ -18,6 +22,8 @@ json.versions section.paper_trail_versions do |version|
       before_name = field.chomp('_id').camelize.constantize.find(arr[0]).name if arr[0]
       after_name = field.chomp('_id').camelize.constantize.find(arr[1]).name if arr[1]
       temp_hash[field.chomp('_id').humanize] = [before_name, after_name]
+    elsif field == 'minor_change_count'
+      next
     else
       temp_hash[field.humanize] = arr
     end

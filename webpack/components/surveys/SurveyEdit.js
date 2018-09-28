@@ -89,23 +89,48 @@ class SurveyEdit extends Component {
         this.state = this.stateForNew(props.currentUser);
     }
     this.unsavedState = false;
+    this.associationChanges = {};
     this.lastSectionCount = this.state.surveySections.length;
   }
 
   componentDidMount() {
     this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
     window.onbeforeunload = this.windowWillUnload.bind(this);
+    if(this.props.sections && !this.associationChanges['sections']) {
+      this.associationChanges['sections'] = {original: this.state.surveySections.map((ss) => {
+        let ss_name = this.props.sections[ss.sectionId].name || '';
+        return {id: ss.id, name: ss_name};
+      }), updated: this.state.surveySections.map((ss) => {
+        let ss_name = this.props.sections[ss.sectionId].name || '';
+        return {id: ss.sectionId, name: ss_name};
+      })};
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(this.lastSectionCount !== prevState.surveySections.length) {
-      this.unsavedState  = true;
+      this.unsavedState = true;
+      if (this.associationChanges['sections']) {
+        this.associationChanges['sections']['updated'] = this.state.surveySections.map((ss) => {
+          let ss_name = this.props.sections[ss.sectionId].name || '';
+          return {id: ss.sectionId, name: ss_name};
+        });
+      } else {
+        this.associationChanges['sections'] = {original: prevState.surveySections.map((ss) => {
+          let ss_name = prevProps.sections[ss.sectionId].name || '';
+          return {id: ss.id, name: ss_name};
+        }), updated: this.state.surveySections.map((ss) => {
+          let ss_name = this.props.sections[ss.sectionId].name || '';
+          return {id: ss.sectionId, name: ss_name};
+        })};
+      }
       this.lastSectionCount = prevState.surveySections.length;
     }
   }
 
   componentWillUnmount() {
     this.unsavedState = false;
+    this.associationChanges = {};
     this.unbindHook();
   }
 
@@ -116,6 +141,11 @@ class SurveyEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
+    if (this.associationChanges['tags']) {
+      this.associationChanges['tags']['updated'] = newConcepts;
+    } else {
+      this.associationChanges['tags'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+    }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
     this.unsavedState = true;
   }
@@ -124,15 +154,17 @@ class SurveyEdit extends Component {
     this.setState({ showModal: false });
     if(leavePage){
       this.unsavedState = false;
+      this.associationChanges = {};
       this.props.router.push(this.nextLocation.pathname);
     }else{
       let survey = Object.assign({}, this.state);
       // Because we were saving SurveySections with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
       // At some point, we can remove this code
       survey.linkedSections = this.state.surveySections.map((sect, i) => ({id: sect.id, surveyId: sect.surveyId, sectionId: sect.sectionId, position: i}));
-      this.props.surveySubmitter(survey, this.state.comment, (response) => {
+      this.props.surveySubmitter(survey, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
         // TODO: Handle when the saving survey fails.
         this.unsavedState = false;
+        this.associationChanges = {};
         if (response.status === 201) {
           this.props.router.push(this.nextLocation.pathname);
         }
@@ -158,8 +190,9 @@ class SurveyEdit extends Component {
     // Because of the way we have to pass the current sections in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
     survey.linkedSections = this.state.surveySections;
-    this.props.surveySubmitter(survey, this.state.comment, (response) => {
+    this.props.surveySubmitter(survey, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
       this.unsavedState = false;
+      this.associationChanges = {};
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
         stats.surveyCount = this.props.stats.surveyCount + 1;

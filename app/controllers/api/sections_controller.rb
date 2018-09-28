@@ -20,7 +20,7 @@ module Api
 
     def show
       @section = Section.includes(:published_by, section_nested_items: [{ response_set: :responses },
-                                                                        :question, :nested_section]).by_id_and_version(params[:id], params[:version])
+                                                                        :question, :nested_section]).by_id_and_version(params[:id].upcase, params[:version])
       if @section.nil?
         not_found
         return
@@ -29,7 +29,7 @@ module Api
     end
 
     def usage
-      @section = Section.by_id_and_version(params[:id], params[:version])
+      @section = Section.by_id_and_version(params[:id].upcase, params[:version])
       if @section.nil?
         not_found
         return

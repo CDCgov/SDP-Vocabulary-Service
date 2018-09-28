@@ -4,7 +4,8 @@ class QuestionsController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   # GET /questions.json
@@ -139,6 +140,7 @@ class QuestionsController < ApplicationController
     if @question.status == 'published' || @question.version_independent_id != question_params[:version_independent_id]
       render json: @question.errors, status: :unprocessable_entity
     else
+      @question.minor_change_count += 1 if params[:unsaved_state]
       update_response_sets(params)
       @question.update_concepts('Question')
       @question.updated_by = current_user

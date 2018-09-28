@@ -9,3 +9,4 @@ Make sure you have checked off the following before you issue your Pull Request:
 - [ ] If any database changes were made, run `rake generate_erd` to update the README.md
 - [ ] If any changes were made to config/routes.rb run `rake jsroutes:generate`
 - [ ] If any HTML was added or modified check to make sure it was still 508 compliant with WAVE tool / carried over any attributes from similar sections
+- [ ] Ensure all code has been appropriately commented inline per standard convention

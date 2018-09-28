@@ -4,7 +4,8 @@ class SectionsController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   # GET /sections
@@ -51,6 +52,7 @@ class SectionsController < ApplicationController
     else
       update_successful = nil
       @section.transaction do
+        @section.minor_change_count += 1 if params[:unsaved_state]
         @section.section_nested_items = update_section_nested_items
         @section.update_concepts('Section')
         # When we assign update_successful, it is the last expression in the block
