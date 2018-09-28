@@ -17,7 +17,7 @@ class ResponseSetModal extends Component {
   }
 
   saveNewResponseSet(newResponseSet){
-    this.props.saveResponseSet(newResponseSet, '', (successResponse) => {
+    this.props.saveResponseSet(newResponseSet, '', false, {}, (successResponse) => {
       this.setState({errors: null});
       this.props.saveResponseSetSuccess(successResponse);
     }, (failureResponse) => {
