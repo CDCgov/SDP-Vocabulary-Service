@@ -232,18 +232,18 @@ class SectionEdit extends Component {
   }
 
   writeAssociationChanges(snis) {
-    let sni_id, sni_name, sni_type;
+    let sniId, sniName, sniType;
     return snis.map((sni) => {
       if (sni.nestedSectionId) {
-        sni_id = sni.nestedSectionId;
-        sni_name = this.props.sections[sni.nestedSectionId].name;
-        sni_type = 'section'
+        sniId = sni.nestedSectionId;
+        sniName = this.props.sections[sni.nestedSectionId].name;
+        sniType = 'section';
       } else {
-        sni_id = sni.questionId;
-        sni_name = this.props.questions[sni.questionId].name || this.props.questions[sni.questionId].content;
-        sni_type = 'question'
+        sniId = sni.questionId;
+        sniName = this.props.questions[sni.questionId].name || this.props.questions[sni.questionId].content;
+        sniType = 'question';
       }
-      return {id: sni_id, name: sni_name, type: sni_type};
+      return {id: sniId, name: sniName, type: sniType};
     });
   }
 

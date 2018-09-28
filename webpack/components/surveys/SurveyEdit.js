@@ -98,11 +98,11 @@ class SurveyEdit extends Component {
     window.onbeforeunload = this.windowWillUnload.bind(this);
     if(this.props.sections && !this.associationChanges['sections']) {
       this.associationChanges['sections'] = {original: this.state.surveySections.map((ss) => {
-        let ss_name = this.props.sections[ss.sectionId].name || '';
-        return {id: ss.id, name: ss_name};
+        let ssName = this.props.sections[ss.sectionId].name || '';
+        return {id: ss.id, name: ssName};
       }), updated: this.state.surveySections.map((ss) => {
-        let ss_name = this.props.sections[ss.sectionId].name || '';
-        return {id: ss.sectionId, name: ss_name};
+        let ssName = this.props.sections[ss.sectionId].name || '';
+        return {id: ss.sectionId, name: ssName};
       })};
     }
   }
@@ -112,16 +112,16 @@ class SurveyEdit extends Component {
       this.unsavedState = true;
       if (this.associationChanges['sections']) {
         this.associationChanges['sections']['updated'] = this.state.surveySections.map((ss) => {
-          let ss_name = this.props.sections[ss.sectionId].name || '';
-          return {id: ss.sectionId, name: ss_name};
+          let ssName = this.props.sections[ss.sectionId].name || '';
+          return {id: ss.sectionId, name: ssName};
         });
       } else {
         this.associationChanges['sections'] = {original: prevState.surveySections.map((ss) => {
-          let ss_name = prevProps.sections[ss.sectionId].name || '';
-          return {id: ss.id, name: ss_name};
+          let ssName = prevProps.sections[ss.sectionId].name || '';
+          return {id: ss.id, name: ssName};
         }), updated: this.state.surveySections.map((ss) => {
-          let ss_name = this.props.sections[ss.sectionId].name || '';
-          return {id: ss.sectionId, name: ss_name};
+          let ssName = this.props.sections[ss.sectionId].name || '';
+          return {id: ss.sectionId, name: ssName};
         })};
       }
       this.lastSectionCount = prevState.surveySections.length;
