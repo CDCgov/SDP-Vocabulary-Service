@@ -156,18 +156,18 @@ export function removeSectionFromGroup(id, group) {
   };
 }
 
-export function saveSection(section, comment, successHandler=null, failureHandler=null) {
+export function saveSection(section, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const fn = axios.post;
-  const postPromise = createPostPromise(section, comment, routes.sectionsPath(), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(section, comment, unsavedState, associationChanges, routes.sectionsPath(), fn, successHandler, failureHandler);
   return {
     type: SAVE_SECTION,
     payload: postPromise
   };
 }
 
-export function saveDraftSection(section, comment, successHandler=null, failureHandler=null) {
+export function saveDraftSection(section, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const fn = axios.put;
-  const postPromise = createPostPromise(section, comment, routes.sectionPath(section.id), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(section, comment, unsavedState, associationChanges, routes.sectionPath(section.id), fn, successHandler, failureHandler);
   return {
     type: SAVE_DRAFT_SECTION,
     payload: postPromise
@@ -217,11 +217,11 @@ export function updatePDV(id, sniId, pdv) {
   };
 }
 
-function createPostPromise(section, comment, url, fn, successHandler=null, failureHandler=null) {
+function createPostPromise(section, comment, unsavedState, associationChanges, url, fn, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   section.questionsAttributes = section.questions;
   const postPromise = fn(url,
-                      {section, comment, authenticityToken},
+                      {section, comment, unsavedState, associationChanges, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (successHandler) {
     postPromise.then(successHandler);

@@ -12,6 +12,7 @@ export default class ResponseSetEdit extends Component {
   constructor(props) {
     super(props);
     this.unsavedState = false;
+    this.associationChanges = {};
     switch (this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(this.props.responseSet);
@@ -37,6 +38,7 @@ export default class ResponseSetEdit extends Component {
 
   componentWillUnmount() {
     this.unsavedState = false;
+    this.associationChanges = {};
     if(this.unbindHook){
       this.unbindHook();
     }
@@ -54,8 +56,9 @@ export default class ResponseSetEdit extends Component {
       this.unsavedState = false;
       this.props.router.push(this.nextLocation.pathname);
     }else{
-      this.props.responseSetSubmitter(this.state, this.state.comment, () => {
+      this.props.responseSetSubmitter(this.state, this.state.comment, this.unsavedState, this.associationChanges, () => {
         this.unsavedState = false;
+        this.associationChanges = {};
         this.props.router.push(this.nextLocation.pathname);
       }, (failureResponse) => {
         this.setState({errors: failureResponse.response.data});
@@ -201,8 +204,9 @@ export default class ResponseSetEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     let responseSet = Object.assign({}, this.state);
-    this.props.responseSetSubmitter(responseSet, this.state.comment, (successResponse) => {
+    this.props.responseSetSubmitter(responseSet, this.state.comment, this.unsavedState, this.associationChanges, (successResponse) => {
       this.unsavedState = false;
+      this.associationChanges = {};
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
         stats.responseSetCount = this.props.stats.responseSetCount + 1;
@@ -216,6 +220,11 @@ export default class ResponseSetEdit extends Component {
   }
 
   handleResponsesChange(newResponses) {
+    if (this.associationChanges['responses']) {
+      this.associationChanges['responses']['updated'] = newResponses;
+    } else {
+      this.associationChanges['responses'] = {original: this.state.responsesAttributes, updated: newResponses};
+    }
     this.setState({responsesAttributes: newResponses});
     this.unsavedState = true;
   }

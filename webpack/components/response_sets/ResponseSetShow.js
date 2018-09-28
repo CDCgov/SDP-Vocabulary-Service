@@ -276,6 +276,12 @@ export default class ResponseSetShow extends Component {
                   {responseSet.publishedBy.email}
                 </div>
                 }
+                { responseSet.oid &&
+                <div className="box-content">
+                  <strong>OID: </strong>
+                  {responseSet.oid}
+                </div>
+                }
               </div>
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">

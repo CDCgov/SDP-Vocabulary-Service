@@ -4,7 +4,8 @@ class ResponseSetsController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   # GET /response_sets
@@ -138,6 +139,7 @@ class ResponseSetsController < ApplicationController
   # PATCH/PUT /response_sets/1.json
   def update
     if @response_set.status == 'draft' && @response_set.version_independent_id == response_set_params[:version_independent_id]
+      @response_set.minor_change_count += 1 if params[:unsaved_state]
       @response_set.updated_by = current_user
       update_responses(params)
 

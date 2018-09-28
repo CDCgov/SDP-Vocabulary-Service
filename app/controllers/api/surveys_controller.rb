@@ -20,7 +20,7 @@ module Api
     end
 
     def show
-      @survey = Survey.by_id_and_version(params[:id], params[:version])
+      @survey = Survey.by_id_and_version(params[:id].upcase, params[:version])
       if @survey.nil?
         not_found
         return

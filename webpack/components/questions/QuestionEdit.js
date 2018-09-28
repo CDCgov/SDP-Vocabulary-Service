@@ -37,6 +37,7 @@ class QuestionEdit extends Component {
     this.handleDataCollectionMethodsChange = this.handleDataCollectionMethodsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
     this.unsavedState = false;
+    this.associationChanges = {};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,6 +70,7 @@ class QuestionEdit extends Component {
 
   componentWillUnmount() {
     this.unsavedState = false;
+    this.associationChanges = {};
     window.onbeforeunload = this.existingOnBeforeUnload;
     if(this.unbindHook){
       this.unbindHook();
@@ -85,10 +87,12 @@ class QuestionEdit extends Component {
     this.setState({ showWarningModal: false });
     if(leavePage){
       this.unsavedState = false;
+      this.associationChanges = {};
       this.props.router.push(this.nextLocation.pathname);
     }else{
-      this.props.questionSubmitter(this.state, this.state.comment, () => {
+      this.props.questionSubmitter(this.state, this.state.comment, this.unsavedState, this.associationChanges, () => {
         this.unsavedState = false;
+        this.associationChanges = {};
         this.props.router.push(this.nextLocation.pathname);
       }, (failureResponse) => {
         this.setState({errors: failureResponse.response.data});
@@ -344,16 +348,18 @@ class QuestionEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.props.action === 'edit') {
-      this.props.draftSubmitter(this.props.id, this.state, this.state.comment, (response) => {
+      this.props.draftSubmitter(this.props.id, this.state, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
         // TODO: Handle when the saving question fails.
         this.unsavedState = false;
+        this.associationChanges = {};
         if (response.status === 200) {
           this.props.router.push(`/questions/${response.data.id}`);
         }
       });
     } else {
-      this.props.questionSubmitter(this.state, this.state.comment, (successResponse) => {
+      this.props.questionSubmitter(this.state, this.state.comment, this.unsavedState, this.associationChanges, (successResponse) => {
         this.unsavedState = false;
+        this.associationChanges = {};
         if (this.props.action === 'new') {
           let stats = Object.assign({}, this.props.stats);
           stats.questionCount = this.props.stats.questionCount + 1;
@@ -368,6 +374,11 @@ class QuestionEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
+    if (this.associationChanges['tags']) {
+      this.associationChanges['tags']['updated'] = newConcepts;
+    } else {
+      this.associationChanges['tags'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+    }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
     this.unsavedState = true;
   }
@@ -422,6 +433,17 @@ class QuestionEdit extends Component {
   }
 
   handleResponseSetsChange(newResponseSets){
+    if (this.associationChanges['response sets']) {
+      this.associationChanges['response sets']['updated'] = newResponseSets.map((rs) => {
+        return {id: rs.id, name: rs.name};
+      });
+    } else {
+      this.associationChanges['response sets'] = {original: this.state.linkedResponseSets.map((rs) => {
+        return {id: rs.id, name: rs.name};
+      }), updated: newResponseSets.map((rs) => {
+        return {id: rs.id, name: rs.name};
+      })};
+    }
     this.setState({linkedResponseSets: newResponseSets});
     this.unsavedState = true;
   }

@@ -7,7 +7,8 @@ class SurveysController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   def index
@@ -40,6 +41,7 @@ class SurveysController < ApplicationController
     else
       update_successful = nil
       @survey.transaction do
+        @survey.minor_change_count += 1 if params[:unsaved_state]
         @survey.survey_sections = update_survey_sections
         @survey.update_concepts('Survey')
         update_successful = @survey.update(survey_params)
