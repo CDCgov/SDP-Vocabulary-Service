@@ -1,8 +1,9 @@
 .cdc-utlt-nav {
   @extend .navbar;
   background-color: $cdc-dark-blue;
-  height: 50px;
+  height: 52px;
   margin-bottom: 0px;
+  z-index: 500;
 
   a {
     color: white;
@@ -60,6 +61,9 @@ a.cdc-brand:focus {
   }
   .item-navbar-icon {
     margin-right: 6px;
+  }
+  .cdc-nav-dropdown {
+    background-color: white !important;
   }
 }
 
@@ -149,9 +153,16 @@ a.cdc-brand:focus {
   min-width: 240px;
 }
 
+.cdc-navbar-collapse {
+  @extend .navbar-collapse;
+  z-index: 500;
+  background-color: $cdc-dark-blue;
+}
+
 .cdc-nav-dropdown {
   @extend .dropdown-menu;
   min-width: 200px;
+  background-color: white;
   ul {
     list-style-type: none;
     padding-left: 0px;
@@ -160,6 +171,7 @@ a.cdc-brand:focus {
     width: 250px;
     overflow-y: auto;
     overflow-x: hidden;
+    background-color: white;
   }
 }
 

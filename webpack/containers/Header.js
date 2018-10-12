@@ -57,7 +57,7 @@ let ContentMenu = ({settingsOpener, currentUser}) => {
     return(
       <li className="dropdown">
         <a href="#" tabIndex="2" id="account-dropdown" className="dropdown-toggle account-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-cog utlt-navbar-icon" aria-hidden="true"></i>{email}<span className="caret"></span></a>
-        <ul className="dropdown-menu">
+        <ul className="cdc-nav-dropdown">
           <li><a href="#" tabIndex="2" onClick={(e) => {
             e.preventDefault();
             settingsOpener();
@@ -207,19 +207,19 @@ class Header extends Component {
         <div className="container">
           {isReady && <div>{this.renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex)}</div>}
           <div className="navbar-header">
-            <button type="button" className="cdc-navbar-toggle collapsed" data-toggle="collapse" data-target="#cdc-navbar-mobile" aria-expanded="false">
+            <button type="button" className="cdc-navbar-toggle collapsed" data-toggle="collapse" data-target="#cdcnav" aria-expanded="false">
               <span className="sr-only">Toggle navigation</span>
               <i className="fa fa-bars"><span className="sr-only">Toggle navigation</span></i>
             </button>
             <Link to="/" className="cdc-brand" tabIndex="2">CDC Vocabulary Service</Link>
           </div>
-          <div className="collapse navbar-collapse" id="cdc-navbar-mobile">
+          <div className="collapse cdc-navbar-collapse" id="cdcnav">
             <SignedInMenu currentUser={this.props.currentUser} location={this.props.location} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
             <ul className="cdc-nav cdc-utlt-navbar-nav navbar-right">
               <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
               <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener} disableUserRegistration={this.props.disableUserRegistration}/>
               <li className="dropdown">
-                <a href="#" id = "help-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
+                <a href="#" id="help-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
                 <ul className="cdc-nav-dropdown">
                   <li className="nav-dropdown-item"><Link to='/Help' tabIndex="2">Help Documentation</Link></li>
                   {isReady && this.props.steps.length > 0 &&
