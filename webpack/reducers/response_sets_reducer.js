@@ -11,8 +11,11 @@ import {
   ADD_ENTITIES_REJECTED,
   ADD_RESPONSE_SET_TO_GROUP_FULFILLED,
   UPDATE_STAGE_RESPONSE_SET_FULFILLED,
-  REMOVE_RESPONSE_SET_FROM_GROUP_FULFILLED
+  REMOVE_RESPONSE_SET_FROM_GROUP_FULFILLED,
+  FETCH_MORE_RESPONSES_FULFILLED
 } from '../actions/types';
+
+import cloneDeep from 'lodash/cloneDeep';
 
 export default function responseSets(state = {}, action) {
   let responseSetClone;
@@ -23,6 +26,11 @@ export default function responseSets(state = {}, action) {
       return Object.assign({},state);
     case ADD_ENTITIES_PENDING:
       return Object.assign({},state);
+    case FETCH_MORE_RESPONSES_FULFILLED:
+      const newStateClone = cloneDeep(state);
+      const rs = newStateClone[action.payload.data.id];
+      rs.responses = rs.responses.concat(action.payload.data.responses);
+      return newStateClone;
     case SAVE_DRAFT_RESPONSE_SET_FULFILLED:
     case PUBLISH_RESPONSE_SET_FULFILLED:
     case RETIRE_RESPONSE_SET_FULFILLED:

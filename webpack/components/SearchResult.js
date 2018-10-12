@@ -325,7 +325,7 @@ export default class SearchResult extends Component {
                 })
               }
               {result.responseCount > 25 &&
-                <p className="result-details-content"><a href={`/api/valueSets/${result.versionIndependentId}`} target="_blank">... click here for full list of responses / codes in our API</a></p>
+                <p className="result-details-content"><a href={`/#/responseSets/${result.id}`}>... click here for full list of responses / codes on the details page</a></p>
               }
             </div>
           </div>

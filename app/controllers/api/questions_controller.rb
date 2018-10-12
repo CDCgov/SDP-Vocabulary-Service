@@ -10,7 +10,7 @@ module Api
                      Question.all.includes(:response_type, :published_by)
                    end
       current_user_id = current_user ? current_user.id : -1
-      @questions = if params[:limit]
+      @questions = if params[:limit] && (params[:limit] < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip')
                      @questions.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
                    else
                      @questions.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)

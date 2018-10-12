@@ -19,6 +19,18 @@ class ResponseSetsController < ApplicationController
     @is_edit = params['isEdit'] || false
   end
 
+  def more_responses
+    response = { id: params[:id] }
+    if params[:page]
+      first_item = params[:page].to_i * 25
+      last_item = (params[:page].to_i + 1) * 25 - 1
+      response[:responses] = @response_set.responses.first((params[:page].to_i + 1) * 25)[first_item..last_item]
+      render json: response
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
+  end
+
   def usage
     @response_set = ResponseSet.find(params[:id])
     if @response_set.status != 'published'

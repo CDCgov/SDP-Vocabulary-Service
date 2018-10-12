@@ -26,7 +26,8 @@ export default class ResponseSetShow extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedTab: 'main'
+      selectedTab: 'main',
+      page: 1
     };
   }
 
@@ -292,16 +293,20 @@ export default class ResponseSetShow extends Component {
                     <p>
                       This response set has a large amount of responses. The table below is a sample of 25 of the {responseSet.responseCount} responses. To access an exhaustive list please choose from the following options:
                       <ul>
-                        <li><a href={`/api/valueSets/${responseSet.versionIndependentId}`} target="_blank">Click here to visit our API endpoint with the full list of responses</a></li>
+                        <li>Visit our API endpoint ({`/api/valueSets/${responseSet.versionIndependentId}`}) with the full list of responses</li>
                         {responseSet.source && responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent &&
                           <li><a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">Click here to visit import source list in PHIN VADS UI</a></li>
                         }
+                        <li>Use the load more option at the bottom of the table to expand to the exhaustive list. For performance and usability each load batch will grab an additional 25 responses.</li>
                       </ul>
                     </p>
                   }
                   <CodedSetTable items={responseSet.responses} itemName={'Response'} />
-                  {responseSet.responseCount && responseSet.responseCount > 25 &&
-                    <p><a href={`/api/valueSets/${responseSet.versionIndependentId}`} target="_blank">... See the full list in our API by clicking here</a></p>
+                  {responseSet.responses && responseSet.responseCount && responseSet.responseCount > 25 && responseSet.responseCount !== responseSet.responses.length &&
+                    <p><button onClick={() => {
+                      this.props.fetchMoreResponses(responseSet.id, this.state.page);
+                      this.setState({page: this.state.page+1});
+                    }}>... Click here to load more</button></p>
                   }
                 </div>
               </div>
@@ -334,6 +339,7 @@ ResponseSetShow.propTypes = {
   retireResponseSet: PropTypes.func,
   addBreadcrumbItem: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
+  fetchMoreResponses: PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
   removeResponseSetFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,

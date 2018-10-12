@@ -5,7 +5,7 @@ module Api
     def index
       @value_sets = params[:search] ? ResponseSet.search(params[:search]) : ResponseSet.all.includes(:responses, :published_by)
       current_user_id = current_user ? current_user.id : -1
-      @value_sets = if params[:limit]
+      @value_sets = if params[:limit] && (params[:limit] < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip')
                       @value_sets.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
                     else
                       @value_sets.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)
