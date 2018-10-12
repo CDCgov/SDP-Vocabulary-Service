@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { hashHistory } from 'react-router';
 
 import { Grid, Row, Col } from 'react-bootstrap';
-import { fetchResponseSet, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
+import { fetchResponseSet, fetchMoreResponses, publishResponseSet, retireResponseSet, updateStageResponseSet, addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, fetchResponseSetUsage } from '../../actions/response_set_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -121,7 +121,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, fetchResponseSet, publishResponseSet, addPreferred, removePreferred, fetchMoreResponses,
     addResponseSetToGroup, removeResponseSetFromGroup, deleteResponseSet, updateStageResponseSet, fetchResponseSetUsage, retireResponseSet, addBreadcrumbItem}, dispatch);
 }
 
@@ -129,6 +129,7 @@ ResponseSetShowContainer.propTypes = {
   responseSet: responseSetProps,
   currentUser: currentUserProps,
   fetchResponseSet: PropTypes.func,
+  fetchMoreResponses: PropTypes.func,
   publishResponseSet: PropTypes.func,
   retireResponseSet: PropTypes.func,
   fetchResponseSetUsage: PropTypes.func,

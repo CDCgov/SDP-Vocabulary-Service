@@ -19,7 +19,8 @@ import {
   ADD_ENTITIES,
   FETCH_RESPONSE_SET_PENDING,
   FETCH_RESPONSE_SET_SUCCESS,
-  FETCH_RESPONSE_SET_FAILURE
+  FETCH_RESPONSE_SET_FAILURE,
+  FETCH_MORE_RESPONSES
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
@@ -50,6 +51,17 @@ export function fetchResponseSet(id, isEdit=null) {
       throw(new Error(error));
     })
 
+  };
+}
+
+export function fetchMoreResponses(id, page=0) {
+  return {
+    type: FETCH_MORE_RESPONSES,
+    payload: axios.get(routes.moreResponsesResponseSetPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout: AJAX_TIMEOUT,
+      params: {page: page}
+    })
   };
 }
 

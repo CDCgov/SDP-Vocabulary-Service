@@ -51,7 +51,7 @@ paths:
           in: query
           description: |
             Limits the number of returned questions, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -147,7 +147,7 @@ paths:
           in: query
           description: |
             Limits the number of returned programs, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -203,7 +203,7 @@ paths:
           in: query
           description: |
             Limits the number of returned systems, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -259,7 +259,7 @@ paths:
           in: query
           description: |
             Limits the number of returned surveys, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -321,7 +321,7 @@ paths:
           in: query
           description: |
             Limits the number of returned sections, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -384,7 +384,7 @@ paths:
           in: query
           description: |
             Limits the number of returned value sets, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -477,7 +477,7 @@ paths:
           in: query
           description: |
             Limits the number of returned Questionnaires, defaults to 100 if no
-            `_content` parameter is supplied, infinity otherwise.
+            `_content` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -540,7 +540,7 @@ paths:
           in: query
           description: |
             Limits the number of returned value sets, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
