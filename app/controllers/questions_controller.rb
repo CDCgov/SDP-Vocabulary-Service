@@ -157,12 +157,8 @@ class QuestionsController < ApplicationController
   end
 
   def update_tags
-    @question.add_tags(params)
-    if @question.save!
-      render :show, status: :ok, location: @question
-    else
-      render json: @question.errors, status: :unprocessable_entity
-    end
+    # This functionality is removed until single word tags changes
+    render json: @question.errors, status: :unprocessable_entity
   end
 
   def usage

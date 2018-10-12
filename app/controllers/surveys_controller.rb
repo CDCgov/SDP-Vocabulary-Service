@@ -130,12 +130,8 @@ class SurveysController < ApplicationController
   end
 
   def update_tags
-    @survey.add_tags(params)
-    if @survey.save!
-      render :show, status: :ok, location: @survey
-    else
-      render json: @survey.errors, status: :unprocessable_entity
-    end
+    # This functionality is removed until single word tags changes
+    render json: @survey.errors, status: :unprocessable_entity
   end
 
   # GET /surveys/1/duplicates

@@ -14,7 +14,6 @@ import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
-import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
 import BasicAlert from '../../components/BasicAlert';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -313,27 +312,12 @@ export default class QuestionShow extends Component {
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
-                      Tags
-                      {isSimpleEditable(question, this.props.currentUser) &&
-                        <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                          e.preventDefault();
-                          this.setState({ tagModalOpen: true });
-                        }}>
-                          <TagModal show={this.state.tagModalOpen || false}
-                            cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                            concepts={question.concepts}
-                            saveButtonAction={(conceptsAttributes) => {
-                              this.props.updateQuestionTags(question.id, conceptsAttributes);
-                              this.setState({ tagModalOpen: false });
-                            }} />
-                          <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                        </a>
-                      }
+                      Code System Mappings
                     </h2>
                   </div>
                   <div className="box-content">
                     <div id="concepts-table">
-                      <CodedSetTable items={question.concepts} itemName={'Tag'} />
+                      <CodedSetTable items={question.concepts} itemName={'Code System Mapping'} />
                     </div>
                   </div>
                 </div>

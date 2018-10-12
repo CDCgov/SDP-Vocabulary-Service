@@ -81,10 +81,18 @@ class ChangeHistoryTab extends Component {
                   </li>
                 }
                 { version.tags &&
-                  <li>Tags updated:
+                  <li>Code system mappings updated:
                     <ul>
-                      <li><strong>Original:</strong><CodedSetTable items={version.tags.original} itemName={'Tag'} /></li>
-                      <li><strong>Updated:</strong><CodedSetTable items={version.tags.updated} itemName={'Tag'} /></li>
+                      <li><strong>Original:</strong><CodedSetTable items={version.tags.original} itemName={'Code System Mapping'} /></li>
+                      <li><strong>Updated:</strong><CodedSetTable items={version.tags.updated} itemName={'Code System Mapping'} /></li>
+                    </ul>
+                  </li>
+                }
+                { version.mappings &&
+                  <li>Code system mappings updated:
+                    <ul>
+                      <li><strong>Original:</strong><CodedSetTable items={version.mappings.original} itemName={'Code System Mapping'} /></li>
+                      <li><strong>Updated:</strong><CodedSetTable items={version.mappings.updated} itemName={'Code System Mapping'} /></li>
                     </ul>
                   </li>
                 }

@@ -207,16 +207,14 @@ class Header extends Component {
         <div className="container">
           {isReady && <div>{this.renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex)}</div>}
           <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span className="sr-only">Toggle navigation</span>
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
+            <button type="button" className="cdc-navbar-toggle collapsed" data-toggle="collapse" data-target="#cdc-navbar-mobile" aria-expanded="false">
+              <span className="sr-only">Toggle navigation</span>
+              <i className="fa fa-bars"><span className="sr-only">Toggle navigation</span></i>
             </button>
             <Link to="/" className="cdc-brand" tabIndex="2">CDC Vocabulary Service</Link>
           </div>
-          <SignedInMenu currentUser={this.props.currentUser} location={this.props.location} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
-          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <div className="collapse navbar-collapse" id="cdc-navbar-mobile">
+            <SignedInMenu currentUser={this.props.currentUser} location={this.props.location} notifications={this.props.notifications} notificationCount={this.props.notificationCount} />
             <ul className="cdc-nav cdc-utlt-navbar-nav navbar-right">
               <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
               <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener} disableUserRegistration={this.props.disableUserRegistration}/>

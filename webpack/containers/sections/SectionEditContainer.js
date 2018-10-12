@@ -89,9 +89,9 @@ class SectionEditContainer extends Component {
         position: 'left',
       },
       {
-        title: 'Tags Table',
-        text: 'The purpose of Tags is to facilitate content discovery and reuse. Click the info (i) icon, or <a class="tutorial-link" href="#help">go to the full help documentation</a> to see more information and examples on how to get the most out of tags.',
-        selector: '.tags-table-header',
+        title: 'Code System Mappings Table',
+        text: 'The purpose of Code System Mappings is to facilitate content discovery and reuse. Click the info (i) icon, or <a class="tutorial-link" href="#help">go to the full help documentation</a> to see more information and examples on how to get the most out of mappings.',
+        selector: '.code-system-mappings-table-header',
         position: 'left',
       }]);
   }

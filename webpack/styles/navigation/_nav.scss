@@ -32,6 +32,12 @@ a.cdc-brand:focus {
   padding: 13px 0px 0px 0px;
 }
 
+.cdc-navbar-toggle {
+  @extend .navbar-toggle;
+  color: white;
+  padding: 13px 0px 0px 0px;
+}
+
 .cdc-nav {
   @extend .nav;
   padding: 0px;

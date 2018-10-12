@@ -17,7 +17,7 @@ class CodedSetTableEditContainer extends Component {
   constructor(props) {
     super(props);
     var items = props.initialItems.length < 1 ? [{value: '', codeSystem: '', displayName: ''}] : props.initialItems;
-    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, showTagHelpModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
+    this.state = {items: items, parentName: props.parentName, childName: props.childName, showConceptModal: false, showCodeMappingModal: false, selectedSystem: '', selectedConcepts: [], searchTerm: ''};
     this.search = this.search.bind(this);
     this.hideCodeSearch = this.hideCodeSearch.bind(this);
   }
@@ -128,7 +128,7 @@ class CodedSetTableEditContainer extends Component {
             <thead>
               <tr>
                 <th id="add-code-checkboxes-column" scope="col">Add</th>
-                <th id="modal-code-display-name-column" scope="col">Display Name / Tag Name</th>
+                <th id="modal-code-display-name-column" scope="col">Display Name / Concept Name</th>
                 <th id="modal-code-column" scope="col">Code / Value</th>
                 <th id="modal-code-system-column" scope="col">Code System</th>
               </tr>
@@ -152,35 +152,30 @@ class CodedSetTableEditContainer extends Component {
     }
   }
 
-  tagHelpModal(){
+  codeMappingHelpModal(){
     return (
-      <Modal animation={false} show={this.state.showTagHelpModal} onHide={() => this.setState({ showTagHelpModal: false })} aria-label="Tagging Info">
+      <Modal animation={false} show={this.state.showCodeMappingModal} onHide={() => this.setState({ showCodeMappingModal: false })} aria-label="Code System Mapping Info">
         <Modal.Header closeButton bsStyle='concept'>
-          <Modal.Title componentClass="h1">Tag Information</Modal.Title>
+          <Modal.Title componentClass="h1">Code System Mappings Help</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h2 className="no-padding-top">Purpose</h2>
-          <p>The purpose of Tags is to facilitate content discovery and reuse.</p>
+          <p>The purpose of Code System Mappings is to facilitate content discovery and reuse.</p>
           <h2>Definitions</h2>
-          <p><strong>Tag Name: </strong>Keywords from a controlled vocabulary. A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies.</p>
-          <p><strong>Tag Value: </strong>This may be a text or coded value that comes from a controlled vocabulary. Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
-          <p><strong>Code System Identifier (optional): </strong>The Code System used if you are using a coded value (e.g., LOINC, SNOMED-CT, RxNorm). Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
-          <h2>Example Tag Table</h2>
+          <p><strong>Concept Name: </strong>Keywords from a controlled vocabulary. A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies.</p>
+          <p><strong>Value: </strong>This may be a text or coded value that comes from a controlled vocabulary. Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
+          <p><strong>Code System Identifier: </strong>The Code System used if you are using a coded value (e.g., LOINC, SNOMED-CT, RxNorm). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
+          <h2>Example Code System Mappings Table</h2>
           <table className="set-table">
-            <caption>Add, search, and create associated Tags</caption>
+            <caption>Add, search, and create associated code system mappings</caption>
             <thead>
               <tr>
-                <th scope="col" className="display-name-column" id="display-name-column-ex">Tag Name</th>
-                <th scope="col" className="code-column" id="code-column-ex">Tag Value</th>
-                <th scope="col" className="code-system-column" id="code-system-column-ex">Code System Identifier (Optional)</th>
+                <th scope="col" className="display-name-column" id="display-name-column-ex">Concept Name</th>
+                <th scope="col" className="code-column" id="code-column-ex">Value</th>
+                <th scope="col" className="code-system-column" id="code-system-column-ex">Code System Identifier</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td headers="display-name-column-ex">MMG Tab Name</td>
-                <td headers="code-column-ex">Data Elements</td>
-                <td headers="code-system-column-ex"></td>
-              </tr>
               <tr>
                 <td headers="display-name-column-ex">Genus Salmonella (organism)</td>
                 <td headers="code-column-ex">27268008</td>
@@ -193,12 +188,12 @@ class CodedSetTableEditContainer extends Component {
               </tr>
             </tbody>
           </table><br/>
-          <p><strong>How to Search for Previously Used Tags</strong><br/>To determine if a tag has been used before in SDP-V, start typing in the tag name column of the table. A drop-down list of all previously used tags that match the text entered in the field will appear. A user can navigate the list and select a tag that was previously used. If a tag is selected from the list, the tag value and code system identifier fields will be populated with existing values.</p>
-          <p><strong>How to Search for Coded Tags from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for coded Tags” magnifying glass icon to the right of the Tags header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the tags table by clicking the “Add” selection beside each result.</p>
-          <p><strong>How to Create a New Tag</strong><br/>A new tag may be created by simply typing a new tag name, tag value, and code system identifier (if applicable). A new tag should only be created if an existing tag does not meet a user’s needs.</p>
+          <p><strong>How to Search for Previously Used Code Mappings</strong><br/>To determine if a code mapping has been used before in SDP-V, start typing in the concept name column of the table. A drop-down list of all previously used code mappings that match the text entered in the field will appear. A user can navigate the list and select a code mapping that was previously used. If a code system mapping is selected from the list, the value and code system identifier fields will be populated with existing values.</p>
+          <p><strong>How to Search for code mappings from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for external coded items” magnifying glass icon to the right of the code mappings header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the code mappings table by clicking the “Add” selection beside each result.</p>
+          <p><strong>How to Create a New Code System Mapping</strong><br/>A new code system mapping may be created by simply typing a new concept name, value, and code system identifier (if applicable). A new code mapping should only be created if an existing code mapping does not meet a user’s needs.</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.setState({ showTagHelpModal: false })} bsStyle="primary">Close</Button>
+          <Button onClick={() => this.setState({ showCodeMappingModal: false })} bsStyle="primary">Close</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -243,22 +238,22 @@ class CodedSetTableEditContainer extends Component {
       <div>
         <table className="set-table">
           <caption>
-            Add, search, and create associated {tableType === 'Response' ? 'responses' : <a title="See Tag Help" tabIndex="3" href="#" onClick={(e) => {
+            Add, search, and create associated {tableType === 'Response' ? 'responses' : <a title="See Code System Mapping Help" tabIndex="3" href="#" onClick={(e) => {
               e.preventDefault();
-              this.setState({ showTagHelpModal: true });
-            }}>tags <i className="fa fa-info-circle"></i><text className='sr-only'>(Click for more info)</text></a>}
+              this.setState({ showCodeMappingModal: true });
+            }}>code system mappings <i className="fa fa-info-circle"></i><text className='sr-only'>(Click for more info)</text></a>}
             <a className="pull-right" tabIndex="3" title="Search Codes" href="#" onClick={(e) => {
               e.preventDefault();
               this.showCodeSearch();
-            }}><i className="fa fa-search"></i> Search for coded {tableType}s</a>
+            }}><i className="fa fa-search"></i> Search for external coded items</a>
           </caption>
           {this.conceptModal()}
-          {this.tagHelpModal()}
+          {this.codeMappingHelpModal()}
           <thead>
             <tr>
-              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : `${tableType} Name`}</th>
-              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : `${tableType} Value`}</th>
-              <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier (Optional)</th>
+              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : 'Concept Name'}</th>
+              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : 'Value'}</th>
+              <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier{tableType === 'Response' ? ' (Optional)' : ''}</th>
             </tr>
           </thead>
           <tbody>
@@ -269,7 +264,7 @@ class CodedSetTableEditContainer extends Component {
               return (
                 <tr key={i}>
                   <td headers="display-name-column">
-                    <label className="hidden" htmlFor={`displayName_${i}`}>{tableType === 'Response' ? 'Display Name' : `${tableType} Name`}</label>
+                    <label className="hidden" htmlFor={`displayName_${i}`}>{tableType === 'Response' ? 'Display Name' : 'Concept Name'}</label>
                     {tableType === 'Response' ? (
                       <input className="input-format" tabIndex="3" type="text" value={r.displayName} name="displayName" id={`displayName_${i}`} onChange={this.handleChange(i, 'displayName')}/>
                     ) : (
