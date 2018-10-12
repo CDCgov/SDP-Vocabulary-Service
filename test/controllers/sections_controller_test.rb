@@ -47,7 +47,7 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-# Reimplementing these when single word tagging is implemented
+  # Reimplementing these when single word tagging is implemented
   test 'cannot edit tags before single word tagging is implemented' do
     section_json = { section: { name: @section.name, version_independent_id: 'SECT-1337' } }.to_json
     post sections_url, params: section_json, headers: { 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json' }

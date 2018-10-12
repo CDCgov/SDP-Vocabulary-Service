@@ -49,7 +49,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
-# Reimplementing these when single word tagging is implemented
+  # Reimplementing these when single word tagging is implemented
   # test 'can edit tags on something you do own' do
   #   post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
   #   put update_tags_question_path(Question.last, format: :json, params: { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] })
