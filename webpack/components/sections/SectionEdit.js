@@ -111,10 +111,10 @@ class SectionEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
-    if (this.associationChanges['tags']) {
-      this.associationChanges['tags']['updated'] = newConcepts;
+    if (this.associationChanges['mappings']) {
+      this.associationChanges['mappings']['updated'] = newConcepts;
     } else {
-      this.associationChanges['tags'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+      this.associationChanges['mappings'] = {original: this.state.conceptsAttributes, updated: newConcepts};
     }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
     this.unsavedState = true;
@@ -383,11 +383,11 @@ class SectionEdit extends Component {
               <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
             </div>
             <div className="section-group">
-              <h2 className="tags-table-header"><strong>Tags</strong></h2>
+              <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>
               <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                        initialItems={this.state.conceptsAttributes}
                        parentName={'section'}
-                       childName={'tag'} />
+                       childName={'Code System Mapping'} />
             </div>
             {this.props.action === 'edit' && <div className="section-group">
               <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>

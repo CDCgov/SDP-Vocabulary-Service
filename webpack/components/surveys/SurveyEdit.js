@@ -141,10 +141,10 @@ class SurveyEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
-    if (this.associationChanges['tags']) {
-      this.associationChanges['tags']['updated'] = newConcepts;
+    if (this.associationChanges['mappings']) {
+      this.associationChanges['mappings']['updated'] = newConcepts;
     } else {
-      this.associationChanges['tags'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+      this.associationChanges['mappings'] = {original: this.state.conceptsAttributes, updated: newConcepts};
     }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
     this.unsavedState = true;
@@ -285,11 +285,11 @@ class SurveyEdit extends Component {
               }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
             </Col>
           </Row>
-          <h2 className="tags-table-header"><strong>Tags</strong></h2>
+          <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>
           <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                    initialItems={this.state.conceptsAttributes}
                    parentName={'survey'}
-                   childName={'tag'} />
+                   childName={'Code System Mapping'} />
           {this.props.action === 'edit' && <div className="survey-group">
             <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
             <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>

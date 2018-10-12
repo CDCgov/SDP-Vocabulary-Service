@@ -146,12 +146,8 @@ class SectionsController < ApplicationController
   end
 
   def update_tags
-    @section.add_tags(params)
-    if @section.save!
-      render :show, status: :ok, location: @section
-    else
-      render json: @section.errors, status: :unprocessable_entity
-    end
+    # This functionality is removed until single word tags changes
+    render json: @sections.errors, status: :unprocessable_entity
   end
 
   def update_pdv

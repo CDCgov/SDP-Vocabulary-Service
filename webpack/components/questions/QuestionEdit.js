@@ -258,11 +258,11 @@ class QuestionEdit extends Component {
                 {this.otherAllowedBox()}
                 <Row>
                   <Col md={12}>
-                    <h2 className="tags-table-header"><strong>Tags</strong></h2>
+                    <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
-                             childName={'tag'} />
+                             childName={'Code System Mapping'} />
                   </Col>
                 </Row>
                 { this.isChoiceType() ?
@@ -374,10 +374,10 @@ class QuestionEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
-    if (this.associationChanges['tags']) {
-      this.associationChanges['tags']['updated'] = newConcepts;
+    if (this.associationChanges['mappings']) {
+      this.associationChanges['mappings']['updated'] = newConcepts;
     } else {
-      this.associationChanges['tags'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+      this.associationChanges['mappings'] = {original: this.state.conceptsAttributes, updated: newConcepts};
     }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
     this.unsavedState = true;

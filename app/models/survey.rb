@@ -53,6 +53,7 @@ class Survey < ApplicationRecord
       q_count = 0
       rs_count = 0
       sect_dupes = s.potential_duplicates(current_user)
+      sect_dupes[:questions] ||= []
       sect_dupes[:response_sets] ||= []
       q_count = sect_dupes[:questions].length if sect_dupes[:questions]
       rs_count = sect_dupes[:response_sets].length if sect_dupes[:response_sets]

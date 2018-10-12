@@ -9,7 +9,6 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
-import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
@@ -253,27 +252,12 @@ class SurveyShow extends Component {
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">
-                    Tags
-                    {isSimpleEditable(this.props.survey, this.props.currentUser) &&
-                      <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ tagModalOpen: true });
-                      }}>
-                        <TagModal show={this.state.tagModalOpen || false}
-                          cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                          concepts={this.props.survey.concepts}
-                          saveButtonAction={(conceptsAttributes) => {
-                            this.props.updateSurveyTags(this.props.survey.id, conceptsAttributes);
-                            this.setState({ tagModalOpen: false });
-                          }} />
-                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                      </a>
-                    }
+                    Code System Mappings
                   </h2>
                 </div>
                 <div className="box-content">
                   <div id="concepts-table">
-                    <CodedSetTable items={this.props.survey.concepts} itemName={'Tag'} />
+                    <CodedSetTable items={this.props.survey.concepts} itemName={'Code System Mapping'} />
                   </div>
                 </div>
               </div>

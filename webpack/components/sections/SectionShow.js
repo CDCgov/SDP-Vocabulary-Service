@@ -16,7 +16,6 @@ import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
 
-import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -344,27 +343,12 @@ class SectionShow extends Component {
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">
-                    Tags
-                    {isSimpleEditable(section, this.props.currentUser) &&
-                      <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ tagModalOpen: true });
-                      }}>
-                        <TagModal show={this.state.tagModalOpen || false}
-                          cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                          concepts={section.concepts}
-                          saveButtonAction={(conceptsAttributes) => {
-                            this.props.updateSectionTags(section.id, conceptsAttributes);
-                            this.setState({ tagModalOpen: false });
-                          }} />
-                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                      </a>
-                    }
+                    Code System Mappings
                   </h2>
                 </div>
                 <div className="box-content">
                   <div id="concepts-table">
-                    <CodedSetTable items={section.concepts} itemName={'Tag'} />
+                    <CodedSetTable items={section.concepts} itemName={'Code System Mapping'} />
                   </div>
                 </div>
               </div>

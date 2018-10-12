@@ -18,6 +18,7 @@ end
 json.versions @survey.paper_trail_versions do |version|
   json.extract! version, :created_at, :comment
   json.tags JSON.parse(version.associations['tags'].gsub('=>', ':')) if version.associations['tags']
+  json.mappings JSON.parse(version.associations['mappings'].gsub('=>', ':')) if version.associations['mappings']
   json.sections JSON.parse(version.associations['sections'].gsub('=>', ':')) if version.associations['sections']
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
