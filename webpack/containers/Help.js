@@ -56,6 +56,10 @@ class Help extends Component {
     return(
       <div className="tab-pane active" id="general" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'general'} aria-labelledby="general-tab">
         <h1 id="general">General</h1>
+        <p><strong>Full help resources:</strong></p>
+        <ul>
+        <li><a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Additional external help resources including a full user guide can be found by clicking here!</a></li>
+        </ul>
         <p><strong>Navigation and Help Basics:</strong></p>
         <ul>
         <li>Use the top bar to log-in or navigate to various pages.</li>
