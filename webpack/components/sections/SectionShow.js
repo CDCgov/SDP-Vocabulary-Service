@@ -298,7 +298,18 @@ class SectionShow extends Component {
           </ul>
           <div className="tab-content">
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
-              <ChangeHistoryTab versions={section.versions} type='section' majorVersion={section.version} />
+              {isSimpleEditable(section, this.props.currentUser) ? (
+                <ChangeHistoryTab versions={section.versions} type='section' majorVersion={section.version} />
+              ) : (
+                <div className='basic-c-box panel-default section-type'>
+                  <div className="panel-heading">
+                    <h2 className="panel-title">Changes</h2>
+                  </div>
+                  <div className="box-content">
+                    You do not have permissions to see change history on this item (you must be a collaborating author / in the proper group).
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
               <div className="basic-c-box panel-default section-type">

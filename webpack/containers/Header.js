@@ -207,7 +207,7 @@ class Header extends Component {
         <div className="container">
           {isReady && <div>{this.renderJoyride(isReady, isRunning, joyrideOverlay, joyrideType, selector, stepIndex)}</div>}
           <div className="navbar-header">
-            <button type="button" className="cdc-navbar-toggle collapsed" data-toggle="collapse" data-target="#cdcnav" aria-expanded="false">
+            <button type="button" className="cdc-navbar-toggle collapsed" data-toggle="collapse" data-target="#cdcnav" aria-expanded="false" tabIndex="2">
               <span className="sr-only">Toggle navigation</span>
               <i className="fa fa-bars"><span className="sr-only">Toggle navigation</span></i>
             </button>

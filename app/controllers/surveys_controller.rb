@@ -103,7 +103,7 @@ class SurveysController < ApplicationController
   def update_stage
     if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
       @survey.update_stage(params[:stage])
-      render :show, status: :ok, location: @question
+      render :show, status: :ok, location: @survey
     else
       render json: @survey.errors, status: :unprocessable_entity
     end
