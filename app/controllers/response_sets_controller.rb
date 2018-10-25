@@ -171,6 +171,15 @@ class ResponseSetsController < ApplicationController
     @response_set.responses << @responses
   end
 
+  def update_tags
+    @response_set.tag_list = params['tag_list']
+    if params['tag_list'] && @response_set.save!
+      render :show, status: :ok, location: @response_set
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /response_sets/1
   # DELETE /response_sets/1.json
   def destroy
@@ -187,7 +196,7 @@ class ResponseSetsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
     params.require(:response_set).permit(:name, :description, :parent_id, :oid,
-                                         :version_independent_id, :groups,
+                                         :version_independent_id, :groups, tag_list: [],
                                          responses_attributes: [:id, :value, :display_name, :code_system])
   end
 end

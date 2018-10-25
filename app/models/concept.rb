@@ -1,3 +1,3 @@
 class Concept < ApplicationRecord
-  belongs_to :taggable, polymorphic: true
+  belongs_to :mappable, polymorphic: true
 end

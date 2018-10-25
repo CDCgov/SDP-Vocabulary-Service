@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Button, Row, Col } from 'react-bootstrap';
 import compact from 'lodash/compact';
 import union from 'lodash/union';
+import TagsInput from 'react-tagsinput';
 
 import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
@@ -44,10 +45,11 @@ class SectionEdit extends Component {
     const showWarningModal = false;
     const parentId = section.parent ? section.parent.id : '';
     const conceptsAttributes = filterConcepts(section.concepts) || [];
+    const tagList = section.tagList || [];
     const linkedResponseSets = this.findLinkedResponseSets(sectionNestedItems);
     const groups = section.groups || [];
     const comment = '';
-    return {sectionNestedItems, name, id, comment, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, groups};
+    return {sectionNestedItems, name, id, comment, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, tagList, groups};
   }
 
   constructor(props) {
@@ -71,6 +73,7 @@ class SectionEdit extends Component {
     this.addedResponseSets = compact(this.state.sectionNestedItems.map((sni) => sni.responseSetId));
 
     this.handleSubmit   = this.handleSubmit.bind(this);
+    this.handleTagChange = this.handleTagChange.bind(this);
     this.moveNestedItemUp = this.moveNestedItemUp.bind(this);
     this.removeNestedItem = this.removeNestedItem.bind(this);
     this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
@@ -174,6 +177,11 @@ class SectionEdit extends Component {
     let newState = {};
     newState[field] = event.target.value;
     this.setState(newState);
+    this.unsavedState = true;
+  }
+
+  handleTagChange(tagList) {
+    this.setState({tagList});
     this.unsavedState = true;
   }
 
@@ -381,6 +389,10 @@ class SectionEdit extends Component {
             <div className="section-group">
               <label htmlFor="section-description">Description</label>
               <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
+            </div>
+            <div className="section-group">
+              <label className="input-label" htmlFor="section-tags">Tags</label>
+              <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'section-tags'}} />
             </div>
             <div className="section-group">
               <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
+import TagsInput from 'react-tagsinput';
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { sectionsProps } from '../../prop-types/section_props';
@@ -25,6 +26,7 @@ class SurveyEdit extends Component {
       name: '',
       version: 1,
       conceptsAttributes: [],
+      tagList: [],
       description: '',
       surveySections: [],
       controlNumber: null,
@@ -63,6 +65,7 @@ class SurveyEdit extends Component {
     newState.surveillanceSystemId = survey.surveillanceSystemId || newState.surveillanceSystemId;
     newState.versionIndependentId = survey.versionIndependentId;
     newState.conceptsAttributes = filterConcepts(survey.concepts);
+    newState.tagList = survey.tagList || [];
     newState.groups = survey.groups || [];
     return newState;
   }
@@ -91,6 +94,7 @@ class SurveyEdit extends Component {
     this.unsavedState = false;
     this.associationChanges = {};
     this.lastSectionCount = this.state.surveySections.length;
+    this.handleTagChange = this.handleTagChange.bind(this);
   }
 
   componentDidMount() {
@@ -147,6 +151,11 @@ class SurveyEdit extends Component {
       this.associationChanges['mappings'] = {original: this.state.conceptsAttributes, updated: newConcepts};
     }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
+    this.unsavedState = true;
+  }
+
+  handleTagChange(tagList) {
+    this.setState({tagList});
     this.unsavedState = true;
   }
 
@@ -259,6 +268,12 @@ class SurveyEdit extends Component {
                   <input tabIndex="3" className="input-format" type="date" placeholder="mm/dd/yyyy" value={this.state.ombApprovalDate || ''} name ="ombApprovalDate" id="ombApprovalDate" onChange={this.handleChange('ombApprovalDate')}/>
                 </div>
               }
+            </Col>
+          </Row>
+          <Row>
+            <Col md={8} className="survey-group">
+              <label className="input-label" htmlFor="survey-tags">Tags</label>
+              <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'survey-tags'}} />
             </Col>
           </Row>
           <Row>

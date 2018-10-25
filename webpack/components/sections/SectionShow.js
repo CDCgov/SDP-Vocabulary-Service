@@ -17,6 +17,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
 
 import Breadcrumb from "../Breadcrumb";
+import TagModal from "../TagModal";
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
@@ -288,6 +289,25 @@ class SectionShow extends Component {
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
+          <p className="maincontent-item-info">Tags: {section.tagList && section.tagList.length > 0 ? (
+            <text>{section.tagList.join(', ')}</text>
+          ) : (
+            <text>No Tags Found</text>
+          )}
+          {isSimpleEditable(section, this.props.currentUser) &&
+            <a className='pull-right' href='#' onClick={(e) => {
+              e.preventDefault();
+              this.setState({ tagModalOpen: true });
+            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+              <TagModal show={this.state.tagModalOpen || false}
+                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                        tagList={section.tagList}
+                        saveButtonAction={(tagList) => {
+                          this.props.updateSectionTags(section.id, tagList);
+                          this.setState({ tagModalOpen: false });
+                        }} />
+            </a>
+          }</p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>

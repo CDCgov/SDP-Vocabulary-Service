@@ -1,6 +1,7 @@
 class Survey < ApplicationRecord
-  include Versionable, Searchable, Taggable, Groupable
+  include Versionable, Searchable, Mappable, Groupable
   acts_as_commentable
+  acts_as_taggable
   has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
                   ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
 

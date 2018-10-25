@@ -1,4 +1,4 @@
-json.extract! response_set, :id, :name, :description, :oid, :created_by, :created_by_id, \
+json.extract! response_set, :id, :name, :description, :oid, :created_by, :created_by_id, :tag_list, \
               :status, :version, :most_recent, :most_recent_published, :version_independent_id, :content_stage, \
               :questions, :created_at, :updated_at, :parent, :published_by, :source, :groups, :preferred, :duplicate_of
 json.url response_set_url(response_set, format: :json)
@@ -17,7 +17,7 @@ json.response_count rs_count if rs_count > 25
 
 json.versions response_set.paper_trail_versions do |version|
   json.extract! version, :created_at, :comment, :associations
-  json.responses JSON.parse(version.associations['responses'].gsub('=>', ':')) if version.associations['responses']
+  json.responses JSON.parse(version.associations['responses'].gsub('=>', ':').gsub('nil','""')) if version.associations['responses']
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
   version.changeset.each_pair do |field, arr|

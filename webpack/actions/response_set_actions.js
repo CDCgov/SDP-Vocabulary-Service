@@ -20,7 +20,8 @@ import {
   FETCH_RESPONSE_SET_PENDING,
   FETCH_RESPONSE_SET_SUCCESS,
   FETCH_RESPONSE_SET_FAILURE,
-  FETCH_MORE_RESPONSES
+  FETCH_MORE_RESPONSES,
+  UPDATE_RESPONSE_SET_TAGS
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
@@ -62,6 +63,17 @@ export function fetchMoreResponses(id, page=0) {
       timeout: AJAX_TIMEOUT,
       params: {page: page}
     })
+  };
+}
+
+export function updateResponseSetTags(id, tagList) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_tags_response_set_path(id),
+                      {id, authenticityToken, tagList},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_RESPONSE_SET_TAGS,
+    payload: putPromise
   };
 }
 
