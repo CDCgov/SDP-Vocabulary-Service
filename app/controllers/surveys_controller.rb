@@ -130,8 +130,12 @@ class SurveysController < ApplicationController
   end
 
   def update_tags
-    # This functionality is removed until single word tags changes
-    render json: @survey.errors, status: :unprocessable_entity
+    @survey.tag_list = params['tag_list']
+    if params['tag_list'] && @survey.save!
+      render :show, status: :ok, location: @survey
+    else
+      render json: @survey.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /surveys/1/duplicates
@@ -207,8 +211,8 @@ class SurveysController < ApplicationController
   def survey_params
     params.require(:survey).permit(:name, :description, :parent_id, :groups,
                                    :control_number, :omb_approval_date, :version_independent_id,
-                                   :surveillance_program_id, :surveillance_system_id,
-                                   concepts_attributes: [:id, :value, :display_name, :code_system])
+                                   :surveillance_program_id, :surveillance_system_id, tag_list: [],
+                                                                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 
   def create_survey_sections

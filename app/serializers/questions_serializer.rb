@@ -17,10 +17,15 @@ class QuestionsSerializer < ActiveModel::Serializer
   attribute :responseType do
     object.response_type.name if object.response_type
   end
-
+  # To ensure backwards compatibility in release 1.12 tags logic is still
+  # a combination of both single word tags and code mappings
   attribute(:tags) { codes }
+  attribute :tag_list, key: :singleWordTags
+  attribute :codeSystemMappings do
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+  end
 
   def codes
-    object.concepts.collect { |c| CodeSerializer.new(c).as_json }
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json } + object.tag_list.map { |tag| { 'displayName': tag, 'code': '', 'codeSystem': '' } }
   end
 end

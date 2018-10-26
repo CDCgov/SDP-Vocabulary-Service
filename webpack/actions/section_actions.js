@@ -174,10 +174,10 @@ export function saveDraftSection(section, comment, unsavedState, associationChan
   };
 }
 
-export function updateSectionTags(id, conceptsAttributes) {
+export function updateSectionTags(id, tagList) {
   const authenticityToken  = getCSRFToken();
   const putPromise = axios.put(routes.update_tags_section_path(id),
-                      {id, authenticityToken, conceptsAttributes},
+                      {id, authenticityToken, tagList},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: UPDATE_SECTION_TAGS,

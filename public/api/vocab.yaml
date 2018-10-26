@@ -662,6 +662,14 @@ definitions:
         type: object
         title: User that published the value set
         $ref: '#/definitions/User'
+      meta:
+        type: object
+        properties:
+          singleWordTags:
+            type: array
+            items:
+              type: string
+              title: Single word tags added by the user for search discovery
 
   Usage:
     type: array
@@ -697,6 +705,17 @@ definitions:
                 sectionUri:
                   type: string
                   title: Relative URI of the section
+
+  CodeMapping:
+    type: object
+    description: A coded value
+    properties:
+      code:
+        type: string
+      codeSystem:
+        type: string
+      displayName:
+        type: string
 
   CodedValue:
     type: object
@@ -743,7 +762,16 @@ definitions:
       tags:
         type: array
         items:
-          $ref: '#/definitions/CodedValue'
+          $ref: '#/definitions/CodeMapping'
+      singleWordTags:
+        type: array
+        items:
+          type: string
+          title: Single word tags added by the user for search discovery
+      codeSytemMappings:
+        type: array
+        items:
+          $ref: '#/definitions/CodeMapping'
       # TODO additional metadata
 
   Program:
@@ -837,7 +865,16 @@ definitions:
       tags:
         type: array
         items:
-          $ref: '#/definitions/CodedValue'
+          $ref: '#/definitions/CodeMapping'
+      singleWordTags:
+        type: array
+        items:
+          type: string
+          title: Single word tags added by the user for search discovery
+      codeSytemMappings:
+        type: array
+        items:
+          $ref: '#/definitions/CodeMapping'
 
   Section:
     type: object
@@ -863,7 +900,16 @@ definitions:
       tags:
         type: array
         items:
-          $ref: '#/definitions/CodedValue'
+          $ref: '#/definitions/CodeMapping'
+      singleWordTags:
+        type: array
+        items:
+          type: string
+          title: Single word tags added by the user for search discovery
+      codeSytemMappings:
+        type: array
+        items:
+          $ref: '#/definitions/CodeMapping'
       # TODO additional metadata
       nested_items:
         type: array

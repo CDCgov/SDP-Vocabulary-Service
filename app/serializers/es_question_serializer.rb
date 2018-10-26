@@ -26,6 +26,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :preferred
   attribute :omb
   attribute :data_collection_methods
+  attribute :tag_list
 
   def most_recent
     object.most_recent?

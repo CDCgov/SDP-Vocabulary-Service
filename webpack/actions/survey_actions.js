@@ -242,10 +242,10 @@ export function attemptImportFile(id, importType, successHandler=null, failureHa
   };
 }
 
-export function updateSurveyTags(id, conceptsAttributes) {
+export function updateSurveyTags(id, tagList) {
   const authenticityToken  = getCSRFToken();
   const putPromise = axios.put(routes.update_tags_survey_path(id),
-                      {id, authenticityToken, conceptsAttributes},
+                      {id, authenticityToken, tagList},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: UPDATE_SURVEY_TAGS,

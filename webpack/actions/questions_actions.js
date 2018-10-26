@@ -131,10 +131,10 @@ export function saveDraftQuestion(id, question, comment, unsavedState, associati
   };
 }
 
-export function updateQuestionTags(id, conceptsAttributes) {
+export function updateQuestionTags(id, tagList) {
   const authenticityToken  = getCSRFToken();
   const putPromise = axios.put(routes.update_tags_question_path(id),
-                      {id, authenticityToken, conceptsAttributes},
+                      {id, authenticityToken, tagList},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: UPDATE_QUESTION_TAGS,

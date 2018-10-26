@@ -157,8 +157,12 @@ class QuestionsController < ApplicationController
   end
 
   def update_tags
-    # This functionality is removed until single word tags changes
-    render json: @question.errors, status: :unprocessable_entity
+    @question.tag_list = params['tag_list']
+    if params['tag_list'] && @question.save!
+      render :show, status: :ok, location: @question
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
   end
 
   def usage
@@ -197,6 +201,6 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:content, :response_type_id, :parent_id, :category_id, :groups,
                                      :version_independent_id, :description, :other_allowed, :subcategory_id,
                                      concepts_attributes: [:id, :value, :display_name, :code_system],
-                                     data_collection_methods: [])
+                                     data_collection_methods: [], tag_list: [])
   end
 end

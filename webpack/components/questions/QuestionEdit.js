@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import values from 'lodash/values';
 import $ from 'jquery';
 import { Row, Col } from 'react-bootstrap';
+import TagsInput from 'react-tagsinput';
 
 import { questionProps } from '../../prop-types/question_props';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -36,6 +37,7 @@ class QuestionEdit extends Component {
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.handleDataCollectionMethodsChange = this.handleDataCollectionMethodsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
+    this.handleTagChange = this.handleTagChange.bind(this);
     this.unsavedState = false;
     this.associationChanges = {};
   }
@@ -125,6 +127,7 @@ class QuestionEdit extends Component {
       conceptsAttributes: [],
       linkedResponseSets: [],
       dataCollectionMethods: [],
+      tagList: [],
       otherAllowed: false
     };
   }
@@ -138,6 +141,7 @@ class QuestionEdit extends Component {
       subcategoryId: this.props.question.subcategory ? this.props.question.subcategory.id : undefined,
       responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
     questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
+    questionCopy.tagList = this.props.question.tagList || [];
     questionCopy.linkedResponseSets = this.props.question.responseSets || [];
     questionCopy.dataCollectionMethods = this.props.question.dataCollectionMethods || [];
     return questionCopy;
@@ -250,6 +254,12 @@ class QuestionEdit extends Component {
                   </Col>
                 </Row>
                 <Row>
+                  <Col md={8} className="question-form-group">
+                    <label className="input-label" htmlFor="question-tags">Tags</label>
+                    <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'question-tags'}} />
+                  </Col>
+                </Row>
+                <Row>
                   <Col md={12} className="question-form-group">
                     <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method</label>
                     <DataCollectionSelect onChangeFunc={this.handleDataCollectionMethodsChange()} methods={state.dataCollectionMethods} />
@@ -343,6 +353,11 @@ class QuestionEdit extends Component {
   handleResponseSetSuccess(successResponse){
     this.handleResponseSetsChange(this.state.linkedResponseSets.concat([successResponse.data]));
     this.setState({showResponseSetModal: false});
+  }
+
+  handleTagChange(tagList) {
+    this.setState({tagList});
+    this.unsavedState = true;
   }
 
   handleSubmit(event) {

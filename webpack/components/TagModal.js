@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
-
-import CodedSetTableEditContainer from '../containers/CodedSetTableEditContainer';
+import TagsInput from 'react-tagsinput';
 
 class TagModal extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      conceptsAttributes: filterConcepts(this.props.concepts) || []
+      tagList: this.props.tagList || []
     };
+    this.handleTagChange = this.handleTagChange.bind(this);
   }
 
   render() {
@@ -20,14 +20,13 @@ class TagModal extends Component{
             <Modal.Title componentClass="h2">Update Tags</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
-                     initialItems={this.state.conceptsAttributes}
-                     childName={'tag'} />
+            <label className="input-label" htmlFor="response-set-tags" aria-hidden='true'>Tags</label>
+            <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'response-set-tags'}} />
           </Modal.Body>
           <br/>
           <br/>
           <Modal.Footer>
-            <Button onClick={() => this.props.saveButtonAction(this.state.conceptsAttributes)} bsStyle="primary">Save</Button>
+            <Button onClick={() => this.props.saveButtonAction(this.state.tagList)} bsStyle="primary">Save</Button>
             <Button onClick={this.props.cancelButtonAction} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
@@ -35,27 +34,16 @@ class TagModal extends Component{
     );
   }
 
-  handleConceptsChange(newConcepts) {
-    this.setState({conceptsAttributes: filterConcepts(newConcepts)});
+  handleTagChange(tagList) {
+    this.setState({tagList});
   }
-}
-
-function filterConcepts(concepts) {
-  if(!concepts){
-    return [];
-  }
-  return concepts.filter((nc) => {
-    return (nc.value !=='' ||  nc.codeSystem !== '' || nc.displayName !=='');
-  }).map((nc) => {
-    return {value: nc.value, codeSystem: nc.codeSystem, displayName: nc.displayName};
-  });
 }
 
 TagModal.propTypes = {
   show: PropTypes.bool,
   cancelButtonAction: PropTypes.func,
   saveButtonAction: PropTypes.func,
-  concepts: PropTypes.array
+  tagList: PropTypes.array
 };
 
 export default TagModal;

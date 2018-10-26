@@ -23,6 +23,7 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :groups
   attribute :omb
   attribute :preferred
+  attribute :tag_list
 
   def most_recent
     object.most_recent?

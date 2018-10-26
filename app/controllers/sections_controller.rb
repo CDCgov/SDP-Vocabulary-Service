@@ -146,8 +146,12 @@ class SectionsController < ApplicationController
   end
 
   def update_tags
-    # This functionality is removed until single word tags changes
-    render json: @sections.errors, status: :unprocessable_entity
+    @section.tag_list = params['tag_list']
+    if params['tag_list'] && @section.save!
+      render :show, status: :ok, location: @section
+    else
+      render json: @section.errors, status: :unprocessable_entity
+    end
   end
 
   def update_pdv
@@ -232,7 +236,7 @@ class SectionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def section_params
     params.require(:section).permit(:name, :description, :parent_id,
-                                    :version_independent_id, :groups,
-                                    concepts_attributes: [:id, :value, :display_name, :code_system])
+                                    :version_independent_id, :groups, tag_list: [],
+                                                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

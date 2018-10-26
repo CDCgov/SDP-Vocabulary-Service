@@ -92,6 +92,7 @@ module SDP
                       { match: { 'codes.code': { query: query_string, boost: 7 } } },
                       { match: { 'codes.codeSystem': { query: query_string, boost: 7 } } },
                       { match: { 'codes.displayName': { query: query_string, boost: 7 } } },
+                      { match: { tag_list: { query: query_string, boost: 9 } } },
                       { match: { category: { query: query_string } } },
                       { match: { subcategory: { query: query_string } } },
                       { match: { 'createdBy.email': { query: query_string } } },
