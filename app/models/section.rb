@@ -3,7 +3,7 @@ class Section < ApplicationRecord
   acts_as_commentable
   acts_as_taggable
   has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
-                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id, :tag_list]
 
   has_many :section_nested_items, -> { order 'position asc' }, dependent: :destroy
   has_many :nested_sections, through: :section_nested_items

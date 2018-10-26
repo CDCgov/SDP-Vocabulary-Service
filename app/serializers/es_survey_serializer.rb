@@ -24,6 +24,7 @@ class ESSurveySerializer < ActiveModel::Serializer
   attribute :preferred
   attribute :omb
   attribute :omb_approval_date, key: :ombApprovalDate
+  attribute :tag_list
 
   def most_recent
     object.most_recent?
