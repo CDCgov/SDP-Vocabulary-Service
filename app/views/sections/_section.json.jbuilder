@@ -11,8 +11,8 @@ end
 
 json.versions section.paper_trail_versions do |version|
   json.extract! version, :created_at, :comment
-  json.tags JSON.parse(version.associations['tags'].gsub('=>', ':').gsub('nil','""')) if version.associations['tags']
-  json.mappings JSON.parse(version.associations['mappings'].gsub('=>', ':').gsub('nil','""')) if version.associations['mappings']
+  json.tags JSON.parse(version.associations['tags'].gsub('=>', ':').gsub('nil', '""')) if version.associations['tags']
+  json.mappings JSON.parse(version.associations['mappings'].gsub('=>', ':').gsub('nil', '""')) if version.associations['mappings']
   json.nested_items JSON.parse(version.associations['nested items'].gsub('=>', ':')) if version.associations['nested items']
   json.pdv JSON.parse(version.associations['pdv'].gsub('=>', ':')) if version.associations['pdv']
   json.response_sets JSON.parse(version.associations['response sets'].gsub('=>', ':')) if version.associations['response sets']

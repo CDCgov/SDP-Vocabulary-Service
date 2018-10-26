@@ -237,6 +237,6 @@ class SectionsController < ApplicationController
   def section_params
     params.require(:section).permit(:name, :description, :parent_id,
                                     :version_independent_id, :groups, tag_list: [],
-                                    concepts_attributes: [:id, :value, :display_name, :code_system])
+                                                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

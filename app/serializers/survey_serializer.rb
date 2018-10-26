@@ -40,7 +40,7 @@ class SurveySerializer < ActiveModel::Serializer
   end
 
   def codes
-    object.concepts.collect { |c| CodeSerializer.new(c).as_json } + object.tag_list.map { |tag| {'displayName': tag, 'code': '', 'codeSystem': ''}}
+    object.concepts.collect { |c| CodeSerializer.new(c).as_json } + object.tag_list.map { |tag| { 'displayName': tag, 'code': '', 'codeSystem': '' } }
   end
 
   def sections

@@ -197,6 +197,6 @@ class ResponseSetsController < ApplicationController
   def response_set_params
     params.require(:response_set).permit(:name, :description, :parent_id, :oid,
                                          :version_independent_id, :groups, tag_list: [],
-                                         responses_attributes: [:id, :value, :display_name, :code_system])
+                                                                           responses_attributes: [:id, :value, :display_name, :code_system])
   end
 end

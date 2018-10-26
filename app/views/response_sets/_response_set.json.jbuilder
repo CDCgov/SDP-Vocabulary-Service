@@ -17,7 +17,7 @@ json.response_count rs_count if rs_count > 25
 
 json.versions response_set.paper_trail_versions do |version|
   json.extract! version, :created_at, :comment, :associations
-  json.responses JSON.parse(version.associations['responses'].gsub('=>', ':').gsub('nil','""')) if version.associations['responses']
+  json.responses JSON.parse(version.associations['responses'].gsub('=>', ':').gsub('nil', '""')) if version.associations['responses']
   json.author User.find(version.whodunnit).email if version.whodunnit
   temp_hash = {}
   version.changeset.each_pair do |field, arr|
