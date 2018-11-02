@@ -940,6 +940,16 @@ class Help extends Component {
     );
   }
 
+  whatsnewTab() {
+  return (
+    <div className="tab-pane" id="whatsnew" role="tabpanel" aria-hidden={this.state.selectedTab !== 'whatsnew'} aria-labelledby="whatsnew-tab">
+      <h1 id="whatsnewTab">What's New</h1>
+      <br/>
+      <p>Hello...How are you?</p>
+    </div>
+  );
+}
+
   render() {
     return (
       <div className="container">
@@ -964,6 +974,9 @@ class Help extends Component {
                     <li id="faq-tab" className="nav-item" role="tab" onClick={() => this.selectTab('faq')} aria-selected={this.state.selectedTab === 'faq'} aria-controls="faq">
                       <a className="nav-link" data-toggle="tab" href="#faq" role="tab">FAQs</a>
                     </li>
+                    <li id="whatsnew-tab" className="nav-item" role="tab" onClick={() => this.selectTab('whatsnew')} aria-selected={this.state.selectedTab === 'whatsnew'} aria-controls="whatsnew">
+                      <a className="nav-link" data-toggle="tab" href="#whatsnew" role="tab">What's New</a>
+                    </li>
                   </ul>
                   <div className="tab-content">
                     {this.instructionsTab()}
@@ -972,6 +985,7 @@ class Help extends Component {
                       <p>Please visit the FAQ page on the official cdc.gov website: <a href="https://www.cdc.gov/sdp/SDPFAQs.html#tabs-2-2" target="_blank">https://www.cdc.gov/sdp/SDPFAQs.html</a></p>
                     </div>
                     {this.glossaryTab()}
+                    {this.whatsnewTab()}
                   </div>
                 </div>
               </div>
