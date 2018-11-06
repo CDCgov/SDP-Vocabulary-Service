@@ -47,8 +47,8 @@ def add_question_to_sheet(sni, sheet)
   sheet.add_row new_row
 end
 
-def add_tag_tab(tag_array)
-  @wb.add_worksheet(name: "Tags #{@tag_tables.length}") do |sheet|
+def add_tag_tab(tag_array, index)
+  @wb.add_worksheet(name: "Tags #{index+1}") do |sheet|
     sheet.add_row ['Tag Name (R)', 'Tag Value (R)', 'Code System Identifier (O)']
     tag_array.each do |tag|
       sheet.add_row [tag[:display_name], tag[:value], tag[:code_system]]
@@ -64,7 +64,6 @@ def tag_tab_name(obj)
       "Tags #{@tag_tables.index(tag_array)+1}"
     else
       @tag_tables << tag_array
-      add_tag_tab(tag_array)
       "Tags #{@tag_tables.length}"
     end
   else
@@ -129,4 +128,8 @@ response_sets.each do |rs|
       sheet.add_row ['','',resp.display_name,resp.value,resp.code_system] unless index == 0
     end
   end
+end
+
+@tag_tables.each_with_index do |tag_array, index|
+  add_tag_tab(tag_array, index)
 end
