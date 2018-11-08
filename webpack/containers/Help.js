@@ -922,7 +922,8 @@ class Help extends Component {
   glossaryTab() {
     return (
       <div className="tab-pane" id="glossary" role="tabpanel" aria-hidden={this.state.selectedTab !== 'glossary'} aria-labelledby="glossary-tab">
-        <h1 id="glossary">Glossary</h1>
+      <h1 ID="glossaryTab">Glossary</h1>
+      <br/>
         <p><strong>Author –</strong> An actor (organization, person, or program) responsible for creating and/or maintaining a data collection item, a code set, a value set, or a data collection instrument</p>
         <p><strong>Code –</strong> a succinct label for a concept, variable, value, or question</p>
         <p><strong>Code System –</strong> a collection of unique codes pertaining to one or more topic areas and maintained as a unit; aka code set</p>
@@ -943,16 +944,133 @@ class Help extends Component {
   whatsnewTab() {
   return (
     <div className="tab-pane" id="whatsnew" role="tabpanel" aria-hidden={this.state.selectedTab !== 'whatsnew'} aria-labelledby="whatsnew-tab">
-      <h1 id="whatsnewTab">What's New</h1>
+    <h1 ID="whatsnewTab">What's New</h1>
       <br/>
-      <p>Hello...How are you?</p>
+      <p>Here you can find the latest news and information about the CDC Vocabulary Service.
+          Read our latest release notes to learn how the application is continuously improving, learn
+          about updates to user documentation, and find other announcements important to the user community.</p>
+      <br/>
+      <br/>
+        <strong>Find Out What's New In:</strong>
+        <br/>
+        <br/>
+        <ol>
+          <a href="#announcements">Announcements</a><br/>
+          <a href="#releasenotes">Release Notes </a>
+              <small>
+              (<a href="#1.1">1.1</a>,&nbsp;
+              <a href="#1.2">1.2</a>,&nbsp;
+              <a href="#1.3">1.3</a>,&nbsp;
+              <a href="#1.4">1.4</a>,&nbsp;
+              <a href="#1.5">1.5</a>,&nbsp;
+              <a href="#1.6">1.6</a>,&nbsp;
+              <a href="#1.7">1.7</a>,&nbsp;
+              <a href="#1.8">1.8</a>,&nbsp;
+              <a href="#1.9">1.9</a>,&nbsp;
+              <a href="#1.10">1.10</a>,&nbsp;
+              <a href="#1.11">1.11</a>,&nbsp;
+              <a href="#1.12">1.12</a>)
+              </small><br/>
+          <a href="#userdocupdates">User Documentation Updates</a>
+          </ol>
+          <br/>
+          <h4 id="Announcements"><strong>Announcements</strong></h4>
+            <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
+          <br/>
+          <h4 id="releasenotes"><strong>Release Notes</strong></h4>
+            <ul>
+            <li id="1.12"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/407928833/SDP+Vocabulary+Service+Release+1.12' target='_blank'>1.12</a></strong> <small>(Sept 28, 2018)</small></li>
+              <ol>
+                <li>Curating Pulished Content</li>
+                <li>UI Asynchronous Rework & Optimizations</li>
+                <li>Comprehensive Developer Documentation</li>
+              </ol>
+            <li id="1.11"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/360546430/SDP+Vocabulary+Service+Release+1.11' target='_blank'>1.11</a></strong> <small>(July 25, 2018)</small></li>
+            <ol>
+              <li>Introduction of Content Stage Attributes</li>
+              <li>User Feedback Success Message</li>
+              <li>Addition of Source to the Response Set Details Summary</li>
+            </ol>
+            <li id="1.10"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/349601800/SDP+Vocabulary+Service+Release+1.10' target='_blank'>1.10</a></strong> <small>(June 29, 2018)</small></li>
+            <ol>
+              <li>New Advanced Search filters</li>
+              <li>Introduction of the Ability for an Author to Save Comments on Draft</li>
+              <li>FHIR API Update</li>
+            </ol>
+            <li id="1.9"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/281509889/SDP+Vocabulary+Service+Release+1.9' target='_blank'>1.9</a></strong> <small>(May 22, 2018)</small></li>
+            <ol>
+              <li>Curation Wizard Feature</li>
+              <li>"CDC preferred" content attribute</li>
+              <li>Import content that conforms to SDP-V generic spreadsheet</li>
+            </ol>
+            <li id="1.8"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/256507905/SDP+Vocabulary+Service+Release+1.8' target='_blank'>1.8</a></strong> <small>(April 25, 2018)</small></li>
+            <ol>
+              <li>Revision history for draft content</li>
+              <li>"Delete/Delete All" prompts</li>
+              <li>Group member visibility in the User Interface (UI)</li>
+            </ol>
+            <li id="1.7"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/212893697/SDP+Vocabulary+Service+Release+1.7' target='_blank'>1.7</a></strong> <small>(March 28, 2018)</small></li>
+            <ol>
+              <li>Export SDP-V data</li>
+              <li>Survey creation by importing using Message Mapping Guide (MMG)</li>
+              <li>"Contact Us" link addition</li>
+            </ol>
+            <li id="1.6"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/145883215/SDP+Vocabulary+Service+Release+1.6' target='_blank'>1.6</a></strong> <small>(February 26, 2018)</small></li>
+            <ol>
+              <li>User Interface (UI) updated for nesting sections and questions</li>
+              <li>Generic spreadsheet importer update (i.e. FHIR API, Swagger API, MMG importer)</li>
+              <li>Collaborative authoring group functionality</li>
+            </ol>
+            <li id="1.5"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/120750131/SDP+Vocabulary+Service+Release+1.5' target='_blank'>1.5</a></strong> <small>(January 30, 2018)</small></li>
+            <ol>
+              <li>Improvement to User Interface (UI) for nesting sections and questions</li>
+              <li>FHIR API update</li>
+              <li>User Interface navigation between various responses</li>
+            </ol>
+            <li id="1.4"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/48627713/SDP+Vocabulary+Service+Release+1.4' target='_blank'>1.4</a></strong> <small>(January 4, 2018)</small></li>
+            <ol>
+              <li>Share draft content per groups</li>
+              <li>User Interface to better display relationships between content</li>
+              <li>SDP-V API update</li>
+            </ol>
+            <li id="1.3"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/60653574/SDP+Vocabulary+Service+Release+1.3' target='_blank'>1.3</a></strong> <small>(Nov 13, 2017)</small></li>
+            <ol>
+              <li>SDP-V form name update</li>
+              <li>Added new advanced search filters</li>
+              <li>Dashboard ranks</li>
+            </ol>
+            <li id="1.2"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/51871750/SDP+Vocabulary+Service+Release+1.2' target='_blank'>1.2</a></strong> <small>(Oct 17, 2017)</small></li>
+            <ol>
+              <li>Tag features</li>
+              <li>"out of date" development</li>
+              <li>Administration role feature</li>
+            </ol>
+            <li id="1.1"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/50036737/SDP+Vocabulary+Service+Release+1.1' target='_blank'>1.1</a></strong> <small>(Oct 10, 2017)</small></li>
+              <ol>
+                <li>See release for more details.</li>
+              </ol>
+              </ul>
+              <br/>
+              <h4 id="userdocupdates"><strong>User Documentation Updates</strong></h4>
+              <ul>
+                  <li><strong>August 2018</strong></li>
+                  <ul>
+                    <li>The <strong>Vocabulary Service User Guide</strong> has been updated with features available through Release 1.8. The user guide is available on the <a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Accessing SDP Vocabulary Service</a> webpage.</li>
+                    <li><strong>Surveillance Data Platform Vocabulary Service Fact Sheet</strong> has been updated.  The fact sheet is available at the bottom of the  <a href='https://www.cdc.gov/sdp/SDPVocabularyServiceSharedServices.html' target='_blank'>SDP Vocabulary Service</a> webpage.</li>
+                  </ul>
+                  <li><strong>June 2018</strong></li>
+                  <ul>
+                    <li>The <strong>Vocabulary Service Value Diagram</strong> has been updated to reflect recent enhancements to the system. This diagram summarizes the value of the Vocabulary Service by highlighting specific capabilities of the service. The diagram is available on the <a href='https://www.cdc.gov/sdp/SDPVocabularyServiceSharedServices.html' target='_blank'>SDP Vocabulary Service</a> webpage.</li>
+                    <li>The <strong>SDP Vocabulary Info Graphic</strong> has been updated to show that Sections can now include either questions or one or more sections (e.g., sub-sections or nested sections). This ability to nest sections was introduced in Release 1.5. The info graphic is available on the <a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Accessing SDP Vocabulary Service</a> webpage.</li>
+                  </ul>
+              </ul>
     </div>
   );
 }
 
   render() {
     return (
-      <div className="container">
+      <div className="container" href="#help">
         <div className="row basic-bg">
           <div className="col-md-12">
             <div className="showpage_header_container no-print">
@@ -981,7 +1099,8 @@ class Help extends Component {
                   <div className="tab-content">
                     {this.instructionsTab()}
                     <div className="tab-pane" id="faq" role="tabpanel" aria-hidden={this.state.selectedTab !== 'faq'} aria-labelledby="faq-tab">
-                      <h1 className="help-section-title">FAQs</h1>
+                      <h1 id="faqTab">FAQs</h1>
+                      <br/>
                       <p>Please visit the FAQ page on the official cdc.gov website: <a href="https://www.cdc.gov/sdp/SDPFAQs.html#tabs-2-2" target="_blank">https://www.cdc.gov/sdp/SDPFAQs.html</a></p>
                     </div>
                     {this.glossaryTab()}
