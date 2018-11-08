@@ -18,7 +18,9 @@ module SDP
 
     class DataElement
       attr_accessor :name, :description, :data_type, :program_var, :de_id, :de_code_system,
-                    :category, :subcategory, :value_set, :concepts,
+                    :category, :subcategory, :value_set, :concepts, :content_stage,
+                    :data_collection_method, :keyword_tags, :other_allowed,
+                    :concept_name, :concept_value, :code_system_identifier, :warnings,
                     :value_set_url, :value_set_oid, :value_set_tab_name, :tag_tab_name
 
       def initialize(vads_oid_regex, coded_data_types, response_types, warnings)
@@ -100,6 +102,7 @@ module SDP
         )
         rs.save!
         @value_set.each do |code|
+          next if code[:name].include?('The information contained in this column')
           rs.responses.create(code_system: code[:code_system_oid], display_name: code[:name], value: code[:code])
         end
         rs
@@ -109,19 +112,40 @@ module SDP
     class GenericSSDataElement < DataElement
       def extract(row)
         super
-
+        @concept_name = normalize(row[:concept_name])
+        @concept_value = normalize(row[:concept_value])
+        @code_system_identifier = normalize(row[:code_system_identifier])
+        @other_allowed = normalize(row[:other_allowed])
+        @content_stage = normalize(row[:content_stage])
+        @data_collection_method = normalize(row[:data_collection_method])
+        @keyword_tags = normalize(row[:keyword_tags])
         @category = normalize(row[:category]),
                     @subcategory = normalize(row[:subcategory])
         @tag_tab_name = normalize(row[:tag_table]) if row[:tag_table].present?
         if row[:value_set_table].present?
           @value_set_tab_name = normalize(row[:value_set_table])
         end
+        @warnings << 'If one of the Code System Mappings Columns is present, all 3 should be filled out.' if (@concept_value.present? || @concept_name.present? || @code_system_identifier.present?) && !(@concept_value.present? && @concept_name.present? && @code_system_identifier.present?)
+        @warnings << 'Content stage can only be "Draft", "Comment Only", or "Trial Use". If you proceed it will default to "Draft"' if @content_stage.present? && !['Draft', 'Comment Only', 'Trial Use'].include?(@content_stage)
       end
 
       def to_question(user)
         q = super
+        # If any of the Code Sytem Mappings columns are present add from main sheet
+        concept_name = @concept_name || ''
+        concept_value = @concept_value || ''
+        code_sys = @code_system_identifier || ''
+        q.concepts << Concept.new(value: concept_value, display_name: concept_name, code_system: code_sys) if concept_value.present? || concept_name.present? || code_sys.present?
         q.category = Category.find_by(name: @category) if @category.present?
         q.subcategory = Subcategory.find_by(name: @subcategory) if @subcategory.present?
+        q.tag_list = @keyword_tags if @keyword_tags.present?
+        q.other_allowed = true if @data_type == 'Choice' && @other_allowed.present? && @other_allowed.upcase.include?('YES')
+        q.data_collection_methods << @data_collection_method if @data_collection_method.present? && [
+          'Electronic (e.g., machine to machine)','Record review','Self-Administered (Web or Mobile)',
+          'Self-Administered (Paper)','Facilitated by Interviewer (Phone)',
+          'Facilitated by Interviewer (In-Person)'
+        ].include?(@data_collection_method)
+        q.content_stage = @content_stage if @content_stage.present? && ['Draft', 'Comment Only', 'Trial Use'].include?(@content_stage)
         q
       end
 
@@ -142,6 +166,7 @@ module SDP
         )
         rs.save!
         @value_set.each do |code|
+          next if code[:display_name].include?('The information contained in this column')
           rs.responses.create(code_system: code[:system], display_name: code[:display_name], value: code[:value])
         end
         rs
@@ -202,9 +227,16 @@ module SDP
           category: 'Question Category (O)',
           subcategory: 'Question Subcategory (O)',
           data_type: 'Question Response Type (R)',
-          tag_table: 'Question Tag Table (O)',
+          tag_table: 'Code System Mappings Table (O)',
           value_set_table: 'Local Response Set Table (C)',
-          value_set: 'Local Response Set Table (C)'
+          value_set: 'Local Response Set Table (C)',
+          other_allowed: 'Other Allowed? (O)',
+          data_collection_method: 'Question Data Collection Method (O)',
+          content_stage: 'Question Content Stage (O)',
+          keyword_tags: 'Question Keyword Tags (O)',
+          concept_name: 'Concept Name (C)',
+          concept_value: 'Value (C)',
+          code_system_identifier: 'Code System Identifier (C)'
         },
         vs_columns: {
           code: 'Concept Code',
@@ -221,9 +253,9 @@ module SDP
           system: 'Code System Identifier (O)'
         },
         tag_columns: {
-          name: 'Tag Name (R)',
-          value: 'Tag Value (R)',
-          system: 'Code System Identifier (O)'
+          name: 'Concept Name (R)',
+          value: 'Value (R)',
+          system: 'Code System Identifier (R)'
         },
         # Note that response_types does not contain all possible values.
         # It only contains values that can appear in MMG files.
@@ -318,8 +350,8 @@ module SDP
 
             logger.debug "skipping tab #{sheet} -- looks like it does not contain form data elements"
             @warnings << " '#{sheet}' tab does not contain expected #{import_type_label} column names"\
-            ' and will not be imported. Refer to the table in the "Import Content" '\
-            'Help Documentation for more info.' # warning
+            ' and will not import any questions from that tab. Refer to the table in the "Import Content" '\
+            'Help Documentation if the tab does contain questions / data elements.' # warning
             next
           end
 
@@ -376,7 +408,6 @@ module SDP
           if nested_item.type == :data_element
           end
           section = Section.new(name: nested_item.name || "Imported Section ##{section_position + 1}", created_by: @user)
-          section.concepts << Concept.new(display_name: 'MMG Tab Name', value: nested_item.de_tab_name)
           section.save!
           s.survey_sections.create(section: section, position: section_position)
           section_position += 1
@@ -409,7 +440,6 @@ module SDP
             parent_section.section_nested_items << nsi
           else
             section = Section.new(name: item.name || "Imported Section ##{i + 1}", created_by: @user)
-            section.concepts << Concept.new(display_name: 'MMG Tab Name', value: item.de_tab_name)
             section.parent = parent_section
             section.save!
             nsi = SectionNestedItem.new(nested_section: section, position: i)
@@ -509,26 +539,28 @@ module SDP
 
       def extract_tags(workbook, verbose)
         all_data_elements.each do |data_element|
-          next unless data_element.tag_tab_name
+          next unless data_element.tag_tab_name && !data_element.concept_name && !data_element.concept_value && !data_element.code_system_identifier
           next unless @all_sheets.include?(data_element.tag_tab_name)
           sheet = workbook.sheet(data_element.tag_tab_name)
-          logger.info "Processing tag tab: #{data_element.tag_tab_name}" if verbose
+          logger.info "Processing Code System Mappings tab: #{data_element.tag_tab_name}" if verbose
           begin
             tag_columns = @config[:tag_columns]
             sheet.each(tag_columns) do |entry|
               # skip first row
               next if entry[:name] == tag_columns[:name]
-              # skip rows without tag name and value
+              # skip rows without CSM name and value
               next if entry[:name].nil? || entry[:name].to_s.strip.empty?
+              # skip if instructional row
+              next if entry[:name].include?('The information contained in')
               data_element.concepts << Concept.new(value: entry[:value], display_name: entry[:name], code_system: entry[:system])
             end
           rescue Roo::HeaderRowNotFoundError # catching the error
             if sheet.header_line == 1
-              @warnings << "On tab '#{sheet}' there is a missing header row in #{data_element.tag_tab_name}, retrying" # warning
+              @warnings << "On tab '#{data_element.tag_tab_name}' there is a missing header row in row 1, retrying" # warning
               sheet.header_line = 2
               retry
             else
-              @warnings << "For tab '#{sheet}' Unable to parse tags from #{data_element.tag_tab_name}" # warning
+              @warnings << "For tab '#{data_element.tag_tab_name}' Unable to parse code system mappings" # warning
             end
           end
         end
