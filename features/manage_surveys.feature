@@ -31,14 +31,14 @@ Feature: Manage Surveys
     And I should see "Version 1 (Trial Use)"
     And I should see "Visibility: Draft (authors and publishers only)"
 
-   Scenario: Show published Survey to unauthenticated user
-     Given I have a published Survey with the name "Test Survey" and the description "Survey description"
-     When I go to the list of Surveys
-     And I click on the menu link for the Survey with the name "Test Survey"
-     And I click on the option to Details the Survey with the name "Test Survey"
-     Then I should see "Test Survey"
-     And I should see "Survey description"
-     And I should not see "Curate"
+  Scenario: Show published Survey to unauthenticated user
+    Given I have a published Survey with the name "Test Survey" and the description "Survey description"
+    When I go to the list of Surveys
+    And I click on the menu link for the Survey with the name "Test Survey"
+    And I click on the option to Details the Survey with the name "Test Survey"
+    Then I should see "Test Survey"
+    And I should see "Survey description"
+    And I should not see "Curate"
 
   Scenario: Send a Draft Survey to a Publisher
     Given I have a Survey with the name "Test Survey" and the description "Survey description"
