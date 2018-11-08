@@ -310,7 +310,7 @@ GEM
       pry (>= 0.9.11)
     public_suffix (3.0.2)
     puma (3.11.3)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-oauth2 (1.9.1)
       activesupport
       attr_required
