@@ -51,7 +51,7 @@ paths:
           in: query
           description: |
             Limits the number of returned questions, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -76,7 +76,7 @@ paths:
       -
         name: id
         in: path
-        description: ID of question
+        description: "Version independent ID of question (see details page), Format: Q-#"
         required: true
         type: string
       -
@@ -106,8 +106,14 @@ paths:
       -
         name: id
         in: path
-        description: ID of question
+        description: "Version independent ID of question (see details page), Format: Q-#"
         required: true
+        type: string
+      -
+        name: version
+        in: query
+        description: Version of question
+        required: false
         type: string
     get:
       tags:
@@ -141,7 +147,7 @@ paths:
           in: query
           description: |
             Limits the number of returned programs, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -197,7 +203,7 @@ paths:
           in: query
           description: |
             Limits the number of returned systems, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -253,7 +259,7 @@ paths:
           in: query
           description: |
             Limits the number of returned surveys, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -278,8 +284,14 @@ paths:
       -
         name: id
         in: path
-        description: ID of Survey
+        description: "Version independent ID of survey (see details page), Format: S-#"
         required: true
+        type: string
+      -
+        name: version
+        in: query
+        description: Version of survey
+        required: false
         type: string
     get:
       tags:
@@ -309,7 +321,7 @@ paths:
           in: query
           description: |
             Limits the number of returned sections, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -334,7 +346,7 @@ paths:
       -
         name: id
         in: path
-        description: ID of section
+        description: "Version independent ID of section (see details page), Format: S-#"
         required: true
         type: string
       -
@@ -372,7 +384,7 @@ paths:
           in: query
           description: |
             Limits the number of returned value sets, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -397,7 +409,7 @@ paths:
       -
         name: id
         in: path
-        description: ID of value set
+        description: "Version independent ID of value set (see details page), Format: RS-#"
         required: true
         type: string
       -
@@ -424,8 +436,14 @@ paths:
       -
         name: id
         in: path
-        description: ID of value set
+        description: "Version independent ID of value set (see details page), Format: RS-#"
         required: true
+        type: string
+      -
+        name: version
+        in: query
+        description: Version of value set
+        required: false
         type: string
     get:
       tags:
@@ -459,7 +477,7 @@ paths:
           in: query
           description: |
             Limits the number of returned Questionnaires, defaults to 100 if no
-            `_content` parameter is supplied, infinity otherwise.
+            `_content` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -485,7 +503,7 @@ paths:
       -
         name: id
         in: path
-        description: ID of Questionnaire
+        description: "Version independent ID of Questionnaire (see survey details page), Format: S-#"
         required: true
         type: string
       -
@@ -522,7 +540,7 @@ paths:
           in: query
           description: |
             Limits the number of returned value sets, defaults to 100 if no
-            `search` parameter is supplied, infinity otherwise.
+            `search` parameter is supplied. Limit is bounded at 100 max records unless client accepts gzip encoding in the request header.
           required: false
           default: 100
           type: integer
@@ -547,7 +565,7 @@ paths:
       -
         name: id
         in: path
-        description: ID of value set
+        description: "Version independent ID of value set (see response set details page), Format: RS-#"
         required: true
         type: string
       -
@@ -644,11 +662,19 @@ definitions:
         type: object
         title: User that published the value set
         $ref: '#/definitions/User'
+      meta:
+        type: object
+        properties:
+          singleWordTags:
+            type: array
+            items:
+              type: string
+              title: Single word tags added by the user for search discovery
 
   Usage:
     type: array
     description:
-      A set of programs and sections that use a question or response
+      A set of programs and sections that use a section, question or response
       value set.
     items:
       type: array
@@ -679,6 +705,17 @@ definitions:
                 sectionUri:
                   type: string
                   title: Relative URI of the section
+
+  CodeMapping:
+    type: object
+    description: A coded value
+    properties:
+      code:
+        type: string
+      codeSystem:
+        type: string
+      displayName:
+        type: string
 
   CodedValue:
     type: object
@@ -725,7 +762,16 @@ definitions:
       tags:
         type: array
         items:
-          $ref: '#/definitions/CodedValue'
+          $ref: '#/definitions/CodeMapping'
+      singleWordTags:
+        type: array
+        items:
+          type: string
+          title: Single word tags added by the user for search discovery
+      codeSytemMappings:
+        type: array
+        items:
+          $ref: '#/definitions/CodeMapping'
       # TODO additional metadata
 
   Program:
@@ -819,7 +865,16 @@ definitions:
       tags:
         type: array
         items:
-          $ref: '#/definitions/CodedValue'
+          $ref: '#/definitions/CodeMapping'
+      singleWordTags:
+        type: array
+        items:
+          type: string
+          title: Single word tags added by the user for search discovery
+      codeSytemMappings:
+        type: array
+        items:
+          $ref: '#/definitions/CodeMapping'
 
   Section:
     type: object
@@ -845,7 +900,16 @@ definitions:
       tags:
         type: array
         items:
-          $ref: '#/definitions/CodedValue'
+          $ref: '#/definitions/CodeMapping'
+      singleWordTags:
+        type: array
+        items:
+          type: string
+          title: Single word tags added by the user for search discovery
+      codeSytemMappings:
+        type: array
+        items:
+          $ref: '#/definitions/CodeMapping'
       # TODO additional metadata
       nested_items:
         type: array

@@ -16,8 +16,8 @@ import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
 
-import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
+import TagModal from "../TagModal";
 import { sectionProps } from '../../prop-types/section_props';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
@@ -289,6 +289,25 @@ class SectionShow extends Component {
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
+          <p className="maincontent-item-info">Tags: {section.tagList && section.tagList.length > 0 ? (
+            <text>{section.tagList.join(', ')}</text>
+          ) : (
+            <text>No Tags Found</text>
+          )}
+          {isSimpleEditable(section, this.props.currentUser) &&
+            <a className='pull-right' href='#' onClick={(e) => {
+              e.preventDefault();
+              this.setState({ tagModalOpen: true });
+            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+              <TagModal show={this.state.tagModalOpen || false}
+                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                        tagList={section.tagList}
+                        saveButtonAction={(tagList) => {
+                          this.props.updateSectionTags(section.id, tagList);
+                          this.setState({ tagModalOpen: false });
+                        }} />
+            </a>
+          }</p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -299,7 +318,18 @@ class SectionShow extends Component {
           </ul>
           <div className="tab-content">
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
-              <ChangeHistoryTab versions={section.versions} type='section' majorVersion={section.version} />
+              {isSimpleEditable(section, this.props.currentUser) ? (
+                <ChangeHistoryTab versions={section.versions} type='section' majorVersion={section.version} />
+              ) : (
+                <div className='basic-c-box panel-default section-type'>
+                  <div className="panel-heading">
+                    <h2 className="panel-title">Changes</h2>
+                  </div>
+                  <div className="box-content">
+                    You do not have permissions to see change history on this item (you must be a collaborating author / in the proper group).
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
               <div className="basic-c-box panel-default section-type">
@@ -308,6 +338,9 @@ class SectionShow extends Component {
                 </div>
                 <div className="box-content">
                   <Linkify>{section.description}</Linkify>
+                </div>
+                <div className="box-content">
+                  <strong>Version Independent ID: </strong>{section.versionIndependentId}
                 </div>
                 { section.contentStage &&
                   <div className="box-content">
@@ -341,27 +374,12 @@ class SectionShow extends Component {
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">
-                    Tags
-                    {isSimpleEditable(section, this.props.currentUser) &&
-                      <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ tagModalOpen: true });
-                      }}>
-                        <TagModal show={this.state.tagModalOpen || false}
-                          cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                          concepts={section.concepts}
-                          saveButtonAction={(conceptsAttributes) => {
-                            this.props.updateSectionTags(section.id, conceptsAttributes);
-                            this.setState({ tagModalOpen: false });
-                          }} />
-                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                      </a>
-                    }
+                    Code System Mappings
                   </h2>
                 </div>
                 <div className="box-content">
                   <div id="concepts-table">
-                    <CodedSetTable items={section.concepts} itemName={'Tag'} />
+                    <CodedSetTable items={section.concepts} itemName={'Code System Mapping'} />
                   </div>
                 </div>
               </div>

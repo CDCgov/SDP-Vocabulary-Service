@@ -10,11 +10,11 @@ import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
 import SectionList from "../sections/SectionList";
 import CodedSetTable from "../CodedSetTable";
+import TagModal from "../TagModal";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
-import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
 import BasicAlert from '../../components/BasicAlert';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -226,6 +226,25 @@ export default class QuestionShow extends Component {
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
+          <p className="maincontent-item-info">Tags: {question.tagList && question.tagList.length > 0 ? (
+            <text>{question.tagList.join(', ')}</text>
+          ) : (
+            <text>No Tags Found</text>
+          )}
+          {isSimpleEditable(question, this.props.currentUser) &&
+            <a className='pull-right' href='#' onClick={(e) => {
+              e.preventDefault();
+              this.setState({ tagModalOpen: true });
+            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+              <TagModal show={this.state.tagModalOpen || false}
+                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                        tagList={question.tagList}
+                        saveButtonAction={(tagList) => {
+                          this.props.updateQuestionTags(question.id, tagList);
+                          this.setState({ tagModalOpen: false });
+                        }} />
+            </a>
+          }</p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -236,12 +255,26 @@ export default class QuestionShow extends Component {
           </ul>
           <div className="tab-content">
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
-              <ChangeHistoryTab versions={question.versions} type='question' majorVersion={question.version} />
+              {isSimpleEditable(question, this.props.currentUser) ? (
+                <ChangeHistoryTab versions={question.versions} type='question' majorVersion={question.version} />
+              ) : (
+                <div className='basic-c-box panel-default question-type'>
+                  <div className="panel-heading">
+                    <h2 className="panel-title">Changes</h2>
+                  </div>
+                  <div className="box-content">
+                    You do not have permissions to see change history on this item (you must be a collaborating author / in the proper group).
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
               <div className="basic-c-box panel-default question-type">
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
+                </div>
+                <div className="box-content">
+                  <strong>Version Independent ID: </strong>{question.versionIndependentId}
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
@@ -310,27 +343,12 @@ export default class QuestionShow extends Component {
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
-                      Tags
-                      {isSimpleEditable(question, this.props.currentUser) &&
-                        <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                          e.preventDefault();
-                          this.setState({ tagModalOpen: true });
-                        }}>
-                          <TagModal show={this.state.tagModalOpen || false}
-                            cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                            concepts={question.concepts}
-                            saveButtonAction={(conceptsAttributes) => {
-                              this.props.updateQuestionTags(question.id, conceptsAttributes);
-                              this.setState({ tagModalOpen: false });
-                            }} />
-                          <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                        </a>
-                      }
+                      Code System Mappings
                     </h2>
                   </div>
                   <div className="box-content">
                     <div id="concepts-table">
-                      <CodedSetTable items={question.concepts} itemName={'Tag'} />
+                      <CodedSetTable items={question.concepts} itemName={'Code System Mapping'} />
                     </div>
                   </div>
                 </div>

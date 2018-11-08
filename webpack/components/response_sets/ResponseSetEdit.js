@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
+import TagsInput from 'react-tagsinput';
 
 import { responseSetProps } from '../../prop-types/response_set_props';
 import Errors from '../Errors';
@@ -12,6 +13,7 @@ export default class ResponseSetEdit extends Component {
   constructor(props) {
     super(props);
     this.unsavedState = false;
+    this.associationChanges = {};
     switch (this.props.action) {
       case 'revise':
         this.state = this.stateForRevise(this.props.responseSet);
@@ -26,6 +28,7 @@ export default class ResponseSetEdit extends Component {
         this.state = this.stateForEdit(this.props.responseSet);
         break;
     }
+    this.handleTagChange = this.handleTagChange.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +40,7 @@ export default class ResponseSetEdit extends Component {
 
   componentWillUnmount() {
     this.unsavedState = false;
+    this.associationChanges = {};
     if(this.unbindHook){
       this.unbindHook();
     }
@@ -54,8 +58,9 @@ export default class ResponseSetEdit extends Component {
       this.unsavedState = false;
       this.props.router.push(this.nextLocation.pathname);
     }else{
-      this.props.responseSetSubmitter(this.state, this.state.comment, () => {
+      this.props.responseSetSubmitter(this.state, this.state.comment, this.unsavedState, this.associationChanges, () => {
         this.unsavedState = false;
+        this.associationChanges = {};
         this.props.router.push(this.nextLocation.pathname);
       }, (failureResponse) => {
         this.setState({errors: failureResponse.response.data});
@@ -77,14 +82,15 @@ export default class ResponseSetEdit extends Component {
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
     const groups = responseSet.groups || [];
+    const tagList = responseSet.tagList || [];
     return {name, oid, description, responsesAttributes, groups,
-      version, parentId, versionIndependentId, showModal};
+      version, parentId, versionIndependentId, showModal, tagList};
   }
 
   stateForNew() {
     return {
       name: '', oid: '', description: '', comment: '',
-      responsesAttributes: [],
+      responsesAttributes: [], tagList: [],
       version: 1, versionIndependentId: null, showModal: false
     };
   }
@@ -98,7 +104,8 @@ export default class ResponseSetEdit extends Component {
     const versionIndependentId = null;
     const parentId  = responseSet.id;
     const showModal = false;
-    return {name, oid, description, responsesAttributes,
+    const tagList = responseSet.tagList || [];
+    return {name, oid, description, responsesAttributes, tagList,
       version, versionIndependentId, parentId, showModal};
   }
 
@@ -113,8 +120,9 @@ export default class ResponseSetEdit extends Component {
     const versionIndependentId = responseSet.versionIndependentId;
     const showModal = false;
     const groups = responseSet.groups || [];
+    const tagList = responseSet.tagList || [];
     return {id, name, oid, description, responsesAttributes, groups,
-      version, parentId, versionIndependentId, showModal};
+      version, parentId, versionIndependentId, showModal, tagList};
   }
 
   cancelButton() {
@@ -158,7 +166,12 @@ export default class ResponseSetEdit extends Component {
                     <input type="hidden" name="parentId" id="parentId" value={this.state.parentId} />
                   </div>
                 </Row>
-
+                <Row>
+                  <Col md={8} className="question-form-group">
+                    <label className="input-label" htmlFor="response-set-tags">Tags</label>
+                    <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'response-set-tags'}} />
+                  </Col>
+                </Row>
                 <Row>
                   <Col md={8} className="question-form-group">
                     <label className="input-label"  htmlFor="response-set-description">Description</label>
@@ -201,8 +214,9 @@ export default class ResponseSetEdit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     let responseSet = Object.assign({}, this.state);
-    this.props.responseSetSubmitter(responseSet, this.state.comment, (successResponse) => {
+    this.props.responseSetSubmitter(responseSet, this.state.comment, this.unsavedState, this.associationChanges, (successResponse) => {
       this.unsavedState = false;
+      this.associationChanges = {};
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
         stats.responseSetCount = this.props.stats.responseSetCount + 1;
@@ -216,7 +230,17 @@ export default class ResponseSetEdit extends Component {
   }
 
   handleResponsesChange(newResponses) {
+    if (this.associationChanges['responses']) {
+      this.associationChanges['responses']['updated'] = newResponses;
+    } else {
+      this.associationChanges['responses'] = {original: this.state.responsesAttributes, updated: newResponses};
+    }
     this.setState({responsesAttributes: newResponses});
+    this.unsavedState = true;
+  }
+
+  handleTagChange(tagList) {
+    this.setState({tagList});
     this.unsavedState = true;
   }
 

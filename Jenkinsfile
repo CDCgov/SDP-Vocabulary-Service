@@ -3,7 +3,7 @@ pipeline {
   agent none
 
   options {
-    timeout(time: 90, unit: 'MINUTES')
+    timeout(time: 120, unit: 'MINUTES')
   }
 
   stages {
@@ -120,7 +120,7 @@ pipeline {
 
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
-          waitTime: '20', waitUnit: 'min'
+          waitTime: '30', waitUnit: 'min'
       }
 
       post {

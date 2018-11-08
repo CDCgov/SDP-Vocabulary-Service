@@ -50,15 +50,23 @@ Feature: Manage Response Sets
     And I fill in the "response-set-name" field with "Gender Partial"
     And I fill in the "save-with-comment" field with "Testing comment functionality on edit"
     And I fill in the "Description" field with "M / F"
+    And I fill in the "Tags" field with "TagTest1"
+    And I tab out of the "Tags" field
     And I click on the "Save" button
     Then I should see "Gender Partial"
     And I should see "M / F"
+    And I should see "TagTest1"
     And I should not see "Publish"
     When I click on the "Change History" link
     Then I should see "Notes / Comments: Testing comment functionality on edit"
     Then I should see "Changes by test_author@gmail.com"
     And I should see "field changed from"
     And I should not see "No changes have been made to this version."
+    When I click on the "Update Tags" link
+    And I fill in the "Tags" field with "TagTest2"
+    And I tab out of the "Tags" field
+    And I click on the "Save" button
+    Then I should see "TagTest1, TagTest2"
 
   Scenario: Send a Draft Response Set to a Publisher
     Given I have a Response Set with the name "Gender Full" and the description "Response set description" and the response "Original Response"
@@ -245,7 +253,7 @@ Feature: Manage Response Sets
     And I click on the "search-btn" button
     Then I should see "Birth Outcome (Rubella)"
     And I should see the "PHIN VADS" link
-    
+
   Scenario: Create New Response Set Local Source
     Given I am logged in as test_author@gmail.com
     Given I have a Response Set with the name "Body Type" and the description "Body Type description"

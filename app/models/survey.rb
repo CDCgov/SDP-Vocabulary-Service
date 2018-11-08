@@ -1,8 +1,9 @@
 class Survey < ApplicationRecord
-  include Versionable, Searchable, Taggable, Groupable
+  include Versionable, Searchable, Mappable, Groupable
   acts_as_commentable
+  acts_as_taggable
   has_paper_trail versions: :paper_trail_versions, version: :paper_trail_version, on: [:update],
-                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id]
+                  ignore: [:created_at, :updated_by_id, :updated_at, :version_independent_id, :published_by_id, :tag_list]
 
   has_many :survey_sections, -> { order 'position asc' }, dependent: :destroy
   has_many :sections, through: :survey_sections
@@ -53,6 +54,7 @@ class Survey < ApplicationRecord
       q_count = 0
       rs_count = 0
       sect_dupes = s.potential_duplicates(current_user)
+      sect_dupes[:questions] ||= []
       sect_dupes[:response_sets] ||= []
       q_count = sect_dupes[:questions].length if sect_dupes[:questions]
       rs_count = sect_dupes[:response_sets].length if sect_dupes[:response_sets]

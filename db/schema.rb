@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180816080433) do
+ActiveRecord::Schema.define(version: 20181022163639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "authentications", id: :serial, force: :cascade do |t|
     t.string "provider", null: false
@@ -38,10 +39,9 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.integer "commentable_id"
     t.integer "user_id"
     t.string "role", default: "comments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["commentable_id"], name: "index_comments_on_commentable_id"
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["commentable_type"], name: "index_comments_on_commentable_type"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -52,9 +52,9 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.string "display_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "taggable_type"
-    t.bigint "taggable_id"
-    t.index ["taggable_type", "taggable_id"], name: "index_concepts_on_taggable_type_and_taggable_id"
+    t.string "mappable_type"
+    t.bigint "mappable_id"
+    t.index ["mappable_type", "mappable_id"], name: "index_concepts_on_mappable_type_and_mappable_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.string "data_collection_methods", default: [], array: true
     t.string "content_stage", default: "Draft"
     t.integer "duplicate_of"
+    t.integer "minor_change_count", default: 0
     t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id"
     t.index ["response_type_id"], name: "index_questions_on_response_type_id"
@@ -169,6 +170,7 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.integer "duplicates_replaced_count", default: 0
     t.string "content_stage", default: "Draft"
     t.integer "duplicate_of"
+    t.integer "minor_change_count", default: 0
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id"
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id"
   end
@@ -195,11 +197,10 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.string "name"
     t.string "resource_type"
     t.integer "resource_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
-    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
   create_table "section_nested_items", id: :serial, force: :cascade do |t|
@@ -228,6 +229,7 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.integer "parent_id"
     t.boolean "preferred"
     t.string "content_stage", default: "Draft"
+    t.integer "minor_change_count", default: 0
     t.index ["created_by_id"], name: "index_sections_on_created_by_id"
   end
 
@@ -278,7 +280,33 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.boolean "preferred"
     t.date "omb_approval_date"
     t.string "content_stage", default: "Draft"
+    t.integer "minor_change_count", default: 0
     t.index ["created_by_id"], name: "index_surveys_on_created_by_id"
+  end
+
+  create_table "taggings", id: :serial, force: :cascade do |t|
+    t.integer "tag_id"
+    t.string "taggable_type"
+    t.integer "taggable_id"
+    t.string "tagger_type"
+    t.integer "tagger_id"
+    t.string "context", limit: 128
+    t.datetime "created_at"
+    t.index ["context"], name: "index_taggings_on_context"
+    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
+    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
+    t.index ["taggable_id"], name: "index_taggings_on_taggable_id"
+    t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
+    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
+    t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
+  end
+
+  create_table "tags", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.integer "taggings_count", default: 0
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -307,9 +335,7 @@ ActiveRecord::Schema.define(version: 20180816080433) do
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
-    t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
-    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -321,6 +347,7 @@ ActiveRecord::Schema.define(version: 20180816080433) do
     t.datetime "created_at"
     t.text "object_changes"
     t.string "comment"
+    t.hstore "associations", default: {}
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 

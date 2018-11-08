@@ -10,7 +10,7 @@ module Api
                      Question.all.includes(:response_type, :published_by)
                    end
       current_user_id = current_user ? current_user.id : -1
-      @questions = if params[:limit]
+      @questions = if params[:limit] && (params[:limit] < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip')
                      @questions.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
                    else
                      @questions.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)
@@ -20,7 +20,7 @@ module Api
     end
 
     def show
-      @question = Question.by_id_and_version(params[:id], params[:version])
+      @question = Question.by_id_and_version(params[:id].upcase, params[:version])
       if @question.nil?
         not_found
         return
@@ -29,7 +29,7 @@ module Api
     end
 
     def usage
-      @question = Question.by_id_and_version(params[:id, params[:version]])
+      @question = Question.by_id_and_version(params[:id].upcase, params[:version])
       if @question.nil?
         not_found
         return

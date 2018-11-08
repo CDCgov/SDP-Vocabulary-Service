@@ -9,8 +9,8 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import CodedSetTable from "../CodedSetTable";
-import TagModal from "../TagModal";
 import Breadcrumb from "../Breadcrumb";
+import TagModal from "../TagModal";
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
 
@@ -198,6 +198,25 @@ class SurveyShow extends Component {
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
+          <p className="maincontent-item-info">Tags: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
+            <text>{this.props.survey.tagList.join(', ')}</text>
+          ) : (
+            <text>No Tags Found</text>
+          )}
+          {isSimpleEditable(this.props.survey, this.props.currentUser) &&
+            <a className='pull-right' href='#' onClick={(e) => {
+              e.preventDefault();
+              this.setState({ tagModalOpen: true });
+            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+              <TagModal show={this.state.tagModalOpen || false}
+                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                        tagList={this.props.survey.tagList}
+                        saveButtonAction={(tagList) => {
+                          this.props.updateSurveyTags(this.props.survey.id, tagList);
+                          this.setState({ tagModalOpen: false });
+                        }} />
+            </a>
+          }</p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -208,7 +227,18 @@ class SurveyShow extends Component {
           </ul>
           <div className="tab-content">
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
-              <ChangeHistoryTab versions={this.props.survey.versions} type='survey' majorVersion={this.props.survey.version} />
+              {isSimpleEditable(this.props.survey, this.props.currentUser) ? (
+                <ChangeHistoryTab versions={this.props.survey.versions} type='survey' majorVersion={this.props.survey.version} />
+              ) : (
+                <div className='basic-c-box panel-default survey-type'>
+                  <div className="panel-heading">
+                    <h2 className="panel-title">Changes</h2>
+                  </div>
+                  <div className="box-content">
+                    You do not have permissions to see change history on this item (you must be a collaborating author / in the proper group).
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
               <div className="basic-c-box panel-default survey-type">
@@ -217,6 +247,9 @@ class SurveyShow extends Component {
                 </div>
                 <div className="box-content">
                   <Linkify>{this.props.survey.description}</Linkify>
+                </div>
+                <div className="box-content">
+                  <strong>Version Independent ID: </strong>{this.props.survey.versionIndependentId}
                 </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="box-content">
@@ -250,27 +283,12 @@ class SurveyShow extends Component {
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">
-                    Tags
-                    {isSimpleEditable(this.props.survey, this.props.currentUser) &&
-                      <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ tagModalOpen: true });
-                      }}>
-                        <TagModal show={this.state.tagModalOpen || false}
-                          cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                          concepts={this.props.survey.concepts}
-                          saveButtonAction={(conceptsAttributes) => {
-                            this.props.updateSurveyTags(this.props.survey.id, conceptsAttributes);
-                            this.setState({ tagModalOpen: false });
-                          }} />
-                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Update
-                      </a>
-                    }
+                    Code System Mappings
                   </h2>
                 </div>
                 <div className="box-content">
                   <div id="concepts-table">
-                    <CodedSetTable items={this.props.survey.concepts} itemName={'Tag'} />
+                    <CodedSetTable items={this.props.survey.concepts} itemName={'Code System Mapping'} />
                   </div>
                 </div>
               </div>

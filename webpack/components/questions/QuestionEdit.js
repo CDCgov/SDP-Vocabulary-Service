@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import values from 'lodash/values';
 import $ from 'jquery';
 import { Row, Col } from 'react-bootstrap';
+import TagsInput from 'react-tagsinput';
 
 import { questionProps } from '../../prop-types/question_props';
 import currentUserProps from '../../prop-types/current_user_props';
@@ -36,7 +37,9 @@ class QuestionEdit extends Component {
     this.handleResponseSetsChange = this.handleResponseSetsChange.bind(this);
     this.handleDataCollectionMethodsChange = this.handleDataCollectionMethodsChange.bind(this);
     this.handleResponseSetSuccess = this.handleResponseSetSuccess.bind(this);
+    this.handleTagChange = this.handleTagChange.bind(this);
     this.unsavedState = false;
+    this.associationChanges = {};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,6 +72,7 @@ class QuestionEdit extends Component {
 
   componentWillUnmount() {
     this.unsavedState = false;
+    this.associationChanges = {};
     window.onbeforeunload = this.existingOnBeforeUnload;
     if(this.unbindHook){
       this.unbindHook();
@@ -85,10 +89,12 @@ class QuestionEdit extends Component {
     this.setState({ showWarningModal: false });
     if(leavePage){
       this.unsavedState = false;
+      this.associationChanges = {};
       this.props.router.push(this.nextLocation.pathname);
     }else{
-      this.props.questionSubmitter(this.state, this.state.comment, () => {
+      this.props.questionSubmitter(this.state, this.state.comment, this.unsavedState, this.associationChanges, () => {
         this.unsavedState = false;
+        this.associationChanges = {};
         this.props.router.push(this.nextLocation.pathname);
       }, (failureResponse) => {
         this.setState({errors: failureResponse.response.data});
@@ -121,6 +127,7 @@ class QuestionEdit extends Component {
       conceptsAttributes: [],
       linkedResponseSets: [],
       dataCollectionMethods: [],
+      tagList: [],
       otherAllowed: false
     };
   }
@@ -134,6 +141,7 @@ class QuestionEdit extends Component {
       subcategoryId: this.props.question.subcategory ? this.props.question.subcategory.id : undefined,
       responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
     questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
+    questionCopy.tagList = this.props.question.tagList || [];
     questionCopy.linkedResponseSets = this.props.question.responseSets || [];
     questionCopy.dataCollectionMethods = this.props.question.dataCollectionMethods || [];
     return questionCopy;
@@ -246,6 +254,12 @@ class QuestionEdit extends Component {
                   </Col>
                 </Row>
                 <Row>
+                  <Col md={8} className="question-form-group">
+                    <label className="input-label" htmlFor="question-tags">Tags</label>
+                    <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'question-tags'}} />
+                  </Col>
+                </Row>
+                <Row>
                   <Col md={12} className="question-form-group">
                     <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method</label>
                     <DataCollectionSelect onChangeFunc={this.handleDataCollectionMethodsChange()} methods={state.dataCollectionMethods} />
@@ -254,11 +268,11 @@ class QuestionEdit extends Component {
                 {this.otherAllowedBox()}
                 <Row>
                   <Col md={12}>
-                    <h2 className="tags-table-header"><strong>Tags</strong></h2>
+                    <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>
                     <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                              initialItems={this.state.conceptsAttributes}
                              parentName={'question'}
-                             childName={'tag'} />
+                             childName={'Code System Mapping'} />
                   </Col>
                 </Row>
                 { this.isChoiceType() ?
@@ -341,19 +355,26 @@ class QuestionEdit extends Component {
     this.setState({showResponseSetModal: false});
   }
 
+  handleTagChange(tagList) {
+    this.setState({tagList});
+    this.unsavedState = true;
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     if (this.props.action === 'edit') {
-      this.props.draftSubmitter(this.props.id, this.state, this.state.comment, (response) => {
+      this.props.draftSubmitter(this.props.id, this.state, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
         // TODO: Handle when the saving question fails.
         this.unsavedState = false;
+        this.associationChanges = {};
         if (response.status === 200) {
           this.props.router.push(`/questions/${response.data.id}`);
         }
       });
     } else {
-      this.props.questionSubmitter(this.state, this.state.comment, (successResponse) => {
+      this.props.questionSubmitter(this.state, this.state.comment, this.unsavedState, this.associationChanges, (successResponse) => {
         this.unsavedState = false;
+        this.associationChanges = {};
         if (this.props.action === 'new') {
           let stats = Object.assign({}, this.props.stats);
           stats.questionCount = this.props.stats.questionCount + 1;
@@ -368,6 +389,11 @@ class QuestionEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
+    if (this.associationChanges['mappings']) {
+      this.associationChanges['mappings']['updated'] = newConcepts;
+    } else {
+      this.associationChanges['mappings'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+    }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
     this.unsavedState = true;
   }
@@ -422,6 +448,17 @@ class QuestionEdit extends Component {
   }
 
   handleResponseSetsChange(newResponseSets){
+    if (this.associationChanges['response sets']) {
+      this.associationChanges['response sets']['updated'] = newResponseSets.map((rs) => {
+        return {id: rs.id, name: rs.name};
+      });
+    } else {
+      this.associationChanges['response sets'] = {original: this.state.linkedResponseSets.map((rs) => {
+        return {id: rs.id, name: rs.name};
+      }), updated: newResponseSets.map((rs) => {
+        return {id: rs.id, name: rs.name};
+      })};
+    }
     this.setState({linkedResponseSets: newResponseSets});
     this.unsavedState = true;
   }

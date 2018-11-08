@@ -5,7 +5,7 @@ module Api
         @surveys = Survey.includes(:published_by, survey_sections:
                          [section: { section_nested_items: [:response_set, :question, :nested_section] }]).where("status='published'")
         @surveys = @surveys.search(params[:_content]) if params[:_content]
-        limit =  params[:limit] ? params[:limit] : 100
+        limit = params[:limit] && (params[:limit] < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip') ? params[:limit] : 100
         @surveys = @surveys.limit(limit).order(version_independent_id: :asc)
       end
 

@@ -10,12 +10,12 @@ export default class CodedSetTable extends Component {
     }
     return (
       <table className="table table-striped coded-set-table">
-        <caption>Information about associated {this.props.itemName}s:</caption>
+        <caption>Table of {this.props.itemName}s:</caption>
         <thead>
           <tr>
-            <th scope="col" id="display-name-column">{this.props.itemName === 'Response' ? 'Display Name' : `${this.props.itemName} Name`}</th>
-            <th scope="col" id="code-column">{this.props.itemName} Value</th>
-            <th scope="col" id="code-system-column">Code System Identifier (Optional)</th>
+            <th scope="col" id="display-name-column">{this.props.itemName === 'Response' ? 'Display Name' : 'Concept Name'}</th>
+            <th scope="col" id="code-column">Value</th>
+            <th scope="col" id="code-system-column">Code System Identifier {this.props.itemName === 'Response' && '(Optional)'}</th>
           </tr>
         </thead>
         <tbody>

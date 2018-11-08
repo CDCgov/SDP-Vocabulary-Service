@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
+import TagsInput from 'react-tagsinput';
 
 import { surveyProps } from '../../prop-types/survey_props';
 import { sectionsProps } from '../../prop-types/section_props';
@@ -25,6 +26,7 @@ class SurveyEdit extends Component {
       name: '',
       version: 1,
       conceptsAttributes: [],
+      tagList: [],
       description: '',
       surveySections: [],
       controlNumber: null,
@@ -63,6 +65,7 @@ class SurveyEdit extends Component {
     newState.surveillanceSystemId = survey.surveillanceSystemId || newState.surveillanceSystemId;
     newState.versionIndependentId = survey.versionIndependentId;
     newState.conceptsAttributes = filterConcepts(survey.concepts);
+    newState.tagList = survey.tagList || [];
     newState.groups = survey.groups || [];
     return newState;
   }
@@ -89,23 +92,49 @@ class SurveyEdit extends Component {
         this.state = this.stateForNew(props.currentUser);
     }
     this.unsavedState = false;
+    this.associationChanges = {};
     this.lastSectionCount = this.state.surveySections.length;
+    this.handleTagChange = this.handleTagChange.bind(this);
   }
 
   componentDidMount() {
     this.unbindHook = this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
     window.onbeforeunload = this.windowWillUnload.bind(this);
+    if(this.props.sections && !this.associationChanges['sections']) {
+      this.associationChanges['sections'] = {original: this.state.surveySections.map((ss) => {
+        let ssName = this.props.sections[ss.sectionId].name || '';
+        return {id: ss.id, name: ssName};
+      }), updated: this.state.surveySections.map((ss) => {
+        let ssName = this.props.sections[ss.sectionId].name || '';
+        return {id: ss.sectionId, name: ssName};
+      })};
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(this.lastSectionCount !== prevState.surveySections.length) {
-      this.unsavedState  = true;
+      this.unsavedState = true;
+      if (this.associationChanges['sections']) {
+        this.associationChanges['sections']['updated'] = this.state.surveySections.map((ss) => {
+          let ssName = this.props.sections[ss.sectionId].name || '';
+          return {id: ss.sectionId, name: ssName};
+        });
+      } else {
+        this.associationChanges['sections'] = {original: prevState.surveySections.map((ss) => {
+          let ssName = prevProps.sections[ss.sectionId].name || '';
+          return {id: ss.id, name: ssName};
+        }), updated: this.state.surveySections.map((ss) => {
+          let ssName = this.props.sections[ss.sectionId].name || '';
+          return {id: ss.sectionId, name: ssName};
+        })};
+      }
       this.lastSectionCount = prevState.surveySections.length;
     }
   }
 
   componentWillUnmount() {
     this.unsavedState = false;
+    this.associationChanges = {};
     this.unbindHook();
   }
 
@@ -116,7 +145,17 @@ class SurveyEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
+    if (this.associationChanges['mappings']) {
+      this.associationChanges['mappings']['updated'] = newConcepts;
+    } else {
+      this.associationChanges['mappings'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+    }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
+    this.unsavedState = true;
+  }
+
+  handleTagChange(tagList) {
+    this.setState({tagList});
     this.unsavedState = true;
   }
 
@@ -124,15 +163,17 @@ class SurveyEdit extends Component {
     this.setState({ showModal: false });
     if(leavePage){
       this.unsavedState = false;
+      this.associationChanges = {};
       this.props.router.push(this.nextLocation.pathname);
     }else{
       let survey = Object.assign({}, this.state);
       // Because we were saving SurveySections with null positions for a while, we need to explicitly set position here to avoid sending a null position back to the server
       // At some point, we can remove this code
       survey.linkedSections = this.state.surveySections.map((sect, i) => ({id: sect.id, surveyId: sect.surveyId, sectionId: sect.sectionId, position: i}));
-      this.props.surveySubmitter(survey, this.state.comment, (response) => {
+      this.props.surveySubmitter(survey, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
         // TODO: Handle when the saving survey fails.
         this.unsavedState = false;
+        this.associationChanges = {};
         if (response.status === 201) {
           this.props.router.push(this.nextLocation.pathname);
         }
@@ -158,8 +199,9 @@ class SurveyEdit extends Component {
     // Because of the way we have to pass the current sections in we have to manually sync props and state for submit
     let survey = Object.assign({}, this.state);
     survey.linkedSections = this.state.surveySections;
-    this.props.surveySubmitter(survey, this.state.comment, (response) => {
+    this.props.surveySubmitter(survey, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
       this.unsavedState = false;
+      this.associationChanges = {};
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
         stats.surveyCount = this.props.stats.surveyCount + 1;
@@ -229,6 +271,12 @@ class SurveyEdit extends Component {
             </Col>
           </Row>
           <Row>
+            <Col md={8} className="survey-group">
+              <label className="input-label" htmlFor="survey-tags">Tags</label>
+              <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'survey-tags'}} />
+            </Col>
+          </Row>
+          <Row>
             <ProgSysEditModal closer={() => this.setState({progSysModalOpen: false})}
               show={this.state.progSysModalOpen}
               update={(sid, pid) => this.setState({surveillanceSystemId: sid, surveillanceProgramId: pid, progSysModalOpen: false})}
@@ -252,11 +300,11 @@ class SurveyEdit extends Component {
               }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
             </Col>
           </Row>
-          <h2 className="tags-table-header"><strong>Tags</strong></h2>
+          <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>
           <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                    initialItems={this.state.conceptsAttributes}
                    parentName={'survey'}
-                   childName={'tag'} />
+                   childName={'Code System Mapping'} />
           {this.props.action === 'edit' && <div className="survey-group">
             <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
             <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>

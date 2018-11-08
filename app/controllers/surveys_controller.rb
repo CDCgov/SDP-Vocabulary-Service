@@ -7,7 +7,8 @@ class SurveysController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   def index
@@ -40,6 +41,7 @@ class SurveysController < ApplicationController
     else
       update_successful = nil
       @survey.transaction do
+        @survey.minor_change_count += 1 if params[:unsaved_state]
         @survey.survey_sections = update_survey_sections
         @survey.update_concepts('Survey')
         update_successful = @survey.update(survey_params)
@@ -101,7 +103,7 @@ class SurveysController < ApplicationController
   def update_stage
     if ['Published', 'Draft', 'Comment Only', 'Trial Use'].include?(params[:stage])
       @survey.update_stage(params[:stage])
-      render :show, status: :ok, location: @question
+      render :show, status: :ok, location: @survey
     else
       render json: @survey.errors, status: :unprocessable_entity
     end
@@ -128,8 +130,8 @@ class SurveysController < ApplicationController
   end
 
   def update_tags
-    @survey.add_tags(params)
-    if @survey.save!
+    @survey.tag_list = params['tag_list']
+    if params['tag_list'] && @survey.save!
       render :show, status: :ok, location: @survey
     else
       render json: @survey.errors, status: :unprocessable_entity
@@ -209,8 +211,8 @@ class SurveysController < ApplicationController
   def survey_params
     params.require(:survey).permit(:name, :description, :parent_id, :groups,
                                    :control_number, :omb_approval_date, :version_independent_id,
-                                   :surveillance_program_id, :surveillance_system_id,
-                                   concepts_attributes: [:id, :value, :display_name, :code_system])
+                                   :surveillance_program_id, :surveillance_system_id, tag_list: [],
+                                                                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 
   def create_survey_sections

@@ -4,7 +4,8 @@ class SectionsController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   # GET /sections
@@ -51,6 +52,7 @@ class SectionsController < ApplicationController
     else
       update_successful = nil
       @section.transaction do
+        @section.minor_change_count += 1 if params[:unsaved_state]
         @section.section_nested_items = update_section_nested_items
         @section.update_concepts('Section')
         # When we assign update_successful, it is the last expression in the block
@@ -144,8 +146,8 @@ class SectionsController < ApplicationController
   end
 
   def update_tags
-    @section.add_tags(params)
-    if @section.save!
+    @section.tag_list = params['tag_list']
+    if params['tag_list'] && @section.save!
       render :show, status: :ok, location: @section
     else
       render json: @section.errors, status: :unprocessable_entity
@@ -234,7 +236,7 @@ class SectionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def section_params
     params.require(:section).permit(:name, :description, :parent_id,
-                                    :version_independent_id, :groups,
-                                    concepts_attributes: [:id, :value, :display_name, :code_system])
+                                    :version_independent_id, :groups, tag_list: [],
+                                                                      concepts_attributes: [:id, :value, :display_name, :code_system])
   end
 end

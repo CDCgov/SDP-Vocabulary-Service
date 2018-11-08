@@ -287,6 +287,9 @@
         "contentStage": {
           "type": "text"
         },
+        "tagList" : {
+          "type": "text"
+        },
         "suggest": {
           "type": "completion",
           "analyzer": "simple",
@@ -482,6 +485,9 @@
           "type": "text"
         },
         "contentStage": {
+          "type": "text"
+        },
+        "tagList" : {
           "type": "text"
         },
         "id": {
@@ -716,6 +722,9 @@
             }
           }
         },
+        "responseCount": {
+          "type": "long"
+        },
         "codes": {
           "properties": {
             "code": {
@@ -860,6 +869,9 @@
         "contentStage": {
           "type": "text"
         },
+        "tagList" : {
+          "type": "text"
+        },
         "suggest": {
           "type": "completion",
           "analyzer": "simple",
@@ -989,6 +1001,9 @@
               "type": "text"
             }
           }
+        },
+        "tagList" : {
+          "type": "text"
         },
         "codes": {
           "properties": {

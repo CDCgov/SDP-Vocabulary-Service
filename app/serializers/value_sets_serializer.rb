@@ -48,4 +48,9 @@ class ValueSetsSerializer < ActiveModel::Serializer
     expansion
   end
   attribute :published_by, serializer: UserSerializer
+  attribute :meta do
+    meta = {}
+    meta['singleWordTags'] = object.tag_list
+    meta
+  end
 end

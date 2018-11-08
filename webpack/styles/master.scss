@@ -9,6 +9,7 @@
 /* ------------------------- IMPORT 3RD PARTY VENDORS ---------------------- */
 @import "~bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import '~react-tagsinput/react-tagsinput';
 @import "~font-awesome/scss/font-awesome";
 @import '~react-joyride/lib/react-joyride';
 /* TODO Why on earth do i need to import this relatively when the above works fine? */

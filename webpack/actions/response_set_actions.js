@@ -19,7 +19,9 @@ import {
   ADD_ENTITIES,
   FETCH_RESPONSE_SET_PENDING,
   FETCH_RESPONSE_SET_SUCCESS,
-  FETCH_RESPONSE_SET_FAILURE
+  FETCH_RESPONSE_SET_FAILURE,
+  FETCH_MORE_RESPONSES,
+  UPDATE_RESPONSE_SET_TAGS
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
@@ -31,13 +33,15 @@ export function deleteResponseSet(id, callback=null) {
   };
 }
 
-export function fetchResponseSet(id) {
+export function fetchResponseSet(id, isEdit=null) {
   store.dispatch({type:FETCH_RESPONSE_SET_PENDING});
+  var params  = {isEdit: isEdit};
   return {
     type: ADD_ENTITIES,
     payload: axios.get(routes.responseSetPath(id), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
-      timeout : AJAX_TIMEOUT
+      timeout : AJAX_TIMEOUT,
+      params
     }).then((rsResponse) => {
       const normalizedData = normalize(rsResponse.data, responseSetSchema);
       store.dispatch(fetchResponseSetSuccess(rsResponse.data));
@@ -48,6 +52,28 @@ export function fetchResponseSet(id) {
       throw(new Error(error));
     })
 
+  };
+}
+
+export function fetchMoreResponses(id, page=0) {
+  return {
+    type: FETCH_MORE_RESPONSES,
+    payload: axios.get(routes.moreResponsesResponseSetPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout: AJAX_TIMEOUT,
+      params: {page: page}
+    })
+  };
+}
+
+export function updateResponseSetTags(id, tagList) {
+  const authenticityToken  = getCSRFToken();
+  const putPromise = axios.put(routes.update_tags_response_set_path(id),
+                      {id, authenticityToken, tagList},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: UPDATE_RESPONSE_SET_TAGS,
+    payload: putPromise
   };
 }
 
@@ -84,10 +110,10 @@ export function fetchResponseSetUsage(id) {
   };
 }
 
-function createPostPromise(responseSet, comment, url, fn, successHandler=null, failureHandler=null) {
+function createPostPromise(responseSet, comment, unsavedState, associationChanges, url, fn, successHandler=null, failureHandler=null) {
   const authenticityToken = getCSRFToken();
   const postPromise = fn(url,
-                      {responseSet, comment, authenticityToken},
+                      {responseSet, comment, unsavedState, associationChanges, authenticityToken},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (successHandler) {
     postPromise.then(successHandler);
@@ -99,18 +125,18 @@ function createPostPromise(responseSet, comment, url, fn, successHandler=null, f
   return postPromise;
 }
 
-export function saveResponseSet(responseSet, comment, successHandler=null, failureHandler=null) {
+export function saveResponseSet(responseSet, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const fn = axios.post;
-  const postPromise = createPostPromise(responseSet, comment, routes.responseSetsPath(), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(responseSet, comment, unsavedState, associationChanges, routes.responseSetsPath(), fn, successHandler, failureHandler);
   return {
     type: SAVE_RESPONSE_SET,
     payload: postPromise
   };
 }
 
-export function saveDraftResponseSet(responseSet, comment, successHandler=null, failureHandler=null) {
+export function saveDraftResponseSet(responseSet, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const fn = axios.put;
-  const postPromise = createPostPromise(responseSet, comment, routes.responseSetPath(responseSet.id), fn, successHandler, failureHandler);
+  const postPromise = createPostPromise(responseSet, comment, unsavedState, associationChanges, routes.responseSetPath(responseSet.id), fn, successHandler, failureHandler);
   return {
     type: SAVE_DRAFT_RESPONSE_SET,
     payload: postPromise

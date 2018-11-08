@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Button, Row, Col } from 'react-bootstrap';
 import compact from 'lodash/compact';
 import union from 'lodash/union';
+import TagsInput from 'react-tagsinput';
 
 import { sectionProps, sectionsProps } from '../../prop-types/section_props';
 import { responseSetsProps } from '../../prop-types/response_set_props';
@@ -44,10 +45,11 @@ class SectionEdit extends Component {
     const showWarningModal = false;
     const parentId = section.parent ? section.parent.id : '';
     const conceptsAttributes = filterConcepts(section.concepts) || [];
+    const tagList = section.tagList || [];
     const linkedResponseSets = this.findLinkedResponseSets(sectionNestedItems);
     const groups = section.groups || [];
     const comment = '';
-    return {sectionNestedItems, name, id, comment, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, groups};
+    return {sectionNestedItems, name, id, comment, version, versionIndependentId, description, showWarningModal, parentId, linkedResponseSets, conceptsAttributes, tagList, groups};
   }
 
   constructor(props) {
@@ -66,10 +68,12 @@ class SectionEdit extends Component {
         this.state = this.stateForRevise({});
     }
     this.unsavedState = false;
+    this.associationChanges = {};
     this.lastNestedItemCount = this.state.sectionNestedItems.length;
     this.addedResponseSets = compact(this.state.sectionNestedItems.map((sni) => sni.responseSetId));
 
     this.handleSubmit   = this.handleSubmit.bind(this);
+    this.handleTagChange = this.handleTagChange.bind(this);
     this.moveNestedItemUp = this.moveNestedItemUp.bind(this);
     this.removeNestedItem = this.removeNestedItem.bind(this);
     this.cancelLeaveModal = this.cancelLeaveModal.bind(this);
@@ -82,6 +86,7 @@ class SectionEdit extends Component {
     this.handleSelectSearchResult = this.handleSelectSearchResult.bind(this);
     this.handleModalResponseAndLeave  = this.handleModalResponseAndLeave.bind(this);
     this.handleResponseSetChangeEvent = this.handleResponseSetChangeEvent.bind(this);
+    this.writeAssociationChanges = this.writeAssociationChanges.bind(this);
   }
 
   componentDidMount() {
@@ -91,6 +96,7 @@ class SectionEdit extends Component {
 
   componentWillUnmount() {
     this.unsavedState = false;
+    this.associationChanges = {};
     this.unbindHook();
   }
 
@@ -108,6 +114,11 @@ class SectionEdit extends Component {
   }
 
   handleConceptsChange(newConcepts) {
+    if (this.associationChanges['mappings']) {
+      this.associationChanges['mappings']['updated'] = newConcepts;
+    } else {
+      this.associationChanges['mappings'] = {original: this.state.conceptsAttributes, updated: newConcepts};
+    }
     this.setState({conceptsAttributes: filterConcepts(newConcepts)});
     this.unsavedState = true;
   }
@@ -116,9 +127,10 @@ class SectionEdit extends Component {
     this.setState({ showWarningModal: false });
     let section = Object.assign({}, this.state);
     section.linkedItems = this.state.sectionNestedItems;
-    this.props.sectionSubmitter(section, this.state.comment, (response) => {
+    this.props.sectionSubmitter(section, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
       // TODO: Handle when the saving section fails.
       this.unsavedState = false;
+      this.associationChanges = {};
       if (response.status === 201) {
         this.props.router.push(this.nextLocation.pathname);
       }
@@ -128,6 +140,7 @@ class SectionEdit extends Component {
   handleModalResponseAndLeave(){
     this.setState({ showWarningModal: false });
     this.unsavedState = false;
+    this.associationChanges = {};
     this.props.router.push(this.nextLocation.pathname);
   }
 
@@ -147,6 +160,13 @@ class SectionEdit extends Component {
   }
 
   handleProgramVarChange(sniIndex, programVar) {
+    if (this.associationChanges['pdv'] && this.associationChanges['pdv'][sniIndex]) {
+      this.associationChanges['pdv'][sniIndex]['updated'] = programVar;
+    } else {
+      this.associationChanges['pdv'] = {};
+      let original = this.state.sectionNestedItems[sniIndex].programVar;
+      this.associationChanges['pdv'][sniIndex] = {original: original, updated: programVar};
+    }
     let newState = Object.assign({}, this.state);
     newState.sectionNestedItems[sniIndex].programVar = programVar;
     this.setState(newState);
@@ -157,6 +177,11 @@ class SectionEdit extends Component {
     let newState = {};
     newState[field] = event.target.value;
     this.setState(newState);
+    this.unsavedState = true;
+  }
+
+  handleTagChange(tagList) {
+    this.setState({tagList});
     this.unsavedState = true;
   }
 
@@ -177,8 +202,9 @@ class SectionEdit extends Component {
     // Because of the way we have to pass the current questions in we have to manually sync props and state for submit
     let section = Object.assign({}, this.state);
     section.linkedItems = this.state.sectionNestedItems;
-    this.props.sectionSubmitter(section, this.state.comment, (response) => {
+    this.props.sectionSubmitter(section, this.state.comment, this.unsavedState, this.associationChanges, (response) => {
       this.unsavedState = false;
+      this.associationChanges = {};
       if (this.props.action === 'new') {
         let stats = Object.assign({}, this.props.stats);
         stats.sectionCount = this.props.stats.sectionCount + 1;
@@ -213,8 +239,29 @@ class SectionEdit extends Component {
     this.setState(newState);
   }
 
+  writeAssociationChanges(snis) {
+    let sniId, sniName, sniType;
+    return snis.map((sni) => {
+      if (sni.nestedSectionId) {
+        sniId = sni.nestedSectionId;
+        sniName = this.props.sections[sni.nestedSectionId].name;
+        sniType = 'section';
+      } else {
+        sniId = sni.questionId;
+        sniName = this.props.questions[sni.questionId].name || this.props.questions[sni.questionId].content;
+        sniType = 'question';
+      }
+      return {id: sniId, name: sniName, type: sniType};
+    });
+  }
+
   updateSectionNestedItems(sectionNestedItems){
     var newState = Object.assign(this.state, {sectionNestedItems: sectionNestedItems, linkedResponseSets: this.findLinkedResponseSets(sectionNestedItems)});
+    if (this.associationChanges['nested items']) {
+      this.associationChanges['nested items']['updated'] = this.writeAssociationChanges(sectionNestedItems);
+    } else {
+      this.associationChanges['nested items'] = {original: this.writeAssociationChanges(this.state.sectionNestedItems), updated: this.writeAssociationChanges(sectionNestedItems)};
+    }
     this.setState(newState);
   }
 
@@ -344,11 +391,15 @@ class SectionEdit extends Component {
               <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
             </div>
             <div className="section-group">
-              <h2 className="tags-table-header"><strong>Tags</strong></h2>
+              <label className="input-label" htmlFor="section-tags">Tags</label>
+              <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'section-tags'}} />
+            </div>
+            <div className="section-group">
+              <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>
               <CodedSetTableEditContainer itemWatcher={(r) => this.handleConceptsChange(r)}
                        initialItems={this.state.conceptsAttributes}
                        parentName={'section'}
-                       childName={'tag'} />
+                       childName={'Code System Mapping'} />
             </div>
             {this.props.action === 'edit' && <div className="section-group">
               <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>

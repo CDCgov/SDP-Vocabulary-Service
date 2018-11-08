@@ -42,16 +42,16 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  test 'cannot edit tags on something you do not own' do
+  test 'cannot edit tags on something you dont own' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
     sign_in users(:not_admin)
-    put update_tags_question_path(Question.last, format: :json, params: { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] })
+    put update_tags_question_path(Question.last, format: :json, params: { tag_list: %w[Tag2 Tag1] })
     assert_response :forbidden
   end
 
   test 'can edit tags on something you do own' do
     post questions_url(format: :json), params: { question: { content: 'This is now a thread.', response_type_id: @question.response_type.id, category_id: @question.category.id } }
-    put update_tags_question_path(Question.last, format: :json, params: { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] })
+    put update_tags_question_path(Question.last, format: :json, params: { tag_list: %w[Tag2 Tag1] })
     assert_response :success
   end
 
@@ -60,7 +60,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
     Question.last.add_to_group(@group.id)
     sign_in @na_user
     @group.add_user(@na_user)
-    put update_tags_question_path(Question.last, format: :json, params: { concepts_attributes: [{ value: 'Tag2', display_name: 'TagName2', code_system: 'SNOMED' }, { value: 'Tag1', display_name: 'TagName1', code_system: 'SNOMED' }] })
+    put update_tags_question_path(Question.last, format: :json, params: { tag_list: %w[Tag2 Tag1] })
     assert_response :success
   end
 

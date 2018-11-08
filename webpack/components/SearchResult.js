@@ -243,7 +243,7 @@ export default class SearchResult extends Component {
       case 'response_set_dropped':
         return (
           <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Response Set details.">
-            {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs${type === 'response_set_dropped' ? '-drop' : ''}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.codes && result.codes.length}</a></li>}
+            {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs${type === 'response_set_dropped' ? '-drop' : ''}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.responseCount}{result.responseCount === undefined && 'Click name for more info'}</a></li>}
           </ul>
         );
       case 'section':
@@ -323,6 +323,9 @@ export default class SearchResult extends Component {
                     </div>
                   );
                 })
+              }
+              {result.responseCount > 25 &&
+                <p className="result-details-content"><a href={`/#/responseSets/${result.id}`}>... click here for full list of responses / codes on the details page</a></p>
               }
             </div>
           </div>

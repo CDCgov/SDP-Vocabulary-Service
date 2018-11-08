@@ -96,12 +96,12 @@ export function fetchQuestionUsage(id) {
   };
 }
 
-export function saveQuestion(question, comment, successHandler=null, failureHandler=null) {
+export function saveQuestion(question, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();
   const linkedResponseSets = question.linkedResponseSets ? question.linkedResponseSets.map((rs) => rs.id) : [];
   delete question.linkedResponseSets;
   const postPromise = axios.post(routes.questionsPath(),
-                      {question, comment, authenticityToken, linkedResponseSets},
+                      {question, comment, unsavedState, associationChanges, authenticityToken, linkedResponseSets},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (failureHandler) {
     postPromise.catch(failureHandler);
@@ -115,12 +115,12 @@ export function saveQuestion(question, comment, successHandler=null, failureHand
   };
 }
 
-export function saveDraftQuestion(id, question, comment, callback=null) {
+export function saveDraftQuestion(id, question, comment, unsavedState, associationChanges, callback=null) {
   const authenticityToken  = getCSRFToken();
   const linkedResponseSets = question.linkedResponseSets ? question.linkedResponseSets.map((rs) => rs.id) : [];
   delete question.linkedResponseSets;
   const putPromise = axios.put(routes.questions_path()+'/'+id,
-                      {question, comment, authenticityToken, linkedResponseSets},
+                      {question, comment, unsavedState, associationChanges, authenticityToken, linkedResponseSets},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   if (callback) {
     putPromise.then(callback);
@@ -131,10 +131,10 @@ export function saveDraftQuestion(id, question, comment, callback=null) {
   };
 }
 
-export function updateQuestionTags(id, conceptsAttributes) {
+export function updateQuestionTags(id, tagList) {
   const authenticityToken  = getCSRFToken();
   const putPromise = axios.put(routes.update_tags_question_path(id),
-                      {id, authenticityToken, conceptsAttributes},
+                      {id, authenticityToken, tagList},
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: UPDATE_QUESTION_TAGS,

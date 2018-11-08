@@ -56,6 +56,10 @@ class Help extends Component {
     return(
       <div className="tab-pane active" id="general" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'general'} aria-labelledby="general-tab">
         <h1 id="general">General</h1>
+        <p><strong>Full help resources:</strong></p>
+        <ul>
+        <li><a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Additional external help resources including a full user guide can be found by clicking here!</a></li>
+        </ul>
         <p><strong>Navigation and Help Basics:</strong></p>
         <ul>
         <li>Use the top bar to log-in or navigate to various pages.</li>
@@ -77,7 +81,7 @@ class Help extends Component {
           <li><a href="#survey-edit">Survey Edit Page</a></li>
           <li><a href="#survey-details">Survey Details Page</a></li>
           <li><a href="#help-page-link">Help Page</a></li>
-          <li><a href="#tag-tables-edit">Tag Tables on Edit Page</a></li>
+          <li><a href="#code-system-mappings-tables-edit">Code System Mappings Tables on Edit Page</a></li>
         </ul>
 
         <h2 id="step-by-step">Step-by-Step Walkthroughs by Page</h2>
@@ -111,10 +115,10 @@ class Help extends Component {
         <h3 id="question-edit">Question Edit Page</h3>
         <ul>
         <li>Use the input fields to edit content of the question. If the response type is open choice this panel will also give you the option to associate response sets with this quesiton at creation time</li>
-        <li>Click the search icon to search for and add coded tags to the question</li>
-        <li>Alternatively, you can manually add a tag - click the plus sign to add additional tags to associate with the question</li>
-        <li>The Tag Name field is what the user will see on the page</li>
-        <li>Optionally, you can enter a code and a code system for the tag you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
+        <li>Click the search icon to search for and add coded concepts to the question</li>
+        <li>Alternatively, you can manually add a code system mapping - click the plus sign to add additional code system mapping to associate with the question</li>
+        <li>The Concept Name field is what the user will see on the page</li>
+        <li>Optionally, you can enter a code and a code system for the mapping you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
         <li>Click save to save a draft of the edited content</li>
         </ul>
         <h3 id="question-details">Question Details Page</h3>
@@ -156,9 +160,9 @@ class Help extends Component {
         <ul>
         <li>Click any item in the left side bar to see instructions on how to perform any of the specified activities</li>
         </ul>
-        <h3 id="tag-tables-edit">Tags Tables on Edit Pages</h3>
+        <h3 id="code-system-mappings-tables-edit">Code System Mappings Tables on Edit Pages</h3>
         <ul>
-        <li>The purpose of Tags is to facilitate content discovery and reuse. Click the info (i) icon, or go to the Tagging Content tab in the help documentation to see more information and examples on how to get the most out of tags.</li>
+        <li>The purpose of Code System Mappings is to facilitate content discovery and reuse. Click the info (i) icon, or go to the Code System Mappings tab in the help documentation to see more information and examples on how to get the most out of code mappings.</li>
         </ul>
       </div>
     );
@@ -365,7 +369,7 @@ class Help extends Component {
           <li>Response Type</li>
           <li>Question Category</li>
           <li>Question Subcategory</li>
-          <li>Tags</li>
+          <li>Code Mappings</li>
         </ul>
         <p>The following fields and relationships will not change:</p>
         <ul>
@@ -387,7 +391,7 @@ class Help extends Component {
           <li>Question Name</li>
           <li>Question Description</li>
           <li>Question Category and Subcategory</li>
-          <li>Tags and Tag Code System</li>
+          <li>Code Mappings and Code System</li>
         </ul>
         <p>The match score algorithm compares the following fields to find similar response sets:</p>
         <ul>
@@ -419,7 +423,7 @@ class Help extends Component {
           <li><a href="#generic-content-organization">How to Identify Sections, Templates, or Repeating Groups within the Generic Spreadsheet</a></li>
           <li><a href="#generic-associate-rs">How to Associate Response Sets with Choice Questions on Import</a></li>
           <li><a href="#generic-local-rs">How to Create User-defined (“Local”) Response Sets Using the SDP-V Import Template</a></li>
-          <li><a href="#generic-add-tags">Adding Tags with Generic Spreadsheet</a></li>
+          <li><a href="#generic-add-code-system-mappings">Adding Code System Mappings with Generic Spreadsheet</a></li>
         </ol>
         </li>
         </ul>
@@ -566,11 +570,11 @@ class Help extends Component {
               <tr>
                 <td headers="generic-display-name-column">'Section Tag Table (O)'</td>
                 <td headers="generic-display-priority">Optional</td>
-                <td headers="generic-display-desc">The purpose of Tags is to facilitate content discovery and reuse.
-                A user can create tags by creating tags tables on separate tabs within the SDP-V generic import spreadsheet.
-                A section will be tagged with values from a tag table where the value in this cell matches the name of a tab
+                <td headers="generic-display-desc">The purpose of Code System Mappings is to facilitate content discovery and reuse.
+                A user can create Code System Mappings by creating Code System Mappings tables on separate tabs within the SDP-V generic import spreadsheet.
+                A section will be mapped with values from a code system table where the value in this cell matches the name of a tab
                 in the spreadsheet with the naming convention "TAG #", where # is a number assigned by the user to identify
-                the tags table in this template (e.g., TAGS 1, TAGS 2,  TAGS 3...).</td>
+                the mappings table in this template (e.g., TAGS 1, TAGS 2,  TAGS 3...).</td>
               </tr>
               <tr>
                 <td headers="generic-display-name-column">'Question Text (R)'</td>
@@ -740,8 +744,8 @@ class Help extends Component {
             </ul>
           </ol>
           <br/>
-          <h4 id="generic-add-tags"><strong>How to Add Tags to Content Using the SDP-V Import Template</strong></h4>
-          <p>The purpose of Tags is to facilitate content discovery and reuse.  A user can create tags by creating tags tables on separate tabs within the SDP-V generic import spreadsheet. </p>
+          <h4 id="generic-add-code-system-mappings"><strong>How to Add Code System Mappings to Content Using the SDP-V Import Template</strong></h4>
+          <p>The purpose of Code System Mappings is to facilitate content discovery and reuse.  A user can create mappings by creating tags tables on separate tabs within the SDP-V generic import spreadsheet. </p>
 
           <ol><li><strong>Populate Distinct Tags Tables on Separate Tabs in the Spreadsheet (Tab naming convention: Tags #)</strong></li>
 
@@ -783,6 +787,7 @@ class Help extends Component {
   }
 
   taggingInstructions() {
+    // Need to update this section with single word tagging instructions
     return(
       <div className="tab-pane" id="tagging" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'tagging'} aria-labelledby="tagging-tab">
         <h1 id="tagging-content">Tagging Content</h1>

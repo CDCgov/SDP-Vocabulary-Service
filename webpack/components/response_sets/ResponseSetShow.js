@@ -14,6 +14,7 @@ import BasicAlert from '../../components/BasicAlert';
 
 import CodedSetTable from "../CodedSetTable";
 import Breadcrumb from "../Breadcrumb";
+import TagModal from "../TagModal";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
@@ -26,7 +27,8 @@ export default class ResponseSetShow extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedTab: 'main'
+      selectedTab: 'main',
+      page: 1
     };
   }
 
@@ -209,6 +211,25 @@ export default class ResponseSetShow extends Component {
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${responseSet.preferred ? 'cdc-preferred-note' : ''}`}><strong>Response Set Name:</strong> {responseSet.name} {responseSet.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
+          <p className="maincontent-item-info">Tags: {responseSet.tagList && responseSet.tagList.length > 0 ? (
+            <text>{responseSet.tagList.join(', ')}</text>
+          ) : (
+            <text>No Tags Found</text>
+          )}
+          {isSimpleEditable(responseSet, this.props.currentUser) &&
+            <a className='pull-right' href='#' onClick={(e) => {
+              e.preventDefault();
+              this.setState({ tagModalOpen: true });
+            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+              <TagModal show={this.state.tagModalOpen || false}
+                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                        tagList={responseSet.tagList}
+                        saveButtonAction={(tagList) => {
+                          this.props.updateResponseSetTags(responseSet.id, tagList);
+                          this.setState({ tagModalOpen: false });
+                        }} />
+            </a>
+          }</p>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -219,12 +240,26 @@ export default class ResponseSetShow extends Component {
           </ul>
           <div className="tab-content">
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
-              <ChangeHistoryTab versions={responseSet.versions} type='response_set' majorVersion={responseSet.version} />
+              {isSimpleEditable(responseSet, this.props.currentUser) ? (
+                <ChangeHistoryTab versions={responseSet.versions} type='response_set' majorVersion={responseSet.version} />
+              ) : (
+                <div className='basic-c-box panel-default response_set-type'>
+                  <div className="panel-heading">
+                    <h2 className="panel-title">Changes</h2>
+                  </div>
+                  <div className="box-content">
+                    You do not have permissions to see change history on this item (you must be a collaborating author / in the proper group).
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
               <div className="basic-c-box panel-default response_set-type">
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
+                </div>
+                <div className="box-content">
+                  <strong>Version Independent ID: </strong>{responseSet.versionIndependentId}
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
@@ -273,13 +308,37 @@ export default class ResponseSetShow extends Component {
                   {responseSet.publishedBy.email}
                 </div>
                 }
+                { responseSet.oid &&
+                <div className="box-content">
+                  <strong>OID: </strong>
+                  {responseSet.oid}
+                </div>
+                }
               </div>
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">Responses</h2>
                 </div>
                 <div className="box-content">
-                <CodedSetTable items={responseSet.responses} itemName={'Response'} />
+                  {responseSet.responseCount && responseSet.responseCount > 25 &&
+                    <p>
+                      This response set has a large amount of responses. The table below is a sample of 25 of the {responseSet.responseCount} responses. To access an exhaustive list please choose from the following options:
+                      <ul>
+                        <li>Visit our API endpoint ({`/api/valueSets/${responseSet.versionIndependentId}`}) with the full list of responses</li>
+                        {responseSet.source && responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent &&
+                          <li><a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">Click here to visit import source list in PHIN VADS UI</a></li>
+                        }
+                        <li>Use the load more option at the bottom of the table to expand to the exhaustive list. For performance and usability each load batch will grab an additional 25 responses.</li>
+                      </ul>
+                    </p>
+                  }
+                  <CodedSetTable items={responseSet.responses} itemName={'Response'} />
+                  {responseSet.responses && responseSet.responseCount && responseSet.responseCount > 25 && responseSet.responseCount !== responseSet.responses.length &&
+                    <p><button onClick={() => {
+                      this.props.fetchMoreResponses(responseSet.id, this.state.page);
+                      this.setState({page: this.state.page+1});
+                    }}>... Click here to load more</button></p>
+                  }
                 </div>
               </div>
               {responseSet.questions && responseSet.questions.length > 0 &&
@@ -311,12 +370,14 @@ ResponseSetShow.propTypes = {
   retireResponseSet: PropTypes.func,
   addBreadcrumbItem: PropTypes.func,
   deleteResponseSet:  PropTypes.func,
+  fetchMoreResponses: PropTypes.func,
   addResponseSetToGroup: PropTypes.func,
   removeResponseSetFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,
   removePreferred: PropTypes.func,
   updateStageResponseSet: PropTypes.func,
   fetchResponseSet: PropTypes.func,
+  updateResponseSetTags: PropTypes.func,
   setStats: PropTypes.func,
   stats: PropTypes.object,
   isLoading: PropTypes.bool,

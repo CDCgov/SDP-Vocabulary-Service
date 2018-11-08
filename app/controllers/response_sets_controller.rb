@@ -4,7 +4,8 @@ class ResponseSetsController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   # GET /response_sets
@@ -15,6 +16,19 @@ class ResponseSetsController < ApplicationController
   # GET /response_sets/1
   # GET /response_sets/1.json
   def show
+    @is_edit = params['isEdit'] || false
+  end
+
+  def more_responses
+    response = { id: params[:id] }
+    if params[:page]
+      first_item = params[:page].to_i * 25
+      last_item = (params[:page].to_i + 1) * 25 - 1
+      response[:responses] = @response_set.responses.first((params[:page].to_i + 1) * 25)[first_item..last_item]
+      render json: response
+    else
+      render json: { msg: 'Error adding item - you do not have permissions in that group' }, status: :unprocessable_entity
+    end
   end
 
   def usage
@@ -137,6 +151,7 @@ class ResponseSetsController < ApplicationController
   # PATCH/PUT /response_sets/1.json
   def update
     if @response_set.status == 'draft' && @response_set.version_independent_id == response_set_params[:version_independent_id]
+      @response_set.minor_change_count += 1 if params[:unsaved_state]
       @response_set.updated_by = current_user
       update_responses(params)
 
@@ -156,6 +171,15 @@ class ResponseSetsController < ApplicationController
     @response_set.responses << @responses
   end
 
+  def update_tags
+    @response_set.tag_list = params['tag_list']
+    if params['tag_list'] && @response_set.save!
+      render :show, status: :ok, location: @response_set
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /response_sets/1
   # DELETE /response_sets/1.json
   def destroy
@@ -172,7 +196,7 @@ class ResponseSetsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def response_set_params
     params.require(:response_set).permit(:name, :description, :parent_id, :oid,
-                                         :version_independent_id, :groups,
-                                         responses_attributes: [:id, :value, :display_name, :code_system])
+                                         :version_independent_id, :groups, tag_list: [],
+                                                                           responses_attributes: [:id, :value, :display_name, :code_system])
   end
 end

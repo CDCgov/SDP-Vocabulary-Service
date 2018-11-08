@@ -9,7 +9,7 @@ module Api
                     Section.includes(:published_by, section_nested_items: [{ response_set: :responses }, :question, :nested_section]).all
                   end
       current_user_id = current_user ? current_user.id : -1
-      @sections = if params[:limit]
+      @sections = if params[:limit] && (params[:limit] < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip')
                     @sections.limit(params[:limit]).where("(status='published' OR created_by_id= ?)", current_user_id)
                   else
                     @sections.limit(100).where("(status='published' OR created_by_id= ?)", current_user_id)
@@ -20,7 +20,7 @@ module Api
 
     def show
       @section = Section.includes(:published_by, section_nested_items: [{ response_set: :responses },
-                                                                        :question, :nested_section]).by_id_and_version(params[:id], params[:version])
+                                                                        :question, :nested_section]).by_id_and_version(params[:id].upcase, params[:version])
       if @section.nil?
         not_found
         return
@@ -29,7 +29,7 @@ module Api
     end
 
     def usage
-      @section = Section.by_id_and_version(params[:id, params[:version]])
+      @section = Section.by_id_and_version(params[:id].upcase, params[:version])
       if @section.nil?
         not_found
         return

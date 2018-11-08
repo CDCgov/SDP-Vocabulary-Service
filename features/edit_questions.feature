@@ -11,6 +11,8 @@ Feature: Edit Questions
     And I fill in the "Question" field with "What is your favorite color?"
     And I select the "Open Choice" option in the "Response Type" list
     And I fill in the "Description" field with "This is a revised description"
+    And I fill in the "Tags" field with "TagTest1"
+    And I tab out of the "Tags" field
     And I click on the "select-Gender Partial" link
     And I click on the "Add Row" link
     And I fill in the "value_1" field with "Test Concept 2"
@@ -23,6 +25,7 @@ Feature: Edit Questions
     And I should see "This is a revised description"
     And I should see "New Concept Name"
     And I should see "Test Concept 2"
+    And I should see "TagTest1"
 
   Scenario: Extend Question
     Given I have a Question with the content "What is your gender?" and the description "This is a question" and the type "MC" and the concept "New Concept Name"

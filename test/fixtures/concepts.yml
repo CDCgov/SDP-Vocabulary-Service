@@ -2,56 +2,56 @@
 
 one:
   value: M
-  taggable: one (Question)
+  mappable: one (Question)
   code_system: MyString
 
 two:
   value: F
-  taggable: one (Question)
+  mappable: one (Question)
   code_system: MyString
 
 three:
   value: Male
-  taggable: two (Question)
+  mappable: two (Question)
   code_system: MyString
 
 four:
   value: Female
-  taggable: two (Question)
+  mappable: two (Question)
   code_system: MyString
 
 five:
   value: Prefer not to answer
-  taggable: two (Question)
+  mappable: two (Question)
   code_system: MyString
 
 six:
   value: Male
-  taggable: gfv2 (Question)
+  mappable: gfv2 (Question)
   code_system: MyString
 
 seven:
   value: Female
-  taggable: gfv2 (Question)
+  mappable: gfv2 (Question)
   code_system: MyString
 
 eight:
   value: Generic
-  taggable: one (Section)
+  mappable: one (Section)
   code_system: MMG
 
 nine:
   value: Generic
-  taggable: one (Section)
+  mappable: one (Section)
   code_system: MMG Tab
 
 ten:
   value: Generic
-  taggable: one (Survey)
+  mappable: one (Survey)
   code_system: MMG
 
 eleven:
   value: 1234-5
-  taggable: one (Question)
+  mappable: one (Question)
   code_system: LOINC
   display_name: Data Element Identifier

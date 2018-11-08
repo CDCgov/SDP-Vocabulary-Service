@@ -93,7 +93,7 @@ module Versionable
         if element.version > 1
           prev_version = element.class.find_by(version_independent_id: element.version_independent_id,
                                                version: element.version - 1)
-          UpdateIndexJob.perform_later(element.class.to_s.underscore, prev_version.id)
+          UpdateIndexJob.perform_later(element.class.to_s.underscore, prev_version.id) if prev_version
         end
       end
     end

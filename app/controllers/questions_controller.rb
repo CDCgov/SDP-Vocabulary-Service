@@ -4,7 +4,8 @@ class QuestionsController < ApplicationController
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
-    { comment: comment }
+    association_changes = request.params[:association_changes] || {}
+    { comment: comment, associations: association_changes }
   end
 
   # GET /questions.json
@@ -139,6 +140,7 @@ class QuestionsController < ApplicationController
     if @question.status == 'published' || @question.version_independent_id != question_params[:version_independent_id]
       render json: @question.errors, status: :unprocessable_entity
     else
+      @question.minor_change_count += 1 if params[:unsaved_state]
       update_response_sets(params)
       @question.update_concepts('Question')
       @question.updated_by = current_user
@@ -155,8 +157,8 @@ class QuestionsController < ApplicationController
   end
 
   def update_tags
-    @question.add_tags(params)
-    if @question.save!
+    @question.tag_list = params['tag_list']
+    if params['tag_list'] && @question.save!
       render :show, status: :ok, location: @question
     else
       render json: @question.errors, status: :unprocessable_entity
@@ -199,6 +201,6 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:content, :response_type_id, :parent_id, :category_id, :groups,
                                      :version_independent_id, :description, :other_allowed, :subcategory_id,
                                      concepts_attributes: [:id, :value, :display_name, :code_system],
-                                     data_collection_methods: [])
+                                     data_collection_methods: [], tag_list: [])
   end
 end
