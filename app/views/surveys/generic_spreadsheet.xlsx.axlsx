@@ -30,12 +30,19 @@ def add_question_to_sheet(sni, sheet)
   new_row << (q.content || '')
   new_row << (q.description || '')
   new_row << (q.response_type ? q.response_type.name : '')
+  new_row << (q.other_allowed ? 'Yes' : '')
   new_row << (sni.response_set ? sni.response_set.name : '')
   new_row << (sni.response_set ? "RS #{sni.response_set.id}" : '')
   new_row << (q.category ? q.category.name : '')
   new_row << (q.subcategory ? q.subcategory.name : '')
-  new_row << tag_tab_name(q)
+  new_row << (q.data_collection_methods && q.data_collection_methods.first ? q.data_collection_methods.first : '')
+  new_row << (q.content_stage || '')
+  new_row << (q.tag_list.count > 0 ? q.tag_list.join('; ') : '')
   new_row << (sni.program_var || '')
+  new_row << (q.concepts.count == 1 ? q.concepts.first.display_name : '')
+  new_row << (q.concepts.count == 1 ? q.concepts.first.value : '')
+  new_row << (q.concepts.count == 1 ? q.concepts.first.code_system : '')
+  new_row << tag_tab_name(q)
   new_row << (q.created_by ? q.created_by.email : '')
   new_row << (q.version_independent_id || '')
   new_row << (q.version || '1')
@@ -48,8 +55,8 @@ def add_question_to_sheet(sni, sheet)
 end
 
 def add_tag_tab(tag_array, index)
-  @wb.add_worksheet(name: "Tags #{index+1}") do |sheet|
-    sheet.add_row ['Tag Name (R)', 'Tag Value (R)', 'Code System Identifier (O)']
+  @wb.add_worksheet(name: "CSM #{index+1}") do |sheet|
+    sheet.add_row ['Concept Name (R)', 'Value (R)', 'Code System Identifier (R)']
     tag_array.each do |tag|
       sheet.add_row [tag[:display_name], tag[:value], tag[:code_system]]
     end
@@ -57,14 +64,14 @@ def add_tag_tab(tag_array, index)
 end
 
 def tag_tab_name(obj)
-  if obj.concepts.length > 0
+  if obj.concepts.length > 1
     tag_array = []
     obj.concepts.each { |tag| tag_array << {display_name: tag.display_name, value: tag.value, code_system: tag.code_system} }
     if @tag_tables.include?(tag_array)
-      "Tags #{@tag_tables.index(tag_array)+1}"
+      "CSM #{@tag_tables.index(tag_array)+1}"
     else
       @tag_tables << tag_array
-      "Tags #{@tag_tables.length}"
+      "CSM #{@tag_tables.length}"
     end
   else
     ''
@@ -94,7 +101,7 @@ def surveillance_program_names(q)
 end
 
 @wb.add_worksheet(name: 'Survey Questions') do |sheet|
-  sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Response Set Name (I)','Local Response Set Table (C)','Question Category (O)','Question Subcategory (O)','Question Tag Table (O)','Program Defined Variable Name (O)','Author','SDP-V ID','Version','Workflow Status','Creation Date','Surveillance Systems','Surveillance Programs','OID']
+  sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Other Allowed? (O)','Response Set Name (I)','Local Response Set Table (C)','Question Category (O)','Question Subcategory (O)','Question Data Collection Method (O)','Question Content Stage (O)','Question Keyword Tags (O)','Program Defined Variable Name (O)','Concept Name (C)','Value (C)','Code System Identifier (C)','Code System Mappings Table (O)','Author (I)','SDP-V ID (I)','Version (I)','Workflow Status (I)','Creation Date (I)','Surveillance Systems (I)','Surveillance Programs (I)','OID (I)']
   @wb.add_worksheet(name: 'Survey Metadata') do |survey_sheet|
     survey_sheet.add_row ['Survey Name (R)','Survey Description (O)','Creation Date (O)','Author (O)','SDP-V ID (O)','Version (O)','Workflow Status (O)','OMB Approval Number (O)','Surveillance Program (O)','Surveillance System (O)']
     survey_row = []
