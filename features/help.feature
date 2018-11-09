@@ -11,6 +11,13 @@ Feature: Online Help
     When I click on the "Glossary" link
     Then I should see "Data Collection Instrument"
 
+  Scenario: In app Whats New page
+    When I go to the dashboard
+    And I click on the "Help" link
+    And I click on the "What‘s New" link
+    Then I should see "Release Notes"
+    And I should see "Find Out What‘s New In"
+
   Scenario: Step-by-Step
     When I go to the dashboard
     And I click on the "Help" link
