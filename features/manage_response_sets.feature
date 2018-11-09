@@ -101,6 +101,8 @@ Feature: Manage Response Sets
     And I should not see "Revise"
     And I should not see "Extend"
     When I click on the "Publish" button
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     Then I should see "Extend"
     And I should see "Revise"
     And I should see "Published By: test_author@gmail.com"

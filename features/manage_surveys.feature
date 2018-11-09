@@ -121,6 +121,8 @@ Feature: Manage Surveys
    Then I should see "Test Survey"
    Then I should see "Survey description"
    When I click on the "Publish" link
+   Then I should see "This action cannot be undone"
+   When I click on the "Confirm Publish" link
    Then I should see "Revise"
    And I should see "Published By: test_author@gmail.com"
    And I should not see "Edit"
