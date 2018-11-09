@@ -10,8 +10,8 @@ class Help extends Component {
     this.selectTab = this.selectTab.bind(this);
     this.selectInstruction = this.selectInstruction.bind(this);
     this.state = {
-      selectedTab: 'instructions',
-      selectedInstruction: 'general'
+      selectedTab: props.location.state ? props.location.state.selectedTab : 'instructions',
+      selectedInstruction: props.location.state ? '' :  'general'
     };
   }
 
@@ -881,7 +881,7 @@ class Help extends Component {
 
   instructionsTab() {
     return(
-      <div className="tab-pane active" id="instructions" role="tabpanel" aria-hidden={this.state.selectedTab !== 'instructions'} aria-labelledby="instructions-tab">
+      <div className={`tab-pane ${this.state.selectedTab === 'instructions' && 'active'}`} id="instructions" role="tabpanel" aria-hidden={this.state.selectedTab !== 'instructions'} aria-labelledby="instructions-tab">
         <div className="col-md-3 how-to-nav no-print">
           <h2 className="showpage_sidenav_subtitle">
             <text className="sr-only">Version History Navigation Links</text>
@@ -942,16 +942,16 @@ class Help extends Component {
   }
 
   whatsnewTab() {
-  return (
-    <div className="tab-pane" id="whatsnew" role="tabpanel" aria-hidden={this.state.selectedTab !== 'whatsnew'} aria-labelledby="whatsnew-tab">
-    <h1 ID="whatsnewTab">What's New</h1>
+    return (
+    <div className={`tab-pane ${this.state.selectedTab === 'whatsnew' && 'active'}`} id="whatsnew" role="tabpanel" aria-hidden={this.state.selectedTab !== 'whatsnew'} aria-labelledby="whatsnew-tab">
+    <h1 ID="whatsnewTab">What&lsquo;s New</h1>
       <br/>
       <p>Here you can find the latest news and information about the CDC Vocabulary Service.
           Read our latest release notes to learn how the application is continuously improving, learn
           about updates to user documentation, and find other announcements important to the user community.</p>
       <br/>
       <br/>
-        <strong>Find Out What's New In:</strong>
+        <strong>Find Out What&lsquo;s New In:</strong>
         <br/>
         <br/>
         <ol>
@@ -1065,8 +1065,8 @@ class Help extends Component {
                   </ul>
               </ul>
     </div>
-  );
-}
+    );
+  }
 
   render() {
     return (
@@ -1083,7 +1083,7 @@ class Help extends Component {
               <div className="row">
                 <div className="col-md-12 nopadding">
                   <ul className="nav nav-tabs" role="tablist">
-                    <li id="instructions-tab" className="nav-item active" role="tab" onClick={() => this.selectTab('instructions')} aria-selected={this.state.selectedTab === 'instructions'} aria-controls="instructions">
+                    <li id="instructions-tab" className={`nav-item ${this.state.selectedTab === 'instructions' && 'active'}`} role="tab" onClick={() => this.selectTab('instructions')} aria-selected={this.state.selectedTab === 'instructions'} aria-controls="instructions">
                       <a className="nav-link" data-toggle="tab" href="#instructions" role="tab">Instructions</a>
                     </li>
                     <li id="glossary-tab" className="nav-item" role="tab" onClick={() => this.selectTab('glossary')} aria-selected={this.state.selectedTab === 'glossary'} aria-controls="glossary">
@@ -1092,8 +1092,8 @@ class Help extends Component {
                     <li id="faq-tab" className="nav-item" role="tab" onClick={() => this.selectTab('faq')} aria-selected={this.state.selectedTab === 'faq'} aria-controls="faq">
                       <a className="nav-link" data-toggle="tab" href="#faq" role="tab">FAQs</a>
                     </li>
-                    <li id="whatsnew-tab" className="nav-item" role="tab" onClick={() => this.selectTab('whatsnew')} aria-selected={this.state.selectedTab === 'whatsnew'} aria-controls="whatsnew">
-                      <a className="nav-link" data-toggle="tab" href="#whatsnew" role="tab">What's New</a>
+                    <li id="whatsnew-tab" className={`nav-item ${this.state.selectedTab === 'whatsnew' && 'active'}`} role="tab" onClick={() => this.selectTab('whatsnew')} aria-selected={this.state.selectedTab === 'whatsnew'} aria-controls="whatsnew">
+                      <a className="nav-link" data-toggle="tab" href="#whatsnew" role="tab">What&lsquo;s New</a>
                     </li>
                   </ul>
                   <div className="tab-content">
@@ -1121,7 +1121,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 Help.propTypes = {
-  setSteps: PropTypes.func
+  setSteps: PropTypes.func,
+  location: PropTypes.object
 };
 
 export default connect(null, mapDispatchToProps)(Help);

@@ -231,7 +231,7 @@ class Header extends Component {
                   <li className="nav-dropdown-item"><a href="/api/" tabIndex="2" target="_blank">Swagger API</a></li>
                   <li className="nav-dropdown-item"><Link to="/fhirDoc" tabIndex="2">FHIR Documentation</Link></li>
                   <li role="separator" className="divider"></li>
-                  <li className="nav-dropdown-item"><Link to='/Help'>What's New</Link></li>
+                  <li className="nav-dropdown-item"><Link to={{ pathname: '/Help', state: {selectedTab: 'whatsnew'} }}>What&lsquo;s New</Link></li>
                   <li className="nav-dropdown-item"><a href="https://www.cdc.gov/sdp/SDPContactUs.html" tabIndex="2" target="_blank">Contact Us</a></li>
                   <li role="separator" className="divider"></li>
                   <li className="nav-dropdown-item"><span className="version-display">Release: v{this.props.appVersion}</span></li>
