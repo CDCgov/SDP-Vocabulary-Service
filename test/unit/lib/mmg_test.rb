@@ -40,16 +40,13 @@ class MMGTest < ActiveSupport::TestCase
     section = Section.where(name: 'Data Elements').first
     assert section.present?
     assert_equal section.questions.count, 1
-    assert_equal section.concepts.count, 1
     assert_equal section.section_nested_items.first.position, 0
-    assert_equal section.concepts.first.value, 'Data Elements'
     section = Section.where(name: 'Form Completion Metadata').first
     assert section.present?
     assert_equal section.questions.first.concepts.first.value, 'INV920'
     assert_equal section.questions.first.concepts.first.display_name, 'Data Element Identifier'
     section = Section.where(name: 'Form2 Completion Metadata').first
     assert section.present?
-    assert_equal section.concepts.last.value, 'Sheet1'
 
     survey = Survey.where(name: f).first
     assert survey.sections.count, SECTION_COUNT
@@ -123,7 +120,6 @@ class MMGTest < ActiveSupport::TestCase
     section = Section.where(name: 'Chronic Health Conditions').first
     assert section.present?
     assert_equal 4, section.questions.count
-    assert_equal 1, section.concepts.count
     assert_equal 'Section', section.parent.name
 
     q = section.section_nested_items.second.question

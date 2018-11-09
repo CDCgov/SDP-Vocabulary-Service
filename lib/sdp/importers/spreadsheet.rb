@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/LineLength
 module SDP
   module Importers
     class NestedItem
@@ -141,8 +142,8 @@ module SDP
         q.tag_list = @keyword_tags if @keyword_tags.present?
         q.other_allowed = true if @data_type == 'Choice' && @other_allowed.present? && @other_allowed.upcase.include?('YES')
         q.data_collection_methods << @data_collection_method if @data_collection_method.present? && [
-          'Electronic (e.g., machine to machine)','Record review','Self-Administered (Web or Mobile)',
-          'Self-Administered (Paper)','Facilitated by Interviewer (Phone)',
+          'Electronic (e.g., machine to machine)', 'Record review', 'Self-Administered (Web or Mobile)',
+          'Self-Administered (Paper)', 'Facilitated by Interviewer (Phone)',
           'Facilitated by Interviewer (In-Person)'
         ].include?(@data_collection_method)
         q.content_stage = @content_stage if @content_stage.present? && ['Draft', 'Comment Only', 'Trial Use'].include?(@content_stage)
