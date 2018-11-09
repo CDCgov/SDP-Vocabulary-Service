@@ -10,7 +10,7 @@ Feature: Import Spreadsheet
     And I attach an MMG to the "file-select" input
     Then I wait 5 seconds
     And I should see "TestMMG.xlsx"
-    And I should see "'Introduction' tab does not contain expected mmg column names and will not be imported."
+    And I should see "'Introduction' tab does not contain expected"
     When I click on the "Import" button
     And I wait 10 seconds
     Then I should see "File imported with warnings"

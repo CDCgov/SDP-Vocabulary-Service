@@ -11,7 +11,7 @@ class ImportSessionTest < ActiveSupport::TestCase
     @import_type = 'mmg'
     assert_difference 'ImportSession.count' do
       @import_session.check!(@import_type)
-      assert_equal " 'Introduction' tab does not contain expected mmg column names and will not be imported. Refer to the table in the \"Import Content\" Help Documentation for more info.", @import_session.import_warnings.first
+      assert_equal " 'Introduction' tab does not contain expected mmg column names and will not import any questions from that tab. Refer to the table in the \"Import Content\" Help Documentation if the tab does contain questions / data elements.", @import_session.import_warnings.first
       assert_equal 6, @import_session.top_level_sections
     end
   end
