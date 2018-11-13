@@ -28,7 +28,7 @@ import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGr
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false };
+    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false, showPublishModal: false };
   }
 
   componentDidMount() {
@@ -142,6 +142,25 @@ export default class QuestionShow extends Component {
     );
   }
 
+  publishModal() {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showPublishModal} onHide={()=>this.setState({showPublishModal: false})} role="dialog" aria-label="Publish Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Publish Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to publish this question?</p><p>This action cannot be undone.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => this.props.handlePublish(this.props.question)} bsStyle="primary">Confirm Publish</Button>
+            <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
   mainContent(question) {
     return (
       <Col md={9} className="maincontent">
@@ -193,7 +212,7 @@ export default class QuestionShow extends Component {
               </div>
             }
             {isPublishable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={() => this.props.handlePublish(question) }>Publish</button>
+              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true}) }>{this.publishModal()}Publish</button>
             }
             {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
               <a className="btn btn-default" href="#" onClick={(e) => {
