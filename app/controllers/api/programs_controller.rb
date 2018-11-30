@@ -4,7 +4,7 @@ module Api
 
     def index
       @programs = params[:search] ? SurveillanceProgram.search(params[:search]) : SurveillanceProgram.all
-      @programs = params[:limit] ? @programs.limit(params[:limit]) : @programs.limit(100)
+      @programs = params[:limit] ? @programs.limit(params[:limit].to_i) : @programs.limit(100)
       render json: @programs, each_serializer: ProgramSerializer
     end
 

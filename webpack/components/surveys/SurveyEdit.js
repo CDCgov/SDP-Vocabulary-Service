@@ -271,8 +271,9 @@ class SurveyEdit extends Component {
             </Col>
           </Row>
           <Row>
-            <Col md={8} className="survey-group">
+            <Col md={12} className="survey-group">
               <label className="input-label" htmlFor="survey-tags">Tags</label>
+              <p>Press 'Tab' or 'Enter' after typing a tag to add it to the list. Press 'Backspace' or click the 'x' icon to remove a tag.</p>
               <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'survey-tags'}} />
             </Col>
           </Row>

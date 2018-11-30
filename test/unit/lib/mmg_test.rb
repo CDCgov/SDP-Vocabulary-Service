@@ -44,7 +44,7 @@ class MMGTest < ActiveSupport::TestCase
     section = Section.where(name: 'Form Completion Metadata').first
     assert section.present?
     assert_equal section.questions.first.concepts.first.value, 'INV920'
-    assert_equal section.questions.first.concepts.first.display_name, 'Data Element Identifier'
+    assert_equal section.questions.first.concepts.first.display_name, section.questions.first.content
     section = Section.where(name: 'Form2 Completion Metadata').first
     assert section.present?
 

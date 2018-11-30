@@ -96,7 +96,7 @@ class SurveyShow extends Component {
             <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Publish Confirmation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure you want to publish this survey and all of its contents?</p><p>This action cannot be undone.</p>
+            <p>Are you sure you want to publish this survey and all of its contents?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => this.props.publishSurvey(this.props.survey.id)} bsStyle="primary">Confirm Publish</Button>
@@ -267,6 +267,13 @@ class SurveyShow extends Component {
                 <div className="box-content">
                   <Linkify>{this.props.survey.description}</Linkify>
                 </div>
+                { this.props.survey.controlNumber &&
+                <div className="box-content">
+                  <strong>OMB Control Number: </strong>
+                  {this.props.survey.controlNumber}
+                  {this.props.survey.ombApprovalDate && <text className='pull-right'><strong>OMB Approval Date: </strong>{this.props.survey.ombApprovalDate}</text>}
+                </div>
+                }
                 <div className="box-content">
                   <strong>Version Independent ID: </strong>{this.props.survey.versionIndependentId}
                 </div>
