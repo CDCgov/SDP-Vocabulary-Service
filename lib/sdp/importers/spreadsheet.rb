@@ -1,4 +1,6 @@
 # rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/CyclomaticComplexity
 module SDP
   module Importers
     class NestedItem
@@ -86,7 +88,7 @@ module SDP
       def to_question(user)
         q = super
         code_sys = @de_code_system || ''
-        q.concepts << Concept.new(value: @de_id, display_name: 'Data Element Identifier', code_system: code_sys) if @de_id.present?
+        q.concepts << Concept.new(value: @de_id, display_name: @name, code_system: code_sys) if @de_id.present? && @name.present?
         q
       end
 
@@ -236,8 +238,26 @@ module SDP
           content_stage: 'Question Content Stage (O)',
           keyword_tags: 'Question Keyword Tags (O)',
           concept_name: 'Concept Name (C)',
-          concept_value: 'Value (C)',
+          concept_value: /(Concept Identifier|Value) \(C\)/,
           code_system_identifier: 'Code System Identifier (C)'
+        },
+        survey_meta_columns: {
+          name: 'Survey Name (R)',
+          description: 'Survey Description (O)',
+          keyword_tags: 'Survey Keyword Tags (O)',
+          concept_name: 'Concept Name (C)',
+          concept_value: 'Concept Identifier (C)',
+          code_system_identifier: 'Code System Identifier (C)',
+          tag_table: 'Code System Mappings Table (O)'
+        },
+        section_meta_columns: {
+          name: 'Section Name (R)',
+          description: 'Section Description (O)',
+          keyword_tags: 'Section Keyword Tags (O)',
+          concept_name: 'Concept Name (C)',
+          concept_value: 'Concept Identifier (C)',
+          code_system_identifier: 'Code System Identifier (C)',
+          tag_table: 'Code System Mappings Table (O)'
         },
         vs_columns: {
           code: 'Concept Code',
@@ -255,7 +275,7 @@ module SDP
         },
         tag_columns: {
           name: 'Concept Name (R)',
-          value: 'Value (R)',
+          value: /(Concept Identifier|Value) \(R\)/,
           system: 'Code System Identifier (R)'
         },
         # Note that response_types does not contain all possible values.
@@ -276,6 +296,8 @@ module SDP
         @user = user
         @errors = []
         @warnings = []
+        @meta_survey = {}
+        @meta_sections = []
         @top_level = NestedItem.new(:section)
         @top_level.name = 'Top Level'
         @current_section = @top_level
@@ -297,7 +319,10 @@ module SDP
       end
 
       def save!
-        s = Survey.new(name: @config[:survey_name] || @file, created_by: @user)
+        @meta_survey[:concepts]
+        s = Survey.new(name: @meta_survey[:name] || @config[:survey_name] || @file, description: @meta_survey[:description] || '', created_by: @user)
+        s.tag_list = @meta_survey[:keyword_tags] if @meta_survey[:keyword_tags].present?
+        s.concepts << @meta_survey[:concepts] if @meta_survey[:concepts].present?
         s.save!
         section_position = 0
         save_survey_items(s, section_position)
@@ -313,7 +338,9 @@ module SDP
 
       def extend!(survey_id)
         original = Survey.find(survey_id)
-        s = Survey.new(name: @config[:survey_name] || @file, created_by: @user, parent_id: original.id)
+        s = Survey.new(name: @meta_survey[:name] || @config[:survey_name] || @file, description: @meta_survey[:description] || '', created_by: @user, parent_id: original.id)
+        s.tag_list = @meta_survey[:keyword_tags] if @meta_survey[:keyword_tags].present?
+        s.concepts << @meta_survey[:concepts] if @meta_survey[:concepts].present?
         section_position = 0
         original.survey_sections.each_with_index do |ss, i|
           s.survey_sections << SurveySection.new(section_id: ss.section_id, position: ss.position)
@@ -341,6 +368,14 @@ module SDP
           if (@config[:vs_columns].values - headers).empty? ||
              @valueset_sheet.match(sheet)
             logger.debug "skipping sheet #{sheet} -- looks like a value set"
+            next
+          elsif (@config[:survey_meta_columns].values - headers).empty?
+            logger.debug "extracting sheet #{sheet} -- looks like survey metadata"
+            extract_survey_metadata(w)
+            next
+          elsif (@config[:section_meta_columns].values - headers).empty?
+            logger.debug "extracting sheet #{sheet} -- looks like section metadata"
+            extract_section_metadata(w)
             next
           elsif (@config[:rs_columns].values - headers).empty?
             logger.debug "skipping sheet #{sheet} -- looks like a response set"
@@ -408,7 +443,11 @@ module SDP
         @top_level.items.each do |nested_item|
           if nested_item.type == :data_element
           end
-          section = Section.new(name: nested_item.name || "Imported Section ##{section_position + 1}", created_by: @user)
+          metadata = @meta_sections.find { |tmp_sect| tmp_sect[:name] == nested_item.name }
+          metadata ||= {}
+          section = Section.new(name: metadata[:name] || nested_item.name || "Imported Section ##{section_position + 1}", description: metadata[:description] || '', created_by: @user)
+          section.tag_list = metadata[:keyword_tags] if metadata[:keyword_tags].present?
+          section.concepts << metadata[:concepts] if metadata[:concepts].present?
           section.save!
           s.survey_sections.create(section: section, position: section_position)
           section_position += 1
@@ -440,7 +479,11 @@ module SDP
             nsi = SectionNestedItem.new(question: q, program_var: item.data_element.program_var, response_set: rs, position: i)
             parent_section.section_nested_items << nsi
           else
-            section = Section.new(name: item.name || "Imported Section ##{i + 1}", created_by: @user)
+            metadata = @meta_sections.find { |tmp_sect| tmp_sect[:name] == item.name }
+            metadata ||= {}
+            section = Section.new(name: metadata[:name] || item.name || "Imported Section ##{i + 1}", description: metadata[:description] || '', created_by: @user)
+            section.tag_list = metadata[:keyword_tags] if metadata[:keyword_tags].present?
+            section.concepts << metadata[:concepts] if metadata[:concepts].present?
             section.parent = parent_section
             section.save!
             nsi = SectionNestedItem.new(nested_section: section, position: i)
@@ -536,6 +579,92 @@ module SDP
           end
         end
         @top_level.items = new_items
+      end
+
+      def extract_survey_metadata(workbook)
+        sheet = workbook.sheet('Survey Metadata')
+        begin
+          survey_columns = @config[:survey_meta_columns]
+          sheet.each(survey_columns) do |entry|
+            # skip first row
+            next if entry[:name] == survey_columns[:name]
+            # skip if instructional row
+            next if entry[:tag_table] && entry[:tag_table].include?('when associating')
+            @meta_survey[:name] = entry[:name] if entry[:name].present?
+            @meta_survey[:description] = entry[:description] if entry[:description].present?
+            @meta_survey[:keyword_tags] = entry[:keyword_tags] if entry[:keyword_tags].present?
+            @meta_survey[:concepts] = if entry[:concept_name].present? || entry[:concept_value].present? || entry[:code_system_identifier].present?
+                                        [Concept.new(value: entry[:concept_value] || '', display_name: entry[:concept_name] || '', code_system: entry[:code_system_identifier] || '')]
+                                      elsif entry[:tag_table].present?
+                                        concept_array = []
+                                        tag_sheet = workbook.sheet(entry[:tag_table])
+                                        tag_columns = @config[:tag_columns]
+                                        tag_sheet.each(tag_columns) do |tag_entry|
+                                          # skip first row
+                                          next if tag_entry[:name] == tag_columns[:name]
+                                          # skip rows without CSM name and value
+                                          next if tag_entry[:name].nil? || tag_entry[:name].to_s.strip.empty?
+                                          # skip if instructional row
+                                          next if tag_entry[:name].include?('The information contained in')
+                                          concept_array << Concept.new(value: tag_entry[:value], display_name: tag_entry[:name], code_system: tag_entry[:system])
+                                        end
+                                        concept_array
+                                      end
+          end
+        rescue Roo::HeaderRowNotFoundError # catching the error
+          if sheet.header_line == 1
+            @warnings << "On tab 'Survey Metadata' there is a missing header row in row 1, retrying" # warning
+            sheet.header_line = 2
+            retry
+          else
+            @warnings << "For tab 'Survey Metadata' Unable to parse code system mappings" # warning
+          end
+        end
+      end
+
+      def extract_section_metadata(workbook)
+        sheet = workbook.sheet('Section Metadata')
+        begin
+          section_columns = @config[:section_meta_columns]
+          sheet.each(section_columns) do |entry|
+            # skip first row
+            next if entry[:name] == section_columns[:name]
+            # skip rows without name
+            next if entry[:name].nil?
+            # skip if instructional row
+            next if entry[:tag_table] && entry[:tag_table].include?('when associating')
+            temp_section = {}
+            temp_section[:name] = entry[:name] if entry[:name].present?
+            temp_section[:description] = entry[:description] if entry[:description].present?
+            temp_section[:keyword_tags] = entry[:keyword_tags] if entry[:keyword_tags].present?
+            temp_section[:concepts] = if entry[:concept_name].present? || entry[:concept_value].present? || entry[:code_system_identifier].present?
+                                        [Concept.new(value: entry[:concept_value] || '', display_name: entry[:concept_name] || '', code_system: entry[:code_system_identifier] || '')]
+                                      elsif entry[:tag_table].present?
+                                        concept_array = []
+                                        tag_sheet = workbook.sheet(entry[:tag_table])
+                                        tag_columns = @config[:tag_columns]
+                                        tag_sheet.each(tag_columns) do |tag_entry|
+                                          # skip first row
+                                          next if tag_entry[:name] == tag_columns[:name]
+                                          # skip rows without CSM name and value
+                                          next if tag_entry[:name].nil? || tag_entry[:name].to_s.strip.empty?
+                                          # skip if instructional row
+                                          next if tag_entry[:name].include?('The information contained in')
+                                          concept_array << Concept.new(value: tag_entry[:value], display_name: tag_entry[:name], code_system: tag_entry[:system])
+                                        end
+                                        concept_array
+                                      end
+            @meta_sections << temp_section
+          end
+        rescue Roo::HeaderRowNotFoundError # catching the error
+          if sheet.header_line == 1
+            @warnings << "On tab 'Section Metadata' there is a missing header row in row 1, retrying" # warning
+            sheet.header_line = 2
+            retry
+          else
+            @warnings << "For tab 'Section Metadata' Unable to parse code system mappings" # warning
+          end
+        end
       end
 
       def extract_tags(workbook, verbose)

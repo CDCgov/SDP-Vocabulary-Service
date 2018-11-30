@@ -15,12 +15,16 @@ def add_section_metadata(s, section_sheet)
   section_row = []
   section_row << (s.name || '')
   section_row << (s.description || '')
+  section_row << (s.tag_list.count > 0 ? s.tag_list.join('; ') : '')
+  section_row << (s.concepts.count == 1 ? s.concepts.first.display_name : '')
+  section_row << (s.concepts.count == 1 ? s.concepts.first.value : '')
+  section_row << (s.concepts.count == 1 ? s.concepts.first.code_system : '')
+  section_row << tag_tab_name(s)
   section_row << (s.created_at || '')
   section_row << (s.created_by ? s.created_by.email : '')
   section_row << (s.version_independent_id || '')
   section_row << (s.version || '')
   section_row << (s.status || '')
-  section_row << tag_tab_name(s)
   section_sheet.add_row section_row
 end
 
@@ -56,7 +60,7 @@ end
 
 def add_tag_tab(tag_array, index)
   @wb.add_worksheet(name: "CSM #{index+1}") do |sheet|
-    sheet.add_row ['Concept Name (R)', 'Value (R)', 'Code System Identifier (R)']
+    sheet.add_row ['Concept Name (R)', 'Concept Identifier (R)', 'Code System Identifier (R)']
     tag_array.each do |tag|
       sheet.add_row [tag[:display_name], tag[:value], tag[:code_system]]
     end
@@ -101,12 +105,17 @@ def surveillance_program_names(q)
 end
 
 @wb.add_worksheet(name: 'Survey Questions') do |sheet|
-  sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Other Allowed? (O)','Response Set Name (I)','Local Response Set Table (C)','Question Category (O)','Question Subcategory (O)','Question Data Collection Method (O)','Question Content Stage (O)','Question Keyword Tags (O)','Program Defined Variable Name (O)','Concept Name (C)','Value (C)','Code System Identifier (C)','Code System Mappings Table (O)','Author (I)','SDP-V ID (I)','Version (I)','Workflow Status (I)','Creation Date (I)','Surveillance Systems (I)','Surveillance Programs (I)','OID (I)']
+  sheet.add_row ['Question Text (R)','Question Description (R)','Question Response Type (R)','Other Allowed? (O)','Response Set Name (I)','Local Response Set Table (C)','Question Category (O)','Question Subcategory (O)','Question Data Collection Method (O)','Question Content Stage (O)','Question Keyword Tags (O)','Program Defined Variable Name (O)','Concept Name (C)','Concept Identifier (C)','Code System Identifier (C)','Code System Mappings Table (O)','Author (I)','SDP-V ID (I)','Version (I)','Workflow Status (I)','Creation Date (I)','Surveillance Systems (I)','Surveillance Programs (I)','OID (I)']
   @wb.add_worksheet(name: 'Survey Metadata') do |survey_sheet|
-    survey_sheet.add_row ['Survey Name (R)','Survey Description (O)','Creation Date (O)','Author (O)','SDP-V ID (O)','Version (O)','Workflow Status (O)','OMB Approval Number (O)','Surveillance Program (O)','Surveillance System (O)']
+    survey_sheet.add_row ['Survey Name (R)','Survey Description (O)','Survey Keyword Tags (O)','Concept Name (C)','Concept Identifier (C)','Code System Identifier (C)','Code System Mappings Table (O)','Creation Date (I)','Author (I)','SDP-V ID (I)','Version (I)','Workflow Status (I)','OMB Approval Number (I)','Surveillance Program (I)','Surveillance System (I)']
     survey_row = []
     survey_row << (@survey.name || '')
     survey_row << (@survey.description || '')
+    survey_row << (@survey.tag_list.count > 0 ? @survey.tag_list.join('; ') : '')
+    survey_row << (@survey.concepts.count == 1 ? @survey.concepts.first.display_name : '')
+    survey_row << (@survey.concepts.count == 1 ? @survey.concepts.first.value : '')
+    survey_row << (@survey.concepts.count == 1 ? @survey.concepts.first.code_system : '')
+    survey_row << tag_tab_name(@survey)
     survey_row << (@survey.created_at || '')
     survey_row << (@survey.created_by ? @survey.created_by.email : '')
     survey_row << (@survey.version_independent_id || '')
@@ -118,7 +127,7 @@ end
     survey_sheet.add_row survey_row
   end
   @wb.add_worksheet(name: 'Sections Metadata') do |section_sheet|
-    section_sheet.add_row ['Section Name (R)','Section Description (O)','Creation Date (O)','Author (O)','SDP-V ID (O)','Version (O)','Workflow Status (O)','Section Tag Table (O)']
+    section_sheet.add_row ['Section Name (R)','Section Description (O)','Section Keyword Tags (O)','Concept Name (C)','Concept Identifier (C)','Code System Identifier (C)','Code System Mappings Table (O)','Creation Date (I)','Author (I)','SDP-V ID (I)','Version (I)','Workflow Status (I)']
     @survey.survey_sections.each do |ss|
       add_section_to_sheet(ss.section, sheet, section_sheet)
     end

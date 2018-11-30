@@ -14,7 +14,7 @@ export default class CodedSetTable extends Component {
         <thead>
           <tr>
             <th scope="col" id="display-name-column">{this.props.itemName === 'Response' ? 'Display Name' : 'Concept Name'}</th>
-            <th scope="col" id="code-column">Value</th>
+            <th scope="col" id="code-column">{this.props.itemName === 'Response' ? 'Response' : 'Concept Identifier'}</th>
             <th scope="col" id="code-system-column">Code System Identifier {this.props.itemName === 'Response' && '(Optional)'}</th>
           </tr>
         </thead>

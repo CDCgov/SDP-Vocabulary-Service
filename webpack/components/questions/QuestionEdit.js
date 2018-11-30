@@ -256,6 +256,7 @@ class QuestionEdit extends Component {
                 <Row>
                   <Col md={8} className="question-form-group">
                     <label className="input-label" htmlFor="question-tags">Tags</label>
+                    <p>Press 'Tab' or 'Enter' after typing a tag to add it to the list. Press 'Backspace' or click the 'x' icon to remove a tag.</p>
                     <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'question-tags'}} />
                   </Col>
                 </Row>

@@ -163,7 +163,7 @@ class CodedSetTableEditContainer extends Component {
           <p>The purpose of Code System Mappings is to facilitate content discovery and reuse.</p>
           <h2>Definitions</h2>
           <p><strong>Concept Name: </strong>Keywords from a controlled vocabulary. A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies.</p>
-          <p><strong>Value: </strong>This may be a text or coded value that comes from a controlled vocabulary. Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
+          <p><strong>Concept Identifier: </strong>This may be a text or coded value that comes from a controlled vocabulary. Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
           <p><strong>Code System Identifier: </strong>The Code System used if you are using a coded value (e.g., LOINC, SNOMED-CT, RxNorm). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
           <h2>Example Code System Mappings Table</h2>
           <table className="set-table">
@@ -171,7 +171,7 @@ class CodedSetTableEditContainer extends Component {
             <thead>
               <tr>
                 <th scope="col" className="display-name-column" id="display-name-column-ex">Concept Name</th>
-                <th scope="col" className="code-column" id="code-column-ex">Value</th>
+                <th scope="col" className="code-column" id="code-column-ex">Concept Identifier</th>
                 <th scope="col" className="code-system-column" id="code-system-column-ex">Code System Identifier</th>
               </tr>
             </thead>
@@ -188,9 +188,9 @@ class CodedSetTableEditContainer extends Component {
               </tr>
             </tbody>
           </table><br/>
-          <p><strong>How to Search for Previously Used Code Mappings</strong><br/>To determine if a code mapping has been used before in SDP-V, start typing in the concept name column of the table. A drop-down list of all previously used code mappings that match the text entered in the field will appear. A user can navigate the list and select a code mapping that was previously used. If a code system mapping is selected from the list, the value and code system identifier fields will be populated with existing values.</p>
+          <p><strong>How to Search for Previously Used Code Mappings</strong><br/>To determine if a code mapping has been used before in SDP-V, start typing in the concept name column of the table. A drop-down list of all previously used code mappings that match the text entered in the field will appear. A user can navigate the list and select a code mapping that was previously used. If a code system mapping is selected from the list, the concept identifier and code system identifier fields will be populated with existing values.</p>
           <p><strong>How to Search for code mappings from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for external coded items” magnifying glass icon to the right of the code mappings header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the code mappings table by clicking the “Add” selection beside each result.</p>
-          <p><strong>How to Create a New Code System Mapping</strong><br/>A new code system mapping may be created by simply typing a new concept name, value, and code system identifier (if applicable). A new code mapping should only be created if an existing code mapping does not meet a user’s needs.</p>
+          <p><strong>How to Create a New Code System Mapping</strong><br/>A new code system mapping may be created by simply typing a new concept name, concept identifier, and code system identifier (if applicable). A new code mapping should only be created if an existing code mapping does not meet a user’s needs.</p>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => this.setState({ showCodeMappingModal: false })} bsStyle="primary">Close</Button>
@@ -252,7 +252,7 @@ class CodedSetTableEditContainer extends Component {
           <thead>
             <tr>
               <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : 'Concept Name'}</th>
-              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : 'Value'}</th>
+              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : 'Concept Identifier'}</th>
               <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier{tableType === 'Response' ? ' (Optional)' : ''}</th>
             </tr>
           </thead>

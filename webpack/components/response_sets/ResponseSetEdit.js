@@ -169,6 +169,7 @@ export default class ResponseSetEdit extends Component {
                 <Row>
                   <Col md={8} className="question-form-group">
                     <label className="input-label" htmlFor="response-set-tags">Tags</label>
+                    <p>Press 'Tab' or 'Enter' after typing a tag to add it to the list. Press 'Backspace' or click the 'x' icon to remove a tag.</p>
                     <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'response-set-tags'}} />
                   </Col>
                 </Row>

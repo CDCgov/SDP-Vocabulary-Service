@@ -118,7 +118,7 @@ export default class ResponseSetShow extends Component {
             <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Publish Confirmation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure you want to publish this response set?</p><p>This action cannot be undone.</p>
+            <p>Are you sure you want to publish this response set?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => this.props.publishResponseSet(this.props.responseSet.id)} bsStyle="primary">Confirm Publish</Button>
