@@ -488,7 +488,7 @@ class Help extends Component {
           <li><a href="#generic-content-organization">Content Organization: How to Identify Sections, Templates, or Repeating Groups within the Generic Spreadsheet Import Template</a></li>
           <li><a href="#generic-associate-rs">How to Associate Response Sets with Choice Questions on Import</a></li>
           <li><a href="#generic-local-rs">How to Create User-defined (“Local”) Response Sets Using the SDP-V Import Template</a></li>
-          <li><a href="#generic-add-code-system-mappings">v.	How to Add Multiple Code System Mappings to Content Using the SDP-V Import Template</a></li>
+          <li><a href="#generic-add-code-system-mappings">How to Add Multiple Code System Mappings to Content Using the SDP-V Import Template</a></li>
         </ol>
         </li>
         </ul>

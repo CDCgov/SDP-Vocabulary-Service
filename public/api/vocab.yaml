@@ -383,7 +383,7 @@ paths:
           name: oid
           in: query
           description: |
-            Fetches a single value set by its OID. Overrides other params. If no matching value set with given oid will return resource not found.
+            Fetches a single value set by its OID. Overrides other params. If no matching value set with given oid will return resource not found. Note, only value sets imported from PHIN VADS can be queried by their OID in SDPV currently.
           required: false
           type: integer
         -
