@@ -162,7 +162,7 @@ class Help extends Component {
         </ul>
         <h3 id="code-system-mappings-tables-edit">Code System Mappings Tables on Edit Pages</h3>
         <ul>
-        <li>The purpose of Code System Mappings is to facilitate content discovery and reuse. Click the info (i) icon, or go to the Code System Mappings tab in the help documentation to see more information and examples on how to get the most out of code mappings.</li>
+        <li>Click the info (i) icon, or go to the Code System Mappings tab in the help documentation to see more information and examples on how to get the most out of code mappings.</li>
         </ul>
       </div>
     );
@@ -266,6 +266,71 @@ class Help extends Component {
         <ul><li>Click on the 'Export' button on the Vocabulary service survey or section details page and select 'Print' (this will save a .pdf file to the folder your browser directs downloads)</li></ul>
 
         </div>
+    );
+  }
+
+  workflowInstructions() {
+    return(
+      <div className="tab-pane" id="workflow" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'workflow'} aria-labelledby="workflow-tab">
+        <h1 id="content-workflow">Workflow Status and Content Stage</h1>
+        <p>SDP-V has workflow statuses and content stages to support different business processes of users.</p>
+        <p><strong>Topics:</strong></p>
+        <ul>
+        <li><a href="#workflow">Workflow Status</a></li>
+        <li><a href="#stage">Content Stage</a></li>
+        </ul>
+
+        <h2 className="help-section-subtitle" id="workflow">Workflow Status</h2>
+        <p>SDP-V content can be in either a Draft or Published workflow status.  Workflow status drives visibility rules in SDP-V. Workflow status is displayed as “Visibility” in the UI to clearly communicate to users who can see which content.</p>
+        <ul>
+        <li>
+        <strong>DRAFT</strong> – When content is created or imported in SDP-V, it is in Draft workflow status. Content in this workflow status has restricted visibility based on ownership and role and can be modified until the author or authoring group is ready to publish it (see Published workflow status below).
+        <ul>
+        <li><strong>Visibility: </strong>Content in draft workflow status is only visible to the user who authored it, users that belong to a group that the content is added to, and to all Publishers in the system.</li>
+        <li><strong>Ability to Modify Content: </strong>Only the Author or group members may make changes to the draft content. The draft content can be edited as desired until it is ready to be sent to a Publisher for review. SDP-V tracks changes to draft content on the Change History tab.</li>
+        <li><strong>Content Stages: </strong>Users can use the “draft”, “comment only”, or “trial use” content stages. The “draft” content stage is the default stage; “trial use” and “comment only” are optional content stages for this workflow status. To support multiple business cases, the user may place content in draft workflow status into these 3 content stages bi-directionally in any order (e.g., draft, comment only, draft, trial use, comment only) or may only use the "draft" content stage.</li>
+        </ul>
+        </li>
+        <li>
+        <strong>PUBLISHED</strong> – Whenever an author or authoring group is ready to share their content publicly, an author must send a request to their program Publisher to change the workflow status in SDP-V. Content must be reviewed and approved by a Publisher in SDP-V to change the workflow status to Published; this action is known as “publishing” is SDP-V.
+        <ul>
+        <li><strong>Visibility: </strong>Published content is visible to everyone who visits the SDP-V website including users without authenticated accounts (publicly available). This allows for authors to share their SDP-V content with a wide public health audience. Once a version is published, it cannot be undone. An author can use the content stage attribute to indicate which published version is ready for use versus other stages of maturity (see definitions below).</li>
+        <li><strong>Ability to Modify Content: </strong>Only the Author or group members of Published content may choose to revise it. Revising published content results in a new version of the content in draft status that can be modified as described above until it is ready to be published. SDP-V maintains a version history for published content so that users can see how content has evolved over time.</li>
+        <li><strong>Content Stages: </strong>Users can use the “published”, “comment only”, or “trial use” content stages. The “published” content stage is the default stage; “trial use” and “comment only” are optional content stages for this workflow status. To support multiple business cases, the user may place content in the published workflow status into these 3 content stages in any order (e.g., comment only, trial use, comment only, published) or may only use the "published" content stage.</li>
+        </ul>
+        </li>
+        </ul>
+        <p><strong>Note:</strong>Content in the published workflow status indicates that a program was ready to share content publicly to promote transparency, harmonization, standardization, and the goals of SDP-V and may not be authoritative. Users interested in using published content are encouraged to reach out to the appropriate program or system with any questions about content and consider the indicated content stage.</p>
+
+        <h2 className="help-section-subtitle" id="stage">Content Stage</h2>
+        <p>An attribute of the content being presented that represents content maturity. Response sets, questions, sections, and surveys added to SDP-V do not need to advance through each content stage described below before sharing their content publicly (publishing content as described above). The content stage attribute offers users flexibility to accurately communicate the maturity of their content at different stages of the vocabulary life cycle with other users.</p>
+        <ul>
+        <li>
+        <strong>DRAFT</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used. This is the initial status assigned to newly created content.
+        <ul><li>This content stage can be used for content is that is in draft workflow status.</li></ul>
+        </li>
+        <li>
+        <strong>COMMENT ONLY</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.
+        <ul><li>This content stage can be used for content is that is in either draft and published workflow status.</li></ul>
+        </li>
+        <li>
+        <strong>TRIAL USE</strong> – Content that the Authors and Publisher believe is ready for User viewing, testing and/or comment. It is generally “complete”, but not final. Content at this Level should not be used to support public health response.
+        <ul><li>This content stage can be used for content that is in either draft and published workflow status.</li></ul>
+        </li>
+        <li>
+        <strong>PUBLISHED</strong> – The most recent version of content. It is ready for viewing, downloading, comments, use for public health response.
+        <ul><li>This content stage can be used for content that is in published workflow status.</li></ul>
+        </li>
+        <li>
+        <strong>RETIRED</strong> – Content that is no longer the most recent version (not latest). However, this content could be used with no known risk.
+        <ul><li>This content stage can be used for content that is in published workflow status. Only publishers can move content to this content stage. Authors who would like to retire content should contact their program publisher. Content that is "retired" is hidden from dashboard search results by default unless an advanced filter is toggled to show retired content.</li></ul>
+        </li>
+        <li>
+        <strong>DUPLICATE</strong> – Content that the Author and Publisher believe is a duplicate of other content in the SDP-V repository. Content marked as “Duplicate” should not be used when creating new SDP-V surveys. If content marked as “Duplicate” is used on an existing SDP-V survey, it should be replaced during the next revision.
+        <ul><li>This content stage is assigned whenever users identify duplicate content using the curation wizard. This content stage cannot be assigned by users outside of the curation wizard.</li></ul>
+        </li>
+        </ul>
+      </div>
     );
   }
 
@@ -409,26 +474,26 @@ class Help extends Component {
         <h1 id="import-content">Importing Content</h1>
         <br/>
         <ul>
-        <li><a href="#message-mapping-guide">Importing Message Mapping Guides and Value Sets</a>
+        <li><a href="#message-mapping-guide">Importing Message Mapping Guide (MMG) Data Elements and Value Sets</a>
         <ol>
         <li><a href="#message-mapping-guide-import-MMG">How to Import MMG Content Through SDP-V User Interface</a></li>
         <li><a href="#message-mapping-import-requirements">MMG Spreadsheet Import Template Content and Formatting Requirements</a></li>
-        <li><a href="#MMG-content-organization">MMG Content: Content Organization: How to Identify Sections, Templates, or Repeating Groups</a></li>
+        <li><a href="#MMG-content-organization">Content Organization: How to Identify Sections, Templates, or Repeating Groups within the MMG Spreadsheet Import Template</a></li>
         </ol>
 
         </li>
-        <li><a href="#generic-spreadsheet-guide">Importing Generic Spreadsheets and Response Sets</a>
+        <li><a href="#generic-spreadsheet-guide">Importing Questions and Response Sets Using SDP-V Generic Import Template</a>
         <ol>
-          <li><a href="#generic-spreadsheet-import">How to Import Generic Content Through SDP-V User Interface</a></li>
-          <li><a href="#generic-content-organization">How to Identify Sections, Templates, or Repeating Groups within the Generic Spreadsheet</a></li>
+          <li><a href="#generic-spreadsheet-import">How to Import Content using the Generic Import Template through the SDP-V User Interface</a></li>
+          <li><a href="#generic-content-organization">Content Organization: How to Identify Sections, Templates, or Repeating Groups within the Generic Spreadsheet Import Template</a></li>
           <li><a href="#generic-associate-rs">How to Associate Response Sets with Choice Questions on Import</a></li>
           <li><a href="#generic-local-rs">How to Create User-defined (“Local”) Response Sets Using the SDP-V Import Template</a></li>
-          <li><a href="#generic-add-code-system-mappings">Adding Code System Mappings with Generic Spreadsheet</a></li>
+          <li><a href="#generic-add-code-system-mappings">v.	How to Add Multiple Code System Mappings to Content Using the SDP-V Import Template</a></li>
         </ol>
         </li>
         </ul>
 
-          <h3><p id="message-mapping-guide">Message Mapping Guide (MMG) and Value Sets</p></h3>
+          <h3><p id="message-mapping-guide">Importing Message Mapping Guide (MMG) Data Elements and Value Sets</p></h3>
           <p>This feature is to support the bulk import of vocabulary content from Nationally Notifiable Disease Message Mapping Guides (MMGs).</p>
 
           <h4><strong><p id="message-mapping-guide-import-MMG">How to Import MMG Content Through SDP-V User Interface</p></strong></h4>
@@ -458,11 +523,11 @@ class Help extends Component {
             <tbody>
               <tr>
                 <td headers="mmg-display-name-column">'Data Element (DE) Name'</td>
-                <td headers="vocab-service-item-column">Question Name</td>
+                <td headers="vocab-service-item-column">Question Name and ‘Concept Name Column’ in Code System Mappings Table on Question Details</td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'DE Identifier Sent in HL7 Message'</td>
-                <td headers="vocab-service-item-column">'Data Element Identifier' Tag on Question*</td>
+                <td headers="vocab-service-item-column">Concept Identifier’ Column in Code System Mappings Tableon Question Details Page*</td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'Data Element Description'</td>
@@ -470,14 +535,13 @@ class Help extends Component {
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'DE Code System'</td>
-                <td headers="vocab-service-item-column">Code System Identifier for 'Data Element Identifier' Tag on Question*</td>
+                <td headers="vocab-service-item-column">‘Code System Identifier’ Column in Code System Mappings Table on Question Details Page *</td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'Value Set Name (VADS Hyperlink)'</td>
-                <td headers="vocab-service-item-column"><p>Response Set </p>Note: The DE will be associated with the PHIN VADS value set if a hyperlink is provided. <br/>
-                 If a valid hyperlink is not provided, the importer will look for a tab with the same name as the value in this cell. The value set tab is expected to contain the value set values.
-                 If a tab with the same name is not found, an error message will be displayed.
-                 </td>
+                <td headers="vocab-service-item-column"><p>Response Set </p>Note: A data element will be associated with a PHIN VADS value set in SDP-V if a valid PHIN VADS hyperlink is provided in the same row of the SDP-V MMG import spreadsheet. The hyperlink provided in the cell must be in the following format to be recognized by the SDP-V MMG Importer: https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.819. The PHIN VADS URL must end in “oid=identifier” in order to be accurately parsed by the importer.  Embedded hyperlinks such as ‘Yes No Indicator (HL7)’ will not be recognized by the importer; this will result in the question not being linked to the appropriate PHIN VADS value set in SDP-V. <br/>
+                 If a valid PHIN VADS hyperlink is not provided, the SDP-V MMG importer will look for a tab with the same name as the value in this cell. The value set tab is expected to contain the value set values organized into the following column headers: ‘Concept Code’, ‘Concept Name’, ‘Code System OID’, ‘Code System Name’, and ‘Code System Version’. If a tab with the same name is not found, an error message will be displayed.
+                </td>
               </tr>
               <tr>
                 <td headers="mmg-display-name-column">'PHIN Variable Code System' OR 'Local Variable Code System'</td>
@@ -491,25 +555,28 @@ class Help extends Component {
           </table><br/>
 
           <ul>
-            <li>The content in each tab in the spreadsheet that contains all required columns will be imported and tagged with 'Tab Name'.</li>
+            <li>The content in each tab in the spreadsheet that contains all required columns will be imported and tagged with the 'Tab Name'.</li>
             <li>If there are multiple spreadsheets that contain all required columns, they will be imported as separate sections on the same SDP-V survey.</li>
-            <li>The user importing content into SDP-V using this template will be assigned as the author of the survey</li>
-            <li>Content will be imported into SDP-V in 'DRAFT' status</li>
+            <li>The user importing content into SDP-V using this template will be assigned as the author of the survey. This SDP-V survey can then be added to a collaborative authoring group in the service to provide access to additional authors. </li>
+            <li>•	Content will be imported into SDP-V in ‘Draft’ workflow status and “Draft” content stage.</li>
           </ul>
 
           <br/>
-          <p><strong>NOTE:</strong> If a required column from the table is missing, the user will receive an error message and the content will not be imported</p>
+          <p><strong>NOTE:</strong> If a required column from the table is missing, the user will receive an error message and the content will not be imported.</p>
           <br/>
           <h4 id="MMG-content-organization"><p><strong>Content Organization: How to Identify Sections, Templates, or Repeating Groups within the MMG Spreadsheet Import Template</strong></p></h4>
           <p>
-            Sections, templates, or repeating groups are created by listing data elements between 'START: insert section name' and 'END: insert section name' rows.
-            Each row between these markers are imported as data elements within that grouping (called sections in the vocabulary service).
-            Sub-sections or sub-groupings may be created by including additional 'START: ' and 'END: ' markers within a parent section or grouping
+            Sections, templates, or repeating groups are created by listing data elements between 'START: insert section name' and 'END: insert section name' rows; the ‘START’ and ‘END’ markers must be in the ‘PHIN Variable’ column. Each row between these markers are imported as data elements within that grouping (called sections in the vocabulary service). Sub-sections or sub-groupings may be created by including additional 'START: ' and 'END: ' markers within a parent section or grouping.
           </p>
           <ul>
-            <li>The beginning of a section is indicated by the prefix 'START: ' (including a space after the colon)</li>
-            <li>The end of a section is indicated by the prefix 'END: '(including a space after the colon)</li>
-            <li>The text following the 'START: ' and 'END: ' pre-fixes will be imported as the Section Name in the vocabulary service</li>
+            <li>The beginning of a section is indicated by the prefix 'START: ' (including a space after the colon) in the 'PHIN Variable' column</li>
+            <li>The end of a section is indicated by the prefix 'END: '(including a space after the colon) in the 'PHIN Variable' column</li>
+            <li>
+              The text following the 'START: ' and 'END: ' pre-fixes will be imported as the Section Name in the vocabulary service
+              <ul>
+                <li>Example: Data element information in rows between START: Laboratory and END: Laboratory markers will be imported into SDP-V as a group of questions and associated response sets into a Section called “Laboratory”.</li>
+              </ul>
+            </li>
             <li>The section name following the 'START: ' prefix must exactly match the section name following the 'END: ' prefix in order for the section to be correctly imported. </li>
             <li>Notes should not be included in the same row as the section name (e.g., after the ‘START:’ or ‘END:’ pre-fixes’)</li>
             <li>Text following a ‘NOTE:’ pre-fix will not be imported. </li>
@@ -517,12 +584,12 @@ class Help extends Component {
           <br/>
           <br/>
 
-          <h3><p id="generic-spreadsheet-guide">Generic Questions and Response Sets</p></h3>
+          <h3><p id="generic-spreadsheet-guide">Importing Questions and Response Sets Using SDP-V Generic Import Template</p></h3>
           <br/>
-          <p>The purpose of this feature is to support the bulk import of questions and response sets into the SDP Vocabulary Service.</p>
+          <p>The purpose of this feature is to support the creation of SDP-V surveys by importing large amounts of questions and response sets from existing data dictionaries, surveys, and other formats into the SDP Vocabulary Service (SDP-V) using a spreadsheet template.</p>
           <br/>
 
-          <h4><p id="generic-spreadsheet-import"><strong>How to Import Generic Content Through SDP-V User Interface</strong></p></h4>
+          <h4><p id="generic-spreadsheet-import"><strong>i.	How to Import Content Using the Generic Import Template through the SDP-V User Interface</strong></p></h4>
           <p>On the taskbar, there is an action button to create content. To create a SDP-V survey using content from the generic SDP-V template formatted spreadsheet, execute the following steps:</p>
           <ol>
             <li>Click on the 'Create' button on the Vocabulary service taskbar and select 'Import Spreadsheet'</li>
@@ -536,12 +603,11 @@ class Help extends Component {
           The generic import column names map directly to the Vocabulary Service items
           (e.g., 'Question Description' in Generic SDP-V template spreadsheet imported as 'Question Description' in SDP-V).
           </p>
-
           <table className="set-table table">
-            <caption><strong>Table 2. Generic Import: Spreadsheet Column Names, Priority and Description </strong></caption>
+            <caption><strong>Table 2A. SDP-V Generic Import: Spreadsheet Column Names, Priority and Description - Survey Metadata Tab </strong></caption>
             <thead>
               <tr>
-                <th  id="generic-display-name-column">Generic Import Column Name</th>
+                <th  id="generic-display-name-column">'Survey Metadata' Tab Column Headers</th>
                 <th  id="generic-display-priority">Priority</th>
                 <th  id="generic-display-desc">Description</th>
               </tr>
@@ -558,38 +624,106 @@ class Help extends Component {
                 <td headers="generic-display-desc">The information contained in this column on the ‘Survey Metadata’ tab is imported as the Survey description. This information can alternatively be added through the SDP-V user interface after import.</td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Section Name (R)'</td>
-                <td headers="generic-display-priority">Required</td>
-                <td headers="generic-display-desc">The information contained in this column on the ‘Section Metadata’ tab is imported as the Section name.</td>
-              </tr>
-              <tr>
-                <td headers="generic-display-name-column">'Section Description (O)'</td>
+                <td headers="generic-display-name-column">‘Survey Keyword Tags (O)’</td>
                 <td headers="generic-display-priority">Optional</td>
-                <td headers="generic-display-desc">The information contained in this column on the ‘Section Metadata’ tab is imported as the Section description. This information can alternatively be added through the SDP-V user interface after import.</td>
+                <td headers="generic-display-desc">Tags are text strings that are either keywords or short phrases created by users to facilitate content discovery, organization, and reuse. For instance, a survey called “Traumatic brain injury” may be tagged with “Concussion” to help other users find that survey who may not think of searching for the term “traumatic brain injury”. Multiple keyword tags can be separated with semicolon. </td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Section Tag Table (O)'</td>
+                <td headers="generic-display-name-column">‘Concept Name (C)’</td>
+                <td headers="generic-display-priority">Conditional</td>
+                <td headers="generic-display-desc">Term from a controlled vocabulary to designate a unit of meaning or idea (e.g., ‘Genus Salmonella (organism)’). A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies such as PHIN VADS. For each row that has data entered in this column, the following additional columns are required: Concept Identifier (C) and Code System Identifier (C). </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">‘Concept Identifier (C)’</td>
+                <td headers="generic-display-priority">Conditional</td>
+                <td headers="generic-display-desc">This is text or a code used to uniquely identify a concept in a controlled vocabulary (e.g., 27268008). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.  For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Code System Identifier (C).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">‘Code System Identifier (C)’</td>
+                <td headers="generic-display-priority">Conditional</td>
+                <td headers="generic-display-desc">This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated. For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Concept Identifier (C).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column">‘Code System Mappings Table (O)’</td>
                 <td headers="generic-display-priority">Optional</td>
-                <td headers="generic-display-desc">The purpose of Code System Mappings is to facilitate content discovery and reuse.
-                A user can create Code System Mappings by creating Code System Mappings tables on separate tabs within the SDP-V generic import spreadsheet.
-                A section will be mapped with values from a code system table where the value in this cell matches the name of a tab
-                in the spreadsheet with the naming convention "TAG #", where # is a number assigned by the user to identify
-                the mappings table in this template (e.g., TAGS 1, TAGS 2,  TAGS 3...).</td>
+                <td headers="generic-display-desc">ONLY use when associating MORE THAN ONE code system mapping per item (e.g., survey, section, or question). A user can create multiple Code System Mappings for a single items (survey, section, question) by creating Code System Mappings tables on separate tabs within the SDP-V generic import spreadsheet. After import, the SDP-V item details page will be populated with values from a code system mappings table where the value in this cell matches the name of a tab in the import spreadsheet with the naming convention "CSM #", where # is a number assigned by the user to identify the mappings table in this template (e.g., CSM 1, CSM 2, CSM 3...). The CSM tab must contain the following headers (described above): Concept Name (R), Concept Identifier (R), and Code System Identifier (R). </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table className="set-table table">
+            <caption><strong>Table 2B. SDP-V Generic Import: Spreadsheet Column Names, Priority and Description - Section Metadata Tab </strong></caption>
+            <thead>
+              <tr>
+                <th  id="generic-display-name-column-b">'Section Metadata' Tab Column Headers</th>
+                <th  id="generic-display-priority-b">Priority</th>
+                <th  id="generic-display-desc-b">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="generic-display-name-column-b">'Section Name (R)'</td>
+                <td headers="generic-display-priority-b">Required</td>
+                <td headers="generic-display-desc-b">The information contained in this column on the 'Section Metadata' tab is imported as the Section name</td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Question Text (R)'</td>
-                <td headers="generic-display-priority">Required</td>
-                <td headers="generic-display-desc">Each row between Section ‘START:’ and ‘END’ markers will be imported as questions within that section. Questions must be associated with a section in SDP-V.</td>
+                <td headers="generic-display-name-column-b">'Section Description (O)'</td>
+                <td headers="generic-display-priority-b">Optional</td>
+                <td headers="generic-display-desc-b">The information contained in this column on the ‘Section Metadata’ tab is imported as the Section description. This information can alternatively be added through the SDP-V user interface after import.</td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Question Description (R)'</td>
-                <td headers="generic-display-priority">Required</td>
-                <td headers="generic-display-desc">The information contained in this column is imported as the question description.</td>
+                <td headers="generic-display-name-column-b">‘Section Keyword Tags’ (O)</td>
+                <td headers="generic-display-priority-b">Optional</td>
+                <td headers="generic-display-desc-b">Tags are text strings that are either keywords or short phrases created by users to facilitate content discovery, organization, and reuse. For instance, a section called “Prescription Drug Misuse and Abuse” may be tagged with “Opioid” to help other users find that section who may not think of searching for the term “prescription drug”. Multiple keyword tags can be separated with semicolon. </td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Question Response Type (R)'</td>
-                <td headers="generic-display-priority">Required</td>
-                <td headers="generic-display-desc">The information contained in this column is imported as the question response type.
+                <td headers="generic-display-name-column-b-b">'Concept Name (C)'</td>
+                <td headers="generic-display-priority-b">Conditional</td>
+                <td headers="generic-display-desc-b">Term from a controlled vocabulary to designate a unit of meaning or idea (e.g., ‘Genus Salmonella (organism)’). A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies such as PHIN VADS. For each row that has data entered in this column, the following additional columns are required: Concept Identifier (C) and Code System Identifier (C). </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-b">'Concept Identifier (C)'</td>
+                <td headers="generic-display-priority-b">Conditional</td>
+                <td headers="generic-display-desc-b">This is text or a code used to uniquely identify a concept in a controlled vocabulary (e.g., 27268008). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.  For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Code System Identifier (C).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-b">'Code System Identifier (C)'</td>
+                <td headers="generic-display-priority-b">Conditional</td>
+                <td headers="generic-display-desc-b">This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated. For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Concept Identifier (C).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-b">'Code System Mappings Table (O)'</td>
+                <td headers="generic-display-priority-b">Optional</td>
+                <td headers="generic-display-desc-b">ONLY use when associating MORE THAN ONE code system mapping per item (e.g., survey, section, or question). A user can create multiple Code System Mappings for a single items (survey, section, question) by creating Code System Mappings tables on separate tabs within the SDP-V generic import spreadsheet. After import, the SDP-V item details page will be populated with values from a code system mappings table where the value in this cell matches the name of a tab in the import spreadsheet with the naming convention "CSM #", where # is a number assigned by the user to identify the mappings table in this template (e.g., CSM 1, CSM 2, CSM 3...). The CSM tab must contain the following headers (described above): Concept Name (R), Concept Identifier (R), and Code System Identifier (R). </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <table className="set-table table">
+            <caption><strong>Table 2C. SDP-V Generic Import: Spreadsheet Column Names, Priority and Description - Survey Questions Tab </strong></caption>
+            <thead>
+              <tr>
+                <th  id="generic-display-name-column-c">'Survey Questions' Tab Column Headers</th>
+                <th  id="generic-display-priority-c">Priority</th>
+                <th  id="generic-display-desc-c">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td headers="generic-display-name-column-c">'Question Text (R)'</td>
+                <td headers="generic-display-priority-c">Required</td>
+                <td headers="generic-display-desc-c">Each row between Section ‘START:’ and ‘END’ markers will be imported as questions within that section. Questions must be associated with a section in SDP-V.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Question Description (R)'</td>
+                <td headers="generic-display-priority-c">Required</td>
+                <td headers="generic-display-desc-c">The information contained in this column is imported as the question description.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Question Response Type (R)'</td>
+                <td headers="generic-display-priority-c">Required</td>
+                <td headers="generic-display-desc-c">The information contained in this column is imported as the question response type.
                   <ul>
                     <li>The allowed response types are: Attachment, Boolean, Choice, Date, Date Time, Decimal, Instant, Integer, Open Choice, Quantity, Reference, String, Text, Time, or URL</li>
                     <li>The 14 allowed response types are defined at https://www.hl7.org/fhir/valueset-item-type.html </li>
@@ -607,35 +741,50 @@ class Help extends Component {
                 </td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Response Set Name (I)'</td>
-                <td headers="generic-display-priority">Informational</td>
-                <td headers="generic-display-desc">This column is to help the user of the template catalog the local response set tables that are being created in the Response Set tabs. The information in this column is for workflow purposes and will not be imported. The Response Set Name will be assigned to local response sets based on values in the response set tables in each response set tab.</td>
+                <td headers="generic-display-name-column-c">‘Other Allowed? (O)’</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c">This attribute can only be used for Choice type questions and allows users to indicated if “Other” is an allowed response option in addition to the values specified in a defined response set. For choice type questions, allowed values in the import template are "Yes" or "No". If this cell is left blank or “No” is specified, then the “Other allowed?” attribute will be null. If this cell in the import spreadsheet includes the value “Yes”, the “Other allowed?” attribute will be checked on import for the indicated question.</td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Local Response Set Table (C)'</td>
-                <td headers="generic-display-priority">Conditional</td>
-                <td headers="generic-display-desc">The information contained in this column is required if the Response Set Source column value is "Local" and the user wants to create the local response set on import.
+                <td headers="generic-display-name-column-c">'Response Set Name (I)'</td>
+                <td headers="generic-display-priority-c">Informational</td>
+                <td headers="generic-display-desc-c">This column is to help the user of the template catalog the local response set tables that are being created in the Response Set tabs. The information in this column is for workflow purposes only and will not be imported. The Response Set Name will be assigned to local response sets based on values in the response set tables in each response set tab.</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Local Response Set Table (C)'</td>
+                <td headers="generic-display-priority-c">Conditional</td>
+                <td headers="generic-display-desc-c">The information contained in this column allows a user to specify a PHIN VADS value set to associate with a question or to create a new response set in SDP-V to be associated with the question on import (referred to as a local response set) if one does not already exist in the repository.<br/>
+                <strong>Associate a question with an existing PHIN VADS value set:</strong>
                 <ul>
-                  <li>A local response set will be created on import and associated with the question in the same row where the value in this cell matches the name of a tab in the spreadsheet with the naming convention 'RS ID#',
-                  where ID# is a number assigned by the user to identify the response set in this template (e.g., RS 1, RS 2, RS 3...)
-                  <ul><li>The RS ID# tab will contain the response set table that will be imported as the response set</li></ul>
-                  </li>
-                  <li>The SDP-V importer will associate a local response set with each question where Response Set Source = "Local" and the Response Set Name matches a tab with the same RS ID#.</li>
+                  <li>Enter the PHIN VADS URL in the cell.</li>
+                  <li>If you provide a PHIN VADS URL, the value set information will be parsed from PHIN VADS and linked to the appropriate question in SDP-V upon import. The PHIN VADS URL must contain “oid= identifier” in order to be accurately parsed by the importer. </li>
+                  <ul>
+                    <li>An example of a valid PHIN VADS URL is: https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.7552</li>
+                  </ul>
+                  <li>Alternatively, PHIN VADS value sets can be found by searching SDP-V and linking them with the question through the user interface after the SDP-V survey has been created on import.</li>
+                  <li>If this column is left blank, the content owner will be able to add response set information to questions through the SDP-V user interface after import.</li>
                 </ul>
-                Note: A user may create as many local response sets as needed, but it is best practice to check SDP-V for existing response sets before doing so to prevent creating duplicate response sets in SDP-V
+                <br/>
+                <strong>Create and associate a local response set on import:</strong>
+                <ul>
+                  <li>A local response set will be created on import and associated with the question in the same row where the value in this cell matches the name of a tab in the spreadsheet with the naming convention 'RS ID#', where ID# is a number assigned by the user to identify the response set in this template (e.g., RS 1, RS 2, RS 3...)
+                    <ul><li>The RS ID# tab will contain the response set table that will be imported as the response set</li></ul>
+                  </li>
+                </ul>
+                Note: A user may create as many local response sets as needed, but it is best practice to check SDP-V for existing response sets before doing so to prevent creating duplicate response sets in SDP-V.
                 </td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Question Category (O)'</td>
-                <td headers="generic-display-priority">Optional</td>
-                <td headers="generic-display-desc">The information contained in this column is imported as the Question Category.
+                <td headers="generic-display-name-column-c">'Question Category (O)'</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c">The information contained in this column is imported as the Question Category.
                 <ul><li>The following are allowed values: Screening, Clinical, Demographics, Treatment, Laboratory, Epidemiological, Vaccine, or Public Health Emergency Preparedness & Response</li></ul>
                 Note: This information is optional, but it is best practice to complete it since it will help other users find related content within SDP-V.</td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Question Subcategory (O)'</td>
-                <td headers="generic-display-priority">Optional</td>
-                <td headers="generic-display-desc">The information contained in this column is imported as the Question Subcategory.
+                <td headers="generic-display-name-column-c">'Question Subcategory (O)'</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c">The information contained in this column is imported as the Question Subcategory.
                 <ul>
                   <li>The Question Subcategory field is only valid if the Question Category is either "Epidemiological" or "Emergency Preparedness".
                     <ul>
@@ -648,23 +797,57 @@ class Help extends Component {
                 </td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Question Tag Table (O)'</td>
-                <td headers="generic-display-priority">Optional</td>
-                <td headers="generic-display-desc">The purpose of Tags is to facilitate content discovery and reuse.  A user can create tags by creating tags tables on separate tabs within the SDP-V generic import spreadsheet. A question will be tagged with values from a tag table where the value in this cell matches the name of a tab in the spreadsheet with the naming convention "TAG #", where # is a number assigned by the user to identify the tags table in this template (e.g., TAGS 1, TAGS 2,  TAGS 3...).</td>
+                <td headers="generic-display-name-column-c">'Question Data Collection Method (O)'</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c">The purpose of this attribute is to help other authors quickly find questions that were used to collect data from a source in a similar manner (e.g., phone interview vs paper-based survey vs electronic data exchange). The Data Collection Method attribute should represent the manner in which the question is used to collect data in a real-world setting. This is not necessarily the same as how CDC is receiving the data. For instance, a question on a survey may be worded to collect information from respondents over the phone, but respondent information may be sent to CDC in an electronic file; in this case, “Facilitated by Interviewer (Phone)” should be selected as the Data Collection Method rather than “electronic (machine to machine). The allowed values for this attribute are: Electronic (e.g., machine to machine), Record review, Self-administered (Web or Mobile), Self-Administered (Paper), Facilitated by Interviewer (Phone) and Facilitated by Interviewer (In-Person). In the import spreadsheet, one value can be specified. After import, the user can select multiple values in the UI. </td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Program Defined Variable Name (O)'</td>
-                <td headers="generic-display-priority">Optional</td>
-                <td headers="generic-display-desc">Program-defined Variable Name is associated with questions at the section level. The purpose of this is to allow each program to use its local program variable names to identify a question, such as those used in data analysis by a program, without changing the properties of the question itself. Since this attribute is not a property of the question, it allows for users across SDP-V to reuse the same questions while allowing programs to meet its use case requirements. </td>
+                <td headers="generic-display-name-column-c">'Question Content Stage (O)'</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c"> An attribute of the content being presented that represents content maturity. The content stage attribute offers users flexibility to accurately communicate the maturity of their content at different stages of the vocabulary life cycle with other users. If this field is left blank, the question will be imported in the “draft” content stage. Users may also select “comment only” or “trial use. Content stages are defined as follows:
+                  <br/><strong>DRAFT</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used.
+                  <br/><strong>COMMENT ONLY</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.
+                  <br/><strong>TRIAL USE</strong> – Content that the Authors and Publisher believe is ready for User viewing, testing and/or comment. It is generally “complete”, but not final. Content at this Level should not be used to support public health response.
+                </td>
               </tr>
               <tr>
-                <td headers="generic-display-name-column">'Notes (I)'</td>
-                <td headers="generic-display-priority">Informational</td>
-                <td headers="generic-display-desc">This column is to help the user of the template keep track of actions that may need to be completed after imported, such as the need to extend an existing response set in SDP-V. The information in this column is for workflow purposes and will not be imported.</td>
+                <td headers="generic-display-name-column-c">'Question Keyword Tags (O)'</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c">Tags are text strings that are either keywords or short phrases created by users to facilitate content discovery, organization, and reuse. For instance, a question about “Prescription Drug Misuse and Abuse” may be tagged with “Opioid” to help other users find that question who may not think of searching for the term “prescription drug”. Multiple keyword tags can be separated with semicolon. </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Program Defined Variable Name (O)'</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c">Program-defined Variable Name is associated with questions at the section level. The purpose of this is to allow each program to use its local program variable names to identify a question, such as those used in data analysis by a program, without changing the properties of the question itself. Since this attribute is not a property of the question, it allows for users across SDP-V to reuse the same questions while allowing programs to meet its use case requirements. </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Concept Name (C)'</td>
+                <td headers="generic-display-priority-c">Conditional</td>
+                <td headers="generic-display-desc-c">Term from a controlled vocabulary to designate a unit of meaning or idea (e.g., ‘Genus Salmonella (organism)’). A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies such as PHIN VADS. For each row that has data entered in this column, the following additional columns are required: Concept Identifier (C) and Code System Identifier (C). </td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Concept Identifier (C)'</td>
+                <td headers="generic-display-priority-c">Conditional</td>
+                <td headers="generic-display-desc-c">This is text or a code used to uniquely identify a concept in a controlled vocabulary (e.g., 27268008). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.  For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Code System Identifier (C).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Code System Identifier (C)'</td>
+                <td headers="generic-display-priority-c">Conditional</td>
+                <td headers="generic-display-desc-c">This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated. For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Concept Identifier (C).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'Code System Mappings Table (O)'</td>
+                <td headers="generic-display-priority-c">Optional</td>
+                <td headers="generic-display-desc-c">The purpose of Tags is to facilitate content discovery and reuse. A user can create tags by creating tags tables on separate tabs within the SDP-V generic import spreadsheet. A question will be tagged with values from a tag table where the value in this cell matches the name of a tab in the spreadsheet with the naming convention "CSM #", where # is a number assigned by the user to identify the tags table in this template (e.g., CSM 1, CSM 2, CSM 3...).</td>
+              </tr>
+              <tr>
+                <td headers="generic-display-name-column-c">'RS Notes (I)'</td>
+                <td headers="generic-display-priority-c">Informational</td>
+                <td headers="generic-display-desc-c">This column is to help the user of the template keep track of actions that may need to be completed after imported, such as the need to extend an existing response set in SDP-V. The information in this column is for workflow purposes and will not be imported.</td>
               </tr>
               </tbody>
           </table><br/>
-          <p>The content in each tab in the spreadsheet that contains all required columns will be imported and tagged with “Tab Name”. If there are multiple spreadsheets that contain all required columns, they will be imported as separate sections on the same SDP-V survey.</p>
+          <p>The content in each tab in the spreadsheet that contains all required columns will be imported and tagged with the “Tab Name”. If there are multiple spreadsheets that contain all required columns, they will be imported as separate sections on the same SDP-V survey.</p>
           <p><strong>NOTE:</strong> If a required column from the table is missing, the user will receive an error message and the content will not be imported.</p>
           <br/>
 
@@ -684,9 +867,14 @@ class Help extends Component {
           <h4 id="generic-associate-rs"><strong>How to Associate Response Sets with Choice Questions on Import</strong></h4>
           <p><strong>There are 3 options for Choice Questions for import into SDP-V:</strong></p>
           <ol>
-          <li>A PHIN VADS response value can be associated with a question by providing a valid PHIN VADS value set URL</li>
-          <li>A local response set can be created in the template and imported</li>
-          <li>The response set information can be left blank and the user can add response information through the SDP-V user interface</li>
+            <li>A PHIN VADS response value can be associated with a question by providing a valid PHIN VADS value set URL
+            <ul>
+              <li>If you provide a PHIN VADS URL, the value set information will be parsed from PHIN VADS and linked to the appropriate question in SDP-V upon import. The PHIN VADS URL must contain “oid= identifier” in order to be accurately parsed by the importer. </li>
+              <li>An example of a valid PHIN VADS URL is: https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.7552</li>
+            </ul>
+            </li>
+            <li>A local response set can be created in the template and associated with the appropriate question on import. </li>
+            <li>The response set information can be left blank and the user can add response information through the SDP-V user interface</li>
           </ol>
 
           <p><strong>BEST PRACTICE:</strong> Check SDP-V for existing response sets before importing local response sets to prevent creating duplicate response sets in SDP-V.
@@ -730,24 +918,24 @@ class Help extends Component {
                 <td headers="generic-rs-name-column">Code System Identifier (optional)</td>
                 <td headers="generic-rs-description-column">The information contained in this column is imported as the ‘Code System Identifier (optional)’ values in the response set table created in SDP-V.</td>
               </tr>
-              </tbody>
+            </tbody>
           </table>
           <br/>
-          <li><strong>Associate response set with appropriate question by entering the following values in the same row as the question text:</strong></li>
+          <li><strong>2.	Associate response set table #’s with appropriate question by entering the following values in the same row as the question text:</strong></li>
             <ul>
-            <li>‘Response Set Source’ (Column D) - “Local”
-              <ul><li>"Local" tells the importer to look for a response set tab within this template for more information.</li></ul>
-            </li>
-            <li>‘Response Set Table’ (column E) – A local response set will be associated with the question in the same row where the value in this cell matches the name of a tab in the spreadsheet with the naming convention RS ID#, where ID# is a number assigned by the user to identify the response set in this template (e.g., RS 1, RS 2, RS 3...)
-              <ul><li>The tab name identifies where the response set table information for a question is located </li></ul>
-            </li>
+              <li>‘Local Response Set Table (C)’ (column F) – A local response set will be associated with the question in the same row where the value in this cell matches the name of a tab in the spreadsheet with the naming convention RS ID#, where ID# is a number assigned by the user to identify the response set in this template (e.g., RS 1, RS 2, RS 3...)
+                <ul><li>The tab name identifies where the response set table information for a question is located</li></ul>
+              </li>
             </ul>
           </ol>
           <br/>
-          <h4 id="generic-add-code-system-mappings"><strong>How to Add Code System Mappings to Content Using the SDP-V Import Template</strong></h4>
-          <p>The purpose of Code System Mappings is to facilitate content discovery and reuse.  A user can create mappings by creating tags tables on separate tabs within the SDP-V generic import spreadsheet. </p>
+          <h4 id="generic-add-code-system-mappings"><strong>How to Add Multiple Code System Mappings to Content Using the SDP-V Import Template</strong></h4>
+          <p>
+            The purpose of Code System Mappings (CSM) is to identify the governed concepts from code systems like LOINC, SNOMED, PHIN VADS, etc that are associated with response sets, questions, sections, or surveys in SDP-V. That is, the Code System Mappings table identifies how content in SDP-V is represented in another code system. <br/>
+            A user can create a single mapping by filling in the Concept Name, Concept Identifier, and Code System Identifier cells on each tab for the respective content (e.g., question, section, or survey). However, in some cases, a user may want to map their content to multiple representations. The SDP-V Generic Importer supports multiple Code Systems Mappings; to import multiple CSM, you will need to create CSM tables on separate tabs within the SDP-V generic import spreadsheet. This feature should only be used when associating MORE THAN ONE code system mapping per item (e.g., survey, section, or question). Alternatively, users can add the CSMs manually through the UI.
+          </p>
 
-          <ol><li><strong>Populate Distinct Tags Tables on Separate Tabs in the Spreadsheet (Tab naming convention: Tags #)</strong></li>
+          <ol><li><strong>1.	Populate Code System Mappings Tables on Separate Tabs in the Spreadsheet (Tab naming convention: CSM #)</strong></li>
 
           <table className="set-table table">
             <caption><strong>Table 4. Response Set Tab Column Listings</strong></caption>
@@ -759,29 +947,27 @@ class Help extends Component {
             </thead>
             <tbody>
               <tr>
-                <td headers="generic-tag-name-column">Tag Name (R)</td>
-                <td headers="generic-tag-description-column">The information contained in this column is imported as ‘Tag Value’ values in the Tags table created in SDP-V.</td>
+                <td headers="generic-tag-name-column">Concept Name (R)</td>
+                <td headers="generic-tag-description-column">Term from a controlled vocabulary to designate a unit of meaning or idea (e.g., ‘Genus Salmonella (organism)’). A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies such as PHIN VADS. For each row that has data entered in this column, the following additional columns are required: Concept Identifier (C) and Code System Identifier (C). </td>
               </tr>
               <tr>
-                <td headers="generic-tag-name-column">Tag Value (R)</td>
-                <td headers="generic-tag-description-column">The information contained in this column is imported as the ‘Response Set Description’ values in the response set table created in SDP-V. </td>
+                <td headers="generic-tag-name-column">Concept Identifier (R)</td>
+                <td headers="generic-tag-description-column">This is text or a code used to uniquely identify a concept in a controlled vocabulary (e.g., 27268008). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.  For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Code System Identifier (C).</td>
               </tr>
               <tr>
                 <td headers="generic-tag-name-column">Code System Identifier (optional)</td>
-                <td headers="generic-tag-description-column">The information contained in this column is imported as the ‘Code System Identifier (optional)’ values in the response set table created in SDP-V. </td>
+                <td headers="generic-tag-description-column">This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated. For each row that has data entered in this column, the following additional columns are required: Concept Name (C) and Concept Identifier (C).</td>
               </tr>
               </tbody>
           </table>
           <br/>
-          <li><strong>Associate tags with appropriate Question or Section by entering the following values in the same row as the question/section text:</strong></li>
+          <li><strong>2.	Associate CSM tables #’s with appropriate Question, Section, or Survey by entering the following values in the same row as the mapped content:</strong></li>
             <ul>
-              <li>‘Question Tag Table’ OR ‘Section Tag Table’ – A question/section will be tagged with values from a tags table where the value in this cell matches the name of a tab in the spreadsheet with the naming convention "TAGS #", where # is a number assigned by the user to identify the tags table in this template (e.g., TAGS 1,  TAGS 2,  TAGS 3...)
-                <ul><li>The tab name identifies where the tag table information for a particular question/section is located </li></ul>
+              <li>‘Code System Mappings Table (O)’–  After import, the SDP-V item details page will be populated with values from the code system mappings table where the value in this cell matches the name of a tab in the import spreadsheet with the naming convention "CSM #", where # is a number assigned by the user to identify the mappings table in this template (e.g., CSM 1, CSM 2, CSM 3...). The CSM tab must contain the following headers (described above): Concept Name (R), Concept Identifier (R), and Code System Identifier (R).
+                <ul><li>The tab name identifies where the CMS table information for a particular question, section, or survey is located in the import spreadsheet </li></ul>
               </li>
             </ul>
           </ol>
-
-
       </div>
     );
   }
@@ -790,44 +976,58 @@ class Help extends Component {
     // Need to update this section with single word tagging instructions
     return(
       <div className="tab-pane" id="tagging" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'tagging'} aria-labelledby="tagging-tab">
-        <h1 id="tagging-content">Tagging Content</h1>
-          <h2>Purpose</h2>
-          <p>The purpose of Tags is to facilitate content discovery and reuse.</p>
-          <h2>Definitions</h2>
-          <p><strong>Tag Name: </strong>Keywords from a controlled vocabulary. A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies.</p>
-          <p><strong>Tag Value: </strong>This may be a text or coded value that comes from a controlled vocabulary. Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
-          <p><strong>Code System Identifier (optional): </strong>The Code System used if you are using a coded value (e.g., LOINC, SNOMED-CT, RxNorm). Note that if you have selected a tag that has already been used in SDP-V or is selected from the results from “search for coded tags”, this field will be automatically populated.</p>
-          <h2>Example Tag Table</h2>
-          <table className="set-table">
-            <caption>Add, search, and create associated Tags</caption>
-            <thead>
-              <tr>
-                <th scope="col" className="display-name-column" id="display-name-column-ex">Tag Name</th>
-                <th scope="col" className="code-column" id="code-column-ex">Tag Value</th>
-                <th scope="col" className="code-system-column" id="code-system-column-ex">Code System Identifier (Optional)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td headers="display-name-column-ex">MMG Tab Name</td>
-                <td headers="code-column-ex">Data Elements</td>
-                <td headers="code-system-column-ex"></td>
-              </tr>
-              <tr>
-                <td headers="display-name-column-ex">Genus Salmonella (organism)</td>
-                <td headers="code-column-ex">27268008</td>
-                <td headers="code-system-column-ex">SNOMED-CT</td>
-              </tr>
-              <tr>
-                <td headers="display-name-column-ex">Genus Campylobacter (organism)</td>
-                <td headers="code-column-ex">35408001</td>
-                <td headers="code-system-column-ex">SNOMED-CT</td>
-              </tr>
-            </tbody>
-          </table><br/>
-          <p><strong>How to Search for Previously Used Tags</strong><br/>To determine if a tag has been used before in SDP-V, start typing in the tag name column of the table. A drop-down list of all previously used tags that match the text entered in the field will appear. A user can navigate the list and select a tag that was previously used. If a tag is selected from the list, the tag value and code system identifier fields will be populated with existing values.</p>
-          <p><strong>How to Search for Coded Tags from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for coded Tags” magnifying glass icon to the right of the Tags header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the tags table by clicking the “Add” selection beside each result.</p>
-          <p><strong>How to Create a New Tag</strong><br/>A new tag may be created by simply typing a new tag name, tag value, and code system identifier (if applicable). A new tag should only be created if an existing tag does not meet a user’s needs.</p>
+        <h1 id="tagging-content">Keyword Tags</h1>
+        <h2>Purpose</h2>
+        <p>Tags are text strings that are either keywords or short phrases created by users to facilitate content discovery, organization, and reuse. For instance, a survey called “’Traumatic brain injury” may be tagged with “Concussion” to help other users find that survey who may not think of searching for the term “traumatic brain injury”.<br/>The purpose of tags is not to identify unique concept identifiers or code systems associated with specific content. To specify code system mappings for your vocabulary, please see the “Code System Mappings” help documentation for additional information.</p>
+        <p><strong>Mutability: </strong>Since keyword tags should only be used to facilitate content discovery and organization, keyword tags can be changed (added or deleted) at any time by the author to meet user needs and to optimize search results. The history of tags is not saved and a new version of content is not created whenever tags are changed.</p>
+        <p><strong>Discoverability: </strong>Tags are included in the dashboard search algorithm so other users can find content that has been tagged with the same keyword(s) entered in the dashboard search bar. </p>
+        <p><strong>How to add a tag: </strong>Tags are listed near the top of the details page under either the response set, question, section or survey name and version number next to the “Tags:” header. Tags may be added or removed by selecting “Update Tags” on the right-side of the screen across from the “Tags:” header. Tags may be either a single word or a short keyword phrase. After selecting “Update Tags”, a tag may be created by simply typing a keyword or short phrase and hitting the “enter” or “tab” key between tag entries and then selecting “Save”. </p>
+        <p><strong>How to remove a tag: </strong>After a tag is successfully created, the UI will wrap the tag in a green box and an “x” will appear allowing the user to delete the tag in the future. To remove a tag, simply click on the “x” next to tag (within the green wrapping) and then select “Save”. Alternatively, tags can be added or removed on the content edit page.</p>
+      </div>
+    );
+  }
+
+  mappingInstructions() {
+    // Need to update this section with single word tagging instructions
+    return(
+      <div className="tab-pane" id="mapping" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'mapping'} aria-labelledby="mapping-tab">
+        <h1 id="mapping-content">Code System Mappings Help</h1>
+        <h2>Purpose</h2>
+        <p>The purpose of the Code System Mappings table is to identify the governed concepts from code systems like LOINC, SNOMED, PHIN VADS, etc that are associated with response sets, questions, sections, or surveys in SDP-V. That is, the Code System Mappings table identifies how content in SDP-V is represented in another code system.<br/>The Code System Mappings table should only include mapping to governed concepts. Non-governed concepts or keywords should not be added to the Code System Mappings table. If you would like to add keywords to your response set, question, section, or survey to facilitate content discovery or organization, please see the “Keyword Tags” help documentation for information on how to use the “Tags” feature.</p>
+        <p><strong>Mutability: </strong>Any changes to entries in the Code System Mappings table are versioned since code system mappings are a property of the vocabulary itself. This allows users to update the Code System Mappings while maintaining legacy mappings in older SDP-V content versions if needed.</p>
+        <p><strong>Discoverability: </strong>Code System Mappings table fields are included in the dashboard search algorithm so other users can find questions, sections, and surveys with specific concept names, concept identifiers or code system identifiers in SDP-V. For instance, a user can enter “27268008” into the dashboard search box to find content in SDP-V associated with that concept identifier. </p>
+
+        <h2>Definitions</h2>
+        <p><strong>Concept Name: </strong>Term from a controlled vocabulary to designate a unit of meaning or idea (e.g., ‘Genus Salmonella (organism)’). A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies such as PHIN VADS.</p>
+        <p><strong>Concept Identifier: </strong>This is text or a code used to uniquely identify a concept in a controlled vocabulary (e.g., 27268008). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
+        <p><strong>Code System Identifier: </strong>This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated.</p>
+
+        <h2>Example Code System Mappings Table</h2>
+        <table className="set-table table">
+          <caption><strong></strong></caption>
+          <thead>
+            <tr>
+              <th  id="concept-name">Concept Name</th>
+              <th  id="concept-identifier">Concept Identifier</th>
+              <th  id="code-sytem-identifier">Code System Identifier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td headers="concept-name">Genus Salmonella (organism)</td>
+              <td headers="concept-identifier">27268008</td>
+              <td headers="code-sytem-identifier">2.16.840.1.113883.6.96</td>
+            </tr>
+            <tr>
+              <td headers="concept-name">Genus Campylobacter (organism)</td>
+              <td headers="concept-identifier">35408001</td>
+              <td headers="code-sytem-identifier">2.16.840.1.113883.6.96</td>
+            </tr>
+          </tbody>
+        </table><br/>
+        <p><strong>How to Search for Previously Used Code Mappings</strong><br/>To determine if a code system mapping has been used before in SDP-V, start typing in the concept name column of the table. A drop-down list of all previously used concept names that match the text entered in the field will appear. A user can navigate the list and select a concept name that was previously used. If a concept name is selected from the list, the concept identifier and code system identifier fields will be populated with existing values already entered in SDP-V.</p>
+        <p><strong>How to Search for Code Mappings from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for external coded items” magnifying glass icon to the right of the code system mappings header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the code mappings table by clicking the “Add” selection beside each result.</p>
+        <p><strong>How to Create a New Code System Mapping</strong><br/>A new code system mapping may be created by simply typing a new concept name, concept identifier, and code system identifier. A new code mapping should only be created if an existing code mapping does not meet a user’s needs.</p>
       </div>
     );
   }
@@ -836,12 +1036,27 @@ class Help extends Component {
     return(
       <div className="tab-pane" id="comment" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'comment'} aria-labelledby="comment-tab">
         <h1 id="commenting-on-content">Commenting on Content</h1>
+        <h2 id="public-comments">Public Comments</h2>
+        <p>To post public comments, you must have a user account. Any comments posted will appear as posted “by user name”, where the user name that appears is the First Name and Last Name stored in the user profile.</p>
         <p><strong>Steps:</strong></p>
         <ul>
+        <li>Login to SDP-V. </li>
         <li>Navigate to the details page of the content you wish to post public comments on</li>
-        <li>Scroll down below the descriptive content section</li>
-        <li>To start a new comment thread fill in the box immediately under the &quot;Public Comments&quot; header</li>
-        <li>To reply to someone else&#39;s comment (which will automatically notify the user of your reply) click the &quot;reply&quot; link immediately under the comment</li>
+        <li>Scroll down below the descriptive and linked content sections</li>
+        <li>To start a new comment thread fill in the box immediately under the "Public Comments" header</li>
+        <li>To reply to someone else's comment (which will automatically notify the user of your reply) click the "reply" link immediately under the comment</li>
+        </ul>
+
+        <h2 id="private-comments">Private Comments</h2>
+        <p>Users can post comments about changes made to draft content if they are either the author or a member of a collaborative authoring group with permission to edit the content.  These comments are saved on the Change History tab and log the date and time that the comment was saved and the user who created it. Visibility of the Change History tab is restricted to authors, authoring group members, and publishers (e.g., private comments).</p>
+        <p><strong>Steps:</strong></p>
+        <ul>
+        <li>Login to SDP-V</li>
+        <li>Navigate to the details page of the draft content you wish to post a private comment</li>
+        <li>Select Edit</li>
+        <li>Type in the “Notes/Comment About Changes Made (Optional)” textbox</li>
+        <li>Click Save</li>
+        <li>Comments will appear on the “Change History” tab on the Details page.</li>
         </ul>
       </div>
     );
@@ -895,10 +1110,12 @@ class Help extends Component {
             <li id="manage-account-tab" role="tab" onClick={() => this.selectInstruction('manage-account')} aria-selected={this.state.selectedInstruction === 'manage-account'} aria-controls="manage-account"><a data-toggle="tab" href="#manage-account">Manage Account</a></li>
             <li id="search-tab" role="tab" onClick={() => this.selectInstruction('search')} aria-selected={this.state.selectedInstruction === 'search'} aria-controls="search"><a data-toggle="tab" href="#search">Search</a></li>
             <li id="view-tab" role="tab" onClick={() => this.selectInstruction('view')} aria-selected={this.state.selectedInstruction === 'view'} aria-controls="view"><a data-toggle="tab" href="#view">View and Export Content</a></li>
+            <li id="workflow-tab" role="tab" onClick={() => this.selectInstruction('workflow')} aria-selected={this.state.selectedInstruction === 'workflow'} aria-controls="workflow"><a data-toggle="tab" href="#workflow">Workflow Status and Content Stage</a></li>
             <li id="create-and-edit-tab" role="tab" onClick={() => this.selectInstruction('create-and-edit')} aria-selected={this.state.selectedInstruction === 'create-and-edit'} aria-controls="create-and-edit"><a data-toggle="tab" href="#create-and-edit">Create and Edit Content</a></li>
             <li id="curation-tab" role="tab" onClick={() => this.selectInstruction('curation')} aria-selected={this.state.selectedInstruction === 'curation'} aria-controls="curation"><a data-toggle="tab" href="#curation">Curation Wizard</a></li>
             <li id="import-tab" role="tab" onClick={() => this.selectInstruction('import')} aria-selected={this.state.selectedInstruction === 'import'} aria-controls="import"><a data-toggle="tab" href="#import">Import Content</a></li>
             <li id="tagging-tab" role="tab" onClick={() => this.selectInstruction('tagging')} aria-selected={this.state.selectedInstruction === 'tagging'} aria-controls="tagging"><a data-toggle="tab" href="#tagging">Tagging Content</a></li>
+            <li id="mapping-tab" role="tab" onClick={() => this.selectInstruction('mapping')} aria-selected={this.state.selectedInstruction === 'mapping'} aria-controls="mapping"><a data-toggle="tab" href="#mapping">Code System Mappings</a></li>
             <li id="comment-tab" role="tab" onClick={() => this.selectInstruction('comment')} aria-selected={this.state.selectedInstruction === 'comment'} aria-controls="comment"><a data-toggle="tab" href="#comment">Comment on Content</a></li>
             <li id="admin-tab" role="tab" onClick={() => this.selectInstruction('admin')} aria-selected={this.state.selectedInstruction === 'admin'} aria-controls="admin"><a data-toggle="tab" href="#admin">Admin Panel</a></li>
           </ul>
@@ -908,10 +1125,12 @@ class Help extends Component {
           {this.searchInstructions()}
           {this.accountInstructions()}
           {this.viewInstructions()}
+          {this.workflowInstructions()}
           {this.editInstructions()}
           {this.curationInstructions()}
           {this.importInstructions()}
           {this.taggingInstructions()}
+          {this.mappingInstructions()}
           {this.commentInstructions()}
           {this.adminInstructions()}
         </div>
