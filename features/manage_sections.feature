@@ -98,6 +98,8 @@ Feature: Manage Sections
     Then I should see "Test Section"
     Then I should see "Section description"
     When I click on the "Publish" link
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     And I should not see "Revise"
     And I should see "Published By: test_publisher@gmail.com"
     And I should not see "Edit"

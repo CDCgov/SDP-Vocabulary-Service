@@ -57,7 +57,7 @@ class QuestionEditContainer extends Component {
       },
       {
         title: 'Code System Mappings Table',
-        text: 'The purpose of Code System Mappings is to facilitate content discovery and reuse. Click the info (i) icon, or <a class="tutorial-link" href="#help">go to the full help documentation</a> to see more information and examples on how to get the most out of mappings.',
+        text: 'Click the info (i) icon, or <a class="tutorial-link" href="#help">go to the full help documentation</a> to see more information and examples on how to get the most out of mappings.',
         selector: '.code-system-mappings-table-header',
         position: 'left',
       },

@@ -7,7 +7,7 @@ import format from 'date-fns/format';
 import { responseSetProps } from '../../prop-types/response_set_props';
 import VersionInfo from '../VersionInfo';
 import { hashHistory } from 'react-router';
-import { Row, Grid, Col } from 'react-bootstrap';
+import { Modal, Button, Row, Grid, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
@@ -28,7 +28,8 @@ export default class ResponseSetShow extends Component {
     super(props);
     this.state = {
       selectedTab: 'main',
-      page: 1
+      page: 1,
+      showPublishModal: false
     };
   }
 
@@ -109,6 +110,25 @@ export default class ResponseSetShow extends Component {
     }
   }
 
+  publishModal() {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showPublishModal} onHide={()=>this.setState({showPublishModal: false})} role="dialog" aria-label="Publish Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Publish Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to publish this response set?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => this.props.publishResponseSet(this.props.responseSet.id)} bsStyle="primary">Confirm Publish</Button>
+            <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
   mainContent(responseSet) {
     return (
       <Col md={9} className="maincontent">
@@ -166,9 +186,9 @@ export default class ResponseSetShow extends Component {
             {isPublishable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                this.props.publishResponseSet(responseSet.id);
+                this.setState({showPublishModal: true});
                 return false;
-              }}>Publish</a>
+              }}>{this.publishModal()}Publish</a>
             }
             {this.props.currentUser && this.props.currentUser.admin && !responseSet.preferred &&
               <a className="btn btn-default" href="#" onClick={(e) => {

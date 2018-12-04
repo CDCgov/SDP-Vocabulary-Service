@@ -51,6 +51,8 @@ Feature: Draft, Publish, and Revise Questions
     Then I should see "Edit"
     And I should see "Publish"
     When I click on the "Publish" button
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     # The next few steps are necessary for *only* this test for some reason, the UI responds normally to the redirect
     And I go to the list of Questions
     Then I should see "What is your gender?"
@@ -69,6 +71,8 @@ Feature: Draft, Publish, and Revise Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     And I click on the "Publish" button
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     Then I should see "What is your gender?"
     And I should see "Revise"
     When I click on the "Revise" button

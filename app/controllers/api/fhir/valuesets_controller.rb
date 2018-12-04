@@ -4,7 +4,7 @@ module Api
       def index
         @value_sets = ResponseSet.where("status='published'").includes(:responses, :published_by)
         @value_sets = @value_sets.search(params[:search]) if params[:search]
-        limit = params[:limit] && (params[:limit] < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip') ? params[:limit] : 100
+        limit = params[:limit] && (params[:limit].to_i < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip') ? params[:limit].to_i : 100
         @value_sets = @value_sets.limit(limit).order(version_independent_id: :asc)
         @offset = 0
         @limit = 100

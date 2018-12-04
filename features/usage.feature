@@ -23,6 +23,8 @@ Feature: Manage Usage
     And I click on the "Save" button
     Then I should see "Test Section"
     When I click on the "Publish" button
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     And I click on the create "Surveys" dropdown item
     And I fill in the "survey-name" field with "Test Survey"
     And I set search filter to "section"
@@ -31,6 +33,8 @@ Feature: Manage Usage
     And I click on the "Save" button
     Then I should see "Test Survey"
     When I click on the "Publish" button
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     And I should see "Surveillance Program: FoodNet"
     And I click on the "CDC Vocabulary Service" link
     And I click on the menu link for the Question with the content "What is your gender?"
@@ -61,6 +65,8 @@ Feature: Manage Usage
     And I click on the "Save" button
     Then I should see "Test Section"
     When I click on the "Publish" button
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     And I click on the create "Surveys" dropdown item
     And I fill in the "survey-name" field with "Test Survey"
     And I set search filter to "section"
@@ -69,6 +75,8 @@ Feature: Manage Usage
     And I click on the "Save" button
     Then I should see "Test Survey"
     When I click on the "Publish" button
+    Then I should see "This action cannot be undone"
+    When I click on the "Confirm Publish" link
     And I should see "Surveillance Program: FoodNet"
     And I click on the "CDC Vocabulary Service" link
     And I click on the menu link for the Response Set with the name "Gender Full"
