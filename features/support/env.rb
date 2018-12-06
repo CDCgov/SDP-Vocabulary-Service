@@ -14,7 +14,7 @@ require 'axe/cucumber/step_definitions'
 require_relative '../../test/elastic_helpers'
 FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: '{}', content_type: 'application/json')
 
-FakeWeb.register_uri(:any, %r{http://concept-manager\..*}, body: '{}')
+FakeWeb.register_uri(:any, %r{http://concept-manager\.sdp\.svc:8080/}, body: '{}')
 
 Capybara.register_driver :chrome do |app|
   driver =  Capybara::Selenium::Driver.new(app, browser: :chrome)
