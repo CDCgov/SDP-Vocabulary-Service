@@ -6,9 +6,9 @@ class ConceptServiceController < ApplicationController
 
   # GET /concepts/systems
   def systems
-    @response = HTTParty.get(CONCEPT_SYSTEM_URL, { open_timeout: 5 })
+    @response = HTTParty.get(CONCEPT_SYSTEM_URL, open_timeout: 5)
     render json: @response.body, status: @response.code
-  rescue Net::OpenTimeout => e
+  rescue Net::OpenTimeout
     render status: 504
   end
 
@@ -16,7 +16,7 @@ class ConceptServiceController < ApplicationController
   def search
     @response = HTTParty.get(CONCEPT_SEARCH_URL, { open_timeout: 5 }, query: { system: params[:system], version: params[:version], search: params[:search] })
     render json: @response.body, status: @response.code
-  rescue Net::OpenTimeout => e
+  rescue Net::OpenTimeout
     render status: 504
   end
 end
