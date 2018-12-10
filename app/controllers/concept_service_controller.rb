@@ -9,7 +9,7 @@ class ConceptServiceController < ApplicationController
     @response = HTTParty.get(CONCEPT_SYSTEM_URL, open_timeout: 5)
     render json: @response.body, status: @response.code
   rescue Net::OpenTimeout
-    render status: 504, json: {message: 'Error opening network connection'}
+    render status: 504, json: { message: 'Error opening network connection' }
   end
 
   # GET /concepts/search
@@ -17,6 +17,6 @@ class ConceptServiceController < ApplicationController
     @response = HTTParty.get(CONCEPT_SEARCH_URL, { open_timeout: 5 }, query: { system: params[:system], version: params[:version], search: params[:search] })
     render json: @response.body, status: @response.code
   rescue Net::OpenTimeout
-    render status: 504, json: {message: 'Error opening network connection'}
+    render status: 504, json: { message: 'Error opening network connection' }
   end
 end
