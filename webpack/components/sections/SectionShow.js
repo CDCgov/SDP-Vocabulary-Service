@@ -356,7 +356,7 @@ class SectionShow extends Component {
                   <h2 className="panel-title">Description</h2>
                 </div>
                 <div className="box-content">
-                  <Linkify>{section.description}</Linkify>
+                  <Linkify properties={{target: '_blank'}}>{section.description}</Linkify>
                 </div>
                 <div className="box-content">
                   <strong>Version Independent ID: </strong>{section.versionIndependentId}

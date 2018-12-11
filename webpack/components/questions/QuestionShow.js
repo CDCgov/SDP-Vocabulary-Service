@@ -297,7 +297,7 @@ export default class QuestionShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
-                  <Linkify>{question.description}</Linkify>
+                  <Linkify properties={{target: '_blank'}}>{question.description}</Linkify>
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>
@@ -359,18 +359,45 @@ export default class QuestionShow extends Component {
                   {question.otherAllowed ? 'Yes' : 'No' }
                 </div>}
               </div>
+              <div className="basic-c-box panel-default">
+                <div className="panel-heading">
+                  <h2 className="panel-title">
+                    Code System Mappings
+                  </h2>
+                </div>
+                <div className="box-content">
+                  <div id="concepts-table">
+                    <CodedSetTable items={question.concepts} itemName={'Code System Mapping'} />
+                  </div>
+                </div>
+              </div>
+              {question.sections && question.sections.length > 0 &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
-                      Code System Mappings
+                      <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about </text>Parent Items</a>
                     </h2>
                   </div>
-                  <div className="box-content">
-                    <div id="concepts-table">
-                      <CodedSetTable items={question.concepts} itemName={'Code System Mapping'} />
+                  <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
+                    <div className="box-content panel-body">
+                      <ul>
+                        {question.sections.map((sect) => {
+                          return (
+                            <li>
+                              <i className="fa fa-list-alt" aria-hidden="true"></i> <a>{sect.name}</a>
+                                <ul>
+                                  <li><i className="fa fa-clipboard" aria-hidden="true"></i> <a>Survey 1</a></li>
+                                  <li><i className="fa fa-clipboard" aria-hidden="true"></i> <a>Survey 2</a></li>
+                                </ul>
+                            </li>
+                          );
+                        })}
+                      </ul>
                     </div>
                   </div>
                 </div>
+              }
               {question.responseSets && question.responseSets.length > 0 &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
@@ -397,21 +424,6 @@ export default class QuestionShow extends Component {
                   <div className="panel-collapse panel-details collapse" id="collapse-lrs">
                     <div className="box-content panel-body">
                       <ResponseSetList responseSets={question.linkedResponseSets} />
-                    </div>
-                  </div>
-                </div>
-              }
-              {question.sections && question.sections.length > 0 &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">
-                      <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {question.sections && question.sections.length}</a>
-                    </h2>
-                  </div>
-                  <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
-                    <div className="box-content panel-body">
-                      <SectionList sections={question.sections} currentUser={this.props.currentUser} />
                     </div>
                   </div>
                 </div>
