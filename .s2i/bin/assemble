@@ -7,3 +7,4 @@ NODE_ENV=production bundle exec rails assets:precompile
 popd
 /usr/libexec/s2i/assemble
 rm -rf /opt/app-root/src/.cache/yarn
+find /opt/app-root/src \( -name \*.key -o -name \*.pem -o -name \*.priv \) -delete
