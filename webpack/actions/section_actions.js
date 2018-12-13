@@ -27,7 +27,8 @@ import {
   REMOVE_NESTED_ITEM,
   FETCH_SECTION_PENDING,
   FETCH_SECTION_SUCCESS,
-  FETCH_SECTION_FAILURE
+  FETCH_SECTION_FAILURE,
+  FETCH_SECTION_PARENTS
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
@@ -108,6 +109,16 @@ function fetchSectionFailure(error) {
     type: FETCH_SECTION_FAILURE,
     status,
     statusText
+  };
+}
+
+export function fetchSectionParents(id) {
+  return {
+    type: FETCH_SECTION_PARENTS,
+    payload: axios.get(routes.parentItemsSectionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout: AJAX_TIMEOUT
+    })
   };
 }
 

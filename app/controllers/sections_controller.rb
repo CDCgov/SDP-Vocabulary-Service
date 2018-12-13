@@ -186,6 +186,14 @@ class SectionsController < ApplicationController
                    status: 200)
   end
 
+  def parent_items
+    response = { id: @section.id }
+    response[:parent_items] = @section.surveys_with_path
+    render json: response
+  rescue
+    render json: [{ error: 'Error fetching parent items' }]
+  end
+
   private
 
   def can_section_be_created?(section)

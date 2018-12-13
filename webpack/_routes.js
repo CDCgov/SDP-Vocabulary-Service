@@ -702,6 +702,9 @@ Based on Rails routes of Vocabulary::Application
 // parent_items_question => /questions/:id/parent_items(.:format)
   // function(id, options)
   parent_items_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"parent_items",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// parent_items_section => /sections/:id/parent_items(.:format)
+  // function(id, options)
+  parent_items_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"parent_items",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // publish_question => /questions/:id/publish(.:format)
   // function(id, options)
   publish_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

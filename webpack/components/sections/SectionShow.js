@@ -7,7 +7,6 @@ import $ from 'jquery';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
-import SurveyList from '../surveys/SurveyList';
 import CodedSetTable from "../CodedSetTable";
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -424,17 +423,35 @@ class SectionShow extends Component {
                   </div>
                 </div>
               }
-              {section.surveys && section.surveys.length > 0 &&
+              {section.parentItems && section.parentItems.length > 0 &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
                       <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about linked </text>Linked Surveys: {section.surveys && section.surveys.length}</a>
+                      <text className="sr-only">Click link to expand information about </text>Parent Items</a>
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
                     <div className="box-content panel-body">
-                      <SurveyList surveys={section.surveys} currentUser={this.props.currentUser} />
+                      {section.parentItems && section.parentItems.length > 0 && section.parentItems[0].error === undefined ? ( <ul className="no-bullet-list">
+                        {section.parentItems.map((surv) => {
+                          return (
+                            <li>
+                              {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
+                              {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
+                              <ul className="no-bullet-list">
+                              {surv.slice(1).map((pathItem, index) => {
+                                return(
+                                  <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
+                                );
+                              })}
+                              </ul>
+                            </li>
+                          );
+                        })}
+                      </ul>) : (
+                        <p>Loading Parent Items or None found.</p>
+                      )}
                     </div>
                   </div>
                 </div>
