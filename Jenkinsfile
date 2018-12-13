@@ -108,6 +108,7 @@ pipeline {
     stage('Publish Results') {
       steps {
         publishBrakeman 'reports/brakeman.html'
+        cucumber 'reports/cucumber.json'
       }
     }
 

@@ -27,7 +27,7 @@ begin
       t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
       t.fork = true # You may get faster startup if you set this to false
       t.profile = 'default'
-      t.cucumber_opts = ["--format rerun --out rerun.txt"]
+      t.cucumber_opts = ["--format rerun --out rerun.txt --format json --out reports/cucumber.json"]
     end
 
     Cucumber::Rake::Task.new({:wip => 'test:prepare'}, 'Run features that are being worked on') do |t|
