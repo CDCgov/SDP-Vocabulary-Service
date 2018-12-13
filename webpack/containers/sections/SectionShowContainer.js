@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 
-import { fetchSection, publishSection, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { fetchSection, publishSection, fetchSectionParents, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
@@ -27,6 +27,9 @@ class SectionShowContainer extends Component {
   }
 
   componentDidMount() {
+    if (this.props.section){
+      this.props.fetchSectionParents(this.props.params.sectionId);
+    }
     this.props.setSteps([
       {
         title: 'Help',
@@ -59,6 +62,8 @@ class SectionShowContainer extends Component {
   componentDidUpdate(prevProps) {
     if(prevProps.params.sectionId != this.props.params.sectionId){
       this.props.fetchSection(this.props.params.sectionId);
+    } else if (this.props.section && this.props.section.parentItems === undefined) {
+      this.props.fetchSectionParents(this.props.params.sectionId);
     }
   }
 
@@ -139,7 +144,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchSection, publishSection, addSectionToGroup, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, fetchSection, fetchSectionParents, publishSection, addSectionToGroup, addPreferred, removePreferred,
     removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, updateStageSection, toggleResultControl, retireSection, clearBreadcrumb, addBreadcrumbItem}, dispatch);
 }
 
@@ -152,6 +157,7 @@ SectionShowContainer.propTypes = {
   setStats: PropTypes.func,
   stats: PropTypes.object,
   fetchSection: PropTypes.func,
+  fetchSectionParents: PropTypes.func,
   deleteSection:  PropTypes.func,
   addSectionToGroup: PropTypes.func,
   removeSectionFromGroup: PropTypes.func,

@@ -177,6 +177,14 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def parent_items
+    response = { id: @question.id }
+    response[:parent_items] = @question.parent_items
+    render json: response
+  rescue
+    render json: [{ error: 'Error fetching parent items' }]
+  end
+
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy

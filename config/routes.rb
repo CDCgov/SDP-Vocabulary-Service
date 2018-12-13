@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     get :export, on: :member
     get :redcap, on: :member
     get :epi_info, on: :member
+    get :parent_items, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member
@@ -69,6 +70,7 @@ Rails.application.routes.draw do
   resources :questions, except: [:edit] do
     get :revise, on: :member
     get :usage, on: :member
+    get :parent_items, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member

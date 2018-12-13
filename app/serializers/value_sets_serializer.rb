@@ -35,8 +35,8 @@ class ValueSetsSerializer < ActiveModel::Serializer
     expansion['identifier'] = nil
     expansion['timestamp'] = nil
     expansion['contains'] = []
-    @responses = object.responses
-    @responses.each do |response|
+    resp = ResponseSet.find(object.id).responses
+    resp.each do |response|
       exp = {}
       exp['system'] = response.code_system
       exp['version'] = nil # responses aren't versioned

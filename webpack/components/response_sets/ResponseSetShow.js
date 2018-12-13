@@ -283,7 +283,7 @@ export default class ResponseSetShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
-                  <Linkify>{responseSet.description}</Linkify>
+                  <Linkify properties={{target: '_blank'}}>{responseSet.description}</Linkify>
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>
