@@ -14,6 +14,14 @@ class SurveyTest < ActiveSupport::TestCase
     assert_equal s.control_number, revision.control_number
   end
 
+  test 'Two surveys can have the same OMB number' do
+    user = users(:admin)
+    s = surveys(:one)
+    s2 = Survey.new(name: 'Same OMB Survey', created_by: user, control_number: '1234-5678')
+    assert s2.save
+    assert_equal s.control_number, s2.control_number
+  end
+
   test ' invalid control number should not be valid' do
     s = surveys(:one)
     s.control_number = '1234'
