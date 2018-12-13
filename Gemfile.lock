@@ -439,7 +439,6 @@ GEM
       equalizer (~> 0.0, >= 0.0.9)
     warden (1.2.7)
       rack (>= 1.0)
-    wdm (0.1.1)
     web-console (3.5.1)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -518,9 +517,8 @@ DEPENDENCIES
   selenium-webdriver
   simplecov
   tzinfo-data
-  wdm (>= 0.1.0)
   web-console
   webpacker
 
 BUNDLED WITH
-   1.17.1
+   1.16.6
