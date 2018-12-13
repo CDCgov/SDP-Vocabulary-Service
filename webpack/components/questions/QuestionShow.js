@@ -8,7 +8,6 @@ import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
-import SectionList from "../sections/SectionList";
 import CodedSetTable from "../CodedSetTable";
 import TagModal from "../TagModal";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
@@ -28,7 +27,7 @@ import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGr
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false, showPublishModal: false };
+    this.state = { tagModalOpen: false, collapseSectionPath: [], selectedTab: 'main', showDeleteModal: false, showPublishModal: false };
   }
 
   componentDidMount() {
@@ -381,19 +380,44 @@ export default class QuestionShow extends Component {
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
                     <div className="box-content panel-body">
-                      <ul>
-                        {question.sections.map((sect) => {
+                      {question.parentItems && question.parentItems.length > 0 && question.parentItems[0].error === undefined ? ( <ul className="no-bullet-list">
+                        {question.parentItems.map((sect, pathIndex) => {
                           return (
                             <li>
-                              <i className="fa fa-list-alt" aria-hidden="true"></i> <a>{sect.name}</a>
-                                <ul>
-                                  <li><i className="fa fa-clipboard" aria-hidden="true"></i> <a>Survey 1</a></li>
-                                  <li><i className="fa fa-clipboard" aria-hidden="true"></i> <a>Survey 2</a></li>
-                                </ul>
+                              <a data-toggle="collapse" title="Click to expand section path" href={`#collapse-section-path-${pathIndex}`} onClick={()=>{
+                                let csp = this.state.collapseSectionPath;
+                                if (this.state.collapseSectionPath[pathIndex]) {
+                                  csp[pathIndex] = false;
+                                  this.setState({collapseSectionPath: csp});
+                                } else {
+                                  csp[pathIndex] = true;
+                                  this.setState({collapseSectionPath: csp});
+                                }
+                              }}><i className={`fa ${this.state.collapseSectionPath[pathIndex] === true ? 'fa-minus' : 'fa-plus'}`} aria-hidden="true"></i> <text className='sr-only'>Click to expand section path</text></a>
+                              <i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${sect.id}`}>{sect.name}</a>
+                                {sect.surveys && sect.surveys.length > 0 && <ul className="no-bullet-list collapse" id={`collapse-section-path-${pathIndex}`}>
+                                  {sect.surveys.map((surv) => {
+                                    return(
+                                      <li>
+                                        {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
+                                        {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
+                                        <ul className="no-bullet-list">
+                                        {surv.slice(1).map((pathItem, index) => {
+                                          return(
+                                            <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
+                                          );
+                                        })}
+                                        </ul>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>}
                             </li>
                           );
                         })}
-                      </ul>
+                      </ul>) : (
+                        <p>Loading Parent Items or None found.</p>
+                      )}
                     </div>
                   </div>
                 </div>

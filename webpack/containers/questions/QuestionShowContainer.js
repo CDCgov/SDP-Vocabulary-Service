@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 
-import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, updateQuestionTags } from '../../actions/questions_actions';
+import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, fetchQuestionParents, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -29,6 +29,9 @@ class QuestionShowContainer extends Component {
   componentDidMount() {
     if (this.props.question && this.props.question.status === 'published') {
       this.props.fetchQuestionUsage(this.props.params.qId);
+    }
+    if (this.props.question) {
+      this.props.fetchQuestionParents(this.props.params.qId);
     }
 
     this.props.setSteps([
@@ -62,6 +65,9 @@ class QuestionShowContainer extends Component {
     if(prevProps.params.qId !== this.props.params.qId){
       this.props.fetchQuestion(this.props.params.qId);
     } else {
+      if (this.props.question && this.props.question.parentItems === undefined) {
+        this.props.fetchQuestionParents(this.props.params.qId);
+      }
       if (this.props.question && this.props.question.status === 'published' &&
           this.props.question.surveillancePrograms === undefined) {
         this.props.fetchQuestionUsage(this.props.params.qId);
@@ -149,7 +155,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
-    removeQuestionFromGroup, fetchQuestionUsage, setSteps, setStats, updateQuestionTags, retireQuestion, addBreadcrumbItem}, dispatch);
+    removeQuestionFromGroup, fetchQuestionUsage, fetchQuestionParents, setSteps, setStats, updateQuestionTags, retireQuestion, addBreadcrumbItem}, dispatch);
 }
 
 // Avoiding a lint error, but if you supply a question when you create this class, it will be ignored and overwritten!
@@ -160,6 +166,7 @@ QuestionShowContainer.propTypes = {
   currentUser:   currentUserProps,
   fetchQuestion: PropTypes.func,
   fetchQuestionUsage: PropTypes.func,
+  fetchQuestionParents: PropTypes.func,
   updateQuestionTags: PropTypes.func,
   updateStageQuestion: PropTypes.func,
   addBreadcrumbItem: PropTypes.func,
