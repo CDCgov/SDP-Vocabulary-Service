@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 pipeline {
-  agent none
+  agent { label 'vocab-ruby' }
 
   options {
     timeout(time: 120, unit: 'MINUTES')
@@ -8,8 +8,6 @@ pipeline {
 
   stages {
     stage('Run Tests') {
-      agent { label 'vocab-ruby' }
-
       steps {
         updateSlack('#FFFF00', 'Started tests')
 
@@ -107,9 +105,19 @@ pipeline {
       }
     }
 
-    stage('Build for Dev Env') {
-      agent any
+    stage('Publish Results') {
+      steps {
+        publishBrakeman 'reports/brakeman.html'
+        cucumber 'reports/cucumber.json'
+        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '',
+          pattern: 'reports/rubocop-checkstyle-result.xml', unHealthy: ''
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false,
+          reportDir: 'reports/rubocop', reportFiles: 'index.html', reportName: 'RuboCop Report',
+          reportTitles: ''])
+      }
+    }
 
+    stage('Build for Dev Env') {
       when {
         branch 'development'
       }
