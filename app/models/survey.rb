@@ -17,9 +17,7 @@ class Survey < ApplicationRecord
   validates :name, presence: true
   validates :created_by, presence: true
   validates :control_number, allow_blank: true, format: { with: /\A\d{4}-\d{4}\z/,
-                                                          message: 'must be a valid OMB Control Number' },
-                             uniqueness: { message: 'surveys should have different OMB Control Numbers',
-                                           unless: proc { |s| s.version > 1 && s.other_versions.map(&:control_number).include?(s.control_number) } }
+                                                          message: 'must be a valid OMB Control Number' }
 
   accepts_nested_attributes_for :sections, allow_destroy: true
 

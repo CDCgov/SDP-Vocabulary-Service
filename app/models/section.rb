@@ -51,6 +51,20 @@ class Section < ApplicationRecord
     omb_flag
   end
 
+  def surveys_with_path
+    s_with_path = []
+    if surveys.count == 0 && parent_sections.count == 0
+      s_with_path << [{ id: id, name: name, type: 'section' }]
+    end
+    surveys.each do |surv|
+      s_with_path << [{ id: surv.id, name: surv.name }, { id: id, name: name }]
+    end
+    parent_sections.each do |ps|
+      s_with_path += ps.surveys_with_path.map { |path| path << { id: id, name: name } }
+    end
+    s_with_path
+  end
+
   # Returns the number of questions with potential duplicates on the section
   def q_with_dupes_count(current_user)
     count = 0
