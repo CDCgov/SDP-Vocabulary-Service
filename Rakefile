@@ -7,7 +7,16 @@ Rails.application.load_tasks
 
 if Rails.env != 'production'
   require 'rubocop/rake_task'
-  RuboCop::RakeTask.new
+  RuboCop::RakeTask.new(:rubocop) do |t|
+    t.options = ['--format',
+                 'RuboCop::Formatter::CheckstyleFormatter',
+                 '-o',
+                 'reports/rubocop-checkstyle-result.xml',
+                 '--format',
+                 'html',
+                 '-o',
+                 'reports/rubocop/index.html']
+  end
   task default: [:create_reports_dir, :rubocop, 'brakeman:run', 'bundle_audit:run',
                  'javascript:test', 'javascript:lint', 'erd:test', 'swagger:validate', 'cucumber']
 end

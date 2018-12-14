@@ -1,3 +1,5 @@
+require:
+- rubocop/formatter/checkstyle_formatter
 inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 2.2

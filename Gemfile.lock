@@ -385,6 +385,8 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
+    rubocop-checkstyle_formatter (0.4.0)
+      rubocop (>= 0.35.1)
     ruby-graphviz (1.2.3)
     ruby-ole (1.2.12.1)
     ruby-progressbar (1.9.0)
@@ -513,6 +515,7 @@ DEPENDENCIES
   roo (~> 2.4.0)
   roo-xls (~> 1.0.0)
   rubocop (~> 0.49.0)
+  rubocop-checkstyle_formatter
   scss_lint
   selenium-webdriver
   simplecov

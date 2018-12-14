@@ -109,6 +109,11 @@ pipeline {
       steps {
         publishBrakeman 'reports/brakeman.html'
         cucumber 'reports/cucumber.json'
+        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '',
+          pattern: 'reports/rubocop-checkstyle-result.xml', unHealthy: ''
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false,
+          reportDir: 'reports/rubocop', reportFiles: 'index.html', reportName: 'RuboCop Report',
+          reportTitles: ''])
       }
     }
 
