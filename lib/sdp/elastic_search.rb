@@ -88,9 +88,9 @@ module SDP
                   elsif query_string.include?('"')
                     # If the string has double quotes it should be exact match
                     { query_string: { query: query_string, fields: [
-                        'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
-                        'tag_list', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
-                        'status', 'content_stage', 'oid', 'version_independent_id'
+                      'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
+                      'tag_list', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
+                      'status', 'content_stage', 'oid', 'version_independent_id'
                     ] } }
                   else
                     { dis_max: { queries: [
