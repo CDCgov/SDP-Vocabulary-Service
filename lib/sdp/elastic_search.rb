@@ -85,6 +85,13 @@ module SDP
 
       must_body = if query_string.blank?
                     {}
+                  elsif query_string.include?('"')
+                    # If the string has double quotes it should be exact match
+                    { query_string: { query: query_string, fields: [
+                        'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
+                        'tag_list', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
+                        'status', 'content_stage', 'oid', 'version_independent_id'
+                    ] } }
                   else
                     { dis_max: { queries: [
                       { match: { name: { query: query_string, boost: 9 } } },
@@ -98,7 +105,9 @@ module SDP
                       { match: { 'createdBy.email': { query: query_string } } },
                       { match: { 'createdBy.name': { query: query_string } } },
                       { match: { status: { query: query_string } } },
-                      { match: { content_stage: { query: query_string } } }
+                      { match: { content_stage: { query: query_string } } },
+                      { match: { oid: { query: query_string } } },
+                      { match: { version_independent_id: { query: query_string } } }
                     ] } }
                   end
 
