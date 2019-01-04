@@ -166,7 +166,7 @@ pipeline {
           logLevel: 'true',
           policy: 'critical',
           requirePackageUpdate: true,
-          timeout: 10
+          timeout: 60
 
         echo "Publishing results..."
         twistlockPublish ca: '',
@@ -177,7 +177,7 @@ pipeline {
           image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
           key: '',
           logLevel: 'true',
-          timeout: 10
+          timeout: 60
       }
     }
   }
