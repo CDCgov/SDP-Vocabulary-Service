@@ -1,5 +1,5 @@
-<Page PageId="<%= page_id %>" Name="<%= 'Page' + section.name.parameterize.underscore.camelize.truncate(40, omission: '') %>" Position="<%= position %>"  BackgroundId="0" ViewId="1">
+<Page PageId="<%= @position+=1 %>" Name="<%= 'Page' + section.name.parameterize.underscore.camelize.truncate(40, omission: '') %>" Position="<%= @position %>"  BackgroundId="0" ViewId="1">
         <% left = 0.01 %>
         <%= render partial: "sections/epi_info_section_field.xml",
-          locals: {section: section, page_id: page_id, position: position, left: left, height: 1, page_name: 'Page' + section.name.parameterize.underscore.camelize.truncate(40, omission: '') } %>
+          locals: {section: section, left: left, height: 1, page_name: 'Page' + section.name.parameterize.underscore.camelize.truncate(40, omission: '') } %>
       </Page>

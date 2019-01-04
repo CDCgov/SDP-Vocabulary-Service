@@ -1,6 +1,6 @@
 <Field
           Name="<%= sni.question.content.parameterize.underscore.camelize.truncate(40, omission: '') %>"
-          PageId="<%= page_id %>"
+          PageId="<%= @position %>"
           FieldId="<%= @tab_counter+1 %>"
           UniqueId=""
           FieldTypeId="<%= epi_info_field_type(sni.question.response_type.code, sni.response_set) %>"
@@ -9,7 +9,7 @@
           PageName="<%= page_name %>"
           PageBeforeCheckCode=""
           PageAfterCheckCode=""
-          Position="<%= position %>"
+          Position="<%= @position %>"
           PromptTopPositionPercentage="<%= @top += 0.025 %>"
           PromptLeftPositionPercentage="<%= left + 0.01 %>"
           ControlTopPositionPercentage="<%= @top += 0.025 %>"
