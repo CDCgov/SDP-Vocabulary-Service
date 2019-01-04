@@ -1,21 +1,11 @@
 <Template Name="<%= @survey.name.parameterize.underscore.camelize.truncate(40, omission: '') %>" Level="View">
   <Project>
     <View ViewId="1" Name="<%= @survey.name.parameterize.underscore.camelize.truncate(40, omission: '') %>" CheckCode="">
-      <% if @survey.page_numbers_present? %>
-        <% sects = @survey.survey_sections %>
-        <% sects.each do |ss| %>
-        <% sections_for_page = @survey.sections.select { |s| s.concepts.where(display_name: 'PageId', value: ss.section.page_id).present? } %>
-          <% if ss.section.id == sections_for_page[0].id %>
-      <%= render partial: "sections/epi_info_multi_section_page.xml",
-        locals: {sections: sections_for_page, page_id: ss.section.page_id, position: ss.position} %>
-          <% end %>
-        <% end %>
-      <% else %>
-        <% @survey.survey_sections.each do |ss| %>
-          <% @top = -0.03 %>
+      <% @position = 0 %>
+      <% @survey.survey_sections.each do |ss| %>
+        <% @top = -0.03 %>
       <%= render partial: "sections/epi_info_section_page.xml",
-        locals: {section: ss.section, page_id: ss.position + 1, position: ss.position} %>
-        <% end %>
+        locals: {section: ss.section} %>
       <% end %>
     </View>
   </Project>
