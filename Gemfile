@@ -48,6 +48,7 @@ gem 'axlsx_rails'
 group :development, :test do
   gem 'fakeweb', '~> 1.3'
   gem 'rubocop', '~> 0.49.0', require: false
+  gem 'rubocop-checkstyle_formatter', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'axe-matchers'
   gem 'byebug'

@@ -88,15 +88,22 @@ function fetchSurveyFailure(error) {
   };
 }
 
-export function fetchDuplicates(id) {
+export function fetchDuplicates(id, successHandler=null, failureHandler=null) {
+  const getPromise = axios.get(routes.duplicatesSurveyPath(id), {
+    headers: {
+      'X-Key-Inflection': 'camel',
+      'Accept': 'application/json'
+    }
+  });
+  if (successHandler) {
+    getPromise.then(successHandler);
+  }
+  if (failureHandler) {
+    getPromise.catch(failureHandler);
+  }
   return {
     type: FETCH_DUPLICATES,
-    payload: axios.get(routes.duplicatesSurveyPath(id), {
-      headers: {
-        'X-Key-Inflection': 'camel',
-        'Accept': 'application/json'
-      }
-    })
+    payload: getPromise
   };
 }
 

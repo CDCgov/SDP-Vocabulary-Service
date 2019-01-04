@@ -16,9 +16,14 @@ import BasicAlert from '../../components/BasicAlert';
 class SurveyDedupeContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      fetchDuplicatesAttempted: false
+    };
     if (this.props.params.surveyId) {
       this.props.fetchSurvey(this.props.params.surveyId);
-      this.props.fetchDuplicates(this.props.params.surveyId);
+      this.props.fetchDuplicates(this.props.params.surveyId, (successResponse)=>{
+        this.setState({fetchDuplicatesAttempted: successResponse.status === 200});
+      });
     }
   }
 
@@ -44,18 +49,16 @@ class SurveyDedupeContainer extends Component {
   }
 
   render() {
-    if(!this.props.survey || !this.props.potentialDupes){
+    if(!this.props.survey || !this.props.potentialDupes || !this.state.fetchDuplicatesAttempted){
       return (
         <Grid className="basic-bg">
           <Row>
             <Col xs={12}>
-              {this.props.isLoading &&
-                <div>
-                  <LoadingSpinner msg="Loading survey..." />
-                  <p>If not redirected there may no longer be any duplicates detected for this survey - try refreshing or contacting an administrator)</p>
-                </div>
-              }
-              {this.props.loadStatus == 'failure' &&
+              <div>
+                <LoadingSpinner msg={!this.state.fetchDuplicatesAttempted ? "Finding Duplicates..." : "Loading survey..."} />
+                <p>If not redirected there may no longer be any duplicates detected for this survey - try refreshing or contacting an administrator)</p>
+              </div>
+              {this.props.loadStatus === 'failure' &&
                 <BasicAlert msg={this.props.loadStatusText} severity='danger' />
               }
             </Col>

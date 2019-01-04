@@ -3,6 +3,7 @@ include ActiveModel::Serialization
 class ESResponseSetSerializer < ActiveModel::Serializer
   attribute :id
   attribute :name
+  attribute :oid
   attribute :version_independent_id
   attribute :version
   attribute :status
