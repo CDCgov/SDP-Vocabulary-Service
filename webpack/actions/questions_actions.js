@@ -15,6 +15,7 @@ import {
   ADD_QUESTION_TO_GROUP,
   REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
+  FETCH_QUESTION_PARENTS,
   ADD_ENTITIES,
   UPDATE_QUESTION_TAGS,
   UPDATE_STAGE_QUESTION,
@@ -95,6 +96,17 @@ export function fetchQuestionUsage(id) {
     })
   };
 }
+
+export function fetchQuestionParents(id) {
+  return {
+    type: FETCH_QUESTION_PARENTS,
+    payload: axios.get(routes.parentItemsQuestionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      timeout: AJAX_TIMEOUT
+    })
+  };
+}
+
 
 export function saveQuestion(question, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();

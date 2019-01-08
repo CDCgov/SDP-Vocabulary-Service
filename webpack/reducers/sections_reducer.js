@@ -14,7 +14,8 @@ import {
   ADD_SECTION_TO_GROUP_FULFILLED,
   REMOVE_SECTION_FROM_GROUP_FULFILLED,
   UPDATE_SECTION_TAGS_FULFILLED,
-  UPDATE_PDV_FULFILLED
+  UPDATE_PDV_FULFILLED,
+  FETCH_SECTION_PARENTS_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
@@ -77,6 +78,13 @@ export default function sections(state = {}, action) {
       return helpers.reorderNestedItem(state, action, 'section', 'sectionNestedItems');
     case DELETE_SECTION_FULFILLED:
       return helpers.deleteItem(state, action);
+    case FETCH_SECTION_PARENTS_FULFILLED:
+      newState = Object.assign({}, state);
+      if (newState[action.payload.data.id] === undefined) {
+        newState[action.payload.data.id] = {};
+      }
+      newState[action.payload.data.id].parentItems = action.payload.data.parentItems;
+      return newState;
     default:
       return state;
   }

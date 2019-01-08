@@ -15,6 +15,15 @@
   min-height: 90vh;
 }
 
+.no-bullet-list {
+  list-style-type: none;
+}
+
+.elbow-li {
+  background:url(img/elbow.png) left center no-repeat;
+  padding-left: 20px;
+}
+
 .fixed-height-list{
   max-height: 400px;
   min-height: 400px;

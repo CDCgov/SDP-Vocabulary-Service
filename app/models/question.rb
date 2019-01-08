@@ -122,6 +122,14 @@ class Question < ApplicationRecord
     section_linked_response_sets.uniq
   end
 
+  def parent_items
+    parent_item_array = []
+    sections.each do |sect|
+      parent_item_array << { id: sect.id, name: sect.name, surveys: sect.surveys_with_path }
+    end
+    parent_item_array
+  end
+
   # Get the programs that the section is associated with by the surveys that the
   # section is contained in
   def surveillance_programs

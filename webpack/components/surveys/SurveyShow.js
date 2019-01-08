@@ -265,7 +265,7 @@ class SurveyShow extends Component {
                   <h2 className="panel-title">Description</h2>
                 </div>
                 <div className="box-content">
-                  <Linkify>{this.props.survey.description}</Linkify>
+                  <Linkify properties={{target: '_blank'}}>{this.props.survey.description}</Linkify>
                 </div>
                 { this.props.survey.controlNumber &&
                 <div className="box-content">

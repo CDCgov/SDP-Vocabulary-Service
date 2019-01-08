@@ -75,7 +75,7 @@ Feature: Manage Surveys
    And I should see "(Published)"
    And I should see "Edit"
    When I click on the "Test Gender Section" link
-   And I click on the "Linked Surveys" link
+   And I click on the "Parent Items" link
    Then I should see "Gender Survey"
 
   Scenario: Extend Survey

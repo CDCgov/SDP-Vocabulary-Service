@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 pipeline {
-  agent none
+  agent { label 'vocab-ruby' }
 
   options {
     timeout(time: 120, unit: 'MINUTES')
@@ -8,8 +8,6 @@ pipeline {
 
   stages {
     stage('Run Tests') {
-      agent { label 'vocab-ruby' }
-
       steps {
         updateSlack('#FFFF00', 'Started tests')
 
@@ -52,7 +50,6 @@ pipeline {
 
         echo "Creating schema..."
         withEnv(["OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
-          sh 'bundle exec rake db:create'
           sh 'bundle exec rake db:schema:load'
         }
 
@@ -72,7 +69,7 @@ pipeline {
         }
 
         echo "Running tests..."
-        withEnv(['NO_PROXY=localhost,127.0.0.1', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
+        withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
           sh 'bundle exec rake'
         }
 
@@ -108,9 +105,19 @@ pipeline {
       }
     }
 
-    stage('Build for Dev Env') {
-      agent any
+    stage('Publish Results') {
+      steps {
+        publishBrakeman 'reports/brakeman.html'
+        cucumber 'reports/cucumber.json'
+        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '',
+          pattern: 'reports/rubocop-checkstyle-result.xml', unHealthy: ''
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false,
+          reportDir: 'reports/rubocop', reportFiles: 'index.html', reportName: 'RuboCop Report',
+          reportTitles: ''])
+      }
+    }
 
+    stage('Build for Dev Env') {
       when {
         branch 'development'
       }
@@ -131,6 +138,46 @@ pipeline {
         failure {
           updateSlack('#FF0000', 'Failed to build for development environment')
         }
+      }
+    }
+
+    stage('Scan Image') {
+      agent { label 'docker' }
+      when {
+        branch 'development'
+      }
+
+      steps {
+        echo "Pulling SDP-V container image for scanning..."
+        sh 'set +x; docker -H localhost:2375 login -u serviceaccount -p $(oc whoami -t) docker-registry.default.svc.cluster.local:5000'
+        sh 'docker -H localhost:2375 pull docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest'
+
+        echo "Scanning image with Twistlock..."
+        twistlockScan ca: '',
+          cert: '',
+          compliancePolicy: 'critical',
+          dockerAddress: 'tcp://localhost:2375',
+          gracePeriodDays: 7,
+          ignoreImageBuildTime: true,
+          repository: '',
+          image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
+          tag: '',
+          key: '',
+          logLevel: 'true',
+          policy: 'critical',
+          requirePackageUpdate: true,
+          timeout: 60
+
+        echo "Publishing results..."
+        twistlockPublish ca: '',
+          cert: '',
+          dockerAddress: 'tcp://localhost:2375',
+          gracePeriodDays: 7,
+          ignoreImageBuildTime: true,
+          image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
+          key: '',
+          logLevel: 'true',
+          timeout: 60
       }
     }
   }

@@ -8,6 +8,7 @@ import {
   UPDATE_QUESTION_TAGS_FULFILLED,
   UPDATE_STAGE_QUESTION_FULFILLED,
   FETCH_QUESTION_USAGE_FULFILLED,
+  FETCH_QUESTION_PARENTS_FULFILLED,
   DELETE_QUESTION_FULFILLED,
   ADD_ENTITIES_FULFILLED,
   ADD_ENTITIES_PENDING,
@@ -53,6 +54,13 @@ export default function questions(state = {}, action) {
       questionsClone[action.payload.data.id].surveillancePrograms = action.payload.data.surveillancePrograms;
       questionsClone[action.payload.data.id].surveillanceSystems = action.payload.data.surveillanceSystems;
       return questionsClone;
+    case FETCH_QUESTION_PARENTS_FULFILLED:
+      const questionsClone2 = Object.assign({}, state);
+      if (questionsClone2[action.payload.data.id] === undefined) {
+        questionsClone2[action.payload.data.id] = {};
+      }
+      questionsClone2[action.payload.data.id].parentItems = action.payload.data.parentItems;
+      return questionsClone2;
     default:
       return state;
   }

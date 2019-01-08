@@ -35,11 +35,13 @@
         "tokenizer": {
           "sdp": {
             "type": "edge_ngram",
-            "min_gram": 3,
-            "max_gram": 10,
+            "min_gram": 2,
+            "max_gram": 20,
             "token_chars": [
               "letter",
-              "digit"
+              "digit",
+              "punctuation",
+              "symbol"
             ]
           }
         },
@@ -823,6 +825,9 @@
           "type": "text"
         },
         "id": {
+          "type": "text"
+        },
+        "oid": {
           "type": "text"
         },
         "mostRecent": {

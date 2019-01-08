@@ -190,7 +190,7 @@ Feature: Edit Sections
     And I should see "What is your gender?"
     And I should see "Response Type: Boolean"
     When I click on the "What is your gender?" link
-    And I click on the "Linked Sections" link
+    And I click on the "Parent Items" link
     Then I should see "Test Section"
 
   Scenario: Show warning modal after adding question
