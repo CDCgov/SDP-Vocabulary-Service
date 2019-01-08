@@ -728,16 +728,6 @@ class Help extends Component {
                     <li>The allowed response types are: Attachment, Boolean, Choice, Date, Date Time, Decimal, Instant, Integer, Open Choice, Quantity, Reference, String, Text, Time, or URL</li>
                     <li>The 14 allowed response types are defined at https://www.hl7.org/fhir/valueset-item-type.html </li>
                   </ul>
-                  The information contained in this column is required IF the question response type is choice or open choice
-                  <ul><li>This column should be left blank if any other response type is selected. </li></ul>
-                  The allowed values for Response Set Source are either "Local" or a URL to an existing PHIN VADS value set.
-                  <ul>
-                  <li>An example of a valid PHIN VADS URL is: https://phinvads.cdc.gov/vads/ViewValueSet.action?id=6358110D-9517-E011-87A0-00188B39829B</li>
-                  <li>If you provide a PHIN VADS URL, the value set information will be parsed from PHIN VADS and linked to the appropriate question in SDP-V upon import. </li>
-                  <li>Alternatively, PHIN VADS value sets can be found by searching SDP-V and linking them with the question through the user interface.</li>
-                  </ul>
-                  <br/>
-                  If this column is left blank, the content owner will be able to add response set information through the SDP-V user interface.
                 </td>
               </tr>
               <tr>
@@ -1188,7 +1178,10 @@ class Help extends Component {
               <a href="#1.9">1.9</a>,&nbsp;
               <a href="#1.10">1.10</a>,&nbsp;
               <a href="#1.11">1.11</a>,&nbsp;
-              <a href="#1.12">1.12</a>)
+              <a href="#1.12">1.12</a>,&nbsp;
+              <a href="#1.13">1.13</a>,&nbsp;
+              <a href="#1.14">1.14</a>,&nbsp;
+              <a href="#1.15">1.15</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1198,6 +1191,29 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.15"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/473858095/SDP+Vocabulary+Service+Release+1.15' target='_blank'>1.15</a></strong> <small>(Jan 8, 2019)</small></li>
+              <ol>
+                <li>Links in descriptions will open in a new tab</li>
+                <li>Allow duplicate OMB number for more than one survey</li>
+                <li>Improvement of linked content</li>
+                <li>Double quoted exact match and tokenizer changes</li>
+                <li>Curation Wizard load messages</li>
+                <li>Epi Info Export improvement</li>
+              </ol>
+            <li id="1.14"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/463994881/SDP+Vocabulary+Service+Release+1.14' target='_blank'>1.14</a></strong> <small>(Dec 04, 2018)</small></li>
+              <ol>
+                <li>Added 'What's New' tab to Help</li>
+                <li>Updated SDP-V import template</li>
+                <li>OMB Approval number and date on show page</li>
+                <li>Metadata Tab importing for Surveys and Sections</li>
+              </ol>
+            <li id="1.13"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/462422017/SDP+Vocabulary+Service+Release+1.13' target='_blank'>1.13</a></strong> <small>(Nov 28, 2018)</small></li>
+              <ol>
+                <li>Tracking associations in the change history tab</li>
+                <li>Rolling out large response set code in demo</li>
+                <li>Single word tags and code system mappings</li>
+                <li>API performance improvements</li>
+              </ol>
             <li id="1.12"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/407928833/SDP+Vocabulary+Service+Release+1.12' target='_blank'>1.12</a></strong> <small>(Sept 28, 2018)</small></li>
               <ol>
                 <li>Curating Pulished Content</li>
