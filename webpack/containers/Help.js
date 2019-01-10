@@ -1218,7 +1218,7 @@ class Help extends Component {
               </ol>
             <li id="1.12"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/407928833/SDP+Vocabulary+Service+Release+1.12' target='_blank'>1.12</a></strong> <small>(Sept 28, 2018)</small></li>
               <ol>
-                <li>Curating Pulished Content</li>
+                <li>Curating Published Content</li>
                 <li>UI Asynchronous Rework & Optimizations</li>
                 <li>Comprehensive Developer Documentation</li>
               </ol>
