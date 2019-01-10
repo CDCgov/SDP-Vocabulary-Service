@@ -484,7 +484,6 @@ module SDP
             section = Section.new(name: metadata[:name] || item.name || "Imported Section ##{i + 1}", description: metadata[:description] || '', created_by: @user)
             section.tag_list = metadata[:keyword_tags] if metadata[:keyword_tags].present?
             section.concepts << metadata[:concepts] if metadata[:concepts].present?
-            section.parent = parent_section
             section.save!
             nsi = SectionNestedItem.new(nested_section: section, position: i)
             parent_section.section_nested_items << nsi

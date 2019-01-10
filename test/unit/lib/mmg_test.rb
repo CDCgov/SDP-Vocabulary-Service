@@ -120,7 +120,6 @@ class MMGTest < ActiveSupport::TestCase
     section = Section.where(name: 'Chronic Health Conditions').first
     assert section.present?
     assert_equal 4, section.questions.count
-    assert_equal 'Section', section.parent.name
 
     q = section.section_nested_items.second.question
     assert q

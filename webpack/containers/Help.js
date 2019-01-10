@@ -1197,6 +1197,8 @@ class Help extends Component {
                 <li>Allow duplicate OMB number for more than one survey</li>
                 <li>Improvement of linked content</li>
                 <li>Double quoted exact match and tokenizer changes</li>
+                <li>The tokenizer was updated to expand the token size from 2 to 20</li>
+                <li>The token characters were expanded to include symbols and punctuation to better parse things like OMB numbers and OIDs</li>
                 <li>Curation Wizard load messages</li>
                 <li>Epi Info Export improvement</li>
               </ol>
