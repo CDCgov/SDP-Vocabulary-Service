@@ -1197,6 +1197,8 @@ class Help extends Component {
                 <li>Allow duplicate OMB number for more than one survey</li>
                 <li>Improvement of linked content</li>
                 <li>Double quoted exact match and tokenizer changes</li>
+                <li>The tokenizer was updated to expand the token size from 2 to 20</li>
+                <li>The token characters were expanded to include symbols and punctuation to better parse things like OMB numbers and OIDs</li>
                 <li>Curation Wizard load messages</li>
                 <li>Epi Info Export improvement</li>
               </ol>
@@ -1216,7 +1218,7 @@ class Help extends Component {
               </ol>
             <li id="1.12"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/407928833/SDP+Vocabulary+Service+Release+1.12' target='_blank'>1.12</a></strong> <small>(Sept 28, 2018)</small></li>
               <ol>
-                <li>Curating Pulished Content</li>
+                <li>Curating Published Content</li>
                 <li>UI Asynchronous Rework & Optimizations</li>
                 <li>Comprehensive Developer Documentation</li>
               </ol>
