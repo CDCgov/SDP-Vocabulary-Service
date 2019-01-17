@@ -94,19 +94,19 @@ module SDP
                     ] } }
                   else
                     { dis_max: { queries: [
-                      { match: { name: { query: query_string, boost: 9 } } },
-                      { match: { description: { query: query_string, boost: 8 } } },
-                      { match: { 'codes.code': { query: query_string, boost: 7 } } },
-                      { match: { 'codes.codeSystem': { query: query_string, boost: 7 } } },
-                      { match: { 'codes.displayName': { query: query_string, boost: 7 } } },
-                      { match: { tag_list: { query: query_string, boost: 9 } } },
-                      { match: { category: { query: query_string } } },
-                      { match: { subcategory: { query: query_string } } },
-                      { match: { 'createdBy.email': { query: query_string } } },
-                      { match: { 'createdBy.name': { query: query_string } } },
+                      { match: { name: { query: query_string, boost: 9, fuzziness: 'AUTO' } } },
+                      { match: { description: { query: query_string, boost: 8, fuzziness: 'AUTO' } } },
+                      { match: { 'codes.code': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
+                      { match: { 'codes.codeSystem': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
+                      { match: { 'codes.displayName': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
+                      { match: { tag_list: { query: query_string, boost: 9, fuzziness: 'AUTO' } } },
+                      { match: { category: { query: query_string, fuzziness: 'AUTO' } } },
+                      { match: { subcategory: { query: query_string, fuzziness: 'AUTO' } } },
+                      { match: { 'createdBy.email': { query: query_string, fuzziness: 'AUTO' } } },
+                      { match: { 'createdBy.name': { query: query_string, fuzziness: 'AUTO' } } },
                       { match: { status: { query: query_string } } },
                       { match: { content_stage: { query: query_string } } },
-                      { match: { oid: { query: query_string } } },
+                      { match: { oid: { query: query_string, boost: 20 } } },
                       { match: { version_independent_id: { query: query_string } } }
                     ] } }
                   end
