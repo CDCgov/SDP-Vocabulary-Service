@@ -15,26 +15,66 @@
               "stop"
             ]
           },
-          "trigram": {
+          "sdpstandard": {
             "type": "custom",
-            "tokenizer": "sdp",
+            "tokenizer": "sdpstandard",
             "filter": [
-              "standard",
-              "shingle"
+              "lowercase",
+              "asciifolding",
+              "stop"
             ]
           },
-          "reverse": {
+          "sdpkey": {
             "type": "custom",
-            "tokenizer": "sdp",
+            "tokenizer": "sdpkey",
             "filter": [
-              "standard",
-              "reverse"
+              "lowercase",
+              "asciifolding",
+              "stop"
+            ]
+          },
+          "sdpoid": {
+            "type": "custom",
+            "tokenizer": "sdpoid",
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "stop"
+            ]
+          },
+          "sdpurlemail": {
+            "type": "custom",
+            "tokenizer": "sdpurlemail",
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "stop"
             ]
           }
         },
         "tokenizer": {
           "sdp": {
             "type": "edge_ngram",
+            "min_gram": 2,
+            "max_gram": 20,
+            "token_chars": [
+              "letter",
+              "digit",
+              "punctuation",
+              "symbol"
+            ]
+          },
+          "sdpstandard": {
+            "type": "standard"
+          },
+          "sdpurlemail": {
+            "type": "uax_url_email"
+          },
+          "sdpkey": {
+            "type": "keyword"
+          },
+          "sdpoid": {
+            "type": "ngram",
             "min_gram": 2,
             "max_gram": 20,
             "token_chars": [
@@ -108,7 +148,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -172,7 +213,7 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "groups": {
           "type": "text"
@@ -194,7 +235,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "sectionNestedItems": {
           "properties": {
@@ -290,7 +331,8 @@
           "type": "text"
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "suggest": {
           "type": "completion",
@@ -353,7 +395,8 @@
         "updatedBy": {
           "properties": {
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "id": {
               "type": "text"
@@ -367,7 +410,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     },
@@ -403,7 +447,8 @@
           }
         },
         "content": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "createdAt": {
           "type": "date"
@@ -414,7 +459,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -478,7 +524,7 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "groups": {
           "type": "text"
@@ -490,7 +536,8 @@
           "type": "text"
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "id": {
           "type": "text"
@@ -509,7 +556,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "responseSets": {
           "properties": {
@@ -642,7 +689,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -708,7 +756,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     },
@@ -755,7 +804,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -819,7 +869,7 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "groups": {
           "type": "text"
@@ -828,7 +878,8 @@
           "type": "text"
         },
         "oid": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpoid"
         },
         "mostRecent": {
           "type": "boolean"
@@ -844,7 +895,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "questions": {
           "properties": {
@@ -875,7 +926,8 @@
           "type": "text"
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "suggest": {
           "type": "completion",
@@ -925,7 +977,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -991,7 +1044,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     },
@@ -1008,7 +1062,8 @@
           }
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "codes": {
           "properties": {
@@ -1050,7 +1105,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -1114,7 +1170,7 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "ombApprovalDate": {
           "type": "date"
@@ -1139,7 +1195,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "questions": {
           "properties": {
@@ -1261,7 +1317,8 @@
         "updatedBy": {
           "properties": {
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "id": {
               "type": "text"
@@ -1275,7 +1332,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     }
