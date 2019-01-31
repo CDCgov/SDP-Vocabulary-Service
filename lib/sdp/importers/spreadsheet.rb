@@ -48,10 +48,10 @@ module SDP
         @program_var = normalize(row[:program_var])
         @value_set = normalize(row[:value_set])
         @concepts = []
+        oid_matcher = @vads_oid_regex.match(row[:value_set])
+        @value_set_oid = oid_matcher[1] if oid_matcher
         if row[:value_set].respond_to? :to_uri
           @value_set_url = row[:value_set].to_uri
-          oid_matcher = @vads_oid_regex.match(row[:value_set])
-          @value_set_oid = oid_matcher[1] if oid_matcher
         end
       end
 
@@ -105,7 +105,7 @@ module SDP
         )
         rs.save!
         @value_set.each do |code|
-          next if code[:name].include?('The information contained in this column')
+          next if code[:name].to_s.include?('The information contained in this column')
           rs.responses.create(code_system: code[:code_system_oid], display_name: code[:name], value: code[:code])
         end
         rs
@@ -167,12 +167,18 @@ module SDP
           source: 'local',
           description: vs_meta[:description]
         )
+        logger.debug "Attempting to save RS: #{rs.name}"
         rs.save!
         @value_set.each do |code|
-          next if code[:display_name].include?('The information contained in this column')
-          rs.responses.create(code_system: code[:system], display_name: code[:display_name], value: code[:value])
+          next if code[:display_name].to_s.include?('The information contained in this column')
+          logger.debug 'Attempting to create a response'
+          rs.responses.create(code_system: code[:system], display_name: code[:display_name].to_s, value: code[:value])
         end
         rs
+      end
+
+      def logger
+        Rails.logger
       end
     end
 
@@ -448,6 +454,7 @@ module SDP
           section = Section.new(name: metadata[:name] || nested_item.name || "Imported Section ##{section_position + 1}", description: metadata[:description] || '', created_by: @user)
           section.tag_list = metadata[:keyword_tags] if metadata[:keyword_tags].present?
           section.concepts << metadata[:concepts] if metadata[:concepts].present?
+          logger.debug "Attempting to Save Section: #{section.name}"
           section.save!
           s.survey_sections.create(section: section, position: section_position)
           section_position += 1
@@ -462,7 +469,6 @@ module SDP
           if item.type == :data_element
             rs = nil
             concepts = nil
-
             if item.data_element.value_set_oid
               rs = response_set_for_vads(item.data_element)
             elsif item.data_element.value_set_tab_name.present? && item.data_element.coded?
@@ -473,6 +479,7 @@ module SDP
             end
             q = item.data_element.to_question(@user)
 
+            logger.debug "Attempting to Save Question: #{q.content}"
             q.save!
             q.question_response_sets.create(response_set: rs) if rs
             q.concepts << concepts if concepts
@@ -484,6 +491,7 @@ module SDP
             section = Section.new(name: metadata[:name] || item.name || "Imported Section ##{i + 1}", description: metadata[:description] || '', created_by: @user)
             section.tag_list = metadata[:keyword_tags] if metadata[:keyword_tags].present?
             section.concepts << metadata[:concepts] if metadata[:concepts].present?
+            logger.debug "Attempting to Save Section: #{section.name}"
             section.save!
             nsi = SectionNestedItem.new(nested_section: section, position: i)
             parent_section.section_nested_items << nsi
@@ -508,6 +516,7 @@ module SDP
       def response_set_for_local(element)
         rs = @local_response_sets[element.value_set_tab_name]
         unless rs
+          logger.debug "Attempting to create RS from tab: #{element.value_set_tab_name}"
           rs = element.create_response_set(@user)
           @local_response_sets[element.value_set_tab_name] = rs
         end
@@ -604,7 +613,7 @@ module SDP
                                           # skip rows without CSM name and value
                                           next if tag_entry[:name].nil? || tag_entry[:name].to_s.strip.empty?
                                           # skip if instructional row
-                                          next if tag_entry[:name].include?('The information contained in')
+                                          next if tag_entry[:name].to_s.include?('The information contained in')
                                           concept_array << Concept.new(value: tag_entry[:value], display_name: tag_entry[:name], code_system: tag_entry[:system])
                                         end
                                         concept_array
@@ -648,7 +657,7 @@ module SDP
                                           # skip rows without CSM name and value
                                           next if tag_entry[:name].nil? || tag_entry[:name].to_s.strip.empty?
                                           # skip if instructional row
-                                          next if tag_entry[:name].include?('The information contained in')
+                                          next if tag_entry[:name].to_s.include?('The information contained in')
                                           concept_array << Concept.new(value: tag_entry[:value], display_name: tag_entry[:name], code_system: tag_entry[:system])
                                         end
                                         concept_array
@@ -680,7 +689,7 @@ module SDP
               # skip rows without CSM name and value
               next if entry[:name].nil? || entry[:name].to_s.strip.empty?
               # skip if instructional row
-              next if entry[:name].include?('The information contained in')
+              next if entry[:name].to_s.include?('The information contained in')
               data_element.concepts << Concept.new(value: entry[:value], display_name: entry[:name], code_system: entry[:system])
             end
           rescue Roo::HeaderRowNotFoundError # catching the error

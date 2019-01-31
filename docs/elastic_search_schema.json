@@ -1175,6 +1175,10 @@
         "ombApprovalDate": {
           "type": "date"
         },
+        "controlNumber": {
+          "type": "text",
+          "analyzer": "sdpkey"
+        },
         "groups": {
           "type": "text"
         },

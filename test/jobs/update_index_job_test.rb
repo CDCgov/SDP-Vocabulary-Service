@@ -6,7 +6,7 @@ class UpdateIndexJobJobTest < ActiveJob::TestCase
     UpdateIndexJob.perform_now('section', section)
     req = FakeWeb.last_request
     assert_equal 'POST', req.method
-    assert_equal "/vocabulary/section/#{section.id}/_update", req.path
+    assert_equal "/vocabulary/section/#{section.id}/_update?retry_on_conflict=5", req.path
   end
 
   test 'job calls create index' do

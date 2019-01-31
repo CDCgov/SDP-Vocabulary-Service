@@ -193,11 +193,15 @@ class Help extends Component {
         <h1 id="search-functionality">Search Functionality</h1>
         <p><strong>Features:</strong></p>
         <ul>
+        <li><a href="#advanced-search">Advanced search</a></li>
         <li><a href="#basic-search">Basic search</a></li>
         <li><a href="#filtering-by-type">Filtering by type</a></li>
         <li><a href="#see-content-you-own">See content you own</a></li>
         <li><a href="#advanced-filtering">Advanced filtering</a></li>
         </ul>
+        <h2 className="help-section-subtitle" id="advanced-search">Advanced Search</h2>
+        <p>The application uses a search engine called Elasticsearch. Features of this search engine include filters in the "Advanced" search pop-up, fuzzy matching on queries that are close matches to the search terms, better weighted results, and the curation wizard.</p>
+        <p>If a warning symbol appears next to the "Advanced" search link or you see an error message in the advanced search pop-up, the advanced search engine (Elasticsearch) is down. The advanced features, including filters and fuzzy matching, will not work while the engine is down. Please check back later or contact your system administrator at <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a> if the issue is persistent.</p>
         <h2 className="help-section-subtitle" id="basic-search">Basic Search</h2>
         <p>On the dashboard there is a search bar that can be used to find questions, response sets, sections, and surveys. Typing in search terms that might be found in the name, description, author e-mail, and various other relevant fields on the items.</p>
         <h2 className="help-section-subtitle" id="filtering-by-type">Filtering by Type</h2>
@@ -208,7 +212,6 @@ class Help extends Component {
         <p>Similar to searching by content you own, when you are logged in to an account that is part of an authoring group, the dashboard will have a &quot;Filter by Group&quot; section displayed on the right side of the dashboard. Selecting any of the group names from the dropdown in that panel will filter any searches down to only return content that is assigned to the specified group.</p>
         <h2 className="help-section-subtitle" id="advanced-filtering">Advanced Filtering</h2>
         <p>Under the search bars seen across the app there is an &#39;Advanced&#39; link. If you click that link it will pop up a window with additional filters that you can apply. Any filters you select will limit your searches by the selected filters. The window also has a clear filters buttons that will reset back to the default search.</p>
-        <p>If a warning symbol appears next to the Advanced link or you see an error message in the advanced search pop-up, the advanced search server (Elasticsearch) is likely down. Please check back later or contact your system administrator if the issue is persistent.</p>
       </div>
     );
   }

@@ -90,7 +90,7 @@ module SDP
                     { query_string: { query: query_string, fields: [
                       'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
                       'tag_list', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
-                      'status', 'content_stage', 'oid', 'version_independent_id'
+                      'status', 'content_stage', 'oid', 'version_independent_id', 'controlNumber'
                     ] } }
                   else
                     { dis_max: { queries: [
@@ -107,6 +107,7 @@ module SDP
                       { match: { status: { query: query_string } } },
                       { match: { content_stage: { query: query_string } } },
                       { match: { oid: { query: query_string, boost: 20 } } },
+                      { match: { controlNumber: { query: query_string, boost: 20 } } },
                       { match: { version_independent_id: { query: query_string } } }
                     ] } }
                   end
