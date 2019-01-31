@@ -12,7 +12,7 @@
             "filter": [
               "lowercase",
               "asciifolding",
-              "stop"
+              "sdpstop"
             ]
           },
           "sdpstandard": {
@@ -21,7 +21,7 @@
             "filter": [
               "lowercase",
               "asciifolding",
-              "stop"
+              "sdpstop"
             ]
           },
           "sdpkey": {
@@ -30,7 +30,7 @@
             "filter": [
               "lowercase",
               "asciifolding",
-              "stop"
+              "sdpstop"
             ]
           },
           "sdpoid": {
@@ -39,7 +39,7 @@
             "filter": [
               "lowercase",
               "asciifolding",
-              "stop"
+              "sdpstop"
             ]
           },
           "sdpurlemail": {
@@ -48,7 +48,7 @@
             "filter": [
               "lowercase",
               "asciifolding",
-              "stop"
+              "sdpstop"
             ]
           }
         },
