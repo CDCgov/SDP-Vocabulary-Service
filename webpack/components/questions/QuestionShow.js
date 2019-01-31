@@ -313,7 +313,7 @@ export default class QuestionShow extends Component {
                 }
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Published (publically available)
+                  <strong>Visibility: </strong>Published (publicly available)
                 </div>
                 }
                 { this.props.currentUser && question.status && question.status === 'draft' &&

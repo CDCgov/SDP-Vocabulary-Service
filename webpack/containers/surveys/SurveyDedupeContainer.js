@@ -17,12 +17,15 @@ class SurveyDedupeContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fetchDuplicatesAttempted: false
+      fetchDuplicatesAttempted: false,
+      fetchError: null
     };
     if (this.props.params.surveyId) {
       this.props.fetchSurvey(this.props.params.surveyId);
       this.props.fetchDuplicates(this.props.params.surveyId, (successResponse)=>{
         this.setState({fetchDuplicatesAttempted: successResponse.status === 200});
+      }, (failureResponse)=>{
+        this.setState({fetchError: failureResponse.message});
       });
     }
   }
@@ -49,7 +52,15 @@ class SurveyDedupeContainer extends Component {
   }
 
   render() {
-    if(!this.props.survey || !this.props.potentialDupes || !this.state.fetchDuplicatesAttempted){
+    if(this.state.fetchError) {
+      return (
+        <Grid className="basic-bg">
+          <div className="import-action-message error" role="alert">
+            Fetch duplicates failed: {this.state.fetchError} - send this code and the link to your system administrator at <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a>
+          </div>
+        </Grid>
+      );
+    } else if(!this.props.survey || !this.props.potentialDupes || !this.state.fetchDuplicatesAttempted){
       return (
         <Grid className="basic-bg">
           <Row>
