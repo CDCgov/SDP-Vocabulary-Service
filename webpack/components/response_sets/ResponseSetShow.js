@@ -314,7 +314,7 @@ export default class ResponseSetShow extends Component {
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Published (publically available)
+                  <strong>Visibility: </strong>Published (publicly available)
                 </div>
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'draft' &&

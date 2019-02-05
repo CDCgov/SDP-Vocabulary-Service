@@ -23,6 +23,7 @@ class ESSurveySerializer < ActiveModel::Serializer
   attribute :groups
   attribute :preferred
   attribute :omb
+  attribute :control_number, key: :controlNumber
   attribute :omb_approval_date, key: :ombApprovalDate
   attribute :tag_list
 

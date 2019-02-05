@@ -291,7 +291,7 @@ class SurveyShow extends Component {
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Published (publically available)
+                  <strong>Visibility: </strong>Published (publicly available)
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'draft' &&
