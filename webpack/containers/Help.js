@@ -1184,7 +1184,8 @@ class Help extends Component {
               <a href="#1.12">1.12</a>,&nbsp;
               <a href="#1.13">1.13</a>,&nbsp;
               <a href="#1.14">1.14</a>,&nbsp;
-              <a href="#1.15">1.15</a>)
+              <a href="#1.15">1.15</a>,&nbsp;
+              <a href="#1.16">1.16</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1194,6 +1195,43 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.16"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/484081696/SDP+Vocabulary+Service+Release+1.16' target='_blank'>1.16</a></strong> <small>(Feb 5, 2019)</small></li>
+              <strong>First 1.16 Sprint</strong> - Focus: Elasticsearch improvements.
+              <ol>
+                <li>1.14 released into production</li>
+                <li>1.15 released into integration</li>
+                <li>Changed importer so nested sections are not extended from parent section on import</li>
+                <ol type="a"><li>Validated recommendations with user group</li></ol>
+                <li>Created analyzer documentation for 51 token filter options</li>
+                <li>Updated Developer repository with notes about tokenizers and analyzers</li>
+                <ol type="a"><li><a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/458686465/SDP-V+Developer+Knowledge+Repositor' target='_blank'>SDP-V Developer Knowledge Repository</a></li></ol>
+                </ol>
+            <strong>Second 1.16 Sprint</strong> - Focus: Elasticsearch improvements. Advanced Filter Improvements. Importer Bug Fixes.
+              <ol>
+                <li>1.15 released into production</li>
+                <li>Implemented Stop words</li>
+                <li>Advance search modal rework</li>
+                <ol type="a">
+                  <li>Source as buttons</li>
+                  <li>Duplicate Added</li>
+                  <li>Stage as drop down</li>
+                  <li>OMB date and approval next to each other</li>
+                  </ol>
+                <li>Importer Fixed</li>
+                <ol type="a">
+                  <li>Number Column</li>
+                  <li>Hyperlinks not extracting OID</li>
+                  <li>Error Handling</li>
+                  </ol>
+                <li>Rails/Cucumber test successful on windows</li>
+                <li>Fixed Names with PHIN VADS URLs</li>
+                <li>OMB Number now searchable</li>
+                <li>Changed 'Publically' to 'publicly'</li>
+                <li>Updated advanced search feature down message</li>
+                <li>Updated OMB Approved filter returns</li>
+                <li>Linked PHIN VADS URLs in importer even if not a hyperlink</li>
+                <li>Investigated ability to render SDP-V content as web-based survey</li>
+              </ol>
             <li id="1.15"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/473858095/SDP+Vocabulary+Service+Release+1.15' target='_blank'>1.15</a></strong> <small>(Jan 8, 2019)</small></li>
               <ol>
                 <li>Links in descriptions will open in a new tab</li>
