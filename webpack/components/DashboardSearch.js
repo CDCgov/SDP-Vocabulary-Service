@@ -407,13 +407,12 @@ class DashboardSearch extends SearchStateComponent {
                     <label htmlFor="stage-filter">Content Stage: </label>
                     <select className="input-select" name="stage-filter" id="stage-filter" value={this.state.stageFilter} onChange={(e) => this.toggleStageFilter(e)} >
                       <option value="">Select Stage...</option>
-                      <option value="Draft">Draft</option>
                       <option value="Comment Only">Comment Only</option>
-                      <option value="Trial Use">Trial Use</option>
-                      <option value="Published">Published</option>
-                      <option value="Retired">Retired</option>
+                      <option value="Draft">Draft</option>
                       <option value="Duplicate">Duplicate</option>
-                    </select>
+                      <option value="Published">Published</option>
+                      <option value="Trial Use">Trial Use</option>
+                      </select>
                     <br />
                   </FormGroup>
                 </Col>
@@ -433,7 +432,7 @@ class DashboardSearch extends SearchStateComponent {
                     <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
                       <option value="">Select Category...</option>
                       {values(this.props.categories).map((category, i) => {
-                        return <option key={i} value={category.name}>{category.name}</option>;
+                        return <option key={i} value={category.name.sort}>{category.name}</option>;
                       })}
                     </select>
                   </FormGroup>
