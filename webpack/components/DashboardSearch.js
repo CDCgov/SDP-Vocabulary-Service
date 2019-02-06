@@ -407,11 +407,12 @@ class DashboardSearch extends SearchStateComponent {
                     <label htmlFor="stage-filter">Content Stage: </label>
                     <select className="input-select" name="stage-filter" id="stage-filter" value={this.state.stageFilter} onChange={(e) => this.toggleStageFilter(e)} >
                       <option value="">Select Stage...</option>
-                      <option value="Comment Only">Comment Only</option>
                       <option value="Draft">Draft</option>
-                      <option value="Duplicate">Duplicate</option>
-                      <option value="Published">Published</option>
+                      <option value="Comment Only">Comment Only</option>
                       <option value="Trial Use">Trial Use</option>
+                      <option value="Published">Published</option>
+                      <option value="Retired">Retired</option>
+                      <option value="Duplicate">Duplicate</option>
                       </select>
                     <br />
                   </FormGroup>
