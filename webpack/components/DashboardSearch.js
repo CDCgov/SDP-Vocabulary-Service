@@ -432,7 +432,7 @@ class DashboardSearch extends SearchStateComponent {
                     <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
                       <option value="">Select Category...</option>
                       {values(this.props.categories).map((category, i) => {
-                        return <option key={i} value={category.name.sort}>{category.name}</option>;
+                        return <option key={i} value={category.name}>{category.name}</option>;
                       })}
                     </select>
                   </FormGroup>
