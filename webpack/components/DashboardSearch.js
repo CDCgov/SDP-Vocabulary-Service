@@ -413,7 +413,7 @@ class DashboardSearch extends SearchStateComponent {
                       <option value="Published">Published</option>
                       <option value="Retired">Retired</option>
                       <option value="Duplicate">Duplicate</option>
-                      </select>
+                    </select>
                     <br />
                   </FormGroup>
                 </Col>
