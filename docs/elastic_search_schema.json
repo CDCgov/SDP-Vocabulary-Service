@@ -12,23 +12,43 @@
             "filter": [
               "lowercase",
               "asciifolding",
-              "stop"
+              "sdpstop"
             ]
           },
-          "trigram": {
+          "sdpstandard": {
             "type": "custom",
-            "tokenizer": "sdp",
+            "tokenizer": "sdpstandard",
             "filter": [
-              "standard",
-              "shingle"
+              "lowercase",
+              "asciifolding",
+              "sdpstop"
             ]
           },
-          "reverse": {
+          "sdpkey": {
             "type": "custom",
-            "tokenizer": "sdp",
+            "tokenizer": "sdpkey",
             "filter": [
-              "standard",
-              "reverse"
+              "lowercase",
+              "asciifolding",
+              "sdpstop"
+            ]
+          },
+          "sdpoid": {
+            "type": "custom",
+            "tokenizer": "sdpoid",
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "sdpstop"
+            ]
+          },
+          "sdpurlemail": {
+            "type": "custom",
+            "tokenizer": "sdpurlemail",
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "sdpstop"
             ]
           }
         },
@@ -43,9 +63,43 @@
               "punctuation",
               "symbol"
             ]
+          },
+          "sdpstandard": {
+            "type": "standard"
+          },
+          "sdpurlemail": {
+            "type": "uax_url_email"
+          },
+          "sdpkey": {
+            "type": "keyword"
+          },
+          "sdpoid": {
+            "type": "ngram",
+            "min_gram": 2,
+            "max_gram": 20,
+            "token_chars": [
+              "letter",
+              "digit",
+              "punctuation",
+              "symbol"
+            ]
           }
         },
         "filter": {
+          "sdpstop": {
+            "type": "stop",
+            "stopwords": ["patient", "subject", "case", "again", "against", "all","am", "an", "and", "any", "are", "as", "at", "be", "because",
+              "been", "before", "being", "below", "between", "both", "but", "by", "could", "did", "do", "does", "doing", "down",
+              "during", "each", "few", "for", "from", "further", "had", "has", "have", "having", "he", "he'd", "he'll", "he's", "her",
+              "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if",
+              "in", "into", "is", "it", "it's", "its", "itself", "let's", "me", "more", "most", "my", "myself", "nor", "of", "on", "once",
+              "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "she", "she'd", "she'll", "she's",
+              "should", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there",
+              "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under",
+              "until", "up", "very", "was", "we", "we'd", "we'll", "we're", "we've", "were", "what", "what's", "when", "when's", "where",
+              "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "would", "you", "you'd", "you'll", "you're",
+              "you've", "your", "yours", "yourself", "yourselves"]
+          },
           "shingle": {
             "type": "shingle",
             "min_shingle_size": 2,
@@ -108,7 +162,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -172,7 +227,7 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "groups": {
           "type": "text"
@@ -194,7 +249,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "sectionNestedItems": {
           "properties": {
@@ -290,7 +345,8 @@
           "type": "text"
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "suggest": {
           "type": "completion",
@@ -353,7 +409,8 @@
         "updatedBy": {
           "properties": {
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "id": {
               "type": "text"
@@ -367,7 +424,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     },
@@ -403,7 +461,8 @@
           }
         },
         "content": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "createdAt": {
           "type": "date"
@@ -414,7 +473,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -478,7 +538,7 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "groups": {
           "type": "text"
@@ -490,7 +550,8 @@
           "type": "text"
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "id": {
           "type": "text"
@@ -509,7 +570,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "responseSets": {
           "properties": {
@@ -642,7 +703,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -708,7 +770,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     },
@@ -755,7 +818,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -819,7 +883,7 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "groups": {
           "type": "text"
@@ -828,7 +892,8 @@
           "type": "text"
         },
         "oid": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpoid"
         },
         "mostRecent": {
           "type": "boolean"
@@ -844,7 +909,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "questions": {
           "properties": {
@@ -875,7 +940,8 @@
           "type": "text"
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "suggest": {
           "type": "completion",
@@ -925,7 +991,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -991,7 +1058,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     },
@@ -1008,7 +1076,8 @@
           }
         },
         "tagList" : {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpstandard"
         },
         "codes": {
           "properties": {
@@ -1050,7 +1119,8 @@
               "type": "boolean"
             },
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "first_name": {
               "type": "text",
@@ -1114,10 +1184,14 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "ombApprovalDate": {
           "type": "date"
+        },
+        "controlNumber": {
+          "type": "text",
+          "analyzer": "sdpkey"
         },
         "groups": {
           "type": "text"
@@ -1139,7 +1213,7 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdp"
+          "analyzer": "sdpstandard"
         },
         "questions": {
           "properties": {
@@ -1261,7 +1335,8 @@
         "updatedBy": {
           "properties": {
             "email": {
-              "type": "text"
+              "type": "text",
+              "analyzer": "sdpurlemail"
             },
             "id": {
               "type": "text"
@@ -1275,7 +1350,8 @@
           "type": "text"
         },
         "version_independent_id": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "sdpkey"
         }
       }
     }

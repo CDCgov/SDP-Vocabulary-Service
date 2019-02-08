@@ -119,6 +119,7 @@ Feature: Edit Questions
     And I fill in the "Question" field with "What time is it?"
     And I select the "Instant" option in the "Response Type" list
     And I click on the "Save" button
+    And I wait 2 seconds
     Then I go to the dashboard
     When I go to the list of Questions
     And I should see "What time is it?"

@@ -45,14 +45,6 @@ Feature: Advanced Search
     And I should see "6/10/2017"
     And I should see "Clear Adv. Filters"
 
-  Scenario: Filter search by source
-    And I am on the "/" page
-    When I click on the "Advanced" link
-    And I select the "SDPV Local" option in the "Source (Response Sets Only):" list
-    And I click on the "Close" button
-    Then I should see "Filtering results by local source"
-    And I should see "Clear Adv. Filters"
-
   Scenario: Filter search by status
     And I am on the "/" page
     When I click on the "Advanced" link
@@ -66,7 +58,7 @@ Feature: Advanced Search
     And I am on the "/" page
     When I click on the "Advanced" link
     And I tab out of the "content-since" field
-    And I click the "Trial" option button
+    And I select the "Trial Use" option in the "Content Stage:" list
     And I click on the "Close" button
     Then I should see "Filtering results by Trial Use content stage"
     And I should see "Clear Adv. Filters"
@@ -75,7 +67,7 @@ Feature: Advanced Search
     And I am on the "/" page
     When I click on the "Advanced" link
     And I tab out of the "content-since" field
-    And I click the "Trial" option button
+    And I select the "Trial Use" option in the "Content Stage:" list
     And I click on the "Close" button
     Then I should see "Filtering results by Trial Use content stage"
     And I should see "Clear Adv. Filters"

@@ -16,6 +16,7 @@ class SurveyImportContainer extends Component {
       importSessionId: null,
       importErrors: [],
       importWarnings: ['Attempting Import...'],
+      importFailure: null,
       fileFormatCheck: null,
       file: null,
       survey: {},
@@ -116,12 +117,16 @@ class SurveyImportContainer extends Component {
         importErrors: successResponse.data.importErrors,
         importSessionId: successResponse.data.id,
         survey: successResponse.data.survey});
+    }, (failureResponse)=>{
+      this.setState({
+        importFailure: failureResponse.message
+      });
     });
     this.setState({importAttempted: true, importErrors: [], importWarnings: [], importFormat: null});
   }
 
   cancelImport() {
-    this.setState({file: null, importAttempted: false, importWarnings: [],importErrors: [], fileChosen: false, importFormat: null, filePromiseReturned: false, survey: {}, importType:"mmg"});
+    this.setState({file: null, importAttempted: false, importFailure: null, importWarnings: [],importErrors: [], fileChosen: false, importFormat: null, filePromiseReturned: false, survey: {}, importType:"mmg"});
   }
 
   fileActions() {
@@ -199,7 +204,16 @@ class SurveyImportContainer extends Component {
   }
 
   importStatus() {
-    if (this.state.importAttempted && this.state.importErrors && this.state.importErrors.length > 0 && this.state.survey === null) {
+    if (this.state.importFailure) {
+      return (
+        <div>
+          <div className="import-action-message error" role="alert">
+            <button className="btn btn-default" onClick={this.cancelImport}><span className="fa fa-trash"></span> Remove</button>
+            Import failed: {this.state.importFailure} - send this code and spreadsheet to your system administrator at <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a>
+          </div>
+        </div>
+      );
+    } else if (this.state.importAttempted && this.state.importErrors && this.state.importErrors.length > 0 && this.state.survey === null) {
       return (
         <div>
           <div className="import-action-message error" role="alert">

@@ -193,11 +193,15 @@ class Help extends Component {
         <h1 id="search-functionality">Search Functionality</h1>
         <p><strong>Features:</strong></p>
         <ul>
+        <li><a href="#advanced-search">Advanced search</a></li>
         <li><a href="#basic-search">Basic search</a></li>
         <li><a href="#filtering-by-type">Filtering by type</a></li>
         <li><a href="#see-content-you-own">See content you own</a></li>
         <li><a href="#advanced-filtering">Advanced filtering</a></li>
         </ul>
+        <h2 className="help-section-subtitle" id="advanced-search">Advanced Search</h2>
+        <p>The application uses a search engine called Elasticsearch. Features of this search engine include filters in the "Advanced" search pop-up, fuzzy matching on queries that are close matches to the search terms, better weighted results, and the curation wizard.</p>
+        <p>If a warning symbol appears next to the "Advanced" search link or you see an error message in the advanced search pop-up, the advanced search engine (Elasticsearch) is down. The advanced features, including filters and fuzzy matching, will not work while the engine is down. Please check back later or contact your system administrator at <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a> if the issue is persistent.</p>
         <h2 className="help-section-subtitle" id="basic-search">Basic Search</h2>
         <p>On the dashboard there is a search bar that can be used to find questions, response sets, sections, and surveys. Typing in search terms that might be found in the name, description, author e-mail, and various other relevant fields on the items.</p>
         <h2 className="help-section-subtitle" id="filtering-by-type">Filtering by Type</h2>
@@ -208,7 +212,6 @@ class Help extends Component {
         <p>Similar to searching by content you own, when you are logged in to an account that is part of an authoring group, the dashboard will have a &quot;Filter by Group&quot; section displayed on the right side of the dashboard. Selecting any of the group names from the dropdown in that panel will filter any searches down to only return content that is assigned to the specified group.</p>
         <h2 className="help-section-subtitle" id="advanced-filtering">Advanced Filtering</h2>
         <p>Under the search bars seen across the app there is an &#39;Advanced&#39; link. If you click that link it will pop up a window with additional filters that you can apply. Any filters you select will limit your searches by the selected filters. The window also has a clear filters buttons that will reset back to the default search.</p>
-        <p>If a warning symbol appears next to the Advanced link or you see an error message in the advanced search pop-up, the advanced search server (Elasticsearch) is likely down. Please check back later or contact your system administrator if the issue is persistent.</p>
       </div>
     );
   }
@@ -1181,7 +1184,8 @@ class Help extends Component {
               <a href="#1.12">1.12</a>,&nbsp;
               <a href="#1.13">1.13</a>,&nbsp;
               <a href="#1.14">1.14</a>,&nbsp;
-              <a href="#1.15">1.15</a>)
+              <a href="#1.15">1.15</a>,&nbsp;
+              <a href="#1.16">1.16</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1191,12 +1195,51 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.16"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/484081696/SDP+Vocabulary+Service+Release+1.16' target='_blank'>1.16</a></strong> <small>(Feb 5, 2019)</small></li>
+              <strong>First 1.16 Sprint</strong> - Focus: Elasticsearch improvements.
+              <ol>
+                <li>1.14 released into production</li>
+                <li>1.15 released into integration</li>
+                <li>Changed importer so nested sections are not extended from parent section on import</li>
+                <ol type="a"><li>Validated recommendations with user group</li></ol>
+                <li>Created analyzer documentation for 51 token filter options</li>
+                <li>Updated Developer repository with notes about tokenizers and analyzers</li>
+                <ol type="a"><li><a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/458686465/SDP-V+Developer+Knowledge+Repositor' target='_blank'>SDP-V Developer Knowledge Repository</a></li></ol>
+                </ol>
+            <strong>Second 1.16 Sprint</strong> - Focus: Elasticsearch improvements. Advanced Filter Improvements. Importer Bug Fixes.
+              <ol>
+                <li>1.15 released into production</li>
+                <li>Implemented Stop words</li>
+                <li>Advance search modal rework</li>
+                <ol type="a">
+                  <li>Source as buttons</li>
+                  <li>Duplicate Added</li>
+                  <li>Stage as drop down</li>
+                  <li>OMB date and approval next to each other</li>
+                  </ol>
+                <li>Importer Fixed</li>
+                <ol type="a">
+                  <li>Number Column</li>
+                  <li>Hyperlinks not extracting OID</li>
+                  <li>Error Handling</li>
+                  </ol>
+                <li>Rails/Cucumber test successful on windows</li>
+                <li>Fixed Names with PHIN VADS URLs</li>
+                <li>OMB Number now searchable</li>
+                <li>Changed 'Publically' to 'publicly'</li>
+                <li>Updated advanced search feature down message</li>
+                <li>Updated OMB Approved filter returns</li>
+                <li>Linked PHIN VADS URLs in importer even if not a hyperlink</li>
+                <li>Investigated ability to render SDP-V content as web-based survey</li>
+              </ol>
             <li id="1.15"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/473858095/SDP+Vocabulary+Service+Release+1.15' target='_blank'>1.15</a></strong> <small>(Jan 8, 2019)</small></li>
               <ol>
                 <li>Links in descriptions will open in a new tab</li>
                 <li>Allow duplicate OMB number for more than one survey</li>
                 <li>Improvement of linked content</li>
                 <li>Double quoted exact match and tokenizer changes</li>
+                <li>The tokenizer was updated to expand the token size from 2 to 20</li>
+                <li>The token characters were expanded to include symbols and punctuation to better parse things like OMB numbers and OIDs</li>
                 <li>Curation Wizard load messages</li>
                 <li>Epi Info Export improvement</li>
               </ol>
@@ -1216,7 +1259,7 @@ class Help extends Component {
               </ol>
             <li id="1.12"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/407928833/SDP+Vocabulary+Service+Release+1.12' target='_blank'>1.12</a></strong> <small>(Sept 28, 2018)</small></li>
               <ol>
-                <li>Curating Pulished Content</li>
+                <li>Curating Published Content</li>
                 <li>UI Asynchronous Rework & Optimizations</li>
                 <li>Comprehensive Developer Documentation</li>
               </ol>

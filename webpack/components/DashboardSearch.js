@@ -234,8 +234,8 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
-  toggleSource(e) {
-    let newState = {sourceFilter: e.target.value};
+  toggleSource(val) {
+    let newState = {sourceFilter: val};
     this.setState(newState);
     let searchParams = this.currentSearchParameters();
     searchParams.sourceFilter = newState.sourceFilter;
@@ -252,9 +252,9 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
-  toggleStageFilter(val) {
-    let newState = {stageFilter: val, retiredFilter: this.state.retiredFilter};
-    if (val === 'Retired' && !this.state.retiredFilter) {
+  toggleStageFilter(e) {
+    let newState = {stageFilter: e.target.value, retiredFilter: this.state.retiredFilter};
+    if (e.target.value === 'Retired' && !this.state.retiredFilter) {
       newState['retiredFilter'] = true;
     }
     this.setState(newState);
@@ -301,7 +301,7 @@ class DashboardSearch extends SearchStateComponent {
         <Modal.Body>
           {this.props.searchSource === 'simple_search' ? (
             <div>
-              <p className="adv-filter-list">Could not connect to advanced search - this feature should return shortly. Please contact your system admin if this issue persists. You may continue to use search with basic functionality.</p>
+              <p className="adv-filter-list">Advanced search functionality is currently unavailable. You may continue to search by exact string match. If this issue persists, please contact: <a href="mailto:surveillanceplatform@cdc.gov">surveillanceplatform@cdc.gov</a></p>
               <p className="adv-filter-list">For more information see the search section on the <Link to="/help">Help Page.</Link></p>
             </div>
             ) : (
@@ -366,6 +366,15 @@ class DashboardSearch extends SearchStateComponent {
                       OMB Approved Content Only
                     </label>
                   </FormGroup>
+                  <FormGroup>
+                    <label htmlFor='omb-date'>OMB Approval Date (Surveys Only):</label>
+                    <SingleDatePicker id="omb-date"
+                                      date={this.state.ombDate}
+                                      onDateChange={this.handleOmbDateChange}
+                                      focused={this.state.ombFocused}
+                                      onFocusChange={({ focused }) => this.setState({ ombFocused: focused })}
+                                      isOutsideRange={(day) => day.isAfter()}/>
+                  </FormGroup>
                 </Col>
                 <Col sm={6}>
                   <FormGroup>
@@ -382,29 +391,30 @@ class DashboardSearch extends SearchStateComponent {
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>
-                    <ControlLabel htmlFor="stage-filter">Content Stage: </ControlLabel>
+                    <ControlLabel htmlFor="source-filter">Source (Response Sets Only):</ControlLabel><br/>
                     <ToggleButtonGroup
                       type="radio"
-                      name="stage-filter"
-                      defaultValue={this.state.stageFilter}
+                      name="source-filter"
+                      defaultValue={this.state.sourceFilter}
                       className="form-btn-group"
                       >
-                      <ToggleButton value={''} onClick={() => this.toggleStageFilter('')}>Any</ToggleButton>
-                      <ToggleButton value={'Draft'} onClick={() => this.toggleStageFilter('Draft')}>Draft</ToggleButton>
-                      <ToggleButton value={'Comment Only'} onClick={() => this.toggleStageFilter('Comment Only')}>Comment</ToggleButton>
-                      <ToggleButton value={'Trial Use'} onClick={() => this.toggleStageFilter('Trial Use')}>Trial</ToggleButton>
-                      <ToggleButton value={'Published'} onClick={() => this.toggleStageFilter('Published')}>Published</ToggleButton>
-                      <ToggleButton value={'Retired'} onClick={() => this.toggleStageFilter('Retired')}>Retired</ToggleButton>
+                      <ToggleButton value={''} onClick={() => this.toggleSource('')}>Any</ToggleButton>
+                      <ToggleButton value={'local'} onClick={() => this.toggleSource('local')}>SDPV Local</ToggleButton>
+                      <ToggleButton value={'phin_vads'} onClick={() => this.toggleSource('phin_vads')}>PHIN VADS</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>
-                    <label htmlFor='omb-date'>OMB Approval Date (Surveys Only):</label>
-                    <SingleDatePicker id="omb-date"
-                                      date={this.state.ombDate}
-                                      onDateChange={this.handleOmbDateChange}
-                                      focused={this.state.ombFocused}
-                                      onFocusChange={({ focused }) => this.setState({ ombFocused: focused })}
-                                      isOutsideRange={(day) => day.isAfter()}/>
+                    <label htmlFor="stage-filter">Content Stage: </label>
+                    <select className="input-select" name="stage-filter" id="stage-filter" value={this.state.stageFilter} onChange={(e) => this.toggleStageFilter(e)} >
+                      <option value="">Select Stage...</option>
+                      <option value="Draft">Draft</option>
+                      <option value="Comment Only">Comment Only</option>
+                      <option value="Trial Use">Trial Use</option>
+                      <option value="Published">Published</option>
+                      <option value="Retired">Retired</option>
+                      <option value="Duplicate">Duplicate</option>
+                    </select>
+                    <br />
                   </FormGroup>
                 </Col>
               </Row>
@@ -429,13 +439,6 @@ class DashboardSearch extends SearchStateComponent {
                   </FormGroup>
                 </Col>
                 <Col sm={6}>
-                  <label htmlFor="source-filter">Source <span className="label-note">(Response Sets Only):</span></label>
-                  <select className="input-select" name="source-filter" id="source-filter" value={this.state.sourceFilter} onChange={(e) => this.toggleSource(e)} >
-                    <option value="">Select Source...</option>
-                    <option value="local">SDPV Local</option>
-                    <option value="phin_vads">PHIN VADS</option>
-                  </select>
-                  <br />
                   <label htmlFor="dataCollectionMethod">Data Collection Method (Questions Only):</label>
                   <DataCollectionSelect onChangeFunc={this.selectMethods} methods={this.state.methodsFilter} />
                 </Col>

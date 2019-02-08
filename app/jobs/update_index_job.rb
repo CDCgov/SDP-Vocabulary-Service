@@ -14,7 +14,7 @@ class UpdateIndexJob < ApplicationJob
     SDP::Elasticsearch.ensure_index
     SDP::Elasticsearch.with_client do |client|
       if client.exists? index: 'vocabulary', type: type.underscore, id: data[:id]
-        client.update index: 'vocabulary', type: type.underscore, id: data[:id], body: { doc: data }
+        client.update index: 'vocabulary', type: type.underscore, id: data[:id], body: { doc: data }, retry_on_conflict: 5
       else
         client.create index: 'vocabulary', type: type.underscore, id: data[:id], body: data
       end
