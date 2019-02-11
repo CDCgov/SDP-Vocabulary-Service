@@ -109,8 +109,6 @@ pipeline {
       agent { label 'jenkins-agent-sonarqube' }
 
       steps {
-        checkout scm
-
         script {
           def scannerHome = tool 'SonarQube Scanner 3.3'
           withSonarQubeEnv('SDP') {
