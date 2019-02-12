@@ -347,7 +347,7 @@ class SurveyDedupe extends Component {
                   return (
                     <tr key={i}>
                       <td headers="match-score-column" className="match-score">{dupe.Score}</td>
-                      <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}</span></td>
+                      <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}<br/>Matched on fields: {dupe.highlight && Object.keys(dupe.highlight).join(', ')}</span></td>
                       <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
                       <td headers="response-type-column"><i className='fa $fa-comments' aria-hidden="true"></i> {dupe.Source.responseType && dupe.Source.responseType.name}</td>
                       <td headers="category-column">{dupe.Source.category && dupe.Source.category.name}</td>
