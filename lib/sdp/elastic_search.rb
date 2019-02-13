@@ -4,6 +4,7 @@
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/BlockLength
 
 module SDP
   module Elasticsearch
@@ -378,7 +379,10 @@ module SDP
 
         mlt_body = {
           more_like_this: {
-            fields: ['name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName', 'category.name', 'subcategory.name'],
+            fields: [
+              'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
+              'tag_list', 'category', 'subcategory', 'oid', 'controlNumber'
+            ],
             like: [
               {
                 '_type': obj.class.to_s.underscore,
@@ -386,7 +390,7 @@ module SDP
               }
             ],
             min_term_freq: 1,
-            minimum_should_match: '75%'
+            minimum_should_match: '85%'
           }
         }
 
@@ -396,6 +400,13 @@ module SDP
             bool: {
               filter: [filter_body, version_filter],
               must: [mlt_body]
+            }
+          },
+          highlight: {
+            pre_tags: ['<strong>'], post_tags: ['</strong>'],
+            fields: {
+              'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
+              'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
             }
           },
           sort: sort_body

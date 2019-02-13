@@ -118,7 +118,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -131,7 +132,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
               "type": "text",
@@ -140,7 +142,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "displayName": {
               "type": "text",
@@ -149,7 +152,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -227,7 +231,8 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -249,7 +254,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "sectionNestedItems": {
           "properties": {
@@ -281,7 +287,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "codeSystem": {
                   "type": "text",
@@ -290,7 +297,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "displayName": {
                   "type": "text",
@@ -299,7 +307,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 }
               }
             },
@@ -437,17 +446,20 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
         "codes": {
           "properties": {
             "code": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystemOid": {
               "type": "text"
@@ -456,7 +468,8 @@
               "type": "date"
             },
             "displayName": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -538,7 +551,8 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -570,7 +584,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "responseSets": {
           "properties": {
@@ -651,7 +666,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -783,7 +799,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -793,10 +810,12 @@
         "codes": {
           "properties": {
             "code": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystemOid": {
               "type": "text"
@@ -805,7 +824,8 @@
               "type": "date"
             },
             "displayName": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -883,7 +903,8 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -893,7 +914,8 @@
         },
         "oid": {
           "type": "text",
-          "analyzer": "sdpoid"
+          "analyzer": "sdpoid",
+          "term_vector" : "with_positions_offsets"
         },
         "mostRecent": {
           "type": "boolean"
@@ -909,7 +931,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "questions": {
           "properties": {
@@ -1071,7 +1094,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -1088,7 +1112,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
               "type": "text",
@@ -1097,7 +1122,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "displayName": {
               "type": "text",
@@ -1106,7 +1132,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -1184,14 +1211,16 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "ombApprovalDate": {
           "type": "date"
         },
         "controlNumber": {
           "type": "text",
-          "analyzer": "sdpkey"
+          "analyzer": "sdpkey",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -1213,7 +1242,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "questions": {
           "properties": {
@@ -1226,7 +1256,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "codeSystem": {
                   "type": "text",
@@ -1235,7 +1266,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "displayName": {
                   "type": "text",
@@ -1244,7 +1276,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 }
               }
             },
