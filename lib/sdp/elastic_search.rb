@@ -400,7 +400,7 @@ module SDP
             bool: {
               filter: [filter_body, version_filter],
               must: [mlt_body],
-              must_not:[{match: { content_stage: 'Retired' } }]
+              must_not: [{ match: { content_stage: 'Retired' } }]
             }
           },
           highlight: {
