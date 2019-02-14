@@ -399,7 +399,8 @@ module SDP
           query: {
             bool: {
               filter: [filter_body, version_filter],
-              must: [mlt_body]
+              must: [mlt_body],
+              must_not: [{ match: { content_stage: 'Retired' } }]
             }
           },
           highlight: {
