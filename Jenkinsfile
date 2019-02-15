@@ -105,6 +105,19 @@ pipeline {
       }
     }
 
+    stage('SonarQube Scan') {
+      agent { label 'jenkins-agent-sonarqube' }
+
+      steps {
+        script {
+          def scannerHome = tool 'SonarQube Scanner 3.3'
+          withSonarQubeEnv('SDP') {
+           sh "${scannerHome}/bin/sonar-scanner -X -Dsonar.projectKey=sdp:vocabulary -Dsonar.sources=."
+          }
+        }
+      }
+    }
+
     stage('Publish Results') {
       steps {
         publishBrakeman 'reports/brakeman.html'
@@ -118,6 +131,8 @@ pipeline {
     }
 
     stage('Build for Dev Env') {
+      agent any
+
       when {
         branch 'development'
       }
