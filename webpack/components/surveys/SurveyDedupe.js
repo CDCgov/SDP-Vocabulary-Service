@@ -318,7 +318,7 @@ class SurveyDedupe extends Component {
             </thead>
             <tbody>
               <tr className="duplicate-row">
-                <td scope="row" headers="name-desc-q-column"><text>{question.draftQuestion.content}</text><br/><span className="small">{question.draftQuestion.description}</span></td>
+                <td scope="row" headers="name-desc-q-column"><a href={`/#/questions/${question.draftQuestion.id}`} target="_blank">{question.draftQuestion.content}</a><br/><span className="small">{question.draftQuestion.description}</span></td>
                 {question.draftQuestion.status === 'published' && <td headers="vis-q-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Published</td>}
                 {question.draftQuestion.status === 'draft' && <td headers="vis-q-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
                 <td headers="response-type-q-column"><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
@@ -347,7 +347,16 @@ class SurveyDedupe extends Component {
                   return (
                     <tr key={i}>
                       <td headers="match-score-column" className="match-score">{dupe.Score}</td>
-                      <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}<br/>Matched on fields: {dupe.highlight && Object.keys(dupe.highlight).join(', ')}</span></td>
+                      <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}<br/>Matched on fields: {dupe.highlight && Object.keys(dupe.highlight).join(', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tag_list/gi, (matched)=>{
+                        var mapObj = {
+                          'codes.code,':'code mapping value,',
+                          'codes.displayName':'code mapping display name',
+                          'codes.codeSystem':'code system',
+                          'controlNumber':'OMB number',
+                          'tag_list':'tags'
+                        };
+                        return mapObj[matched];
+                      })}</span></td>
                       <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
                       <td headers="response-type-column"><i className='fa $fa-comments' aria-hidden="true"></i> {dupe.Source.responseType && dupe.Source.responseType.name}</td>
                       <td headers="category-column">{dupe.Source.category && dupe.Source.category.name}</td>
@@ -405,12 +414,21 @@ class SurveyDedupe extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td scope="row" headers="name-desc-rs-column"><text>{responseSet.draftResponseSet.name}</text><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
+              <tr className="duplicate-row">
+                <td scope="row" headers="name-desc-rs-column"><a href={`/#/responseSets/${responseSet.draftResponseSet.id}`} target="_blank">{responseSet.draftResponseSet.name}</a><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
                 {responseSet.draftResponseSet.status === 'published' && <td headers="vis-rs-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Published</td>}
                 {responseSet.draftResponseSet.status === 'draft' && <td headers="vis-rs-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
                 <td headers="linked-rs-column"><a target='_blank' href={`/#/questions/${responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.id}`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</a></td>
-                <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ')}</td>
+                <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tag_list/gi, (matched)=>{
+                  var mapObj = {
+                    'codes.code,':'code mapping value,',
+                    'codes.displayName':'code mapping display name',
+                    'codes.codeSystem':'code system',
+                    'controlNumber':'OMB number',
+                    'tag_list':'tags'
+                  };
+                  return mapObj[matched];
+                })}</td>
               </tr>
             </tbody>
           </table>
