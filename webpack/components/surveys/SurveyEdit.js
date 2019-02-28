@@ -245,10 +245,10 @@ class SurveyEdit extends Component {
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <Errors errors={this.state.errors} />
             <div className="survey-inline">
-              <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
               <input tabIndex="3" className='btn btn-default pull-right' name="Save Survey" type="submit" value={`Save`}/>
               {this.cancelButton()}
             </div>
+            <br/>
           <hr />
           <div className="survey-group">
             <label htmlFor="survey-name" hidden>Name</label>
