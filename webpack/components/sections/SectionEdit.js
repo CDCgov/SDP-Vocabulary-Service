@@ -376,11 +376,11 @@ class SectionEdit extends Component {
         <form onSubmit={this.handleSubmit}>
           <Errors errors={this.state.errors} />
             <div className="form-inline">
-              <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
               <input tabIndex="3" className='btn btn-default pull-right' name="Save Section" type="submit" value={`Save`}/>
               <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
               {this.cancelButton()}
             </div>
+            <br/>
             <hr />
             <div className="section-group">
               <label htmlFor="section-name" hidden>Name</label>
