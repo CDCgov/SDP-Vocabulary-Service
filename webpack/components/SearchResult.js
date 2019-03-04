@@ -505,6 +505,16 @@ export default class SearchResult extends Component {
                 </li>
               </ul>
             </div>
+            {highlight && <i><span className="small">Matched on fields: {Object.keys(highlight).join(', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tagList/gi, (matched)=>{
+              var mapObj = {
+                'codes.code,':'code mapping value,',
+                'codes.displayName':'code mapping display name',
+                'codes.codeSystem':'code system',
+                'controlNumber':'OMB number',
+                'tagList':'tags'
+              };
+              return mapObj[matched];
+            })}</span></i>}
           </div>
           <div className="result-linked-details">
             {this.linkedDetails(result, type)}

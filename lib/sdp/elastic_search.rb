@@ -119,7 +119,8 @@ module SDP
                          {
                            pre_tags: ['<strong>'], post_tags: ['</strong>'],
                            fields: {
-                             name: {}, description: {}
+                             'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
+                             'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
                            }
                          }
                        end
@@ -394,12 +395,18 @@ module SDP
           }
         }
 
+        date_body = if obj.curated_at
+                      { range: { createdAt: { gte: obj.curated_at } } }
+                    else
+                      {}
+                    end
+
         individual_search_body = {
           size: 10,
           query: {
             bool: {
               filter: [filter_body, version_filter],
-              must: [mlt_body],
+              must: [mlt_body, date_body],
               must_not: [{ match: { content_stage: 'Retired' } }]
             }
           },

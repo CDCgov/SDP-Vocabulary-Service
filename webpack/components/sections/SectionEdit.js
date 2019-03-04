@@ -265,15 +265,15 @@ class SectionEdit extends Component {
     this.setState(newState);
   }
 
-  findLinkedResponseSets(sectionNestedItems, addedResponseSets){
+  findLinkedResponseSets(sectionNestedItems){
     var linkedResponseSetMap = {};
-    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionNestedItems.map((sni) => sni.responseSetId));
     sectionNestedItems.map((sni) => {
       var linkedResponseSets = [];
       var qId = sni.questionId || -1;
       if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
         linkedResponseSets = this.props.questions[qId].responseSets || [];
       }
+      var otherResponseSets = union(this.addedResponseSets, [sni.responseSetId]);
       linkedResponseSets = union(linkedResponseSets, otherResponseSets);
       linkedResponseSetMap[sni.questionId] = compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
     });

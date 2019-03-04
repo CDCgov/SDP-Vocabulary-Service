@@ -21,6 +21,7 @@ class SurveyDedupe extends Component {
       viewResponseSetIndex: 0,
       showDeleteModal: false,
       showLinkModal: false,
+      showReviewModal: false,
       selectedDupe: {},
       selectedDraft: {}
     };
@@ -35,6 +36,7 @@ class SurveyDedupe extends Component {
       viewResponseSetIndex: 0,
       showDeleteModal: false,
       showLinkModal: false,
+      showReviewModal: false,
     });
   }
 
@@ -111,6 +113,35 @@ class SurveyDedupe extends Component {
               this.setState({viewPage: 'all', showLinkModal: false, success: {msg: `Successfully linked:  ${draft.content || draft.name } with `, id: dupeItem.id, name: dupeItem.name}, warning: {} });
             }} bsStyle="primary">Confirm Link</Button>
             <Button onClick={()=>this.setState({showLinkModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
+  reviewModal() {
+    let draft = this.state.selectedDraft;
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showReviewModal} onHide={()=>this.setState({showReviewModal: false})} role="dialog" aria-label="Review Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Mark as Reviewed Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to make the following changes:</p>
+            <ul>
+              <li>The {this.state.viewType} from your survey will be marked as reviewed with today's date which will filter all future curation suggestions. Only new content created after today will be suggested when returning to curate this survey.</li>
+            </ul>
+            <p><strong>NOTE: </strong>You may click on the "Show all past suggestions" link in the future to see the previous suggestions that will be hidden by default.</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => {
+              this.props.markAsReviewed(draft.id, this.props.survey.id, this.state.viewType);
+              this.setState({viewPage: 'all', showReviewModal: false, success: {msg: `Successfully reviewed:  ${draft.content || draft.name } `}, warning: {} });
+            }} bsStyle="primary">Confirm Review</Button>
+            <Button onClick={()=>this.setState({showReviewModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -326,8 +357,16 @@ class SurveyDedupe extends Component {
               </tr>
             </tbody>
           </table>
+          <div className="pull-right">
+            <button className="btn btn-default" id={`review-question-${question.draftQuestion.id}`} onClick={(e) => {
+              e.preventDefault();
+              this.setState({showReviewModal: true, selectedDraft: question.draftQuestion});
+              return false;
+            }}>Mark as Reviewed</button>
+          </div>
           <div className="suggested-replacements">
             <h3 className="h4">Suggested Replacement Questions ({question.potentialDuplicates && question.potentialDuplicates.length})</h3>
+            {question.draftQuestion.curatedAt && <p className='pull-right'>(Last reviewed: {question.draftQuestion.curatedAt}) <a>Click to show past suggestions</a></p>}
             <table className="table table-dark-header">
               <caption className="sr-only">Information about suggested replacement questions</caption>
               <thead>
@@ -347,13 +386,13 @@ class SurveyDedupe extends Component {
                   return (
                     <tr key={i}>
                       <td headers="match-score-column" className="match-score">{dupe.Score}</td>
-                      <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}<br/>Matched on fields: {dupe.highlight && Object.keys(dupe.highlight).join(', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tag_list/gi, (matched)=>{
+                      <td scope="row" headers="name-desc-column"><a href={`/#/questions/${dupe.Source.id}`} target="_blank">{dupe.Source.name}</a><br/><span className="small">{dupe.Source.description}<br/>Matched on fields: {dupe.highlight && Object.keys(dupe.highlight).join(', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tagList/gi, (matched)=>{
                         var mapObj = {
                           'codes.code,':'code mapping value,',
                           'codes.displayName':'code mapping display name',
                           'codes.codeSystem':'code system',
                           'controlNumber':'OMB number',
-                          'tag_list':'tags'
+                          'tagList':'tags'
                         };
                         return mapObj[matched];
                       })}</span></td>
@@ -419,13 +458,13 @@ class SurveyDedupe extends Component {
                 {responseSet.draftResponseSet.status === 'published' && <td headers="vis-rs-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Published</td>}
                 {responseSet.draftResponseSet.status === 'draft' && <td headers="vis-rs-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
                 <td headers="linked-rs-column"><a target='_blank' href={`/#/questions/${responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.id}`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</a></td>
-                <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tag_list/gi, (matched)=>{
+                <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tagList/gi, (matched)=>{
                   var mapObj = {
                     'codes.code,':'code mapping value,',
                     'codes.displayName':'code mapping display name',
                     'codes.codeSystem':'code system',
                     'controlNumber':'OMB number',
-                    'tag_list':'tags'
+                    'tagList':'tags'
                   };
                   return mapObj[matched];
                 })}</td>
@@ -491,6 +530,7 @@ class SurveyDedupe extends Component {
         <div className="maincontent-details">
           {this.deleteModal()}
           {this.linkModal()}
+          {this.reviewModal()}
           <h1 className="maincontent-item-name"><strong>Survey Name:</strong> <a href={`/#/surveys/${this.props.survey.id}`}>{this.props.survey.name}</a> </h1>
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
@@ -538,6 +578,7 @@ SurveyDedupe.propTypes = {
   loadStatus : PropTypes.string,
   loadStatusText : PropTypes.string,
   linkToDuplicate: PropTypes.func,
+  markAsReviewed: PropTypes.func,
   currentUser: currentUserProps,
 };
 

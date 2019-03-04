@@ -97,6 +97,15 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  def mark_as_reviewed
+    @response_set.curated_at = Time.current
+    if @response_set.save!
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @response_set.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /response_sets
   # POST /response_sets.json
   def create

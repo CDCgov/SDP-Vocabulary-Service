@@ -83,7 +83,7 @@ class ResponseSet < ApplicationRecord
     batch.add_to_batch(self, :response_sets) do |rs_results|
       if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
         { draft_response_set: { id: id, linked_question: { id: question.id, content: question.content }, status: status, content_stage: content_stage,
-                                name: name, description: description, responses: responses },
+                                name: name, description: description, responses: responses, curated_at: curated_at },
           potential_duplicates: rs_results['hits']['hits'] }
       else
         false

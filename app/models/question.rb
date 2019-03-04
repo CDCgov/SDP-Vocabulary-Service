@@ -88,7 +88,7 @@ class Question < ApplicationRecord
         category_name = category ? category.name : ''
         rt = response_type ? response_type.name : ''
         { draft_question: { id: id, content: content, description: description, response_type: rt, status: status, content_stage: content_stage,
-                            category: category_name }, potential_duplicates: results['hits']['hits'] }
+                            category: category_name, curated_at: curated_at }, potential_duplicates: results['hits']['hits'] }
       else
         false
       end

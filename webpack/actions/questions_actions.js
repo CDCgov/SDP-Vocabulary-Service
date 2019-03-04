@@ -23,7 +23,8 @@ import {
   FETCH_QUESTION_SUCCESS,
   FETCH_QUESTION_FAILURE,
   FETCH_QUESTION_PENDING,
-  LINK_TO_DUPLICATE
+  LINK_TO_DUPLICATE,
+  MARK_AS_REVIEWED
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
@@ -65,6 +66,23 @@ export function linkToDuplicate(id, replacement, survey, type) {
                       {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
   return {
     type: LINK_TO_DUPLICATE,
+    payload: putPromise
+  };
+}
+
+export function markAsReviewed(id, survey, type) {
+  const authenticityToken = getCSRFToken();
+  let route = '';
+  if (type === 'question'){
+    route = routes.mark_as_reviewed_question_path(id);
+  } else {
+    route = routes.mark_as_reviewed_response_set_path(id);
+  }
+  const putPromise = axios.put(route,
+                      {survey, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: MARK_AS_REVIEWED,
     payload: putPromise
   };
 }

@@ -660,6 +660,12 @@ Based on Rails routes of Vocabulary::Application
 // mark_as_duplicate_response_set => /response_sets/:id/mark_as_duplicate(.:format)
   // function(id, options)
   mark_as_duplicate_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"mark_as_duplicate",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// mark_as_reviewed_question => /questions/:id/mark_as_reviewed(.:format)
+  // function(id, options)
+  mark_as_reviewed_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"mark_as_reviewed",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// mark_as_reviewed_response_set => /response_sets/:id/mark_as_reviewed(.:format)
+  // function(id, options)
+  mark_as_reviewed_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"mark_as_reviewed",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // more_responses_response_set => /response_sets/:id/more_responses(.:format)
   // function(id, options)
   more_responses_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"more_responses",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
