@@ -130,7 +130,7 @@ class SectionShowContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   let section = {};
-  if (state.sections[ownProps.params.sectionId] && state.sections[ownProps.params.sectionId].questions && typeof state.sections[ownProps.params.sectionId].questions[0] === 'number') {
+  if (state.sections[ownProps.params.sectionId] && state.sections[ownProps.params.sectionId].questions && typeof state.sections[ownProps.params.sectionId].questions[0] !== 'object') {
     section = denormalize(state.sections[ownProps.params.sectionId], sectionSchema, state);
   } else {
     section = state.sections[ownProps.params.sectionId];

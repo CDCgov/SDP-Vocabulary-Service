@@ -112,7 +112,7 @@ class ResponseSetShowContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   let rs = {};
-  if (state.responseSets[ownProps.params.rsId] && state.responseSets[ownProps.params.rsId].questions && typeof state.responseSets[ownProps.params.rsId].questions[0] === 'number') {
+  if (state.responseSets[ownProps.params.rsId] && state.responseSets[ownProps.params.rsId].questions && typeof state.responseSets[ownProps.params.rsId].questions[0] !== 'object') {
     rs = denormalize(state.responseSets[ownProps.params.rsId], responseSetSchema, state);
   } else {
     rs = state.responseSets[ownProps.params.rsId];
