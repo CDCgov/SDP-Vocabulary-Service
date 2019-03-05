@@ -12,6 +12,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :description
   attribute :updated_at, key: :updatedAt
   attribute :created_at, key: :createdAt
+  attribute :curated_at, key: :curatedAt
   attribute :suggest
   attribute :updated_by, key: :updatedBy
   attribute :created_by, key: :createdBy

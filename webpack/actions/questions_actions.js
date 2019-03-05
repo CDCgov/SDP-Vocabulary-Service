@@ -16,6 +16,7 @@ import {
   REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
   FETCH_QUESTION_PARENTS,
+  FETCH_QUESTION_DUPES,
   ADD_ENTITIES,
   UPDATE_QUESTION_TAGS,
   UPDATE_STAGE_QUESTION,
@@ -23,7 +24,8 @@ import {
   FETCH_QUESTION_SUCCESS,
   FETCH_QUESTION_FAILURE,
   FETCH_QUESTION_PENDING,
-  LINK_TO_DUPLICATE
+  LINK_TO_DUPLICATE,
+  MARK_AS_REVIEWED
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
@@ -69,6 +71,23 @@ export function linkToDuplicate(id, replacement, survey, type) {
   };
 }
 
+export function markAsReviewed(id, survey, type) {
+  const authenticityToken = getCSRFToken();
+  let route = '';
+  if (type === 'question'){
+    route = routes.mark_as_reviewed_question_path(id);
+  } else {
+    route = routes.mark_as_reviewed_response_set_path(id);
+  }
+  const putPromise = axios.put(route,
+                      {survey, authenticityToken},
+                      {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}});
+  return {
+    type: MARK_AS_REVIEWED,
+    payload: putPromise
+  };
+}
+
 export function fetchQuestion(id) {
   store.dispatch({type:FETCH_QUESTION_PENDING});
   return {
@@ -107,6 +126,25 @@ export function fetchQuestionParents(id) {
   };
 }
 
+export function fetchQuestionDupes(id, type, successHandler=null) {
+  let route = '';
+  if (type === 'question'){
+    route = routes.allDupesQuestionPath(id);
+  } else {
+    route = routes.allDupesResponseSetPath(id);
+  }
+  const getPromise = axios.get(route, {
+    headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+    timeout: AJAX_TIMEOUT
+  });
+  if (successHandler) {
+    getPromise.then(successHandler);
+  }
+  return {
+    type: FETCH_QUESTION_DUPES,
+    payload: getPromise
+  };
+}
 
 export function saveQuestion(question, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();

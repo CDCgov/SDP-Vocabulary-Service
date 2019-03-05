@@ -134,6 +134,21 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def mark_as_reviewed
+    @question.curated_at = Time.current
+    if @question.save!
+      render json: Survey.find(params[:survey]).potential_duplicates(current_user), status: :ok
+    else
+      render json: @question.errors, status: :unprocessable_entity
+    end
+  end
+
+  def all_dupes
+    render json: @question.potential_duplicates(current_user, date_filter: true)
+  rescue
+    render json: @question.errors, status: :unprocessable_entity
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
