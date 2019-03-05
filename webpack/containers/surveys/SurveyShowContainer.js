@@ -98,12 +98,18 @@ class SurveyShowContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  let surv = {};
+  if (state.surveys[ownProps.params.surveyId] && state.surveys[ownProps.params.surveyId].sections && typeof state.surveys[ownProps.params.surveyId].sections[0] === 'number') {
+    surv = denormalize(state.surveys[ownProps.params.surveyId], surveySchema, state);
+  } else {
+    surv = state.surveys[ownProps.params.surveyId];
+  }
   const props = {};
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
   props.dupeCount = state.dupeCount;
-  props.survey = denormalize(state.surveys[ownProps.params.surveyId], surveySchema, state);
+  props.survey = surv;
   if (props.survey && props.survey.surveySections) {
     props.sections = props.survey.surveySections.map((section) => state.sections[section.sectionId]);
     props.sections = props.sections.filter((sect) => sect !== undefined);

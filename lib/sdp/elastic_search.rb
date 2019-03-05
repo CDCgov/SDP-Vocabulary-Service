@@ -296,7 +296,7 @@ module SDP
       end
     end
 
-    def self.find_duplicates(obj, current_user_id = nil, groups = [])
+    def self.find_duplicates(obj, current_user_id = nil, groups = [], date_filter = false)
       sort_body = ['_score', { '_script': {
         'script': "doc['surveillance_systems.id'].values.size()",
         type: 'number',
@@ -313,7 +313,10 @@ module SDP
 
       mlt_body = {
         more_like_this: {
-          fields: ['name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName', 'category.name', 'subcategory.name'],
+          fields: [
+            'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
+            'tag_list', 'category', 'subcategory', 'oid', 'controlNumber'
+          ],
           like: [
             {
               '_type': obj.class.to_s.underscore,
@@ -321,16 +324,30 @@ module SDP
             }
           ],
           min_term_freq: 1,
-          minimum_should_match: '75%'
+          minimum_should_match: '85%'
         }
       }
+
+      date_body = if obj.curated_at && !date_filter
+                    { range: { createdAt: { gte: obj.curated_at } } }
+                  else
+                    {}
+                  end
 
       search_body = {
         size: 10,
         query: {
           bool: {
             filter: [filter_body, version_filter],
-            must: [mlt_body]
+            must: [mlt_body, date_body],
+            must_not: [{ match: { content_stage: 'Retired' } }]
+          }
+        },
+        highlight: {
+          pre_tags: ['<strong>'], post_tags: ['</strong>'],
+          fields: {
+            'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
+            'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
           }
         },
         sort: sort_body

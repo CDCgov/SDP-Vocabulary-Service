@@ -31,6 +31,12 @@ class ResponseSetsController < ApplicationController
     end
   end
 
+  def all_dupes
+    render json: @response_set.potential_duplicates(current_user, Question.new, date_filter: true)
+  rescue
+    render json: @response_set.errors, status: :unprocessable_entity
+  end
+
   def usage
     @response_set = ResponseSet.find(params[:id])
     if @response_set.status != 'published'

@@ -23,7 +23,8 @@ class SurveyDedupe extends Component {
       showLinkModal: false,
       showReviewModal: false,
       selectedDupe: {},
-      selectedDraft: {}
+      selectedDraft: {},
+      potentialDupes: []
     };
   }
 
@@ -193,7 +194,7 @@ class SurveyDedupe extends Component {
                       {question.draftQuestion.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
                       <td headers={`section_${i} response-column`}><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
                       <td headers={`section_${i} category-column`}>{question.draftQuestion.category}</td>
-                      <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${question.draftQuestion.content}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewQuestionIndex: j})}>View</button></td>
+                      <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${question.draftQuestion.content}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewQuestionIndex: j, potentialDupes: question.potentialDuplicates})}>View</button></td>
                     </tr>
                   );
                 })}
@@ -250,7 +251,7 @@ class SurveyDedupe extends Component {
                       {responseSet.draftResponseSet.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
                       <td headers={`section_${i} linked-column`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</td>
                       <td headers={`section_${i} responses-column`}>{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ')}</td>
-                      <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${responseSet.draftResponseSet.name}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewResponseSetIndex: j})}>View</button></td>
+                      <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${responseSet.draftResponseSet.name}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewResponseSetIndex: j, potentialDupes: responseSet.potentialDuplicates})}>View</button></td>
                     </tr>
                   );
                 })}
@@ -366,7 +367,14 @@ class SurveyDedupe extends Component {
           </div>
           <div className="suggested-replacements">
             <h3 className="h4">Suggested Replacement Questions ({question.potentialDuplicates && question.potentialDuplicates.length})</h3>
-            {question.draftQuestion.curatedAt && <p className='pull-right'>(Last reviewed: {question.draftQuestion.curatedAt}) <a>Click to show past suggestions</a></p>}
+            {question.draftQuestion.curatedAt && <p className='pull-right'>(Last reviewed: {question.draftQuestion.curatedAt}) <a href='#' onClick={(e)=>{
+              e.preventDefault();
+              this.props.fetchQuestionDupes(question.draftQuestion.id, 'question', (successResponse)=>{
+                if(successResponse.data && successResponse.data.potentialDuplicates) {
+                  this.setState({potentialDupes: successResponse.data.potentialDuplicates});
+                }
+              });
+            }}>Click to show past suggestions</a></p>}
             <table className="table table-dark-header">
               <caption className="sr-only">Information about suggested replacement questions</caption>
               <thead>
@@ -382,7 +390,7 @@ class SurveyDedupe extends Component {
                 </tr>
               </thead>
               <tbody>
-                {question.potentialDuplicates && question.potentialDuplicates.map((dupe, i) => {
+                {this.state.potentialDupes && this.state.potentialDupes.map((dupe, i) => {
                   return (
                     <tr key={i}>
                       <td headers="match-score-column" className="match-score">{dupe.Score}</td>
@@ -471,8 +479,23 @@ class SurveyDedupe extends Component {
               </tr>
             </tbody>
           </table>
+          <div className="pull-right">
+            <button className="btn btn-default" id={`review-rs-${responseSet.draftResponseSet.id}`} onClick={(e) => {
+              e.preventDefault();
+              this.setState({showReviewModal: true, selectedDraft: responseSet.draftResponseSet});
+              return false;
+            }}>Mark as Reviewed</button>
+          </div>
           <div className="suggested-replacements">
           <h3 className="h4">Suggested Replacement Response Sets ({responseSet.potentialDuplicates && responseSet.potentialDuplicates.length})</h3>
+          {responseSet.draftResponseSet.curatedAt && <p className='pull-right'>(Last reviewed: {responseSet.draftResponseSet.curatedAt}) <a href='#' onClick={(e)=>{
+            e.preventDefault();
+            this.props.fetchQuestionDupes(responseSet.draftResponseSet.id, 'responseSet', (successResponse)=>{
+              if(successResponse.data && successResponse.data.potentialDuplicates) {
+                this.setState({potentialDupes: successResponse.data.potentialDuplicates});
+              }
+            });
+          }}>Click to show past suggestions</a></p>}
             <table className="table">
               <caption>Information about suggested replacement response sets</caption>
               <thead>
@@ -486,7 +509,7 @@ class SurveyDedupe extends Component {
                 </tr>
               </thead>
               <tbody>
-                {responseSet.potentialDuplicates && responseSet.potentialDuplicates.map((dupe, i) => {
+                {this.state.potentialDupes && this.state.potentialDupes.map((dupe, i) => {
                   return (
                     <tr key={i}>
                       <td headers="match-score-column" className="match-score">{dupe.Score}</td>
@@ -579,6 +602,7 @@ SurveyDedupe.propTypes = {
   loadStatusText : PropTypes.string,
   linkToDuplicate: PropTypes.func,
   markAsReviewed: PropTypes.func,
+  fetchQuestionDupes: PropTypes.func,
   currentUser: currentUserProps,
 };
 

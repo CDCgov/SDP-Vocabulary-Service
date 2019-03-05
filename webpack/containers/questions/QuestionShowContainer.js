@@ -142,8 +142,14 @@ class QuestionShowContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  let q = {};
+  if (state.questions[ownProps.params.qId] && state.questions[ownProps.params.qId].responseSets && typeof state.questions[ownProps.params.qId].responseSets[0] === 'number') {
+    q = denormalize(state.questions[ownProps.params.qId], questionSchema, state);
+  } else {
+    q = state.questions[ownProps.params.qId];
+  }
   const props = {};
-  props.question = denormalize(state.questions[ownProps.params.qId], questionSchema, state);
+  props.question = q;
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;

@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     get :parent_items, on: :member
+    get :all_dupes, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member
@@ -89,6 +90,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     get :more_responses, on: :member
+    get :all_dupes, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member

@@ -507,6 +507,12 @@ Based on Rails routes of Vocabulary::Application
 // administrators => /administrators(.:format)
   // function(options)
   administrators_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"administrators",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// all_dupes_question => /questions/:id/all_dupes(.:format)
+  // function(id, options)
+  all_dupes_question_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"questions",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"all_dupes",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// all_dupes_response_set => /response_sets/:id/all_dupes(.:format)
+  // function(id, options)
+  all_dupes_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"all_dupes",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // api_fhir_questionaire => /api/fhir/Questionnaire/:id(.:format)
   // function(id, options)
   api_fhir_questionaire_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Questionnaire",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),

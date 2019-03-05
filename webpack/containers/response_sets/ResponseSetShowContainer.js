@@ -111,9 +111,15 @@ class ResponseSetShowContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  let rs = {};
+  if (state.responseSets[ownProps.params.rsId] && state.responseSets[ownProps.params.rsId].questions && typeof state.responseSets[ownProps.params.rsId].questions[0] === 'number') {
+    rs = denormalize(state.responseSets[ownProps.params.rsId], responseSetSchema, state);
+  } else {
+    rs = state.responseSets[ownProps.params.rsId];
+  }
   const props = {};
   props.currentUser = state.currentUser;
-  props.responseSet = denormalize(state.responseSets[ownProps.params.rsId], responseSetSchema, state);
+  props.responseSet = rs;
   props.publishers = state.publishers;
   props.stats = state.stats;
   props.isLoading = state.ajaxStatus.responseSet.isLoading;

@@ -6,7 +6,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { fetchSurvey, fetchDuplicates } from '../../actions/survey_actions';
-import { markAsDuplicate, linkToDuplicate, markAsReviewed } from '../../actions/questions_actions';
+import { markAsDuplicate, linkToDuplicate, markAsReviewed, fetchQuestionDupes } from '../../actions/questions_actions';
 import { surveyProps } from '../../prop-types/survey_props';
 import SurveyDedupe from '../../components/surveys/SurveyDedupe';
 import currentUserProps from "../../prop-types/current_user_props";
@@ -94,6 +94,7 @@ class SurveyDedupeContainer extends Component {
                                 markAsDuplicate={this.props.markAsDuplicate}
                                 linkToDuplicate={this.props.linkToDuplicate}
                                 markAsReviewed={this.props.markAsReviewed}
+                                fetchQuestionDupes={this.props.fetchQuestionDupes}
                                 currentUser={this.props.currentUser} />
                 </Col>
               </Row>
@@ -106,7 +107,7 @@ class SurveyDedupeContainer extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, fetchSurvey, fetchDuplicates, markAsDuplicate, linkToDuplicate, markAsReviewed}, dispatch);
+  return bindActionCreators({setSteps, fetchSurvey, fetchDuplicates, markAsDuplicate, linkToDuplicate, markAsReviewed, fetchQuestionDupes}, dispatch);
 }
 
 function mapStateToProps(state, ownProps) {
@@ -135,6 +136,7 @@ SurveyDedupeContainer.propTypes = {
   loadStatusText : PropTypes.string,
   linkToDuplicate: PropTypes.func,
   markAsReviewed: PropTypes.func,
+  fetchQuestionDupes: PropTypes.func,
   currentUser: currentUserProps,
 };
 

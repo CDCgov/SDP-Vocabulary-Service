@@ -16,6 +16,7 @@ import {
   REMOVE_QUESTION_FROM_GROUP,
   FETCH_QUESTION_USAGE,
   FETCH_QUESTION_PARENTS,
+  FETCH_QUESTION_DUPES,
   ADD_ENTITIES,
   UPDATE_QUESTION_TAGS,
   UPDATE_STAGE_QUESTION,
@@ -125,6 +126,25 @@ export function fetchQuestionParents(id) {
   };
 }
 
+export function fetchQuestionDupes(id, type, successHandler=null) {
+  let route = '';
+  if (type === 'question'){
+    route = routes.allDupesQuestionPath(id);
+  } else {
+    route = routes.allDupesResponseSetPath(id);
+  }
+  const getPromise = axios.get(route, {
+    headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+    timeout: AJAX_TIMEOUT
+  });
+  if (successHandler) {
+    getPromise.then(successHandler);
+  }
+  return {
+    type: FETCH_QUESTION_DUPES,
+    payload: getPromise
+  };
+}
 
 export function saveQuestion(question, comment, unsavedState, associationChanges, successHandler=null, failureHandler=null) {
   const authenticityToken  = getCSRFToken();

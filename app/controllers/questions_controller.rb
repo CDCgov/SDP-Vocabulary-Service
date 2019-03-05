@@ -143,6 +143,12 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def all_dupes
+    render json: @question.potential_duplicates(current_user, date_filter: true)
+  rescue
+    render json: @question.errors, status: :unprocessable_entity
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update

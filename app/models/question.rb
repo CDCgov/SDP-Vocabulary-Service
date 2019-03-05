@@ -68,15 +68,15 @@ class Question < ApplicationRecord
     new_revision
   end
 
-  def potential_duplicates(current_user)
+  def potential_duplicates(current_user, date_filter = false)
     current_user_id = current_user ? current_user.id : nil
     current_user_groups = current_user ? current_user.groups : []
-    category_name = category ? category.name : ''
-    rt = response_type ? response_type.name : ''
-    results = SDP::Elasticsearch.find_duplicates(self, current_user_id, current_user_groups)
+    results = SDP::Elasticsearch.find_duplicates(self, current_user_id, current_user_groups, date_filter)
     if results && results['hits'] && results['hits']['total'] > 0
+      category_name = category ? category.name : ''
+      rt = response_type ? response_type.name : ''
       { draft_question: { id: id, content: content, description: description, response_type: rt, status: status, content_stage: content_stage,
-                          category: category_name }, potential_duplicates: results['hits']['hits'] }
+                          category: category_name, curated_at: curated_at }, potential_duplicates: results['hits']['hits'] }
     else
       false
     end
