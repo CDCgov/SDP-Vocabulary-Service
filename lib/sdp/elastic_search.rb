@@ -90,7 +90,7 @@ module SDP
                     # If the string has double quotes it should be exact match
                     { query_string: { query: query_string, fields: [
                       'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
-                      'tag_list', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
+                      'tagList', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
                       'status', 'content_stage', 'oid', 'version_independent_id', 'controlNumber'
                     ] } }
                   else
@@ -100,7 +100,7 @@ module SDP
                       { match: { 'codes.code': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
                       { match: { 'codes.codeSystem': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
                       { match: { 'codes.displayName': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
-                      { match: { tag_list: { query: query_string, boost: 9, fuzziness: 'AUTO' } } },
+                      { match: { 'tagList': { query: query_string, boost: 9, fuzziness: 'AUTO' } } },
                       { match: { category: { query: query_string, fuzziness: 'AUTO' } } },
                       { match: { subcategory: { query: query_string, fuzziness: 'AUTO' } } },
                       { match: { 'createdBy.email': { query: query_string, fuzziness: 'AUTO' } } },
@@ -117,7 +117,7 @@ module SDP
         pre_tags: ['<strong>'], post_tags: ['</strong>'],
         fields: {
           'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
-          'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
+          'tagList': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
         }
       }
 
@@ -311,7 +311,7 @@ module SDP
         more_like_this: {
           fields: [
             'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
-            'tag_list', 'category', 'subcategory', 'oid', 'controlNumber'
+            'tagList', 'category', 'subcategory', 'oid', 'controlNumber'
           ],
           like: [
             {
@@ -342,8 +342,10 @@ module SDP
         highlight: {
           pre_tags: ['<strong>'], post_tags: ['</strong>'],
           fields: {
-            'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
-            'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
+            'name': { 'type': 'fvh' }, 'description': { 'type': 'fvh' }, 'codes.code': { 'type': 'fvh' },
+            'codes.codeSystem': { 'type': 'fvh' }, 'codes.displayName': { 'type': 'fvh' },
+            'tagList': { 'type': 'fvh' }, 'category': { 'type': 'fvh' }, 'subcategory': { 'type': 'fvh' },
+            'oid': { 'type': 'fvh' }, 'controlNumber': { 'type': 'fvh' }
           }
         },
         sort: sort_body
@@ -395,7 +397,7 @@ module SDP
           more_like_this: {
             fields: [
               'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
-              'tag_list', 'category', 'subcategory', 'oid', 'controlNumber'
+              'tagList', 'category', 'subcategory', 'oid', 'controlNumber'
             ],
             like: [
               {
@@ -426,8 +428,10 @@ module SDP
           highlight: {
             pre_tags: ['<strong>'], post_tags: ['</strong>'],
             fields: {
-              'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
-              'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
+              'name': { 'type': 'fvh' }, 'description': { 'type': 'fvh' }, 'codes.code': { 'type': 'fvh' },
+              'codes.codeSystem': { 'type': 'fvh' }, 'codes.displayName': { 'type': 'fvh' },
+              'tagList': { 'type': 'fvh' }, 'category': { 'type': 'fvh' }, 'subcategory': { 'type': 'fvh' },
+              'oid': { 'type': 'fvh' }, 'controlNumber': { 'type': 'fvh' }
             }
           },
           sort: sort_body

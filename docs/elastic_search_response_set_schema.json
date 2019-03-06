@@ -286,7 +286,8 @@
         },
         "tagList" : {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "suggest": {
           "type": "completion",
