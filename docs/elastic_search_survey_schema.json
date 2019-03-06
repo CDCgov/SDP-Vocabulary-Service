@@ -354,6 +354,38 @@
           "preserve_position_increments": true,
           "max_input_length": 50
         },
+        "surveillance_programs": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "surveillance_systems": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
         "surveillance_program": {
           "properties": {
             "id": {

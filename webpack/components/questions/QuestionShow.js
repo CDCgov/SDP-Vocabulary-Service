@@ -335,15 +335,15 @@ export default class QuestionShow extends Component {
                 }
                 {question.category && <div className="box-content">
                   <strong>Category: </strong>
-                  {question.category.name && question.category.name}
+                  {question.category.name}
                 </div>}
                 {question.subcategory && <div className="box-content">
                   <strong>Subcategory: </strong>
-                  {question.subcategory.name && question.subcategory.name}
+                  {question.subcategory.name}
                 </div>}
                 {question.responseType && <div className="box-content">
                   <strong>Response Type: </strong>
-                  {question.responseType.name && question.responseType.name}
+                  {question.responseType.name}
                 </div>}
                 {question.dataCollectionMethods && question.dataCollectionMethods.length > 0 && <div className="box-content">
                   <strong>Data Collection Methods: </strong>
