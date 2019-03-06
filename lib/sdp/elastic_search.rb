@@ -114,12 +114,12 @@ module SDP
                   end
 
       highlight_body = {
-                         pre_tags: ['<strong>'], post_tags: ['</strong>'],
-                         fields: {
-                           'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
-                           'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
-                         }
-                       }
+        pre_tags: ['<strong>'], post_tags: ['</strong>'],
+        fields: {
+          'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
+          'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
+        }
+      }
 
       # prog_name = type == 'survey' ? 'surveillance_program' : 'surveillance_programs'
       # sys_name = type == 'survey' ? 'surveillance_system' : 'surveillance_systems'
@@ -335,7 +335,7 @@ module SDP
         query: {
           bool: {
             filter: [filter_body, version_filter],
-            must: [mlt_body, date_body],
+            must: [mlt_body, date_body].reject(&:empty?),
             must_not: [{ match: { content_stage: 'Retired' } }]
           }
         },
@@ -419,7 +419,7 @@ module SDP
           query: {
             bool: {
               filter: [filter_body, version_filter],
-              must: [mlt_body, date_body],
+              must: [mlt_body, date_body].reject(&:empty?),
               must_not: [{ match: { content_stage: 'Retired' } }]
             }
           },
