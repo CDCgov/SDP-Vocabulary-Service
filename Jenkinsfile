@@ -112,7 +112,7 @@ pipeline {
         script {
           def scannerHome = tool 'SonarQube Scanner 3.3'
           withSonarQubeEnv('SDP') {
-           sh "${scannerHome}/bin/sonar-scanner -X -Dsonar.projectKey=sdp:vocabulary -Dsonar.sources=."
+           sh "${scannerHome}/bin/sonar-scanner -X"
           }
         }
       }
