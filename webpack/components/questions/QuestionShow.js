@@ -278,7 +278,7 @@ export default class QuestionShow extends Component {
           <div className="tab-content">
           <div className={`tab-pane ${this.state.selectedTab === 'curation' && 'active'}`} id="curation" role="tabpanel" aria-hidden={this.state.selectedTab !== 'curation'} aria-labelledby="curation-history-tab">
             {isSimpleEditable(question, this.props.currentUser) ? (
-              <CurationHistoryTab suggestedRepOf={question.suggestedRepOf} duplicateOf={question.duplicateOf} contentStage={question.contentStage} objSetName={'Question'} type='question'/>
+              <CurationHistoryTab suggestedReplacementOf={question.suggestedReplacementOf} duplicateOf={question.duplicateOf} contentStage={question.contentStage} objSetName={'Question'} type='question'/>
             ) : (
               <div className='basic-c-box panel-default question-type'>
                 <div className="panel-heading">
