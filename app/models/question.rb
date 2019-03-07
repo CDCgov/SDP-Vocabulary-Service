@@ -108,7 +108,7 @@ class Question < ApplicationRecord
   def link_to_duplicate(replacement)
     self.duplicate_of = replacement
     q_replacement = Question.find(replacement)
-    q_replacement.suggested_replacement_of == '' if q_replacement.suggested_replacement_of == nil?
+    q_replacement.suggested_replacement_of = '' if q_replacement.suggested_replacement_of.nil?
     q_replacement.suggested_replacement_of << "#{id} "
     q_replacement.save!
     self.content_stage = 'Duplicate'

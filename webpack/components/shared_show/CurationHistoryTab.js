@@ -1,10 +1,6 @@
 import React, {Component } from 'react';
 import PropTypes from 'prop-types';
-import parse from 'date-fns/parse';
-import format from 'date-fns/format';
 import { Link } from 'react-router';
-import Linkify from 'react-linkify';
-import CodedSetTable from "../CodedSetTable";
 
 class CurationHistoryTab extends Component {
   render() {
@@ -21,29 +17,31 @@ class CurationHistoryTab extends Component {
       );
     }
 
-function GetDuplicateLink(sEvent, nDuplicateOf) {
-  switch(sEvent)
-  {
-    case 'Response Set':
-      return <Link to={`/responseSets/${nDuplicateOf}`}>Response Set #{nDuplicateOf}</Link>
-    case 'Question':
-      return <Link to={`/questions/${nDuplicateOf}`}>Question #{nDuplicateOf}</Link>
-    default:
-      return 'Duplicate not found.';
-  }
-}
+    function GetDuplicateLink(sEvent, nDuplicateOf) {
+      switch(sEvent)  {
+        case 'Response Set':
+          return <Link to={`/responseSets/${nDuplicateOf}`}>Response Set #{nDuplicateOf}</Link>;
+        case 'Question':
+          return <Link to={`/questions/${nDuplicateOf}`}>Question #{nDuplicateOf}</Link>;
+        default:
+          return 'Duplicate not found.';
+      }
+    }
 
-function GetSuggestedRepOf(sEvent, sSuggestedReplacementOf) {
-  switch(sEvent)
-  {
-    case 'Response Set':
-      return sSuggestedReplacementOf.trim().split(" ").map((replace_id)=>{return(<u>{<Link to={`/responseSets/${replace_id}`}>Response Set #{replace_id}</Link>}<br/></u>);})
-    case 'Question':
-      return sSuggestedReplacementOf.trim().split(" ").map((replace_id)=>{return(<u>{<Link to={`/questions/${replace_id}`}>Question #{replace_id}</Link>}<br/></u>);})
-    default:
-      return 'Suggested Replacement not found.';
-  }
-}
+    function GetSuggestedRepOf(sEvent, sSuggestedReplacementOf) {
+      switch(sEvent)  {
+        case 'Response Set':
+          return sSuggestedReplacementOf.trim().split(" ").map((replaceId)=>{
+            return(<u>{<Link to={`/responseSets/${replaceId}`}>Response Set #{replaceId}</Link>}<br/></u>);
+          });
+        case 'Question':
+          return sSuggestedReplacementOf.trim().split(" ").map((replaceId)=>{
+            return(<u>{<Link to={`/questions/${replaceId}`}>Question #{replaceId}</Link>}<br/></u>);
+          });
+        default:
+          return 'Suggested Replacement not found.';
+      }
+    }
 
     return (
             <div className={`basic-c-box panel-default ${this.props.type}-type`}>
@@ -68,15 +66,16 @@ function GetSuggestedRepOf(sEvent, sSuggestedReplacementOf) {
                   {this.props.suggestedReplacementOf && this.props.objSetName && GetSuggestedRepOf(this.props.objSetName, this.props.suggestedReplacementOf)}
                 </div>
             </div>
-        );
-      }
+    );
+  }
     }
 
 CurationHistoryTab.propTypes = {
   duplicateOf: PropTypes.number,
-  suggestedreplacementOf: PropTypes.number,
+  suggestedReplacementOf: PropTypes.number,
   contentStage: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
+  objSetName: PropTypes.string
 };
 
 export default CurationHistoryTab;
