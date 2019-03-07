@@ -13,6 +13,7 @@ import TagModal from "../TagModal";
 import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
+import CurationHistoryTab from "../shared_show/CurationHistoryTab";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import Breadcrumb from "../Breadcrumb";
 import BasicAlert from '../../components/BasicAlert';
@@ -270,8 +271,25 @@ export default class QuestionShow extends Component {
             <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
               <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
             </li>
+            <li id="curation-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'curation'})} aria-selected={this.state.selectedTab === 'curation'} aria-controls="curation">
+              <a className="nav-link" data-toggle="tab" href="#curation-history" role="tab">Curation History</a>
+            </li>
           </ul>
           <div className="tab-content">
+          <div className={`tab-pane ${this.state.selectedTab === 'curation' && 'active'}`} id="curation" role="tabpanel" aria-hidden={this.state.selectedTab !== 'curation'} aria-labelledby="curation-history-tab">
+            {isSimpleEditable(question, this.props.currentUser) ? (
+              <CurationHistoryTab suggestedReplacementOf={question.suggestedReplacementOf} duplicateOf={question.duplicateOf} contentStage={question.contentStage} objSetName={'Question'} type='question'/>
+            ) : (
+              <div className='basic-c-box panel-default question-type'>
+                <div className="panel-heading">
+                  <h2 className="panel-title">Curation</h2>
+                </div>
+                <div className="box-content">
+                  You do not have permissions to see curation history on this item (you must be the owner or in the proper collaborative authoring group).
+                </div>
+              </div>
+            )}
+          </div>
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
               {isSimpleEditable(question, this.props.currentUser) ? (
                 <ChangeHistoryTab versions={question.versions} type='question' majorVersion={question.version} />
@@ -281,7 +299,7 @@ export default class QuestionShow extends Component {
                     <h2 className="panel-title">Changes</h2>
                   </div>
                   <div className="box-content">
-                    You do not have permissions to see change history on this item (you must be a collaborating author / in the proper group).
+                    You do not have permissions to see change history on this item (you must be the owner or in the proper collaborative authoring group).
                   </div>
                 </div>
               )}
@@ -306,11 +324,6 @@ export default class QuestionShow extends Component {
                   <strong>Content Stage: </strong>
                   {question.contentStage}
                 </div>}
-                {question.duplicateOf && question.contentStage && question.contentStage === 'Duplicate' &&
-                <div className="box-content">
-                  <strong>Duplicate of: </strong><Link to={`/questions/${question.duplicateOf}`}>Question #{question.duplicateOf}</Link>
-                </div>
-                }
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="box-content">
                   <strong>Visibility: </strong>Published (publicly available)

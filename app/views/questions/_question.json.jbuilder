@@ -1,7 +1,7 @@
 json.extract! question, :id, :content, :created_at, :created_by, :created_by_id, :updated_at, :category_id, :concepts, :description, :status, \
               :category, :version, :version_independent_id, :other_versions, :most_recent, :response_sets, :response_type, :data_collection_methods, \
               :parent, :other_allowed, :published_by, :most_recent_published, :subcategory, :groups, :linked_response_sets, :preferred, :content_stage, \
-              :duplicate_of, :tag_list
+              :duplicate_of, :suggested_replacement_of, :tag_list
 json.url question_url(question, format: :json)
 
 json.sections question.sections do |s|
