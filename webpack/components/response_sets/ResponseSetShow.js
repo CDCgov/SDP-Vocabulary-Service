@@ -29,7 +29,8 @@ export default class ResponseSetShow extends Component {
     this.state = {
       selectedTab: 'main',
       page: 1,
-      showPublishModal: false
+      showPublishModal: false,
+      showDeleteModal: false
     };
   }
 
@@ -129,6 +130,36 @@ export default class ResponseSetShow extends Component {
     );
   }
 
+  deleteModal(responseSet) {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showDeleteModal} onHide={()=>this.setState({showDeleteModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete this response set? This action cannot be undone.</p>
+            <p><strong>Delete Response Set: </strong>This will delete the response set permanently</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => this.props.deleteResponseSet(responseSet.id, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.responseSetCount = this.props.stats.responseSetCount - 1;
+                stats.myResponseSetCount = this.props.stats.myResponseSetCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete Response Set</Button>
+            <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
   mainContent(responseSet) {
     return (
       <Col md={9} className="maincontent">
@@ -211,19 +242,9 @@ export default class ResponseSetShow extends Component {
             {isEditable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                if(confirm('Are you sure you want to delete this Response Set? This action cannot be undone.')){
-                  this.props.deleteResponseSet(responseSet.id, (response) => {
-                    if (response.status == 200) {
-                      let stats = Object.assign({}, this.props.stats);
-                      stats.responseSetCount = this.props.stats.responseSetCount - 1;
-                      stats.myResponseSetCount = this.props.stats.myResponseSetCount - 1;
-                      this.props.setStats(stats);
-                      this.props.router.push('/');
-                    }
-                  });
-                }
+                this.setState({showDeleteModal: true});
                 return false;
-              }}>Delete</a>
+              }}>{this.deleteModal(responseSet)}Delete</a>
             }
           </div>
         }

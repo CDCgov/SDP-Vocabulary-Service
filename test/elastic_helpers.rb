@@ -33,15 +33,13 @@ module Elastictest
     msearch_body = '{"responses":[' + [fake_body, fake_body, fake_body].join(',') + ']}'
     FakeWeb.register_uri(:any, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
     FakeWeb.register_uri(:get, %r{http://example\.com:9200/_msearch}, body: msearch_body, content_type: 'application/json')
-    # FakeWeb.register_uri(:get, %r{http://example\.com:9200/vocabulary}, body: fake_body, content_type: 'application/json')
-    # FakeWeb.register_uri(:get, %r{http://example\.com:9200/}, body: fake_body, content_type: 'application/json')
   end
 
   def self.fake_results(result_type, results)
     fake_body  = ''
     serializer = "ES#{result_type.classify}Serializer".constantize
     results.each_with_index do |result, index|
-      fake_body += "{\"_index\":\"vocabulary\",\"_type\":\"#{result_type}\",\"_id\":\"#{result.id}\",\"_score\":2.1132807,\"_source\":"
+      fake_body += "{\"_index\":\"#{result_type}\",\"_type\":\"#{result_type}\",\"_id\":\"#{result.id}\",\"_score\":2.1132807,\"_source\":"
       fake_body += serializer.new(result).to_json
       fake_body += index != results.size - 1 ? '},' : '}'
     end

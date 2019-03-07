@@ -264,23 +264,32 @@ class SurveyDedupe extends Component {
   }
 
   previousQuestion() {
+    let section, question;
     let prevQuestionIndex = this.state.viewQuestionIndex;
     let prevSectionIndex = this.state.viewSectionIndex;
     if(prevQuestionIndex > 0) {
-      this.setState({viewQuestionIndex: prevQuestionIndex-1});
+      section = this.props.potentialDupes[prevSectionIndex];
+      question = section.dupes.questions[prevQuestionIndex-1];
+      this.setState({viewQuestionIndex: prevQuestionIndex-1, potentialDupes: question.potentialDuplicates});
     } else {
-      let prevSection = this.props.potentialDupes[this.state.viewSectionIndex-1];
-      this.setState({viewSectionIndex: prevSectionIndex-1, viewQuestionIndex: prevSection.dupes.questions.length-1});
+      section = this.props.potentialDupes[prevSectionIndex-1];
+      question = section.dupes.questions[section.dupes.questions.length-1];
+      this.setState({viewSectionIndex: prevSectionIndex-1, viewQuestionIndex: section.dupes.questions.length-1, potentialDupes: question.potentialDuplicates});
     }
   }
 
   nextQuestion() {
+    let section, question;
     let prevQuestionIndex = this.state.viewQuestionIndex;
     let prevSectionIndex = this.state.viewSectionIndex;
     if(prevQuestionIndex < (this.props.potentialDupes[prevSectionIndex].dupes.questions.length-1)) {
-      this.setState({viewQuestionIndex: prevQuestionIndex+1});
+      section = this.props.potentialDupes[prevSectionIndex];
+      question = section.dupes.questions[prevQuestionIndex+1];
+      this.setState({viewQuestionIndex: prevQuestionIndex+1, potentialDupes: question.potentialDuplicates});
     } else {
-      this.setState({viewSectionIndex: prevSectionIndex+1, viewQuestionIndex: 0});
+      section = this.props.potentialDupes[prevSectionIndex+1];
+      question = section.dupes.questions[0];
+      this.setState({viewSectionIndex: prevSectionIndex+1, viewQuestionIndex: 0, potentialDupes: question.potentialDuplicates});
     }
   }
 
@@ -293,23 +302,32 @@ class SurveyDedupe extends Component {
   }
 
   previousResponseSet() {
+    let section, responseSet;
     let prevResponseSetIndex = this.state.viewResponseSetIndex;
     let prevSectionIndex = this.state.viewSectionIndex;
     if(prevResponseSetIndex > 0) {
-      this.setState({viewResponseSetIndex: prevResponseSetIndex-1});
+      section = this.props.potentialDupes[prevSectionIndex];
+      responseSet = section.dupes.responseSets[prevResponseSetIndex-1];
+      this.setState({viewResponseSetIndex: prevResponseSetIndex-1, potentialDupes: responseSet.potentialDuplicates});
     } else {
-      let prevSection = this.props.potentialDupes[this.state.viewSectionIndex-1];
-      this.setState({viewSectionIndex: prevSectionIndex-1, viewResponseSetIndex: prevSection.dupes.responseSets.length-1});
+      section = this.props.potentialDupes[prevSectionIndex-1];
+      responseSet = section.dupes.responseSets[section.dupes.responseSets.length-1];
+      this.setState({viewSectionIndex: prevSectionIndex-1, viewResponseSetIndex: section.dupes.responseSets.length-1, potentialDupes: responseSet.potentialDuplicates});
     }
   }
 
   nextResponseSet() {
+    let section, responseSet;
     let prevResponseSetIndex = this.state.viewResponseSetIndex;
     let prevSectionIndex = this.state.viewSectionIndex;
     if(prevResponseSetIndex < (this.props.potentialDupes[prevSectionIndex].dupes.responseSets.length-1)) {
-      this.setState({viewResponseSetIndex: prevResponseSetIndex+1});
+      section = this.props.potentialDupes[prevSectionIndex];
+      responseSet = section.dupes.responseSets[prevResponseSetIndex+1];
+      this.setState({viewResponseSetIndex: prevResponseSetIndex+1, potentialDupes: responseSet.potentialDuplicates});
     } else {
-      this.setState({viewSectionIndex: prevSectionIndex+1, viewResponseSetIndex: 0});
+      section = this.props.potentialDupes[prevSectionIndex+1];
+      responseSet = section.dupes.responseSets[0];
+      this.setState({viewSectionIndex: prevSectionIndex+1, viewResponseSetIndex: 0, potentialDupes: responseSet.potentialDuplicates});
     }
   }
 

@@ -194,7 +194,7 @@ sudo -u postgres createuser -d <username>
 
 > Note: on some systems the "setting up the database" instructions below will automatically create a user
 
-#### Install Elasticsearch >= 5.3.1 and < 6.0
+#### Install Elasticsearch >= 6.0
 - This will allow advanced search features in the application, but is not necessary as there is a basic backup search system.
 - Be aware, Elasticsearch can take up a lot of ram (2gb by default) and many file descriptors
 - Install the Oracle JDK >= 1.8 and < 1.10 : [Oracle JDK Installation Instructions](http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html)

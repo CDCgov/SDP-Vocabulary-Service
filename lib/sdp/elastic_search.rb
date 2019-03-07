@@ -90,7 +90,7 @@ module SDP
                     # If the string has double quotes it should be exact match
                     { query_string: { query: query_string, fields: [
                       'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
-                      'tag_list', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
+                      'tagList', 'category', 'subcategory', 'createdBy.email', 'createdBy.name',
                       'status', 'content_stage', 'oid', 'version_independent_id', 'controlNumber'
                     ] } }
                   else
@@ -100,7 +100,7 @@ module SDP
                       { match: { 'codes.code': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
                       { match: { 'codes.codeSystem': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
                       { match: { 'codes.displayName': { query: query_string, boost: 7, fuzziness: 'AUTO' } } },
-                      { match: { tag_list: { query: query_string, boost: 9, fuzziness: 'AUTO' } } },
+                      { match: { 'tagList': { query: query_string, boost: 9, fuzziness: 'AUTO' } } },
                       { match: { category: { query: query_string, fuzziness: 'AUTO' } } },
                       { match: { subcategory: { query: query_string, fuzziness: 'AUTO' } } },
                       { match: { 'createdBy.email': { query: query_string, fuzziness: 'AUTO' } } },
@@ -113,17 +113,13 @@ module SDP
                     ] } }
                   end
 
-      highlight_body = if query_string.blank?
-                         {}
-                       else
-                         {
-                           pre_tags: ['<strong>'], post_tags: ['</strong>'],
-                           fields: {
-                             'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
-                             'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
-                           }
-                         }
-                       end
+      highlight_body = {
+        pre_tags: ['<strong>'], post_tags: ['</strong>'],
+        fields: {
+          'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
+          'tagList': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
+        }
+      }
 
       # prog_name = type == 'survey' ? 'surveillance_program' : 'surveillance_programs'
       # sys_name = type == 'survey' ? 'surveillance_system' : 'surveillance_systems'
@@ -261,15 +257,15 @@ module SDP
         query: {
           bool: {
             filter: { bool: {
-              filter: [filter_body, version_filter, group_filter],
+              filter: [filter_body, version_filter, group_filter].reject(&:empty?),
               must: [
                 prog_terms, sys_terms, date_terms, omb_terms, ombd_terms,
                 preferred_terms, status_terms, source_terms, rt_terms,
                 category_terms, methods_terms, stage_terms
-              ],
-              must_not: [ns_terms, retired_terms]
+              ].reject(&:empty?),
+              must_not: [ns_terms, retired_terms].reject(&:empty?)
             } },
-            must: must_body
+            must: [must_body].reject(&:empty?)
           }
         },
         sort: sort_body,
@@ -280,9 +276,9 @@ module SDP
         results = if query_string
                     SDP::Elasticsearch.search_on_string(client, type, search_body)
                   elsif type
-                    client.search index: 'vocabulary', type: type, body: search_body
+                    client.search index: type, body: search_body
                   else
-                    client.search index: 'vocabulary', body: search_body
+                    client.search index: 'question,section,response_set,survey', body: search_body
                   end
         return results
       end
@@ -290,9 +286,9 @@ module SDP
 
     def self.search_on_string(client, type, search_body)
       if type
-        client.search index: 'vocabulary', type: type, body: search_body
+        client.search index: type, body: search_body
       else
-        client.search index: 'vocabulary', body: search_body
+        client.search index: 'question,section,response_set,survey', body: search_body
       end
     end
 
@@ -315,7 +311,7 @@ module SDP
         more_like_this: {
           fields: [
             'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
-            'tag_list', 'category', 'subcategory', 'oid', 'controlNumber'
+            'tagList', 'category', 'subcategory', 'oid', 'controlNumber'
           ],
           like: [
             {
@@ -339,29 +335,31 @@ module SDP
         query: {
           bool: {
             filter: [filter_body, version_filter],
-            must: [mlt_body, date_body],
+            must: [mlt_body, date_body].reject(&:empty?),
             must_not: [{ match: { content_stage: 'Retired' } }]
           }
         },
         highlight: {
           pre_tags: ['<strong>'], post_tags: ['</strong>'],
           fields: {
-            'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
-            'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
+            'name': { 'type': 'fvh' }, 'description': { 'type': 'fvh' }, 'codes.code': { 'type': 'fvh' },
+            'codes.codeSystem': { 'type': 'fvh' }, 'codes.displayName': { 'type': 'fvh' },
+            'tagList': { 'type': 'fvh' }, 'category': { 'type': 'fvh' }, 'subcategory': { 'type': 'fvh' },
+            'oid': { 'type': 'fvh' }, 'controlNumber': { 'type': 'fvh' }
           }
         },
         sort: sort_body
       }
 
       with_client do |client|
-        results = client.search index: 'vocabulary', type: obj.class.to_s.underscore, body: search_body
+        results = client.search index: obj.class.to_s.underscore, body: search_body
         return results
       end
     end
 
     def self.find_duplicate_questions(content, description)
       with_client do |client|
-        client.search(index: 'vocabulary', type: 'question',
+        client.search(index: 'question',
                       body: {
                         query: {
                           bool: {
@@ -393,13 +391,13 @@ module SDP
       ] } }
 
       objs.each do |obj|
-        search_body << { index: 'vocabulary', type: obj.class.to_s.underscore }
+        search_body << { index: obj.class.to_s.underscore }
 
         mlt_body = {
           more_like_this: {
             fields: [
               'name', 'description', 'codes.code', 'codes.codeSystem', 'codes.displayName',
-              'tag_list', 'category', 'subcategory', 'oid', 'controlNumber'
+              'tagList', 'category', 'subcategory', 'oid', 'controlNumber'
             ],
             like: [
               {
@@ -423,15 +421,17 @@ module SDP
           query: {
             bool: {
               filter: [filter_body, version_filter],
-              must: [mlt_body, date_body],
+              must: [mlt_body, date_body].reject(&:empty?),
               must_not: [{ match: { content_stage: 'Retired' } }]
             }
           },
           highlight: {
             pre_tags: ['<strong>'], post_tags: ['</strong>'],
             fields: {
-              'name': {}, 'description': {}, 'codes.code': {}, 'codes.codeSystem': {}, 'codes.displayName': {},
-              'tag_list': {}, 'category': {}, 'subcategory': {}, 'oid': {}, 'controlNumber': {}
+              'name': { 'type': 'fvh' }, 'description': { 'type': 'fvh' }, 'codes.code': { 'type': 'fvh' },
+              'codes.codeSystem': { 'type': 'fvh' }, 'codes.displayName': { 'type': 'fvh' },
+              'tagList': { 'type': 'fvh' }, 'category': { 'type': 'fvh' }, 'subcategory': { 'type': 'fvh' },
+              'oid': { 'type': 'fvh' }, 'controlNumber': { 'type': 'fvh' }
             }
           },
           sort: sort_body
@@ -446,7 +446,7 @@ module SDP
 
     def self.find_suggestions(prefix)
       with_client do |client|
-        client.search(index: 'vocabulary', body: {
+        client.search(index: 'question,section,response_set,survey', body: {
                         _source: 'version',
                         suggest: {
                           search_suggest: {
@@ -466,10 +466,28 @@ module SDP
 
     def self.ensure_index
       with_client do |client|
-        unless client.indices.exists? index: 'vocabulary'
+        unless client.indices.exists? index: 'question'
           # create the index
-          json = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../../docs/elastic_search_schema.json')))
-          client.indices.create index: 'vocabulary',
+          json = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../../docs/elastic_search_question_schema.json')))
+          client.indices.create index: 'question',
+                                body:  json
+        end
+        unless client.indices.exists? index: 'section'
+          # create the index
+          json = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../../docs/elastic_search_section_schema.json')))
+          client.indices.create index: 'section',
+                                body:  json
+        end
+        unless client.indices.exists? index: 'response_set'
+          # create the index
+          json = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../../docs/elastic_search_response_set_schema.json')))
+          client.indices.create index: 'response_set',
+                                body:  json
+        end
+        unless client.indices.exists? index: 'survey'
+          # create the index
+          json = JSON.parse(File.read(File.join(File.dirname(__FILE__), '../../docs/elastic_search_survey_schema.json')))
+          client.indices.create index: 'survey',
                                 body:  json
         end
       end
@@ -477,9 +495,21 @@ module SDP
 
     def self.delete_index
       with_client do |client|
-        if client.indices.exists? index: 'vocabulary'
+        if client.indices.exists? index: 'question'
           # delete the index
-          client.indices.delete index: 'vocabulary'
+          client.indices.delete index: 'question'
+        end
+        if client.indices.exists? index: 'section'
+          # delete the index
+          client.indices.delete index: 'section'
+        end
+        if client.indices.exists? index: 'response_set'
+          # delete the index
+          client.indices.delete index: 'response_set'
+        end
+        if client.indices.exists? index: 'survey'
+          # delete the index
+          client.indices.delete index: 'survey'
         end
       end
     end
@@ -487,8 +517,8 @@ module SDP
     def self.delete_item(type, id, refresh = false)
       ensure_index
       with_client do |client|
-        if client.exists?(index: 'vocabulary', type: type.underscore, id: id)
-          client.delete index: 'vocabulary', type: type.underscore, id: id, refresh: refresh
+        if client.exists?(index: type.underscore, type: type.underscore, id: id)
+          client.delete index: type.underscore, type: type.underscore, id: id, refresh: refresh
         end
       end
     end
@@ -549,8 +579,7 @@ module SDP
 
     def self.delete_all(type, ids)
       with_client do |client|
-        client.delete_by_query index: 'vocabulary',
-                               type: type,
+        client.delete_by_query index: type,
                                body: { query: { bool: { must_not: { terms: { id: ids } } } } }
       end
     end
