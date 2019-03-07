@@ -265,7 +265,7 @@ export default class ResponseSetShow extends Component {
           <div className="tab-content">
           <div className={`tab-pane ${this.state.selectedTab === 'curation' && 'active'}`} id="curation" role="tabpanel" aria-hidden={this.state.selectedTab !== 'curation'} aria-labelledby="curation-history-tab">
             {isSimpleEditable(responseSet, this.props.currentUser) ? (
-              <CurationHistoryTab duplicateOf={responseSet.duplicateOf} contentStage={responseSet.contentStage} objSetName={'Response Set'} type='response_set'/>
+              <CurationHistoryTab suggestedReplacementOf={responseSet.suggestedReplacementOf} duplicateOf={responseSet.duplicateOf} contentStage={responseSet.contentStage} objSetName={'Response Set'} type='response_set'/>
             ) : (
               <div className='basic-c-box panel-default response_set-type'>
                 <div className="panel-heading">
