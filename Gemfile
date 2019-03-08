@@ -38,21 +38,21 @@ gem 'paper_trail'
 gem 'rolify'
 
 # Gems to support MMG spreadsheet import
-gem 'roo', '~> 2.4.0'
-gem 'roo-xls', '~> 1.0.0'
+gem 'roo'
+gem 'roo-xls'
 
 # Gems to support writing spreadsheet export
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 
 group :development, :test do
-  gem 'fakeweb', '~> 1.3'
+  gem 'fakeweb', git: 'https://github.com/chrisk/fakeweb.git', branch: 'master'
   gem 'rubocop', '~> 0.49.0', require: false
   gem 'rubocop-checkstyle_formatter', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'axe-matchers'
   gem 'byebug'
-  gem 'capybara', '2.11.0'
+  gem 'capybara'
   gem 'capybara-accessible'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner.git'
