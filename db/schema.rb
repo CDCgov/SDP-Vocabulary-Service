@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 20190304155018) do
     t.integer "minor_change_count", default: 0
     t.string "suggested_replacement_of"
     t.datetime "curated_at"
+    t.string "suggested_replacement_of"
     t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id"
     t.index ["response_type_id"], name: "index_questions_on_response_type_id"
@@ -175,6 +176,7 @@ ActiveRecord::Schema.define(version: 20190304155018) do
     t.integer "minor_change_count", default: 0
     t.string "suggested_replacement_of"
     t.datetime "curated_at"
+    t.string "suggested_replacement_of"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id"
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id"
   end

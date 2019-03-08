@@ -85,7 +85,9 @@ Feature: Manage Response Sets
     When I go to the list of Response Sets
     And I click on the menu link for the Response Set with the name "Test Response Set"
     And I click on the option to Details the Response Set with the name "Test Response Set"
-    When I click on the "Delete" link and confirm my action
+    When I click on the "Delete" link
+    Then I should see "Are you sure you want to delete this response set?"
+    When I click on the "Delete Response Set" link
     Then I go to the dashboard
     When I go to the list of Response Sets
     Then I should not see "Test Response Set"

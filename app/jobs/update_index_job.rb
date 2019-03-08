@@ -13,10 +13,10 @@ class UpdateIndexJob < ApplicationJob
     data = "ES#{type.camelize}Serializer".constantize.new(object).as_json
     SDP::Elasticsearch.ensure_index
     SDP::Elasticsearch.with_client do |client|
-      if client.exists? index: 'vocabulary', type: type.underscore, id: data[:id]
-        client.update index: 'vocabulary', type: type.underscore, id: data[:id], body: { doc: data }, retry_on_conflict: 5
+      if client.exists? index: type.underscore, type: type.underscore, id: data[:id]
+        client.update index: type.underscore, type: type.underscore, id: data[:id], body: { doc: data }, retry_on_conflict: 5
       else
-        client.create index: 'vocabulary', type: type.underscore, id: data[:id], body: data
+        client.create index: type.underscore, type: type.underscore, id: data[:id], body: data
       end
     end
   end

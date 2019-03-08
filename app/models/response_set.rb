@@ -103,6 +103,10 @@ class ResponseSet < ApplicationRecord
 
   def link_to_duplicate(replacement)
     self.duplicate_of = replacement
+    rs_replacement = ResponseSet.find(replacement)
+    rs_replacement.suggested_replacement_of = '' if rs_replacement.suggested_replacement_of.nil?
+    rs_replacement.suggested_replacement_of << "#{id} "
+    rs_replacement.save!
     self.content_stage = 'Duplicate'
     self.duplicates_replaced_count += 1
   end

@@ -385,7 +385,7 @@ class SectionShow extends Component {
                 { section.parent &&
                 <div className="box-content">
                   <strong>Extended from: </strong>
-                  <Link to={`/sections/${section.parent.id}`}>{ section.parent.name && section.parent.name }</Link>
+                  <Link to={`/sections/${section.parent.id}`}>{ section.parent.name }</Link>
                 </div>
                 }
               </div>

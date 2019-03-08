@@ -3,11 +3,11 @@ This reference will show you how to install and get the application up and runni
 
 If you’re not on Windows, please refer to the [Getting Started on Mac or Linux].
 
-## Tech 
+## Tech
 The following technologies are used to built the SDP Vocabulary Service.
 
 * [Ruby Lang] - a dynamic, interpreted, reflective, object-oriented, general-purpose programming language!
-* [Ruby on Rails] - server-side web application framework written in Ruby 
+* [Ruby on Rails] - server-side web application framework written in Ruby
 * [Bundler] - a dependency manager for Ruby projects that tracks and installs the gems and versions that are needed.
 * [JavaScript] - a lightweight interpreted programming language.
 * [Node.js] - a cross-platform JavaScript run-time environment.
@@ -36,7 +36,7 @@ The first step is to install the prerequisites:
 ```
 
 ##### Node.js = 8.x
-- Download and install [Node.js installer] . Tested with 8.11.4. 
+- Download and install [Node.js installer] . Tested with 8.11.4.
 - If you are using version >=10.9.0, you may run into the following error.
 
 ```sh
@@ -55,17 +55,17 @@ The first step is to install the prerequisites:
 ```
 ##### PostgreSQL >= 9.6
 - Download [PostgreSQL installer] from EnterpriseDB. Tested using 10.5 by EDB
-- Follow the instructions on [Install PostgreSQL] tutorial. When installing Postgres, make note of the password you set for the default user(postgres). 
+- Follow the instructions on [Install PostgreSQL] tutorial. When installing Postgres, make note of the password you set for the default user(postgres).
 - The quick way to verify the installation is through the pgAdmin application.
 
 ##### Git
 - Download and run [Git installer]
 
-##### Elasticsearch (optional)
+##### Elasticsearch >= 6.0 (optional)
 - Install the Oracle Java >= [JDK 1.8]
 - [Download Elasticsearch]. Make sure to get version 5.X - any version between 5.2 and < 6.0 should work, you may need to get archived versions. Tested with elasticsearch-5.6.7.zip.
 - Unzip downloaded file to location where your application will run from.  Example
-````sh 
+````sh
 C:\elasticsearch-5.6.7
 ````
 > To Install the JDK Software and Set JAVA_HOME on a Windows System
@@ -158,7 +158,7 @@ Run these commands to initialize the database.
 ````
 Run these commands to create schemas.
 
-````sh 
+````sh
 > bundle exec rake db:schema:load
 > bundle exec rake db:schema:load RAILS_ENV=test
 ````
@@ -204,8 +204,8 @@ Grant admin role to user.
 bundle exec rake admin:grant_admin[‘EMAIL’]
 ````
 
-> The user created using the above script cannot be validated when logging in, always got `Invalid Credentials! Please check the information you entered and try again.` 
-And the question mark is automatically added to the user email like `?user123@cdc.gov?` 
+> The user created using the above script cannot be validated when logging in, always got `Invalid Credentials! Please check the information you entered and try again.`
+And the question mark is automatically added to the user email like `?user123@cdc.gov?`
 
 ## Configure and Run Elastic Search
 - Open the configuration file, which is located at {install-path}\config\elasticsearch.yml. Example:
@@ -230,15 +230,15 @@ path.logs: C:\elasticsearch-5.6.7\logs
 Possible errors when starting the service:
 
 >  `Error: missing 'server' JVM at 'C:\Program Files (x86)\Java\jre1.8.0_161\bin\server\jvm.dll'.
-Please install or use the JRE or JDK that contains these missing components.` 
+Please install or use the JRE or JDK that contains these missing components.`
 - To fix this error, go to JRE installation location, for example,
-`C:\Program Files (x86)\Java\jre1.8.0_161\bin`, 
+`C:\Program Files (x86)\Java\jre1.8.0_161\bin`,
 - Create a new folder 'server', and copy everything from client folder to this serve folder.
 
 > If you see some an error like, `Error occurred during initialization of VM
 Could not reserve enough space for 2097152KB object heap`
-- By default, elastic search uses 2gb memory. To fix this error, open the JAVA VM configuration file, which is located at {install-path}\config\jvm.options. Example: 
-````sh 
+- By default, elastic search uses 2gb memory. To fix this error, open the JAVA VM configuration file, which is located at {install-path}\config\jvm.options. Example:
+````sh
 C:\elasticsearch-5.6.7\config\jvm.options
 ````
 - Change the following lines to `-Xms1g -Xmx1g` or `-Xms512m -Xmx512m`
@@ -288,5 +288,3 @@ Run these commands to start webpack dev server.
    [JDK 1.8]: <http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>
    [Google Chrome]: <https://www.google.com/chrome/>
    [Chrome Driver]: <https://sites.google.com/a/chromium.org/chromedriver/downloads>
-
-   

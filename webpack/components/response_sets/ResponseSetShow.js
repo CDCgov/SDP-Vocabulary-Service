@@ -19,6 +19,7 @@ import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
+import CurationHistoryTab from "../shared_show/CurationHistoryTab";
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isSimpleEditable, isGroupable } from '../../utilities/componentHelpers';
@@ -29,7 +30,8 @@ export default class ResponseSetShow extends Component {
     this.state = {
       selectedTab: 'main',
       page: 1,
-      showPublishModal: false
+      showPublishModal: false,
+      showDeleteModal: false
     };
   }
 
@@ -122,7 +124,37 @@ export default class ResponseSetShow extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => this.props.publishResponseSet(this.props.responseSet.id)} bsStyle="primary">Confirm Publish</Button>
-            <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+            <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
+  deleteModal(responseSet) {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showDeleteModal} onHide={()=>this.setState({showDeleteModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete this response set? This action cannot be undone.</p>
+            <p><strong>Delete Response Set: </strong>This will delete the response set permanently</p>
+          </Modal.Body>
+          <br/>
+          <br/>
+          <Modal.Footer>
+            <Button onClick={() => this.props.deleteResponseSet(responseSet.id, (response) => {
+              if (response.status == 200) {
+                let stats = Object.assign({}, this.props.stats);
+                stats.responseSetCount = this.props.stats.responseSetCount - 1;
+                stats.myResponseSetCount = this.props.stats.myResponseSetCount - 1;
+                this.props.setStats(stats);
+                this.props.router.push('/');
+              }
+            })} bsStyle="primary">Delete Response Set</Button>
+            <Button onClick={()=>this.setState({showDeleteModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -211,19 +243,9 @@ export default class ResponseSetShow extends Component {
             {isEditable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                if(confirm('Are you sure you want to delete this Response Set? This action cannot be undone.')){
-                  this.props.deleteResponseSet(responseSet.id, (response) => {
-                    if (response.status == 200) {
-                      let stats = Object.assign({}, this.props.stats);
-                      stats.responseSetCount = this.props.stats.responseSetCount - 1;
-                      stats.myResponseSetCount = this.props.stats.myResponseSetCount - 1;
-                      this.props.setStats(stats);
-                      this.props.router.push('/');
-                    }
-                  });
-                }
+                this.setState({showDeleteModal: true});
                 return false;
-              }}>Delete</a>
+              }}>{this.deleteModal(responseSet)}Delete</a>
             }
           </div>
         }
@@ -257,8 +279,25 @@ export default class ResponseSetShow extends Component {
             <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
               <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
             </li>
+            <li id="curation-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'curation'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="curation">
+              <a className="nav-link" data-toggle="tab" href="#curation-history" role="tab">Curation History</a>
+            </li>
           </ul>
           <div className="tab-content">
+          <div className={`tab-pane ${this.state.selectedTab === 'curation' && 'active'}`} id="curation" role="tabpanel" aria-hidden={this.state.selectedTab !== 'curation'} aria-labelledby="curation-history-tab">
+            {isSimpleEditable(responseSet, this.props.currentUser) ? (
+              <CurationHistoryTab suggestedReplacementOf={responseSet.suggestedReplacementOf} duplicateOf={responseSet.duplicateOf} contentStage={responseSet.contentStage} objSetName={'Response Set'} type='response_set'/>
+            ) : (
+              <div className='basic-c-box panel-default response_set-type'>
+                <div className="panel-heading">
+                  <h2 className="panel-title">Curation</h2>
+                </div>
+                <div className="box-content">
+                  You do not have permissions to see curation history on this item ((you must be the owner or in the proper collaborative authoring group).
+                </div>
+              </div>
+            )}
+          </div>
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
               {isSimpleEditable(responseSet, this.props.currentUser) ? (
                 <ChangeHistoryTab versions={responseSet.versions} type='response_set' majorVersion={responseSet.version} />
@@ -268,7 +307,7 @@ export default class ResponseSetShow extends Component {
                     <h2 className="panel-title">Changes</h2>
                   </div>
                   <div className="box-content">
-                    You do not have permissions to see change history on this item (you must be a collaborating author / in the proper group).
+                    You do not have permissions to see change history on this item (you must be the owner or in the proper collaborative authoring group).
                   </div>
                 </div>
               )}
@@ -305,11 +344,6 @@ export default class ResponseSetShow extends Component {
                   <div className="box-content">
                     <strong>Content Stage: </strong>
                     {responseSet.contentStage}
-                  </div>
-                }
-                {responseSet.duplicateOf && responseSet.contentStage && responseSet.contentStage === 'Duplicate' &&
-                  <div className="box-content">
-                    <strong>Duplicate of: </strong><Link to={`/responseSets/${responseSet.duplicateOf}`}>Response Set #{responseSet.duplicateOf}</Link>
                   </div>
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&

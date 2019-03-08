@@ -133,11 +133,10 @@ class QuestionEdit extends Component {
   }
 
   copyQuestion() {
-    let category = this.props.question.category ? this.props.question.category : this.props.question.category;
     let questionCopy = {content: this.props.question.content,
       description: this.props.question.description,
       otherAllowed: this.props.question.otherAllowed,
-      categoryId: category ? category.id : undefined,
+      categoryId: this.props.question.category ? this.props.question.category.id : undefined,
       subcategoryId: this.props.question.subcategory ? this.props.question.subcategory.id : undefined,
       responseTypeId: this.props.question.responseType ? this.props.question.responseType.id : undefined};
     questionCopy.conceptsAttributes = filterConcepts(this.props.question.concepts);
