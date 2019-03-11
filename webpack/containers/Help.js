@@ -1187,7 +1187,8 @@ class Help extends Component {
               <a href="#1.13">1.13</a>,&nbsp;
               <a href="#1.14">1.14</a>,&nbsp;
               <a href="#1.15">1.15</a>,&nbsp;
-              <a href="#1.16">1.16</a>)
+              <a href="#1.16">1.16</a>,&nbsp;
+              <a href="#1.17">1.17</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1197,6 +1198,26 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.17"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/491061249/SDP+Vocabulary+Service+Release+1.17' target='_blank'>1.17</a></strong> <small>(Mar 8, 2019)</small></li>
+              <ol>
+              <li>Added advanced search feature on create Questions page</li>
+              <li>Removed unusable hamburger stacks</li>
+              <li>Reworded Questions on Section Response</li>
+              <li>Implemented "match on fields" values to make human readable</li>
+              <li>Curation Wizard updates</li>
+              <ol type="a"><li>Show User New potential duplicate</li></ol>
+              <ol type="a"><li>More detail added to user's questions</li></ol>
+              <ol type="a"><li>"Retired" content no longer shows</li></ol>
+              <ol type="a"><li>Optimized algorithm</li></ol>
+              <ol type="a"><li>Updated in-app instructions</li></ol>
+              <li>Added Curation Tab to Response Set and Questions</li>
+              <ol type="a"><li>Moved duplicates link to Curation History tab</li></ol>
+              <ol type="a"><li>Added 'Suggested Replacement Of' links</li></ol>
+              <li>Implemented landing page tag for analytics</li>
+              <li>Updated PDV on published questions page</li>
+              <li>SonarCube integration</li>
+              <li>Upgraded Elasticsearch 5 to 6</li>
+              </ol>
             <li id="1.16"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/484081696/SDP+Vocabulary+Service+Release+1.16' target='_blank'>1.16</a></strong> <small>(Feb 5, 2019)</small></li>
               <strong>First 1.16 Sprint</strong> - Focus: Elasticsearch improvements.
               <ol>
