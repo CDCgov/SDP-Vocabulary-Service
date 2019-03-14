@@ -89,7 +89,7 @@ class DashboardContainer extends SearchManagerComponent {
         },
         {
           title: 'Dashboard Search',
-          text: 'Type in your search term and search across all items by default. Results include items you own and published items.',
+          text: 'Type in your search term and search across all items by default. Results include private items you own and public items.',
           selector: '.search-input',
           position: 'bottom',
         },

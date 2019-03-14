@@ -87,7 +87,7 @@ class Help extends Component {
         <h2 id="step-by-step">Step-by-Step Walkthroughs by Page</h2>
         <h3 id="dashboard">Dashboard</h3>
         <ul>
-        <li>Type in your search term and search across all items by default. Results include items you own and published items.</li>
+        <li>Type in your search term and search across all items by default. Results include items you own and public items.</li>
         <li>Click on any of the type boxes to highlight them and toggle on filtering by that single item type.</li>
         <li>Click Advanced Link to see additional filters you can apply to your search.</li>
         <li>If you already have an account you can log in to unlock more features in the top right of the dashboard page.</li>
@@ -104,13 +104,13 @@ class Help extends Component {
         <li>Click Advanced to see additional filters you can apply to your search.</li>
         <li>Use these search results to find the question you want to add.</li>
         <li>Click on the add (+) button to select a question for the section.</li>
-        <li>Edit the various section details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published).</li>
+        <li>Edit the various section details on the right side of the page. Select save in the top right of the page when done editing to save a private draft of the content (this content will not be public until it is published).</li>
         </ul>
         <h3 id="section-details">Section Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the 'Create and Edit Content' section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
-        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content</li>
         </ul>
         <h3 id="question-edit">Question Edit Page</h3>
         <ul>
@@ -119,13 +119,13 @@ class Help extends Component {
         <li>Alternatively, you can manually add a code system mapping - click the plus sign to add additional code system mapping to associate with the question</li>
         <li>The Concept Name field is what the user will see on the page</li>
         <li>Optionally, you can enter a code and a code system for the mapping you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
-        <li>Click save to save a draft of the edited content</li>
+        <li>Click save to save a private draft of the edited content</li>
         </ul>
         <h3 id="question-details">Question Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
-        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content</li>
         </ul>
         <h3 id="response-set-edit">Response Set Edit Page</h3>
         <ul>
@@ -134,13 +134,13 @@ class Help extends Component {
         <li>Alternatively, you can manually add a response - click the plus sign to add additional responses to associate with the response set</li>
         <li>The Display Name field is what the user will see on the page</li>
         <li>Optionally, you can enter a code and a code system for the response you are adding if it belongs to an external system (such as LOINC or SNOMED)</li>
-        <li>Click save to save a draft of the edited content (this content will not be public until it is published)</li>
+        <li>Click save to save a private draft of the edited content (this content will not be public until it is published)</li>
         </ul>
         <h3 id="response-set-details">Response Set Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
-        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content</li>
         </ul>
         <h3 id="survey-edit">Survey Edit Page</h3>
         <ul>
@@ -148,13 +148,13 @@ class Help extends Component {
         <li>Click Advanced to see additional filters you can apply to your search</li>
         <li>Use these search results to find the section you want to add</li>
         <li>Click on the add button to select a section for the survey</li>
-        <li>Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published)</li>
+        <li>Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a private draft of the content (this content will not be public until it is published)</li>
         </ul>
         <h3 id="survey-details">Survey Details Page</h3>
         <ul>
         <li>Use the history side bar to switch between revisions of an item if more than one exists</li>
         <li>See all of the details including linked items on this section of the page. Use the buttons in the top right to do various actions with the content depending on your user permissions. For full details on what an action does please see the "Create and Edit Content" section of the <a className="tutorial-link" href="#help">Help Documentation (linked here).</a></li>
-        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content</li>
+        <li>At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content</li>
         </ul>
         <h3 id="help-page-link">Help Page</h3>
         <ul>
@@ -207,7 +207,7 @@ class Help extends Component {
         <h2 className="help-section-subtitle" id="filtering-by-type">Filtering by Type</h2>
         <p>You can filter a search by the type of content by clicking on the analytics icons immediately below the search bar on the dashboard page. Clicking on any of those four squares on the top of the page will filter by the type specified in the square and highlight the square. Once a filter is applied you can click on the &#39;clear filter&#39; link that will appear under the icons on the dashboard.</p>
         <h2 className="help-section-subtitle" id="see-content-you-own">See Content You Own</h2>
-        <p>Similar to searching by type (described above) when you are logged in to an account the dashboard will have a &quot;My Stuff&quot; section displayed on the right side of the dashboard. Clicking on any of the icons or the filter link in that panel will highlight the filter applied in blue and filter any searches down to only return drafts and published content that you own.</p>
+        <p>Similar to searching by type (described above) when you are logged in to an account the dashboard will have a &quot;My Stuff&quot; section displayed on the right side of the dashboard. Clicking on any of the icons or the filter link in that panel will highlight the filter applied in blue and filter any searches down to only return private drafts and public published content that you own.</p>
         <h2 className="help-section-subtitle" id="see-content-your-groups-own">See Content Your Groups Own</h2>
         <p>Similar to searching by content you own, when you are logged in to an account that is part of an authoring group, the dashboard will have a &quot;Filter by Group&quot; section displayed on the right side of the dashboard. Selecting any of the group names from the dropdown in that panel will filter any searches down to only return content that is assigned to the specified group.</p>
         <h2 className="help-section-subtitle" id="advanced-filtering">Advanced Filtering</h2>
@@ -284,49 +284,49 @@ class Help extends Component {
         </ul>
 
         <h2 className="help-section-subtitle" id="workflow">Workflow Status</h2>
-        <p>SDP-V content can be in either a Draft or Published workflow status.  Workflow status drives visibility rules in SDP-V. Workflow status is displayed as “Visibility” in the UI to clearly communicate to users who can see which content.</p>
+        <p>SDP-V content can be in either a Private or Public workflow status.  Workflow status drives visibility rules in SDP-V. Workflow status is displayed as “Visibility” in the UI to clearly communicate to users who can see which content.</p>
         <ul>
         <li>
-        <strong>DRAFT</strong> – When content is created or imported in SDP-V, it is in Draft workflow status. Content in this workflow status has restricted visibility based on ownership and role and can be modified until the author or authoring group is ready to publish it (see Published workflow status below).
+        <strong>PRIVATE</strong> – When content is created or imported in SDP-V, it is in Private workflow status. Content in this workflow status has restricted visibility based on ownership and role and can be modified until the author or authoring group is ready to publish it (see Public workflow status below).
         <ul>
-        <li><strong>Visibility: </strong>Content in draft workflow status is only visible to the user who authored it, users that belong to a group that the content is added to, and to all Publishers in the system.</li>
-        <li><strong>Ability to Modify Content: </strong>Only the Author or group members may make changes to the draft content. The draft content can be edited as desired until it is ready to be sent to a Publisher for review. SDP-V tracks changes to draft content on the Change History tab.</li>
-        <li><strong>Content Stages: </strong>Users can use the “draft”, “comment only”, or “trial use” content stages. The “draft” content stage is the default stage; “trial use” and “comment only” are optional content stages for this workflow status. To support multiple business cases, the user may place content in draft workflow status into these 3 content stages bi-directionally in any order (e.g., draft, comment only, draft, trial use, comment only) or may only use the "draft" content stage.</li>
+        <li><strong>Visibility: </strong>Content in private workflow status is only visible to the user who authored it, users that belong to a group that the content is added to, and to all Publishers in the system.</li>
+        <li><strong>Ability to Modify Content: </strong>Only the Author or group members may make changes to the private draft content. The private content can be edited as desired until it is ready to be sent to a Publisher for review. SDP-V tracks changes to private draft content on the Change History tab.</li>
+        <li><strong>Content Stages: </strong>Users can use the “draft”, “comment only”, or “trial use” content stages. The “draft” content stage is the default stage; “trial use” and “comment only” are optional content stages for this workflow status. To support multiple business cases, the user may place content in private workflow status into these 3 content stages bi-directionally in any order (e.g., draft, comment only, trial use, comment only) or may only use the "draft" content stage.</li>
         </ul>
         </li>
         <li>
-        <strong>PUBLISHED</strong> – Whenever an author or authoring group is ready to share their content publicly, an author must send a request to their program Publisher to change the workflow status in SDP-V. Content must be reviewed and approved by a Publisher in SDP-V to change the workflow status to Published; this action is known as “publishing” is SDP-V.
+        <strong>PUBLIC</strong> – Whenever an author or authoring group is ready to share their content publicly, an author must send a request to their program Publisher to change the workflow status in SDP-V. Content must be reviewed and approved by a Publisher in SDP-V to change the workflow status to Public; this action is known as “publishing” is SDP-V.
         <ul>
-        <li><strong>Visibility: </strong>Published content is visible to everyone who visits the SDP-V website including users without authenticated accounts (publicly available). This allows for authors to share their SDP-V content with a wide public health audience. Once a version is published, it cannot be undone. An author can use the content stage attribute to indicate which published version is ready for use versus other stages of maturity (see definitions below).</li>
-        <li><strong>Ability to Modify Content: </strong>Only the Author or group members of Published content may choose to revise it. Revising published content results in a new version of the content in draft status that can be modified as described above until it is ready to be published. SDP-V maintains a version history for published content so that users can see how content has evolved over time.</li>
-        <li><strong>Content Stages: </strong>Users can use the “published”, “comment only”, or “trial use” content stages. The “published” content stage is the default stage; “trial use” and “comment only” are optional content stages for this workflow status. To support multiple business cases, the user may place content in the published workflow status into these 3 content stages in any order (e.g., comment only, trial use, comment only, published) or may only use the "published" content stage.</li>
+        <li><strong>Visibility: </strong>Public content is visible to everyone who visits the SDP-V website including users without authenticated accounts (publicly available). This allows for authors to share their SDP-V content with a wide public health audience. Once a version is public, it cannot be set back to private. An author can use the content stage attribute to indicate which public version is ready for use versus other stages of maturity (see definitions below).</li>
+        <li><strong>Ability to Modify Content: </strong>Only the Author or group members of public content may choose to revise it. Revising public content results in a new version of the content in private status that can be modified as described above until it is ready to be published publicly. SDP-V maintains a version history for public content so that users can see how content has evolved over time.</li>
+        <li><strong>Content Stages: </strong>Users can use the “published”, “comment only”, or “trial use” content stages. The “published” content stage is the default stage; “trial use” and “comment only” are optional content stages for this workflow status. To support multiple business cases, the user may place content in the public workflow status into these 3 content stages in any order (e.g., comment only, trial use, comment only, published) or may only use the "published" content stage.</li>
         </ul>
         </li>
         </ul>
-        <p><strong>Note:</strong>Content in the published workflow status indicates that a program was ready to share content publicly to promote transparency, harmonization, standardization, and the goals of SDP-V and may not be authoritative. Users interested in using published content are encouraged to reach out to the appropriate program or system with any questions about content and consider the indicated content stage.</p>
+        <p><strong>Note:</strong>Content in the public workflow status indicates that a program was ready to share content publicly to promote transparency, harmonization, standardization, and the goals of SDP-V and may not be authoritative. Users interested in using public content are encouraged to reach out to the appropriate program or system with any questions about content and consider the indicated content stage.</p>
 
         <h2 className="help-section-subtitle" id="stage">Content Stage</h2>
         <p>An attribute of the content being presented that represents content maturity. Response sets, questions, sections, and surveys added to SDP-V do not need to advance through each content stage described below before sharing their content publicly (publishing content as described above). The content stage attribute offers users flexibility to accurately communicate the maturity of their content at different stages of the vocabulary life cycle with other users.</p>
         <ul>
         <li>
         <strong>DRAFT</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used. This is the initial status assigned to newly created content.
-        <ul><li>This content stage can be used for content is that is in draft workflow status.</li></ul>
+        <ul><li>This content stage can be used for content is that is in private workflow status.</li></ul>
         </li>
         <li>
         <strong>COMMENT ONLY</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.
-        <ul><li>This content stage can be used for content is that is in either draft and published workflow status.</li></ul>
+        <ul><li>This content stage can be used for content is that is in either private and public workflow status.</li></ul>
         </li>
         <li>
         <strong>TRIAL USE</strong> – Content that the Authors and Publisher believe is ready for User viewing, testing and/or comment. It is generally “complete”, but not final. Content at this Level should not be used to support public health response.
-        <ul><li>This content stage can be used for content that is in either draft and published workflow status.</li></ul>
+        <ul><li>This content stage can be used for content that is in either private and public workflow status.</li></ul>
         </li>
         <li>
         <strong>PUBLISHED</strong> – The most recent version of content. It is ready for viewing, downloading, comments, use for public health response.
-        <ul><li>This content stage can be used for content that is in published workflow status.</li></ul>
+        <ul><li>This content stage can be used for content that is in public workflow status.</li></ul>
         </li>
         <li>
         <strong>RETIRED</strong> – Content that is no longer the most recent version (not latest). However, this content could be used with no known risk.
-        <ul><li>This content stage can be used for content that is in published workflow status. Only publishers can move content to this content stage. Authors who would like to retire content should contact their program publisher. Content that is "retired" is hidden from dashboard search results by default unless an advanced filter is toggled to show retired content.</li></ul>
+        <ul><li>This content stage can be used for content that is in public workflow status. Only publishers can move content to this content stage. Authors who would like to retire content should contact their program publisher. Content that is "retired" is hidden from dashboard search results by default unless an advanced filter is toggled to show retired content.</li></ul>
         </li>
         <li>
         <strong>DUPLICATE</strong> – Content that the Author and Publisher believe is a duplicate of other content in the SDP-V repository. Content marked as “Duplicate” should not be used when creating new SDP-V surveys. If content marked as “Duplicate” is used on an existing SDP-V survey, it should be replaced during the next revision.
@@ -350,30 +350,30 @@ class Help extends Component {
         </ul>
         <h2 className="help-section-subtitle" id="create-new-content">Create New Content</h2>
         <ul>
-          <li>To start a new draft of any item click on the &quot;Create&quot; drop down in the top navigation bar on the dashboard.</li>
-          <li>On the creation / editing page change any fields that need to be updated and press save - this saves a draft of the first version of the new item that will need to get published by a publisher before it will be visible to others.</li>
+          <li>To start a new private draft of any item click on the &quot;Create&quot; drop down in the top navigation bar on the dashboard.</li>
+          <li>On the creation / editing page change any fields that need to be updated and press save - this saves a private draft of the first version of the new item that will need to get published by a publisher before it will be publicly visible to others.</li>
           <li>If you try to navigate away before saving the changes a prompt will ask if you want to navigate away without saving or save before you leave.</li>
         </ul>
         <h2 className="help-section-subtitle" id="edit-content">Edit Content</h2>
-        <p><strong>Note:</strong> You can only edit your own draft content, or content that belongs to a group where you are a member - once your content is published you will be given the option to create a new revision or extension (a copy with a separate version history) of the content.</p>
+        <p><strong>Note:</strong> You can only edit your own private content, or content that belongs to a group where you are a member - once your content is made public you will be given the option to create a new revision or extension (a copy with a separate version history) of the content.</p>
         <ul>
           <li>When looking at the search result for the item you want to edit click on the menu button in the bottom right and select edit.</li>
           <li>When on the details page of an item the edit or revise button should appear in the top right above the item information.</li>
-          <li>On the edit page change any fields that need to be updated and press save - this overwrites the previous draft with the changes made and does not keep a history of the previous draft.</li>
+          <li>On the edit page change any fields that need to be updated and press save.</li>
         </ul>
         <h2 className="help-section-subtitle" id="revise-content">Revise Content</h2>
-        <p><strong>Note:</strong> You can only revise your own published content, or published content that belongs to a group where you are a member. Saving a revision will save a draft of that revision until you publish the new version.</p>
+        <p><strong>Note:</strong> You can only revise your own public content, or public content that belongs to a group where you are a member. Saving a revision will save a private draft of that revision until you publish the new version.</p>
         <ul>
           <li>When looking at the search result for the item you want to revise click on the menu button in the bottom right and select revise</li>
           <li>When on the details page of an item the edit or revise button should appear in the top right above the item information</li>
-          <li>On the revision editing page change any fields that need to be updated and press save - this saves a draft of the new version that will need to get published by a publisher before it will be visible to others.</li>
+          <li>On the revision editing page change any fields that need to be updated and press save - this saves a private draft of the new version that will need to get published by a publisher before it will be publicly visible to others.</li>
         </ul>
         <h2 className="help-section-subtitle" id="extend-content">Extend Content</h2>
-        <p><strong>Note:</strong> You can only extend published content. Unlike revising, you do not need to own or be part of a group that owns content in order to create an extension (use it as a template with its own version history). Saving an extension will save a draft that is the first version (new revision history) with a link to the content it was extended from (shown as the parent of the item).</p>
+        <p><strong>Note:</strong> You can only extend public content. Unlike revising, you do not need to own or be part of a group that owns content in order to create an extension (use it as a template with its own version history). Saving an extension will save a private draft that is the first version (new revision history) with a link to the content it was extended from (shown as the parent of the item).</p>
         <ul>
           <li>When looking at the search result for the item you want to extend click on the menu button in the bottom right and select extend</li>
-          <li>When on the details page of a published item the extend button should appear in the top right above the item information</li>
-          <li>On the extension editing page change any fields that need to be updated and press save - this saves a draft of the first version of the extended item that will need to get published by a publisher before it will be visible to others.</li>
+          <li>When on the details page of a public item the extend button should appear in the top right above the item information</li>
+          <li>On the extension editing page change any fields that need to be updated and press save - this saves a private draft of the first version of the extended item that will need to get published by a publisher before it will be publicly visible to others.</li>
         </ul>
 
       </div>
@@ -384,7 +384,7 @@ class Help extends Component {
     return (
       <div className="tab-pane" id="curation" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'curation'} aria-labelledby="curation-tab">
         <h1 id="curation-wizard">Curation Wizard</h1>
-        <p>Description: The curation wizard shows the user questions and response sets in the SDP-V repository that are similar to content on user’s survey. This feature automates the identification of similar questions and response sets created by other programs to maximize harmonization opportunities within SDP-V before draft content is published or during the revision of a published SDP-V survey. The user may select an existing question or response set from the SDP-V repository to replace draft content on their survey or link published content on their survey to another question or response in the service to indicate to other users what content in the repository is the preferred replacement.</p>
+        <p>Description: The curation wizard shows the user questions and response sets in the SDP-V repository that are similar to content on user’s survey. This feature automates the identification of similar questions and response sets created by other programs to maximize harmonization opportunities within SDP-V before private content is published or during the revision of a public SDP-V survey. The user may select an existing question or response set from the SDP-V repository to replace private draft content on their survey or link public content on their survey to another question or response in the service to indicate to other users what content in the repository is the preferred replacement.</p>
         <p>Value: These replacements and linkages will help curate and reduce redundancy while promoting reuse. Use of this feature will also enable proper population of system usage statistics in SDP-V to show use of content across CDC programs and systems (e.g., different users must link to the same question in the repository for usage across sections, surveys, programs, and surveillance systems to be transparent in the service). This feature will also help to prevent duplicate questions and response sets from cluttering the repository so that content is easier to search, browse, and use.</p>
         <p><strong>How to Find Similar Questions and Response Sets in SDP-V (Surveys)</strong></p>
         <p>The Curation Wizard feature will be available on the Survey Details page if the algorithm detects similar questions and/or response sets from your survey in the SDP-V repository.</p>
@@ -424,15 +424,15 @@ class Help extends Component {
           <li>
             Click on the Question Name hyperlink to view the question details of the suggested replacement questions that were identified by the matching algorithm
             <ul>
-              <li>If the potential duplicate Question or Response Set visibility is “draft”: Select ‘Replace’ to mark the draft question or response set on the user’s survey as a duplicate and replace it with the selected question or response set. A prompt will appear for confirmation of the replacement along with details of the change that states the current question or response set will be replaced everywhere it is used in the vocabulary service and be deleted.This action cannot be undone.</li>
-              <li>If the duplicate Question or Response Set visibility is “published”: A “Link” button appears instead of “Replace”. Selecting “Link” will mark the question or response set as “Duplicate” and move the question or response set to the “Duplicate” content stage. The potential duplicate question or response set details page will provide a link to the question or response set that the author selected (by clicking “Link to”). This action allows authors to indicate which item is a preferred replacement to promote harmonization and reduce redundancy.</li>
+              <li>If the potential duplicate Question or Response Set visibility is “private”: Select ‘Replace’ to mark the private draft question or response set on the user’s survey as a duplicate and replace it with the selected question or response set. A prompt will appear for confirmation of the replacement along with details of the change that states the current question or response set will be replaced everywhere it is used in the vocabulary service and be deleted. This action cannot be undone.</li>
+              <li>If the duplicate Question or Response Set visibility is “public”: A “Link” button appears instead of “Replace”. Selecting “Link” will mark the question or response set as “Duplicate” and move the question or response set to the “Duplicate” content stage. The potential duplicate question or response set details page will provide a link to the question or response set that the author selected (by clicking “Link to”). This action allows authors to indicate which item is a preferred replacement to promote harmonization and reduce redundancy.</li>
             </ul>
           </li>
         </ul>
         <h2>Curation Wizard ‘Replace’ Function</h2>
-        <p>Whenever a user chooses to replace a draft question or response set on their survey with an existing question or response set in SDP-V, only some fields are updated. This is to prevent the user from losing information that has already been entered.</p>
+        <p>Whenever a user chooses to replace a private question or response set on their survey with an existing question or response set in SDP-V, only some fields are updated. This is to prevent the user from losing information that has already been entered.</p>
         <p><strong>Questions</strong></p>
-        <p>Whenever a user replaces a duplicate question on their draft survey with a suggested replacement question, the replacement question is linked to the draft survey. The following list shows which fields will change:</p>
+        <p>Whenever a user replaces a duplicate question on their private survey with a suggested replacement question, the replacement question is linked to the private survey. The following list shows which fields will change:</p>
         <ul>
           <li>Question Name</li>
           <li>Question Description</li>
@@ -448,7 +448,7 @@ class Help extends Component {
         </ul>
         <p><strong>Note: </strong>Since there are many valid question and response set pairs, questions and response sets are assessed independently using the curation wizard. For instance, a program can harmonize a question (like ‘How old are you?’) with another program while choosing to use a different valid response set than that same program (like 5-year age categories compared to 10-year age categories).</p>
         <p><strong>Response Sets</strong></p>
-        <p>Whenever a user replaces a duplicate response set on their draft survey with a suggested replacement response set, the replacement response set is linked to the draft survey. The following list shows which fields will change:</p>
+        <p>Whenever a user replaces a duplicate response set on their private survey with a suggested replacement response set, the replacement response set is linked to the private survey. The following list shows which fields will change:</p>
         <ul>
           <li>Response Set Name</li>
           <li>Response Set Description</li>
@@ -563,7 +563,7 @@ class Help extends Component {
             <li>The content in each tab in the spreadsheet that contains all required columns will be imported and tagged with the 'Tab Name'.</li>
             <li>If there are multiple spreadsheets that contain all required columns, they will be imported as separate sections on the same SDP-V survey.</li>
             <li>The user importing content into SDP-V using this template will be assigned as the author of the survey. This SDP-V survey can then be added to a collaborative authoring group in the service to provide access to additional authors. </li>
-            <li>•	Content will be imported into SDP-V in ‘Draft’ workflow status and “Draft” content stage.</li>
+            <li>Content will be imported into SDP-V in ‘Private’ workflow status and “Draft” content stage.</li>
           </ul>
 
           <br/>
@@ -1043,11 +1043,11 @@ class Help extends Component {
         </ul>
 
         <h2 id="private-comments">Private Comments</h2>
-        <p>Users can post comments about changes made to draft content if they are either the author or a member of a collaborative authoring group with permission to edit the content.  These comments are saved on the Change History tab and log the date and time that the comment was saved and the user who created it. Visibility of the Change History tab is restricted to authors, authoring group members, and publishers (e.g., private comments).</p>
+        <p>Users can post comments about changes made to private draft content if they are either the author or a member of a collaborative authoring group with permission to edit the content.  These comments are saved on the Change History tab and log the date and time that the comment was saved and the user who created it. Visibility of the Change History tab is restricted to authors, authoring group members, and publishers (e.g., private comments).</p>
         <p><strong>Steps:</strong></p>
         <ul>
         <li>Login to SDP-V</li>
-        <li>Navigate to the details page of the draft content you wish to post a private comment</li>
+        <li>Navigate to the details page of the private draft content you wish to post a private comment</li>
         <li>Select Edit</li>
         <li>Type in the “Notes/Comment About Changes Made (Optional)” textbox</li>
         <li>Click Save</li>
@@ -1078,7 +1078,7 @@ class Help extends Component {
         <h2 className="help-section-subtitle" id="admin-list">Admin List</h2>
         <p>This list will populate with all of the users who have administrative privileges. The admin role allows access to all content and all functionality in the application. To the right of each user name and email is a remove button that will revoke the admin role from that user. The admin role can be granted by typing in the email of a user and clicking the plus button. The user will then appear on the admin list or an error will be displayed explaining any issues with the addition.</p>
         <h2 className="help-section-subtitle" id="publisher-list">Publisher List</h2>
-        <p>For usage instructions please see the information about the Admin List above. Adding members to this list allows them to see draft content they did not author and publish that content to make it public.</p>
+        <p>For usage instructions please see the information about the Admin List above. Adding members to this list allows them to see private content they did not author and publish that content to make it public.</p>
         <h2 className="help-section-subtitle" id="prog-sys-list">Program and System Lists</h2>
         <p>On the Program List and System List tabs an administrator can see a current list of all surveillance programs and systems currently available for users to work under. The admin can use the input fields and click the add button to make another program / system available for in the users profile drop down.</p>
         <h2 className="help-section-subtitle" id="group-list">Group List</h2>
@@ -1136,7 +1136,7 @@ class Help extends Component {
   glossaryTab() {
     return (
       <div className="tab-pane" id="glossary" role="tabpanel" aria-hidden={this.state.selectedTab !== 'glossary'} aria-labelledby="glossary-tab">
-      <h1 ID="glossaryTab">Glossary</h1>
+      <h1 id="glossaryTab">Glossary</h1>
       <br/>
         <p><strong>Author –</strong> An actor (organization, person, or program) responsible for creating and/or maintaining a data collection item, a code set, a value set, or a data collection instrument</p>
         <p><strong>Code –</strong> a succinct label for a concept, variable, value, or question</p>
@@ -1158,7 +1158,7 @@ class Help extends Component {
   whatsnewTab() {
     return (
     <div className={`tab-pane ${this.state.selectedTab === 'whatsnew' && 'active'}`} id="whatsnew" role="tabpanel" aria-hidden={this.state.selectedTab !== 'whatsnew'} aria-labelledby="whatsnew-tab">
-    <h1 ID="whatsnewTab">What&lsquo;s New</h1>
+    <h1 id="whatsnewTab">What&lsquo;s New</h1>
       <br/>
       <p>Here you can find the latest news and information about the CDC Vocabulary Service.
           Read our latest release notes to learn how the application is continuously improving, learn
@@ -1214,7 +1214,7 @@ class Help extends Component {
               <ol type="a"><li>Moved duplicates link to Curation History tab</li></ol>
               <ol type="a"><li>Added 'Suggested Replacement Of' links</li></ol>
               <li>Implemented landing page tag for analytics</li>
-              <li>Updated PDV on published questions page</li>
+              <li>Updated PDV on public questions page</li>
               <li>SonarCube integration</li>
               <li>Upgraded Elasticsearch 5 to 6</li>
               </ol>
@@ -1282,7 +1282,7 @@ class Help extends Component {
               </ol>
             <li id="1.12"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/407928833/SDP+Vocabulary+Service+Release+1.12' target='_blank'>1.12</a></strong> <small>(Sept 28, 2018)</small></li>
               <ol>
-                <li>Curating Published Content</li>
+                <li>Curating Public Content</li>
                 <li>UI Asynchronous Rework & Optimizations</li>
                 <li>Comprehensive Developer Documentation</li>
               </ol>
@@ -1295,7 +1295,7 @@ class Help extends Component {
             <li id="1.10"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/349601800/SDP+Vocabulary+Service+Release+1.10' target='_blank'>1.10</a></strong> <small>(June 29, 2018)</small></li>
             <ol>
               <li>New Advanced Search filters</li>
-              <li>Introduction of the Ability for an Author to Save Comments on Draft</li>
+              <li>Introduction of the Ability for an Author to Save Comments on Private Draft</li>
               <li>FHIR API Update</li>
             </ol>
             <li id="1.9"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/281509889/SDP+Vocabulary+Service+Release+1.9' target='_blank'>1.9</a></strong> <small>(May 22, 2018)</small></li>
@@ -1306,7 +1306,7 @@ class Help extends Component {
             </ol>
             <li id="1.8"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/256507905/SDP+Vocabulary+Service+Release+1.8' target='_blank'>1.8</a></strong> <small>(April 25, 2018)</small></li>
             <ol>
-              <li>Revision history for draft content</li>
+              <li>Revision history for private draft content</li>
               <li>"Delete/Delete All" prompts</li>
               <li>Group member visibility in the User Interface (UI)</li>
             </ol>
@@ -1330,7 +1330,7 @@ class Help extends Component {
             </ol>
             <li id="1.4"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/48627713/SDP+Vocabulary+Service+Release+1.4' target='_blank'>1.4</a></strong> <small>(January 4, 2018)</small></li>
             <ol>
-              <li>Share draft content per groups</li>
+              <li>Share private draft content per groups</li>
               <li>User Interface to better display relationships between content</li>
               <li>SDP-V API update</li>
             </ol>

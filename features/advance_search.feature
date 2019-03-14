@@ -49,9 +49,9 @@ Feature: Advanced Search
     And I am on the "/" page
     When I click on the "Advanced" link
     And I tab out of the "content-since" field
-    And I click the "Draft (Authors Only)" option button
+    And I click the "Private (Authors Only)" option button
     And I click on the "Close" button
-    Then I should see "Filtering results by draft visibility status"
+    Then I should see "Filtering results by private visibility status"
     And I should see "Clear Adv. Filters"
 
   Scenario: Filter search by stage

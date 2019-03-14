@@ -51,7 +51,7 @@ class SectionShowContainer extends Component {
       },
       {
         title: 'Comment Threads',
-        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content.',
+        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content.',
         selector: '.showpage-comments-title',
         position: 'top',
       }]);

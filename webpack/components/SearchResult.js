@@ -138,11 +138,11 @@ export default class SearchResult extends Component {
   resultStatusCondensed(status,version,type,date) {
     if(status === 'published') {
       return(
-          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>published (<text className="sr-only">Item Version Number: </text><span title={type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}>v{version}</span>)</p>
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>public (<text className="sr-only">Item Version Number: </text><span title={type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}>v{version}</span>)</p>
       );
     } else if (status === 'draft') {
       return(
-          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>draft (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>private (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
       );
     } else {
       return(

@@ -11,7 +11,7 @@ class PublisherLookUp extends Component {
                 <span className="fa fa-envelope-o"></span> Send <span className="caret"></span>
               </button>
               <ul className="dropdown-menu">
-                <li key="header" className="dropdown-header">Publishers</li>
+                <li key="header" className="dropdown-header">Select publisher name below to generate an email requesting they {this.props.publishOrRetire} your content:</li>
                 {values(this.props.publishers).map((p, i) => {
                   return <li key={i}><a href={this.link(p)}>{p.name} &lt;{p.email}&gt;</a></li>;
                 })}
@@ -20,19 +20,32 @@ class PublisherLookUp extends Component {
   }
 
   link(publisher) {
-    const subject = `Publish New ${this.props.itemType} - CDC Vocabulary Service`;
-    const body = `Hello ${publisher.firstName},
+    let subject = '';
+    let body = '';
+    if(this.props.publishOrRetire === 'publish') {
+      subject = `Publish New ${this.props.itemType} - CDC Vocabulary Service`;
+      body = `Hello ${publisher.firstName},
 
-Please review and publish my recently authored ${this.props.itemType}: ${window.location.href}
+  Please review and publish my recently authored ${this.props.itemType}: ${window.location.href}
 
-Thanks!`;
-    return `mailto:${publisher.email}?subject=${strictUriEncode(subject)}&body=${strictUriEncode(body)}`;
+  Thanks!`;
+      return `mailto:${publisher.email}?subject=${strictUriEncode(subject)}&body=${strictUriEncode(body)}`;
+    } else {
+      subject = `Retire ${this.props.itemType} - CDC Vocabulary Service`;
+      body = `Hello ${publisher.firstName},
+
+  Please review and retire my ${this.props.itemType}: ${window.location.href}
+
+  Thanks!`;
+      return `mailto:${publisher.email}?subject=${strictUriEncode(subject)}&body=${strictUriEncode(body)}`;
+    }
   }
 }
 
 PublisherLookUp.propTypes = {
   itemType: PropTypes.string.isRequired,
-  publishers: publishersProps
+  publishers: publishersProps,
+  publishOrRetire: PropTypes.string
 };
 
 export default PublisherLookUp;

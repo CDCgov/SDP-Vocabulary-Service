@@ -24,4 +24,4 @@ Feature: Online Help
     And I click on the "Step-by-Step Walkthrough" link
     Then I should see "Click next"
     When I click on the "Next" link
-    Then I should see "Results include items"
+    Then I should see "Results include private items"
