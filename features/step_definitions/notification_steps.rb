@@ -3,6 +3,13 @@ Given(/^I have a Notification with the message "([^"]*)" and the url "([^"]*)"$/
   Notification.create!(user_id: user.id, url: url, message: message)
 end
 
+Given(/^I have a Notification with the message "([^"]*)"$/) do |message|
+  user = get_user('test_author@gmail.com')
+  rs = ResponseSet.create!(name: 'Test', description: 'Test desc', version: 1, created_by: user)
+  url = "/#/responseSets/#{rs.id}"
+  Notification.create!(user_id: user.id, url: url, message: message)
+end
+
 When(/^I click on the "([^"]*)" notification$/) do |message|
   page.find('.notification-menu-item', text: message).click
 end

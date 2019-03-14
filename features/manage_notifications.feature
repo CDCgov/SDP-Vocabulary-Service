@@ -12,10 +12,10 @@ Feature: Manage Notifications
     And I should see no new notifications
 
   Scenario: Notification Redirect
-    Given I have a Notification with the message "User1 has replied to your comment" and the url "/#/questions/1"
+    Given I have a Notification with the message "User1 has replied to your comment"
     And I am logged in as test_author@gmail.com
-    And I have a Question with the content "Who?" and the type "MC"
     When I go to the dashboard
     And I click on the "notification-dropdown" link
     And I click on the "User1 has replied to your comment" notification
-    Then I should see "Name: Who?"
+    And I wait 2 seconds
+    Then I should see "Name: Test"
