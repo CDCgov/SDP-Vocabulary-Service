@@ -14,6 +14,7 @@ class SurveySectionList extends Component {
     var survey = this.props.survey;
     return (
       <div id="added-nested-items" aria-label="Added sections" className="section-edit-container">
+      <br/>
       <div className="added-nested-item-group">
           {this.props.survey.surveySections.map((section, i) => {
             var sect = this.props.sections[section.sectionId];
@@ -25,7 +26,7 @@ class SurveySectionList extends Component {
             } else {
               return (
                 <Row key={i}>
-                  <Col md={11}>
+                  <Col md={11} className='survey-section'>
                     <SearchResult type  ='survey_section'
                                   result={{Source: sect}}
                                   currentUser={{id: -1}}
