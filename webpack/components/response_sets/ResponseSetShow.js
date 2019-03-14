@@ -31,7 +31,8 @@ export default class ResponseSetShow extends Component {
       selectedTab: 'main',
       page: 1,
       showPublishModal: false,
-      showDeleteModal: false
+      showDeleteModal: false,
+      publishOrRetire: 'Publish'
     };
   }
 
@@ -117,13 +118,15 @@ export default class ResponseSetShow extends Component {
       <div className="static-modal">
         <Modal animation={false} show={this.state.showPublishModal} onHide={()=>this.setState({showPublishModal: false})} role="dialog" aria-label="Publish Confirmation Modal">
           <Modal.Header>
-            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Publish Confirmation</Modal.Title>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> {this.state.publishOrRetire} Confirmation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure you want to publish this response set?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p>
+            {this.state.publishOrRetire === 'Publish' && <div><p>Are you sure you want to publish this response set?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p></div>}
+            {this.state.publishOrRetire === 'Retire' && <div><p>Are you sure you want to retire this content?</p><p>The content stage can be changed later.</p></div>}
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => this.props.publishResponseSet(this.props.responseSet.id)} bsStyle="primary">Confirm Publish</Button>
+            {this.state.publishOrRetire === 'Retire' && <Button onClick={() => this.props.retireResponseSet(this.props.responseSet.id)} bsStyle="primary">Confirm Retire</Button>}
+            {this.state.publishOrRetire === 'Publish' && <Button onClick={() => this.props.publishResponseSet(this.props.responseSet.id)} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
@@ -166,8 +169,9 @@ export default class ResponseSetShow extends Component {
       <Col md={9} className="maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
-            {isEditable(responseSet, this.props.currentUser) &&
+            {isSimpleEditable(responseSet, this.props.currentUser) &&
               <PublisherLookUp publishers={this.props.publishers}
+                             publishOrRetire={responseSet.status === 'draft' ? 'publish' : 'retire'}
                              itemType="Response Set" />
             }
             {isGroupable(responseSet, this.props.currentUser) &&
@@ -181,13 +185,6 @@ export default class ResponseSetShow extends Component {
             }
             {isExtendable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
-            }
-            {isRetirable(responseSet, this.props.currentUser) &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.props.retireResponseSet(responseSet.id);
-                return false;
-              }}>Retire</a>
             }
             {isSimpleEditable(responseSet, this.props.currentUser) &&
               <div className="btn-group">
@@ -215,10 +212,17 @@ export default class ResponseSetShow extends Component {
                 </ul>
               </div>
             }
+            {isRetirable(responseSet, this.props.currentUser) &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                return false;
+              }}>{this.publishModal()}Retire</a>
+            }
             {isPublishable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
-                this.setState({showPublishModal: true});
+                this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
                 return false;
               }}>{this.publishModal()}Publish</a>
             }
@@ -348,12 +352,12 @@ export default class ResponseSetShow extends Component {
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Published (publicly available)
+                  <strong>Visibility: </strong>Public
                 </div>
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'draft' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Draft (authors and publishers only)
+                  <strong>Visibility: </strong>Private (authors and publishers only)
                 </div>
                 }
                 { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&

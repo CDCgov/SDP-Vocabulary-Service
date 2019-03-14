@@ -70,10 +70,10 @@ class SurveyDedupe extends Component {
           <Modal.Body>
             <p>Are you sure you want to make the following changes:</p>
             <ul>
-              <li>The draft {this.state.viewType} from your survey will be replaced everywhere it is used in the vocabulary service.</li>
-              <li>"{draft.content || draft.name}" from your survey will be deleted and the preferred "{dupeItem.name}" will show up on any draft sections / surveys where your duplicate was removed.</li>
+              <li>The private draft {this.state.viewType} from your survey will be replaced everywhere it is used in the vocabulary service.</li>
+              <li>"{draft.content || draft.name}" from your survey will be deleted and the preferred "{dupeItem.name}" will show up on any private draft sections / surveys where your duplicate was removed.</li>
             </ul>
-            <p><strong>NOTE: </strong>This is a <strong>draft</strong> item. Accordingly, this action WILL delete and replace to remove redundancy and increase reuse in the system.</p>
+            <p><strong>NOTE: </strong>This is a <strong>private draft</strong> item. Accordingly, this action WILL delete and replace to remove redundancy and increase reuse in the system.</p>
           </Modal.Body>
           <br/>
           <br/>
@@ -104,7 +104,7 @@ class SurveyDedupe extends Component {
               <li>The {this.state.viewType} from your survey will be moved to the "Duplicate" content stage and marked as such on its details page.</li>
               <li>"{draft.content || draft.name}" from your survey will provide a link to the preferred "{dupeItem.name}" on its details page under the "Duplicate of:" field.</li>
             </ul>
-            <p><strong>NOTE: </strong>This is a <strong>published</strong> item. Accordingly, this action WILL NOT replace the item marked as duplicate with the linked item on any published surveys or sections. An author must revise these published items. This action allows you to indicate which item is a preferred replacement to promote harmonization and reduce redundancy.</p>
+            <p><strong>NOTE: </strong>This is a <strong>publicly published</strong> item. Accordingly, this action WILL NOT replace the item marked as duplicate with the linked item on any public surveys or sections. An author must revise these public items. This action allows you to indicate which item is a preferred replacement to promote harmonization and reduce redundancy.</p>
           </Modal.Body>
           <br/>
           <br/>
@@ -170,7 +170,7 @@ class SurveyDedupe extends Component {
         }
         <h2 className="h4">Potential Duplicate Questions ({qCount})</h2>
         <table className="table table-dark-header">
-          <caption className="sr-only">Information about potential duplicate draft questions in this survey</caption>
+          <caption className="sr-only">Information about potential duplicate questions in this survey</caption>
           <thead>
             <tr>
               <th scope="col" id="name-desc-column">Name &amp; Description</th>
@@ -190,8 +190,8 @@ class SurveyDedupe extends Component {
                   return (
                     <tr key={j}>
                       <td scope="row" headers={`section_${i} name-desc-column`}><text>{question.draftQuestion.content}</text><br/><span className="small">{question.draftQuestion.description}</span></td>
-                      {question.draftQuestion.status === 'published' && <td headers={`section_${i} vis-column`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Published</td>}
-                      {question.draftQuestion.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
+                      {question.draftQuestion.status === 'published' && <td headers={`section_${i} vis-column`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
+                      {question.draftQuestion.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                       <td headers={`section_${i} response-column`}><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
                       <td headers={`section_${i} category-column`}>{question.draftQuestion.category}</td>
                       <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${question.draftQuestion.content}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewQuestionIndex: j, potentialDupes: question.potentialDuplicates})}>View</button></td>
@@ -227,7 +227,7 @@ class SurveyDedupe extends Component {
         }
         <h2 className="h4">Potential Duplicate Response Sets ({rsCount})</h2>
         <table className="table table-dark-header">
-          <caption className="sr-only">Information about potential duplicate draft response sets in this survey</caption>
+          <caption className="sr-only">Information about potential duplicate response sets in this survey</caption>
           <thead>
             <tr>
               <th scope="col" id="name-desc-column">Name &amp; Description</th>
@@ -247,8 +247,8 @@ class SurveyDedupe extends Component {
                   return (
                     <tr key={j}>
                       <td scope="row" headers={`section_${i} name-desc-column`}><text>{responseSet.draftResponseSet.name}</text><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
-                      {responseSet.draftResponseSet.status === 'published' && <td headers={`section_${i} vis-column`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Published</td>}
-                      {responseSet.draftResponseSet.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
+                      {responseSet.draftResponseSet.status === 'published' && <td headers={`section_${i} vis-column`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
+                      {responseSet.draftResponseSet.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                       <td headers={`section_${i} linked-column`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</td>
                       <td headers={`section_${i} responses-column`}>{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ')}</td>
                       <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${responseSet.draftResponseSet.name}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewResponseSetIndex: j, potentialDupes: responseSet.potentialDuplicates})}>View</button></td>
@@ -357,7 +357,7 @@ class SurveyDedupe extends Component {
           <h3 className="h4">Duplicate Question</h3>
           <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></p>
           <table className="table table-dark-header">
-            <caption className="sr-only">Information about potential duplicate draft questions in this survey</caption>
+            <caption className="sr-only">Information about potential duplicate questions in this survey</caption>
             <thead>
               <tr>
                 <th scope="col" id="name-desc-q-column">Question Name &amp; Description</th>
@@ -369,8 +369,8 @@ class SurveyDedupe extends Component {
             <tbody>
               <tr className="duplicate-row">
                 <td scope="row" headers="name-desc-q-column"><a href={`/#/questions/${question.draftQuestion.id}`} target="_blank">{question.draftQuestion.content}</a><br/><span className="small">{question.draftQuestion.description}</span></td>
-                {question.draftQuestion.status === 'published' && <td headers="vis-q-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Published</td>}
-                {question.draftQuestion.status === 'draft' && <td headers="vis-q-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
+                {question.draftQuestion.status === 'published' && <td headers="vis-q-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
+                {question.draftQuestion.status === 'draft' && <td headers="vis-q-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                 <td headers="response-type-q-column"><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
                 <td headers="category-q-column">{question.draftQuestion.category}</td>
               </tr>
@@ -469,7 +469,7 @@ class SurveyDedupe extends Component {
           <h3 className="h4">Duplicate Response Set</h3>
           <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></p>
           <table className="table">
-            <caption>Information about potential duplicate draft response sets in this survey</caption>
+            <caption>Information about potential duplicate response sets in this survey</caption>
             <thead>
               <tr className="active">
                 <th scope="col" id="name-desc-rs-column">Name &amp; Description</th>
@@ -481,8 +481,8 @@ class SurveyDedupe extends Component {
             <tbody>
               <tr className="duplicate-row">
                 <td scope="row" headers="name-desc-rs-column"><a href={`/#/responseSets/${responseSet.draftResponseSet.id}`} target="_blank">{responseSet.draftResponseSet.name}</a><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
-                {responseSet.draftResponseSet.status === 'published' && <td headers="vis-rs-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Published</td>}
-                {responseSet.draftResponseSet.status === 'draft' && <td headers="vis-rs-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Draft</td>}
+                {responseSet.draftResponseSet.status === 'published' && <td headers="vis-rs-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
+                {responseSet.draftResponseSet.status === 'draft' && <td headers="vis-rs-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                 <td headers="linked-rs-column"><a target='_blank' href={`/#/questions/${responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.id}`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</a></td>
                 <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tagList/gi, (matched)=>{
                   var mapObj = {
@@ -592,17 +592,17 @@ class SurveyDedupe extends Component {
             <div className="import-note warning">
               <strong>Potential duplicate {this.state.viewType}s</strong><br />
               This survey contains  {this.state.viewType}s which may be duplicates of existing {this.state.viewType}s in the Vocabulary Service.
-              You may select an existing {this.state.viewType} to replace draft content or link published content to the suspected duplicate {this.state.viewType} in the survey. These replacements and linkages will help curate the content and reduce redundancy while promoting reuse.
+              You may select an existing {this.state.viewType} to replace private content or link public content to the suspected duplicate {this.state.viewType} in the survey. These replacements and linkages will help curate the content and reduce redundancy while promoting reuse.
             </div>
             <div className="tab-pane active step-focus" id="question-list" role="tabpanel" aria-hidden={this.state.viewType !== 'question'} aria-labelledby="question-list-tab">
               {this.state.viewPage === 'all' && this.viewAllDupes(qCount)}
               {this.state.viewPage === 'single' && this.viewSingleDupe(qCount)}
-              {this.state.viewType === 'question' && qCount < 1 && <p>No duplicate draft questions detected on this survey</p>}
+              {this.state.viewType === 'question' && qCount < 1 && <p>No duplicate questions detected on this survey</p>}
             </div>
             <div className="tab-pane" id="response-set-list" role="tabpanel" aria-hidden={this.state.viewType !== 'response set'} aria-labelledby="response-set-list-tab">
               {this.state.viewPage === 'all' && this.viewAllRSDupes(rsCount)}
               {this.state.viewPage === 'single' && this.viewSingleRSDupe(rsCount)}
-              {this.state.viewType === 'response set' && rsCount < 1 && <p>No duplicate draft response sets detected on this survey</p>}
+              {this.state.viewType === 'response set' && rsCount < 1 && <p>No duplicate response sets detected on this survey</p>}
             </div>
           </div>
         </div>

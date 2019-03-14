@@ -386,8 +386,8 @@ class DashboardSearch extends SearchStateComponent {
                       className="form-btn-group"
                       >
                       <ToggleButton value={''} onClick={() => this.toggleStatus('')}>Any</ToggleButton>
-                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Draft (Authors Only)</ToggleButton>
-                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Published (Public)</ToggleButton>
+                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Private (Authors Only)</ToggleButton>
+                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Public</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>

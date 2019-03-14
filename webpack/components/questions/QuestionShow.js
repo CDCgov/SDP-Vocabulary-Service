@@ -28,7 +28,7 @@ import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGr
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, collapseSectionPath: [], selectedTab: 'main', showDeleteModal: false, showPublishModal: false };
+    this.state = { tagModalOpen: false, collapseSectionPath: [], selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
   }
 
   componentDidMount() {
@@ -112,7 +112,7 @@ export default class QuestionShow extends Component {
           <Modal.Body>
             <p>Are you sure you want to delete this question? This action cannot be undone.</p>
             <p><strong>Delete Question: </strong>This will delete the question but not any of the other items created or associated with it</p>
-            <p><strong>Delete All: </strong>This will delete the question and all other unused draft response sets associated with it</p>
+            <p><strong>Delete All: </strong>This will delete the question and all other unused private draft response sets associated with it</p>
           </Modal.Body>
           <br/>
           <br/>
@@ -147,13 +147,15 @@ export default class QuestionShow extends Component {
       <div className="static-modal">
         <Modal animation={false} show={this.state.showPublishModal} onHide={()=>this.setState({showPublishModal: false})} role="dialog" aria-label="Publish Confirmation Modal">
           <Modal.Header>
-            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Publish Confirmation</Modal.Title>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> {this.state.publishOrRetire} Confirmation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure you want to publish this question?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p>
+            {this.state.publishOrRetire === 'Publish' && <div><p>Are you sure you want to publish this question?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p></div>}
+            {this.state.publishOrRetire === 'Retire' && <div><p>Are you sure you want to retire this content?</p><p>The content stage can be changed later.</p></div>}
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => this.props.handlePublish(this.props.question)} bsStyle="primary">Confirm Publish</Button>
+            {this.state.publishOrRetire === 'Retire' && <Button onClick={() => this.props.retireQuestion(this.props.question.id)} bsStyle="primary">Confirm Retire</Button>}
+            {this.state.publishOrRetire === 'Publish' && <Button onClick={() => this.props.handlePublish(this.props.question)} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
@@ -166,8 +168,9 @@ export default class QuestionShow extends Component {
       <Col md={9} className="maincontent">
         {this.props.currentUser && this.props.currentUser.id &&
           <div className="action_bar no-print">
-            {isEditable(question, this.props.currentUser) &&
+            {isSimpleEditable(question, this.props.currentUser) &&
               <PublisherLookUp publishers={this.props.publishers}
+                             publishOrRetire={question.status === 'draft' ? 'publish' : 'retire'}
                              itemType="Question" />
             }
             {isGroupable(question, this.props.currentUser) &&
@@ -181,9 +184,6 @@ export default class QuestionShow extends Component {
             }
             {isExtendable(question, this.props.currentUser) &&
               <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
-            }
-            {isRetirable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={() => this.props.retireQuestion(question.id) }>Retire</button>
             }
             {isSimpleEditable(question, this.props.currentUser) &&
               <div className="btn-group">
@@ -211,8 +211,11 @@ export default class QuestionShow extends Component {
                 </ul>
               </div>
             }
+            {isRetirable(question, this.props.currentUser) &&
+              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true, publishOrRetire: 'Retire'}) }>{this.publishModal()}Retire</button>
+            }
             {isPublishable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true}) }>{this.publishModal()}Publish</button>
+              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true, publishOrRetire: 'Publish'}) }>{this.publishModal()}Publish</button>
             }
             {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -326,12 +329,12 @@ export default class QuestionShow extends Component {
                 </div>}
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Published (publicly available)
+                  <strong>Visibility: </strong>Public
                 </div>
                 }
                 { this.props.currentUser && question.status && question.status === 'draft' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Draft (authors and publishers only)
+                  <strong>Visibility: </strong>Private (authors and publishers only)
                 </div>
                 }
                 { question.parent &&

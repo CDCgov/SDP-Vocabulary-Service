@@ -71,7 +71,7 @@ class SurveyEditContainer extends Component {
       },
       {
         title: 'Survey Details',
-        text: 'Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a draft of the content (this content will not be public until it is published).',
+        text: 'Edit the various survey details on the right side of the page. Select save in the top right of the page when done editing to save a private draft of the content (this content will not be public until it is published).',
         selector: '.survey-edit-details',
         position: 'left',
       },
