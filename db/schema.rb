@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181022163639) do
+ActiveRecord::Schema.define(version: 20190304155018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,6 +145,9 @@ ActiveRecord::Schema.define(version: 20181022163639) do
     t.string "content_stage", default: "Draft"
     t.integer "duplicate_of"
     t.integer "minor_change_count", default: 0
+    t.string "suggested_replacement_of"
+    t.datetime "curated_at"
+    t.string "suggested_replacement_of"
     t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["created_by_id"], name: "index_questions_on_created_by_id"
     t.index ["response_type_id"], name: "index_questions_on_response_type_id"
@@ -171,6 +174,9 @@ ActiveRecord::Schema.define(version: 20181022163639) do
     t.string "content_stage", default: "Draft"
     t.integer "duplicate_of"
     t.integer "minor_change_count", default: 0
+    t.string "suggested_replacement_of"
+    t.datetime "curated_at"
+    t.string "suggested_replacement_of"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id"
     t.index ["updated_by_id"], name: "index_response_sets_on_updated_by_id"
   end

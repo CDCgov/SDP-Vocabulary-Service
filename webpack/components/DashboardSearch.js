@@ -464,16 +464,23 @@ class DashboardSearch extends SearchStateComponent {
     this.props.search(this.currentSearchParameters());
   }
 
+  onEnter(e) {
+    if(e.key === 'Enter') {
+      e.preventDefault();
+      this.onFormSubmit(e);
+    }
+  }
+
   render() {
     return (
-    <form onSubmit={this.onFormSubmit}>
+    <div>
       {this.advSearchModal()}
       <Row>
         <Col md={12}>
           <div className="input-group search-group">
             <Autocomplete
               value={this.state.searchTerms}
-              inputProps={{ id: 'search', className: 'search-input', name: 'search', type: 'text', tabIndex: '4', 'aria-label': 'Dashboard Search Bar', placeholder: `${this.props.placeholder || "Search..."}` }}
+              inputProps={{ id: 'search', className: 'search-input', name: 'search', type: 'text', tabIndex: '4', 'aria-label': 'Dashboard Search Bar', placeholder: `${this.props.placeholder || "Search..."}`, onKeyPress: event => this.onEnter(event) }}
               wrapperStyle={{}}
               autoHighlight={false}
               items={this.props.suggestions || []}
@@ -495,7 +502,7 @@ class DashboardSearch extends SearchStateComponent {
               )}
             />
             <span className="input-group-btn">
-              <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="Click to submit search" type="submit"><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
+              <button id="search-btn" tabIndex="4" className="search-btn search-btn-default" aria-label="Click to submit search" onClick={(e)=>this.onFormSubmit(e)}><i className="fa fa-search search-btn-icon" aria-hidden="true"></i></button>
             </span>
           </div>
           <div>
@@ -568,7 +575,7 @@ class DashboardSearch extends SearchStateComponent {
           </div><br/>
         </Col>
       </Row>
-    </form>
+    </div>
     );
   }
 }

@@ -66,13 +66,13 @@ class ResponseSet < ApplicationRecord
     new_revision
   end
 
-  def potential_duplicates(current_user, question)
+  def potential_duplicates(current_user, question, date_filter = false)
     current_user_id = current_user ? current_user.id : nil
     current_user_groups = current_user ? current_user.groups : []
-    rs_results = SDP::Elasticsearch.find_duplicates(self, current_user_id, current_user_groups)
+    rs_results = SDP::Elasticsearch.find_duplicates(self, current_user_id, current_user_groups, date_filter)
     if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
       { draft_response_set: { id: id, linked_question: { id: question.id, content: question.content }, status: status, content_stage: content_stage,
-                              name: name, description: description, responses: responses },
+                              name: name, description: description, responses: responses, curated_at: curated_at },
         potential_duplicates: rs_results['hits']['hits'] }
     else
       false
@@ -83,7 +83,7 @@ class ResponseSet < ApplicationRecord
     batch.add_to_batch(self, :response_sets) do |rs_results|
       if rs_results && rs_results['hits'] && rs_results['hits']['total'] > 0
         { draft_response_set: { id: id, linked_question: { id: question.id, content: question.content }, status: status, content_stage: content_stage,
-                                name: name, description: description, responses: responses },
+                                name: name, description: description, responses: responses, curated_at: curated_at },
           potential_duplicates: rs_results['hits']['hits'] }
       else
         false
@@ -103,6 +103,10 @@ class ResponseSet < ApplicationRecord
 
   def link_to_duplicate(replacement)
     self.duplicate_of = replacement
+    rs_replacement = ResponseSet.find(replacement)
+    rs_replacement.suggested_replacement_of = '' if rs_replacement.suggested_replacement_of.nil?
+    rs_replacement.suggested_replacement_of << "#{id} "
+    rs_replacement.save!
     self.content_stage = 'Duplicate'
     self.duplicates_replaced_count += 1
   end

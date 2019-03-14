@@ -55,7 +55,7 @@ pipeline {
 
         echo "Starting elasticsearch..."
         timeout(time: 5, unit: 'MINUTES') {
-          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} | oc create -f -'
+          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.6 | oc create -f -'
           waitUntil {
             script {
               sleep time: 15, unit: 'SECONDS'
@@ -105,6 +105,19 @@ pipeline {
       }
     }
 
+    stage('SonarQube Scan') {
+      agent { label 'jenkins-agent-sonarqube' }
+
+      steps {
+        script {
+          def scannerHome = tool 'SonarQube Scanner 3.3'
+          withSonarQubeEnv('SDP') {
+           sh "${scannerHome}/bin/sonar-scanner -X"
+          }
+        }
+      }
+    }
+
     stage('Publish Results') {
       steps {
         publishBrakeman 'reports/brakeman.html'
@@ -118,6 +131,8 @@ pipeline {
     }
 
     stage('Build for Dev Env') {
+      agent any
+
       when {
         branch 'development'
       }

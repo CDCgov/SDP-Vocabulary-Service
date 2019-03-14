@@ -265,15 +265,15 @@ class SectionEdit extends Component {
     this.setState(newState);
   }
 
-  findLinkedResponseSets(sectionNestedItems, addedResponseSets){
+  findLinkedResponseSets(sectionNestedItems){
     var linkedResponseSetMap = {};
-    var otherResponseSets = union(this.addedResponseSets || addedResponseSets, sectionNestedItems.map((sni) => sni.responseSetId));
     sectionNestedItems.map((sni) => {
       var linkedResponseSets = [];
       var qId = sni.questionId || -1;
       if(this.props.questions[qId] && this.props.questions[qId].responseSets && this.props.questions[qId].responseSets.length > 0) {
         linkedResponseSets = this.props.questions[qId].responseSets || [];
       }
+      var otherResponseSets = union(this.addedResponseSets, [sni.responseSetId]);
       linkedResponseSets = union(linkedResponseSets, otherResponseSets);
       linkedResponseSetMap[sni.questionId] = compact(linkedResponseSets.map((rsId) => this.props.responseSets[rsId]));
     });
@@ -376,11 +376,11 @@ class SectionEdit extends Component {
         <form onSubmit={this.handleSubmit}>
           <Errors errors={this.state.errors} />
             <div className="form-inline">
-              <button tabIndex="3" className="btn btn-default btn-sm" disabled><span className="fa fa-navicon"></span><span className="sr-only">Edit Action Menu</span></button>
               <input tabIndex="3" className='btn btn-default pull-right' name="Save Section" type="submit" value={`Save`}/>
               <button tabIndex="3" className="btn btn-default pull-right" disabled>Export</button>
               {this.cancelButton()}
             </div>
+            <br/>
             <hr />
             <div className="section-group">
               <label htmlFor="section-name" hidden>Name</label>

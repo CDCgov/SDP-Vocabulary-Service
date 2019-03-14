@@ -1,6 +1,6 @@
 json.extract! response_set, :id, :name, :description, :oid, :created_by, :created_by_id, :tag_list, \
               :status, :version, :most_recent, :most_recent_published, :version_independent_id, :content_stage, \
-              :questions, :created_at, :updated_at, :parent, :published_by, :source, :groups, :preferred, :duplicate_of
+              :questions, :created_at, :updated_at, :parent, :published_by, :source, :groups, :preferred, :duplicate_of, :suggested_replacement_of
 json.url response_set_url(response_set, format: :json)
 
 json.all_versions response_set.all_versions do |rs|

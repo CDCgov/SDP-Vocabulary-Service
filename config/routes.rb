@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     get :parent_items, on: :member
+    get :all_dupes, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member
@@ -78,6 +79,7 @@ Rails.application.routes.draw do
     put :remove_from_group, on: :member
     put :mark_as_duplicate, on: :member
     put :link_to_duplicate, on: :member
+    put :mark_as_reviewed, on: :member
     put :update_tags, on: :member
   end
   resources :comments do
@@ -88,6 +90,7 @@ Rails.application.routes.draw do
     get :revise, on: :member
     get :usage, on: :member
     get :more_responses, on: :member
+    get :all_dupes, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member
@@ -95,6 +98,7 @@ Rails.application.routes.draw do
     put :remove_from_group, on: :member
     put :mark_as_duplicate, on: :member
     put :link_to_duplicate, on: :member
+    put :mark_as_reviewed, on: :member
     put :update_tags, on: :member
   end
 

@@ -88,16 +88,16 @@
         "filter": {
           "sdpstop": {
             "type": "stop",
-            "stopwords": ["patient", "subject", "case", "again", "against", "all","am", "an", "and", "any", "are", "as", "at", "be", "because",
+            "stopwords": ["patient", "subject", "case", "a", "again", "against", "all","am", "an", "and", "any", "are", "as", "at", "be", "because",
               "been", "before", "being", "below", "between", "both", "but", "by", "could", "did", "do", "does", "doing", "down",
               "during", "each", "few", "for", "from", "further", "had", "has", "have", "having", "he", "he'd", "he'll", "he's", "her",
               "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if",
-              "in", "into", "is", "it", "it's", "its", "itself", "let's", "me", "more", "most", "my", "myself", "nor", "of", "on", "once",
+              "in", "into", "is", "it", "it's", "its", "itself", "let's", "me", "more", "most", "my", "myself", "no", "not", "nor", "of", "on", "once",
               "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "she", "she'd", "she'll", "she's",
               "should", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there",
               "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under",
               "until", "up", "very", "was", "we", "we'd", "we'll", "we're", "we've", "were", "what", "what's", "when", "when's", "where",
-              "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "would", "you", "you'd", "you'll", "you're",
+              "where's", "which", "while", "who", "who's", "whom", "why", "why's", "will", "with", "would", "you", "you'd", "you'll", "you're",
               "you've", "your", "yours", "yourself", "yourselves"]
           },
           "shingle": {
@@ -118,7 +118,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -131,7 +132,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
               "type": "text",
@@ -140,7 +142,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "displayName": {
               "type": "text",
@@ -149,7 +152,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -227,7 +231,8 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -249,7 +254,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "sectionNestedItems": {
           "properties": {
@@ -281,7 +287,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "codeSystem": {
                   "type": "text",
@@ -290,7 +297,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "displayName": {
                   "type": "text",
@@ -299,7 +307,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 }
               }
             },
@@ -437,17 +446,20 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
         "codes": {
           "properties": {
             "code": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystemOid": {
               "type": "text"
@@ -456,7 +468,8 @@
               "type": "date"
             },
             "displayName": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -465,6 +478,9 @@
           "analyzer": "sdpstandard"
         },
         "createdAt": {
+          "type": "date"
+        },
+        "curatedAt": {
           "type": "date"
         },
         "createdBy": {
@@ -538,7 +554,8 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -570,7 +587,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "responseSets": {
           "properties": {
@@ -651,7 +669,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -783,7 +802,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -793,10 +813,12 @@
         "codes": {
           "properties": {
             "code": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystemOid": {
               "type": "text"
@@ -805,11 +827,15 @@
               "type": "date"
             },
             "displayName": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
         "createdAt": {
+          "type": "date"
+        },
+        "curatedAt": {
           "type": "date"
         },
         "createdBy": {
@@ -883,7 +909,8 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -893,7 +920,8 @@
         },
         "oid": {
           "type": "text",
-          "analyzer": "sdpoid"
+          "analyzer": "sdpoid",
+          "term_vector" : "with_positions_offsets"
         },
         "mostRecent": {
           "type": "boolean"
@@ -909,7 +937,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "questions": {
           "properties": {
@@ -1071,7 +1100,8 @@
               "type": "text"
             },
             "name": {
-              "type": "text"
+              "type": "text",
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -1088,7 +1118,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "codeSystem": {
               "type": "text",
@@ -1097,7 +1128,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             },
             "displayName": {
               "type": "text",
@@ -1106,7 +1138,8 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
+              },
+              "term_vector" : "with_positions_offsets"
             }
           }
         },
@@ -1184,14 +1217,16 @@
         },
         "description": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "ombApprovalDate": {
           "type": "date"
         },
         "controlNumber": {
           "type": "text",
-          "analyzer": "sdpkey"
+          "analyzer": "sdpkey",
+          "term_vector" : "with_positions_offsets"
         },
         "groups": {
           "type": "text"
@@ -1213,7 +1248,8 @@
         },
         "name": {
           "type": "text",
-          "analyzer": "sdpstandard"
+          "analyzer": "sdpstandard",
+          "term_vector" : "with_positions_offsets"
         },
         "questions": {
           "properties": {
@@ -1226,7 +1262,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "codeSystem": {
                   "type": "text",
@@ -1235,7 +1272,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 },
                 "displayName": {
                   "type": "text",
@@ -1244,7 +1282,8 @@
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
+                  },
+                  "term_vector" : "with_positions_offsets"
                 }
               }
             },

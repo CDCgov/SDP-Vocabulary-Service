@@ -6,15 +6,15 @@ class UpdateIndexJobJobTest < ActiveJob::TestCase
     UpdateIndexJob.perform_now('section', section)
     req = FakeWeb.last_request
     assert_equal 'POST', req.method
-    assert_equal "/vocabulary/section/#{section.id}/_update?retry_on_conflict=5", req.path
+    assert_equal "/section/section/#{section.id}/_update?retry_on_conflict=5", req.path
   end
 
   test 'job calls create index' do
     section = sections(:two)
-    FakeWeb.register_uri(:head, "http://example.com:9200/vocabulary/section/#{section.id}", status: ['404', 'Not Found'])
+    FakeWeb.register_uri(:head, "http://example.com:9200/section/section/#{section.id}", status: ['404', 'Not Found'])
     UpdateIndexJob.perform_now('section', section)
     req = FakeWeb.last_request
     assert_equal 'PUT', req.method
-    assert_equal "/vocabulary/section/#{section.id}?op_type=create", req.path
+    assert_equal "/section/section/#{section.id}?op_type=create", req.path
   end
 end

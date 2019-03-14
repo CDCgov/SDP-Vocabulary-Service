@@ -384,16 +384,17 @@ class Help extends Component {
     return (
       <div className="tab-pane" id="curation" role="tabpanel" aria-hidden={this.state.selectedInstruction !== 'curation'} aria-labelledby="curation-tab">
         <h1 id="curation-wizard">Curation Wizard</h1>
-        <p>The curation wizard shows the user questions and response sets in the SDP-V repository that are similar to content on user’s draft survey. This feature automates the identification of similar questions and response sets created by other programs to maximize harmonization opportunities within SDP-V before draft content is published. Use of this feature will enable proper population of usage statistics in SDP-V to show use of content across programs and systems (e.g., different users must link to the same question in the repository for usage across sections, surveys, programs, and surveillance systems to be transparent in the service). This feature will help to prevent duplicate questions and response sets from cluttering the repository.</p>
+        <p>Description: The curation wizard shows the user questions and response sets in the SDP-V repository that are similar to content on user’s survey. This feature automates the identification of similar questions and response sets created by other programs to maximize harmonization opportunities within SDP-V before draft content is published or during the revision of a published SDP-V survey. The user may select an existing question or response set from the SDP-V repository to replace draft content on their survey or link published content on their survey to another question or response in the service to indicate to other users what content in the repository is the preferred replacement.</p>
+        <p>Value: These replacements and linkages will help curate and reduce redundancy while promoting reuse. Use of this feature will also enable proper population of system usage statistics in SDP-V to show use of content across CDC programs and systems (e.g., different users must link to the same question in the repository for usage across sections, surveys, programs, and surveillance systems to be transparent in the service). This feature will also help to prevent duplicate questions and response sets from cluttering the repository so that content is easier to search, browse, and use.</p>
         <p><strong>How to Find Similar Questions and Response Sets in SDP-V (Surveys)</strong></p>
-        <p>On the Survey Details page, the Curation Wizard feature will be available if the survey is in DRAFT status and the algorithm detects similar questions and/or response sets in the SDP-V repository.</p>
+        <p>The Curation Wizard feature will be available on the Survey Details page if the algorithm detects similar questions and/or response sets from your survey in the SDP-V repository.</p>
         <p>To start the curation wizard, execute the following steps:</p>
         <ul>
           <li>
-            Click on the 'Curate' button on the Survey details page (the number in parentheses indicates the total questions and/or response sets on the draft survey with similar content in SDP-V detected)
+            Click on the 'Curate' button on the Survey details page (the number in parentheses indicates the total questions and/or response sets on the survey with similar content in SDP-V detected)
             <ul>
               <li>
-                If no similar questions and/or response sets are detected on the draft survey, then the “Curate” button will not appear to the user.
+                If no similar questions and/or response sets are detected on the survey, then the “Curate” button will not appear to the user.
               </li>
             </ul>
           </li>
@@ -401,29 +402,30 @@ class Help extends Component {
             The Curate Survey Content Page contains two tabs.
             <ul>
               <li>
-                The ‘Questions’ tab is the default view and lists all questions on the survey with potential duplicates in the repository (the number in parentheses indicates the total questions on the draft survey with similar content detected in SDP-V).
+                The ‘Questions’ tab is the default view and lists all questions on the survey with potential duplicates in the repository (the number in parentheses indicates the total questions on the survey with similar content detected in SDP-V).
               </li>
               <li>
-                The ‘Response Sets’ tab lists all response sets on the survey with potential duplicates in the repository (the number in parentheses indicates the total response sets on the draft survey with similar content detected in SDP-V).
+                The ‘Response Sets’ tab lists all response sets on the survey with potential duplicates in the repository (the number in parentheses indicates the total response sets on the survey with similar content detected in SDP-V).
               </li>
             </ul>
           </li>
           <li>
             Select ‘View’ to see similar questions or response sets in the SDP-V repository with significant overlap in various fields (at least 75%).
             <ul>
-              <li>Click on the Section Name hyperlink to view the section details where the potential duplicate questions were identified on the user’s draft survey</li>
+              <li>Click on the Section Name hyperlink to view the section details where the potential duplicate questions were identified on the user’s survey</li>
             </ul>
           </li>
           <li>
             Scroll through ‘Potential Duplicate Questions’ or ‘Potential Duplicate Response Sets’ by using the left and right arrows on the right-side of the screen
             <ul>
-              <li>Click on the Section Name hyperlink to view the section details where the potential duplicate questions were identified on the user’s draft survey</li>
+              <li>Click on the Section Name hyperlink to view the section details where the potential duplicate questions were identified on the user’s survey</li>
             </ul>
           </li>
           <li>
-            Select ‘Replace’ to mark the draft question or response set on the user’s survey as a duplicate and replace it with the selected question or response set. This action will delete the question or response set marked as a duplicate. This action cannot be undone.
+            Click on the Question Name hyperlink to view the question details of the suggested replacement questions that were identified by the matching algorithm
             <ul>
-              <li>Click on the Question Name hyperlink to view the question details of the suggested replacement questions that were identified by the matching algorithm</li>
+              <li>If the potential duplicate Question or Response Set visibility is “draft”: Select ‘Replace’ to mark the draft question or response set on the user’s survey as a duplicate and replace it with the selected question or response set. A prompt will appear for confirmation of the replacement along with details of the change that states the current question or response set will be replaced everywhere it is used in the vocabulary service and be deleted.This action cannot be undone.</li>
+              <li>If the duplicate Question or Response Set visibility is “published”: A “Link” button appears instead of “Replace”. Selecting “Link” will mark the question or response set as “Duplicate” and move the question or response set to the “Duplicate” content stage. The potential duplicate question or response set details page will provide a link to the question or response set that the author selected (by clicking “Link to”). This action allows authors to indicate which item is a preferred replacement to promote harmonization and reduce redundancy.</li>
             </ul>
           </li>
         </ul>
@@ -453,7 +455,7 @@ class Help extends Component {
           <li>Responses</li>
         </ul>
         <p><strong>Curation Wizard Match Score Algorithm</strong></p>
-        <p>The match score algorithm identifies questions and response sets in the SDP-V repository that are like content on a user’s draft survey based on a match of at least 75% overlap in the fields.</p>
+        <p>The match score algorithm identifies questions and response sets in the SDP-V repository that are like content on a user’s survey based on a match of at least 75% overlap in the fields.</p>
         <p>The match score algorithm compares the following fields to find similar questions:</p>
         <ul>
           <li>Question Name</li>
@@ -1185,7 +1187,8 @@ class Help extends Component {
               <a href="#1.13">1.13</a>,&nbsp;
               <a href="#1.14">1.14</a>,&nbsp;
               <a href="#1.15">1.15</a>,&nbsp;
-              <a href="#1.16">1.16</a>)
+              <a href="#1.16">1.16</a>,&nbsp;
+              <a href="#1.17">1.17</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1195,6 +1198,26 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.17"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/491061249/SDP+Vocabulary+Service+Release+1.17' target='_blank'>1.17</a></strong> <small>(Mar 8, 2019)</small></li>
+              <ol>
+              <li>Added advanced search feature on create Questions page</li>
+              <li>Removed unusable hamburger stacks</li>
+              <li>Reworded Questions on Section Response</li>
+              <li>Implemented "match on fields" values to make human readable</li>
+              <li>Curation Wizard updates</li>
+              <ol type="a"><li>Show User New potential duplicate</li></ol>
+              <ol type="a"><li>More detail added to user's questions</li></ol>
+              <ol type="a"><li>"Retired" content no longer shows</li></ol>
+              <ol type="a"><li>Optimized algorithm</li></ol>
+              <ol type="a"><li>Updated in-app instructions</li></ol>
+              <li>Added Curation Tab to Response Set and Questions</li>
+              <ol type="a"><li>Moved duplicates link to Curation History tab</li></ol>
+              <ol type="a"><li>Added 'Suggested Replacement Of' links</li></ol>
+              <li>Implemented landing page tag for analytics</li>
+              <li>Updated PDV on published questions page</li>
+              <li>SonarCube integration</li>
+              <li>Upgraded Elasticsearch 5 to 6</li>
+              </ol>
             <li id="1.16"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/484081696/SDP+Vocabulary+Service+Release+1.16' target='_blank'>1.16</a></strong> <small>(Feb 5, 2019)</small></li>
               <strong>First 1.16 Sprint</strong> - Focus: Elasticsearch improvements.
               <ol>
