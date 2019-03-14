@@ -154,8 +154,14 @@ export default class QuestionShow extends Component {
             {this.state.publishOrRetire === 'Retire' && <div><p>Are you sure you want to retire this content?</p><p>The content stage can be changed later.</p></div>}
           </Modal.Body>
           <Modal.Footer>
-            {this.state.publishOrRetire === 'Retire' && <Button onClick={() => this.props.retireQuestion(this.props.question.id)} bsStyle="primary">Confirm Retire</Button>}
-            {this.state.publishOrRetire === 'Publish' && <Button onClick={() => this.props.handlePublish(this.props.question)} bsStyle="primary">Confirm Publish</Button>}
+            {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
+              this.props.retireQuestion(this.props.question.id);
+              this.setState({showPublishModal: false});
+            }} bsStyle="primary">Confirm Retire</Button>}
+            {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
+              this.props.handlePublish(this.props.question);
+              this.setState({showPublishModal: false});
+            }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>

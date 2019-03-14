@@ -1136,7 +1136,7 @@ class Help extends Component {
   glossaryTab() {
     return (
       <div className="tab-pane" id="glossary" role="tabpanel" aria-hidden={this.state.selectedTab !== 'glossary'} aria-labelledby="glossary-tab">
-      <h1 ID="glossaryTab">Glossary</h1>
+      <h1 id="glossaryTab">Glossary</h1>
       <br/>
         <p><strong>Author –</strong> An actor (organization, person, or program) responsible for creating and/or maintaining a data collection item, a code set, a value set, or a data collection instrument</p>
         <p><strong>Code –</strong> a succinct label for a concept, variable, value, or question</p>
@@ -1158,7 +1158,7 @@ class Help extends Component {
   whatsnewTab() {
     return (
     <div className={`tab-pane ${this.state.selectedTab === 'whatsnew' && 'active'}`} id="whatsnew" role="tabpanel" aria-hidden={this.state.selectedTab !== 'whatsnew'} aria-labelledby="whatsnew-tab">
-    <h1 ID="whatsnewTab">What&lsquo;s New</h1>
+    <h1 id="whatsnewTab">What&lsquo;s New</h1>
       <br/>
       <p>Here you can find the latest news and information about the CDC Vocabulary Service.
           Read our latest release notes to learn how the application is continuously improving, learn

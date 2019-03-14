@@ -100,8 +100,14 @@ class SurveyShow extends Component {
             {this.state.publishOrRetire === 'Retire' && <div><p>Are you sure you want to retire this content?</p><p>The content stage can be changed later.</p></div>}
           </Modal.Body>
           <Modal.Footer>
-            {this.state.publishOrRetire === 'Retire' && <Button onClick={() => this.props.retireSurvey(this.props.survey.id)} bsStyle="primary">Confirm Retire</Button>}
-            {this.state.publishOrRetire === 'Publish' && <Button onClick={() => this.props.publishSurvey(this.props.survey.id)} bsStyle="primary">Confirm Publish</Button>}
+            {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
+              this.props.retireSurvey(this.props.survey.id);
+              this.setState({showPublishModal: false});
+            }} bsStyle="primary">Confirm Retire</Button>}
+            {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
+              this.props.publishSurvey(this.props.survey.id);
+              this.setState({showPublishModal: false});
+            }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
