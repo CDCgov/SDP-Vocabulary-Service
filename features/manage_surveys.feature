@@ -29,7 +29,7 @@ Feature: Manage Surveys
     When I click on the "Trial Use" link
     Then I should see "Survey Details [TRIAL USE]"
     And I should see "Version 1 (Trial Use)"
-    And I should see "Visibility: Draft (authors and publishers only)"
+    And I should see "Visibility: Private (authors and publishers only)"
 
   Scenario: Show published Survey to unauthenticated user
     Given I have a published Survey with the name "Test Survey" and the description "Survey description"
@@ -128,6 +128,8 @@ Feature: Manage Surveys
    And I should not see "Edit"
    And I should see "Retire"
    When I click on the "Retire" link
+   Then I should see "Are you sure"
+   When I click on the "Confirm Retire" link
    Then I should see "Content Stage: Retired"
 
   Scenario: Edit a draft Survey

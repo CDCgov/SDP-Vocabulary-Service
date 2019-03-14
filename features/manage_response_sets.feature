@@ -111,6 +111,8 @@ Feature: Manage Response Sets
     And I should not see "Edit"
     And I should see "Retire"
     When I click on the "Retire" link
+    Then I should see "Are you sure"
+    When I click on the "Confirm Retire" link
     Then I should see "Content Stage: Retired"
     And I should see "(Retired)"
 

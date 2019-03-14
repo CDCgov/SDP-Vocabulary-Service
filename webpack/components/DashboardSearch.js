@@ -561,7 +561,7 @@ class DashboardSearch extends SearchStateComponent {
               <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category</div>
             }
             {this.state.statusFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.statusFilter} visibility status</div>
+              <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status</div>
             }
             {this.state.stageFilter !== '' &&
               <div className="adv-filter-list">Filtering results by {this.state.stageFilter} content stage</div>
