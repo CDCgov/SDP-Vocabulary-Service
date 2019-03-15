@@ -29,17 +29,17 @@ namespace :usage do
     end
 
     puts 'Calculating User Metrics...'
-        user_info = User.all.map {|u| "#{u.email}, Program: #{u.last_program ? u.last_program.name: 'None'}, Sign in Count: #{u.sign_in_count}"}
+    user_info = User.all.map { |u| " #{u.email}, Program: #{u.last_program ? u.last_program.name : 'None' }, Sign in Count: #{ u.sign_in_count } " }
 
     puts 'Calculating program Metrics...'
     sp_count = 0
     sp_names = SurveillanceProgram.all.map do |sp|
       if sp.surveys.count > 0
-        sp_count+=1
-          sp.name
+        sp_count += 1
+        sp.name
       end
     end
-      sp_names = sp_names.compact
+    sp_names = sp_names.compact
 
     puts "\nMetrics:"
 
@@ -82,7 +82,7 @@ namespace :usage do
     puts "Response Sets: #{ResponseSet.where(preferred: true).count}"
     puts "Questions: #{Question.where(preferred: true).count}"
 
-    puts "\nOMB Approved Survey Count: #{Survey.all.reject {|s| !s.control_number.present? }.compact.count}"
+    puts "\nOMB Approved Survey Count: #{Survey.all.reject { |s| !s.control_number.present? }.compact.count }"
 
     puts "\nNumber of groups: #{Group.all.count}"
     puts "\nDuplicates Replaced:"
@@ -96,8 +96,8 @@ namespace :usage do
 
     puts "\nUser Info:"
     puts '-----------'
-    user_info.each {|u| puts u}
-    admin_users = User.all.map {|u| u.email if u.admin?}.compact
+    user_info.each { |u| puts u }
+    admin_users = User.all.map { |u| u.email if u.admin? }.compact
 
     puts "\nAdmins: #{admin_users.count}"
     puts '-----------'
@@ -108,7 +108,7 @@ namespace :usage do
     puts '-----------'
     puts sdp_team
 
-    other_users = User.all.map {|u| u.email if u.email && !sdp_team.include?(u.email)}.compact
+    other_users = User.all.map { |u| u.email if u.email && !sdp_team.include?(u.email) }.compact
     puts "\nCDC Program Users: #{other_users.count}"
     puts '-----------'
     puts other_users
