@@ -17,5 +17,3 @@ Feature: Manage Notifications
     When I go to the dashboard
     And I click on the "notification-dropdown" link
     And I click on the "User1 has replied to your comment" notification
-    And I wait 2 seconds
-    Then I should see "Name: Test"
