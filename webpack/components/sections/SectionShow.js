@@ -13,7 +13,7 @@ import PublisherLookUp from "../shared_show/PublisherLookUp";
 import GroupLookUp from "../shared_show/GroupLookUp";
 import ChangeHistoryTab from "../shared_show/ChangeHistoryTab";
 import LoadingSpinner from '../../components/LoadingSpinner';
-import BasicAlert from '../../components/BasicAlert';
+import NotFoundAlert from '../../containers/NotFoundAlert';
 
 import Breadcrumb from "../Breadcrumb";
 import TagModal from "../TagModal";
@@ -55,7 +55,7 @@ class SectionShow extends Component {
                   <div className="main-content">
                     {this.props.isLoading && <LoadingSpinner msg="Loading section..." />}
                     {this.props.loadStatus == 'failure' &&
-                      <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                      <NotFoundAlert msg={this.props.loadStatusText} severity='danger' type='section' id={1706} />
                     }
                     {this.props.loadStatus == 'success' &&
                      <BasicAlert msg="Sorry, there is a problem loading this section." severity='warning' />

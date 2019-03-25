@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'elasticsearch', to: 'elasticsearch#index', as: :elasticsearch
   get 'elasticsearch/duplicate_questions' => 'elasticsearch#duplicate_questions'
   get 'elasticsearch/suggestions' => 'elasticsearch#suggestions'
+  get 'public_info', to: 'public_info#index', as: :public_info
 
   get '/landing' => 'landing#index'
   get '/landing/stats' => 'landing#stats'
