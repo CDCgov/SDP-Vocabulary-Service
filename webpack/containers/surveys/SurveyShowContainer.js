@@ -13,7 +13,7 @@ import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { setBreadcrumbPath, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 
 import LoadingSpinner from '../../components/LoadingSpinner';
-import BasicAlert from '../../components/BasicAlert';
+import NotFoundAlert from '../../containers/NotFoundAlert';
 import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
@@ -79,7 +79,7 @@ class SurveyShowContainer extends Component {
                       <div className="main-content">
                         {this.props.isLoading && <LoadingSpinner msg="Loading survey..." />}
                         {this.props.loadStatus == 'failure' &&
-                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                          <NotFoundAlert msg={this.props.loadStatusText} severity='danger' type='Survey' id={this.props.params.surveyId} />
                         }
                       </div>
                   </Col>

@@ -7,8 +7,9 @@ import {
 export function fetchPublicInfo(id,type) {
   return {
     type: FETCH_PUBLIC_INFO,
-    payload: axios.get(routes.publicInfoPath(id,type), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    payload: axios.get(routes.publicInfoPath(), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
+      params: { id: id, type: type }
     })
   };
 }

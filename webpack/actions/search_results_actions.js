@@ -65,8 +65,12 @@ export function fetchSearchResults(context, searchParameters) {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'},
       params: searchParameters.toSearchParameters()
     }).then((response) => {
-      const normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
+      let normalizedData = normalize(response.data.hits.hits, searchResultsSchema);
       unelasticsearchResults(normalizedData.entities);
+      // On section edit RS searches shouldn't overwrite questions in redux store
+      if(window.location.href.includes('sections/new') && searchParameters.type == 'response_set') {
+        delete normalizedData.entities.questions;
+      }
       store.dispatch({type: ADD_ENTITIES_FULFILLED, payload: normalizedData.entities});
       return response;
     })

@@ -4,7 +4,7 @@ import {
 
 export default function publicInfo(state = {}, action) {
   if (action.type === FETCH_PUBLIC_INFO_FULFILLED) {
-    return action.payload;
+    return action.payload.data;
   }
   return state;
 }
