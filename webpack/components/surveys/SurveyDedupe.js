@@ -57,7 +57,6 @@ class SurveyDedupe extends Component {
     }
   }
 
-
   deleteModal() {
     let dupeItem = this.state.selectedDupe;
     let draft = this.state.selectedDraft;
@@ -168,7 +167,7 @@ class SurveyDedupe extends Component {
             <a href={`/#/questions/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>
           </div>
         }
-        <h2 className="h4">Potential Duplicate Questions ({qCount})</h2>
+        <h2 className="h4">Questions from your Survey w/Suggested Replacements ({qCount})</h2>
         <table className="table table-dark-header">
           <caption className="sr-only">Information about potential duplicate questions in this survey</caption>
           <thead>
@@ -225,7 +224,7 @@ class SurveyDedupe extends Component {
             <a href={`/#/responseSets/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>
           </div>
         }
-        <h2 className="h4">Potential Duplicate Response Sets ({rsCount})</h2>
+        <h2 className="h4">Response Sets from Your Survey w/Suggested Replacements ({rsCount})</h2>
         <table className="table table-dark-header">
           <caption className="sr-only">Information about potential duplicate response sets in this survey</caption>
           <thead>
@@ -241,7 +240,7 @@ class SurveyDedupe extends Component {
             return (
               <tbody key={i}>
                 {section.rsCount > 0 && <tr className="section-row">
-                  <td id={`section_${i}`} scope="colgroup" colSpan="4"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate response sets in this section</span></td>
+                  <td id={`section_${i}`} scope="colgroup" colSpan="5"><i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate response sets in this section</span></td>
                 </tr>}
                 {section.dupes.responseSets.map((responseSet, j) => {
                   return (
@@ -347,17 +346,16 @@ class SurveyDedupe extends Component {
       return (
         <div>
           <div className="duplicate-nav-buttons">
-            <h2 className="h4">Viewing {pageIndex} of {qCount} Potential Duplicate Questions <a href="#" onClick={(e) => {
+            <h2 className="h4">Viewing {pageIndex} of {qCount} Questions w/Suggested Replacements <a href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({ viewPage: 'all' });
             }}>(List all)</a></h2>
             <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousQuestion()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate question</span></button>
             <button className="btn btn-default" disabled={pageIndex == qCount} onClick={() => this.nextQuestion()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate question</span></button>
           </div>
-          <h3 className="h4">Duplicate Question</h3>
-          <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></p>
+            <h3 className="h4">Questions from your Survey</h3>
           <table className="table table-dark-header">
-            <caption className="sr-only">Information about potential duplicate questions in this survey</caption>
+            <caption className="sr-only">Information about questions in this survey</caption>
             <thead>
               <tr>
                 <th scope="col" id="name-desc-q-column">Question Name &amp; Description</th>
@@ -376,6 +374,8 @@ class SurveyDedupe extends Component {
               </tr>
             </tbody>
           </table>
+          <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></p>
+          <hr/>
           <div className="pull-right">
             <button className="btn btn-default" id={`review-question-${question.draftQuestion.id}`} onClick={(e) => {
               e.preventDefault();
@@ -394,7 +394,6 @@ class SurveyDedupe extends Component {
               });
             }}>Click to show past suggestions</a></p>}
             <table className="table table-dark-header">
-              <caption className="sr-only">Information about suggested replacement questions</caption>
               <thead>
                 <tr>
                   <th scope="col" id="match-score-column" className="match-score">Match Score</th>
@@ -461,17 +460,15 @@ class SurveyDedupe extends Component {
             <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousResponseSet()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate response set</span></button>
             <button className="btn btn-default" disabled={pageIndex == rsCount} onClick={() => this.nextResponseSet()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate response set</span></button>
           </div>
-
-          <h2 className="h4 pull-right">Viewing {pageIndex} of {rsCount} Potential Duplicate Response Sets <a href="#" onClick={(e) => {
+          <h2 className="h4 pull-right">Viewing {pageIndex} of {rsCount} Response Sets w/Suggested Replacements <a href="#" onClick={(e) => {
             e.preventDefault();
             this.setState({ viewPage: 'all' });
           }}>(List all)</a></h2>
-          <h3 className="h4">Duplicate Response Set</h3>
-          <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></p>
-          <table className="table">
-            <caption>Information about potential duplicate response sets in this survey</caption>
+          <h3 className="h4">Response Set from Your Survey</h3>
+          <table className="table table-dark-header">
+            <caption>Information about response sets in this survey</caption>
             <thead>
-              <tr className="active">
+              <tr>
                 <th scope="col" id="name-desc-rs-column">Name &amp; Description</th>
                 <th scope="col" id="vis-rs-column">Visibility</th>
                 <th scope="col" id="linked-rs-column">Linked Question</th>
@@ -497,6 +494,8 @@ class SurveyDedupe extends Component {
               </tr>
             </tbody>
           </table>
+          <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></p>
+          <hr/>
           <div className="pull-right">
             <button className="btn btn-default" id={`review-rs-${responseSet.draftResponseSet.id}`} onClick={(e) => {
               e.preventDefault();
@@ -514,10 +513,9 @@ class SurveyDedupe extends Component {
               }
             });
           }}>Click to show past suggestions</a></p>}
-            <table className="table">
-              <caption>Information about suggested replacement response sets</caption>
+            <table className="table table-dark-header">
               <thead>
-                <tr className="active">
+                <tr>
                   <th scope="col" id="match-score-column" className="match-score">Match Score</th>
                   <th scope="col" id="name-desc-column">Response Set Name &amp; Description</th>
                   <th scope="col" id="cdc-pref-column">CDC Preferred</th>
@@ -558,6 +556,11 @@ class SurveyDedupe extends Component {
     }
   }
 
+  Capitalize(str){
+    let strCap = str.charAt(0).toUpperCase() + str.slice(1);
+    return strCap;
+  }
+
   render() {
     if(!this.props.survey || !this.props.potentialDupes){
       return <LoadingSpinner msg="Loading survey..." />;
@@ -590,9 +593,10 @@ class SurveyDedupe extends Component {
           </ul>
           <div className="tab-content">
             <div className="import-note warning">
-              <strong>Potential duplicate {this.state.viewType}s</strong><br />
-              This survey contains  {this.state.viewType}s which may be duplicates of existing {this.state.viewType}s in the Vocabulary Service.
-              You may select an existing {this.state.viewType} to replace private content or link public content to the suspected duplicate {this.state.viewType} in the survey. These replacements and linkages will help curate the content and reduce redundancy while promoting reuse.
+              <strong>{this.Capitalize(this.state.viewType)}s from Your Survey are Similar to Others in SDP-V</strong><br/>
+              The Curation Wizard promotes harmonization in data collection by identifying similar questions and response sets in SDP-V and
+              suggesting them to the author of SDP-V survey to consider for reuse. You may decide to replace one or more questions
+              and/or response sets on your survey with the suggested content if it is found to meet your data collection needs.
             </div>
             <div className="tab-pane active step-focus" id="question-list" role="tabpanel" aria-hidden={this.state.viewType !== 'question'} aria-labelledby="question-list-tab">
               {this.state.viewPage === 'all' && this.viewAllDupes(qCount)}

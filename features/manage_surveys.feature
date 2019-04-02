@@ -291,20 +291,20 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I wait 1 seconds
     And I click on the "Curate" button
-    Then I should see "Potential Duplicate Questions (2)"
+    Then I should see "Questions from your Survey w/Suggested Replacements (2)"
     And I should see "Test Section (2)"
     And I should see "Response Sets (1)"
     When I click on the "view-single-What is your gender?" button
-    Then I should see "Viewing 1 of 2 Potential Duplicate Questions"
+    Then I should see "Viewing 1 of 2 Questions w/Suggested Replacements"
     When I click on the "Switch to the next potential duplicate question" button
-    Then I should see "Viewing 2 of 2 Potential Duplicate Questions"
+    Then I should see "Viewing 2 of 2 Questions w/Suggested Replacements"
     When I click on the "select-question-What is your name? Dupe" button
     Then I should see "Select & Replace Confirmation"
     When I click on the "Cancel" button
     And I click on the "(List all)" link
     Then I should see "Test Section (2)"
     When I click on the "Response Sets (1)" link
-    Then I should see "Potential Duplicate Response Sets (1)"
+    Then I should see "Response Sets from Your Survey w/Suggested Replacements (1)"
     And I click on the "view-single-Gender Partial" button
     Then I should see "Suggested Replacement Response Sets ("
     When I click on the "select-response-set-Gender Partial dupe" button
