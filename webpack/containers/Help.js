@@ -1201,70 +1201,29 @@ class Help extends Component {
             <li id="1.17"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/491061249/SDP+Vocabulary+Service+Release+1.17' target='_blank'>1.17</a></strong> <small>(Mar 8, 2019)</small></li>
               <ol>
               <li>Added advanced search feature on create Questions page</li>
-              <li>Removed unusable hamburger stacks</li>
-              <li>Reworded Questions on Section Response</li>
-              <li>Implemented "match on fields" values to make human readable</li>
-              <li>Curation Wizard updates</li>
-              <ol type="a"><li>Show User New potential duplicate</li></ol>
-              <ol type="a"><li>More detail added to user's questions</li></ol>
-              <ol type="a"><li>"Retired" content no longer shows</li></ol>
-              <ol type="a"><li>Optimized algorithm</li></ol>
-              <ol type="a"><li>Updated in-app instructions</li></ol>
-              <li>Added Curation Tab to Response Set and Questions</li>
-              <ol type="a"><li>Moved duplicates link to Curation History tab</li></ol>
-              <ol type="a"><li>Added 'Suggested Replacement Of' links</li></ol>
-              <li>Implemented landing page tag for analytics</li>
-              <li>Updated PDV on public questions page</li>
-              <li>SonarCube integration</li>
-              <li>Upgraded Elasticsearch 5 to 6</li>
+              <li>Implemented "matched on fields" values to increase transparency of dashboard results</li>
+              <li>Curation Wizard updates, including:</li>
+              <ol type="a">
+              <li>“Mark as Reviewed” capability to filter out previously reviewed suggestions</li>
+              <li>Filter out "Retired" content from suggestions</li>
+              <li>Optimize match algorithm</li>
+              </ol>
+              <li>Added Curation History Tab to Response Sets and Questions</li>
               </ol>
             <li id="1.16"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/484081696/SDP+Vocabulary+Service+Release+1.16' target='_blank'>1.16</a></strong> <small>(Feb 5, 2019)</small></li>
-              <strong>First 1.16 Sprint</strong> - Focus: Elasticsearch improvements.
               <ol>
-                <li>1.14 released into production</li>
-                <li>1.15 released into integration</li>
-                <li>Changed importer so nested sections are not extended from parent section on import</li>
-                <ol type="a"><li>Validated recommendations with user group</li></ol>
-                <li>Created analyzer documentation for 51 token filter options</li>
-                <li>Updated Developer repository with notes about tokenizers and analyzers</li>
-                <ol type="a"><li><a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/458686465/SDP-V+Developer+Knowledge+Repositor' target='_blank'>SDP-V Developer Knowledge Repository</a></li></ol>
-                </ol>
-            <strong>Second 1.16 Sprint</strong> - Focus: Elasticsearch improvements. Advanced Filter Improvements. Importer Bug Fixes.
-              <ol>
-                <li>1.15 released into production</li>
-                <li>Implemented Stop words</li>
-                <li>Advance search modal rework</li>
-                <ol type="a">
-                  <li>Source as buttons</li>
-                  <li>Duplicate Added</li>
-                  <li>Stage as drop down</li>
-                  <li>OMB date and approval next to each other</li>
-                  </ol>
-                <li>Importer Fixed</li>
-                <ol type="a">
-                  <li>Number Column</li>
-                  <li>Hyperlinks not extracting OID</li>
-                  <li>Error Handling</li>
-                  </ol>
-                <li>Rails/Cucumber test successful on windows</li>
-                <li>Fixed Names with PHIN VADS URLs</li>
-                <li>OMB Number now searchable</li>
-                <li>Changed 'Publically' to 'publicly'</li>
-                <li>Updated advanced search feature down message</li>
-                <li>Updated OMB Approved filter returns</li>
-                <li>Linked PHIN VADS URLs in importer even if not a hyperlink</li>
-                <li>Investigated ability to render SDP-V content as web-based survey</li>
+              <li>Elasticsearch improvements</li>
+              <li>Advanced Filter Improvements</li>
+              <li>Importer Bug Fixes</li>
               </ol>
             <li id="1.15"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/473858095/SDP+Vocabulary+Service+Release+1.15' target='_blank'>1.15</a></strong> <small>(Jan 8, 2019)</small></li>
               <ol>
-                <li>Links in descriptions will open in a new tab</li>
-                <li>Allow duplicate OMB number for more than one survey</li>
-                <li>Improvement of linked content</li>
-                <li>Double quoted exact match and tokenizer changes</li>
-                <li>The tokenizer was updated to expand the token size from 2 to 20</li>
-                <li>The token characters were expanded to include symbols and punctuation to better parse things like OMB numbers and OIDs</li>
-                <li>Curation Wizard load messages</li>
-                <li>Epi Info Export improvement</li>
+              <li>Links in descriptions will open in a new tab</li>
+              <li>Allow duplicate OMB number for more than one survey</li>
+              <li>Improvement of linked content</li>
+              <li>Exact match on dashboard with double quotes</li>
+              <li>Dashboard search optimization and tokenizer changes</li>
+              <li>Epi Info Export improvement</li>
               </ol>
             <li id="1.14"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/463994881/SDP+Vocabulary+Service+Release+1.14' target='_blank'>1.14</a></strong> <small>(Dec 04, 2018)</small></li>
               <ol>
