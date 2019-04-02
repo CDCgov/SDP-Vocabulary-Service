@@ -501,12 +501,12 @@ module SDP
       end
 
       def response_set_for_vads(element)
-        rs = ResponseSet.most_recent_for_oid(element.value_set_oid)
+        rs = ResponseSet.most_recent_for_oid(element.value_set_oid.strip)
         if rs.nil?
           rs = ResponseSet.new(
             created_by: @user, status: 'draft',
             name: element.value_set_tab_name || element.name,
-            source: 'PHIN_VADS', oid: element.value_set_oid
+            source: 'PHIN_VADS', oid: element.value_set_oid.strip
           )
           rs.save!
         end

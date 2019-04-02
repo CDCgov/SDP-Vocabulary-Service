@@ -15,6 +15,7 @@ import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
+import NotFoundAlert from '../../containers/NotFoundAlert';
 import ResponseSetShow from '../../components/response_sets/ResponseSetShow';
 
 import { responseSetProps } from '../../prop-types/response_set_props';
@@ -89,7 +90,7 @@ class ResponseSetShowContainer extends Component {
                       <div className="main-content">
                         {this.props.isLoading && <LoadingSpinner msg="Loading response set..." />}
                         {this.props.loadStatus == 'failure' &&
-                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                          <NotFoundAlert msg={this.props.loadStatusText} severity='danger' type='ResponseSet' id={this.props.params.rsId} />
                         }
                         {this.props.loadStatus == 'success' &&
                          <BasicAlert msg="Sorry, there is a problem loading this response set." severity='warning' />
