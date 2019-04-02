@@ -29,7 +29,7 @@ namespace :usage do
     end
 
     puts 'Calculating User Metrics...'
-    user_info = User.all.map { |u| " #{u.email}, Program: #{u.last_program ? u.last_program.name : 'None' }, Sign in Count: #{ u.sign_in_count } " }
+    user_info = User.all.map { |u| " #{u.email}, Program: #{u.last_program ? u.last_program.name : 'None'}, Sign in Count: #{u.sign_in_count} " }
 
     puts 'Calculating program Metrics...'
     sp_count = 0
@@ -82,7 +82,7 @@ namespace :usage do
     puts "Response Sets: #{ResponseSet.where(preferred: true).count}"
     puts "Questions: #{Question.where(preferred: true).count}"
 
-    puts "\nOMB Approved Survey Count: #{Survey.all.reject { |s| !s.control_number.present? }.compact.count }"
+    puts "\nOMB Approved Survey Count: #{Survey.all.select { |s| s.control_number.present? }.compact.count}"
 
     puts "\nNumber of groups: #{Group.all.count}"
     puts "\nDuplicates Replaced:"
