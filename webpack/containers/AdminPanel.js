@@ -54,6 +54,7 @@ class AdminPanel extends Component {
   }
 
   componentDidMount() {
+    ga('send', 'pageview', window.location.toString());
     this.props.setSteps([
       {
         title: 'Help',
@@ -157,6 +158,7 @@ class AdminPanel extends Component {
             {this.state.success.msg}
           </div>
         }
+        <hr/>
         <div className="input-group search-group">
           <div className="col-md-6 question-form-group">
             <label className="input-label" htmlFor={`${type}-name`}>Name</label>
@@ -172,6 +174,7 @@ class AdminPanel extends Component {
           </div>
         </div>
         <button id="submit-prog-sys" className="btn btn-default pull-right" aria-label={`Click to add new ${type} to list`} type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new item to list</text></i> {`Add new ${type}`}</button>
+        <br/><hr/>
       </form>
     );
   }
@@ -189,6 +192,7 @@ class AdminPanel extends Component {
             {this.state.success.msg}
           </div>
         }
+        <hr/>
         <div className="input-group search-group">
           <div className="col-md-6 question-form-group">
             <label className="input-label" htmlFor="group-name">Name</label>
@@ -200,6 +204,7 @@ class AdminPanel extends Component {
           </div>
         </div>
         <button id="submit-group" className="btn btn-default pull-right" aria-label="Click to add new group to list" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new group to list</text></i> Add new group</button>
+        <br/><hr/>
       </form>
     );
   }
@@ -325,6 +330,21 @@ class AdminPanel extends Component {
     );
   }
 
+  SDPVAnalytics() {
+    return(alert('this is a test.'));
+  }
+
+  analyticsTab() {
+    return(
+      <div className="tab-pane" id="analytics" role="tabpanel" aria-hidden={this.state.selectedTab !== 'analytics'} aria-labelledby="analytics-tab">
+        <h2 id="group-list">Analytics</h2>
+        <hr/>
+        <button id="btnAnalytics" className="btn btn-default pull-left" type="submit" onClick={() => this.SDPVAnalytics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Metrics</i></button>
+        <br/><br/><hr/>
+      </div>
+    );
+  }
+
   render() {
     return (
       <Grid>
@@ -349,11 +369,11 @@ class AdminPanel extends Component {
               <li id="system-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('system-list')} aria-selected={this.state.selectedTab === 'system-list'} aria-controls="system-list">
                 <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
               </li>
-              <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
-                this.props.fetchGroups();
-                this.selectTab('group-list');
-              }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
-                <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+              <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {this.props.fetchGroups(); this.selectTab('group-list');}} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
+              <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+              </li>
+              <li id="analytics-tab" className="nav-item" role="tab" onClick={() => this.selectTab('analytics')} aria-selected={this.state.selectedTab === 'analytics'} aria-controls="analytics">
+                <a className="nav-link" data-toggle="tab" href="#analytics" role="tab">Analytics</a>
               </li>
               <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
                 <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
@@ -365,6 +385,7 @@ class AdminPanel extends Component {
               {this.programTab()}
               {this.systemTab()}
               {this.groupTab()}
+              {this.analyticsTab()}
               {this.elasticTab()}
             </div>
           </Col>
