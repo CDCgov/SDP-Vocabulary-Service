@@ -31,6 +31,7 @@ class ResponseSetShowContainer extends Component {
   }
 
   componentDidMount() {
+    ga('send', 'pageview', window.location.toString());
     if (this.props.responseSet && this.props.responseSet.status === 'published') {
       this.props.fetchResponseSetUsage(this.props.params.rsId);
     }
