@@ -28,6 +28,7 @@ class QuestionShowContainer extends Component {
   }
 
   componentDidMount() {
+    ga('send', 'pageview', window.location.toString());
     if (this.props.question && this.props.question.status === 'published') {
       this.props.fetchQuestionUsage(this.props.params.qId);
     }
