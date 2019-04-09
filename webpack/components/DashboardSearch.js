@@ -16,7 +16,6 @@ import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import values from 'lodash/values';
 import filter from 'lodash/filter';
-import isEmpty from 'lodash/isEmpty';
 import $ from 'jquery';
 
 class DashboardSearch extends SearchStateComponent {
@@ -163,39 +162,31 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   surveillanceProgramsSelect() {
-    if (isEmpty(this.state.surveillancePrograms)) {
-      return <p>No surveillance programs loaded in the database</p>;
-    } else {
-      return (
-        <FormGroup id="search-programs">
-          <label htmlFor="select-prog">Select Programs:</label>
-          <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
-          <select multiple className="form-control" id="select-prog" value={this.state.programFilter} onChange={(e) => this.selectFilters(e, 'programFilter')}>
-            {this.state.surveillancePrograms && values(this.state.surveillancePrograms).map((sp) => {
-              return <option key={sp.id} value={sp.id}>{sp.name}</option>;
-            })}
-          </select>
-        </FormGroup>
-      );
-    }
+    return (
+      <FormGroup id="search-programs">
+        <label htmlFor="select-prog">Select Programs:</label>
+        <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
+        <select multiple className="form-control" id="select-prog" value={this.state.programFilter} onChange={(e) => this.selectFilters(e, 'programFilter')}>
+          {this.state.surveillancePrograms && values(this.state.surveillancePrograms).map((sp) => {
+            return <option key={sp.id} value={sp.id}>{sp.name}</option>;
+          })}
+        </select>
+      </FormGroup>
+    );
   }
 
   surveillanceSystemsSelect() {
-    if (isEmpty(this.state.surveillanceSystems)) {
-      return <p>No surveillance systems loaded in the database</p>;
-    } else {
-      return (
-        <FormGroup id="search-systems">
-          <label htmlFor="select-sys">Select Systems:</label>
-          <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
-          <select multiple className="form-control" id="select-sys" value={this.state.systemFilter} onChange={(e) => this.selectFilters(e, 'systemFilter')}>
-            {this.state.surveillanceSystems && values(this.state.surveillanceSystems).map((ss) => {
-              return <option key={ss.id} value={ss.id}>{ss.name}</option>;
-            })}
-          </select>
-        </FormGroup>
-      );
-    }
+    return (
+      <FormGroup id="search-systems">
+        <label htmlFor="select-sys">Select Systems:</label>
+        <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
+        <select multiple className="form-control" id="select-sys" value={this.state.systemFilter} onChange={(e) => this.selectFilters(e, 'systemFilter')}>
+          {this.state.surveillanceSystems && values(this.state.surveillanceSystems).map((ss) => {
+            return <option key={ss.id} value={ss.id}>{ss.name}</option>;
+          })}
+        </select>
+      </FormGroup>
+    );
   }
 
   toggleMostRecentFilter() {

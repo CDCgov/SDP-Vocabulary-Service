@@ -357,19 +357,59 @@ module SDP
       end
     end
 
-    def self.find_duplicate_questions(content, description)
+    def self.find_duplicate_questions(content, description, current_user_id = nil, groups = [])
+      sort_body = ['_score', { '_script': {
+        'script': "doc['surveillance_systems.id'].values.size()",
+        type: 'number',
+        order: 'desc'
+      } }]
+
+      version_filter = { term: { 'most_recent': true } }
+
+      filter_body = { dis_max: { queries: [
+        { term: { 'createdBy.id': current_user_id } },
+        { match: { status: 'published' } },
+        { terms: { groups: groups } }
+      ] } }
+
+      mlt_body = {
+        more_like_this: {
+          fields: %w[name description],
+          like: [
+            {
+              '_type': 'question',
+              'doc': {
+                'name': content,
+                'description': description
+              }
+            }
+          ],
+          min_term_freq: 1,
+          minimum_should_match: '85%'
+        }
+      }
+
+      search_body = {
+        size: MAX_DUPLICATE_QUESTION_SUGGESTIONS,
+        query: {
+          bool: {
+            filter: [filter_body, version_filter],
+            must: [mlt_body].reject(&:empty?),
+            must_not: [{ match: { content_stage: 'Retired' } }]
+          }
+        },
+        highlight: {
+          pre_tags: ['<strong>'], post_tags: ['</strong>'],
+          fields: {
+            'name': { 'type': 'fvh' }, 'description': { 'type': 'fvh' }
+          }
+        },
+        sort: sort_body
+      }
+
       with_client do |client|
-        client.search(index: 'question',
-                      body: {
-                        query: {
-                          bool: {
-                            filter: { match: { status: 'published' } },
-                            should: [{ match: { name: content } }, { match: { description: description } }],
-                            minimum_should_match: '75%'
-                          }
-                        },
-                        size: MAX_DUPLICATE_QUESTION_SUGGESTIONS
-                      })
+        results = client.search index: 'question', body: search_body
+        return results
       end
     end
 
