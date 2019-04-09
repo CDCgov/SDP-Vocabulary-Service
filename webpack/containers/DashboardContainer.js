@@ -63,7 +63,7 @@ class DashboardContainer extends SearchManagerComponent {
   }
 
   componentWillMount() {
-    ga('send', 'pageview', '/SDP-V/Dasboard';
+    ga('send', 'pageview', '/SDP-V/Dashboard';
     let lastSearch = this.props.lastSearch;
     let searchParameters = new SearchParameters(this.props.lastSearch);
     if(lastSearch.page > 1 && lastSearch.page !== this.state.page) {
