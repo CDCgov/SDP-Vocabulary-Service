@@ -28,6 +28,7 @@ class SectionShowContainer extends Component {
   }
 
   componentDidMount() {
+    ga('send', 'pageview', window.location.toString());
     if (this.props.section){
       this.props.fetchSectionParents(this.props.params.sectionId);
     }
