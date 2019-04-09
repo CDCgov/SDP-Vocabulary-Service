@@ -23,6 +23,7 @@ class CodedSetTableEditContainer extends Component {
   }
 
   componentWillMount() {
+    ga('send', 'pageview', window.location.toString());
     this.props.fetchConceptSystems();
     this.props.fetchTags();
   }
