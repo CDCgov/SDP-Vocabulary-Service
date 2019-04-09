@@ -29,6 +29,7 @@ class SurveyShowContainer extends Component {
   }
 
   componentDidMount() {
+    ga('send', 'pageview', window.location.toString());
     this.props.setSteps([
       {
         title: 'Help',
