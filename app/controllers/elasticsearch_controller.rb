@@ -47,11 +47,13 @@ class ElasticsearchController < ApplicationController
 
   def duplicate_questions
     results = if SDP::Elasticsearch.ping
+                current_user_id = current_user ? current_user.id : -1
+                groups = current_user ? current_user.groups : []
                 content = params[:content]
                 content ||= ''
                 description = params[:description]
                 description ||= ''
-                SDP::Elasticsearch.find_duplicate_questions(content, description)
+                SDP::Elasticsearch.find_duplicate_questions(content, description, current_user_id, groups)
               else
                 SDP::SimpleSearch.find_duplicate_questions(params[:content]).target!
               end
