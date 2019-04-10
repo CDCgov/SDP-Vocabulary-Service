@@ -1189,7 +1189,7 @@ class Help extends Component {
               <a href="#1.15">1.15</a>,&nbsp;
               <a href="#1.16">1.16</a>,&nbsp;
               <a href="#1.17">1.17</a>,&nbsp;
-              <a href="#1.17">1.18</a>)
+              <a href="#1.18">1.18</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1201,13 +1201,9 @@ class Help extends Component {
             <ul>
             <li id="1.18"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/524910593/SDP+Vocabulary+Service+Release+1.18' target='_blank'>1.18</a></strong> <small>(Apr 5, 2019)</small></li>
               <ol>
-              <li>Authors have the ability to request retired content</li>
-              <li>Workflow status updates:</li>
-              <ol type="a">
-              <li>'Draft' has been changed to 'Private'</li>
-              <li>'Published' has been changed to 'Public'</li>
-              </ol>
-              <li>Resource message access update</li>
+              <li>Authors have the ability to request that publishers retire content</li>
+              <li>'Draft' visibility has been changed to 'Private' and 'Published' visibility has been changed to 'Public' to attributes more intuitive</li>
+              <li>"Access denied" message updated for authenticated and non-authenticated users to promote collaboration on private content</li>
               </ol>
             <li id="1.17"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/491061249/SDP+Vocabulary+Service+Release+1.17' target='_blank'>1.17</a></strong> <small>(Mar 8, 2019)</small></li>
               <ol>
