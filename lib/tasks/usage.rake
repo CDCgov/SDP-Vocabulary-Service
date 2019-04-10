@@ -97,18 +97,18 @@ namespace :usage do
     puts "\nUser Info:"
     puts '-----------'
     user_info.each { |u| puts u }
-    admin_users = User.all.map { |u| u.email if u.admin? }.compact
+    # admin_users = User.all.map { |u| u.email if u.admin? }.compact
 
-    puts "\nAdmins: #{admin_users.count}"
+    puts "\nAdmins: 1"
     puts '-----------'
-    puts admin_users
+    puts 'admin@sdpv.local'
 
     sdp_team = ['msq8@cdc.gov', 'ikk1@cdc.gov', 'oef1@cdc.gov', 'njj8@cdc.gov', 'lsj7@cdc.gov', 'nen8@cdc.gov', 'zoo3@cdc.gov', 'onk2@cdc.gov', 'wdd8@cdc.gov', 'oju3@cdc.gov', 'mpx1@cdc.gov', 'kff0@cdc.gov']
     puts "\nSDP Team: #{sdp_team.count}"
     puts '-----------'
     puts sdp_team
 
-    other_users = User.all.map { |u| u.email if u.email && !sdp_team.include?(u.email) }.compact
+    other_users = User.all.map { |u| u.email if u.email && !sdp_team.include?(u.email) && u.email != 'admin@sdpv.local' }.compact
     puts "\nCDC Program Users: #{other_users.count}"
     puts '-----------'
     puts other_users
