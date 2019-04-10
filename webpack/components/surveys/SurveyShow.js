@@ -26,7 +26,7 @@ import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGr
 class SurveyShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false, showPublishModal: false };
+    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
   }
 
   componentDidMount() {
@@ -58,7 +58,7 @@ class SurveyShow extends Component {
           <Modal.Body>
             <p>Are you sure you want to delete this survey? This action cannot be undone.</p>
             <p><strong>Delete Survey: </strong>This will delete the survey but not any of the other items created or associated with it</p>
-            <p><strong>Delete All: </strong>This will delete the survey and all other unused draft sections, questions, and response sets associated with it</p>
+            <p><strong>Delete All: </strong>This will delete the survey and all other unused private draft sections, questions, and response sets associated with it</p>
           </Modal.Body>
           <br/>
           <br/>
@@ -93,13 +93,21 @@ class SurveyShow extends Component {
       <div className="static-modal">
         <Modal animation={false} show={this.state.showPublishModal} onHide={()=>this.setState({showPublishModal: false})} role="dialog" aria-label="Delete Confirmation Modal">
           <Modal.Header>
-            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> Publish Confirmation</Modal.Title>
+            <Modal.Title componentClass="h2"><i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"><text className="sr-only">Warning for</text></i> {this.state.publishOrRetire} Confirmation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure you want to publish this survey and all of its contents?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p>
+            {this.state.publishOrRetire === 'Publish' && <div><p>Are you sure you want to publish this survey and all of its contents?</p><p>Publishing this item will change the visibility of this content to public, making it available to all authenticated and unauthenticated users.</p><p>This action cannot be undone.</p></div>}
+            {this.state.publishOrRetire === 'Retire' && <div><p>Are you sure you want to retire this content?</p><p>The content stage can be changed later.</p></div>}
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => this.props.publishSurvey(this.props.survey.id)} bsStyle="primary">Confirm Publish</Button>
+            {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
+              this.props.retireSurvey(this.props.survey.id);
+              this.setState({showPublishModal: false});
+            }} bsStyle="primary">Confirm Retire</Button>}
+            {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
+              this.props.publishSurvey(this.props.survey.id);
+              this.setState({showPublishModal: false});
+            }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
@@ -111,8 +119,9 @@ class SurveyShow extends Component {
     return (
       <Col md={9} className="maincontent">
         <div className="action_bar no-print">
-          {isEditable(this.props.survey, this.props.currentUser) &&
+          {isSimpleEditable(this.props.survey, this.props.currentUser) &&
             <PublisherLookUp publishers={this.props.publishers}
+                           publishOrRetire={this.props.survey.status === 'draft' ? 'publish' : 'retire'}
                            itemType="Survey" />
           }
           <div className="btn-group">
@@ -132,13 +141,6 @@ class SurveyShow extends Component {
           </div>
           {isGroupable(this.props.survey, this.props.currentUser) &&
             <GroupLookUp item={this.props.survey} addFunc={this.props.addSurveyToGroup} removeFunc={this.props.removeSurveyFromGroup} currentUser={this.props.currentUser} />
-          }
-          {isRetirable(this.props.survey, this.props.currentUser) &&
-            <a className="btn btn-default" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.props.retireSurvey(this.props.survey.id);
-              return false;
-            }}>Retire</a>
           }
           {isSimpleEditable(this.props.survey, this.props.currentUser) &&
             <div className="btn-group">
@@ -166,10 +168,17 @@ class SurveyShow extends Component {
               </ul>
             </div>
           }
+          {isRetirable(this.props.survey, this.props.currentUser) &&
+            <a className="btn btn-default" href="#" onClick={(e) => {
+              e.preventDefault();
+              this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+              return false;
+            }}>{this.publishModal()}Retire</a>
+          }
           {isPublishable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
-              this.setState({showPublishModal: true});
+              this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
               return false;
             }}>{this.publishModal()}Publish</a>
           }
@@ -291,12 +300,12 @@ class SurveyShow extends Component {
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Published (publicly available)
+                  <strong>Visibility: </strong>Public
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'draft' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Draft (authors and publishers only)
+                  <strong>Visibility: </strong>Private (authors and publishers only)
                 </div>
                 }
                 { this.props.survey.parent &&

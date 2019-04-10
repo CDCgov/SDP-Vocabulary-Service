@@ -386,8 +386,8 @@ class DashboardSearch extends SearchStateComponent {
                       className="form-btn-group"
                       >
                       <ToggleButton value={''} onClick={() => this.toggleStatus('')}>Any</ToggleButton>
-                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Draft (Authors Only)</ToggleButton>
-                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Published (Public)</ToggleButton>
+                      <ToggleButton value={'draft'} onClick={() => this.toggleStatus('draft')}>Private (Authors Only)</ToggleButton>
+                      <ToggleButton value={'published'} onClick={() => this.toggleStatus('published')}>Public</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
                   <FormGroup>
@@ -561,7 +561,7 @@ class DashboardSearch extends SearchStateComponent {
               <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category</div>
             }
             {this.state.statusFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.statusFilter} visibility status</div>
+              <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status</div>
             }
             {this.state.stageFilter !== '' &&
               <div className="adv-filter-list">Filtering results by {this.state.stageFilter} content stage</div>

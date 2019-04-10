@@ -65,7 +65,7 @@ class ResponseSetEditContainer extends Component {
       },
       {
         title: 'Action Buttons',
-        text: 'Click save to save a draft of the edited content (this content will not be public until it is published).',
+        text: 'Click save to save a private draft of the edited content (this content will not be public until it is published).',
         selector: '.panel-footer',
         position: 'top',
       }]);

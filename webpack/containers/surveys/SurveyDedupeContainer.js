@@ -67,7 +67,7 @@ class SurveyDedupeContainer extends Component {
             <Col xs={12}>
               <div>
                 <LoadingSpinner msg={!this.state.fetchDuplicatesAttempted ? "Finding Duplicates..." : "Loading survey..."} />
-                <p>If not redirected there may no longer be any duplicates detected for this survey - try refreshing or contacting an administrator)</p>
+                <p>If not redirected there may no longer be any duplicates detected for this survey - try refreshing or contacting an administrator.</p>
               </div>
               {this.props.loadStatus === 'failure' &&
                 <BasicAlert msg={this.props.loadStatusText} severity='danger' />

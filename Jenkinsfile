@@ -93,6 +93,7 @@ pipeline {
           echo "Archiving test artifacts..."
           archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
             fingerprint: true
+          stash allowEmpty: true, includes: 'reports/**,coverage/**', name: 'reports'
         }
 
         success {
@@ -109,6 +110,7 @@ pipeline {
       agent { label 'jenkins-agent-sonarqube' }
 
       steps {
+        unstash 'reports'
         script {
           def scannerHome = tool 'SonarQube Scanner 3.3'
           withSonarQubeEnv('SDP') {

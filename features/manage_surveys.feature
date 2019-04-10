@@ -29,7 +29,7 @@ Feature: Manage Surveys
     When I click on the "Trial Use" link
     Then I should see "Survey Details [TRIAL USE]"
     And I should see "Version 1 (Trial Use)"
-    And I should see "Visibility: Draft (authors and publishers only)"
+    And I should see "Visibility: Private (authors and publishers only)"
 
   Scenario: Show published Survey to unauthenticated user
     Given I have a published Survey with the name "Test Survey" and the description "Survey description"
@@ -128,6 +128,8 @@ Feature: Manage Surveys
    And I should not see "Edit"
    And I should see "Retire"
    When I click on the "Retire" link
+   Then I should see "Are you sure"
+   When I click on the "Confirm Retire" link
    Then I should see "Content Stage: Retired"
 
   Scenario: Edit a draft Survey
@@ -289,20 +291,20 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I wait 1 seconds
     And I click on the "Curate" button
-    Then I should see "Potential Duplicate Questions (2)"
+    Then I should see "Questions from your Survey w/Suggested Replacements (2)"
     And I should see "Test Section (2)"
     And I should see "Response Sets (1)"
     When I click on the "view-single-What is your gender?" button
-    Then I should see "Viewing 1 of 2 Potential Duplicate Questions"
+    Then I should see "Viewing 1 of 2 Questions w/Suggested Replacements"
     When I click on the "Switch to the next potential duplicate question" button
-    Then I should see "Viewing 2 of 2 Potential Duplicate Questions"
+    Then I should see "Viewing 2 of 2 Questions w/Suggested Replacements"
     When I click on the "select-question-What is your name? Dupe" button
     Then I should see "Select & Replace Confirmation"
     When I click on the "Cancel" button
     And I click on the "(List all)" link
     Then I should see "Test Section (2)"
     When I click on the "Response Sets (1)" link
-    Then I should see "Potential Duplicate Response Sets (1)"
+    Then I should see "Response Sets from Your Survey w/Suggested Replacements (1)"
     And I click on the "view-single-Gender Partial" button
     Then I should see "Suggested Replacement Response Sets ("
     When I click on the "select-response-set-Gender Partial dupe" button

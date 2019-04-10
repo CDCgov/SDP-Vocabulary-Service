@@ -138,11 +138,11 @@ export default class SearchResult extends Component {
   resultStatusCondensed(status,version,type,date) {
     if(status === 'published') {
       return(
-          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>published (<text className="sr-only">Item Version Number: </text><span title={type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}>v{version}</span>)</p>
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>public (<text className="sr-only">Item Version Number: </text><span title={type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}>v{version}</span>)</p>
       );
     } else if (status === 'draft') {
       return(
-          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>draft (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>private (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
       );
     } else {
       return(
@@ -227,7 +227,7 @@ export default class SearchResult extends Component {
     } else if (result.responseSets == undefined) {
       return (<li>Click question name to view additional question information.</li>);
     } else {
-      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Author Recommended Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
+      return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Sets: {result.responseSets && result.responseSets.length}</a></li>);
     }
   }
 

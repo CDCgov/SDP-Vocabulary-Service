@@ -13,6 +13,7 @@ import { hideResultControl, toggleResultControl } from '../../actions/display_st
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { clearBreadcrumb, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import NotFoundAlert from '../../containers/NotFoundAlert';
 import BasicAlert from '../../components/BasicAlert';
 import SectionShow from '../../components/sections/SectionShow';
 import { sectionProps } from '../../prop-types/section_props';
@@ -51,7 +52,7 @@ class SectionShowContainer extends Component {
       },
       {
         title: 'Comment Threads',
-        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content.',
+        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content.',
         selector: '.showpage-comments-title',
         position: 'top',
       }]);
@@ -84,7 +85,7 @@ class SectionShowContainer extends Component {
                       <div className="main-content">
                         {this.props.isLoading && <LoadingSpinner msg="Loading section..." />}
                         {this.props.loadStatus == 'failure' &&
-                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                          <NotFoundAlert msg={this.props.loadStatusText} severity='danger' type='Section' id={this.props.params.sectionId} />
                         }
                         {this.props.loadStatus == 'success' &&
                          <BasicAlert msg="Sorry, there is a problem loading this section." severity='warning' />

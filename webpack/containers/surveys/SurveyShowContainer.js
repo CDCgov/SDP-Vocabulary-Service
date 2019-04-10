@@ -13,7 +13,7 @@ import { addPreferred, removePreferred } from '../../actions/preferred_actions';
 import { setBreadcrumbPath, addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 
 import LoadingSpinner from '../../components/LoadingSpinner';
-import BasicAlert from '../../components/BasicAlert';
+import NotFoundAlert from '../../containers/NotFoundAlert';
 import SurveyShow from '../../components/surveys/SurveyShow';
 import { surveyProps } from '../../prop-types/survey_props';
 import { surveySchema } from '../../schema';
@@ -50,7 +50,7 @@ class SurveyShowContainer extends Component {
       },
       {
         title: 'Comment Threads',
-        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content.',
+        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content.',
         selector: '.showpage-comments-title',
         position: 'top',
       }]);
@@ -79,7 +79,7 @@ class SurveyShowContainer extends Component {
                       <div className="main-content">
                         {this.props.isLoading && <LoadingSpinner msg="Loading survey..." />}
                         {this.props.loadStatus == 'failure' &&
-                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                          <NotFoundAlert msg={this.props.loadStatusText} severity='danger' type='Survey' id={this.props.params.surveyId} />
                         }
                       </div>
                   </Col>

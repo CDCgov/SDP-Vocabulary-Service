@@ -183,6 +183,7 @@ Feature: Session Management
     Given I am logged in as test_author@gmail.com
     Then I navigate to a question created by "someone@gmail.com"
     Then I should see "You do not have access to this resource."
+    And I should see "Name: content"
 
   Scenario: Dashboard should display Registration link when user registration is not disable
     User registration is "disabled"

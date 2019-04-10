@@ -14,6 +14,7 @@ import { addBreadcrumbItem } from '../../actions/breadcrumb_actions';
 import { questionProps } from "../../prop-types/question_props";
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
+import NotFoundAlert from '../../containers/NotFoundAlert';
 import QuestionShow  from '../../components/questions/QuestionShow';
 import { questionSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
@@ -55,7 +56,7 @@ class QuestionShowContainer extends Component {
       },
       {
         title: 'Comment Threads',
-        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on published content.',
+        text: 'At the bottom of each details page is a section for public comments. People can view and respond to these comments in threads on public content.',
         selector: '.showpage-comments-title',
         position: 'top',
       }]);
@@ -99,7 +100,7 @@ class QuestionShowContainer extends Component {
                       <div className="main-content">
                         {this.props.isLoading && <LoadingSpinner msg="Loading question..." />}
                         {this.props.loadStatus == 'failure' &&
-                          <BasicAlert msg={this.props.loadStatusText} severity='danger' />
+                          <NotFoundAlert msg={this.props.loadStatusText} severity='danger' type='Question' id={this.props.params.qId} />
                         }
                         {this.props.loadStatus == 'success' &&
                          <BasicAlert msg="Sorry, there is a problem loading this question." severity='warning' />
