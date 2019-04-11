@@ -331,7 +331,8 @@ class AdminPanel extends Component {
   }
 
   SDPVAnalytics() {
-    return(alert('this is a test.'));
+    var fileDownload = requre('js-file-dowload');
+    fileDownload(data, 'UsageMetrics.xlsx');
   }
 
   analyticsTab() {
@@ -341,8 +342,12 @@ class AdminPanel extends Component {
         <hr/>
         <button id="btnAnalytics" className="btn btn-default pull-left" type="submit" onClick={() => this.SDPVAnalytics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics</i></button>
         <br/>
-
         <br/>
+        <br/>
+          Click <a href="/UsageMetrics.xlsx">here</a> to download Usage Metrics.
+        <br/>
+        <br/>
+        
         <hr/>
       </div>
     );
