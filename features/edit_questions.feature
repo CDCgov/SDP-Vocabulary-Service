@@ -34,18 +34,21 @@ Feature: Edit Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
     When I click on the "Change History" link
+    And I wait 1 seconds
     Then I should see "No changes have been made to this version."
     And I should not see "Changes by"
     When I click on the "Publish" button
     Then I should see "This action cannot be undone"
     When I click on the "Confirm Publish" link
     Then I click on the "Change History" link
+    And I wait 1 seconds
     Then I should see "Changes by test_author@gmail.com"
     And I should see "field changed from"
     And I should not see "No changes have been made to this version."
     And I click on the "Extend" button
     And I fill in the "Description" field with "This is an extended description"
     And I click on the "Save" button
+    And I wait 1 seconds
     Then I should see "Version: 1"
     And I should see "Extended from: What is your gender?"
     And I should see "New Concept"
