@@ -11,6 +11,9 @@ import { Modal, Button, Row, Grid, Col } from 'react-bootstrap';
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BasicAlert from '../../components/BasicAlert';
+import Pagination from 'rc-pagination';
+
+const PAGE_SIZE = 10;
 
 import CodedSetTable from "../CodedSetTable";
 import Breadcrumb from "../Breadcrumb";
@@ -30,10 +33,13 @@ export default class ResponseSetShow extends Component {
     this.state = {
       selectedTab: 'main',
       page: 1,
+      qPage: 1,
       showPublishModal: false,
       showDeleteModal: false,
       publishOrRetire: 'Publish'
     };
+    this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
+    this.pageChange = this.pageChange.bind(this);
   }
 
   componentDidMount() {
@@ -86,6 +92,17 @@ export default class ResponseSetShow extends Component {
         </Row>
       </div>
     );
+  }
+
+  pageChange(nextPage) {
+    this.setState({qPage: nextPage});
+  }
+
+  nestedItemsForPage(responseSet) {
+    const startIndex = (this.state.qPage - 1) * PAGE_SIZE;
+    const endIndex = this.state.qPage * PAGE_SIZE;
+    const itemPage = responseSet.questions.slice(startIndex, endIndex);
+    return itemPage;
   }
 
   historyBar(responseSet) {
@@ -411,7 +428,10 @@ export default class ResponseSetShow extends Component {
                     <h2 className="panel-title">Linked Questions</h2>
                   </div>
                   <div className="box-content">
-                    <SectionNestedItemList items={responseSet.questions} currentUser={this.props.currentUser} />
+                    <SectionNestedItemList items={this.nestedItemsForPage(responseSet)} currentUser={this.props.currentUser} />
+                    {responseSet.questions.length > 10 &&
+                      <Pagination onChange={this.pageChange} current={this.state.qPage} total={responseSet.questions.length} />
+                    }
                   </div>
                 </div>
               }

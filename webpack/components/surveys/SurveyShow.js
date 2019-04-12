@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { hashHistory, Link } from 'react-router';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import Linkify from 'react-linkify';
+import Pagination from 'rc-pagination';
+
+const PAGE_SIZE = 10;
 
 import VersionInfo from '../VersionInfo';
 import PublisherLookUp from "../shared_show/PublisherLookUp";
@@ -26,7 +29,9 @@ import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGr
 class SurveyShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
+    this.state = { tagModalOpen: false, page: 1, selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
+    this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
+    this.pageChange = this.pageChange.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +51,17 @@ class SurveyShow extends Component {
         <VersionInfo versionable={this.props.survey} versionableType='survey' currentUser={this.props.currentUser} />
       </Col>
     );
+  }
+
+  pageChange(nextPage) {
+    this.setState({page: nextPage});
+  }
+
+  nestedItemsForPage(sections) {
+    const startIndex = (this.state.page - 1) * PAGE_SIZE;
+    const endIndex = this.state.page * PAGE_SIZE;
+    const itemPage = sections.slice(startIndex, endIndex);
+    return itemPage;
   }
 
   deleteModal() {
@@ -336,7 +352,10 @@ class SurveyShow extends Component {
                 </div>
                 <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
                   <div className="box-content panel-body">
-                    <SectionList sections={this.props.sections} currentUser={this.props.currentUser} />
+                    <SectionList sections={this.nestedItemsForPage(this.props.sections)} currentUser={this.props.currentUser} />
+                    {this.props.sections.length > 10 &&
+                      <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.sections.length} />
+                    }
                   </div>
                 </div>
               </div>

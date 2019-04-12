@@ -426,7 +426,7 @@ class SectionShow extends Component {
                     <div className="box-content panel-body">
                       <SectionNestedItemList resultStyle={this.props.resultStyle} items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
                       {this.props.section.sectionNestedItems.length > 10 &&
-                      <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
+                        <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
                       }
                     </div>
                   </div>
