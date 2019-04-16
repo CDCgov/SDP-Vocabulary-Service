@@ -330,25 +330,6 @@ class AdminPanel extends Component {
     );
   }
 
-  SDPVAnalytics() {
-    return(alert('this is a test.'))
-  }
-
-  analyticsTab() {
-    return(
-      <div className="tab-pane" id="analytics" role="tabpanel" aria-hidden={this.state.selectedTab !== 'analytics'} aria-labelledby="analytics-tab">
-        <h2 id="group-list">Analytics</h2>
-        <hr/>
-        <button id="btnAnalytics" className="btn btn-default pull-right" type="submit" onClick={() => this.SDPVAnalytics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics</i></button>
-        <br/>
-        <br/>
-        <br/>
-        Click <a href="/UsageMetrics.xlsx">here</a> to download Usage Metrics.
-        <hr/>
-      </div>
-    );
-  }
-
   render() {
     return (
       <Grid>
@@ -376,9 +357,6 @@ class AdminPanel extends Component {
               <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {this.props.fetchGroups(); this.selectTab('group-list');}} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
               <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
               </li>
-              <li id="analytics-tab" className="nav-item" role="tab" onClick={() => this.selectTab('analytics')} aria-selected={this.state.selectedTab === 'analytics'} aria-controls="analytics">
-                <a className="nav-link" data-toggle="tab" href="#analytics" role="tab">Analytics</a>
-              </li>
               <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
                 <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
               </li>
@@ -389,7 +367,6 @@ class AdminPanel extends Component {
               {this.programTab()}
               {this.systemTab()}
               {this.groupTab()}
-              {this.analyticsTab()}
               {this.elasticTab()}
             </div>
           </Col>
