@@ -330,6 +330,82 @@ class AdminPanel extends Component {
     );
   }
 
+<<<<<<< HEAD
+=======
+  UsageMetrics() {
+    return(
+      <div>
+      Metrics:
+      <br/><u>Total number of objects in the system</u>:
+      <br/>Response Sets:
+      <br/>Questions:
+      <br/>Sections:
+      <br/>Surveys:
+      <br/>
+      <br/><u>Private objects in the system</u>:
+      <br/>Response Sets:
+      <br/>Questions:
+      <br/>Sections:
+      <br/>Surveys:
+      <br/>
+      <br/><u>Public objects in the system</u>:
+      <br/>Response Sets:
+      <br/>Questions:
+      <br/>Sections:
+      <br/>Surveys:
+      <br/>
+      <br/><u>Number of objects being reused (i.e. if the same question is used on 5 surveys it coutns as 1 question being reused)</u>:
+      <br/>Response Sets:
+      <br/>Questions:
+      <br/>Sections:
+      <br/>Surveys:
+      <br/>
+      <br/><u>Extensions</u>:
+      <br/>Response Sets:
+      <br/>Questions:
+      <br/>Sections:
+      <br/>Surveys:
+      <br/>
+      <br/><u>Preferred</u>:
+      <br/>Response Sets:
+      <br/>Questions:
+      <br/>
+      <br/><u>OMB Approved Survey Count</u>:
+      <br/>
+      <br/><u>Number of groups</u>:
+      <br/>
+      <br/><u>Duplcates Replaced</u>:
+      <br/>Response Sets:
+      <br/>Questions:
+      <br/>
+      <br/><u>User Info</u>:
+      <br/>
+      <br/><u>Admins</u>:
+      <br/>
+      <br/><u>SDP Team</u>:
+      <br/>
+      <br/><u>CDC Program Users</u>:
+      <br/>
+      <br/><u>Programs with content in the system</u>:
+      <br/>
+      </div>);
+  }
+
+  analyticsTab() {
+    return(
+      <div className="tab-pane" id="analytics" role="tabpanel" aria-hidden={this.state.selectedTab !== 'analytics'} aria-labelledby="analytics-tab">
+      <GroupMembers show={this.state.groupModal} group={this.state.selectedGroup} close={this.hideModal} addUserToGroup={this.props.addUserToGroup} removeUserFromGroup={this.props.removeUserFromGroup} />
+        <h2 id="group-list">Analytics</h2>
+        <hr/>
+        <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.UsageMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics</i></button>
+        <br/>
+        <br/>
+        <hr/>
+      </div>
+    );
+  }
+
+>>>>>>> tab update
   render() {
     return (
       <Grid>
