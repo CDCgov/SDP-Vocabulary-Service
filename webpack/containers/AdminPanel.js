@@ -13,6 +13,8 @@ import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
 import currentUserProps from '../prop-types/current_user_props';
 import GroupMembers from '../components/GroupMembers';
 
+import { fetchMetrics } from '../actions/metrics_actions';
+
 class AdminPanel extends Component {
   constructor(props){
     super(props);
@@ -334,61 +336,9 @@ class AdminPanel extends Component {
 =======
   UsageMetrics() {
     return(
-      <div>
-      Metrics:
-      <br/><u>Total number of objects in the system</u>:
-      <br/>Response Sets:
-      <br/>Questions:
-      <br/>Sections:
-      <br/>Surveys:
-      <br/>
-      <br/><u>Private objects in the system</u>:
-      <br/>Response Sets:
-      <br/>Questions:
-      <br/>Sections:
-      <br/>Surveys:
-      <br/>
-      <br/><u>Public objects in the system</u>:
-      <br/>Response Sets:
-      <br/>Questions:
-      <br/>Sections:
-      <br/>Surveys:
-      <br/>
-      <br/><u>Number of objects being reused (i.e. if the same question is used on 5 surveys it coutns as 1 question being reused)</u>:
-      <br/>Response Sets:
-      <br/>Questions:
-      <br/>Sections:
-      <br/>Surveys:
-      <br/>
-      <br/><u>Extensions</u>:
-      <br/>Response Sets:
-      <br/>Questions:
-      <br/>Sections:
-      <br/>Surveys:
-      <br/>
-      <br/><u>Preferred</u>:
-      <br/>Response Sets:
-      <br/>Questions:
-      <br/>
-      <br/><u>OMB Approved Survey Count</u>:
-      <br/>
-      <br/><u>Number of groups</u>:
-      <br/>
-      <br/><u>Duplcates Replaced</u>:
-      <br/>Response Sets:
-      <br/>Questions:
-      <br/>
-      <br/><u>User Info</u>:
-      <br/>
-      <br/><u>Admins</u>:
-      <br/>
-      <br/><u>SDP Team</u>:
-      <br/>
-      <br/><u>CDC Program Users</u>:
-      <br/>
-      <br/><u>Programs with content in the system</u>:
-      <br/>
-      </div>);
+      <p className="metrics-text">
+        {this.props.metrics}
+      </p>);
   }
 
   analyticsTab() {
@@ -397,10 +347,11 @@ class AdminPanel extends Component {
       <GroupMembers show={this.state.groupModal} group={this.state.selectedGroup} close={this.hideModal} addUserToGroup={this.props.addUserToGroup} removeUserFromGroup={this.props.removeUserFromGroup} />
         <h2 id="group-list">Analytics</h2>
         <hr/>
-        <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.UsageMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics</i></button>
+        <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.props.fetchMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics</i></button>
         <br/>
         <br/>
         <hr/>
+        {this.UsageMetrics()}
       </div>
     );
   }
@@ -455,6 +406,7 @@ class AdminPanel extends Component {
 function mapStateToProps(state) {
   const props = {};
   props.adminList = state.admins;
+  props.metrics = state.metrics;
   props.publisherList = state.publishers;
   props.programList = state.surveillancePrograms;
   props.systemList = state.surveillanceSystems;
@@ -466,10 +418,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
     revokePublisher, grantPublisher, grantAdmin, createGroup, addUserToGroup,
-    removeUserFromGroup, fetchGroups, esSync, esDeleteAndSync}, dispatch);
+    removeUserFromGroup, fetchGroups, esSync, fetchMetrics, esDeleteAndSync}, dispatch);
 }
 
 AdminPanel.propTypes = {
+  metrics: PropTypes.string,
+  isLoading: PropTypes.bool,
+  fetchMetrics: PropTypes.func,
   adminList: PropTypes.object,
   publisherList: PropTypes.object,
   programList: PropTypes.object,
