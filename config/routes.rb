@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   get '/publishers' => 'publishers#index'
   get '/administrators' => 'administrators#index'
+  get '/metrics' => 'metrics#index'
 
   namespace :admin do
     put '/roles/grant_admin' => 'roles#grant_admin', as: :grant_admin
