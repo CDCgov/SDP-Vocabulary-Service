@@ -12,6 +12,10 @@ html, body  {
 
 }
 
+.metrics-text {
+  white-space: pre-wrap;
+}
+
 .login {
   padding: 10px;
 }
@@ -26,7 +30,7 @@ html, body  {
 
 .no-gutter {
     margin-left: 0;
-    margin-right: 0;    
+    margin-right: 0;
 }
 
 .no-gutter > [class^="col-"] {
