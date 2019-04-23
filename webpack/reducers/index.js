@@ -22,6 +22,7 @@ import {
 
 import { byIdReducer, byIdWithIndividualReducer } from './reducer_generator';
 
+import metrics from './metrics_reducer';
 import questions from './questions_reducer';
 import sections from './sections_reducer';
 import comments from './comments';
@@ -56,7 +57,7 @@ const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE
 
 const rootReducer = combineReducers({
   questions, comments, stats, currentUser, responseSets, sections, categories, admins, potentialDupes, dupeCount,
-  responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions, publicInfo,
+  responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions, publicInfo, metrics,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags, groups, displayStyle, breadcrumbPath, ajaxStatus
 });
 
