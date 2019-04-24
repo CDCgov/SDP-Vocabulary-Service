@@ -32,10 +32,30 @@ tags:
   -
     name: FHIR
     description: Access to FHIR compliant API
+  -
+      name: Metrics
+      description: Access to SDP-V usage metrics
 
 basePath: /api
 
 paths:
+
+  /metrics:
+    get:
+      tags:
+      - Metrics
+      description: |
+        Get a list of SDP-V usage metrics.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/metrics'
+
   /questions:
     get:
       tags:
