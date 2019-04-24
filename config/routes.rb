@@ -125,6 +125,8 @@ Rails.application.routes.draw do
       get :usage, on: :member
     end
 
+    get 'metrics', to: 'metrics#index', as: :metrics
+
     namespace :fhir do
       get 'Valueset', to: 'valuesets#index', as: :valuesets, defaults: { format: :json }
       get 'Valueset/:id', to: 'valuesets#show',  as: :valueset, defaults: { format: :json }
