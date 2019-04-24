@@ -335,7 +335,7 @@ class AdminPanel extends Component {
 <<<<<<< HEAD
 =======
   UsageMetrics() {
-    return(
+  return(
       <p className="metrics-text">
         {this.props.metrics}
       </p>);
@@ -353,6 +353,7 @@ class AdminPanel extends Component {
         <hr/>
         {this.UsageMetrics()}
       </div>
+
     );
   }
 
