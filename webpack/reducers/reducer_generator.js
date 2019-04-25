@@ -16,6 +16,19 @@ export function byIdReducer(...successTypes) {
   };
 }
 
+export function byIdReducerArray(...successTypes) {
+  return (state = {}, action) => {
+    if (successTypes.includes(action.type) && action.payload.data && action.payload.data.authors && action.payload.data.collabs) {
+      let authors = keyBy(action.payload.data.authors, 'id');
+      let collabs = keyBy(action.payload.data.collabs, 'id');
+      let allTypes = {authors: authors, collabs: collabs}
+      return allTypes;
+    } else {
+      return state;
+    }
+  };
+}
+
 // Same as byIdReducer but with a bit of added functionality. This reducer can
 // also handle updates for an individual object. When the action is the
 // individualSuccessType, the reducer will return a new state where object is

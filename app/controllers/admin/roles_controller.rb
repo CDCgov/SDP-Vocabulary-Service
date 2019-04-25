@@ -49,5 +49,33 @@ module Admin
         render json: { msg: 'Error when removing user, please refresh application and try again' }, status: :unprocessable_entity
       end
     end
+
+    def grant_author
+      user = User.find_by(email: params[:email])
+      if user
+        user.add_role :author
+        user.save
+        authors = User.with_role(:author).preload(:roles)
+        collabs = User.all.reject {|u| u.has_role?('author')}
+        render json: {authors: authors, collabs: collabs}, status: 200
+      else
+        # Return user not found
+        render json: { msg: "No user found with email #{params[:email]}, make sure email is in correct format" }, status: :unprocessable_entity
+      end
+    end
+
+    def revoke_author
+      user = User.find_by(id: params[:author_id])
+      if user
+        user.remove_role :author
+        user.save
+        authors = User.with_role(:author).preload(:roles)
+        collabs = User.all.reject {|u| u.has_role?('author')}
+        render json: {authors: authors, collabs: collabs}, status: 200
+      else
+        # Return user not found
+        render json: { msg: 'Error when removing user, please refresh application and try again' }, status: :unprocessable_entity
+      end
+    end
   end
 end

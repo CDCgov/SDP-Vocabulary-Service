@@ -486,6 +486,9 @@ Based on Rails routes of Vocabulary::Application
 // admin_grant_admin => /admin/roles/grant_admin(.:format)
   // function(options)
   admin_grant_admin_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_admin",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_grant_author => /admin/roles/grant_author(.:format)
+  // function(options)
+  admin_grant_author_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_author",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_grant_publisher => /admin/roles/grant_publisher(.:format)
   // function(options)
   admin_grant_publisher_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"grant_publisher",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -501,6 +504,9 @@ Based on Rails routes of Vocabulary::Application
 // admin_revoke_admin => /admin/roles/revoke_admin(.:format)
   // function(options)
   admin_revoke_admin_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"revoke_admin",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// admin_revoke_author => /admin/roles/revoke_author(.:format)
+  // function(options)
+  admin_revoke_author_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"revoke_author",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // admin_revoke_publisher => /admin/roles/revoke_publisher(.:format)
   // function(options)
   admin_revoke_publisher_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"roles",false],[2,[7,"/",false],[2,[6,"revoke_publisher",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -579,6 +585,9 @@ Based on Rails routes of Vocabulary::Application
 // authentications => /authentications(.:format)
   // function(options)
   authentications_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"authentications",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// authors => /authors(.:format)
+  // function(options)
+  authors_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"authors",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // cancel_user_registration => /users/cancel(.:format)
   // function(options)
   cancel_user_registration_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"cancel",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),

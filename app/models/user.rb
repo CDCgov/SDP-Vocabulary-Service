@@ -38,5 +38,9 @@ class User < ApplicationRecord
   def publisher?
     has_role?(:publisher)
   end
+
+  def author?
+    has_role?(:author)
+  end
 end
 # rubocop:enable Rails/HasAndBelongsToMany
