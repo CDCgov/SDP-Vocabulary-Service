@@ -33,8 +33,8 @@ tags:
     name: FHIR
     description: Access to FHIR compliant API
   -
-      name: Metrics
-      description: Access to SDP-V usage metrics
+    name: metrics
+    description: Access to SDP-V usage metrics
 
 basePath: /api
 
@@ -43,7 +43,7 @@ paths:
   /metrics:
     get:
       tags:
-      - Metrics
+      - metrics
       description: |
         Get a list of SDP-V usage metrics.
       produces:
@@ -831,7 +831,7 @@ definitions:
     description:
       Details about a system.
     properties:
-      systemId:
+      systemid:
         type: string
         title: System identifier
       systemName:
@@ -843,7 +843,7 @@ definitions:
       systemDescription:
         type: string
         title: Human readable description of the system
-
+        
   Survey:
     type: object
     description:
