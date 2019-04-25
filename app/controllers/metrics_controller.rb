@@ -99,16 +99,16 @@ class MetricsController < ApplicationController
     sdp_team = ['msq8@cdc.gov', 'ikk1@cdc.gov', 'oef1@cdc.gov', 'njj8@cdc.gov', 'lsj7@cdc.gov', 'nen8@cdc.gov', 'zoo3@cdc.gov', 'onk2@cdc.gov', 'wdd8@cdc.gov', 'oju3@cdc.gov', 'mpx1@cdc.gov', 'kff0@cdc.gov']
     metrics << "\n\nSDP Team: #{sdp_team.count}"
     metrics << "\n-------\n"
-    sdp_team.map {|u| metrics << "#{u}, "}
+    sdp_team.map { |u| metrics << "#{u}, " }
 
     other_users = User.all.map { |u| u.email if u.email && !sdp_team.include?(u.email) && u.email != 'admin@sdpv.local' }.compact
     metrics << "\n\nCDC Program Users: #{other_users.count}"
     metrics << "\n-------\n"
-    other_users.map {|u| metrics << "#{u}, "}
+    other_users.map { |u| metrics << "#{u}, " }
 
     metrics << "\n\nPrograms with content in the system: #{sp_count}"
     metrics << "\n-------\n"
-    sp_names.map {|u| metrics << "#{u}, "}
+    sp_names.map { |u| metrics << "#{u}, " }
     render html: metrics
   end
 end
