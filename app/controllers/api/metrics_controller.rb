@@ -25,17 +25,6 @@ module Api
         end
       end
 
-      user_info = User.all.map { |u| " #{u.email}, Program: #{u.last_program ? u.last_program.name : 'None'}, Sign in Count: #{u.sign_in_count} " }
-
-      sp_count = 0
-      sp_names = SurveillanceProgram.all.map do |sp|
-        if sp.surveys.count > 0
-          sp_count += 1
-          sp.name
-        end
-      end
-      sp_names = sp_names.compact
-
       # Total number of objects in the system
       metrics_json['response_set_count'] = ResponseSet.all.count
       metrics_json['question_count'] = Question.all.count
