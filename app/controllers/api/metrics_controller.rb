@@ -3,7 +3,6 @@ module Api
     respond_to :json
 
     def index
-      metrics = ''
       metrics_json = {}
       count_q = 0
       # Question.all.map do |q|
@@ -37,84 +36,56 @@ module Api
       end
       sp_names = sp_names.compact
 
-      metrics << "\n\nMetrics:"
+      # Total number of objects in the system
+      metrics_json['response_set_count'] = ResponseSet.all.count
+      metrics_json['question_count'] = Question.all.count
+      metrics_json['section_count'] = Section.all.count
+      metrics_json['survey_count'] = Survey.all.count
 
-      metrics << "\n\nTotal number of objects in the system:"
-      metrics << "\n-------"
-      metrics << "\nResponse Sets: #{ResponseSet.all.count}"
-      metrics_json['rs_count'] = ResponseSet.all.count
-      metrics << "\nQuestions: #{Question.all.count}"
-      metrics << "\nSections: #{Section.all.count}"
-      metrics << "\nSurveys: #{Survey.all.count}"
+      # Private objects in the system
+      metrics_json['response_set_count_draft'] = ResponseSet.where(status: 'draft').count
+      metrics_json['question_count_draft'] = Question.where(status: 'draft').count
+      metrics_json['section_count_draft'] = Section.where(status: 'draft').count
+      metrics_json['survey_count_draft'] = Survey.where(status: 'draft').count
 
-      metrics << "\n\nPrivate objects in the system:"
-      metrics << "\n-------"
-      metrics << "\nResponse Sets: #{ResponseSet.where(status: 'draft').count}"
-      metrics << "\nQuestions: #{Question.where(status: 'draft').count}"
-      metrics << "\nSections: #{Section.where(status: 'draft').count}"
-      metrics << "\nSurveys: #{Survey.where(status: 'draft').count}"
+      # Public objects in the system
+      metrics_json['response_set_count_published'] = ResponseSet.where(status: 'published').count
+      metrics_json['question_count_published'] = Question.where(status: 'published').count
+      metrics_json['section_count_published'] = Section.where(status: 'published').count
+      metrics_json['survey_count_published'] = Survey.where(status: 'published').count
 
-      metrics << "\n\nPublic objects in the system:"
-      metrics << "\n-------"
-      metrics << "\nResponse Sets: #{ResponseSet.where(status: 'published').count}"
-      metrics << "\nQuestions: #{Question.where(status: 'published').count}"
-      metrics << "\nSections: #{Section.where(status: 'published').count}"
-      metrics << "\nSurveys: #{Survey.where(status: 'published').count}"
+      # Number of objects being reused (i.e. if the same question is used on 5 surveys it counts as 1 question being reused)
+      metrics_json['response_set_count_reused'] = count_rs
+      metrics_json['question_count_reused'] = count_q
+      metrics_json['survey_count_reused'] = count_s
 
-      metrics << "\n\nNumber of objects being reused (i.e. if the same question is used on 5 surveys it counts as 1 question being reused):"
-      metrics << "\n-------"
-      metrics << "\nResponse Sets: #{count_rs}"
-      metrics << "\nQuestions: #{count_q}"
-      metrics << "\nSections: #{count_s}"
+      # Extensions
+      metrics_json['response_set_count_extensions'] = ResponseSet.where.not(parent_id: nil).count
+      metrics_json['question_count_extensions'] = Question.where.not(parent_id: nil).count
+      metrics_json['section_count_extensions'] = Section.where.not(parent_id: nil).count
+      metrics_json['survey_count_extensions'] = Survey.where.not(parent_id: nil).count
 
-      metrics << "\n\nExtensions:"
-      metrics << "\n-------"
-      metrics << "\nResponse Sets: #{ResponseSet.where.not(parent_id: nil).count}"
-      metrics << "\nQuestions: #{Question.where.not(parent_id: nil).count}"
-      metrics << "\nSections: #{Section.where.not(parent_id: nil).count}"
-      metrics << "\nSurveys: #{Survey.where.not(parent_id: nil).count}"
+      # Preferred
+      metrics_json['response_set_count_extensions'] = ResponseSet.where(preferred: true).count
+      metrics_json['question_count_preferred'] = Question.where(preferred: true).count
 
-      metrics << "\n\nPreferred:"
-      metrics << "\n-------"
-      metrics << "\nQuestions: #{Question.where(preferred: true).count}"
-      metrics << "\nResponse Sets: #{ResponseSet.where(preferred: true).count}"
+      # OMB Approved Survey Count
+      metrics_json['omb_approved_survey_count'] = Survey.all.select { |s| s.control_number.present? }.compact.count
 
-      metrics << "\n\nOMB Approved Survey Count: #{Survey.all.select { |s| s.control_number.present? }.compact.count}"
+      # Number of groups
+      metrics_json['group_all_count'] = Group.all.count
 
-      metrics << "\n\nNumber of groups: #{Group.all.count}"
-      metrics << "\n\nDuplicates Replaced:"
-      metrics << "\n-------"
+      # Duplicates Replaced
       rs_sum = 0
       q_sum = 0
-      Question.where.not(duplicates_replaced_count: 0).each { |q| q_sum += q.duplicates_replaced_count }
       ResponseSet.where.not(duplicates_replaced_count: 0).each { |rs| rs_sum += rs.duplicates_replaced_count }
-      metrics << "\nResponse Sets: #{rs_sum}"
-      metrics << "\nQuestions: #{q_sum}"
+      Question.where.not(duplicates_replaced_count: 0).each { |q| q_sum += q.duplicates_replaced_count }
+      # metrics << "\nResponse Sets: #{rs_sum}"
+      metrics_json['response_set_all_count'] = rs_sum
+      # metrics << "\nQuestions: #{q_sum}"
+      metrics_json['question_all_count'] = q_sum
 
-      metrics << "\n\nUser Info:"
-      metrics << "\n-------"
-      user_info.each { |u| metrics << u }
-      # admin_users = User.all.map { |u| u.email if u.admin? }.compact
-
-      metrics << "\n\nAdmins: 1"
-      metrics << "\n-------\n"
-      metrics << 'admin@sdpv.local'
-
-      sdp_team = ['msq8@cdc.gov', 'ikk1@cdc.gov', 'oef1@cdc.gov', 'njj8@cdc.gov', 'lsj7@cdc.gov', 'nen8@cdc.gov', 'zoo3@cdc.gov', 'onk2@cdc.gov', 'wdd8@cdc.gov', 'oju3@cdc.gov', 'mpx1@cdc.gov', 'kff0@cdc.gov']
-      metrics << "\n\nSDP Team: #{sdp_team.count}"
-      metrics << "\n-------\n"
-      sdp_team.map {|u| metrics << "#{u}, "}
-
-      other_users = User.all.map { |u| u.email if u.email && !sdp_team.include?(u.email) && u.email != 'admin@sdpv.local' }.compact
-      metrics << "\n\nCDC Program Users: #{other_users.count}"
-      metrics << "\n-------\n"
-      other_users.map {|u| metrics << "#{u}, "}
-
-      metrics << "\n\nPrograms with content in the system: #{sp_count}"
-      metrics << "\n-------\n"
-      sp_names.map {|u| metrics << "#{u}, "}
-      
       render json: metrics_json
     end
-    end
+  end
 end
