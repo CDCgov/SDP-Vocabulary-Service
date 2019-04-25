@@ -5,25 +5,25 @@ module Api
     def index
       metrics_json = {}
       count_q = 0
-      # Question.all.map do |q|
-      #   if q.sections.count > 1 || (q.sections.count == 1 && ((SectionNestedItem.where(nested_section_id: q.sections.first.id).count + SurveySection.where(section_id: q.sections.first.id).count) > 1))
-      #     count_q += 1
-      #   end
-      # end
+      Question.all.map do |q|
+        if q.sections.count > 1 || (q.sections.count == 1 && ((SectionNestedItem.where(nested_section_id: q.sections.first.id).count + SurveySection.where(section_id: q.sections.first.id).count) > 1))
+          count_q += 1
+        end
+      end
 
       count_rs = 0
-      # ResponseSet.all.map do |rs|
-      #   if rs.sections.count > 1 || (rs.sections.count == 1 && ((SectionNestedItem.where(nested_section_id: rs.sections.first.id).count + SurveySection.where(section_id: rs.sections.first.id).count) > 1))
-      #     count_rs += 1
-      #   end
-      # end
+      ResponseSet.all.map do |rs|
+        if rs.sections.count > 1 || (rs.sections.count == 1 && ((SectionNestedItem.where(nested_section_id: rs.sections.first.id).count + SurveySection.where(section_id: rs.sections.first.id).count) > 1))
+          count_rs += 1
+        end
+      end
 
       count_s = 0
-      # Section.all.map do |s|
-      #   if s.surveys.count > 1 || ((SectionNestedItem.where(nested_section_id: s.id).count + SurveySection.where(section_id: s.id).count) > 1)
-      #     count_s += 1
-      #   end
-      # end
+      Section.all.map do |s|
+        if s.surveys.count > 1 || ((SectionNestedItem.where(nested_section_id: s.id).count + SurveySection.where(section_id: s.id).count) > 1)
+          count_s += 1
+        end
+      end
 
       user_info = User.all.map { |u| " #{u.email}, Program: #{u.last_program ? u.last_program.name : 'None'}, Sign in Count: #{u.sign_in_count} " }
 
@@ -80,9 +80,11 @@ module Api
       q_sum = 0
       ResponseSet.where.not(duplicates_replaced_count: 0).each { |rs| rs_sum += rs.duplicates_replaced_count }
       Question.where.not(duplicates_replaced_count: 0).each { |q| q_sum += q.duplicates_replaced_count }
-      # metrics << "\nResponse Sets: #{rs_sum}"
+
+      # Response Set count all
       metrics_json['response_set_all_count'] = rs_sum
-      # metrics << "\nQuestions: #{q_sum}"
+
+      # Question count all
       metrics_json['question_all_count'] = q_sum
 
       render json: metrics_json
