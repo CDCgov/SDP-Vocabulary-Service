@@ -45,7 +45,7 @@ paths:
       tags:
       - metrics
       description: |
-        Get a list of SDP-V usage metrics.
+        Gets a list of SDP-V usage metrics.
       produces:
       - application/json
       responses:
@@ -54,7 +54,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/metrics'
+              $ref: '#/definitions/Metric'
 
   /questions:
     get:
@@ -843,7 +843,37 @@ definitions:
       systemDescription:
         type: string
         title: Human readable description of the system
-        
+
+  Metric:
+    type: object
+    description:
+      Details about SDP-V usage metrics.
+    properties:
+      response_set_count:
+        type: integer
+      question_count:
+        type: integer
+      section_count:
+        type: integer
+      survey_count:
+        type: integer
+      response_set_count_draft:
+        type: integer
+      question_count_draft:
+        type: integer
+      section_count_draft:
+        type: integer
+      survey_count_draft:
+        type: integer
+      response_set_count_published:
+        type: integer
+      question_count_published:
+        type: integer
+      section_count_published:
+        type: integer
+      survey_count_published:
+        type: integer
+
   Survey:
     type: object
     description:
