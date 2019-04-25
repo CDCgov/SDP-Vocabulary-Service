@@ -335,25 +335,24 @@ class AdminPanel extends Component {
 <<<<<<< HEAD
 =======
   UsageMetrics() {
-  return(
-      <p className="metrics-text">
-        {this.props.metrics}
-      </p>);
-  }
+    return(<p className="metrics-text">
+      {this.props.metrics}
+      </p>
+    );
+}
 
   analyticsTab() {
     return(
       <div className="tab-pane" id="analytics" role="tabpanel" aria-hidden={this.state.selectedTab !== 'analytics'} aria-labelledby="analytics-tab">
-      <GroupMembers show={this.state.groupModal} group={this.state.selectedGroup} close={this.hideModal} addUserToGroup={this.props.addUserToGroup} removeUserFromGroup={this.props.removeUserFromGroup} />
+        <GroupMembers show={this.state.groupModal} group={this.state.selectedGroup} close={this.hideModal} addUserToGroup={this.props.addUserToGroup} removeUserFromGroup={this.props.removeUserFromGroup} />
         <h2 id="group-list">Analytics</h2>
         <hr/>
-        <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.props.fetchMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics</i></button>
+        <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.props.fetchMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics </i></button>
         <br/>
         <br/>
-        <hr/>
         {this.UsageMetrics()}
+        <hr/>
       </div>
-
     );
   }
 
