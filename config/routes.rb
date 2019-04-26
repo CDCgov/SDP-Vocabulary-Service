@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'categories', to: 'categories#index', as: :categories
   get 'concepts', to: 'concepts#index', as: :concepts
   get 'elasticsearch', to: 'elasticsearch#index', as: :elasticsearch
+  get 'elasticsearch/export' => 'elasticsearch#export' 
   get 'elasticsearch/duplicate_questions' => 'elasticsearch#duplicate_questions'
   get 'elasticsearch/suggestions' => 'elasticsearch#suggestions'
   get 'public_info', to: 'public_info#index', as: :public_info

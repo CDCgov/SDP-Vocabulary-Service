@@ -211,6 +211,7 @@ export const FETCH_DUPLICATE_COUNT_FULFILLED = 'FETCH_DUPLICATE_COUNT_FULFILLED'
 
 // Current User
 export const LOG_OUT = 'LOG_OUT';
+export const EXPORT_SEARCH = 'EXPORT_SEARCH';
 
 // Publisher and admin types
 export const FETCH_PUBLISHERS = 'FETCH_PUBLISHERS';

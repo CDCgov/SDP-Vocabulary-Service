@@ -198,13 +198,13 @@ export default class QuestionShow extends Component {
             {isGroupable(question, this.props.currentUser) &&
               <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} removeFunc={this.props.removeQuestionFromGroup} currentUser={this.props.currentUser} />
             }
-            {isRevisable(question, this.props.currentUser) &&
+            {isRevisable(question, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
             }
             {isEditable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/edit`}>Edit</Link>
             }
-            {isExtendable(question, this.props.currentUser) &&
+            {isExtendable(question, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
             }
             {isSimpleEditable(question, this.props.currentUser) &&
@@ -257,7 +257,7 @@ export default class QuestionShow extends Component {
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
             }
-            {isEditable(question, this.props.currentUser) &&
+            {isEditable(question, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showDeleteModal: true});

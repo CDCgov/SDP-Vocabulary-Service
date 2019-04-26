@@ -87,6 +87,16 @@ export default class ProfileEditor extends Component {
         </div>
       </div>
       <div className="form-group">
+        <label className="control-label">Roles</label><br/>
+        { this.props.currentUser && this.props.currentUser.admin && <text>Admin, </text>}
+        { this.props.currentUser && this.props.currentUser.publisher && <text>Publisher, </text>}
+        { this.props.currentUser && this.props.currentUser.author ? (
+          <text>Author</text>
+        ) : (
+          <text>Collaborator</text>
+        )}
+      </div>
+      <div className="form-group">
         <label className="control-label">Groups</label>
         <p>{this.state.groups.length > 0 ? (this.state.groups.map((group, i) => {
           if (i+1 < this.state.groups.length) {

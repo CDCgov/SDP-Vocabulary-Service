@@ -216,20 +216,20 @@ class SurveyShow extends Component {
               return false;
             }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
           }
-          {isRevisable(this.props.survey, this.props.currentUser) &&
+          {isRevisable(this.props.survey, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/revise`}>Revise</Link>
           }
           {isEditable(this.props.survey, this.props.currentUser) &&
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/edit`}>Edit</Link>
           }
-          {isEditable(this.props.survey, this.props.currentUser) &&
+          {isEditable(this.props.survey, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({showDeleteModal: true});
               return false;
             }}>{this.deleteModal()}Delete</a>
           }
-          {isExtendable(this.props.survey, this.props.currentUser) &&
+          {isExtendable(this.props.survey, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
           }
           {((this.props.currentUser && this.props.currentUser.admin) || isPublishable(this.props.survey, this.props.currentUser) || isEditable(this.props.survey, this.props.currentUser) || (isRevisable(this.props.survey, this.props.currentUser))) && this.props.dupeCount > 0 &&

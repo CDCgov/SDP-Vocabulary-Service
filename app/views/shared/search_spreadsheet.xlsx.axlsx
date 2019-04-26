@@ -1,0 +1,72 @@
+@wb = xlsx_package.workbook
+
+def add_result_to_sheet(sheet, obj)
+  new_row = []
+  new_row << (obj['_type'] || '')
+  new_row << (obj['_source']['name'] || '')
+  new_row << (obj['_source']['description'] || '')
+  new_row << (obj['_source']['version_independent_id'] || '')
+  new_row << (obj['_source']['preferred'] ? obj['_source']['preferred'].to_s : 'false')
+  new_row << (obj['_source']['content_stage'] || '')
+  new_row << (obj['_source']['status'] == 'published' ? 'Public' : 'Private')
+  new_row << (obj['_source']['version '] || '1')
+  new_row << surveillance_program_names(obj['_source'])
+  new_row << surveillance_system_names(obj['_source'])
+  new_row << (obj['_source']['omb'] ? obj['_source']['omb'].to_s : 'false')
+  puts 'SOURCE'
+  puts 'SOURCE'
+  puts 'SOURCE'
+  puts 'SOURCE'
+  puts obj['_source']
+  new_row << (obj['_source']['createdAt'] ? obj['_source']['createdAt'].gsub(/T.+/,'') : '')
+  new_row << (obj['_source']['createdBy'] ? obj['_source']['createdBy']['email'] : '')
+  new_row << (obj['_source']['tag_list'].count > 0 ? obj['_source']['tag_list'].join('; ') : '')
+  new_row << code_mappings(obj['_source'])
+  new_row << (obj['_source']['oid'] || '')
+  new_row << (obj['_source']['category'] ? obj['_source']['category']['name'] : '')
+  sheet.add_row new_row
+end
+
+def code_mappings(obj)
+  mappings = ''
+  if obj['codes'].length > 0
+    obj['codes'].each {|c| mappings << "#{c['displayName']}, #{c['code']}, #{c['codeSystem']}; "}
+    mappings.chomp('; ')
+  else
+    mappings = ''
+  end
+  mappings
+end
+
+def surveillance_system_names(q)
+  system_names = ''
+  if q['surveillance_systems'] && q['surveillance_systems'].length > 0
+    q['surveillance_systems'].each {|ss| system_names << ss.name + ','}
+    system_names.chomp(',')
+  elsif q['surveillance_system']
+    system_names << q['surveillance_system']['name']
+  else
+    system_names = ''
+  end
+  system_names
+end
+
+def surveillance_program_names(q)
+  program_names = ''
+  if q['surveillance_programs'] && q['surveillance_programs'].length > 0
+    q['surveillance_programs'].each {|sp| program_names << sp.name + ','}
+    program_names.chomp(',')
+  elsif q['surveillance_program']
+    program_names << q['surveillance_program']['name']
+  else
+    program_names = ''
+  end
+  program_names
+end
+
+@wb.add_worksheet(name: 'Search Results') do |sheet|
+  sheet.add_row ['Result Type','Name','Description','SDPV ID','CDC Preferred','Content Stage','Visibility','Version','Programs','Systems','OMB Approved','Created At','Created By','Tags','Code System Mappings','OID (Response Set Only)','Category (Questions Only)']
+  @results['hits']['hits'].each do |r|
+    add_result_to_sheet(sheet, r)
+  end
+end

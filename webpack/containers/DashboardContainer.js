@@ -9,7 +9,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchCategories } from '../actions/category_actions';
-import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
+import { fetchSearchResults, exportSearch, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
 import { clearBreadcrumb } from '../actions/breadcrumb_actions';
 
 import DashboardSearch from '../components/DashboardSearch';
@@ -398,6 +398,13 @@ class DashboardContainer extends SearchManagerComponent {
             </div>
           </div>
         }
+        <div className="recent-items-heading"></div>
+        <div>
+          <div className="recent-items-group-heading">Download Search Result Report</div>
+          <div className="recent-items-body">
+            <button className="recent-item-list btn" onClick={() => this.props.exportSearch(this.currentSearchParameters())}>Download <i className="fa fa-download" aria-hidden="true"></i></button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -425,7 +432,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, clearAjaxStatus, fetchResponseTypes, fetchCategories, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
+  return bindActionCreators({setSteps, clearAjaxStatus, fetchResponseTypes, fetchCategories, fetchSearchResults, exportSearch, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -442,6 +449,7 @@ DashboardContainer.propTypes = {
   fetchResponseTypes: PropTypes.func,
   fetchCategories: PropTypes.func,
   fetchSearchResults: PropTypes.func,
+  exportSearch: PropTypes.func,
   setLastSearch: PropTypes.func,
   fetchLastSearch: PropTypes.func,
   fetchSuggestions: PropTypes.func,

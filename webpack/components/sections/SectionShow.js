@@ -295,20 +295,20 @@ class SectionShow extends Component {
               return false;
             }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
           }
-          {isRevisable(section, this.props.currentUser) &&
+          {isRevisable(section, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
             <Link className="btn btn-default" to={`sections/${section.id}/revise`}>Revise</Link>
           }
           {isEditable(section, this.props.currentUser) &&
             <Link className="btn btn-default" to={`sections/${section.id}/edit`}>Edit</Link>
           }
-          {isEditable(section, this.props.currentUser) &&
+          {isEditable(section, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({showDeleteModal: true});
               return false;
             }}>{this.deleteModal(section)}Delete</a>
           }
-          {isExtendable(section, this.props.currentUser) &&
+          {isExtendable(section, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
         </div>
