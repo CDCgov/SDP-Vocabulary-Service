@@ -72,8 +72,10 @@ class MetricsController < ApplicationController
 
     metrics << "\n\nPreferred:"
     metrics << "\n-------"
-    metrics << "\nQuestions: #{Question.where(preferred: true).count}"
     metrics << "\nResponse Sets: #{ResponseSet.where(preferred: true).count}"
+    metrics << "\nQuestions: #{Question.where(preferred: true).count}"
+    metrics << "\nSection: #{Section.where(preferred: true).count}"
+    metrics << "\nSurvey: #{Survey.where(preferred: true).count}"
 
     metrics << "\n\nOMB Approved Survey Count: #{Survey.all.select { |s| s.control_number.present? }.compact.count}"
 
