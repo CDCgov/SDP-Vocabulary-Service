@@ -45,7 +45,8 @@ paths:
       tags:
       - metrics
       description: |
-        Gets a list of SDP-V usage metrics.
+              - Gets a list of total objects and counts for SDP-V usage metrics.
+              - It may take several minutes to generate the usage metrics report due to the calculations that are being performed. Thank you for your patience.
       produces:
       - application/json
       responses:
@@ -857,21 +858,35 @@ definitions:
         type: integer
       survey_count:
         type: integer
-      response_set_count_draft:
+      response_set_reused:
         type: integer
-      question_count_draft:
+      question_reused:
         type: integer
-      section_count_draft:
+      survey_reused:
         type: integer
-      survey_count_draft:
+      response_set_extensions:
         type: integer
-      response_set_count_published:
+      question_extensions:
         type: integer
-      question_count_published:
+      section_extensions:
         type: integer
-      section_count_published:
+      survey_extensions:
         type: integer
-      survey_count_published:
+      response_set_preferred:
+        type: integer
+      question_preferred:
+        type: integer
+      survey_preferred:
+        type: integer
+      Section_preferred:
+        type: integer
+      omb_approved_survey:
+        type: integer
+      number_of_groups:
+        type: integer
+      cdc_program_users:
+        type: integer
+      programs_with_content:
         type: integer
 
   Survey:
