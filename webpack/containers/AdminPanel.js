@@ -350,6 +350,8 @@ class AdminPanel extends Component {
         <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.props.fetchMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics </i></button>
         <br/>
         <br/>
+        <br/>
+        {<small>It may take several minutes to generate the usage metrics report due to the calculations that are being performed. Thank you for your patience.</small>}
         {this.UsageMetrics()}
         <hr/>
       </div>
