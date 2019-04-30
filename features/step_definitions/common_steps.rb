@@ -3,6 +3,7 @@
 Given(/^I am logged in as (.+?)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  user.add_role :author
   group = Group.find_or_create_by(name: 'Group1', description: 'A group for testing group associations')
   group.add_user(user)
   login_as(user, scope: :user)
@@ -11,6 +12,7 @@ end
 Given(/^I am the publisher (.+)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  user.add_role :author
   user.add_role :publisher
   user.save
   user.reload
@@ -20,6 +22,7 @@ end
 Given(/^I am the admin (.+)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  user.add_role :author
   user.add_role :admin
   user.save
   user.reload
@@ -29,6 +32,7 @@ end
 Given(/^there is an admin with the email (.+)$/) do |user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  user.add_role :author
   user.add_role :admin
   user.save
   user.reload
@@ -37,6 +41,7 @@ end
 Given(/^I have a publisher "(.+)" with the first name "(.+)" and last name "(.+)"$/) do |user_name, first_name, last_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name, first_name: first_name, last_name: last_name)
   Ability.new(user)
+  user.add_role :author
   user.add_role :publisher
   user.save
 end
@@ -44,6 +49,7 @@ end
 Given(/^I am working the program "(.+)" and system "(.+)" logged in as (.+)$/) do |program_name, system_name, user_name|
   user = User.create_with(password: 'password').find_or_create_by(email: user_name)
   Ability.new(user)
+  user.add_role :author
   login_as(user, scope: :user)
   last_program = SurveillanceProgram.where(name: program_name).first
   last_system = SurveillanceSystem.where(name: system_name).first

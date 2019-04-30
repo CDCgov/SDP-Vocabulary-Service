@@ -41,7 +41,7 @@ end
 def surveillance_system_names(q)
   system_names = ''
   if q['surveillance_systems'] && q['surveillance_systems'].length > 0
-    q['surveillance_systems'].each {|ss| system_names << ss.name + ','}
+    q['surveillance_systems'].each {|ss| system_names << ss['name'] + ','}
     system_names.chomp(',')
   elsif q['surveillance_system']
     system_names << q['surveillance_system']['name']
@@ -54,7 +54,7 @@ end
 def surveillance_program_names(q)
   program_names = ''
   if q['surveillance_programs'] && q['surveillance_programs'].length > 0
-    q['surveillance_programs'].each {|sp| program_names << sp.name + ','}
+    q['surveillance_programs'].each {|sp| program_names << sp['name'] + ','}
     program_names.chomp(',')
   elsif q['surveillance_program']
     program_names << q['surveillance_program']['name']

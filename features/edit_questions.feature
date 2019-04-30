@@ -169,9 +169,9 @@ Feature: Edit Questions
     When I go to the dashboard
     And I click on the create "Questions" dropdown item
     Then I should see "Create Question"
-    And I should not see "Potential Duplicate Questions"
+    And I should not see "Suggested Existing Questions for Reuse"
     Then I fill in the "Question" field with "What is your favorite animal?"
-    Then I should see "Potential Duplicate Questions"
+    Then I should see "Suggested Existing Questions for Reuse"
     And I should see "What is your favorite color?"
 
   Scenario: Question added to group should show up in version history

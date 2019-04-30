@@ -1,5 +1,6 @@
 Given(/^a user "(.+)" exists$/) do |user_name|
   user = User.create!(email: user_name, password: 'password')
+  user.add_role :author
   Ability.new(user)
 end
 

@@ -37,7 +37,7 @@ class ElasticsearchController < ApplicationController
                                           query_size, page, must_filters['publisher'],
                                           must_filters['mystuff'], must_filters['nested_section']).target!
                end
-    render xlsx: "search_report_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}", template: 'shared/search_spreadsheet.xlsx.axlsx'
+    render xlsx: "search_report_#{Time.zone.now.strftime('%Y-%m-%d_%H-%M-%S')}", template: 'shared/search_spreadsheet.xlsx.axlsx'
   end
 
   def must_filter_defaults(params)

@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
 class Ability
   include CanCan::Ability
 
@@ -19,8 +21,12 @@ class Ability
       can :read, [ResponseSet, Question, Section, Survey], status: 'published'
       can :link_to_duplicate, [ResponseSet, Question, Section, Survey], status: 'published', created_by_id: user.id
       can :link_to_duplicate, [ResponseSet, Question, Section, Survey], status: 'published', groups: { id: user.group_ids }
-      can [:update, :update_tags, :redcap, :spreadsheet, :epi_info, :more_responses, :parent_items, :duplicate_count, :update_tags, :usage, :comment], [ResponseSet, Question, Section, Survey], status: 'draft', created_by_id: user.id
-      can [:update, :update_tags, :redcap, :spreadsheet, :epi_info, :more_responses, :parent_items, :duplicate_count, :update_tags, :usage, :comment], [ResponseSet, Question, Section, Survey], status: 'draft', groups: { id: user.group_ids }
+      can [
+        :update, :update_tags, :redcap, :spreadsheet, :epi_info, :more_responses, :parent_items, :duplicate_count,
+        :update_tags, :usage, :comment
+      ], [ResponseSet, Question, Section, Survey], status: 'draft', created_by_id: user.id
+      can [:update, :update_tags, :redcap, :spreadsheet, :epi_info, :more_responses, :parent_items, :duplicate_count,
+           :update_tags, :usage, :comment], [ResponseSet, Question, Section, Survey], status: 'draft', groups: { id: user.group_ids }
       can :redcap, [ResponseSet, Question, Section, Survey], status: 'published'
       can :parent_items, [Question, Section], status: 'published'
       can :more_responses, [ResponseSet], status: 'published'

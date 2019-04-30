@@ -10,6 +10,7 @@ import NestedSearchBar from '../NestedSearchBar';
 
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
+import currentUserProps from '../../prop-types/current_user_props';
 
 // This is an abstract class that is never intended to
 // be used directly.
@@ -185,5 +186,6 @@ ProfileEditor.propTypes = {
   show: PropTypes.bool.isRequired,
   disableUserUpdate:PropTypes.string,
   surveillanceSystems: surveillanceSystemsProps,
-  surveillancePrograms: surveillanceProgramsProps
+  surveillancePrograms: surveillanceProgramsProps,
+  currentUser: currentUserProps
 };

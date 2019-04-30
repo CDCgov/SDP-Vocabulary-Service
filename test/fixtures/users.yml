@@ -11,6 +11,7 @@ admin:
   last_system: nids
   last_program: generic
   groups: one, two
+  roles: author
 
 publisher:
   email: publisher@example.com
@@ -18,6 +19,7 @@ publisher:
   last_name: "Publisher"
   last_system: nids
   last_program: generic
+  roles: author
 
 not_admin:
   email: not_admin@example.com
@@ -25,6 +27,7 @@ not_admin:
   last_name: "User"
   last_system: nids
   last_program: generic
+  roles: author
 
 publisher:
   email: publisher@example.com
