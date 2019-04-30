@@ -31,7 +31,7 @@ tags:
     description: Access to systems
   -
     name: metrics
-    description: Access to SDP-V usage metrics
+    description: Access to usage metrics
   -
     name: FHIR
     description: Access to FHIR compliant API
