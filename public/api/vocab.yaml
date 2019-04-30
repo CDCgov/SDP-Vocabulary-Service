@@ -12,29 +12,29 @@ info:
 
 tags:
   -
-    name: FHIR
-    description: Access to FHIR compliant API.
-  -
-    name: metrics
-    description: Access to SDP-V usage metrics.
-  -
-    name: programs
-    description: Access to programs.
-  -
-    name: questions
-    description: Access to questions.
+    name: surveys
+    description: Access to surveys
   -
     name: sections
-    description: Access to sections.
+    description: Access to sections
   -
-    name: surveys
-    description: Access to surveys.
-  -
-    name: systems
-    description: Access to systems.
+    name: questions
+    description: Access to questions
   -
     name: valueSets
-    description: Access to value sets.
+    description: Access to value sets
+  -
+    name: programs
+    description: Access to programs
+  -
+    name: systems
+    description: Access to systems
+  -
+    name: metrics
+    description: Access to SDP-V usage metrics
+  -
+    name: FHIR
+    description: Access to FHIR compliant API
 
 basePath: /api
 
