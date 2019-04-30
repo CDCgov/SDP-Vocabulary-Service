@@ -11,6 +11,7 @@ import concat from 'lodash/concat';
 
 import NestedSearchBar from '../components/NestedSearchBar';
 import { fetchConcepts, fetchConceptSystems, fetchTags } from '../actions/concepts_actions';
+import { gaSend } from '../utilities/GoogleAnalytics';
 
 
 class CodedSetTableEditContainer extends Component {
@@ -23,7 +24,7 @@ class CodedSetTableEditContainer extends Component {
   }
 
   componentWillMount() {
-    ga('send', 'pageview', window.location.toString());
+    gaSend('send', 'pageview', window.location.toString());
     this.props.fetchConceptSystems();
     this.props.fetchTags();
   }

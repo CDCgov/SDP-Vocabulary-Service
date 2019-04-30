@@ -23,6 +23,7 @@ import { responseSetSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
+import { gaSend } from '../../utilities/GoogleAnalytics';
 
 class ResponseSetShowContainer extends Component {
 
@@ -31,7 +32,7 @@ class ResponseSetShowContainer extends Component {
   }
 
   componentDidMount() {
-    ga('send', 'pageview', window.location.toString());
+    gaSend('send', 'pageview', window.location.toString());
     if (this.props.responseSet && this.props.responseSet.status === 'published') {
       this.props.fetchResponseSetUsage(this.props.params.rsId);
     }

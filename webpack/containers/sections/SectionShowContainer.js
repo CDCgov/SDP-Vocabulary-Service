@@ -21,6 +21,7 @@ import { sectionSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
+import { gaSend } from '../../utilities/GoogleAnalytics';
 
 class SectionShowContainer extends Component {
   componentWillMount() {
@@ -28,7 +29,7 @@ class SectionShowContainer extends Component {
   }
 
   componentDidMount() {
-    ga('send', 'pageview', window.location.toString());
+    gaSend('send', 'pageview', window.location.toString());
     if (this.props.section){
       this.props.fetchSectionParents(this.props.params.sectionId);
     }

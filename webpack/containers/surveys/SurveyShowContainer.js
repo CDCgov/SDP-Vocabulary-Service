@@ -21,6 +21,7 @@ import { sectionProps } from '../../prop-types/section_props';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from '../../prop-types/current_user_props';
 import { publishersProps } from "../../prop-types/publisher_props";
+import { gaSend } from '../../utilities/GoogleAnalytics';
 
 class SurveyShowContainer extends Component {
   componentWillMount() {
@@ -29,7 +30,7 @@ class SurveyShowContainer extends Component {
   }
 
   componentDidMount() {
-    ga('send', 'pageview', window.location.toString());
+    gaSend('send', 'pageview', window.location.toString());
     this.props.setSteps([
       {
         title: 'Help',

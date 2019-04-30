@@ -1,3 +1,7 @@
+# rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
+
 module Api
   class MetricsController < Api::ApplicationController
     respond_to :json
@@ -26,7 +30,7 @@ module Api
       end
 
       sp_count = 0
-      sp_names = SurveillanceProgram.all.map do |sp|
+      SurveillanceProgram.all.map do |sp|
         if sp.surveys.count > 0
           sp_count += 1
           sp.name
@@ -65,10 +69,9 @@ module Api
       sdp_team = ['msq8@cdc.gov', 'ikk1@cdc.gov', 'oef1@cdc.gov', 'njj8@cdc.gov', 'lsj7@cdc.gov', 'nen8@cdc.gov', 'zoo3@cdc.gov', 'onk2@cdc.gov', 'wdd8@cdc.gov', 'oju3@cdc.gov', 'mpx1@cdc.gov', 'kff0@cdc.gov']
 
       other_users = User.all.map { |u| u.email if u.email && !sdp_team.include?(u.email) && u.email != 'admin@sdpv.local' }.compact
-      metrics_json['cdc_program_users'] = "#{other_users.count}"
+      metrics_json['cdc_program_users'] = other_users.count.to_s
 
-      programs_with_content_json = {}
-      metrics_json['programs_with_content'] = "#{sp_count}"
+      metrics_json['programs_with_content'] = sp_count.to_s
 
       render json: metrics_json
     end

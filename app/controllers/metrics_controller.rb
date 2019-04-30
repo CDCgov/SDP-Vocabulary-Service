@@ -1,5 +1,7 @@
+# rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
 class MetricsController < ApplicationController
-
   def index
     metrics = ''
     count_q = 0

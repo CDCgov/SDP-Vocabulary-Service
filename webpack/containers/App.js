@@ -18,6 +18,7 @@ import { fetchSurveillancePrograms } from '../actions/surveillance_program_actio
 import { fetchPublishers } from '../actions/publisher_actions';
 import { fetchAdmins } from '../actions/admin_actions';
 import { fetchStats } from '../actions/landing';
+import { gaSend } from '../utilities/GoogleAnalytics';
 
 class App extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class App extends Component {
     this.props.fetchPublishers();
     this.props.fetchAdmins();
     this.props.fetchStats();
+    gaSend('send', 'pageview', window.location.toString());
   }
 
   disableUserRegistration() {

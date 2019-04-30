@@ -27,7 +27,7 @@ end
 
 namespace :javascript do
   task :test do
-    sh('yarn test')
+    sh("NODE_ENV='test' yarn test")
   end
 
   task :lint do
