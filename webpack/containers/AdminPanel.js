@@ -13,6 +13,9 @@ import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
 import currentUserProps from '../prop-types/current_user_props';
 import GroupMembers from '../components/GroupMembers';
 
+import { fetchMetrics } from '../actions/metrics_actions';
+import { gaSend } from '../utilities/GoogleAnalytics';
+
 class AdminPanel extends Component {
   constructor(props){
     super(props);
@@ -54,6 +57,7 @@ class AdminPanel extends Component {
   }
 
   componentDidMount() {
+    gaSend('send', 'pageview', window.location.toString());
     this.props.setSteps([
       {
         title: 'Help',
@@ -157,6 +161,7 @@ class AdminPanel extends Component {
             {this.state.success.msg}
           </div>
         }
+        <hr/>
         <div className="input-group search-group">
           <div className="col-md-6 question-form-group">
             <label className="input-label" htmlFor={`${type}-name`}>Name</label>
@@ -172,6 +177,7 @@ class AdminPanel extends Component {
           </div>
         </div>
         <button id="submit-prog-sys" className="btn btn-default pull-right" aria-label={`Click to add new ${type} to list`} type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new item to list</text></i> {`Add new ${type}`}</button>
+        <br/><hr/>
       </form>
     );
   }
@@ -189,6 +195,7 @@ class AdminPanel extends Component {
             {this.state.success.msg}
           </div>
         }
+        <hr/>
         <div className="input-group search-group">
           <div className="col-md-6 question-form-group">
             <label className="input-label" htmlFor="group-name">Name</label>
@@ -200,6 +207,7 @@ class AdminPanel extends Component {
           </div>
         </div>
         <button id="submit-group" className="btn btn-default pull-right" aria-label="Click to add new group to list" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new group to list</text></i> Add new group</button>
+        <br/><hr/>
       </form>
     );
   }
@@ -325,6 +333,29 @@ class AdminPanel extends Component {
     );
   }
 
+  UsageMetrics() {
+    return(<p className="metrics-text">
+      {this.props.metrics}
+      </p>
+    );
+  }
+
+  analyticsTab() {
+    return(
+      <div className="tab-pane" id="analytics" role="tabpanel" aria-hidden={this.state.selectedTab !== 'analytics'} aria-labelledby="analytics-tab">
+        <h2 id="group-list">Analytics</h2>
+        <hr/>
+        <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.props.fetchMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics </i></button>
+        <br/>
+        <br/>
+        <br/>
+        {<small>It may take several minutes to generate the usage metrics report due to the calculations that are being performed. Thank you for your patience.</small>}
+        {this.UsageMetrics()}
+        <hr/>
+      </div>
+    );
+  }
+
   render() {
     return (
       <Grid>
@@ -350,10 +381,12 @@ class AdminPanel extends Component {
                 <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
               </li>
               <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
-                this.props.fetchGroups();
-                this.selectTab('group-list');
+                this.props.fetchGroups(); this.selectTab('group-list');
               }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
-                <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+              <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+              </li>
+              <li id="analytics-tab" className="nav-item" role="tab" onClick={() => this.selectTab('analytics')} aria-selected={this.state.selectedTab === 'analytics'} aria-controls="analytics">
+                <a className="nav-link" data-toggle="tab" href="#analytics" role="tab">Analytics</a>
               </li>
               <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
                 <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
@@ -365,6 +398,7 @@ class AdminPanel extends Component {
               {this.programTab()}
               {this.systemTab()}
               {this.groupTab()}
+              {this.analyticsTab()}
               {this.elasticTab()}
             </div>
           </Col>
@@ -377,6 +411,7 @@ class AdminPanel extends Component {
 function mapStateToProps(state) {
   const props = {};
   props.adminList = state.admins;
+  props.metrics = state.metrics;
   props.publisherList = state.publishers;
   props.programList = state.surveillancePrograms;
   props.systemList = state.surveillanceSystems;
@@ -388,10 +423,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
     revokePublisher, grantPublisher, grantAdmin, createGroup, addUserToGroup,
-    removeUserFromGroup, fetchGroups, esSync, esDeleteAndSync}, dispatch);
+    removeUserFromGroup, fetchGroups, esSync, fetchMetrics, esDeleteAndSync}, dispatch);
 }
 
 AdminPanel.propTypes = {
+  metrics: PropTypes.string,
+  isLoading: PropTypes.bool,
+  fetchMetrics: PropTypes.func,
   adminList: PropTypes.object,
   publisherList: PropTypes.object,
   programList: PropTypes.object,

@@ -20,6 +20,7 @@ import { questionSchema } from '../../schema';
 import CommentList from '../../containers/CommentList';
 import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
+import { gaSend } from '../../utilities/GoogleAnalytics';
 
 class QuestionShowContainer extends Component {
 
@@ -28,6 +29,7 @@ class QuestionShowContainer extends Component {
   }
 
   componentDidMount() {
+    gaSend('send', 'pageview', window.location.toString());
     if (this.props.question && this.props.question.status === 'published') {
       this.props.fetchQuestionUsage(this.props.params.qId);
     }

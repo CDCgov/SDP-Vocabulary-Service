@@ -8,6 +8,7 @@ import currentUserProps from "../../prop-types/current_user_props";
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 import iconMap from '../../styles/iconMap';
+import { isEditable, isRevisable } from '../../utilities/componentHelpers';
 
 class SurveyDedupe extends Component {
   constructor(props) {
@@ -426,7 +427,7 @@ class SurveyDedupe extends Component {
                       <td headers="category-column">{dupe.Source.category && dupe.Source.category.name}</td>
                       <td headers="stage-column">{dupe.Source.contentStage}</td>
                       <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                      {question.draftQuestion && question.draftQuestion.status && question.draftQuestion.status === 'draft' && <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                      {(isEditable(this.props.survey, this.props.currentUser) || isRevisable(this.props.survey, this.props.currentUser)) && question.draftQuestion && question.draftQuestion.status && question.draftQuestion.status === 'draft' && <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
                         e.preventDefault();
                         this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
                         return false;

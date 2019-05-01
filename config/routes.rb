@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   get '/publishers' => 'publishers#index'
   get '/administrators' => 'administrators#index'
+  get '/metrics' => 'metrics#index'
 
   namespace :admin do
     put '/roles/grant_admin' => 'roles#grant_admin', as: :grant_admin
@@ -123,6 +124,8 @@ Rails.application.routes.draw do
     resources :systems, only: [:index, :show] do
       get :usage, on: :member
     end
+
+    get 'metrics', to: 'metrics#index', as: :metrics
 
     namespace :fhir do
       get 'Valueset', to: 'valuesets#index', as: :valuesets, defaults: { format: :json }

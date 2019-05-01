@@ -30,12 +30,33 @@ tags:
     name: systems
     description: Access to systems
   -
+    name: metrics
+    description: Access to usage metrics
+  -
     name: FHIR
     description: Access to FHIR compliant API
 
 basePath: /api
 
 paths:
+
+  /metrics:
+    get:
+      tags:
+      - metrics
+      description: |
+              - Gets a list of total objects and counts for SDP-V usage metrics.
+              - It may take several minutes to generate the usage metrics report due to the calculations that are being performed. Thank you for your patience.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Metric'
+
   /questions:
     get:
       tags:
@@ -811,7 +832,7 @@ definitions:
     description:
       Details about a system.
     properties:
-      systemId:
+      systemid:
         type: string
         title: System identifier
       systemName:
@@ -823,6 +844,50 @@ definitions:
       systemDescription:
         type: string
         title: Human readable description of the system
+
+  Metric:
+    type: object
+    description:
+      Details about SDP-V usage metrics.
+    properties:
+      response_set_count:
+        type: integer
+      question_count:
+        type: integer
+      section_count:
+        type: integer
+      survey_count:
+        type: integer
+      response_set_reused:
+        type: integer
+      question_reused:
+        type: integer
+      survey_reused:
+        type: integer
+      response_set_extensions:
+        type: integer
+      question_extensions:
+        type: integer
+      section_extensions:
+        type: integer
+      survey_extensions:
+        type: integer
+      response_set_preferred:
+        type: integer
+      question_preferred:
+        type: integer
+      survey_preferred:
+        type: integer
+      Section_preferred:
+        type: integer
+      omb_approved_survey:
+        type: integer
+      number_of_groups:
+        type: integer
+      cdc_program_users:
+        type: integer
+      programs_with_content:
+        type: integer
 
   Survey:
     type: object

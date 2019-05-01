@@ -21,6 +21,7 @@ import { surveillanceSystemsProps }from '../prop-types/surveillance_system_props
 import { surveillanceProgramsProps } from '../prop-types/surveillance_program_props';
 import { signUp } from '../actions/current_user_actions';
 import { clearAjaxStatus } from '../actions/landing';
+import { gaSend } from '../utilities/GoogleAnalytics';
 
 
 const DASHBOARD_CONTEXT = 'DASHBOARD_CONTEXT';
@@ -63,6 +64,7 @@ class DashboardContainer extends SearchManagerComponent {
   }
 
   componentWillMount() {
+    gaSend('send', 'pageview', '/SDP-V/Dashboard');
     let lastSearch = this.props.lastSearch;
     let searchParameters = new SearchParameters(this.props.lastSearch);
     if(lastSearch.page > 1 && lastSearch.page !== this.state.page) {
