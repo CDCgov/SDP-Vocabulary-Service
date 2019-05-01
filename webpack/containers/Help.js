@@ -1191,7 +1191,8 @@ class Help extends Component {
               <a href="#1.15">1.15</a>,&nbsp;
               <a href="#1.16">1.16</a>,&nbsp;
               <a href="#1.17">1.17</a>,&nbsp;
-              <a href="#1.18">1.18</a>)
+              <a href="#1.18">1.18</a>,&nbsp;
+              <a href="#1.19">1.19</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1201,6 +1202,12 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.19"><strong>Release <a href='' target='_blank'>1.19</a></strong> <small>(Apr, 2019)</small></li>
+              <ol>
+              <li>...</li>
+              <li>...</li>
+              <li>...</li>
+              </ol>
             <li id="1.18"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/524910593/SDP+Vocabulary+Service+Release+1.18' target='_blank'>1.18</a></strong> <small>(Apr 5, 2019)</small></li>
               <ol>
               <li>Authors have the ability to request that publishers retire content</li>
