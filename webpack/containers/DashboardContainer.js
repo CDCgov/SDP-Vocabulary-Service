@@ -9,7 +9,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchResponseTypes } from '../actions/response_type_actions';
 import { fetchCategories } from '../actions/category_actions';
-import { fetchSearchResults, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
+import { fetchSearchResults, exportSearch, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
 import { clearBreadcrumb } from '../actions/breadcrumb_actions';
 
 import DashboardSearch from '../components/DashboardSearch';
@@ -185,7 +185,7 @@ class DashboardContainer extends SearchManagerComponent {
         }
         <div className="container">
           <div className="row basic-bg">
-            <div className={loggedIn ? ("col-md-8") : ("col-md-12")}>
+            <div className="col-md-8">
               <div className="dashboard-details">
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
                                  surveillancePrograms={this.props.surveillancePrograms}
@@ -230,13 +230,11 @@ class DashboardContainer extends SearchManagerComponent {
                 </div>
               </div>
             </div>
-            {loggedIn &&
-              <div className="col-md-4">
-                <div className="dashboard-activity">
-                  {this.authorStats(this.state.type, this.state.myStuffFilter)}
-                </div>
+            <div className="col-md-4">
+              <div className="dashboard-activity">
+                {this.authorStats(this.state.type, this.state.myStuffFilter, loggedIn)}
               </div>
-            }
+            </div>
           </div>
         </div>
       </div>
@@ -348,12 +346,12 @@ class DashboardContainer extends SearchManagerComponent {
     </div>);
   }
 
-  authorStats(searchType, myStuffFilter) {
+  authorStats(searchType, myStuffFilter, loggedIn) {
     const groups = this.props.currentUser ? this.props.currentUser.groups : [];
     return (
       <div className="recent-items-panel">
-        <div className="recent-items-heading">My Stuff</div>
-        <div className="recent-items-body">
+        {loggedIn && <div className="recent-items-heading">My Stuff</div>}
+        {loggedIn && <div className="recent-items-body">
           <div className="list-group" name="Filter by stuff you own">
             <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'response_set' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set', true)}>
               <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
@@ -379,9 +377,9 @@ class DashboardContainer extends SearchManagerComponent {
           {myStuffFilter ? (<a href="#" className="center-block text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
             <a href="#" tabIndex="4" className="center-block text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
           )}
-        </div>
-        <div className="recent-items-heading"></div>
-        {groups.length > 0 && this.props.searchResults.Source !== 'simple_search' &&
+        </div>}
+        {loggedIn && <div className="recent-items-heading"></div>}
+        {loggedIn && groups.length > 0 && this.props.searchResults.Source !== 'simple_search' &&
           <div>
             <div className="recent-items-group-heading">Filter by Group</div>
             <div className="recent-items-body">
@@ -398,6 +396,13 @@ class DashboardContainer extends SearchManagerComponent {
             </div>
           </div>
         }
+        {loggedIn && <div className="recent-items-heading"></div>}
+        {this.props.searchResults.Source !== 'simple_search' && <div>
+          <div className="recent-items-group-heading">Download Search Result Report</div>
+          <div className="recent-items-body">
+            <button className="recent-item-list btn" onClick={() => this.props.exportSearch(this.currentSearchParameters())}>Download <i className="fa fa-download" aria-hidden="true"></i></button>
+          </div>
+        </div>}
       </div>
     );
   }
@@ -425,7 +430,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, clearAjaxStatus, fetchResponseTypes, fetchCategories, fetchSearchResults, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
+  return bindActionCreators({setSteps, clearAjaxStatus, fetchResponseTypes, fetchCategories, fetchSearchResults, exportSearch, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -442,6 +447,7 @@ DashboardContainer.propTypes = {
   fetchResponseTypes: PropTypes.func,
   fetchCategories: PropTypes.func,
   fetchSearchResults: PropTypes.func,
+  exportSearch: PropTypes.func,
   setLastSearch: PropTypes.func,
   fetchLastSearch: PropTypes.func,
   fetchSuggestions: PropTypes.func,

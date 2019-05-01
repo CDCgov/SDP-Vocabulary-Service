@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'categories', to: 'categories#index', as: :categories
   get 'concepts', to: 'concepts#index', as: :concepts
   get 'elasticsearch', to: 'elasticsearch#index', as: :elasticsearch
+  get 'elasticsearch/export' => 'elasticsearch#export'
   get 'elasticsearch/duplicate_questions' => 'elasticsearch#duplicate_questions'
   get 'elasticsearch/suggestions' => 'elasticsearch#suggestions'
   get 'public_info', to: 'public_info#index', as: :public_info
@@ -26,12 +27,15 @@ Rails.application.routes.draw do
   get '/publishers' => 'publishers#index'
   get '/administrators' => 'administrators#index'
   get '/metrics' => 'metrics#index'
+  get '/authors' => 'authors#index'
 
   namespace :admin do
     put '/roles/grant_admin' => 'roles#grant_admin', as: :grant_admin
     put '/roles/revoke_admin' => 'roles#revoke_admin', as: :revoke_admin
     put '/roles/grant_publisher' => 'roles#grant_publisher', as: :grant_publisher
     put '/roles/revoke_publisher' => 'roles#revoke_publisher', as: :revoke_publisher
+    put '/roles/grant_author' => 'roles#grant_author', as: :grant_author
+    put '/roles/revoke_author' => 'roles#revoke_author', as: :revoke_author
     put '/elastic_panel/delete_and_sync' => 'elastic_panel#delete_and_sync', as: :delete_and_sync
     put '/elastic_panel/es_sync' => 'elastic_panel#es_sync', as: :es_sync
     resources :groups, only: [:index, :create]

@@ -12,3 +12,6 @@ two: {}
 
 publisher:
   name: publisher
+
+author:
+  name: author

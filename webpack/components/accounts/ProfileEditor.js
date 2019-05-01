@@ -10,6 +10,7 @@ import NestedSearchBar from '../NestedSearchBar';
 
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
+import currentUserProps from '../../prop-types/current_user_props';
 
 // This is an abstract class that is never intended to
 // be used directly.
@@ -85,6 +86,16 @@ export default class ProfileEditor extends Component {
           <input className="form-control" type="text" name="lastName" id="lastName"
                  value={this.state.lastName} onChange={this.handleChange('lastName')}/>
         </div>
+      </div>
+      <div className="form-group">
+        <label className="control-label">Roles</label><br/>
+        { this.props.currentUser && this.props.currentUser.admin && <text>Admin, </text>}
+        { this.props.currentUser && this.props.currentUser.publisher && <text>Publisher, </text>}
+        { this.props.currentUser && this.props.currentUser.author ? (
+          <text>Author</text>
+        ) : (
+          <text>Collaborator</text>
+        )}
       </div>
       <div className="form-group">
         <label className="control-label">Groups</label>
@@ -175,5 +186,6 @@ ProfileEditor.propTypes = {
   show: PropTypes.bool.isRequired,
   disableUserUpdate:PropTypes.string,
   surveillanceSystems: surveillanceSystemsProps,
-  surveillancePrograms: surveillanceProgramsProps
+  surveillancePrograms: surveillanceProgramsProps,
+  currentUser: currentUserProps
 };

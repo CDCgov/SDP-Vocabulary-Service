@@ -200,13 +200,13 @@ export default class ResponseSetShow extends Component {
             {isGroupable(responseSet, this.props.currentUser) &&
               <GroupLookUp item={responseSet} addFunc={this.props.addResponseSetToGroup} removeFunc={this.props.removeResponseSetFromGroup} currentUser={this.props.currentUser} />
             }
-            {isRevisable(responseSet, this.props.currentUser) &&
+            {isRevisable(responseSet, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/revise`}>Revise</Link>
             }
             {isEditable(responseSet, this.props.currentUser) &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/edit`}>Edit</Link>
             }
-            {isExtendable(responseSet, this.props.currentUser) &&
+            {isExtendable(responseSet, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link className="btn btn-default" to={`/responseSets/${responseSet.id}/extend`}>Extend</Link>
             }
             {isSimpleEditable(responseSet, this.props.currentUser) &&
@@ -267,7 +267,7 @@ export default class ResponseSetShow extends Component {
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
             }
-            {isEditable(responseSet, this.props.currentUser) &&
+            {isEditable(responseSet, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showDeleteModal: true});

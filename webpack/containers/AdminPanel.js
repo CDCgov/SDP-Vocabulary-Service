@@ -10,6 +10,7 @@ import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync, fetchGroups,
 import { addProgram } from '../actions/surveillance_program_actions';
 import { addSystem } from '../actions/surveillance_system_actions';
 import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
+import { revokeAuthor, grantAuthor } from '../actions/author_actions';
 import currentUserProps from '../prop-types/current_user_props';
 import GroupMembers from '../components/GroupMembers';
 
@@ -67,7 +68,7 @@ class AdminPanel extends Component {
       },
       {
         title: 'Tabs',
-        text: 'Select a tab to view various administrator functionality including: adding users to list of publishers and administrators, groups management, program and system creation, and elasticsearch management.',
+        text: 'Select a tab to view various administrator functionality including: adding users to list of publishers, authors, and administrators, groups management, program and system creation, and elasticsearch management.',
         selector: '.nav-tabs',
         position: 'bottom',
       }]);
@@ -97,6 +98,13 @@ class AdminPanel extends Component {
       case 'publisher-list':
         this.props.grantPublisher(this.state.searchEmail, () => {
           this.setState({success: {msg: `Publisher granted to ${this.state.searchEmail}`}, warning: {}});
+        }, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
+        break;
+      case 'author-list':
+        this.props.grantAuthor(this.state.searchEmail, () => {
+          this.setState({success: {msg: `Author granted to ${this.state.searchEmail}`}, warning: {}});
         }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
@@ -249,6 +257,41 @@ class AdminPanel extends Component {
     );
   }
 
+  authorTab() {
+    var authorList = values(this.props.authorList);
+    var collabList = values(this.props.collabList);
+    return(
+      <div className="tab-pane" id="author-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'author-list'} aria-labelledby="author-list-tab">
+        <h2 id="author-list">Author List</h2>
+        {this.emailInput()}
+        <div className='col-md-6 border-right'>
+          <h3 id="collabs">Collaborators</h3>
+          {collabList.map((collab) => {
+            return (<p key={collab.id} className="admin-group"><strong>{collab.firstName || collab['first_name']} {collab.lastName}</strong> ({collab.email}) <button id={`remove_${collab.email}`} className="btn btn-default pull-right" onClick={() => {
+              this.props.grantAuthor(collab.email, () => {
+                this.setState({success: {msg: `Author granted to ${collab.email}`}, warning: {}});
+              }, (failureResponse) => {
+                this.setState({error: failureResponse.response.data});
+              });
+            }}><i className="fa fa-arrow-right search-btn-icon" aria-hidden="true"></i><text className="sr-only">{`click to add ${collab.firstName || collab['first_name']} to author list`}</text></button>
+            </p>);
+          })}
+        </div>
+        <div className='col-md-6'>
+          <h3 id="authors">Authors</h3>
+          {authorList.map((pub) => {
+            return (<p key={pub.id} className="admin-group"><strong>{pub.firstName} {pub.lastName || pub['first_name']}</strong> ({pub.email}) <button id={`remove_${pub.email}`} className="btn btn-default pull-right" onClick={() => {
+              this.props.revokeAuthor(pub.id, null, (failureResponse) => {
+                this.setState({error: failureResponse.response.data});
+              });
+            }}><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${pub.firstName || pub['first_name']} from author list`}</text></button>
+            </p>);
+          })}
+        </div>
+      </div>
+    );
+  }
+
   programTab() {
     var programList = values(this.props.programList);
     return(
@@ -374,6 +417,9 @@ class AdminPanel extends Component {
               <li id="publisher-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('publisher-list')} aria-selected={this.state.selectedTab === 'publisher-list'} aria-controls="publisher-list">
                 <a className="nav-link" data-toggle="tab" href="#publisher-list" role="tab">Publisher List</a>
               </li>
+              <li id="author-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('author-list')} aria-selected={this.state.selectedTab === 'author-list'} aria-controls="author-list">
+                <a className="nav-link" data-toggle="tab" href="#author-list" role="tab">Author List</a>
+              </li>
               <li id="program-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('program-list')} aria-selected={this.state.selectedTab === 'program-list'} aria-controls="program-list">
                 <a className="nav-link" data-toggle="tab" href="#program-list" role="tab">Program List</a>
               </li>
@@ -395,6 +441,7 @@ class AdminPanel extends Component {
             <div className="tab-content">
               {this.adminTab()}
               {this.publisherTab()}
+              {this.authorTab()}
               {this.programTab()}
               {this.systemTab()}
               {this.groupTab()}
@@ -413,6 +460,8 @@ function mapStateToProps(state) {
   props.adminList = state.admins;
   props.metrics = state.metrics;
   props.publisherList = state.publishers;
+  props.authorList = state.authors.authors || {};
+  props.collabList = state.authors.collabs || {};
   props.programList = state.surveillancePrograms;
   props.systemList = state.surveillanceSystems;
   props.groupList = state.groups;
@@ -423,7 +472,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
     revokePublisher, grantPublisher, grantAdmin, createGroup, addUserToGroup,
-    removeUserFromGroup, fetchGroups, esSync, fetchMetrics, esDeleteAndSync}, dispatch);
+    removeUserFromGroup, fetchGroups, esSync, fetchMetrics, esDeleteAndSync, grantAuthor,
+    revokeAuthor}, dispatch);
 }
 
 AdminPanel.propTypes = {
@@ -432,6 +482,8 @@ AdminPanel.propTypes = {
   fetchMetrics: PropTypes.func,
   adminList: PropTypes.object,
   publisherList: PropTypes.object,
+  authorList: PropTypes.object,
+  collabList: PropTypes.object,
   programList: PropTypes.object,
   systemList: PropTypes.object,
   groupList: PropTypes.array,
@@ -445,8 +497,10 @@ AdminPanel.propTypes = {
   fetchGroups: PropTypes.func,
   revokeAdmin: PropTypes.func,
   revokePublisher: PropTypes.func,
+  revokeAuthor: PropTypes.func,
   grantAdmin: PropTypes.func,
   grantPublisher: PropTypes.func,
+  grantAuthor: PropTypes.func,
   esSync: PropTypes.func,
   esDeleteAndSync: PropTypes.func
 };

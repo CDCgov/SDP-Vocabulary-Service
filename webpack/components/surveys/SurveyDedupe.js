@@ -377,13 +377,13 @@ class SurveyDedupe extends Component {
           </table>
           <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewQuestionIndex+1} of {section.qCount})<span className="sr-only">There are {section.qCount} potential duplicate questions in this section</span></p>
           <hr/>
-          <div className="pull-right">
+          {this.props.currentUser && this.props.currentUser.author && <div className="pull-right">
             <button className="btn btn-default" id={`review-question-${question.draftQuestion.id}`} onClick={(e) => {
               e.preventDefault();
               this.setState({showReviewModal: true, selectedDraft: question.draftQuestion});
               return false;
             }}>Mark as Reviewed</button>
-          </div>
+          </div>}
           <div className="suggested-replacements">
             <h3 className="h4">Suggested Replacement Questions ({question.potentialDuplicates && question.potentialDuplicates.length})</h3>
             {question.draftQuestion.curatedAt && <p className='pull-right'>(Last reviewed: {question.draftQuestion.curatedAt}) <a href='#' onClick={(e)=>{
@@ -427,7 +427,7 @@ class SurveyDedupe extends Component {
                       <td headers="category-column">{dupe.Source.category && dupe.Source.category.name}</td>
                       <td headers="stage-column">{dupe.Source.contentStage}</td>
                       <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                      {(isEditable(this.props.survey, this.props.currentUser) || isRevisable(this.props.survey, this.props.currentUser)) && question.draftQuestion && question.draftQuestion.status && question.draftQuestion.status === 'draft' && <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                      {this.props.currentUser && this.props.currentUser.author && (isEditable(this.props.survey, this.props.currentUser) || isRevisable(this.props.survey, this.props.currentUser)) && question.draftQuestion && question.draftQuestion.status && question.draftQuestion.status === 'draft' && <td headers="action-column"><button id={`select-question-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
                         e.preventDefault();
                         this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: question.draftQuestion});
                         return false;
@@ -497,13 +497,13 @@ class SurveyDedupe extends Component {
           </table>
           <p className="linked-section">Linked Section: <i className={`fa ${iconMap['section']}`} aria-hidden="true"></i><text className="sr-only">Click to view parent section</text> <a href={`/#/sections/${section.id}`} target="_blank">{section.name}</a> ({this.state.viewResponseSetIndex+1} of {section.rsCount})<span className="sr-only">There are {section.rsCount} potential duplicate questions in this section</span></p>
           <hr/>
-          <div className="pull-right">
+          {this.props.currentUser && this.props.currentUser.author && <div className="pull-right">
             <button className="btn btn-default" id={`review-rs-${responseSet.draftResponseSet.id}`} onClick={(e) => {
               e.preventDefault();
               this.setState({showReviewModal: true, selectedDraft: responseSet.draftResponseSet});
               return false;
             }}>Mark as Reviewed</button>
-          </div>
+          </div>}
           <div className="suggested-replacements">
           <h3 className="h4">Suggested Replacement Response Sets ({responseSet.potentialDuplicates && responseSet.potentialDuplicates.length})</h3>
           {responseSet.draftResponseSet.curatedAt && <p className='pull-right'>(Last reviewed: {responseSet.draftResponseSet.curatedAt}) <a href='#' onClick={(e)=>{
@@ -534,7 +534,7 @@ class SurveyDedupe extends Component {
                       <td headers="cdc-pref-column" className={dupe.Source.preferred ? 'cdc-preferred-column' : ''}>{dupe.Source.preferred && <text className='sr-only'>This content is marked as preferred by the CDC</text>}</td>
                       <td headers="stage-column">{dupe.Source.contentStage}</td>
                       <td headers="usage-column" className="text-center">{dupe.Source.surveillancePrograms && dupe.Source.surveillancePrograms.length}</td>
-                      {responseSet.draftResponseSet && responseSet.draftResponseSet.status && responseSet.draftResponseSet.status === 'draft' && <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
+                      {this.props.currentUser && this.props.currentUser.author && responseSet.draftResponseSet && responseSet.draftResponseSet.status && responseSet.draftResponseSet.status === 'draft' && <td headers="action-column"><button id={`select-response-set-${dupe.Source.name}`} className="btn btn-default btn-sm" onClick={(e) => {
                         e.preventDefault();
                         this.setState({showDeleteModal: true, selectedDupe: dupe.Source, selectedDraft: responseSet.draftResponseSet});
                         return false;

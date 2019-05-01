@@ -31,7 +31,7 @@ export function isEditable(object, currentUser) {
 }
 
 export function isGroupable(object, currentUser) {
-  return currentUser && currentUser.id && currentUser.groups &&
+  return currentUser && currentUser.id && currentUser.author && currentUser.groups &&
   (object.createdById === currentUser.id ||
     (currentUser.groups && object.groups && currentUser.groups.filter((group) => object.groups.map(g => g.id).includes(group.id)).length > 0)
   );
