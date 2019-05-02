@@ -1205,18 +1205,13 @@ class Help extends Component {
             <li id="1.19"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/564461569/SDP+Vocabulary+Service+Release+1.19' target='_blank'>1.19</a></strong> <small>(May 2, 2019)</small></li>
               <ol>
               <li>Collaborator role has been implemented</li>
-              <li>Reporting requirements for curation has been refined</li>
-              <li>Reporting function has been added allowing users to run reports</li>
-              <li>Pagination to linked content has been implemented</li>
-              <li>Curation wizard has been extended to administrator and publisher roles</li>
-              <li>"View Survey" button functionality has been updated upon import of data</li>
-              <li>"Critical error" message upon import of data was updated to reflect messages more accurately</li>
-              <li>Usage Metrics:</li>
-                <ol type="a">
-                <li>Administrators have the ability to generate usage metrics in the Admin Panel</li>
-                <li>Usage metrics have been exposed as an API</li>
-                <li>Additional tags have been implemented for analtyics</li>
-              </ol>
+              <li>Implemented Dashboard Search Result Report Feature that allows users to export dashboard search results into a spreadsheet format</li>
+              <li>Implemented metrics tab on admin panel to allow administrators to view system metrics</li>
+              <li>Aggregate metrics have been exposed in the API</li>
+              <li>Added pagination to linked content to accommodate application growth and ensure performance and page responsiveness as linked content increases on pages</li>
+              <li>Curation wizard feature has been extended to allow administrators and publishers to view suggested replacement questions on surveys</li>
+              <li>Additional google tags have been implemented for analytics</li>
+              <li>Bug fixes</li>
               </ol>
             <li id="1.18"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/524910593/SDP+Vocabulary+Service+Release+1.18' target='_blank'>1.18</a></strong> <small>(Apr 5, 2019)</small></li>
               <ol>
