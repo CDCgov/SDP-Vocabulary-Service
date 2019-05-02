@@ -1202,15 +1202,25 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.19"><strong>Release <a href='' target='_blank'>1.19</a></strong> <small>(Apr, 2019)</small></li>
+            <li id="1.19"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/564461569/SDP+Vocabulary+Service+Release+1.19' target='_blank'>1.19</a></strong> <small>(May 2, 2019)</small></li>
               <ol>
-              <li>...</li>
-              <li>...</li>
-              <li>...</li>
+              <li>Collaborator role has been implemented</li>
+              <li>Reporting requirements for curation has been refined</li>
+              <li>Reporting function has been added allowing users to run reports</li>
+              <li>Pagination to linked content has been implemented</li>
+              <li>Curation wizard has been extended to administrator and publisher roles</li>
+              <li>"View Survey" button functionality has been updated upon import of data</li>
+              <li>"Critical error" message upon import of data was updated to reflect messages more accurately</li>
+              <li>Usage Metrics:</li>
+                <ol type="a">
+                <li>Administrators have the ability to generate usage metrics in the Admin Panel</li>
+                <li>Usage metrics have been exposed as an API</li>
+                <li>Additional tags have been implemented for analtyics</li>
+              </ol>
               </ol>
             <li id="1.18"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/524910593/SDP+Vocabulary+Service+Release+1.18' target='_blank'>1.18</a></strong> <small>(Apr 5, 2019)</small></li>
               <ol>
-              <li>Authors have the ability to request that publishers retire content</li>
+              <li>Authors have the ability to request that publishers retired content</li>
               <li>'Draft' visibility has been changed to 'Private' and 'Published' visibility has been changed to 'Public' to attributes more intuitive</li>
               <li>"Access denied" message updated for authenticated and non-authenticated users to promote collaboration on private content</li>
               </ol>
