@@ -40,6 +40,7 @@ Feature: Edit Questions
     When I click on the "Publish" button
     Then I should see "This action cannot be undone"
     When I click on the "Confirm Publish" link
+    And I wait 1 seconds
     Then I click on the "Change History" link
     And I wait 1 seconds
     Then I should see "Changes by test_author@gmail.com"
