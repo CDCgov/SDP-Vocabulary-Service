@@ -400,7 +400,7 @@ class DashboardContainer extends SearchManagerComponent {
         {this.props.searchResults.Source !== 'simple_search' && <div>
           <div className="recent-items-group-heading">Download Search Result Report</div>
           <div className="recent-items-body">
-            <button className="recent-item-list btn" onClick={() => this.props.exportSearch(this.currentSearchParameters())}>Download <i className="fa fa-download" aria-hidden="true"></i></button>
+            <a className="recent-item-list" href={`/elasticsearch/export?${Object.keys(this.currentSearchParameters().toSearchParameters()).map(key => key + '=' + this.currentSearchParameters().toSearchParameters()[key]).join('&')}`}>Download <i className="fa fa-download" aria-hidden="true"></i></a>
           </div>
         </div>}
       </div>
