@@ -13,6 +13,7 @@ import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
 import { revokeAuthor, grantAuthor } from '../actions/author_actions';
 import currentUserProps from '../prop-types/current_user_props';
 import GroupMembers from '../components/GroupMembers';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 import { fetchMetrics } from '../actions/metrics_actions';
 import { gaSend } from '../utilities/GoogleAnalytics';
@@ -34,7 +35,8 @@ class AdminPanel extends Component {
       acronym: '',
       groupModal: false,
       selectedGroup: group,
-      syncPending: false
+      syncPending: false,
+      isLoading: false
     };
   }
 
@@ -377,10 +379,15 @@ class AdminPanel extends Component {
   }
 
   UsageMetrics() {
-    return(<p className="metrics-text">
-      {this.props.metrics}
-      </p>
-    );
+    if (this.state.isLoading) {
+      return <p className="metrics-text"><br/><br/><LoadingSpinner msg="Calculating Metrics..." /></p>;
+    } else {
+      return(
+        <p className="metrics-text">
+          {this.props.metrics}
+        </p>
+      );
+    }
   }
 
   analyticsTab() {
@@ -388,7 +395,12 @@ class AdminPanel extends Component {
       <div className="tab-pane" id="analytics" role="tabpanel" aria-hidden={this.state.selectedTab !== 'analytics'} aria-labelledby="analytics-tab">
         <h2 id="group-list">Analytics</h2>
         <hr/>
-        <button id="analytics" className="btn btn-default pull-left" type="submit" onClick={() => this.props.fetchMetrics()}><i className="fa fa-plus search-btn-icon" aria-hidden="true"> Generate Usage Metrics </i></button>
+        <button id="analytics" className={`btn btn-default pull-left ${this.state.isLoading ? 'disabled' : ''}`} type="submit" onClick={() => {
+          this.setState({isLoading: true});
+          this.props.fetchMetrics(() => {
+            this.setState({isLoading: false});
+          });
+        }}><i className="fa fa-download search-btn-icon" aria-hidden="true"></i> Generate Usage Metrics</button>
         <br/>
         <br/>
         <br/>
