@@ -28,6 +28,8 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
@@ -244,6 +246,7 @@ export default class QuestionShow extends Component {
                 e.preventDefault();
                 this.props.addPreferred(question.id, 'Question', () => {
                   this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/Checked');
                 });
                 return false;
               }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -253,6 +256,7 @@ export default class QuestionShow extends Component {
                 e.preventDefault();
                 this.props.removePreferred(question.id, 'Question', () => {
                   this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/UnChecked');
                 });
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
@@ -348,6 +352,7 @@ export default class QuestionShow extends Component {
                 {question.contentStage && <div className="box-content">
                   <strong>Content Stage: </strong>
                   {question.contentStage}
+                  {gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/' + question.contentStage)}
                 </div>}
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="box-content">
