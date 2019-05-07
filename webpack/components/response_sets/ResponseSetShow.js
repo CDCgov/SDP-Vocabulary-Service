@@ -27,6 +27,8 @@ import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isSimpleEditable, isGroupable } from '../../utilities/componentHelpers';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 export default class ResponseSetShow extends Component {
   constructor(props){
     super(props);
@@ -254,6 +256,7 @@ export default class ResponseSetShow extends Component {
                 e.preventDefault();
                 this.props.addPreferred(responseSet.id, 'ResponseSet', () => {
                   this.props.fetchResponseSet(responseSet.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/Checked');
                 });
                 return false;
               }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -263,6 +266,7 @@ export default class ResponseSetShow extends Component {
                 e.preventDefault();
                 this.props.removePreferred(responseSet.id, 'ResponseSet', () => {
                   this.props.fetchResponseSet(responseSet.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/UnChecked');
                 });
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
@@ -371,6 +375,7 @@ export default class ResponseSetShow extends Component {
                   <div className="box-content">
                     <strong>Content Stage: </strong>
                     {responseSet.contentStage}
+                    {gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/' + responseSet.contentStage)}
                   </div>
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
