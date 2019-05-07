@@ -11,7 +11,8 @@ import {
   SET_LAST_SEARCH,
   FETCH_LAST_SEARCH,
   FETCH_SUGGESTIONS,
-  ADD_ENTITIES_FULFILLED
+  ADD_ENTITIES_FULFILLED,
+  EXPORT_SEARCH
 } from './types';
 
 const VALID_PARAMETERS = ['searchTerms', 'type', 'programFilter', 'systemFilter', 'nsFilter', 'ombFilter',
@@ -75,6 +76,23 @@ export function fetchSearchResults(context, searchParameters) {
       return response;
     })
   };
+}
+
+export function exportSearch(searchParameters) {
+  return {
+    type: EXPORT_SEARCH,
+    payload: axios.get(routes.elasticsearchExportPath(), {
+      headers: {'Accept': 'application/vnd.ms-excel'},
+      responseType: 'blob',
+      params: searchParameters.toSearchParameters()
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'search_report.xlsx');
+      document.body.appendChild(link);
+      link.click();
+    })};
 }
 
 export function fetchLastSearch(context, searchParameters) {

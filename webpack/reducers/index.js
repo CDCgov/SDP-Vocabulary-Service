@@ -15,13 +15,17 @@ import {
   FETCH_ADMINS_FULFILLED,
   GRANT_ADMIN_FULFILLED,
   REVOKE_ADMIN_FULFILLED,
+  FETCH_AUTHORS_FULFILLED,
+  GRANT_AUTHOR_FULFILLED,
+  REVOKE_AUTHOR_FULFILLED,
   ADD_PROGRAM_FULFILLED,
   ADD_SYSTEM_FULFILLED
 } from '../actions/types';
 
 
-import { byIdReducer, byIdWithIndividualReducer } from './reducer_generator';
+import { byIdReducer, byIdReducerArray, byIdWithIndividualReducer } from './reducer_generator';
 
+import metrics from './metrics_reducer';
 import questions from './questions_reducer';
 import sections from './sections_reducer';
 import comments from './comments';
@@ -53,10 +57,11 @@ const surveillanceSystems  = byIdReducer(FETCH_SURVEILLANCE_SYSTEMS_FULFILLED, A
 const surveillancePrograms = byIdReducer(FETCH_SURVEILLANCE_PROGRAMS_FULFILLED, ADD_PROGRAM_FULFILLED);
 const publishers = byIdReducer(FETCH_PUBLISHERS_FULFILLED, GRANT_PUBLISHER_FULFILLED, REVOKE_PUBLISHER_FULFILLED);
 const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE_ADMIN_FULFILLED);
+const authors = byIdReducerArray(FETCH_AUTHORS_FULFILLED, GRANT_AUTHOR_FULFILLED, REVOKE_AUTHOR_FULFILLED);
 
 const rootReducer = combineReducers({
   questions, comments, stats, currentUser, responseSets, sections, categories, admins, potentialDupes, dupeCount,
-  responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions, publicInfo,
+  responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions, publicInfo, metrics, authors,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags, groups, displayStyle, breadcrumbPath, ajaxStatus
 });
 

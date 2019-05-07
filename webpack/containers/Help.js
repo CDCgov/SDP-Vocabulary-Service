@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
+import { gaSend } from '../utilities/GoogleAnalytics';
 
 class Help extends Component {
   constructor(props){
@@ -37,6 +38,7 @@ class Help extends Component {
   }
 
   componentDidMount() {
+    gaSend('send', 'pageview', window.location.toString());
     this.props.setSteps([
       {
         title: 'Help',
@@ -1189,7 +1191,8 @@ class Help extends Component {
               <a href="#1.15">1.15</a>,&nbsp;
               <a href="#1.16">1.16</a>,&nbsp;
               <a href="#1.17">1.17</a>,&nbsp;
-              <a href="#1.18">1.18</a>)
+              <a href="#1.18">1.18</a>,&nbsp;
+              <a href="#1.19">1.19</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1199,9 +1202,20 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.19"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/564461569/SDP+Vocabulary+Service+Release+1.19' target='_blank'>1.19</a></strong> <small>(May 2, 2019)</small></li>
+              <ol>
+              <li>Collaborator role has been implemented</li>
+              <li>Implemented Dashboard Search Result Report Feature that allows users to export dashboard search results into a spreadsheet format</li>
+              <li>Implemented metrics tab on admin panel to allow administrators to view system metrics</li>
+              <li>Aggregate metrics have been exposed in the API</li>
+              <li>Added pagination to linked content to accommodate application growth and ensure performance and page responsiveness as linked content increases on pages</li>
+              <li>Curation wizard feature has been extended to allow administrators and publishers to view suggested replacement questions on surveys</li>
+              <li>Additional google tags have been implemented for analytics</li>
+              <li>Bug fixes</li>
+              </ol>
             <li id="1.18"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/524910593/SDP+Vocabulary+Service+Release+1.18' target='_blank'>1.18</a></strong> <small>(Apr 5, 2019)</small></li>
               <ol>
-              <li>Authors have the ability to request that publishers retire content</li>
+              <li>Authors have the ability to request that publishers retired content</li>
               <li>'Draft' visibility has been changed to 'Private' and 'Published' visibility has been changed to 'Public' to attributes more intuitive</li>
               <li>"Access denied" message updated for authenticated and non-authenticated users to promote collaboration on private content</li>
               </ol>

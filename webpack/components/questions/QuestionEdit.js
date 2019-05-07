@@ -295,7 +295,7 @@ class QuestionEdit extends Component {
                     <SearchResultList searchResults={this.props.potentialDuplicates}
                                       isEditPage={false}
                                       currentUser={this.props.currentUser}
-                                      title="Potential Duplicate Questions"/>
+                                      title="Suggested Existing Questions for Reuse"/>
                   }
                 </div>
                 {this.props.action === 'edit' && <Row>

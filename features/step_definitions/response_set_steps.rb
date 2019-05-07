@@ -22,6 +22,16 @@ Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]
                       responses_attributes: [{ value: '', display_name: response, code_system: '' }])
 end
 
+Given(/^I have a Response Set with 20 question linkages$/) do
+  user = get_user 'test_author@gmail.com'
+  rs = ResponseSet.create!(name: 'test rs', description: 'test rs', version: 1, created_by: user)
+  rt = ResponseType.where(code: 'choice').first
+  20.times do |i|
+    q = Question.create!(content: "qtest #{i}", response_type_id: rt.id, created_by: user)
+    rs.questions << q
+  end
+end
+
 Given(/^I have a Response Set with the name "([^"]*)" and the description "([^"]*)" and \
 with the Responses (.+)$/) do |set_name, desc, response_values|
   user = get_user 'test_author@gmail.com'

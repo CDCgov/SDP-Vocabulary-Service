@@ -17,7 +17,9 @@ import { fetchSurveillanceSystems } from '../actions/surveillance_system_actions
 import { fetchSurveillancePrograms } from '../actions/surveillance_program_actions';
 import { fetchPublishers } from '../actions/publisher_actions';
 import { fetchAdmins } from '../actions/admin_actions';
+import { fetchAuthors } from '../actions/author_actions';
 import { fetchStats } from '../actions/landing';
+import { gaSend } from '../utilities/GoogleAnalytics';
 
 class App extends Component {
   constructor(props) {
@@ -38,7 +40,9 @@ class App extends Component {
     this.props.fetchSurveillanceSystems();
     this.props.fetchPublishers();
     this.props.fetchAdmins();
+    this.props.fetchAuthors();
     this.props.fetchStats();
+    gaSend('send', 'pageview', window.location.toString());
   }
 
   disableUserRegistration() {
@@ -143,6 +147,7 @@ App.propTypes = {
   fetchSurveillancePrograms: PropTypes.func,
   fetchPublishers: PropTypes.func,
   fetchAdmins: PropTypes.func,
+  fetchAuthors: PropTypes.func,
   fetchStats: PropTypes.func,
   children: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,
@@ -160,4 +165,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {fetchCurrentUser, logIn, signUp, updateUser,
-  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers, fetchAdmins, fetchStats})(App);
+  fetchSurveillanceSystems, fetchSurveillancePrograms, fetchPublishers, fetchAdmins, fetchAuthors, fetchStats})(App);

@@ -21,6 +21,25 @@ class ElasticsearchController < ApplicationController
     render json: results
   end
 
+  def export
+    type = params[:type] ? params[:type] : nil
+    query_string = params[:search] ? params[:search] : nil
+    query_size = params[:size] ? params[:size].to_i : 10
+    page = params[:page] ? params[:page].to_i : 1
+    current_user_id = current_user ? current_user.id : -1
+    groups = current_user ? current_user.groups : []
+    must_filters = must_filter_defaults(params)
+    @results = if SDP::Elasticsearch.ping
+                 # Confirm Cap on Query size
+                 SDP::Elasticsearch.search(type, query_string, 1, 1000, must_filters, current_user_id, groups)
+               else
+                 SDP::SimpleSearch.search(type, query_string, current_user_id,
+                                          query_size, page, must_filters['publisher'],
+                                          must_filters['mystuff'], must_filters['nested_section']).target!
+               end
+    render xlsx: "search_report_#{Time.zone.now.strftime('%Y-%m-%d_%H-%M-%S')}", template: 'shared/search_spreadsheet.xlsx.axlsx'
+  end
+
   def must_filter_defaults(params)
     must_filters = {}
     must_filters['group_id'] = params[:groups] ? params[:groups].to_i : 0
@@ -47,11 +66,13 @@ class ElasticsearchController < ApplicationController
 
   def duplicate_questions
     results = if SDP::Elasticsearch.ping
+                current_user_id = current_user ? current_user.id : -1
+                groups = current_user ? current_user.groups : []
                 content = params[:content]
                 content ||= ''
                 description = params[:description]
                 description ||= ''
-                SDP::Elasticsearch.find_duplicate_questions(content, description)
+                SDP::Elasticsearch.find_duplicate_questions(content, description, current_user_id, groups)
               else
                 SDP::SimpleSearch.find_duplicate_questions(params[:content]).target!
               end

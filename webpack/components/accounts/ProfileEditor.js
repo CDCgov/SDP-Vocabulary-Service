@@ -4,13 +4,13 @@ import { Modal } from 'react-bootstrap';
 import values from 'lodash/values';
 import filter from 'lodash/filter';
 import clone from 'lodash/clone';
-import isEmpty from 'lodash/isEmpty';
 
 import Errors from '../Errors.js';
 import NestedSearchBar from '../NestedSearchBar';
 
 import { surveillanceSystemsProps }from '../../prop-types/surveillance_system_props';
 import { surveillanceProgramsProps } from '../../prop-types/surveillance_program_props';
+import currentUserProps from '../../prop-types/current_user_props';
 
 // This is an abstract class that is never intended to
 // be used directly.
@@ -88,6 +88,16 @@ export default class ProfileEditor extends Component {
         </div>
       </div>
       <div className="form-group">
+        <label className="control-label">Roles</label><br/>
+        { this.props.currentUser && this.props.currentUser.admin && <text>Admin, </text>}
+        { this.props.currentUser && this.props.currentUser.publisher && <text>Publisher, </text>}
+        { this.props.currentUser && this.props.currentUser.author ? (
+          <text>Author</text>
+        ) : (
+          <text>Collaborator</text>
+        )}
+      </div>
+      <div className="form-group">
         <label className="control-label">Groups</label>
         <p>{this.state.groups.length > 0 ? (this.state.groups.map((group, i) => {
           if (i+1 < this.state.groups.length) {
@@ -119,35 +129,27 @@ export default class ProfileEditor extends Component {
   }
 
   surveillanceProgramsField() {
-    if (isEmpty(this.props.surveillancePrograms)) {
-      return <p>No surveillance programs loaded in the database</p>;
-    } else {
-      return (<div id="search-programs">
-          <label className="control-label" htmlFor="lastProgramId">Default Surveillance Program</label>
-          <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
-          <select size='5' className="form-control" name="lastProgramId" id="lastProgramId" value={this.state.lastProgramId} onChange={this.handleChange('lastProgramId')} >
-            {this.state.surveillancePrograms && this.state.surveillancePrograms.map((sp) => {
-              return <option key={sp.id} value={sp.id}>{sp.name}</option>;
-            })}
-          </select>
-        </div>);
-    }
+    return (<div id="search-programs">
+        <label className="control-label" htmlFor="lastProgramId">Default Surveillance Program</label>
+        <NestedSearchBar onSearchTermChange={this.programSearch} modelName="Program" />
+        <select size='5' className="form-control" name="lastProgramId" id="lastProgramId" value={this.state.lastProgramId} onChange={this.handleChange('lastProgramId')} >
+          {this.state.surveillancePrograms && this.state.surveillancePrograms.map((sp) => {
+            return <option key={sp.id} value={sp.id}>{sp.name}</option>;
+          })}
+        </select>
+      </div>);
   }
 
   surveillanceSystemsField() {
-    if (isEmpty(this.props.surveillanceSystems)) {
-      return <p>No surveillance systems loaded in the database</p>;
-    } else {
-      return (<div id="search-systems">
-          <label className="control-label" htmlFor="lastSystemId">Default Surveillance System</label>
-          <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
-          <select size='5' className="form-control" name="lastSystemId" id="lastSystemId" value={this.state.lastSystemId} onChange={this.handleChange('lastSystemId')} >
-            {this.state.surveillanceSystems && this.state.surveillanceSystems.map((ss) => {
-              return <option key={ss.id} value={ss.id}>{ss.name}</option>;
-            })}
-          </select>
-        </div>);
-    }
+    return (<div id="search-systems">
+        <label className="control-label" htmlFor="lastSystemId">Default Surveillance System</label>
+        <NestedSearchBar onSearchTermChange={this.systemSearch} modelName="System" />
+        <select size='5' className="form-control" name="lastSystemId" id="lastSystemId" value={this.state.lastSystemId} onChange={this.handleChange('lastSystemId')} >
+          {this.state.surveillanceSystems && this.state.surveillanceSystems.map((ss) => {
+            return <option key={ss.id} value={ss.id}>{ss.name}</option>;
+          })}
+        </select>
+      </div>);
   }
 
   profileInformation() {
@@ -184,5 +186,6 @@ ProfileEditor.propTypes = {
   show: PropTypes.bool.isRequired,
   disableUserUpdate:PropTypes.string,
   surveillanceSystems: surveillanceSystemsProps,
-  surveillancePrograms: surveillanceProgramsProps
+  surveillancePrograms: surveillanceProgramsProps,
+  currentUser: currentUserProps
 };

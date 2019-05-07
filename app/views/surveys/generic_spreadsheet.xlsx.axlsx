@@ -126,7 +126,7 @@ end
     survey_row << (@survey.surveillance_system ? @survey.surveillance_system.name : '')
     survey_sheet.add_row survey_row
   end
-  @wb.add_worksheet(name: 'Sections Metadata') do |section_sheet|
+  @wb.add_worksheet(name: 'Section Metadata') do |section_sheet|
     section_sheet.add_row ['Section Name (R)','Section Description (O)','Section Keyword Tags (O)','Concept Name (C)','Concept Identifier (C)','Code System Identifier (C)','Code System Mappings Table (O)','Creation Date (I)','Author (I)','SDP-V ID (I)','Version (I)','Workflow Status (I)']
     @survey.survey_sections.each do |ss|
       add_section_to_sheet(ss.section, sheet, section_sheet)

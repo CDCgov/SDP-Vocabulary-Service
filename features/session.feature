@@ -117,7 +117,6 @@ Feature: Session Management
     When I click on the "account-dropdown" link
     And I click on the "Settings" link
     Then I should see "Account Details"
-    And I should see "No surveillance programs loaded in the database"
     And I fill in the "firstName" field with "Brett"
     And I fill in the "lastName" field with "Bretterson"
     And I click on the "Update" button

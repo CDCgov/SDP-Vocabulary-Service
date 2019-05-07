@@ -26,6 +26,16 @@ Feature: Manage Response Sets
     And I should see "Surveillance Programs: 0"
     And I should see "Surveillance Systems: 1"
 
+  Scenario: Show response set with many linkages
+    Given I have a Response Set with 20 question linkages
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    When I click on the menu link for the Response Set with the name "test rs"
+    And I click on the option to Details the Response Set with the name "test rs"
+    Then I should see "Name: test rs"
+    And I should see "qtest 3"
+    And I should not see "qtest 13"
+
   Scenario: Show Response Set in Detail No Responses
     Given I have a Response Set with the name "Gender Full" and the description "Response set description"
     And I am logged in as test_author@gmail.com

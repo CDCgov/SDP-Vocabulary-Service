@@ -10,8 +10,13 @@ import { revokeAdmin, grantAdmin, esSync, esDeleteAndSync, fetchGroups,
 import { addProgram } from '../actions/surveillance_program_actions';
 import { addSystem } from '../actions/surveillance_system_actions';
 import { revokePublisher, grantPublisher } from '../actions/publisher_actions';
+import { revokeAuthor, grantAuthor } from '../actions/author_actions';
 import currentUserProps from '../prop-types/current_user_props';
 import GroupMembers from '../components/GroupMembers';
+import LoadingSpinner from '../components/LoadingSpinner';
+
+import { fetchMetrics } from '../actions/metrics_actions';
+import { gaSend } from '../utilities/GoogleAnalytics';
 
 class AdminPanel extends Component {
   constructor(props){
@@ -30,7 +35,8 @@ class AdminPanel extends Component {
       acronym: '',
       groupModal: false,
       selectedGroup: group,
-      syncPending: false
+      syncPending: false,
+      isLoading: false
     };
   }
 
@@ -54,6 +60,7 @@ class AdminPanel extends Component {
   }
 
   componentDidMount() {
+    gaSend('send', 'pageview', window.location.toString());
     this.props.setSteps([
       {
         title: 'Help',
@@ -63,7 +70,7 @@ class AdminPanel extends Component {
       },
       {
         title: 'Tabs',
-        text: 'Select a tab to view various administrator functionality including: adding users to list of publishers and administrators, groups management, program and system creation, and elasticsearch management.',
+        text: 'Select a tab to view various administrator functionality including: adding users to list of publishers, authors, and administrators, groups management, program and system creation, and elasticsearch management.',
         selector: '.nav-tabs',
         position: 'bottom',
       }]);
@@ -93,6 +100,13 @@ class AdminPanel extends Component {
       case 'publisher-list':
         this.props.grantPublisher(this.state.searchEmail, () => {
           this.setState({success: {msg: `Publisher granted to ${this.state.searchEmail}`}, warning: {}});
+        }, (failureResponse) => {
+          this.setState({error: failureResponse.response.data});
+        });
+        break;
+      case 'author-list':
+        this.props.grantAuthor(this.state.searchEmail, () => {
+          this.setState({success: {msg: `Author granted to ${this.state.searchEmail}`}, warning: {}});
         }, (failureResponse) => {
           this.setState({error: failureResponse.response.data});
         });
@@ -157,6 +171,7 @@ class AdminPanel extends Component {
             {this.state.success.msg}
           </div>
         }
+        <hr/>
         <div className="input-group search-group">
           <div className="col-md-6 question-form-group">
             <label className="input-label" htmlFor={`${type}-name`}>Name</label>
@@ -172,6 +187,7 @@ class AdminPanel extends Component {
           </div>
         </div>
         <button id="submit-prog-sys" className="btn btn-default pull-right" aria-label={`Click to add new ${type} to list`} type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new item to list</text></i> {`Add new ${type}`}</button>
+        <br/><hr/>
       </form>
     );
   }
@@ -189,6 +205,7 @@ class AdminPanel extends Component {
             {this.state.success.msg}
           </div>
         }
+        <hr/>
         <div className="input-group search-group">
           <div className="col-md-6 question-form-group">
             <label className="input-label" htmlFor="group-name">Name</label>
@@ -200,6 +217,7 @@ class AdminPanel extends Component {
           </div>
         </div>
         <button id="submit-group" className="btn btn-default pull-right" aria-label="Click to add new group to list" type="submit"><i className="fa fa-plus search-btn-icon" aria-hidden="true"><text className="sr-only">Click button to add new group to list</text></i> Add new group</button>
+        <br/><hr/>
       </form>
     );
   }
@@ -237,6 +255,41 @@ class AdminPanel extends Component {
           }}><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${pub.name} from publisher list`}</text></button>}
           </p>);
         })}
+      </div>
+    );
+  }
+
+  authorTab() {
+    var authorList = values(this.props.authorList);
+    var collabList = values(this.props.collabList);
+    return(
+      <div className="tab-pane" id="author-list" role="tabpanel" aria-hidden={this.state.selectedTab !== 'author-list'} aria-labelledby="author-list-tab">
+        <h2 id="author-list">Author List</h2>
+        {this.emailInput()}
+        <div className='col-md-6 border-right'>
+          <h3 id="collabs">Collaborators</h3>
+          {collabList.map((collab) => {
+            return (<p key={collab.id} className="admin-group"><strong>{collab.firstName || collab['first_name']} {collab.lastName}</strong> ({collab.email}) <button id={`remove_${collab.email}`} className="btn btn-default pull-right" onClick={() => {
+              this.props.grantAuthor(collab.email, () => {
+                this.setState({success: {msg: `Author granted to ${collab.email}`}, warning: {}});
+              }, (failureResponse) => {
+                this.setState({error: failureResponse.response.data});
+              });
+            }}><i className="fa fa-arrow-right search-btn-icon" aria-hidden="true"></i><text className="sr-only">{`click to add ${collab.firstName || collab['first_name']} to author list`}</text></button>
+            </p>);
+          })}
+        </div>
+        <div className='col-md-6'>
+          <h3 id="authors">Authors</h3>
+          {authorList.map((pub) => {
+            return (<p key={pub.id} className="admin-group"><strong>{pub.firstName} {pub.lastName || pub['first_name']}</strong> ({pub.email}) <button id={`remove_${pub.email}`} className="btn btn-default pull-right" onClick={() => {
+              this.props.revokeAuthor(pub.id, null, (failureResponse) => {
+                this.setState({error: failureResponse.response.data});
+              });
+            }}><i className="fa fa-trash search-btn-icon" aria-hidden="true"></i> Remove<text className="sr-only">{`- click to remove ${pub.firstName || pub['first_name']} from author list`}</text></button>
+            </p>);
+          })}
+        </div>
       </div>
     );
   }
@@ -325,6 +378,39 @@ class AdminPanel extends Component {
     );
   }
 
+  UsageMetrics() {
+    if (this.state.isLoading) {
+      return <p className="metrics-text"><br/><br/><LoadingSpinner msg="Calculating Metrics..." /></p>;
+    } else {
+      return(
+        <p className="metrics-text">
+          {this.props.metrics}
+        </p>
+      );
+    }
+  }
+
+  analyticsTab() {
+    return(
+      <div className="tab-pane" id="analytics" role="tabpanel" aria-hidden={this.state.selectedTab !== 'analytics'} aria-labelledby="analytics-tab">
+        <h2 id="group-list">Analytics</h2>
+        <hr/>
+        <button id="analytics" className={`btn btn-default pull-left ${this.state.isLoading ? 'disabled' : ''}`} type="submit" onClick={() => {
+          this.setState({isLoading: true});
+          this.props.fetchMetrics(() => {
+            this.setState({isLoading: false});
+          });
+        }}><i className="fa fa-download search-btn-icon" aria-hidden="true"></i> Generate Usage Metrics</button>
+        <br/>
+        <br/>
+        <br/>
+        {<small>It may take several minutes to generate the usage metrics report due to the calculations that are being performed. Thank you for your patience.</small>}
+        {this.UsageMetrics()}
+        <hr/>
+      </div>
+    );
+  }
+
   render() {
     return (
       <Grid>
@@ -343,6 +429,9 @@ class AdminPanel extends Component {
               <li id="publisher-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('publisher-list')} aria-selected={this.state.selectedTab === 'publisher-list'} aria-controls="publisher-list">
                 <a className="nav-link" data-toggle="tab" href="#publisher-list" role="tab">Publisher List</a>
               </li>
+              <li id="author-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('author-list')} aria-selected={this.state.selectedTab === 'author-list'} aria-controls="author-list">
+                <a className="nav-link" data-toggle="tab" href="#author-list" role="tab">Author List</a>
+              </li>
               <li id="program-list-tab" className="nav-item" role="tab" onClick={() => this.selectTab('program-list')} aria-selected={this.state.selectedTab === 'program-list'} aria-controls="program-list">
                 <a className="nav-link" data-toggle="tab" href="#program-list" role="tab">Program List</a>
               </li>
@@ -350,10 +439,12 @@ class AdminPanel extends Component {
                 <a className="nav-link" data-toggle="tab" href="#system-list" role="tab">System List</a>
               </li>
               <li id="group-list-tab" className="nav-item" role="tab" onClick={() => {
-                this.props.fetchGroups();
-                this.selectTab('group-list');
+                this.props.fetchGroups(); this.selectTab('group-list');
               }} aria-selected={this.state.selectedTab === 'group-list'} aria-controls="group-list">
-                <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+              <a className="nav-link" data-toggle="tab" href="#group-list" role="tab">Group List</a>
+              </li>
+              <li id="analytics-tab" className="nav-item" role="tab" onClick={() => this.selectTab('analytics')} aria-selected={this.state.selectedTab === 'analytics'} aria-controls="analytics">
+                <a className="nav-link" data-toggle="tab" href="#analytics" role="tab">Analytics</a>
               </li>
               <li id="elastic-tab" className="nav-item" role="tab" onClick={() => this.selectTab('elasticsearch')} aria-selected={this.state.selectedTab === 'elasticsearch'} aria-controls="elasticsearch">
                 <a className="nav-link" data-toggle="tab" href="#elasticsearch" role="tab">Elasticsearch</a>
@@ -362,9 +453,11 @@ class AdminPanel extends Component {
             <div className="tab-content">
               {this.adminTab()}
               {this.publisherTab()}
+              {this.authorTab()}
               {this.programTab()}
               {this.systemTab()}
               {this.groupTab()}
+              {this.analyticsTab()}
               {this.elasticTab()}
             </div>
           </Col>
@@ -377,7 +470,10 @@ class AdminPanel extends Component {
 function mapStateToProps(state) {
   const props = {};
   props.adminList = state.admins;
+  props.metrics = state.metrics;
   props.publisherList = state.publishers;
+  props.authorList = state.authors.authors || {};
+  props.collabList = state.authors.collabs || {};
   props.programList = state.surveillancePrograms;
   props.systemList = state.surveillanceSystems;
   props.groupList = state.groups;
@@ -388,12 +484,18 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, addProgram, addSystem, revokeAdmin,
     revokePublisher, grantPublisher, grantAdmin, createGroup, addUserToGroup,
-    removeUserFromGroup, fetchGroups, esSync, esDeleteAndSync}, dispatch);
+    removeUserFromGroup, fetchGroups, esSync, fetchMetrics, esDeleteAndSync, grantAuthor,
+    revokeAuthor}, dispatch);
 }
 
 AdminPanel.propTypes = {
+  metrics: PropTypes.string,
+  isLoading: PropTypes.bool,
+  fetchMetrics: PropTypes.func,
   adminList: PropTypes.object,
   publisherList: PropTypes.object,
+  authorList: PropTypes.object,
+  collabList: PropTypes.object,
   programList: PropTypes.object,
   systemList: PropTypes.object,
   groupList: PropTypes.array,
@@ -407,8 +509,10 @@ AdminPanel.propTypes = {
   fetchGroups: PropTypes.func,
   revokeAdmin: PropTypes.func,
   revokePublisher: PropTypes.func,
+  revokeAuthor: PropTypes.func,
   grantAdmin: PropTypes.func,
   grantPublisher: PropTypes.func,
+  grantAuthor: PropTypes.func,
   esSync: PropTypes.func,
   esDeleteAndSync: PropTypes.func
 };

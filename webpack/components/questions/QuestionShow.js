@@ -5,6 +5,9 @@ import format from 'date-fns/format';
 import { hashHistory, Link } from 'react-router';
 import Linkify from 'react-linkify';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import Pagination from 'rc-pagination';
+
+const PAGE_SIZE = 10;
 
 import VersionInfo from "../VersionInfo";
 import ResponseSetList from "../response_sets/ResponseSetList";
@@ -28,7 +31,9 @@ import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGr
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, collapseSectionPath: [], selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
+    this.state = { tagModalOpen: false, page: 1, collapseSectionPath: [], selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
+    this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
+    this.pageChange = this.pageChange.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +87,17 @@ export default class QuestionShow extends Component {
         </Row>
       </div>
     );
+  }
+
+  pageChange(nextPage) {
+    this.setState({page: nextPage});
+  }
+
+  nestedItemsForPage(responseSets) {
+    const startIndex = (this.state.page - 1) * PAGE_SIZE;
+    const endIndex = this.state.page * PAGE_SIZE;
+    const itemPage = responseSets.slice(startIndex, endIndex);
+    return itemPage;
   }
 
   reviseQuestionButton(){
@@ -182,13 +198,13 @@ export default class QuestionShow extends Component {
             {isGroupable(question, this.props.currentUser) &&
               <GroupLookUp item={question} addFunc={this.props.addQuestionToGroup} removeFunc={this.props.removeQuestionFromGroup} currentUser={this.props.currentUser} />
             }
-            {isRevisable(question, this.props.currentUser) &&
+            {isRevisable(question, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/revise`}>Revise</Link>
             }
             {isEditable(question, this.props.currentUser) &&
               <Link className="btn btn-primary" to={`/questions/${this.props.question.id}/edit`}>Edit</Link>
             }
-            {isExtendable(question, this.props.currentUser) &&
+            {isExtendable(question, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link to={`/questions/${this.props.question.id}/extend`} className="btn btn-primary">Extend</Link>
             }
             {isSimpleEditable(question, this.props.currentUser) &&
@@ -241,7 +257,7 @@ export default class QuestionShow extends Component {
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
             }
-            {isEditable(question, this.props.currentUser) &&
+            {isEditable(question, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showDeleteModal: true});
@@ -454,7 +470,10 @@ export default class QuestionShow extends Component {
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-rs">
                     <div className="box-content panel-body">
-                      <ResponseSetList responseSets={question.responseSets} />
+                      <ResponseSetList responseSets={this.nestedItemsForPage(question.responseSets)} />
+                      {question.responseSets.length > 10 &&
+                        <Pagination onChange={this.pageChange} current={this.state.page} total={question.responseSets.length} />
+                      }
                     </div>
                   </div>
                 </div>
@@ -469,7 +488,10 @@ export default class QuestionShow extends Component {
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-lrs">
                     <div className="box-content panel-body">
-                      <ResponseSetList responseSets={question.linkedResponseSets} />
+                      <ResponseSetList responseSets={this.nestedItemsForPage(question.linkedResponseSets)} />
+                      {question.linkedResponseSets.length > 10 &&
+                        <Pagination onChange={this.pageChange} current={this.state.page} total={question.linkedResponseSets.length} />
+                      }
                     </div>
                   </div>
                 </div>
