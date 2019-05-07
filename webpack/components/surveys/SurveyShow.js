@@ -26,6 +26,8 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 class SurveyShow extends Component {
   constructor(props) {
     super(props);
@@ -255,6 +257,7 @@ class SurveyShow extends Component {
               e.preventDefault();
               this.props.addPreferred(this.props.survey.id, 'Survey', () => {
                 this.props.fetchSurvey(this.props.survey.id);
+                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/Checked');
               });
               return false;
             }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -264,6 +267,7 @@ class SurveyShow extends Component {
               e.preventDefault();
               this.props.removePreferred(this.props.survey.id, 'Survey', () => {
                 this.props.fetchSurvey(this.props.survey.id);
+                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/UnChecked');
               });
               return false;
             }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
@@ -364,6 +368,7 @@ class SurveyShow extends Component {
                 <div className="box-content">
                   <strong>Content Stage: </strong>
                   {this.props.survey.contentStage}
+                  {gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/' + this.props.survey.contentStage)}
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
