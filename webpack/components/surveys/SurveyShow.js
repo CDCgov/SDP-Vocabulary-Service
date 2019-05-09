@@ -200,12 +200,13 @@ class SurveyShow extends Component {
                 e.preventDefault();
                 this.setState({showEpiInfoModal: true});
               }}>Epi Info (Web Survey)</a>{this.epiInfoModal()}</li>
-              <li><a href={`/surveys/${this.props.survey.id}/epi_info`}>Epi Info (XML)</a></li>
-              <li><a href={`/surveys/${this.props.survey.id}/redcap`}>REDCap (XML)</a></li>
-              <li><a href={`/surveys/${this.props.survey.id}/spreadsheet`}>Spreadsheet (XLSX)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/epi_info`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Epi Info (XML)');}>Epi Info (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/redcap`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to REDCap (XML)');}>REDCap (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/spreadsheet`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Spreadsheet (XLSX)');}>Spreadsheet (XLSX)</a></li>
               <li><a href='#' onClick={(e) => {
                 e.preventDefault();
                 window.print();
+                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Window Print');
               }}>Print</a></li>
             </ul>
           </div>
@@ -222,18 +223,22 @@ class SurveyShow extends Component {
                 <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Comment Only');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Comment Only');
                 }}>Comment Only</a></li>
                 <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Trial Use');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Trial Use');
                 }}>Trial Use</a></li>
                 {this.props.survey.status === 'draft' && <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Draft');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Draft');
                 }}>Draft</a></li>}
                 {this.props.survey.status === 'published' && <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Published');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Published');
                 }}>Published</a></li>}
               </ul>
             </div>
@@ -242,6 +247,7 @@ class SurveyShow extends Component {
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Retire');
               return false;
             }}>{this.publishModal()}Retire</a>
           }
@@ -249,6 +255,7 @@ class SurveyShow extends Component {
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Publish');
               return false;
             }}>{this.publishModal()}Publish</a>
           }
@@ -368,7 +375,6 @@ class SurveyShow extends Component {
                 <div className="box-content">
                   <strong>Content Stage: </strong>
                   {this.props.survey.contentStage}
-                  {gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/' + this.props.survey.contentStage)}
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
