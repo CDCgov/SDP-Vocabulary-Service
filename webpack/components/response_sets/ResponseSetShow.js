@@ -152,7 +152,7 @@ export default class ResponseSetShow extends Component {
               this.props.publishResponseSet(this.props.responseSet.id);
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
-            <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+            <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>}
           </Modal.Footer>
         </Modal>
       </div>
@@ -221,18 +221,22 @@ export default class ResponseSetShow extends Component {
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Comment Only');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Comment Only');
                   }}>Comment Only</a></li>
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Trial Use');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Trial Use');
                   }}>Trial Use</a></li>
                   {responseSet.status === 'draft' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Draft');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Draft');
                   }}>Draft</a></li>}
                   {responseSet.status === 'published' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Published');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Published');
                   }}>Published</a></li>}
                 </ul>
               </div>
@@ -241,6 +245,7 @@ export default class ResponseSetShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Retire');
                 return false;
               }}>{this.publishModal()}Retire</a>
             }
@@ -248,6 +253,7 @@ export default class ResponseSetShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Publish');
                 return false;
               }}>{this.publishModal()}Publish</a>
             }
@@ -275,6 +281,7 @@ export default class ResponseSetShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showDeleteModal: true});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Delete');
                 return false;
               }}>{this.deleteModal(responseSet)}Delete</a>
             }
@@ -375,7 +382,6 @@ export default class ResponseSetShow extends Component {
                   <div className="box-content">
                     <strong>Content Stage: </strong>
                     {responseSet.contentStage}
-                    {gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/' + responseSet.contentStage)}
                   </div>
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
