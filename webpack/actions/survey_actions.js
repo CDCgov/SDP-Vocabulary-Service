@@ -11,6 +11,7 @@ import {
   SAVE_DRAFT_SURVEY,
   CREATE_SURVEY,
   PUBLISH_SURVEY,
+  PUBLISH_WEB_SURVEY,
   RETIRE_SURVEY,
   ADD_SURVEY_TO_GROUP,
   REMOVE_SURVEY_FROM_GROUP,
@@ -125,6 +126,25 @@ export function publishSurvey(id) {
     type: PUBLISH_SURVEY,
     payload: axios.put(routes.publishSurveyPath(id),
      {authenticityToken}, {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}})
+  };
+}
+
+export function publishWebSurvey(id, orgKey, successHandler=null, failureHandler=null) {
+  const authenticityToken = getCSRFToken();
+  const putPromise = axios.put(
+    routes.publishWebSurveyPath(id),
+    {org: orgKey, authenticityToken: authenticityToken},
+    {headers: {'X-Key-Inflection': 'camel', 'Accept': 'application/json'}}
+  );
+  if (successHandler) {
+    putPromise.then(successHandler);
+  }
+  if (failureHandler) {
+    putPromise.catch(failureHandler);
+  }
+  return {
+    type: PUBLISH_WEB_SURVEY,
+    payload: putPromise
   };
 }
 

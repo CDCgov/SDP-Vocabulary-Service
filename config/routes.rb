@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   resources :surveys, except: [:edit], defaults: { format: :json } do
     get :revise, on: :member
     put :publish, on: :member
+    put :publish_web, on: :member
     put :retire, on: :member
     put :update_stage, on: :member
     get :redcap, on: :member

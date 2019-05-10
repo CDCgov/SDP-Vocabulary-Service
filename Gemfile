@@ -40,6 +40,7 @@ gem 'rolify'
 # Gems to support MMG spreadsheet import
 gem 'roo'
 gem 'roo-xls'
+gem 'savon'
 
 # Gems to support writing spreadsheet export
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
