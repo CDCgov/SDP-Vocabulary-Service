@@ -146,13 +146,15 @@ export default class ResponseSetShow extends Component {
           <Modal.Footer>
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireResponseSet(this.props.responseSet.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.responseSet.version + '/Confirm Retire');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.publishResponseSet(this.props.responseSet.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.responseSet.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
-            <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>}
+            <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
       </div>
