@@ -23,6 +23,8 @@ import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 import ResultStyleControl from '../shared_show/ResultStyleControl';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 const PAGE_SIZE = 10;
 
 class SectionShow extends Component {
@@ -229,11 +231,12 @@ class SectionShow extends Component {
             </button>
             <ul className="dropdown-menu">
               <li key="header" className="dropdown-header">Export format:</li>
-              <li><a href={`/sections/${this.props.section.id}/epi_info`}>Epi Info (XML)</a></li>
-              <li><a href={`/sections/${this.props.section.id}/redcap`}>REDCap (XML)</a></li>
+              <li><a href={`/sections/${this.props.section.id}/epi_info`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.section.version + '/Export to Epi Info (XML)')}>Epi Info (XML)</a></li>
+              <li><a href={`/sections/${this.props.section.id}/redcap`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.section.version + '/Export to REDCap (XML)')}>REDCap (XML)</a></li>
               <li><a href='#' onClick={(e) => {
                 e.preventDefault();
                 window.print();
+                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.section.version + '/Window Print');
               }}>Print</a></li>
             </ul>
           </div>
@@ -261,18 +264,22 @@ class SectionShow extends Component {
                 <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSection(section.id, 'Comment Only');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Comment Only');
                 }}>Comment Only</a></li>
                 <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSection(section.id, 'Trial Use');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Trial Use');
                 }}>Trial Use</a></li>
                 {section.status === 'draft' && <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSection(section.id, 'Draft');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Draft');
                 }}>Draft</a></li>}
                 {section.status === 'published' && <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSection(section.id, 'Published');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Published');
                 }}>Published</a></li>}
               </ul>
             </div>
@@ -282,6 +289,7 @@ class SectionShow extends Component {
               e.preventDefault();
               this.props.addPreferred(section.id, 'Section', () => {
                 this.props.fetchSection(section.id);
+                gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/CDC Pref/Checked');
               });
               return false;
             }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -291,6 +299,7 @@ class SectionShow extends Component {
               e.preventDefault();
               this.props.removePreferred(section.id, 'Section', () => {
                 this.props.fetchSection(section.id);
+                gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/CDC Pref/UnChecked');
               });
               return false;
             }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>

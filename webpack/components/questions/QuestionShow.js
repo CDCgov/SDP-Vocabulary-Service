@@ -28,6 +28,8 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
@@ -172,10 +174,12 @@ export default class QuestionShow extends Component {
           <Modal.Footer>
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireQuestion(this.props.question.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.question.version + '/Confirm Retire');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.handlePublish(this.props.question);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.question.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
@@ -217,18 +221,22 @@ export default class QuestionShow extends Component {
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Comment Only');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Comment Only');
                   }}>Comment Only</a></li>
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Trial Use');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Trial Use');
                   }}>Trial Use</a></li>
                   {question.status === 'draft' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Draft');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Draft');
                   }}>Draft</a></li>}
                   {question.status === 'published' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Published');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Published');
                   }}>Published</a></li>}
                 </ul>
               </div>
@@ -244,6 +252,7 @@ export default class QuestionShow extends Component {
                 e.preventDefault();
                 this.props.addPreferred(question.id, 'Question', () => {
                   this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/Checked');
                 });
                 return false;
               }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -253,6 +262,7 @@ export default class QuestionShow extends Component {
                 e.preventDefault();
                 this.props.removePreferred(question.id, 'Question', () => {
                   this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/UnChecked');
                 });
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
