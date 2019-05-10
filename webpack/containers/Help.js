@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
-import { gaSend } from '../utilities/GoogleAnalytics';
 
 class Help extends Component {
   constructor(props){
@@ -38,7 +37,6 @@ class Help extends Component {
   }
 
   componentDidMount() {
-    gaSend('send', 'pageview', window.location.toString());
     this.props.setSteps([
       {
         title: 'Help',
