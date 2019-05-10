@@ -231,7 +231,7 @@ class SectionShow extends Component {
             </button>
             <ul className="dropdown-menu">
               <li key="header" className="dropdown-header">Export format:</li>
-              <li><a href={`/sections/${this.props.section.id}/epi_info`}>Epi Info (XML)</a></li>
+              <li><a href={`/sections/${this.props.section.id}/epi_info`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.section.version + '/Export to Epi Info (XML)')}>Epi Info (XML)</a></li>
               <li><a href={`/sections/${this.props.section.id}/redcap`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.section.version + '/Export to REDCap (XML)')}>REDCap (XML)</a></li>
               <li><a href='#' onClick={(e) => {
                 e.preventDefault();
