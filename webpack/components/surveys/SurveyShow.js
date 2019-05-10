@@ -124,13 +124,15 @@ class SurveyShow extends Component {
           <Modal.Footer>
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireSurvey(this.props.survey.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Confirm Retire');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.publishSurvey(this.props.survey.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
-            <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+              <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -200,9 +202,9 @@ class SurveyShow extends Component {
                 e.preventDefault();
                 this.setState({showEpiInfoModal: true});
               }}>Epi Info (Web Survey)</a>{this.epiInfoModal()}</li>
-              <li><a href={`/surveys/${this.props.survey.id}/epi_info`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Epi Info (XML)');}>Epi Info (XML)</a></li>
-              <li><a href={`/surveys/${this.props.survey.id}/redcap`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to REDCap (XML)');}>REDCap (XML)</a></li>
-              <li><a href={`/surveys/${this.props.survey.id}/spreadsheet`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Spreadsheet (XLSX)');}>Spreadsheet (XLSX)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/epi_info`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Epi Info (XML)')}>Epi Info (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/redcap`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to REDCap (XML)')}>REDCap (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/spreadsheet`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Spreadsheet (XLSX)')}>Spreadsheet (XLSX)</a></li>
               <li><a href='#' onClick={(e) => {
                 e.preventDefault();
                 window.print();
@@ -296,7 +298,7 @@ class SurveyShow extends Component {
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
           }
           {((this.props.currentUser && this.props.currentUser.admin) || isPublishable(this.props.survey, this.props.currentUser) || isEditable(this.props.survey, this.props.currentUser) || (isRevisable(this.props.survey, this.props.currentUser))) && this.props.dupeCount > 0 &&
-              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`}>Curate ({this.props.dupeCount})</Link>
+              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Curate')}>Curate ({this.props.dupeCount})</Link>
           }
         </div>
         <div className="maincontent-details">
