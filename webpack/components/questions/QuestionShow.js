@@ -174,12 +174,12 @@ export default class QuestionShow extends Component {
           <Modal.Footer>
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireQuestion(this.props.question.id);
-              gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Confirm Retire');
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.question.version + '/Confirm Retire');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.handlePublish(this.props.question);
-              gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Confirm Publish');
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.question.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
