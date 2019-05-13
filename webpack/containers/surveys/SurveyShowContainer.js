@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 
-import { fetchSurvey, fetchDuplicateCount, publishSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
+import { fetchSurvey, fetchDuplicateCount, publishSurvey, publishWebSurvey, retireSurvey, addSurveyToGroup, removeSurveyFromGroup, deleteSurvey, updateStageSurvey, updateSurveyTags } from '../../actions/survey_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -148,7 +148,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({setSteps, setStats, publishSurvey, retireSurvey, addSurveyToGroup, addPreferred, removePreferred, fetchDuplicateCount,
-    removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags, updateStageSurvey, setBreadcrumbPath, addBreadcrumbItem}, dispatch);
+    removeSurveyFromGroup, fetchSurvey, deleteSurvey, updateSurveyTags, updateStageSurvey, setBreadcrumbPath, publishWebSurvey,
+    addBreadcrumbItem}, dispatch);
 }
 
 SurveyShowContainer.propTypes = {
@@ -159,6 +160,7 @@ SurveyShowContainer.propTypes = {
   fetchDuplicateCount: PropTypes.func,
   dupeCount: PropTypes.number,
   publishSurvey: PropTypes.func,
+  publishWebSurvey: PropTypes.func,
   retireSurvey: PropTypes.func,
   addSurveyToGroup: PropTypes.func,
   removeSurveyFromGroup: PropTypes.func,

@@ -304,6 +304,14 @@ class SectionEdit extends Component {
     this.props.removeNestedItem(this.state, event.target.dataset.index);
   }
 
+  onEnter(e, prev) {
+    if(e.key === 'Enter' && parseInt(e.target.value)) {
+      e.preventDefault();
+      this.props.reorderNestedItem(this.state, prev-1, prev-parseInt(e.target.value));
+      e.target.value = '';
+    }
+  }
+
   addedNestedItems() {
     return (
       <div id="added-nested-items" aria-label="Added sections and questions">
@@ -334,6 +342,9 @@ class SectionEdit extends Component {
                   <button data-index={i} className="btn btn-small btn-default move-up" onClick={this.moveNestedItemUp}>
                     <i data-index={i} title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up item on section`}</span>
                   </button>
+                </div>
+                <div className="row section-nested-item-controls">
+                  <input className='col-md-8' style={{'padding-left': '5px', 'padding-right': '1px'}} placeholder={i+1} onKeyPress={event => this.onEnter(event, i+1)} />
                 </div>
                 <div className="row section-nested-item-controls">
                   <button data-index={i} className="btn btn-small btn-default move-down" onClick={this.moveNestedItemDown}>

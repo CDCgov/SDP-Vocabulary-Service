@@ -471,7 +471,7 @@ module SDP
             concepts = nil
             if item.data_element.value_set_oid
               rs = response_set_for_vads(item.data_element)
-            elsif item.data_element.value_set_tab_name.present? && item.data_element.coded?
+            elsif item.data_element.value_set_tab_name.present? && item.data_element.coded? && !(item.data_element.value_set_tab_name.include?('http') || item.data_element.value_set_tab_name.include?('://') || item.data_element.value_set_tab_name.include?('cdc.gov'))
               rs = response_set_for_local(item.data_element)
             end
             if item.data_element.tag_tab_name.present?
@@ -731,7 +731,9 @@ module SDP
         # make sure that any warnings from the data element itself is passed back
         # @warnings << data_element.warnings()
 
-        if data_element.value_set_tab_name.present? && !@all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
+        if data_element.value_set_tab_name.present? && (data_element.value_set_tab_name.include?('http') || data_element.value_set_tab_name.include?('://') || data_element.value_set_tab_name.include?('cdc.gov')) && @vads_oid.match(row[:value_set]).blank?
+          @warnings << "In tab '#{sheet}' on row '#{row[:name]}' URL '#{data_element.value_set_tab_name}' does not contain an OID"
+        elsif data_element.value_set_tab_name.present? && !@all_sheets.find { |sn| sn.strip == data_element.value_set_tab_name.strip }
           @warnings << "In tab '#{sheet}' on row '#{row[:name]}' Value set tab '#{data_element.value_set_tab_name}' not present" # warning
           # data_element.value_set_tab_name = nil
         end

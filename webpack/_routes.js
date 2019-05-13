@@ -543,6 +543,9 @@ Based on Rails routes of Vocabulary::Application
 // api_fhir_valuesets => /api/fhir/Valueset(.:format)
   // function(options)
   api_fhir_valuesets_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"fhir",false],[2,[7,"/",false],[2,[6,"Valueset",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// api_metrics => /api/metrics(.:format)
+  // function(options)
+  api_metrics_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"metrics",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // api_program => /api/programs/:id(.:format)
   // function(id, options)
   api_program_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"programs",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
@@ -747,6 +750,9 @@ Based on Rails routes of Vocabulary::Application
 // publish_survey => /surveys/:id/publish(.:format)
   // function(id, options)
   publish_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// publish_web_survey => /surveys/:id/publish_web(.:format)
+  // function(id, options)
+  publish_web_survey_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"surveys",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"publish_web",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // publishers => /publishers(.:format)
   // function(options)
   publishers_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"publishers",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),

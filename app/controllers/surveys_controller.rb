@@ -1,4 +1,5 @@
 require './lib/sdp/elastic_search'
+require 'savon'
 
 class SurveysController < ApplicationController
   before_action :load_survey_with_children, only: :show
@@ -83,6 +84,37 @@ class SurveysController < ApplicationController
 
     else
       render json: @survey.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /surveys/1/publish
+  def publish_web
+    client = Savon.client(
+      wsdl: 'http://www.cstesurvey.org/EpiInfoWebSurvey/SurveyManagerServiceV3.svc?wsdl',
+      log: true, log_level: :debug, pretty_print_xml: true, namespaces: {
+        'xmlns:typ' => 'http://www.yourcompany.com/types/',
+        'xmlns:epi' => 'http://schemas.datacontract.org/2004/07/Epi.Web.Common.DTO'
+      }
+    )
+    @tab_counter = 0
+    @top = -0.03
+    xml = render_to_string 'surveys/epi_info.xml', layout: false
+    # Put XML body in request once client debugged
+    resp = client.call(:publish_survey, message: {
+                         'tns:pRequestMessage' => {
+                           'typ:SurveyInfo' => {
+                             'typ:OrganizationKey' => params['org'],
+                             'typ:SurveyName' => @survey.name,
+                             'typ:XML' => xml
+                           }
+                         }
+                       })
+
+    if resp && resp['URL']
+      render json: { msg: "Successfully created web survey: #{resp['URL']}" }, status: :ok
+    else
+      # Replace with status text eventually resp['StatusText']
+      render json: { msg: 'An Error has occured while publishing your survey.' }, status: :unprocessable_entity
     end
   end
 
