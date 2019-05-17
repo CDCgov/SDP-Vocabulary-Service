@@ -243,6 +243,9 @@
         "mostRecent": {
           "type": "boolean"
         },
+        "mostRecentId": {
+          "type": "boolean"
+        },
         "most_recent": {
           "type": "boolean"
         },
@@ -266,6 +269,9 @@
               "type": "text"
             },
             "name": {
+              "type": "text"
+            },
+            "version": {
               "type": "text"
             },
             "responseSet": {
