@@ -56,7 +56,7 @@ export function isExtendable(object, currentUser) {
 export function displayVersion(currentVersion, mostRecent) {
   if (currentVersion) {
     if (mostRecent && mostRecent > currentVersion) {
-      return `${currentVersion} (version ${mostRecent} available)`;
+      return `${currentVersion} of ${mostRecent}`;
     } else {
       return currentVersion;
     }
