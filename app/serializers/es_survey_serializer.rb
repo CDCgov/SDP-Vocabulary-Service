@@ -26,6 +26,11 @@ class ESSurveySerializer < ActiveModel::Serializer
   attribute :control_number, key: :controlNumber
   attribute :omb_approval_date, key: :ombApprovalDate
   attribute :tag_list
+  attribute :most_recent_id
+
+  def most_recent_id
+    object.most_recent
+  end
 
   def most_recent
     object.most_recent?
@@ -68,7 +73,7 @@ class ESSurveySerializer < ActiveModel::Serializer
 
   def sections
     object.survey_sections.includes(:section).collect do |ss|
-      { id: ss.section_id, name: ss.section.name }
+      { id: ss.section_id, name: ss.section.name, version: ss.section.version }
     end
   end
 
