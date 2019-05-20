@@ -54,11 +54,14 @@ export function isExtendable(object, currentUser) {
 }
 
 export function displayVersion(currentVersion, mostRecent) {
-  if (currentVersion) {
-    if (mostRecent && mostRecent > currentVersion) {
+// Commented out by zoo3 (Chris Sandlin) on 5/17/2019.
+// Description: Updated Search Result to return 'version of version' for ease
+// of user readability.
+  // if (currentVersion) {
+  //   if (mostRecent && mostRecent > currentVersion) {
+  //     return `${currentVersion} of ${mostRecent}`;
+  //   } else {
       return `${currentVersion} of ${mostRecent}`;
-    } else {
-      return currentVersion;
-    }
-  }
+    // }
+  // }
 }
