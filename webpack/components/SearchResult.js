@@ -301,7 +301,7 @@ export default class SearchResult extends Component {
                 result.responseSets.map((rs, i) => {
                   return(
                     <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' | VERSION ' + rs.version}</Link></span>}
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link></span>}
                     </div>
                   );
                 })
