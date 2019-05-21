@@ -244,7 +244,7 @@ export default class QuestionShow extends Component {
             {isRetirable(question, this.props.currentUser) &&
               <button className="btn btn-primary" onClick={(e) => {
                 e.preventDefault();
-                this.setState({showPublishModal: true, publishOrRetire: 'Retire'})
+                this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
                 gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Retire');
               }}>{this.publishModal()}Retire</button>
             }
@@ -253,7 +253,7 @@ export default class QuestionShow extends Component {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
                 gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Publish');
-            }}>{this.publishModal()}Publish</button>
+              }}>{this.publishModal()}Publish</button>
             }
             {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
               <a className="btn btn-default" href="#" onClick={(e) => {
