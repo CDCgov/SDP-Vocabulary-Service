@@ -242,10 +242,18 @@ export default class QuestionShow extends Component {
               </div>
             }
             {isRetirable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true, publishOrRetire: 'Retire'}) }>{this.publishModal()}Retire</button>
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                this.setState({showPublishModal: true, publishOrRetire: 'Retire'})
+                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Retire');
+              }}>{this.publishModal()}Retire</button>
             }
             {isPublishable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true, publishOrRetire: 'Publish'}) }>{this.publishModal()}Publish</button>
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Publish');
+            }}>{this.publishModal()}Publish</button>
             }
             {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -271,6 +279,7 @@ export default class QuestionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showDeleteModal: true});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Delete');
                 return false;
               }}>{this.deleteModal(question)}Delete</a>
             }
