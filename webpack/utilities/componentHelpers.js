@@ -61,7 +61,7 @@ export function displayVersion(currentVersion, mostRecent) {
   //   if (mostRecent && mostRecent > currentVersion) {
   //     return `${currentVersion} of ${mostRecent}`;
   //   } else {
-      return `${currentVersion} of ${mostRecent}`;
+  return `${currentVersion} of ${mostRecent}`;
     // }
   // }
 }
