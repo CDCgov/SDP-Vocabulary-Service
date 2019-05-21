@@ -443,7 +443,7 @@
           }
         },
         "version": {
-          "type": "text"
+          "type": "long"
         },
         "version_independent_id": {
           "type": "text",
