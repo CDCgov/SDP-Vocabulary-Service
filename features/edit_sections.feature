@@ -96,13 +96,13 @@ Feature: Edit Sections
     When I click on the "Linked Questions" link
     Then I should see "Switch to expanded item view"
     And I should see "What is your gender?"
-    And I should see "VERSION 1 | ITEM TYPE: QUESTION"
+    And I should see "VERSION 1 OF 1 | ITEM TYPE: QUESTION"
     And I should not see "Publish"
     And I should see "Version: 1"
     And I should see "Edit"
     When I click on the "Switch to condensed item view" button
     Then I should see "What is your gender?"
-    And I should not see "VERSION 1 | ITEM TYPE: QUESTION"
+    And I should not see "VERSION 1 OF 1 | ITEM TYPE: QUESTION"
     And I should see "v1"
 
   Scenario: Reorder Questions
