@@ -173,6 +173,7 @@ pipeline {
         twistlockScan ca: '',
           cert: '',
           compliancePolicy: 'critical',
+          containerized: false,
           dockerAddress: 'tcp://localhost:2375',
           gracePeriodDays: 7,
           ignoreImageBuildTime: true,
@@ -188,6 +189,7 @@ pipeline {
         echo "Publishing results..."
         twistlockPublish ca: '',
           cert: '',
+          containerized: false,
           dockerAddress: 'tcp://localhost:2375',
           gracePeriodDays: 7,
           ignoreImageBuildTime: true,
