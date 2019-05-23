@@ -328,7 +328,7 @@ class SectionEdit extends Component {
             <Row key={sni.questionId || sni.nestedSectionId}>
               <Col md={11}>
                 <AddedNestedItem index={i}
-                                 item={sni.questionId ? this.props.questions[sni.questionId] : this.props.sections[sni.nestedSectionId]}
+                                 item={sni.questionId ? this.props.questions[sni.questionId] : this.props.section.nestedSections.find((ns) => ns.id == sni.nestedSectionId)}
                                  itemType={sni.questionId ? 'question' : 'section'}
                                  programVar={sni.programVar}
                                  responseSets={this.state.linkedResponseSets[sni.questionId] || []}
