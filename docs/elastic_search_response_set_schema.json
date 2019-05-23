@@ -242,6 +242,9 @@
         "mostRecent": {
           "type": "boolean"
         },
+        "mostRecentId": {
+          "type": "boolean"
+        },
         "most_recent": {
           "type": "boolean"
         },
@@ -401,7 +404,7 @@
           }
         },
         "version": {
-          "type": "text"
+          "type": "long"
         },
         "version_independent_id": {
           "type": "text",

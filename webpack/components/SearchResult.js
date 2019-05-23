@@ -301,7 +301,7 @@ export default class SearchResult extends Component {
                 result.responseSets.map((rs, i) => {
                   return(
                     <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name}</Link></span>}
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link></span>}
                     </div>
                   );
                 })
@@ -350,7 +350,7 @@ export default class SearchResult extends Component {
                 result.sections.map((sect, i) => {
                   return(
                     <div key={`section-${sect.id}-${i}`} className="result-details-content">
-                      <span className={`fa ${iconMap[type]}`} aria-hidden="true"></span> <Link to={`/sections/${sect.id}`}>{sect.name}</Link>
+                      <span className={`fa ${iconMap[type]}`} aria-hidden="true"></span> <Link to={`/sections/${sect.id}`}>{sect.name + ' (version ' + sect.version + ')'}</Link>
                     </div>
                   );
                 })
@@ -368,7 +368,7 @@ export default class SearchResult extends Component {
           if(ni !== undefined) {
             return(
               <div key={`nested-item-${ni.id}-${i}`} className="result-details-content">
-                <span className={`fa ${iconMap[ni.type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {ni.name || ni.content}</Link>
+                <span className={`fa ${iconMap[ni.type]}`} aria-hidden="true"></span> <Link to={`/${ni.type}s/${ni.id}`}> {(ni.name || ni.content) + ' (version ' + ni.version + ')'}</Link>
               </div>
             );
           } else {
@@ -481,7 +481,7 @@ export default class SearchResult extends Component {
                 {result.source && this.resultSetSourceInfo(result)}
                 <li className={`result-timestamp ${(this.props.programVar || isSimpleEditable(result, this.props.currentUser)) && 'list-program-var'}`}>
                   <p>{ format(parse(result.createdAt,''), 'MMMM Do, YYYY') }</p>
-                  <p><text className="sr-only">Item Version Number: </text>version {displayVersion(result.version, result.mostRecentPublished)} | <text className="sr-only">Item type: </text>{type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}</p>
+                  <p><text className="sr-only">Item Version Number: </text>version {displayVersion(result.version, (result.mostRecentPublished || result.mostRecentId))} | <text className="sr-only">Item type: </text>{type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}</p>
                   {isSimpleEditable(result, this.props.currentUser) ? (
                     <a className="pull-right tag-modal-link" href="#" onClick={(e) => {
                       e.preventDefault();

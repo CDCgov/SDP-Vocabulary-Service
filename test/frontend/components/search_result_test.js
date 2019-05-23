@@ -29,6 +29,6 @@ describe('SearchResult', () => {
 
   it('should properly display version information', () => {
     expect(rsComponent.find("div[class='result-analytics']")).to.contain('version 1');
-    expect(orsComponent.find("div[class='result-analytics']")).to.contain('version 1 (version 2 available)');
+    expect(orsComponent.find("div[class='result-analytics']")).to.contain('version 1 of 2');
   });
 });

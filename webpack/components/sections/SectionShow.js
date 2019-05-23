@@ -201,9 +201,11 @@ class SectionShow extends Component {
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireSection(this.props.section.id);
               this.setState({showPublishModal: false});
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.section.version + '/Confirm Retire');
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.publishSection(this.props.section.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.section.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
@@ -244,6 +246,7 @@ class SectionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Publish');
                 return false;
               }}>{this.publishModal()}Publish</a>
           }
@@ -251,6 +254,7 @@ class SectionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Retire');
                 return false;
               }}>{this.publishModal()}Retire</a>
           }
