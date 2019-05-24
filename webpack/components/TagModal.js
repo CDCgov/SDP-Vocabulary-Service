@@ -12,6 +12,12 @@ class TagModal extends Component{
     this.handleTagChange = this.handleTagChange.bind(this);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.tagList !== prevProps.tagList) {
+      this.setState({tagList: this.props.tagList});
+    }
+  }
+
   render() {
     return(
       <div className="static-modal">
