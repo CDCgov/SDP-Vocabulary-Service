@@ -12,7 +12,7 @@ class TagModal extends Component{
     this.handleTagChange = this.handleTagChange.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (this.props.tagList !== prevProps.tagList) {
       this.setState({tagList: this.props.tagList});
     }

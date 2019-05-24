@@ -91,8 +91,8 @@ module Versionable
         element.published_by = publisher
         element.save!
         if element.version > 1
-          prev_versions = element.all_versions[1..(version-1)]
-          prev_versions.each {|prev_version| UpdateIndexJob.perform_later(element.class.to_s.underscore, prev_version.id)}
+          prev_versions = element.all_versions[1..(version - 1)]
+          prev_versions.each { |prev_version| UpdateIndexJob.perform_later(element.class.to_s.underscore, prev_version.id) }
         end
       end
     end

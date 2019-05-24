@@ -151,9 +151,6 @@ class QuestionsController < ApplicationController
 
   def qrs_link
     rid = nil
-    puts params[:type]
-    puts params[:id]
-    puts params[:sid]
     if params[:type] == 'survey'
       surv = Survey.find(params[:sid])
       surv.sections.each do |s|
