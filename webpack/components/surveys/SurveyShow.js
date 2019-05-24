@@ -152,9 +152,11 @@ class SurveyShow extends Component {
                 {this.state.error.msg}
               </div>
             }
-            {this.state.success && this.state.success.msg &&
+            {this.state.success && this.state.success.msg && this.state.success.url &&
               <div className="alert alert-success">
-                {this.state.success.msg}
+                {this.state.success.msg}<br/>
+                <a href={this.state.success.url}>{this.state.success.url}</a><br/>
+                <p>Publish Key: {this.state.success.pubkey}</p>
               </div>
             }
             <p>To create a web survey in Epi Info with a shareable link, enter your Organization Key:</p>
@@ -167,7 +169,7 @@ class SurveyShow extends Component {
             <Button className={this.state.isCreating ? 'disabled' : ''} onClick={() => {
               this.setState({isCreating: true});
               this.props.publishWebSurvey(this.props.survey.id, this.state.orgKey, (successResponse) => {
-                this.setState({isCreating: false, success: {msg: `Web survey created at ${successResponse.data && successResponse.data.url}`}, warning: {}});
+                this.setState({isCreating: false, success: successResponse.data, warning: {}, error: {}});
               }, (failureResponse) => {
                 if (failureResponse.response.data && failureResponse.response.data.msg) {
                   this.setState({isCreating: false, error: failureResponse.response.data });

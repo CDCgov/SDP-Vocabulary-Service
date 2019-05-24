@@ -99,23 +99,30 @@ class SurveysController < ApplicationController
     @tab_counter = 0
     @top = -0.03
     xml = render_to_string 'surveys/epi_info.xml', layout: false
+    pubkey = SecureRandom.uuid
     # Put XML body in request once client debugged
     resp = client.call(:publish_survey, message: {
                          'tns:pRequestMessage' => {
                            'typ:SurveyInfo' => {
                              'typ:OrganizationKey' => params['org'],
+                             'typ:ClosingDate' => (Time.now + (60*60*24*30)).strftime("%FT%T%:z"),
+                             'typ:ExitText' => 'Thank you!',
+                             'typ:IntroductionText' => 'Welcome!',
+                             'typ:IsDraftMode' => true,
+                             'typ:StartDate' => Time.now.strftime("%FT%T%:z"),
                              'typ:SurveyName' => @survey.name,
+                             'typ:SurveyNumber' => @survey.id,
+                             'typ:SurveyType' => 1,
+                             'typ:UserPublishKey' => pubkey,
                              'typ:XML' => xml
                            }
                          }
                        })
-
-    if resp && resp['URL']
-      render json: { msg: "Successfully created web survey: #{resp['URL']}" }, status: :ok
-    else
-      # Replace with status text eventually resp['StatusText']
-      render json: { msg: 'An Error has occured while publishing your survey.' }, status: :unprocessable_entity
-    end
+    url = resp.body[:publish_survey_response][:publish_survey_result][:publish_info][:url]
+    render json: { msg: "Successfully created web survey:", url: url, pubkey: pubkey }, status: :ok
+  rescue
+    # Replace with status text eventually resp['StatusText']
+    render json: { msg: 'An Error has occured while publishing your survey.' }, status: :unprocessable_entity
   end
 
   # PATCH/PUT /surveys/1/retire
