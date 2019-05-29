@@ -104,11 +104,11 @@ class SurveysController < ApplicationController
     resp = client.call(:publish_survey, message: {
                          'tns:pRequestMessage' => {
                            'typ:SurveyInfo' => {
-                             'typ:OrganizationKey' => params['org'],
                              'typ:ClosingDate' => (Time.zone.now + (60 * 60 * 24 * 30)).strftime('%FT%T%:z'),
                              'typ:ExitText' => 'Thank you!', 'typ:IntroductionText' => 'Welcome!',
                              'typ:IsDraftMode' => true,
-                             'typ:StartDate' => Time.zone.now.strftime('%FT%T%:z'),
+                             'typ:OrganizationKey' => params['org'],
+                             'typ:StartDate' => (Time.zone.now - (60 * 60 * 24)).strftime('%FT%T%:z'),
                              'typ:SurveyName' => @survey.name, 'typ:SurveyNumber' => @survey.id,
                              'typ:SurveyType' => 1,
                              'typ:UserPublishKey' => pubkey,
