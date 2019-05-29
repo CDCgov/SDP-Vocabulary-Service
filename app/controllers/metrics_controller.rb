@@ -91,6 +91,7 @@ class MetricsController < ApplicationController
     response.stream.write "\n\nOMB Approved Survey Count: #{Survey.all.select { |s| s.control_number.present? }.compact.count}"
 
     response.stream.write "\n\nNumber of groups: #{Group.all.count}"
+    response.stream.write "\n\nCollaborating Author Groups with Surveys: #{GroupsSurveys.select('DISTINCT group_id').count}"
     response.stream.write "\n\nDuplicates Replaced:"
     response.stream.write "\n-------"
     rs_sum = 0
