@@ -10,7 +10,6 @@ import {
   ADD_USER_TO_GROUP,
   REMOVE_USER_FROM_GROUP,
   FETCH_GROUPS,
-  FETCH_GROUPS_SURVEYS,
   CREATE_GROUP
 } from './types';
 
@@ -27,15 +26,6 @@ export function fetchGroups() {
   return {
     type: FETCH_GROUPS,
     payload: axios.get(routes.adminGroupsPath(), {
-      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
-    })
-  };
-}
-
-export function fetchGroupsSurveys() {
-  return {
-    type: FETCH_GROUPS_SURVEYS,
-    payload: axios.get(routes.adminGroupsSurveysPath(), {
       headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
     })
   };
