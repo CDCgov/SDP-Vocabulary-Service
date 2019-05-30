@@ -1201,7 +1201,7 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.20"><strong>Release <a href='' target='_blank'>1.20</a></strong> <small>(May ??, 2019)</small></li>
+            <li id="1.20"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/571015169/SDP+Vocabulary+Service+Release+1.20' target='_blank'>1.20</a></strong> <small>(May 30, 2019)</small></li>
               <ol>
               <li>Implemented logic to determine if PHIN VADS link is valid and if the OID exists</li>
               <li>Added ability to create an Epi Info web-based Survey using SDP-V content</li>
