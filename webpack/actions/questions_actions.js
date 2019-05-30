@@ -25,7 +25,8 @@ import {
   FETCH_QUESTION_FAILURE,
   FETCH_QUESTION_PENDING,
   LINK_TO_DUPLICATE,
-  MARK_AS_REVIEWED
+  MARK_AS_REVIEWED,
+  FETCH_QRS_LINK
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
@@ -142,6 +143,19 @@ export function fetchQuestionDupes(id, type, successHandler=null) {
   }
   return {
     type: FETCH_QUESTION_DUPES,
+    payload: getPromise
+  };
+}
+
+export function fetchQrsLink(qid, sid, type, successHandler=null) {
+  const getPromise = axios.get(routes.qrsLinkQuestionPath(qid),
+    {params: {sid, type}},
+    {headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}});
+  if (successHandler) {
+    getPromise.then(successHandler);
+  }
+  return {
+    type: FETCH_QRS_LINK,
     payload: getPromise
   };
 }

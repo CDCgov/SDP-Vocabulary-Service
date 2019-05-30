@@ -36,11 +36,19 @@ Feature: Manage Questions
     When I click on the "Groups" button
     Then I should see "Group1"
     And I should see "None"
-    When I click on the "Click to add content to the Group1 group" button
+    And I wait 1 seconds
+    When I click on the "add_Group1" button
+    When I click on the "Groups" button
+    When I click on the "add_Group1" button
+    And I wait 1 seconds
     And I click on the "Groups" button
     Then I should see "Group1"
     And I should not see "None"
+    And I wait 1 seconds
     When I click on the "Click to remove content from Group1 group" button
+    And I click on the "Groups" button
+    When I click on the "Click to remove content from Group1 group" button
+    And I wait 1 seconds
     And I click on the "Groups" button
     Then I should see "Group1"
     And I should see "None"

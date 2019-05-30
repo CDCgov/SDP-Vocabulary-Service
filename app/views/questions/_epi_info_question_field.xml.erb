@@ -2,7 +2,7 @@
           Name="<%= sni.question.content.parameterize.underscore.camelize.truncate(40, omission: '') %>"
           PageId="<%= @position %>"
           FieldId="<%= @tab_counter+1 %>"
-          UniqueId=""
+          UniqueId="<%= SecureRandom.uuid %>"
           FieldTypeId="<%= epi_info_field_type(sni.question.response_type.code, sni.response_set) %>"
           ControlAfterCheckCode=""
           ControlBeforeCheckCode=""

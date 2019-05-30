@@ -33,7 +33,7 @@ import { gaSend } from '../../utilities/GoogleAnalytics';
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, page: 1, collapseSectionPath: [], selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
+    this.state = { tagModalOpen: false, page: 1, collapseSectionPath: [], qrsLink: null, selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
     this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
     this.pageChange = this.pageChange.bind(this);
   }
@@ -479,6 +479,29 @@ export default class QuestionShow extends Component {
                   </div>
                 </div>
               }
+              {this.props.breadcrumb && this.props.breadcrumb.length > 1 && question.linkedResponseSets && question.linkedResponseSets.length > 0 && (this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section')) &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-ers" onClick={() => {
+                        let sid = this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section');
+                        let sidType = this.props.breadcrumb.find((item)=>item.type=='survey') ? 'survey' : 'section';
+                        this.props.fetchQrsLink(question.id, sid.id, sidType, (successResponse)=>this.setState({qrsLink: successResponse.data}));
+                      }}><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about </text>Responses expected for this question:</a>
+                    </h2>
+                  </div>
+                  <div className="panel-collapse panel-details collapse" id="collapse-ers">
+                    <div className="box-content panel-body">
+                      {question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink) ? (
+                        <ResponseSetList responseSets={[question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink)]} />
+                      ) : (
+                        <LoadingSpinner msg="Loading responses..." />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              }
               {question.responseSets && question.responseSets.length > 0 &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
@@ -549,6 +572,8 @@ QuestionShow.propTypes = {
   retireQuestion: PropTypes.func,
   deleteQuestion: PropTypes.func,
   addBreadcrumbItem: PropTypes.func,
+  breadcrumb: PropTypes.array,
+  fetchQrsLink: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
   removeQuestionFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,

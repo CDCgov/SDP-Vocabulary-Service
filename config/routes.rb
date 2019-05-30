@@ -79,6 +79,7 @@ Rails.application.routes.draw do
     get :usage, on: :member
     get :parent_items, on: :member
     get :all_dupes, on: :member
+    get :qrs_link, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member

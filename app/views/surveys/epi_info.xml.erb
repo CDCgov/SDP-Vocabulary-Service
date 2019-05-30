@@ -1,6 +1,7 @@
-<Template Name="<%= @survey.name.parameterize.underscore.camelize.truncate(40, omission: '') %>" Level="View">
-  <Project>
-    <View ViewId="1" Name="<%= @survey.name.parameterize.underscore.camelize.truncate(40, omission: '') %>" CheckCode="">
+<Template Name="<%= @survey.name.parameterize.underscore.camelize.truncate(40, omission: '') %>"  CreateDate="Thursday, May 23, 2019 11:00:29 AM" Level="Project">
+  <Project Id="" Name="TestPublish" Location="" Description="" EpiVersion="" CreateDate="" ControlFontBold="False" ControlFontItalics="False" ControlFontName="Segoe UI" ControlFontSize="10" DefaultLabelAlign="Vertical" DefaultPageHeight="1016" DefaultPageOrientation="Portrait" DefaultPageWidth="780" EditorFontBold="False" EditorFontItalics="False" EditorFontName="Segoe UI" EditorFontSize="10">
+    <CollectedData><Database Source="" DataDriver="" /></CollectedData><Metadata Source="" /><EnterMakeviewInterpreter Source="Epi.Core.EnterInterpreter" />
+    <View ViewId="1" Name="<%= @survey.name.parameterize.underscore.camelize.truncate(40, omission: '') %>"  IsRelatedView="False" CheckCode="" Width="780" Height="1016" Orientation="Portrait" LabelAlign="Vertical" SurveyId="">
       <% @position = 0 %>
       <% @survey.survey_sections.each do |ss| %>
         <% @top = -0.03 %>

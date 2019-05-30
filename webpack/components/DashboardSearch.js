@@ -524,44 +524,47 @@ class DashboardSearch extends SearchStateComponent {
               </div>
             }
             {this.state.mostRecentFilter &&
-              <div className="adv-filter-list">Filtering by most recent version</div>
+              <div className="adv-filter-list">Filtering by most recent version <a href='#' onClick={() => this.toggleMostRecentFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.preferredFilter &&
-              <div className="adv-filter-list">Filtering by CDC preferred content</div>
+              <div className="adv-filter-list">Filtering by CDC preferred content <a href='#' onClick={() => this.togglePreferredFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.retiredFilter &&
-              <div className="adv-filter-list">Including retired content in search results</div>
+              <div className="adv-filter-list">Including retired content in search results <a href='#' onClick={() => this.toggleRetiredFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+            }
+            {!this.state.retiredFilter &&
+              <div className="adv-filter-list">Hiding retired content from search results <a href='#' onClick={() => this.toggleRetiredFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.ombFilter &&
-              <div className="adv-filter-list">Filtering by OMB approved content</div>
+              <div className="adv-filter-list">Filtering by OMB approved content <a href='#' onClick={() => this.toggleOmbFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.contentSince &&
               <div className="adv-filter-list">Content Since Filter:
-                <div className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')}</div>
+                <div className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')} <a href='#' onClick={() => this.handleDateChange(null)}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               </div>
             }
             {this.state.ombDate &&
               <div className="adv-filter-list">Filtering to surveys with OMB approval date after:
-                <div className="adv-filter-list-item col-md-12">{this.state.ombDate.format('M/D/YYYY')}</div>
+                <div className="adv-filter-list-item col-md-12">{this.state.ombDate.format('M/D/YYYY')} <a href='#' onClick={() => this.handleOmbDateChange(null)}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               </div>
             }
             {this.state.sort !== '' &&
-              <div className="adv-filter-list">Sorting results by {this.state.sort}</div>
+              <div className="adv-filter-list">Sorting results by {this.state.sort} <a href='#' onClick={() => this.toggleSort('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.categoryFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category</div>
+              <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category <a href='#' onClick={() => this.toggleCategory('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.statusFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status</div>
+              <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status <a href='#' onClick={() => this.toggleStatus('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.stageFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.stageFilter} content stage</div>
+              <div className="adv-filter-list">Filtering results by {this.state.stageFilter} content stage <a href='#' onClick={() => this.toggleStageFilter('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.sourceFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.sourceFilter} source</div>
+              <div className="adv-filter-list">Filtering results by {this.state.sourceFilter} source <a href='#' onClick={() => this.toggleSource('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.rtFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.rtFilter} response type</div>
+              <div className="adv-filter-list">Filtering results by {this.state.rtFilter} response type <a href='#' onClick={() => this.toggleResponseType('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
           </div><br/>
         </Col>

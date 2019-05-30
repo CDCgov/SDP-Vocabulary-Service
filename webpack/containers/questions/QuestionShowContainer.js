@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 
-import { fetchQuestion, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, fetchQuestionParents, updateQuestionTags } from '../../actions/questions_actions';
+import { fetchQuestion, fetchQrsLink, publishQuestion, retireQuestion, addQuestionToGroup, updateStageQuestion, removeQuestionFromGroup, deleteQuestion, fetchQuestionUsage, fetchQuestionParents, updateQuestionTags } from '../../actions/questions_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { addPreferred, removePreferred } from '../../actions/preferred_actions';
@@ -133,9 +133,11 @@ class QuestionShowContainer extends Component {
                          updateQuestionTags={this.props.updateQuestionTags}
                          publishers={this.props.publishers}
                          addBreadcrumbItem={this.props.addBreadcrumbItem}
+                         breadcrumb={this.props.breadcrumb}
                          isLoading={this.props.isLoading}
                          loadStatus={this.props.loadStatus}
                          loadStatusText={this.props.loadStatusText}
+                         fetchQrsLink={this.props.fetchQrsLink}
                         />
         <div className="showpage-comments-title">Public Comments:</div>
         <CommentList commentableType='Question' commentableId={this.props.question.id} />
@@ -153,6 +155,7 @@ function mapStateToProps(state, ownProps) {
   }
   const props = {};
   props.question = q;
+  props.breadcrumb = state.breadcrumbPath;
   props.currentUser = state.currentUser;
   props.publishers = state.publishers;
   props.stats = state.stats;
@@ -163,7 +166,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion,
+  return bindActionCreators({fetchQuestion, deleteQuestion, addQuestionToGroup, addPreferred, removePreferred, updateStageQuestion, fetchQrsLink,
     removeQuestionFromGroup, fetchQuestionUsage, fetchQuestionParents, setSteps, setStats, updateQuestionTags, retireQuestion, addBreadcrumbItem}, dispatch);
 }
 
@@ -179,6 +182,8 @@ QuestionShowContainer.propTypes = {
   updateQuestionTags: PropTypes.func,
   updateStageQuestion: PropTypes.func,
   addBreadcrumbItem: PropTypes.func,
+  breadcrumb: PropTypes.array,
+  fetchQrsLink: PropTypes.func,
   retireQuestion: PropTypes.func,
   setSteps: PropTypes.func,
   setStats: PropTypes.func,
