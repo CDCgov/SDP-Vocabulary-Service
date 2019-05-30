@@ -69,7 +69,7 @@ module Api
       response.stream.write "\"number_of_groups\": #{Group.all.count}, "
 
       # Number of Collaborating Author Groups with Surveys
-      response.stream.write "\"collaborating_author_groups_with_surveys\": #{GroupsSurveys.select('DISTINCT group_id').count},"
+      response.stream.write "\"number_of_collaborating_author_groups_with_surveys\": #{GroupsSurveys.select('DISTINCT group_id').count},"
 
       sdp_team = ['msq8@cdc.gov', 'ikk1@cdc.gov', 'oef1@cdc.gov', 'njj8@cdc.gov', 'lsj7@cdc.gov', 'nen8@cdc.gov', 'zoo3@cdc.gov', 'onk2@cdc.gov', 'wdd8@cdc.gov', 'oju3@cdc.gov', 'mpx1@cdc.gov', 'kff0@cdc.gov']
       other_users = User.all.map { |u| u.email if u.email && !sdp_team.include?(u.email) && u.email != 'admin@sdpv.local' }.compact
