@@ -1190,7 +1190,8 @@ class Help extends Component {
               <a href="#1.16">1.16</a>,&nbsp;
               <a href="#1.17">1.17</a>,&nbsp;
               <a href="#1.18">1.18</a>,&nbsp;
-              <a href="#1.19">1.19</a>)
+              <a href="#1.19">1.19</a>,&nbsp;
+            <a href="#1.20">1.20</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1200,6 +1201,17 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.20"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/571015169/SDP+Vocabulary+Service+Release+1.20' target='_blank'>1.20</a></strong> <small>(May 30, 2019)</small></li>
+              <ol>
+              <li>Implemented logic to determine if PHIN VADS link is valid and if the OID exists</li>
+              <li>Added ability to create an Epi Info web-based Survey using SDP-V content</li>
+              <li>Implemented versions of content on dashboard search results</li>
+              <li>Implemented the abiliy to remove advanced filters from the dashboard</li>
+              <li>Implemented the ability to indicate which Response Set is linked on Sections/Surveys when a user navigates to the Question details page</li>
+              <li>Users have the ability to identify a new position for Question/Sections on Survey and Section edit pages</li>
+              <li>Added the ability to view 'Hide retired content' on the dashboard</li>
+              <li>Implemented sorting of search results to show most rescent version at the top</li>
+              </ol>
             <li id="1.19"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/564461569/SDP+Vocabulary+Service+Release+1.19' target='_blank'>1.19</a></strong> <small>(May 2, 2019)</small></li>
               <ol>
               <li>Collaborator role has been implemented</li>
