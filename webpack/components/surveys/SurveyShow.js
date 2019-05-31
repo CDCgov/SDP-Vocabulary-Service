@@ -144,7 +144,7 @@ class SurveyShow extends Component {
       <div className="static-modal">
         <Modal animation={false} show={this.state.showEpiInfoModal} onHide={()=>this.setState({showEpiInfoModal: false})} role="dialog" aria-label="Epi Info Modal">
           <Modal.Header>
-            <Modal.Title componentClass="h2"><i className="fa fa-internet-explorer" aria-hidden="true"><text className="sr-only">Input for</text></i> Epi Info Web Survey</Modal.Title>
+            <Modal.Title componentClass="h2"><i className="fa fa-internet-explorer" aria-hidden="true"><text className="sr-only">Input for</text></i> Epi Info Web Survey (BETA)</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {this.state.error && this.state.error.msg &&
@@ -177,7 +177,7 @@ class SurveyShow extends Component {
                   this.setState({isCreating: false, error: {msg: 'An Error has occured while publishing your survey.'}});
                 }
               });
-            }} bsStyle="primary">Create Web Survey</Button>
+            }} bsStyle="primary">Create Web Survey (BETA)</Button>
             <Button onClick={()=>this.setState({showEpiInfoModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
