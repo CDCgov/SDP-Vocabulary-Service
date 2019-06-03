@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import TagsInput from 'react-tagsinput';
 
 import { surveyProps } from '../../prop-types/survey_props';
@@ -15,6 +15,7 @@ import SurveySectionList from './SurveySectionList';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
+import InfoModal from '../InfoModal';
 import ProgSysEditModal from './ProgSysEditModal';
 
 class SurveyEdit extends Component {
@@ -33,6 +34,7 @@ class SurveyEdit extends Component {
       ombApprovalDate : '',
       versionIndependentId: null,
       showModal: false,
+      showInfo: false,
       progSysModalOpen: false,
       surveillanceProgramId: currentUser.lastProgramId || null,
       surveillanceSystemId: currentUser.lastSystemId || null
@@ -310,6 +312,9 @@ class SurveyEdit extends Component {
             <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
             <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
           </div>}
+          <InfoModal show={this.state.showInfo} header="Section Position" body="This column displays the order of the sections. To change position, enter the desired position and hit the 'Enter' key on your keyboard." hideInfo={()=>this.setState({showInfo: false})} />
+          <Button bsStyle='link' className="pull-right" onClick={() => this.setState({showInfo: true})}>Position <i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
+          <br/>
           <SurveySectionList survey={this.state}
                           sections ={this.props.sections}
                           questions  ={this.props.questions}
