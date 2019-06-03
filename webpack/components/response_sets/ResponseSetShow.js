@@ -27,6 +27,8 @@ import currentUserProps from "../../prop-types/current_user_props";
 import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isSimpleEditable, isGroupable } from '../../utilities/componentHelpers';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 export default class ResponseSetShow extends Component {
   constructor(props){
     super(props);
@@ -144,10 +146,12 @@ export default class ResponseSetShow extends Component {
           <Modal.Footer>
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireResponseSet(this.props.responseSet.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.responseSet.version + '/Confirm Retire');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.publishResponseSet(this.props.responseSet.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.responseSet.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
@@ -219,18 +223,22 @@ export default class ResponseSetShow extends Component {
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Comment Only');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Comment Only');
                   }}>Comment Only</a></li>
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Trial Use');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Trial Use');
                   }}>Trial Use</a></li>
                   {responseSet.status === 'draft' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Draft');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Draft');
                   }}>Draft</a></li>}
                   {responseSet.status === 'published' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageResponseSet(responseSet.id, 'Published');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Published');
                   }}>Published</a></li>}
                 </ul>
               </div>
@@ -239,6 +247,7 @@ export default class ResponseSetShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Retire');
                 return false;
               }}>{this.publishModal()}Retire</a>
             }
@@ -246,6 +255,7 @@ export default class ResponseSetShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Publish');
                 return false;
               }}>{this.publishModal()}Publish</a>
             }
@@ -254,6 +264,7 @@ export default class ResponseSetShow extends Component {
                 e.preventDefault();
                 this.props.addPreferred(responseSet.id, 'ResponseSet', () => {
                   this.props.fetchResponseSet(responseSet.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/Checked');
                 });
                 return false;
               }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -263,6 +274,7 @@ export default class ResponseSetShow extends Component {
                 e.preventDefault();
                 this.props.removePreferred(responseSet.id, 'ResponseSet', () => {
                   this.props.fetchResponseSet(responseSet.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/UnChecked');
                 });
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
@@ -271,6 +283,7 @@ export default class ResponseSetShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showDeleteModal: true});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Delete');
                 return false;
               }}>{this.deleteModal(responseSet)}Delete</a>
             }

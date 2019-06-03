@@ -129,6 +129,7 @@ class SurveyTest < ActiveSupport::TestCase
     q3.response_sets = [rs3]
 
     sect3 = Section.new(name: 'Test group third sect ', created_by: user)
+    assert sect3.save
     # sect3.section_nested_items << [SectionNestedItem.new(question_id: q3.id, response_set_id: rs3.id, position: 2)]
     sect3.add_to_group(group2.id)
 

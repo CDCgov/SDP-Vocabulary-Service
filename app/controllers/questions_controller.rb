@@ -149,6 +149,24 @@ class QuestionsController < ApplicationController
     render json: @question.errors, status: :unprocessable_entity
   end
 
+  def qrs_link
+    rid = nil
+    if params[:type] == 'survey'
+      surv = Survey.find(params[:sid])
+      surv.sections.each do |s|
+        s.flatten_questions.each do |sni|
+          rid = sni.response_set_id if sni.question_id == @question.id
+          break if rid
+        end
+        break if rid
+      end
+    else
+      sni = SectionNestedItem.where(section_id: params[:sid], question_id: @question.id)
+      rid = sni[0].response_set_id if sni[0]
+    end
+    render json: rid
+  end
+
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update

@@ -27,6 +27,11 @@ class ESResponseSetSerializer < ActiveModel::Serializer
   attribute :source
   attribute :response_count
   attribute :tag_list
+  attribute :most_recent_id
+
+  def most_recent_id
+    object.most_recent
+  end
 
   def most_recent
     object.most_recent?

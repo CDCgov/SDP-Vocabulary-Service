@@ -3,3 +3,4 @@ test/test_helper.js
 webpack/_routes.js
 webpack/print.js
 webpack/utilities/AdobeAnalytics.js
+webpack/components/TagModal.js

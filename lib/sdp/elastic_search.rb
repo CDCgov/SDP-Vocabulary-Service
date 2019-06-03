@@ -242,6 +242,7 @@ module SDP
                     [
                       { 'preferred': { order: 'desc' } },
                       '_score',
+                      { 'version': { order: 'desc' } },
                       { '_script': {
                         'script': "doc['surveillance_systems.id'].values.size()",
                         type: 'number',
@@ -571,9 +572,9 @@ module SDP
     end
 
     def self.sync_now
-      sync_sections('now')
-      sync_questions('now')
       sync_response_sets('now')
+      sync_questions('now')
+      sync_sections('now')
       sync_surveys('now')
     end
 

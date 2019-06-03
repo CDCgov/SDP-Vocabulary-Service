@@ -26,10 +26,16 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 class SurveyShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, page: 1, selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
+    this.state = {
+      tagModalOpen: false, page: 1, selectedTab: 'main', showDeleteModal: false,
+      showPublishModal: false, publishOrRetire: 'Publish', showEpiInfoModal: false,
+      orgKey: '', error: {}, success: {}, warning: {}, isCreating: false
+    };
     this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
     this.pageChange = this.pageChange.bind(this);
   }
@@ -118,13 +124,61 @@ class SurveyShow extends Component {
           <Modal.Footer>
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireSurvey(this.props.survey.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Confirm Retire');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.publishSurvey(this.props.survey.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
-            <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+              <Button onClick={() => this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
+  epiInfoModal() {
+    return(
+      <div className="static-modal">
+        <Modal animation={false} show={this.state.showEpiInfoModal} onHide={()=>this.setState({showEpiInfoModal: false})} role="dialog" aria-label="Epi Info Modal">
+          <Modal.Header>
+            <Modal.Title componentClass="h2"><i className="fa fa-internet-explorer" aria-hidden="true"><text className="sr-only">Input for</text></i> Epi Info Web Survey (BETA)</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.state.error && this.state.error.msg &&
+              <div className="alert alert-danger">
+                {this.state.error.msg}
+              </div>
+            }
+            {this.state.success && this.state.success.msg && this.state.success.url &&
+              <div className="alert alert-success">
+                {this.state.success.msg}<br/>
+                <a href={this.state.success.url}>{this.state.success.url}</a><br/>
+                <p>Publish Key: {this.state.success.pubkey}</p>
+              </div>
+            }
+            <p>To create a web survey in Epi Info with a shareable link, enter your Organization Key:</p>
+            <input  className="input-format" type='text' placeholder='ex. 00000000-0000-5555-9999-ex4mpl312345' value={this.state.orgKey} onChange={(e) => this.setState({orgKey: e.target.value})} />
+            <hr/><p>If you do not have an account with Epi Info for your organization, <a href='http://www.cstesurvey.org/EpiInfoWebSurvey/Account'>click here to register your organization</a> and return once you have received an organization key.</p>
+            <p>If you want to download the XML template to use the Epi Info desktop client, <a href={`/surveys/${this.props.survey.id}/epi_info`}>click here.</a></p>
+            {this.state.isCreating && <div><hr/><p><LoadingSpinner msg="Attempting to create Web Survey..." /></p></div>}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button className={this.state.isCreating ? 'disabled' : ''} onClick={() => {
+              this.setState({isCreating: true});
+              this.props.publishWebSurvey(this.props.survey.id, this.state.orgKey, (successResponse) => {
+                this.setState({isCreating: false, success: successResponse.data, warning: {}, error: {}});
+              }, (failureResponse) => {
+                if (failureResponse.response.data && failureResponse.response.data.msg) {
+                  this.setState({isCreating: false, error: failureResponse.response.data });
+                } else {
+                  this.setState({isCreating: false, error: {msg: 'An Error has occured while publishing your survey.'}});
+                }
+              });
+            }} bsStyle="primary">Create Web Survey (BETA)</Button>
+            <Button onClick={()=>this.setState({showEpiInfoModal: false})} bsStyle="default">Cancel</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -146,12 +200,17 @@ class SurveyShow extends Component {
             </button>
             <ul className="dropdown-menu">
               <li key="header" className="dropdown-header">Export format:</li>
-              <li><a href={`/surveys/${this.props.survey.id}/epi_info`}>Epi Info (XML)</a></li>
-              <li><a href={`/surveys/${this.props.survey.id}/redcap`}>REDCap (XML)</a></li>
-              <li><a href={`/surveys/${this.props.survey.id}/spreadsheet`}>Spreadsheet (XLSX)</a></li>
+              <li><a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.setState({showEpiInfoModal: true});
+              }}>Epi Info (Web Survey)</a>{this.epiInfoModal()}</li>
+              <li><a href={`/surveys/${this.props.survey.id}/epi_info`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Epi Info (XML)')}>Epi Info (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/redcap`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to REDCap (XML)')}>REDCap (XML)</a></li>
+              <li><a href={`/surveys/${this.props.survey.id}/spreadsheet`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Export to Spreadsheet (XLSX)')}>Spreadsheet (XLSX)</a></li>
               <li><a href='#' onClick={(e) => {
                 e.preventDefault();
                 window.print();
+                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Window Print');
               }}>Print</a></li>
             </ul>
           </div>
@@ -168,18 +227,22 @@ class SurveyShow extends Component {
                 <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Comment Only');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Comment Only');
                 }}>Comment Only</a></li>
                 <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Trial Use');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Trial Use');
                 }}>Trial Use</a></li>
                 {this.props.survey.status === 'draft' && <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Draft');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Draft');
                 }}>Draft</a></li>}
                 {this.props.survey.status === 'published' && <li><a href='#' onClick={(e) => {
                   e.preventDefault();
                   this.props.updateStageSurvey(this.props.survey.id, 'Published');
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Published');
                 }}>Published</a></li>}
               </ul>
             </div>
@@ -188,6 +251,7 @@ class SurveyShow extends Component {
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Retire');
               return false;
             }}>{this.publishModal()}Retire</a>
           }
@@ -195,6 +259,7 @@ class SurveyShow extends Component {
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Publish');
               return false;
             }}>{this.publishModal()}Publish</a>
           }
@@ -203,6 +268,7 @@ class SurveyShow extends Component {
               e.preventDefault();
               this.props.addPreferred(this.props.survey.id, 'Survey', () => {
                 this.props.fetchSurvey(this.props.survey.id);
+                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/Checked');
               });
               return false;
             }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -212,6 +278,7 @@ class SurveyShow extends Component {
               e.preventDefault();
               this.props.removePreferred(this.props.survey.id, 'Survey', () => {
                 this.props.fetchSurvey(this.props.survey.id);
+                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/UnChecked');
               });
               return false;
             }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
@@ -233,7 +300,7 @@ class SurveyShow extends Component {
             <Link className="btn btn-default" to={`/surveys/${this.props.survey.id}/extend`}>Extend</Link>
           }
           {((this.props.currentUser && this.props.currentUser.admin) || isPublishable(this.props.survey, this.props.currentUser) || isEditable(this.props.survey, this.props.currentUser) || (isRevisable(this.props.survey, this.props.currentUser))) && this.props.dupeCount > 0 &&
-              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`}>Curate ({this.props.dupeCount})</Link>
+              <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Curate')}>Curate ({this.props.dupeCount})</Link>
           }
         </div>
         <div className="maincontent-details">
@@ -436,6 +503,7 @@ SurveyShow.propTypes = {
   router: PropTypes.object,
   currentUser: currentUserProps,
   publishSurvey: PropTypes.func,
+  publishWebSurvey: PropTypes.func,
   retireSurvey: PropTypes.func,
   deleteSurvey:  PropTypes.func,
   addPreferred: PropTypes.func,

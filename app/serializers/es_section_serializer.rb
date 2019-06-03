@@ -24,6 +24,11 @@ class ESSectionSerializer < ActiveModel::Serializer
   attribute :omb
   attribute :preferred
   attribute :tag_list
+  attribute :most_recent_id
+
+  def most_recent_id
+    object.most_recent
+  end
 
   def most_recent
     object.most_recent?
@@ -55,6 +60,7 @@ class ESSectionSerializer < ActiveModel::Serializer
         { id: sni.question_id,
           name: sni.question.content,
           type: 'question',
+          version: sni.question.version,
           codes: (sni.question.concepts || []).collect { |c| CodeSerializer.new(c).as_json },
           response_set: sni.response_set.try(:name),
           response_set_id: sni.response_set_id }
@@ -62,6 +68,7 @@ class ESSectionSerializer < ActiveModel::Serializer
         { id: sni.nested_section_id,
           name: sni.nested_section.name,
           type: 'section',
+          version: sni.nested_section.version,
           codes: (sni.nested_section.concepts || []).collect { |c| CodeSerializer.new(c).as_json } }
       end
     end

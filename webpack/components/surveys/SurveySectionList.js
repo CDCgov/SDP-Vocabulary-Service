@@ -7,11 +7,20 @@ import { questionsProps } from "../../prop-types/question_props";
 import SearchResult from '../SearchResult';
 
 class SurveySectionList extends Component {
+  onEnter(e, prev) {
+    if(e.key === 'Enter' && parseInt(e.target.value)) {
+      e.preventDefault();
+      this.props.reorderSection(this.props.survey, prev-1, prev-parseInt(e.target.value));
+      e.target.value = '';
+    }
+  }
+
   render() {
     if(!this.props.sections || this.props.survey.surveySections.length < 1){
       return (<div className="section-group">No Sections Selected</div>);
     }
     var survey = this.props.survey;
+
     return (
       <div id="added-nested-items" aria-label="Added sections" className="section-edit-container">
       <br/>
@@ -42,6 +51,9 @@ class SurveySectionList extends Component {
                            }}>
                         <i title="Move Up" className="fa fa fa-arrow-up"></i><span className="sr-only">{`Move Up section ${sect.name} on survey`}</span>
                       </button>
+                    </div>
+                    <div className="row section-nested-item-controls">
+                      <input className='col-md-8' style={{'padding-left': '5px', 'padding-right': '1px'}} placeholder={i+1} onKeyPress={event => this.onEnter(event, i+1)} />
                     </div>
                     <div className="row section-nested-item-controls">
                       <button className="btn btn-small btn-default move-down"

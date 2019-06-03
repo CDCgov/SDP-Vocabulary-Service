@@ -28,6 +28,11 @@ class ESQuestionSerializer < ActiveModel::Serializer
   attribute :omb
   attribute :data_collection_methods
   attribute :tag_list
+  attribute :most_recent_id
+
+  def most_recent_id
+    object.most_recent
+  end
 
   def most_recent
     object.most_recent?
@@ -57,7 +62,7 @@ class ESQuestionSerializer < ActiveModel::Serializer
 
   def response_sets
     object.response_sets.collect do |rs|
-      { id: rs.id, name: rs.name }
+      { id: rs.id, name: rs.name, version: rs.version }
     end
   end
 

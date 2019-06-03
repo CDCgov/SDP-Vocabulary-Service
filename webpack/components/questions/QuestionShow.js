@@ -28,10 +28,12 @@ import { publishersProps } from "../../prop-types/publisher_props";
 
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
+import { gaSend } from '../../utilities/GoogleAnalytics';
+
 export default class QuestionShow extends Component {
   constructor(props) {
     super(props);
-    this.state = { tagModalOpen: false, page: 1, collapseSectionPath: [], selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
+    this.state = { tagModalOpen: false, page: 1, collapseSectionPath: [], qrsLink: null, selectedTab: 'main', showDeleteModal: false, showPublishModal: false, publishOrRetire: 'Publish' };
     this.nestedItemsForPage = this.nestedItemsForPage.bind(this);
     this.pageChange = this.pageChange.bind(this);
   }
@@ -172,10 +174,12 @@ export default class QuestionShow extends Component {
           <Modal.Footer>
             {this.state.publishOrRetire === 'Retire' && <Button onClick={() => {
               this.props.retireQuestion(this.props.question.id);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.question.version + '/Confirm Retire');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Retire</Button>}
             {this.state.publishOrRetire === 'Publish' && <Button onClick={() => {
               this.props.handlePublish(this.props.question);
+              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.question.version + '/Confirm Publish');
               this.setState({showPublishModal: false});
             }} bsStyle="primary">Confirm Publish</Button>}
             <Button onClick={()=>this.setState({showPublishModal: false})} bsStyle="default">Cancel</Button>
@@ -217,33 +221,46 @@ export default class QuestionShow extends Component {
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Comment Only');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Comment Only');
                   }}>Comment Only</a></li>
                   <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Trial Use');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Trial Use');
                   }}>Trial Use</a></li>
                   {question.status === 'draft' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Draft');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Draft');
                   }}>Draft</a></li>}
                   {question.status === 'published' && <li><a href='#' onClick={(e) => {
                     e.preventDefault();
                     this.props.updateStageQuestion(question.id, 'Published');
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Published');
                   }}>Published</a></li>}
                 </ul>
               </div>
             }
             {isRetirable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true, publishOrRetire: 'Retire'}) }>{this.publishModal()}Retire</button>
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Retire');
+              }}>{this.publishModal()}Retire</button>
             }
             {isPublishable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={() => this.setState({showPublishModal: true, publishOrRetire: 'Publish'}) }>{this.publishModal()}Publish</button>
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Publish');
+              }}>{this.publishModal()}Publish</button>
             }
             {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.props.addPreferred(question.id, 'Question', () => {
                   this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/Checked');
                 });
                 return false;
               }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
@@ -253,6 +270,7 @@ export default class QuestionShow extends Component {
                 e.preventDefault();
                 this.props.removePreferred(question.id, 'Question', () => {
                   this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/UnChecked');
                 });
                 return false;
               }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
@@ -261,6 +279,7 @@ export default class QuestionShow extends Component {
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showDeleteModal: true});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Delete');
                 return false;
               }}>{this.deleteModal(question)}Delete</a>
             }
@@ -460,6 +479,29 @@ export default class QuestionShow extends Component {
                   </div>
                 </div>
               }
+              {this.props.breadcrumb && this.props.breadcrumb.length > 1 && question.linkedResponseSets && question.linkedResponseSets.length > 0 && (this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section')) &&
+                <div className="basic-c-box panel-default">
+                  <div className="panel-heading">
+                    <h2 className="panel-title">
+                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-ers" onClick={() => {
+                        let sid = this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section');
+                        let sidType = this.props.breadcrumb.find((item)=>item.type=='survey') ? 'survey' : 'section';
+                        this.props.fetchQrsLink(question.id, sid.id, sidType, (successResponse)=>this.setState({qrsLink: successResponse.data}));
+                      }}><i className="fa fa-bars" aria-hidden="true"></i>
+                      <text className="sr-only">Click link to expand information about </text>Responses expected for this question:</a>
+                    </h2>
+                  </div>
+                  <div className="panel-collapse panel-details collapse" id="collapse-ers">
+                    <div className="box-content panel-body">
+                      {question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink) ? (
+                        <ResponseSetList responseSets={[question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink)]} />
+                      ) : (
+                        <LoadingSpinner msg="Loading responses..." />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              }
               {question.responseSets && question.responseSets.length > 0 &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
@@ -530,6 +572,8 @@ QuestionShow.propTypes = {
   retireQuestion: PropTypes.func,
   deleteQuestion: PropTypes.func,
   addBreadcrumbItem: PropTypes.func,
+  breadcrumb: PropTypes.array,
+  fetchQrsLink: PropTypes.func,
   addQuestionToGroup: PropTypes.func,
   removeQuestionFromGroup: PropTypes.func,
   addPreferred: PropTypes.func,

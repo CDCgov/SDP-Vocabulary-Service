@@ -4,6 +4,7 @@ import { denormalize } from 'normalizr';
 import { Button, Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import keyBy from 'lodash/keyBy';
 import { sectionSchema } from '../../schema';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -222,11 +223,16 @@ function mapStateToProps(state, ownProps) {
       }
     });
   }
+  let nestedSections = {};
+  if (section && section.nestedSections) {
+    nestedSections = keyBy(section.nestedSections, 'id');
+  }
+  const sections = Object.assign({}, state.sections, nestedSections);
   return {
     section: section,
     questions: state.questions,
     responseSets: state.responseSets,
-    sections: state.sections,
+    sections: sections,
     stats: state.stats,
     selectedQuestions: selectedQuestions,
     selectedSections: selectedSections,

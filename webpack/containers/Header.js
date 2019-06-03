@@ -9,6 +9,7 @@ import currentUserProps from '../prop-types/current_user_props';
 import NotificationDropdown from '../containers/NotificationDropdown';
 import NotificationMenu from '../components/NotificationMenu';
 import { fetchNotifications } from '../actions/notification_actions';
+import { gaSend } from '../utilities/GoogleAnalytics';
 
 let LoginMenu = ({disableUserRegistration, logInOpener, signUpOpener, currentUser}) => {
   let loggedIn = ! isEmpty(currentUser);
@@ -228,11 +229,11 @@ class Header extends Component {
                       return this.joyride.reset(true);
                     }}>Step-by-Step Walkthrough</a></li>
                   }
-                  <li className="nav-dropdown-item"><a href="/api/" tabIndex="2" target="_blank">Swagger API</a></li>
-                  <li className="nav-dropdown-item"><Link to="/fhirDoc" tabIndex="2">FHIR Documentation</Link></li>
+                  <li className="nav-dropdown-item"><a href="/api/" tabIndex="2" target="_blank" onClick={() => gaSend('send', 'pageview', window.location.toString() + '/Swagger API')}>Swagger API</a></li>
+                  <li className="nav-dropdown-item"><Link to="/fhirDoc" tabIndex="2" onClick={() => gaSend('send', 'pageview', window.location.toString() + '/FHIR Documentation')}>FHIR Documentation</Link></li>
                   <li role="separator" className="divider"></li>
-                  <li className="nav-dropdown-item"><Link to={{ pathname: '/Help', state: {selectedTab: 'whatsnew'} }}>What&lsquo;s New</Link></li>
-                  <li className="nav-dropdown-item"><a href="https://www.cdc.gov/sdp/SDPContactUs.html" tabIndex="2" target="_blank">Contact Us</a></li>
+                  <li className="nav-dropdown-item"><Link to={{ pathname: '/Help', state: {selectedTab: 'whatsnew'} }}  onClick={() => gaSend('send', 'pageview', window.location.toString() + '/whats New')}>What&lsquo;s New</Link></li>
+                  <li className="nav-dropdown-item"><a href="https://www.cdc.gov/sdp/SDPContactUs.html" tabIndex="2" target="_blank"  onClick={() => gaSend('send', 'pageview', window.location.toString() + '/Contact Us')}>Contact Us</a></li>
                   <li role="separator" className="divider"></li>
                   <li className="nav-dropdown-item"><span className="version-display">Release: v{this.props.appVersion}</span></li>
                 </ul>
