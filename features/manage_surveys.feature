@@ -61,15 +61,12 @@ Feature: Manage Surveys
    And I click on the option to Revise the Survey with the name "Test Survey"
    And I fill in the "survey-name" field with "Gender Survey"
    And I fill in the "survey-description" field with "Revised Description"
-   And I fill in the "Tags" field with "TagTest1"
-   And I tab out of the "Tags" field
    And I fill in the "search" field with "Gender"
    And I click on the "search-btn" button
    And I use the section search to select "Test Gender Section"
    And I click on the "Save" button
    Then I should see "Name: Gender Survey"
    Then I should see "Revised Description"
-   And I should see "TagTest1"
    When I click on the "Linked Sections" link
    And I should see "Test Gender Section"
    And I should see "(Published)"
