@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import Linkify from 'react-linkify';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';
@@ -8,6 +10,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 import { setSteps } from '../actions/tutorial_actions';
 import { fetchResponseTypes } from '../actions/response_type_actions';
+import { fetchResponseSetPreview } from '../actions/response_set_actions';
 import { fetchCategories } from '../actions/category_actions';
 import { fetchSearchResults, exportSearch, fetchMoreSearchResults, setLastSearch, fetchLastSearch, SearchParameters, fetchSuggestions } from '../actions/search_results_actions';
 import { clearBreadcrumb } from '../actions/breadcrumb_actions';
@@ -223,7 +226,7 @@ class DashboardContainer extends SearchManagerComponent {
                     {this.analyticsGroup(this.state.type)}
                 </div>
                 <div className="load-more-search">
-                  <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} />
+                  <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} fetchResponseSetPreview={this.props.fetchResponseSetPreview} />
                   {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
                     <button id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</button>
                   }
@@ -379,6 +382,71 @@ class DashboardContainer extends SearchManagerComponent {
           )}
         </div>}
         {loggedIn && <div className="recent-items-heading"></div>}
+        {this.props.preview && this.props.preview.name && <div>
+          <div className="recent-items-group-heading">Response Set Preview</div>
+          <div className="recent-items-body">
+            <div className='basic-c-box panel-default response_set-type'>
+              <div className="panel-heading">
+                <h2 className="panel-title"><Link className="preview-heading" to={`/responseSets/${this.props.preview.id}`}>{this.props.preview.name + ' (version ' + this.props.preview.version + ')'}</Link></h2>
+              </div>
+              { this.props.preview.source &&
+                <div className="box-content">
+                  <strong>Import / Source: </strong>
+                  {this.props.preview.source}
+                </div>
+              }
+              { this.props.preview.contentStage &&
+                <div className="box-content">
+                  <strong>Content Stage: </strong>
+                  {this.props.preview.contentStage}
+                </div>
+              }
+              <div className="box-content">
+                {this.props.preview.responseCount && this.props.preview.responseCount > 25 &&
+                  <p>
+                    This response set has a large amount of responses. The table below is a sample of 25 of the {this.props.preview.responseCount} responses.
+                  </p>
+                }
+                {this.props.preview.responses && this.props.preview.responses.length <= 0 &&
+                  <p>
+                    <strong>Responses:</strong> This response set doesn't have any responses yet.
+                  </p>
+                }
+                {this.props.preview.responses && this.props.preview.responses.length > 0 && <table className="table table-striped coded-set-table">
+                  <caption>Responses Preview Table:</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col" id="display-name-column">Display Name</th>
+                      <th scope="col" id="code-column">Response</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.props.preview.responses.length < 10 && this.props.preview.responses.map((item,i) => {
+                      return (
+                        <tr key={i}>
+                          <td headers="display-name-column">{item.displayName}</td>
+                          <td headers="code-column">{item.value}</td>
+                        </tr>
+                      );
+                    })}
+                      {this.props.preview.responses.length >= 10 && this.props.preview.responses.slice(0,10).map((item,i) => {
+                        return (
+                          <tr key={i}>
+                            <td headers="display-name-column">{item.displayName}</td>
+                            <td headers="code-column">{item.value}</td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>}
+                {this.props.preview.responses && this.props.preview.responseCount && this.props.preview.responseCount > 25 &&
+                  <p>... click response set name above to see all responses</p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>}
+        {this.props.preview && this.props.preview.name && <div className="recent-items-heading"></div>}
         {loggedIn && groups.length > 0 && this.props.searchResults.Source !== 'simple_search' &&
           <div>
             <div className="recent-items-group-heading">Filter by Group</div>
@@ -425,12 +493,17 @@ function mapStateToProps(state) {
     surveillancePrograms: state.surveillancePrograms,
     currentUser: state.currentUser,
     categories: state.categories,
-    responseTypes: state.responseTypes
+    responseTypes: state.responseTypes,
+    preview: state.preview
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, clearAjaxStatus, fetchResponseTypes, fetchCategories, fetchSearchResults, exportSearch, setLastSearch, fetchLastSearch, fetchMoreSearchResults, fetchSuggestions, signUp, clearBreadcrumb}, dispatch);
+  return bindActionCreators({
+    setSteps, clearAjaxStatus, fetchResponseTypes, fetchCategories, fetchResponseSetPreview,
+    fetchSearchResults, exportSearch, setLastSearch, fetchLastSearch, fetchMoreSearchResults,
+    fetchSuggestions, signUp, clearBreadcrumb
+  }, dispatch);
 }
 
 DashboardContainer.propTypes = {
@@ -443,6 +516,7 @@ DashboardContainer.propTypes = {
   myResponseSetCount: PropTypes.number,
   mySurveyCount: PropTypes.number,
   setSteps: PropTypes.func,
+  preview: PropTypes.object,
   clearAjaxStatus: PropTypes.func,
   fetchResponseTypes: PropTypes.func,
   fetchCategories: PropTypes.func,
@@ -451,6 +525,7 @@ DashboardContainer.propTypes = {
   setLastSearch: PropTypes.func,
   fetchLastSearch: PropTypes.func,
   fetchSuggestions: PropTypes.func,
+  fetchResponseSetPreview: PropTypes.func,
   lastSearch: PropTypes.object,
   fetchMoreSearchResults: PropTypes.func,
   signUp: PropTypes.func,

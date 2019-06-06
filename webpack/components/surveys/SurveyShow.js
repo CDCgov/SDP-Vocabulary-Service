@@ -163,6 +163,7 @@ class SurveyShow extends Component {
             <input  className="input-format" type='text' placeholder='ex. 00000000-0000-5555-9999-ex4mpl312345' value={this.state.orgKey} onChange={(e) => this.setState({orgKey: e.target.value})} />
             <hr/><p>If you do not have an account with Epi Info for your organization, <a href='http://www.cstesurvey.org/EpiInfoWebSurvey/Account'>click here to register your organization</a> and return once you have received an organization key.</p>
             <p>If you want to download the XML template to use the Epi Info desktop client, <a href={`/surveys/${this.props.survey.id}/epi_info`}>click here.</a></p>
+            <p><strong>Note:</strong> Once published the survey will need to be edited in the Epi Info desktop client. In the future when publishing an editing package will download. For now, save the publisher key returned on success and enter it into the web survey import form in the Epi Info desktop client. If you are not familiar with this process and want to add skip logic or make formatting edits before publishing this survey please <a href={`/surveys/${this.props.survey.id}/epi_info`}>download the XML Template</a> and import into the desktop client to edit before publishing. For more instructions see the "View and Export Content", then "Epi Info" section in <a href='/#/help'>the help documentation.</a></p>
             {this.state.isCreating && <div><hr/><p><LoadingSpinner msg="Attempting to create Web Survey..." /></p></div>}
           </Modal.Body>
           <Modal.Footer>
