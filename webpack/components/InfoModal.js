@@ -13,7 +13,7 @@ class InfoModal extends Component{
   render(){
     return(
       <div className="static-modal" id='saveModal'>
-        <Modal show={this.props.show} onHide={this.props.cancelButtonAction} role="dialog" aria-label={this.props.title}>
+        <Modal show={this.props.show} onHide={this.props.hideInfo} role="dialog" aria-label={this.props.header}>
           <Modal.Header>
             <Modal.Title componentClass="h3"><span className={'fa fa-info-circle'}></span> {this.props.header}</Modal.Title>
           </Modal.Header>
@@ -33,9 +33,7 @@ InfoModal.propTypes = {
   show: PropTypes.bool,
   header: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
-  hideInfo: PropTypes.func,
-  title: PropTypes.func,
-  cancelButtonAction: PropTypes.func
+  hideInfo: PropTypes.func
 };
 
 export default InfoModal;
