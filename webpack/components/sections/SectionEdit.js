@@ -316,23 +316,23 @@ class SectionEdit extends Component {
   addedNestedItems() {
     return (
       <div id="added-nested-items" aria-label="Added sections and questions">
-        <Row>
-          <div className="response-set-header">
-            <Col md={5} className="response-set-label">
-            <InfoModal show={this.state.showInfoSelectedQuestionsandSections} header="Selected Questions and Sections" body={<p>The “Selected Questions and Sections” panel displays the selected content for this Section. A Section may contain either Questions only, Sections only, or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoSelectedQuestionsandSections: false})} />
-            <label htmlFor="selectedQuestionsandSections">Selected Questions &amp; Sections<Button bsStyle='link' onClick={() => this.setState({showInfoSelectedQuestionsandSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
-            </Col>
-            <Col md={7} className="response-set-label">
-              <InfoModal show={this.state.showInfoAddNewResponseSet} header="Add New Response Set" body={<p><u>For Questions with Choice or Open Choice response types</u>:  The Vocabulary Service allows users to reuse Questions in the repository created by another author while providing the flexibility to select a context appropriate Response Set on a given Section if the author recommended response sets do not fit their needs.
-                <br/><br/>To determine if a new response set if necessary:
-                <br/><br/>1) The user should first consider using the response sets populated in the response set drop-down menu; these are response sets there were selected as valid response options by the question author (aka author recommended response sets).
-                <br/><br/>2) If none of the author recommend response sets is suitable, the user should select the magnifying glass icon to search for existing response sets that can be used with the selected question. To add a selected Response Set to the question, click the blue “+” button.
-                <br/><br/>3) After searching the service, if no suitable response sets are found, a user can create  a new response set directly from this page. The user can then add the newly created response set to the selected question by selecting the magnifying glass icon and locating the response set. To add the Response Set to the question, click the blue “+” button.</p>} hideInfo={()=>this.setState({showInfoAddNewResponseSet: false})} />
-              <Button bsStyle='link' onClick={() => this.setState({showInfoAddNewResponseSet: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
-              <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
-            </Col>
-          </div>
-        </Row>
+      <Row>
+        <div className="response-set-header">
+          <Col md={5} className="response-set-label">
+          <InfoModal show={this.state.showInfoSelectedQuestionsandSections} header="Selected Questions and Sections" body={<p>The “Selected Questions and Sections” panel displays the selected content for this Section. A Section may contain either Questions only, Sections only, or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoSelectedQuestionsandSections: false})} />
+          <label htmlFor="selectedQuestionsandSections">Selected Questions &amp; Sections<Button bsStyle='link' style={{ padding: 3, display: 'flex', justifyContent: 'center'}} onClick={() => this.setState({showInfoSelectedQuestionsandSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+          </Col>
+          <Col md={7} className="response-set-label">
+            <InfoModal show={this.state.showInfoAddNewResponseSet} header="Add New Response Set" body={<p><u>For Questions with Choice or Open Choice response types</u>:  The Vocabulary Service allows users to reuse Questions in the repository created by another author while providing the flexibility to select a context appropriate Response Set on a given Section if the author recommended response sets do not fit their needs.
+              <br/><br/>To determine if a new response set if necessary:
+              <br/><br/>1) The user should first consider using the response sets populated in the response set drop-down menu; these are response sets there were selected as valid response options by the question author (aka author recommended response sets).
+              <br/><br/>2) If none of the author recommend response sets is suitable, the user should select the magnifying glass icon to search for existing response sets that can be used with the selected question. To add a selected Response Set to the question, click the blue “+” button.
+              <br/><br/>3) After searching the service, if no suitable response sets are found, a user can create  a new response set directly from this page. The user can then add the newly created response set to the selected question by selecting the magnifying glass icon and locating the response set. To add the Response Set to the question, click the blue “+” button.</p>} hideInfo={()=>this.setState({showInfoAddNewResponseSet: false})} />
+            <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAddNewResponseSet: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
+            <Button onClick={this.props.showResponseSetModal} bsStyle="primary">Add New Response Set</Button>
+          </Col>
+        </div>
+      </Row>
         <div className="added-nested-item-group">
           {this.state.sectionNestedItems.map((sni, i) =>
             <Row key={sni.questionId || sni.nestedSectionId}>
@@ -414,7 +414,7 @@ class SectionEdit extends Component {
             <div className="section-group">
               <InfoModal show={this.state.showInfoTags} header="Tags" body={<p>Tags are text strings that are either keywords or short phrases created by users to facilitate content discovery, organization, and reuse. Tags are weighted in the dashboard search result algorithm so users are presented with search results that have been tagged with the same keyword(s) entered in the dashboard search bar.
                 <br/><br/>Keyword tags can be changed (added or deleted) at any time by the author(s) to meet user needs and to optimize search results. The history of tags is not saved on the change history tab; tags are not versioned.</p>} hideInfo={()=>this.setState({showInfoTags: false})} />
-              <label htmlFor="tags">Tags<Button bsStyle='link' onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+              <label htmlFor="tags">Tags<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
               <p>Press 'Tab' or 'Enter' after typing a tag to add it to the list. Press 'Backspace' or click the 'x' icon to remove a tag.</p>
               <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'section-tags'}} />
             </div>

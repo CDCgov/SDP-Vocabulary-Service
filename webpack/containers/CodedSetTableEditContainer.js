@@ -242,19 +242,19 @@ class CodedSetTableEditContainer extends Component {
     var tableType = this.state.childName[0].toUpperCase() + this.state.childName.slice(1);
     if (tableType == 'Response') {
       if(colHeader == 'Display Name')
-        { return <Button bsStyle='link' onClick={() => this.setState({showInfoDisplayName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
+        { return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDisplayName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
         else if(colHeader == 'Response')
-        {return <Button bsStyle='link' onClick={() => this.setState({showInfoResponse: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
+        {return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponse: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
         else if (colHeader == ' (Optional)')
-        {return <Button bsStyle='link' onClick={() => this.setState({showInfoCodeSystemIdentifierOptional: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
+        {return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemIdentifierOptional: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
       }
     else if (tableType == 'Code System Mapping') {
       if(colHeader == 'Concept Name')
-        { return <Button bsStyle='link' onClick={() => this.setState({showInfoConceptName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
+        { return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoConceptName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
         else if(colHeader == 'Concept Identifier')
-        { return <Button bsStyle='link' onClick={() => this.setState({showInfoConceptID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
+        { return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoConceptID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
         else if(colHeader == '')
-        { return <Button bsStyle='link' onClick={() => this.setState({showInfoCodeSystemIdentifier: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
+        { return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemIdentifier: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;}
     }
   }
 

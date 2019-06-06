@@ -223,7 +223,7 @@ class QuestionEdit extends Component {
                     </Col>
                     <Col md={4} className="question-form-group">
                     <InfoModal show={this.state.showInfoCategory} header="Category" body={<p>The category will define the type of Question you are creating.<br/><br/>This attribute is optional but completion allows other users to find questions of interest. There is an advanced search filter that is based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoCategory: false})} />
-                    <label className="input-label" htmlFor="categoryId">Category<Button bsStyle='link' onClick={() => this.setState({showInfoCategory: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+                    <label className="input-label" htmlFor="categoryId">Category<Button bsStyle='link' style={{ padding: 3}} onClick={() => this.setState({showInfoCategory: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
                       <select className="input-select" tabIndex="3" name="categoryId" id="categoryId" value={state.categoryId || undefined} onChange={this.handleChange('categoryId')} >
                         <option value=""></option>
                         {categories && values(categories).map((ct) => {
@@ -255,7 +255,7 @@ class QuestionEdit extends Component {
 
                   <Col md={4} className="question-form-group">
                   <InfoModal show={this.state.showInfoResponseType} header="Response Type" body={<p>Choose a Response Type that indicates what kind of response is expected for the Question. Common response types include choice, text, and date.  These response types are defined by HL7.</p>} hideInfo={()=>this.setState({showInfoResponseType: false})} />
-                  <label className="input-label" htmlFor="responseTypeId">Response Type<Button bsStyle='link' onClick={() => this.setState({showInfoResponseType: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+                  <label className="input-label" htmlFor="responseTypeId">Response Type<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponseType: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
                     <select name="responseTypeId" tabIndex="3" id="responseTypeId" className="input-select" value={state.responseTypeId || undefined} onChange={this.handleResponseTypeChange()} >
                       {this.sortedResponseTypes(this.props.responseTypes).map((rt) => {
                         return (<option key={rt.id} value={rt.id} >{rt.name} - {rt.description}</option>);
@@ -269,7 +269,7 @@ class QuestionEdit extends Component {
                       <br/>
                       <br/>
                       Keyword tags can be changed (added or deleted) at any time by the author(s) to meet user needs and to optimize search results. The history of tags is not saved on the change history tab; tags are not versioned.</p>} hideInfo={()=>this.setState({showInfoTags: false})} />
-                    <label className="input-label" htmlFor="question-tags">Tags<Button bsStyle='link' onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+                    <label className="input-label" htmlFor="question-tags">Tags<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
                     <p>Press 'Tab' or 'Enter' after typing a tag to add it to the list. Press 'Backspace' or click the 'x' icon to remove a tag.</p>
                     <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'question-tags'}} />
                   </Col>
@@ -277,7 +277,7 @@ class QuestionEdit extends Component {
                 <Row>
                   <Col md={12} className="question-form-group">
                     <InfoModal show={this.state.showInfoDataCollectionMethod} header="Data Collection Method" body={<p>The Data Collection Method attribute represents the manner in which the Question is used to collect data at the time of administration. This is not necessarily the same as how CDC is receiving the data.<br/><br/>This attribute is optional but completion helps other users find questions in SDP-V most suited for a specific data collection method. There is an advanced search filter based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoDataCollectionMethod: false})} />
-                    <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method<Button bsStyle='link' onClick={() => this.setState({showInfoDataCollectionMethod: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+                    <label className="input-label" htmlFor="dataCollectionMethod">Data Collection Method<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDataCollectionMethod: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
                     <DataCollectionSelect onChangeFunc={this.handleDataCollectionMethodsChange()} methods={state.dataCollectionMethods} />
                   </Col>
                 </Row>
@@ -295,13 +295,13 @@ class QuestionEdit extends Component {
                 <Row className="response-set-row">
                   <Col md={6} className="response-set-label">
                     <InfoModal show={this.state.showInfoSearchandSelectResponseSet} header="Search and Select Response Sets" body={<p>Search through existing Response Sets in the system to identify the expected responses from this question. To select a specific Response Set, click the blue “+” button. Once added, the “+” sign will change into a checkmark to indicate the Response Set will be associated with the Question save.</p>} hideInfo={()=>this.setState({showInfoSearchandSelectResponseSet:false})} />
-                    <label>Search and Select Response Sets<Button bsStyle='link' onClick={() => this.setState({showInfoSearchandSelectResponseSet: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+                    <label htmlFor="selectedResponseSet">Search and Select Response Sets<Button bsStyle='link' style={{ padding: 3, display: 'flex', justifyContent: 'center' }} onClick={() => this.setState({showInfoSearchandSelectResponseSet: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
                   </Col>
                   <Col md={6} className="response-set-label">
                     <InfoModal show={this.state.showinfoSelectedResponseSets} header="Selected Response Sets" body={<p>The “Selected Response Sets” panel displays your selections. Adding a Response Set to a Question simply means that the Response Set(s) are a valid set of choices for the Question. You can add more than one Response Set if appropriate. <br/><br/><u>Author Recommended Response Sets</u>: Response sets added to a Question by the author at the time of creation will be displayed in the UI on the Question Details page as “Author Recommended Response Sets”. This allows the author of the question to identify Response Sets that are appropriate for different contexts (e.g., For a Question asking about a vaccine administered, valid Response Sets may include condition-specific vaccine types, like varicella, influenza, or pertussis).  These “author recommended response sets” will populate the Response Set drop down menu on the “Create Section” page to encourage reuse of these Response Sets. <br/><br/><u>Note</u>: If a user would like reuse a Question, but the “author recommended response sets” do not meet the needs of that user, users can select other Response Sets from the repository to associate with the Question while creating, editing, or revising a Section (See Section 7.1.3 of the User Guide). This allows other SDP-V users to reuse Questions in the repository but provides the flexibility to select a context appropriate Response Set on a given Section.</p>} hideInfo={()=>this.setState({showinfoSelectedResponseSets: false})} />
-                    <label>Selected Response Set<Button bsStyle='link' onClick={() => this.setState({showinfoSelectedResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+                    <label htmlFor="selectedResponseSet">Selected Response Set<Button bsStyle='link' style={{ padding: 3, display: 'flex', justifyContent: 'center'}} onClick={() => this.setState({showinfoSelectedResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
                     <InfoModal show={this.state.showInfoAddNewResponseSet} header="Add New Response Set" body={<p>After searching the service, if no suitable response sets are found, a user can create  a new response set and add it to question directly from this page.</p>} hideInfo={()=>this.setState({showInfoAddNewResponseSet: false})} />
-                    <Button bsStyle='link' onClick={() => this.setState({showInfoAddNewResponseSet: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
+                    <Button bsStyle='link' style={{ padding: 5 }} onClick={() => this.setState({showInfoAddNewResponseSet: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
                     <button className="btn btn-primary add-new-response-set" type="button" id="add-new-response-set" onClick={() => this.setState({showResponseSetModal:true})}>Add New Response Set</button>
                   </Col>
                 </Row>
@@ -451,8 +451,8 @@ class QuestionEdit extends Component {
           <Col md={8}/>
           <Col md={4} className="question-form-group">
             <InfoModal show={this.state.showInfoOtherAllowed} header="Other Allowed" body={<p>The “Other Allowed” choice appears when the “Choice” Response Type is selected. When checked, it indicates that the Question provides an “other” choice where a respondent can provide their own answer outside of the chosen Response Set.</p>} hideInfo={()=>this.setState({showInfoOtherAllowed: false})} />
-            <label className="input-label" htmlFor="otherAllowed">Other Allowed<Button bsStyle='link' onClick={() => this.setState({showInfoOtherAllowed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
             <input className="form-check-input" tabIndex="3" type="checkbox" name="otherAllowed" id="otherAllowed" checked={this.state.otherAllowed} onChange={() => this.toggleOtherAllowed()} />
+            <label htmlFor="otherAllowed">Other Allowed<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoOtherAllowed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
           </Col>
         </Row>
       );
