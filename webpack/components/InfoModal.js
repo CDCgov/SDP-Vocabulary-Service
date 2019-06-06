@@ -15,15 +15,13 @@ class InfoModal extends Component{
       <div className="static-modal" id='saveModal'>
         <Modal show={this.props.show} onHide={this.props.cancelButtonAction} role="dialog" aria-label={this.props.title}>
           <Modal.Header>
-            <Modal.Title componentClass="h1"><span className={'fa fa-info-circle'}></span> {this.props.header}</Modal.Title>
+            <Modal.Title componentClass="h3"><span className={'fa fa-info-circle'}></span> {this.props.header}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {this.props.body}
           </Modal.Body>
-          <br/>
-          <br/>
           <Modal.Footer>
-          {this.getButton(this.props.hideInfo, 'Close', 'right', 'link')}
+          {this.getButton(this.props.hideInfo, 'Close', 'right', 'primary')}
           </Modal.Footer>
         </Modal>
       </div>
