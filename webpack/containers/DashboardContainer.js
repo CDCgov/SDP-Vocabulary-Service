@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import Linkify from 'react-linkify';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';

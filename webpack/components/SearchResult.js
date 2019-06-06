@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import {Button} from 'react-bootstrap'
+import {Button} from 'react-bootstrap';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { displayVersion, isSimpleEditable } from '../utilities/componentHelpers';
