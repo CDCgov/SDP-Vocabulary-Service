@@ -33,7 +33,9 @@ InfoModal.propTypes = {
   show: PropTypes.bool,
   header: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
-  hideInfo: PropTypes.func
+  hideInfo: PropTypes.func,
+  title: PropTypes.func,
+  cancelButtonAction: PropTypes.func
 };
 
 export default InfoModal;
