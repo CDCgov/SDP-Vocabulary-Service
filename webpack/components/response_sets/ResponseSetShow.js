@@ -123,7 +123,7 @@ export default class ResponseSetShow extends Component {
   }
 
   sourceLink(responseSet) {
-    if(responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent) {
+    if(responseSet.source === 'PHIN_VADS' && responseSet.oid) {
       return <a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">PHIN VADS</a>;
     } else if (responseSet.source === 'PHIN_VADS') {
       return <a href="https://phinvads.cdc.gov">PHIN VADS</a>;

@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import {Button} from 'react-bootstrap';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { displayVersion, isSimpleEditable } from '../utilities/componentHelpers';
@@ -301,7 +302,7 @@ export default class SearchResult extends Component {
                 result.responseSets.map((rs, i) => {
                   return(
                     <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link></span>}
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link><Button style={{padding: '0px'}} bsStyle='link' className="pull-right" onClick={() => this.props.fetchResponseSetPreview(rs.id)}><i className="fa fa-search" aria-hidden="true"></i> Preview</Button></span>}
                     </div>
                   );
                 })
@@ -558,6 +559,7 @@ SearchResult.propTypes = {
   showResponseSetSearch: PropTypes.func,
   handleResponseSetChange:  PropTypes.func,
   handleSelectSearchResult: PropTypes.func,
+  fetchResponseSetPreview: PropTypes.func,
   updatePDV: PropTypes.func,
   isSelected: PropTypes.bool
 };

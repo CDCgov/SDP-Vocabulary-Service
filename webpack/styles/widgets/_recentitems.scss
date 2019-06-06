@@ -19,6 +19,10 @@
   border-bottom: 0px;
 }
 
+.preview-heading {
+  color: $cdc-blue !important;
+}
+
 .recent-items-body {
   @extend .panel-body;
   padding: 0px;

@@ -48,6 +48,7 @@ import dupeCount from './dupe_count_reducer';
 import breadcrumbPath from './breadcrumb_reducer';
 import ajaxStatus from './ajax_status_reducer';
 import publicInfo from './public_info_reducer';
+import preview from './preview_reducer';
 
 const categories = byIdWithIndividualReducer(FETCH_CATEGORIES_FULFILLED,
   FETCH_CATEGORY_FULFILLED, 'categories');
@@ -60,7 +61,7 @@ const admins = byIdReducer(FETCH_ADMINS_FULFILLED, GRANT_ADMIN_FULFILLED, REVOKE
 const authors = byIdReducerArray(FETCH_AUTHORS_FULFILLED, GRANT_AUTHOR_FULFILLED, REVOKE_AUTHOR_FULFILLED);
 
 const rootReducer = combineReducers({
-  questions, comments, stats, currentUser, responseSets, sections, categories, admins, potentialDupes, dupeCount,
+  questions, comments, stats, currentUser, responseSets, sections, categories, admins, potentialDupes, dupeCount, preview,
   responseTypes, notifications, searchResults, concepts, conceptSystems, lastSearch, suggestions, publicInfo, metrics, authors,
   surveillancePrograms, surveillanceSystems, surveys, publishers, tutorialSteps, tags, groups, displayStyle, breadcrumbPath, ajaxStatus
 });

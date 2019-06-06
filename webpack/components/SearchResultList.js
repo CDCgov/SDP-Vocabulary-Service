@@ -19,7 +19,7 @@ export default class SearchResultList extends Component {
                           type={sr.Type} result={sr} currentUser={this.props.currentUser}
                           handleSelectSearchResult={this.props.handleSelectSearchResult}
                           extraAction={this.props.extraAction} extraActionName={this.props.extraActionName}
-                          isEditPage={this.props.isEditPage}
+                          isEditPage={this.props.isEditPage} fetchResponseSetPreview={this.props.fetchResponseSetPreview}
                           />
           );
         })}
@@ -43,5 +43,6 @@ SearchResultList.propTypes = {
   handleSelectSearchResult: PropTypes.func,
   extraActionName: PropTypes.string,
   extraAction: PropTypes.func,
-  title: PropTypes.string
+  title: PropTypes.string,
+  fetchResponseSetPreview: PropTypes.func
 };
