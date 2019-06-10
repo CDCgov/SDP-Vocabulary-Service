@@ -1344,6 +1344,11 @@ class Help extends Component {
               <br/>
               <h4 id="userdocupdates"><strong>User Documentation Updates</strong></h4>
               <ul>
+              <li><strong>May 2019</strong></li>
+              <ul>
+                <li>The <strong>Vocabulary Service User Guide</strong>  has been updated with features available through Release 1.15.  The user guide is available on the <a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Accessing SDP Vocabulary Service</a> webpage.</li>
+                <li><strong>Surveillance Data Platform Vocabulary Service Fact Sheet</strong> has been updated.  The fact sheet is available at the bottom of the  <a href='https://www.cdc.gov/sdp/SDPVocabularyServiceSharedServices.html' target='_blank'>SDP Vocabulary Service</a> webpage.</li>
+              </ul>
                   <li><strong>August 2018</strong></li>
                   <ul>
                     <li>The <strong>Vocabulary Service User Guide</strong> has been updated with features available through Release 1.8. The user guide is available on the <a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Accessing SDP Vocabulary Service</a> webpage.</li>
