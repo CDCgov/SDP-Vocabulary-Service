@@ -12,6 +12,8 @@ Feature: Edit Sections
     And I should see "Healthcare Concept"
     When I click on the "Edit" link
     And I fill in the "section-name" field with "Edited Section"
+    And I fill in the "Tags" field with "TagTest1"
+    And I tab out of the "Tags" field
     And I click on the "Add Row" link
     And I fill in the "value_0" field with "Test Concept 1"
     And I fill in the "value_1" field with "Test Concept 2"
@@ -20,6 +22,7 @@ Feature: Edit Sections
     And I click on the "Save" button
     Then I should see "Name: Edited Section"
     Then I should see "Section description"
+    And I should see "TagTest1"
     And I should see "Test Concept 2"
     And I should not see "Test Concept 1"
     When I click on the "Change History" link
