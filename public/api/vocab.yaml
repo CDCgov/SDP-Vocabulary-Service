@@ -884,6 +884,8 @@ definitions:
         type: integer
       number_of_groups:
         type: integer
+      number_of_collaborating_author_groups_with_surveys:
+          type: integer
       cdc_program_users:
         type: integer
       programs_with_content:

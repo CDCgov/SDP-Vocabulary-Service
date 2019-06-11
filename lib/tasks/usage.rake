@@ -85,6 +85,9 @@ namespace :usage do
     puts "\nOMB Approved Survey Count: #{Survey.all.select { |s| s.control_number.present? }.compact.count}"
 
     puts "\nNumber of groups: #{Group.all.count}"
+
+    puts "\nCollaborating Author Groups with Surveys: #{GroupsSurveys.select('DISTINCT group_id').count}"
+
     puts "\nDuplicates Replaced:"
     puts '-----------'
     rs_sum = 0
