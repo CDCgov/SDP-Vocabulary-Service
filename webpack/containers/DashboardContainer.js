@@ -40,6 +40,7 @@ class DashboardContainer extends SearchManagerComponent {
     this.openSignUpModal = this.openSignUpModal.bind(this);
     this.closeSignUpModal = this.closeSignUpModal.bind(this);
     this.currentSearchParameters = this.currentSearchParameters.bind(this);
+    this.showPreview = this.showPreview.bind(this);
     this.state = {
       type: '',
       searchTerms: '',
@@ -61,7 +62,8 @@ class DashboardContainer extends SearchManagerComponent {
       firstTimeOpen: false,
       myStuffFilter: false,
       page: 1,
-      groupFilterId: 0
+      groupFilterId: 0,
+      previewCollapse: true
     };
   }
 
@@ -225,7 +227,7 @@ class DashboardContainer extends SearchManagerComponent {
                     {this.analyticsGroup(this.state.type)}
                 </div>
                 <div className="load-more-search">
-                  <SearchResultList searchResults={this.props.searchResults} currentUser={this.props.currentUser} isEditPage={false} fetchResponseSetPreview={this.props.fetchResponseSetPreview} />
+                  <SearchResultList ref='list' searchResults={this.props.searchResults} showPreview={this.showPreview} currentUser={this.props.currentUser} isEditPage={false} fetchResponseSetPreview={this.props.fetchResponseSetPreview} />
                   {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
                     <button id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</button>
                   }
@@ -241,6 +243,10 @@ class DashboardContainer extends SearchManagerComponent {
         </div>
       </div>
     );
+  }
+
+  showPreview() {
+    this.setState({previewCollapse: true});
   }
 
   openSignUpModal() {
@@ -382,8 +388,15 @@ class DashboardContainer extends SearchManagerComponent {
         </div>}
         {loggedIn && <div className="recent-items-heading"></div>}
         {this.props.preview && this.props.preview.name && <div>
-          <div className="recent-items-group-heading">Response Set Preview</div>
-          <div className="recent-items-body">
+          <div className="recent-items-group-heading">Response Set Preview <Button bsStyle='link' className='pull-right' data-toggle='collapse' data-target='#preview-body' onClick={() => {
+            if(this.state.previewCollapse) {
+              this.refs.list.selectActiveDash(-1);
+            } else {
+              this.refs.list.setLast();
+            }
+            this.setState({previewCollapse: !this.state.previewCollapse});
+          }}><i className={`fa ${this.state.previewCollapse === true ? 'fa-times' : 'fa-plus'}`} aria-hidden='true'></i><text className='sr-only'>Click to hide or show preview details</text></Button></div>
+          <div className={`recent-items-body collapse ${this.state.previewCollapse ? 'in': ''}`} id='preview-body' style={{height: this.state.previewCollapse ? 'auto' : ''}}>
             <div className='basic-c-box panel-default response_set-type'>
               <div className="panel-heading">
                 <h2 className="panel-title"><Link className="preview-heading" to={`/responseSets/${this.props.preview.id}`}>{this.props.preview.name + ' (version ' + this.props.preview.version + ')'}</Link></h2>

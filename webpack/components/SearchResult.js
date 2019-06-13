@@ -295,14 +295,20 @@ export default class SearchResult extends Component {
     switch(type) {
       case 'question':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-question`}>
-            <div className="panel-body">
+          <div className={`panel-collapse panel-details collapse`} id={`collapse-${result.id}-question`}>
+            <div className={`panel-body ${this.props.activeId === result.id ? 'analytics-active-item' : ''}`}>
               <text className="sr-only">List of links to response sets on this question:</text>
               {result.responseSets && result.responseSets.length > 0 &&
                 result.responseSets.map((rs, i) => {
                   return(
                     <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link><Button style={{padding: '0px'}} bsStyle='link' className="pull-right" onClick={() => this.props.fetchResponseSetPreview(rs.id)}><i className="fa fa-search" aria-hidden="true"></i> Preview</Button></span>}
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link><Button style={{padding: '0px'}} bsStyle='link' className="pull-right" onClick={() => {
+                        this.props.fetchResponseSetPreview(rs.id);
+                        this.props.showPreview();
+                        if (this.props.selectActive){
+                          this.props.selectActive(result.id);
+                        }
+                      }}><i className="fa fa-search" aria-hidden="true"></i> Preview</Button></span>}
                     </div>
                   );
                 })
@@ -458,8 +464,8 @@ export default class SearchResult extends Component {
 
   baseResult(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
     return (
-      <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
-        <li className="u-result-content-item">
+      <ul className='u-result-group u-result u-result-content' id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
+        <li className={`u-result-content-item ${this.props.activeId === result.id ? 'preview-active-item' : ''}`}>
           <div className={`u-result-details result__${type}`}>
             <div className="list-inline result-type-wrapper">
               <div className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></div>
@@ -517,12 +523,12 @@ export default class SearchResult extends Component {
               return mapObj[matched];
             })}</span></i>}
           </div>
-          <div className="result-linked-details">
+          <div className={`result-linked-details ${this.props.activeId === result.id ? 'preview-active-item' : ''}`}>
             {this.linkedDetails(result, type)}
           </div>
           {(type !== "section_nested_item") && this.detailsPanel(result, type)}
         </li>
-        <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
+        <li className={`u-result-content-item result-nav ${this.props.activeId === result.id ? 'preview-active-item' : ''}`} role="navigation" aria-label="Search Result">
           <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
@@ -555,6 +561,9 @@ SearchResult.propTypes = {
   responseSets: PropTypes.arrayOf(responseSetProps),
   extraActionName: PropTypes.string,
   showProgramVarModal: PropTypes.func,
+  selectActive: PropTypes.func,
+  showPreview: PropTypes.func,
+  activeId: PropTypes.number,
   selectedResponseSetId: PropTypes.number,
   showResponseSetSearch: PropTypes.func,
   handleResponseSetChange:  PropTypes.func,

@@ -17,6 +17,9 @@
 .recent-items-group-heading {
   @extend .recent-items-heading;
   border-bottom: 0px;
+  .btn {
+    padding-top: 2px !important;
+  }
 }
 
 .preview-heading {
