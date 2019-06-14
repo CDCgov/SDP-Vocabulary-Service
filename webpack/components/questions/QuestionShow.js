@@ -291,7 +291,7 @@ export default class QuestionShow extends Component {
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
+          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version)</text></Button>}: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
           <p className="maincontent-item-info">Tags: {question.tagList && question.tagList.length > 0 ? (
             <text>{question.tagList.join(', ')}</text>
           ) : (
@@ -370,18 +370,18 @@ export default class QuestionShow extends Component {
                 <InfoModal show={this.state.showContentStage} header={question.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={question.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 {question.contentStage && <div className="box-content">
                   <strong>Content Stage: </strong>
-                  {question.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
+                  {question.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                 </div>}
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="box-content">
                   <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
-                  <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
+                  <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && question.status && question.status === 'draft' &&
                 <div className="box-content">
                   <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
-                  <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
+                  <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
                 </div>
                 }
                 { question.parent &&
@@ -440,7 +440,7 @@ export default class QuestionShow extends Component {
                       <InfoModal show={this.state.showInfoParentItemsQuestion} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service. It helps to answer “where is this question being used?”. The default view shows the names of the different Sections that the Question is being used on. The user can view the Surveys that each Section is used on by clicking “+”.</p>} hideInfo={()=>this.setState({showInfoParentItemsQuestion: false})} />
                       <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
                       <text className="sr-only">Click link to expand information about </text>Parent Items</a>
-                      <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsQuestion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
+                      <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsQuestion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Parent Items)</text></Button>
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">

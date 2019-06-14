@@ -286,3 +286,18 @@ Feature: Manage Response Sets
     And I click on the "search-btn" button
     Then I should see "Body Type"
     And I should not see a "PHIN VADS" link
+
+  Scenario: View info buttons in a Response Set
+    Given I have a Response Set with the name "Gender Full"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Response Sets
+    When I click on the menu link for the Response Set with the name "Gender Full"
+    And I click on the option to Details the Response Set with the name "Gender Full"
+    When I click on the "Click for info about this item (Version)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Content Stage)" button
+    Then I click on the "Close" button
+  # When I click on the "Click for info about this item (Public)" button
+  # Then I click on the "Close" button
+    When I click on the "Click for info about this item (Private)" button
+    Then I click on the "Close" button
