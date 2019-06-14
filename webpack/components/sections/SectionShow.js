@@ -24,6 +24,8 @@ import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGr
 import ResultStyleControl from '../shared_show/ResultStyleControl';
 
 import { gaSend } from '../../utilities/GoogleAnalytics';
+import InfoModal from '../../components/InfoModal';
+import InfoModalBodyContent from '../../components/InfoModalBodyContent';
 
 const PAGE_SIZE = 10;
 
@@ -325,10 +327,11 @@ class SectionShow extends Component {
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
         </div>
+        <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
+          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}: {section.version} - Author: {section.userId} </p>
           <p className="maincontent-item-info">Tags: {section.tagList && section.tagList.length > 0 ? (
             <text>{section.tagList.join(', ')}</text>
           ) : (
@@ -382,20 +385,23 @@ class SectionShow extends Component {
                 <div className="box-content">
                   <strong>Version Independent ID: </strong>{section.versionIndependentId}
                 </div>
+                <InfoModal show={this.state.showContentStage} header={section.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={section.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 { section.contentStage &&
                   <div className="box-content">
                     <strong>Content Stage: </strong>
-                    {section.contentStage}
+                    {section.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
                   </div>
                 }
                 { this.props.currentUser && section.status && section.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Public
+                <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
+                  <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && section.status && section.status === 'draft' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Private (authors and publishers only)
+                <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
+                  <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
                 </div>
                 }
                 { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
@@ -449,8 +455,10 @@ class SectionShow extends Component {
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
+                    <InfoModal show={this.state.showInfoParentItemsSection} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service.  It helps to answer “where is this question being used?”. The default view shows the names of the different Surveys that the Section is being used on. If the Section that is being viewed is nested on another Section in the service, the user can also see that by following the breadcrumb.</p>} hideInfo={()=>this.setState({showInfoParentItemsSection: false})} />
                       <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
                       <text className="sr-only">Click link to expand information about </text>Parent Items</a>
+                      <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsSection: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">

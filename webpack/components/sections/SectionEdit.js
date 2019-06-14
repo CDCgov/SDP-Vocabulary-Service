@@ -17,6 +17,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import ModalDialog  from '../ModalDialog';
 import Errors from '../Errors';
 import InfoModal from '../InfoModal';
+import InfoModalBodyContent from '../../components/InfoModalBodyContent';
 
 class SectionEdit extends Component {
 
@@ -412,8 +413,7 @@ class SectionEdit extends Component {
               <input tabIndex="3" className="input-format" placeholder="Enter a description here..." type="text" value={this.state.description || ''} name="section-description" id="section-description" onChange={this.handleChangeDescription}/>
             </div>
             <div className="section-group">
-              <InfoModal show={this.state.showInfoTags} header="Tags" body={<p>Tags are text strings that are either keywords or short phrases created by users to facilitate content discovery, organization, and reuse. Tags are weighted in the dashboard search result algorithm so users are presented with search results that have been tagged with the same keyword(s) entered in the dashboard search bar.
-                <br/><br/>Keyword tags can be changed (added or deleted) at any time by the author(s) to meet user needs and to optimize search results. The history of tags is not saved on the change history tab; tags are not versioned.</p>} hideInfo={()=>this.setState({showInfoTags: false})} />
+              <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
               <label htmlFor="section-tags">Tags<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
               <p>Press 'Tab' or 'Enter' after typing a tag to add it to the list. Press 'Backspace' or click the 'x' icon to remove a tag.</p>
               <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'section-tags'}} />

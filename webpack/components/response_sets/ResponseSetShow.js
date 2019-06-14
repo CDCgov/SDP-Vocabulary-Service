@@ -28,6 +28,8 @@ import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isSimpleEditable, isGroupable } from '../../utilities/componentHelpers';
 
 import { gaSend } from '../../utilities/GoogleAnalytics';
+import InfoModal from '../../components/InfoModal';
+import InfoModalBodyContent from '../../components/InfoModalBodyContent';
 
 export default class ResponseSetShow extends Component {
   constructor(props){
@@ -36,6 +38,8 @@ export default class ResponseSetShow extends Component {
       selectedTab: 'main',
       page: 1,
       qPage: 1,
+      show: false,
+      showInfoDraft: false,
       showPublishModal: false,
       showDeleteModal: false,
       publishOrRetire: 'Publish'
@@ -289,10 +293,11 @@ export default class ResponseSetShow extends Component {
             }
           </div>
         }
+        <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${responseSet.preferred ? 'cdc-preferred-note' : ''}`}><strong>Response Set Name:</strong> {responseSet.name} {responseSet.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
+          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
           <p className="maincontent-item-info">Tags: {responseSet.tagList && responseSet.tagList.length > 0 ? (
             <text>{responseSet.tagList.join(', ')}</text>
           ) : (
@@ -382,18 +387,21 @@ export default class ResponseSetShow extends Component {
                 }
                 { responseSet.contentStage &&
                   <div className="box-content">
+                  <InfoModal show={this.state.showContentStage} header={responseSet.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={responseSet.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                     <strong>Content Stage: </strong>
-                    {responseSet.contentStage}
+                    {responseSet.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
                   </div>
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Public
+                  <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
+                  <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && responseSet.status && responseSet.status === 'draft' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Private (authors and publishers only)
+                  <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
+                  <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>}
                 </div>
                 }
                 { responseSet.status === 'published' && responseSet.publishedBy && responseSet.publishedBy.email &&
