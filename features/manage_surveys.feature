@@ -96,7 +96,7 @@ Feature: Manage Surveys
     When I click on the "Linked Sections" link
     And I should see "Test Gender Section"
     And I should not see "Publish"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "Edit"
 
  Scenario: Delete a draft Survey

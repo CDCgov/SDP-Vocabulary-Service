@@ -439,8 +439,8 @@ export default class QuestionShow extends Component {
                     <h2 className="panel-title">
                       <InfoModal show={this.state.showInfoParentItemsQuestion} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service. It helps to answer “where is this question being used?”. The default view shows the names of the different Sections that the Question is being used on. The user can view the Surveys that each Section is used on by clicking “+”.</p>} hideInfo={()=>this.setState({showInfoParentItemsQuestion: false})} />
                       <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about </text>Parent Items</a>
-                      <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsQuestion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Parent Items)</text></Button>
+                      <text className="sr-only">Click link to expand information about (Parent Items)</text>Parent Items</a>
+                      <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsQuestion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Parent Items InfoButton)</text></Button>
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">

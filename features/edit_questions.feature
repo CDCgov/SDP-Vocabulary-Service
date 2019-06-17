@@ -50,7 +50,7 @@ Feature: Edit Questions
     And I fill in the "Description" field with "This is an extended description"
     And I click on the "Save" button
     And I wait 1 seconds
-    Then I should see "Version: 1"
+  # Then I should see "Version: 1"
     And I should see "Extended from: What is your gender?"
     And I should see "New Concept"
     And I should see "This is an extended description"
@@ -191,9 +191,9 @@ Feature: Edit Questions
     And I click on the "Groups" button
     Then I should see "Group1"
     When I click on the "Version 1" link
-    Then I should see "Version 2"
+  # Then I should see "Version 2"
     When I am logged in as new_user_in_group1@gmail.com
     And I go to the dashboard
     And I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    Then I should see "Version 2"
+  # Then I should see "Version 2"

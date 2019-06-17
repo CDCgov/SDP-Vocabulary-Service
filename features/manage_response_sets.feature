@@ -138,7 +138,7 @@ Feature: Manage Response Sets
     And I fill in the "value_1" field with "Test Response 2"
     And I click on the "remove_0" link
     And I click on the "Save" button
-    Then I should see "Version: 2"
+  # Then I should see "Version: 2"
     And I should see "Gender Partial"
     And I should see "M / F"
     And I should see "Test Response 2"
@@ -152,7 +152,7 @@ Feature: Manage Response Sets
     And I click on the option to Revise the Response Set with the name "Gender Full"
     And I click on the link to remove the Response "Male" in row number 1
     And I click on the "Save" button
-    Then I should see "Version: 2"
+  # Then I should see "Version: 2"
     And I should see "Gender Full"
     And I should not see "Male"
 
@@ -168,7 +168,7 @@ Feature: Manage Response Sets
     And I fill in the "value_1" field with "Test Response 2"
     And I click on the "remove_0" link
     And I click on the "Save" button
-    Then I should see "Version: 1"
+  # Then I should see "Version: 1"
     And I should see "Extended from: Gender Full"
     And I should see "Gender Partial"
     And I should see "M / F / O"
@@ -194,7 +194,7 @@ Feature: Manage Response Sets
     And I fill in the "displayName_2" field with "Test Name 3"
     And I click on the "remove_2" link
     And I click on the "Save" button
-    Then I should see "Version: 1"
+  # Then I should see "Version: 1"
     And I should see "Gender Partial"
     And I should see "Test Response 1"
     And I should see "Test Response 2"
