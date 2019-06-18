@@ -294,11 +294,12 @@ export default class ResponseSetShow extends Component {
           </div>
         }
         <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
+        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${responseSet.preferred ? 'cdc-preferred-note' : ''}`}><strong>Response Set Name:</strong> {responseSet.name} {responseSet.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version)</text></Button>}: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
-          <p className="maincontent-item-info">Tags: {responseSet.tagList && responseSet.tagList.length > 0 ? (
+          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {responseSet.tagList && responseSet.tagList.length > 0 ? (
             <text>{responseSet.tagList.join(', ')}</text>
           ) : (
             <text>No Tags Found</text>
@@ -363,7 +364,8 @@ export default class ResponseSetShow extends Component {
                   <h2 className="panel-title">Details</h2>
                 </div>
                 <div className="box-content">
-                  <strong>Version Independent ID: </strong>{responseSet.versionIndependentId}
+                <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
+                  <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{responseSet.versionIndependentId}
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
