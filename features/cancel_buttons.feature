@@ -11,7 +11,7 @@ Feature: Cancel buttons
     And I click on the "Cancel" button
     Then I should see "Question Details"
     And I should see "Name: What is your gender?"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "History"
     And I should see "Comments:"
     And I should not see "Revise Question"
@@ -31,7 +31,7 @@ Feature: Cancel buttons
     And I click on the "Cancel" button
     Then I should see "Question Details"
     And I should see "Name: What is your gender?"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "History"
     And I should see "Comments:"
 
@@ -67,7 +67,7 @@ Feature: Cancel buttons
     When I click on the "Continue Without Saving" button
     Then I should see "Question Details"
     And I should see "Name: What is your gender?"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "History"
     And I should see "Comments:"
 
@@ -90,7 +90,7 @@ Feature: Cancel buttons
     When I click on the "Continue Without Saving" button
     Then I should see "Question Details"
     And I should see "Name: What is your gender?"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "History"
     And I should see "Comments:"
 

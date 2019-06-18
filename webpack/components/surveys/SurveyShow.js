@@ -27,6 +27,8 @@ import { publishersProps } from "../../prop-types/publisher_props";
 import { isEditable, isRevisable, isPublishable, isRetirable, isExtendable, isGroupable, isSimpleEditable } from '../../utilities/componentHelpers';
 
 import { gaSend } from '../../utilities/GoogleAnalytics';
+import InfoModal from '../../components/InfoModal';
+import InfoModalBodyContent from '../../components/InfoModalBodyContent';
 
 class SurveyShow extends Component {
   constructor(props) {
@@ -304,10 +306,11 @@ class SurveyShow extends Component {
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Curate')}>Curate ({this.props.dupeCount})</Link>
           }
         </div>
+        <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${this.props.survey.preferred ? 'cdc-preferred-note' : ''}`}><strong>Survey Name:</strong> {this.props.survey.name} {this.props.survey.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
+          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version)</text></Button>}: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
           <p className="maincontent-item-info">Tags: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
@@ -376,20 +379,23 @@ class SurveyShow extends Component {
                   {this.props.survey.publishedBy.email}
                 </div>
                 }
+                <InfoModal show={this.state.showContentStage} header={this.props.survey.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={this.props.survey.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 { this.props.survey.contentStage &&
                 <div className="box-content">
                   <strong>Content Stage: </strong>
-                  {this.props.survey.contentStage}
+                  {this.props.survey.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Public
+                <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
+                  <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'draft' &&
                 <div className="box-content">
-                  <strong>Visibility: </strong>Private (authors and publishers only)
+                <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
+                  <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
                 </div>
                 }
                 { this.props.survey.parent &&

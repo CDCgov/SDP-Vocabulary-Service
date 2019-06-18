@@ -96,7 +96,7 @@ Feature: Manage Surveys
     When I click on the "Linked Sections" link
     And I should see "Test Gender Section"
     And I should not see "Publish"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "Edit"
 
  Scenario: Delete a draft Survey
@@ -409,3 +409,18 @@ Feature: Manage Surveys
       And I click on the menu link for the Survey with the name "Test2 Survey"
       And I click on the option to Edit the Survey with the name "Test2 Survey"
       Then I should see "OMB Approval Date"
+
+    Scenario: View the info buttons in a Survey
+      Given I have a Survey with the name "Test Survey" and the description "Survey description"
+      And I am logged in as test_author@gmail.com
+      When I go to the list of Surveys
+      And I click on the menu link for the Survey with the name "Test Survey"
+      And I click on the option to Details the Survey with the name "Test Survey"
+      When I click on the "Click for info about this item (Version)" button
+      Then I click on the "Close" button
+      When I click on the "Click for info about this item (Content Stage)" button
+      Then I click on the "Close" button
+    # When I click on the "Click for info about this item (Public)" button
+    # Then I click on the "Close" button
+      When I click on the "Click for info about this item (Private)" button
+      Then I click on the "Close" button

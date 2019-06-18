@@ -109,3 +109,18 @@ Feature: Manage Sections
     When I click on the "Confirm Retire" link
     Then I should see "Content Stage: Retired"
     And I should see "(Retired)"
+
+  Scenario: View the info buttons in a Section
+    Given I have a Section with the name "Test Section" and the description "Section description"
+    And I am the publisher test_publisher@gmail.com
+    When I go to the list of Sections
+    And I click on the menu link for the Section with the name "Test Section"
+    And I click on the option to Details the Section with the name "Test Section"
+    When I click on the "Click for info about this item (Version)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Content Stage)" button
+    Then I click on the "Close" button
+  # When I click on the "Click for info about this item (Public)" button
+  # Then I click on the "Close" button
+    When I click on the "Click for info about this item (Private)" button
+    Then I click on the "Close" button
