@@ -45,6 +45,14 @@ export default class InfoModalBodyContent extends Component {
           Keyword tags can be changed (added or deleted) at any time by the author(s) to meet user needs and to optimize search results. The history of tags is not saved on the change history tab; tags are not versioned.</p>;
   }
 
+  getVersionIndependentIDInfoBody() {
+    return <p>The version independent ID is an API parameter that uniquely identifies a particular response set, question, section, or SDP-V survey. If a version is not specified, the API will return the most recent version of vocabulary.</p>;
+  }
+
+  getCodeSystemMappingsInfoBody() {
+    return <p>Description test.</p>;
+  }
+
   render() {
     if(this.props.enum == 'contentStage') {
       return this.getContentStageInfoBody();
@@ -52,10 +60,15 @@ export default class InfoModalBodyContent extends Component {
       return this.getVisibilityInfoBody();
     } else if (this.props.enum == 'version') {
       return this.getVersionInfoBody();
-    } else if (this.props.enum == 'tags')
+    } else if (this.props.enum == 'tags') {
       return this.getTagInfoBody();
-  }
+    } else if (this.props.enum == 'versionIndependentID') {
+      return this.getVersionIndependentIDInfoBody();
+    } else if (this.props.enum == 'codeSystemMappings') {
+      return this.getCodeSystemMappingsInfoBody();
     }
+  }
+}
 
 InfoModalBodyContent.propTypes = {
   enum: PropTypes.string,
