@@ -418,7 +418,11 @@ class SectionShow extends Component {
                 </div>
                 }
               </div>
+<<<<<<< HEAD
               <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
+=======
+              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeSystemMappings'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
+>>>>>>> updated info buttons
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">

@@ -409,11 +409,12 @@ class SurveyShow extends Component {
                 </div>
                 }
               </div>
+              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeSystemMappings'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
                   <h2 className="panel-title">
-                    Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Linked Sections)</text></Button>}
+                    Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
                   </h2>
                 </div>
                 <div className="box-content">
@@ -422,6 +423,7 @@ class SurveyShow extends Component {
                   </div>
                 </div>
               </div>
+              <InfoModal show={this.state.showInfoLinkedSections} header="Linked Sections" body={<p>Displays the selected sections (grouping of questions) for this Survey.</p>} hideInfo={()=>this.setState({showInfoLinkedSections: false})} />
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <InfoModal show={this.state.showInfoLinkedSections} header="Linked Sections" body={<p>Displays the selected sections (grouping of questions) for this Survey.</p>} hideInfo={()=>this.setState({showInfoLinkedSections: false})} />
