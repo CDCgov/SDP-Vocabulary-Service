@@ -284,9 +284,9 @@ class CodedSetTableEditContainer extends Component {
           <InfoModal show={this.state.showInfoCodeSystemIdentifier} header="Code System Identifier" body={<p>This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated.</p>} hideInfo={()=>this.setState({showInfoCodeSystemIdentifier: false})} />
           <thead>
             <tr>
-              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : 'Concept Name'} {this.getInfoButtonBody(tableType === 'Response' ? 'Display Name' : 'Concept Name')}</th>
-              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : 'Concept Identifier'} {this.getInfoButtonBody(tableType === 'Response' ? tableType : 'Concept Identifier')}</th>
-              <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier{tableType === 'Response' ? ' (Optional)' : ''} {this.getInfoButtonBody(tableType === 'Response' ? ' (Optional)' : '')}</th>
+              <th scope="col" className="display-name-column" id="display-name-column">{tableType === 'Response' ? 'Display Name' : 'Concept Name'}{this.getInfoButtonBody(tableType === 'Response' ? 'Display Name' : 'Concept Name')}</th>
+              <th scope="col" className="code-column" id="code-column">{tableType === 'Response' ? tableType : 'Concept Identifier'}{this.getInfoButtonBody(tableType === 'Response' ? tableType : 'Concept Identifier')}</th>
+              <th scope="col" className="code-system-column" id="code-system-column">Code System Identifier{tableType === 'Response' ? ' (Optional)' : ''}{this.getInfoButtonBody(tableType === 'Response' ? ' (Optional)' : '')}</th>
             </tr>
           </thead>
           <tbody>
