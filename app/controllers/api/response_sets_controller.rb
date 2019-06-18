@@ -25,6 +25,7 @@ module Api
     end
 
     def show
+      @@tracker.pageview(path: "/api/valueSets/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Show')
       @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
         not_found
