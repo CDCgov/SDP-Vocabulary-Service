@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 export default class InfoModalBodyContent extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      show: false
+    };
   }
 
   getContentStageInfoBody() {
@@ -50,7 +53,48 @@ export default class InfoModalBodyContent extends Component {
   }
 
   getCodeSystemMappingsInfoBody() {
-    return <p>Description test.</p>;
+    return <p>FROM MODAL.</p>;
+  }
+
+  codeMappingHelpModal(){
+    return <div>
+    <h2 clasName='no-padding-top'>Purpose</h2>
+    <p>The purpose of the Code System Mappings table is to identify the governed concepts from code systems like LOINC, SNOMED, PHIN VADS, etc that are associated with response sets, questions, sections, or surveys in SDP-V. That is, the Code System Mappings table identifies how content in SDP-V is represented in another code system.<br/>The Code System Mappings table should only include mapping to governed concepts. Non-governed concepts or keywords should not be added to the Code System Mappings table. If you would like to add keywords to your response set, question, section, or survey to facilitate content discovery or organization, please see the “Keyword Tags” help documentation for information on how to use the “Tags” feature.</p>
+    <p><strong>Mutability: </strong>Any changes to entries in the Code System Mappings table are versioned since code system mappings are a property of the vocabulary itself. This allows users to update the Code System Mappings while maintaining legacy mappings in older SDP-V content versions if needed.</p>
+    <p><strong>Discoverability: </strong>Code System Mappings table fields are included in the dashboard search algorithm so other users can find questions, sections, and surveys with specific concept names, concept identifiers or code system identifiers in SDP-V. For instance, a user can enter “27268008” into the dashboard search box to find content in SDP-V associated with that concept identifier. </p>
+
+    <h2>Definitions</h2>
+    <p><strong>Concept Name: </strong>Term from a controlled vocabulary to designate a unit of meaning or idea (e.g., ‘Genus Salmonella (organism)’). A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies such as PHIN VADS.</p>
+    <p><strong>Concept Identifier: </strong>This is text or a code used to uniquely identify a concept in a controlled vocabulary (e.g., 27268008). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
+    <p><strong>Code System Identifier: </strong>This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated.</p>
+
+    <h2>Example Code System Mappings Table</h2>
+    <table className="set-table table">
+      <caption><strong></strong></caption>
+      <thead>
+        <tr>
+          <th  id="concept-name">Concept Name</th>
+          <th  id="concept-identifier">Concept Identifier</th>
+          <th  id="code-sytem-identifier">Code System Identifier</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td headers="concept-name">Genus Salmonella (organism)</td>
+          <td headers="concept-identifier">27268008</td>
+          <td headers="code-sytem-identifier">2.16.840.1.113883.6.96</td>
+        </tr>
+        <tr>
+          <td headers="concept-name">Genus Campylobacter (organism)</td>
+          <td headers="concept-identifier">35408001</td>
+          <td headers="code-sytem-identifier">2.16.840.1.113883.6.96</td>
+        </tr>
+      </tbody>
+    </table><br/>
+    <p><strong>How to Search for Previously Used Code Mappings</strong><br/>To determine if a code system mapping has been used before in SDP-V, start typing in the concept name column of the table. A drop-down list of all previously used concept names that match the text entered in the field will appear. A user can navigate the list and select a concept name that was previously used. If a concept name is selected from the list, the concept identifier and code system identifier fields will be populated with existing values already entered in SDP-V.</p>
+    <p><strong>How to Search for Code Mappings from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for external coded items” magnifying glass icon to the right of the code system mappings header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the code mappings table by clicking the “Add” selection beside each result.</p>
+    <p><strong>How to Create a New Code System Mapping</strong><br/>A new code system mapping may be created by simply typing a new concept name, concept identifier, and code system identifier. A new code mapping should only be created if an existing code mapping does not meet a user’s needs.</p>
+    </div>
   }
 
   render() {
@@ -66,6 +110,8 @@ export default class InfoModalBodyContent extends Component {
       return this.getVersionIndependentIDInfoBody();
     } else if (this.props.enum == 'codeSystemMappings') {
       return this.getCodeSystemMappingsInfoBody();
+    } else if (this.props.enum == 'codeMappingHelpModal') {
+      return this.codeMappingHelpModal();
     }
   }
 }
