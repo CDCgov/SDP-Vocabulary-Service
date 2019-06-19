@@ -287,12 +287,11 @@ export default class QuestionShow extends Component {
             }
           </div>
         }
-        <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
         <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version)</text></Button>}: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
+          <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
           <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {question.tagList && question.tagList.length > 0 ? (
             <text>{question.tagList.join(', ')}</text>
           ) : (
@@ -413,7 +412,9 @@ export default class QuestionShow extends Component {
                   {question.responseType.name}
                 </div>}
                 {question.dataCollectionMethods && question.dataCollectionMethods.length > 0 && <div className="box-content">
-                  <strong>Data Collection Methods: </strong>
+                <InfoModal show={this.state.showInfoDataCollectionMethods} header="Category" body={<p>The Data Collection Method attribute represents the manner in which the Question is used to collect data at the time of administration. This is not necessarily the same as how CDC is receiving the data.<br /><br />This attribute is optional but completion helps other users find questions in SDP-V most suited for a specific data collection method. There is an advanced search filter based off of this attribute.
+</p>} hideInfo={()=>this.setState({showInfoDataCollectionMethods: false})} />
+                  <strong>Data Collection Methods{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDataCollectionMethods: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Data Collection Methods)</text></Button>}: </strong>
                   <ul>
                     {question.dataCollectionMethods.map((dcm, i) => {
                       return (<li key={i}>{dcm}</li>);
@@ -426,7 +427,7 @@ export default class QuestionShow extends Component {
                   {question.otherAllowed ? 'Yes' : 'No' }
                 </div>}
               </div>
-              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeSystemMappings'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
+              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">

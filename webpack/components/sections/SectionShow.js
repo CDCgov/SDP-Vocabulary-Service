@@ -327,12 +327,11 @@ class SectionShow extends Component {
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
         </div>
-        <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
         <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version)</text></Button>}: {section.version} - Author: {section.userId} </p>
+          <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
           <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
             <text>{section.tagList.join(', ')}</text>
           ) : (
@@ -419,7 +418,7 @@ class SectionShow extends Component {
                 </div>
                 }
               </div>
-              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeSystemMappings'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
+              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">
@@ -432,7 +431,7 @@ class SectionShow extends Component {
                   </div>
                 </div>
               </div>
-              <InfoModal show={this.state.showInfoLinkedQuestionsAndSections} header="Linked Questions and Sections" body={<p>Description test.</p>} hideInfo={()=>this.setState({showInfoLinkedQuestionsAndSections: false})} />
+              <InfoModal show={this.state.showInfoLinkedQuestionsAndSections} header="Linked Questions and Sections" body={<p>Displays the selected content for this Section. A Section may contain either Questions only, Sections only (a grouping of questions), or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoLinkedQuestionsAndSections: false})} />
               {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
