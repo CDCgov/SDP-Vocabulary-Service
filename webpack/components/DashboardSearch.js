@@ -535,10 +535,6 @@ class DashboardSearch extends SearchStateComponent {
             </span>
           </div>
           <div>
-            <a className="adv-search-link pull-right" title="Advanced Search" href="#" tabIndex="4" onClick={(e) => {
-              e.preventDefault();
-              this.showAdvSearch();
-            }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>
             <nav className="filter-navbar">
                 <div className="navbar-header">
                   <i className="fa fa-filter filter-brand"><text className="sr-only">Filter navbar</text></i>
@@ -574,7 +570,7 @@ class DashboardSearch extends SearchStateComponent {
                             return <li key={i} className="nav-dropdown-item" onClick={()=>this.selectGroup(g.id)}><a href='#'>{g.name}</a></li>;
                           })}
                           <li role="separator" className="divider"></li>
-                          <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectGroup(-1)}>All My Groups</a></li>
+                          <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectGroup('-1')}>All My Groups</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -600,6 +596,10 @@ class DashboardSearch extends SearchStateComponent {
                       <a href="#" id="clear-filter" tabIndex="2" className="filter-navbar-item help-link" role="button" onClick={()=>this.clearAdvSearch()}>Clear</a>
                     </li>
                   </ul>
+                  <a className="adv-search-link pull-right" title="Advanced Search" href="#" tabIndex="4" onClick={(e) => {
+                    e.preventDefault();
+                    this.showAdvSearch();
+                  }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>
                 </div>
             </nav>
             {this.state.programFilter.length > 0 &&

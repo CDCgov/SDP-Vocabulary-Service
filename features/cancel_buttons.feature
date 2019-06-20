@@ -45,8 +45,7 @@ Feature: Cancel buttons
     When I go to the list of Questions
     And I click on the create "Questions" dropdown item
     And I click on the "Cancel" button
-    Then I should see "My Stuff"
-    And I should see "Search Results"
+    Then I should see "Search Results"
 
   # Scenario: Cancel out of creating a new section
   # Given I am logged in as test_author@gmail.com
@@ -109,7 +108,6 @@ Feature: Cancel buttons
     And I should see "Unsaved Changes"
     When I click on the "Continue Without Saving" button
     Then I should see "Search Results"
-    And I should see "My Stuff"
 
   # Scenario: Cancel out of creating a new section with modal warning
   # Given I am logged in as test_author@gmail.com

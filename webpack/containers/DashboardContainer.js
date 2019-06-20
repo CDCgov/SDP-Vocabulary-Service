@@ -207,6 +207,7 @@ class DashboardContainer extends SearchManagerComponent {
                 {this.state.groupFilterId === '-1' &&
                   <div className="adv-filter-list">Filtering to content owned by any of your groups</div>
                 }
+                {console.log(this.state.groupFilterId)}
                 {this.state.groupFilterId > 0 &&
                   <div className="group-filter-info">
                   <div className="adv-filter-list">
