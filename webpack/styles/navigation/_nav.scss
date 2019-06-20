@@ -33,6 +33,13 @@ a.cdc-brand:focus {
   padding: 13px 0px 0px 0px;
 }
 
+.filter-brand {
+  @extend .navbar-brand;
+  color: $medium-gray;
+  font-size: 20px;
+  padding: 0px 0px 0px 0px;
+}
+
 .cdc-navbar-toggle {
   @extend .navbar-toggle;
   color: white;
@@ -64,6 +71,67 @@ a.cdc-brand:focus {
   }
   .cdc-nav-dropdown {
     background-color: white !important;
+  }
+}
+
+.filter-brand {
+  @extend .navbar-brand;
+  color: $medium-gray;
+  font-size: 20px;
+  height: 20px;
+  padding: 0px 10px 0px 6px;
+}
+
+.filter-navbar {
+  @extend .navbar;
+  height: 20px;
+  min-height: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-nav {
+  @extend .nav;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.filter-utlt-navbar-nav {
+  @extend .navbar-nav;
+  padding: 0px 0px 0px 0px;
+  .utlt-navbar-item>a {
+    height: 20px;
+  }
+  .utlt-navbar-icon {
+    padding-right: 6px;
+  }
+  span {
+    margin-left: 6px;
+  }
+  .item-navbar-icon {
+    margin-right: 6px;
+  }
+  .cdc-nav-dropdown {
+    background-color: white !important;
+  }
+}
+
+.filter-navbar-item {
+  color: $medium-gray;
+  height: 20px;
+  font-size: 16px;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-left: 8px !important;
+  padding-right: 16px !important;
+  .item-navbar-icon {
+    margin-right: 6px;
+  }
+  a:hover, a:focus {
+    background-color: white;
+    height: 20px;
+  }
+  span {
+    margin-left: 6px;
   }
 }
 

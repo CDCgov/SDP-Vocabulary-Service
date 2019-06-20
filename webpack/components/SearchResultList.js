@@ -27,12 +27,6 @@ export default class SearchResultList extends Component {
   render() {
     return (
       <div className="search-result-list">
-        {this.props.searchResults.hits &&
-          <div>
-            <h1 className="search-result-heading">{this.title()} ({this.props.searchResults.hits && this.props.searchResults.hits.total && this.props.searchResults.hits.total})</h1>
-            <hr/>
-          </div>
-        }
         {this.props.searchResults.hits && this.props.searchResults.hits.hits.map((sr, i) => {
           return(
             <SearchResult key={`${sr.Source.versionIndependentId}-${sr.Source.updatedAt}-${i}`} showPreview={this.props.showPreview}

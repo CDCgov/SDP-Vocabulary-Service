@@ -12,6 +12,48 @@ html, body  {
 
 }
 
+.rs-green {
+  color: $rs-green !important;
+}
+
+.question-blue {
+  color: $question-blue !important;
+}
+
+.section-purple {
+  color: $section-purple !important;
+}
+
+.survey-teal {
+  color: $survey-teal !important;
+}
+
+.dark-gray {
+  color: $dark-gray !important;
+}
+
+.fa-list {
+  color: $rs-green !important;
+}
+
+.fa-question-circle {
+  color: $question-blue !important;
+}
+
+.fa-window-maximize {
+  color: $section-purple !important;
+}
+
+.fa-clipboard {
+  color: $survey-teal !important;
+}
+
+.download-sr {
+  padding-top: 6px;
+  font-size: 16px;
+  color: $medium-gray;
+}
+
 .metrics-text {
   white-space: pre-wrap;
 }

@@ -243,7 +243,7 @@ export default class SearchResult extends Component {
       case 'response_set':
       case 'response_set_dropped':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Response Set details.">
+          <ul className="list-inline result-linked-number result-linked-item associated__responses" aria-label="Additional Response Set details.">
             {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs${type === 'response_set_dropped' ? '-drop' : ''}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.responseCount}{result.responseCount === undefined && 'Click name for more info'}</a></li>}
           </ul>
         );
@@ -443,13 +443,13 @@ export default class SearchResult extends Component {
           {this.showLinkedDetails(result, type)}
         </li>
         <li className="u-result-content-item condensed result-nav text-center" role="navigation" aria-label="Search Result">
-          <div><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div><Link className='dark-gray' to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div>
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult, type)
             ) : (
               <div className="dropdown">
-                <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
+                <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dark-gray dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
                   <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
                   <span className="sr-only">View Item Action Menu</span>
                 </a>
@@ -529,14 +529,14 @@ export default class SearchResult extends Component {
           {(type !== "section_nested_item") && this.detailsPanel(result, type)}
         </li>
         <li className={`u-result-content-item result-nav ${this.props.activeId === result.id ? 'preview-active-item' : ''}`} role="navigation" aria-label="Search Result">
-          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div className="result-nav-item"><Link className='dark-gray' to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult, type)
             ) : (
               <div className="dropdown">
                 <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
-                  <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
+                  <span className="fa fa-ellipsis-h dark-gray" aria-hidden="true"></span>
                   <span className="sr-only">View Item Action Menu</span>
                 </a>
                 {this.resultDropdownMenu(result, type, actionName, action)}
