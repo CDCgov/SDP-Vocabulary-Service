@@ -3,6 +3,7 @@ module Api
     respond_to :json
 
     def index
+      @@tracker.pageview(path: "/api/surveys/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API Survey Show - Search criteria: ' + "#{params[:search]}")
       @surveys = if params[:search]
                    Survey.includes(:published_by, survey_sections:
                                     [section: { section_nested_items: [:response_set, :question, :nested_section] }]).search(params[:search])
@@ -22,10 +23,13 @@ module Api
     def show
       @survey = Survey.by_id_and_version(params[:id].upcase, params[:version])
       if @survey.nil?
-        not_found
+        @@tracker.pageview(path: "/api/surveys/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Survey Not Found')
+        not_found('Survey')
         return
+      else
+        @@tracker.pageview(path: "/api/surveys/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Survey Show')
+        render json: @survey, serializer: SurveySerializer
       end
-      render json: @survey, serializer: SurveySerializer
     end
   end
 end

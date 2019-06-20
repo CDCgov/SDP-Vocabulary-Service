@@ -3,6 +3,7 @@ module Api
     respond_to :json
 
     def index
+      @@tracker.pageview(path: "/api/sections/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API Section Show - Search criteria: ' + "#{params[:search]}")
       @sections = if params[:search]
                     Section.includes(:published_by, section_nested_items: [{ response_set: :responses }, :question, :nested_section]).search(params[:search])
                   else
@@ -22,10 +23,13 @@ module Api
       @section = Section.includes(:published_by, section_nested_items: [{ response_set: :responses },
                                                                         :question, :nested_section]).by_id_and_version(params[:id].upcase, params[:version])
       if @section.nil?
-        not_found
+        @@tracker.pageview(path: "/api/sections/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Section Not Found')
+        not_found('Section')
         return
+      else
+        @@tracker.pageview(path: "/api/sections/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Section Show')
+        render json: @section, serializer: SectionSerializer
       end
-      render json: @section, serializer: SectionSerializer
     end
 
     def usage

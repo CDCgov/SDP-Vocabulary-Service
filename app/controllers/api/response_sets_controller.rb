@@ -4,6 +4,7 @@ module Api
     respond_to :json
 
     def index
+      @@tracker.pageview(path: "/api/valueSets/#{params[:oid]}/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API Response Sets Show - Search criteria: ' + "#{params[:search]}")
       if params[:oid]
         @value_sets = [ResponseSet.find_by(oid: params[:oid])]
       else
@@ -25,22 +26,27 @@ module Api
     end
 
     def show
-      @@tracker.pageview(path: "/api/valueSets/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Show')
       @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
-        not_found
+        @@tracker.pageview(path: "/api/valueSets/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Not Found')
+        not_found('Response Set')
         return
+      else
+        @@tracker.pageview(path: "/api/valueSets/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Show')
+        render json: @value_set, serializer: ValueSetsSerializer
       end
-      render json: @value_set, serializer: ValueSetsSerializer
     end
 
     def usage
       @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
-        not_found
+        @@tracker.pageview(path: "/api/valueSetsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Usage Not Found')
+        not_found('Response Set Usage')
         return
-      end
-      render json: @value_set, serializer: UsageSerializer
+      else
+        @@tracker.pageview(path: "/api/valueSetsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Usage Show')
+        render json: @value_set, serializer: ValueSetsSerializer
     end
+  end
   end
 end

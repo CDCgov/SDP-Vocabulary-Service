@@ -9,6 +9,7 @@ module Api
 
     def index
       response.headers['Content-Type'] = 'application/json'
+      @@tracker.pageview(path: "/api/metrics/SDP-V", hostname: Settings.default_url_helper_host, title: 'API Generate Metrics')
 
       # Total number of objects in the system
       response.stream.write "[{\"response_set_count\": #{ResponseSet.all.count}, "

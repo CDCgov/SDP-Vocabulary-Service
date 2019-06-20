@@ -4,6 +4,7 @@ module Api
     respond_to :json
 
     def index
+      @@tracker.pageview(path: "/api/questions/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API Question Show - Search criteria: ' + "#{params[:search]}")
       @questions = if params[:search]
                      Question.includes(:response_type, :published_by).search(params[:search])
                    else
@@ -22,19 +23,25 @@ module Api
     def show
       @question = Question.by_id_and_version(params[:id].upcase, params[:version])
       if @question.nil?
-        not_found
+        @@tracker.pageview(path: "/api/questions/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Not Found')
+        not_found('Question')
         return
+      else
+        @@tracker.pageview(path: "/api/questions/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Show')
+        render json: @question, serializer: QuestionsSerializer
       end
-      render json: @question, serializer: QuestionsSerializer
     end
 
     def usage
       @question = Question.by_id_and_version(params[:id].upcase, params[:version])
       if @question.nil?
-        not_found
+        @@tracker.pageview(path: "/api/questionsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Usage Not Found')
+        not_found('Question Usage')
         return
+      else
+        @@tracker.pageview(path: "/api/questionsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Usage Show')
+        render json: @question, serializer: QuestionsSerializer
       end
-      render json: @question, serializer: UsageSerializer
     end
   end
 end

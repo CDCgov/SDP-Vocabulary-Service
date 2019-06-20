@@ -2,6 +2,7 @@ module Api
   module Fhir
     class ValuesetsController < ApplicationController
       def index
+        @@tracker.pageview(path: "/api/FHIR/valueSets/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API FHIR Reponse Set Show - Search criteria: ' + "#{params[:search]}")
         @value_sets = ResponseSet.where("status='published'").includes(:responses, :published_by)
         @value_sets = @value_sets.search(params[:search]) if params[:search]
         limit = params[:limit] && (params[:limit].to_i < 100 || request.env['HTTP_ACCEPT_ENCODING'] == 'gzip') ? params[:limit].to_i : 100
@@ -11,6 +12,7 @@ module Api
       end
 
       def show
+        @@tracker.pageview(path: "/api/FHIR/valueSets/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API FHIR Response Set Show')
         @value_set = ResponseSet.by_id_and_version(params[:id], params[:version])
         if @value_set.nil?
           not_found
