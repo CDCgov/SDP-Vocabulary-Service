@@ -459,17 +459,17 @@ export default class QuestionShow extends Component {
                                   this.setState({collapseSectionPath: csp});
                                 }
                               }}><i className={`fa ${this.state.collapseSectionPath[pathIndex] === true ? 'fa-minus' : 'fa-plus'}`} aria-hidden="true"></i> <text className='sr-only'>Click to expand section path</text></a>
-                              <i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${sect.id}`}>{sect.name}</a>
+                              <i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${sect.id}`}>{sect.name}</a>
                                 {sect.surveys && sect.surveys.length > 0 && <ul className="no-bullet-list collapse" id={`collapse-section-path-${pathIndex}`}>
                                   {sect.surveys.map((surv) => {
                                     return(
                                       <li>
                                         {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
-                                        {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
+                                        {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
                                         <ul className="no-bullet-list">
                                         {surv.slice(1).map((pathItem, index) => {
                                           return(
-                                            <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
+                                            <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
                                           );
                                         })}
                                         </ul>

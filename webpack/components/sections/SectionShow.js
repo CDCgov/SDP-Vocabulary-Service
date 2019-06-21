@@ -468,11 +468,11 @@ class SectionShow extends Component {
                           return (
                             <li>
                               {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
-                              {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
+                              {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
                               <ul className="no-bullet-list">
                               {surv.slice(1).map((pathItem, index) => {
                                 return(
-                                  <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-list-alt" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
+                                  <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
                                 );
                               })}
                               </ul>

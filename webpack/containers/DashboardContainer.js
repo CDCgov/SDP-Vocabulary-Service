@@ -158,6 +158,7 @@ class DashboardContainer extends SearchManagerComponent {
 
   render() {
     let loggedIn = ! isEmpty(this.props.currentUser);
+    const groups = this.props.currentUser ? this.props.currentUser.groups : [];
     const searchResults = this.props.searchResults;
     const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     const groupObj = this.props.currentUser.groups && this.props.currentUser.groups.find((g) => g.id === parseInt(this.state.groupFilterId, 10));
@@ -189,11 +190,14 @@ class DashboardContainer extends SearchManagerComponent {
         }
         <div className="container">
           <div className="row basic-bg">
-            <div className="col-md-8">
+            <div className={this.props.preview && this.props.preview.name ? 'col-md-8' : 'col-md-12'}>
               <div className="dashboard-details">
+                <div>
+                  {this.analyticsGroup(this.state.type)}
+                </div>
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
-                                 surveillancePrograms={this.props.surveillancePrograms}
-                                 categories={this.props.categories}
+                                 surveillancePrograms={this.props.surveillancePrograms} loggedIn={loggedIn}
+                                 categories={this.props.categories} groups={groups}
                                  responseTypes={this.props.responseTypes}
                                  changeFiltersCallback={this.changeFiltersCallback}
                                  searchSource={this.props.searchResults.Source}
@@ -223,10 +227,16 @@ class DashboardContainer extends SearchManagerComponent {
                   </div>
                 </div>
                 }
-                <div>
-                    {this.analyticsGroup(this.state.type)}
-                </div>
                 <div className="load-more-search">
+                  {this.props.searchResults.hits &&
+                    <div>
+                      <h1 className="search-result-heading col-md-7">Search Results ({this.props.searchResults.hits && this.props.searchResults.hits.total && this.props.searchResults.hits.total})</h1>
+                      {this.props.searchResults.Source !== 'simple_search' &&
+                          <div className="col-md-5"><a className="pull-right download-sr" href={`/elasticsearch/export?${Object.keys(this.currentSearchParameters().toSearchParameters()).map(key => key + '=' + this.currentSearchParameters().toSearchParameters()[key]).join('&')}`}>Download search results (.xlsx) <i className="fa fa-download" aria-hidden="true"></i></a></div>
+                      }
+                      <hr/>
+                    </div>
+                  }
                   <SearchResultList ref='list' searchResults={this.props.searchResults} showPreview={this.showPreview} currentUser={this.props.currentUser} isEditPage={false} fetchResponseSetPreview={this.props.fetchResponseSetPreview} />
                   {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&
                     <button id="load-more-btn" className="button button-action center-block" onClick={() => this.loadMore()}>LOAD MORE</button>
@@ -234,11 +244,11 @@ class DashboardContainer extends SearchManagerComponent {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            {this.props.preview && this.props.preview.name && <div className="col-md-4">
               <div className="dashboard-activity">
-                {this.authorStats(this.state.type, this.state.myStuffFilter, loggedIn)}
+                {this.authorStats(this.state.type, this.state.myStuffFilter)}
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       </div>
@@ -321,72 +331,41 @@ class DashboardContainer extends SearchManagerComponent {
     return (
     <div className="analytics-group" role="navigation" aria-label="Analytics">
       <ul className="analytics-list-group">
-        <button id="response-sets-analytics-item" tabIndex="4" className={"analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
+        <button id="response-sets-analytics-item" tabIndex="4" className={"rs-green analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
           <div>
-            <i className="fa fa-list fa-3x item-icon" aria-hidden="true"></i>
+            <i className="fa fa-list fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="response-sets-analytics-item-title">{this.props.responseSetCount}</p>
             <h2 className="item-title" id="response-sets-analytics-item-title">Response Sets</h2>
           </div>
         </button>
-        <button id="questions-analytics-item" tabIndex="4" className={"analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
+        <button id="questions-analytics-item" tabIndex="4" className={"question-blue analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
           <div>
-            <i className="fa fa-tasks fa-3x item-icon" aria-hidden="true"></i>
+            <i className="fa fa-question-circle fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="question-analytics-item-title">{this.props.questionCount}</p>
             <h2 className="item-title" id="question-analytics-item-title">Questions</h2>
           </div>
         </button>
-        <button id="sections-analytics-item" tabIndex="4" className={"analytics-list-item btn" + (searchType === 'section' ? " analytics-active-item" : "")} onClick={() => this.selectType('section')}>
+        <button id="sections-analytics-item" tabIndex="4" className={"section-purple analytics-list-item btn" + (searchType === 'section' ? " analytics-active-item" : "")} onClick={() => this.selectType('section')}>
           <div>
-            <i className="fa fa-list-alt fa-3x item-icon" aria-hidden="true"></i>
+            <i className="fa fa-window-maximize fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="sections-analytics-item-title">{this.props.sectionCount}</p>
             <h2 className="item-title" id="sections-analytics-item-title">Sections</h2>
           </div>
         </button>
-        <button id="surveys-analytics-item" tabIndex="4" className={"analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
+        <button id="surveys-analytics-item" tabIndex="4" className={"survey-teal analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
           <div>
-            <i className="fa fa-clipboard fa-3x item-icon" aria-hidden="true"></i>
+            <i className="fa fa-clipboard fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="surveys-analytics-item-title">{this.props.surveyCount}</p>
             <h2 className="item-title" id="surveys-analytics-item-title">Surveys</h2>
           </div>
         </button>
       </ul>
-      {(searchType !== '' && searchType !== undefined && searchType !== null)&& <a href="#" tabIndex="4" onClick={() => this.selectType(searchType)}>Clear Type Filter</a>}
     </div>);
   }
 
-  authorStats(searchType, myStuffFilter, loggedIn) {
-    const groups = this.props.currentUser ? this.props.currentUser.groups : [];
+  authorStats() {
     return (
       <div className="recent-items-panel">
-        {loggedIn && <div className="recent-items-heading">My Stuff</div>}
-        {loggedIn && <div className="recent-items-body">
-          <div className="list-group" name="Filter by stuff you own">
-            <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'response_set' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set', true)}>
-              <div className="recent-items-icon"><i className="fa fa-list recent-items-icon" aria-hidden="true"></i></div>
-              <text className="sr-only">Click button to filter search results by response sets you own.</text>
-              <div className="recent-items-value">{this.props.myResponseSetCount} Response Sets</div>
-            </button>
-            <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'question' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('question', true)}>
-              <div className="recent-items-icon"><i className="fa fa-tasks recent-items-icon" aria-hidden="true"></i></div>
-              <text className="sr-only">Click button to filter search results by questions you own.</text>
-              <div className="recent-items-value">{this.props.myQuestionCount} Questions</div>
-            </button>
-            <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'section' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('section', true)}>
-              <div className="recent-items-icon"><i className="fa fa-list-alt recent-items-icon" aria-hidden="true"></i></div>
-              <text className="sr-only">Click button to filter search results by sections you own.</text>
-              <div className="recent-items-value">{this.props.mySectionCount} Sections</div>
-            </button>
-            <button tabIndex="4" className={"recent-item-list btn" + (searchType === 'survey' && myStuffFilter ? " analytics-active-item" : "")} onClick={() => this.selectType('survey', true)}>
-              <div className="recent-items-icon"><i className="fa fa-clipboard recent-items-icon" aria-hidden="true"></i></div>
-              <text className="sr-only">Click button to filter search results by surveys you own.</text>
-              <div className="recent-items-value">{this.props.mySurveyCount} Surveys</div>
-            </button>
-          </div>
-          {myStuffFilter ? (<a href="#" className="center-block text-center" onClick={() => this.selectType(searchType)}>Clear My Stuff Filter</a>) : (
-            <a href="#" tabIndex="4" className="center-block text-center" onClick={() => this.selectType(searchType, true)}>Filter by My Stuff</a>
-          )}
-        </div>}
-        {loggedIn && <div className="recent-items-heading"></div>}
         {this.props.preview && this.props.preview.name && <div>
           <div className="recent-items-group-heading">Response Set Preview <Button bsStyle='link' className='pull-right' data-toggle='collapse' data-target='#preview-body' onClick={() => {
             if(this.state.previewCollapse) {
@@ -459,30 +438,6 @@ class DashboardContainer extends SearchManagerComponent {
           </div>
         </div>}
         {this.props.preview && this.props.preview.name && <div className="recent-items-heading"></div>}
-        {loggedIn && groups.length > 0 && this.props.searchResults.Source !== 'simple_search' &&
-          <div>
-            <div className="recent-items-group-heading">Filter by Group</div>
-            <div className="recent-items-body">
-              <label className="input-label" htmlFor="groupFilterId" aria-hidden='true' hidden='true'>Group Select</label>
-              <select tabIndex="4" className="input-group-select" name="groupFilterId" id="groupFilterId" value={this.state.groupFilterId} onChange={(e) => this.selectGroup(e.target.value)} >
-                <option value={0}></option>
-                {groups.map((g) => {
-                  return <option key={g.id} value={g.id}>{g.name}</option>;
-                })}
-                <option disabled>----------------------------</option>
-                <option value={-1}>All My Groups</option>
-              </select>
-              {this.state.groupFilterId !== 0 && <a href="#" tabIndex="4" className="center-block text-center" onClick={() => this.selectGroup(0)}>Clear Groups Filter</a>}
-            </div>
-          </div>
-        }
-        {loggedIn && <div className="recent-items-heading"></div>}
-        {this.props.searchResults.Source !== 'simple_search' && <div>
-          <div className="recent-items-group-heading">Download Search Result Report</div>
-          <div className="recent-items-body">
-            <a className="recent-item-list" href={`/elasticsearch/export?${Object.keys(this.currentSearchParameters().toSearchParameters()).map(key => key + '=' + this.currentSearchParameters().toSearchParameters()[key]).join('&')}`}>Download <i className="fa fa-download" aria-hidden="true"></i></a>
-          </div>
-        </div>}
       </div>
     );
   }
