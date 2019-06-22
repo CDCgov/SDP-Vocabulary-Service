@@ -10,6 +10,9 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import iconMap from '../../styles/iconMap';
 import { isEditable, isRevisable } from '../../utilities/componentHelpers';
 
+import InfoModal from '../../components/InfoModal';
+import InfoModalBodyContent from '../../components/InfoModalBodyContent';
+
 class SurveyDedupe extends Component {
   constructor(props) {
     super(props);
@@ -168,16 +171,16 @@ class SurveyDedupe extends Component {
             <a href={`/#/questions/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>
           </div>
         }
-        <h2 className="h4">Questions from your Survey w/Suggested Replacements ({qCount})</h2>
+        <h2 className="h4">Questions from your Survey w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showQuestionsFromYourSurveyWithSuggestedReplacements: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Questions From Your Survey With Suggested Replacements)</text></Button>} ({qCount})</h2>
         <table className="table table-dark-header">
           <caption className="sr-only">Information about potential duplicate questions in this survey</caption>
           <thead>
             <tr>
-              <th scope="col" id="name-desc-column">Name &amp; Description</th>
+              <th scope="col" id="name-desc-column">Name &amp; Description</th>{<Button bsStyle='link' style={{ padding: 3, color:'white' }} onClick={() => this.setState({showQuestionNameAndDescription: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Questions Name and Description)</text></Button>}
               <th scope="col" id="vis-column">Visibility</th>
               <th scope="col" id="response-column">Response Type</th>
               <th scope="col" id="category-column">Category</th>
-              <th scope="col" id="action-column" className="action">Action</th>
+              <th scope="col" id="action-column" className="action">Action</th>{<Button bsStyle='link' style={{ padding: 3, color:'white' }} onClick={() => this.setState({showQuestionAction: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Action)</text></Button>}
             </tr>
           </thead>
           {this.props.potentialDupes.map((section, i) => {
@@ -225,16 +228,19 @@ class SurveyDedupe extends Component {
             <a href={`/#/responseSets/${this.state.success.id}`} target="_blank">{this.state.success.name}</a>
           </div>
         }
-        <h2 className="h4">Response Sets from Your Survey w/Suggested Replacements ({rsCount})</h2>
+        <InfoModal show={this.state.showResponseSetsFromYourSurveyWithSuggestedReplacements} header="Response Sets from your Survey w/Suggested Replacement" body={<p>Total response sets on this survey that are similar (at least 85% overlap in select fields) to existing response sets in the SDP-V repository.</p>} hideInfo={()=>this.setState({showResponseSetsFromYourSurveyWithSuggestedReplacements: false})} />
+        <InfoModal show={this.state.showResponseSetNameAndDescription} header="Name and Description" body={<p>Response Sets are listed by the Section from the Survey that they are from. <br/><br/>The Section name and total number of response sets from that section that are similar to existing response sets in the SDP-V repository are listed as headers. Next, the list of response sets within each section is provided, including the response set name, description, visibility, linked question, and list of responses.</p>} hideInfo={()=>this.setState({showResponseSetNameAndDescription: false})} />
+        <InfoModal show={this.state.showResponseSetAction} header="Action" body={<p>Select “View” to see the list of Response Sets from the SDP-V repository that are similar (at least 85% overlap in select fields) to the selected Response Set.</p>} hideInfo={()=>this.setState({showResponseSetAction: false})} />
+        <h2 className="h4">Response Sets from Your Survey w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Suggested Replacements)</text></Button>} ({rsCount})</h2>
         <table className="table table-dark-header">
           <caption className="sr-only">Information about potential duplicate response sets in this survey</caption>
           <thead>
             <tr>
-              <th scope="col" id="name-desc-column">Name &amp; Description</th>
+              <th scope="col" id="name-desc-column">Name &amp; Description{<Button bsStyle='link' style={{ padding: 3, color:'white' }} onClick={() => this.setState({showResponseSetNameAndDescription: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Name and Description)</text></Button>}</th>
               <th scope="col" id="vis-column">Visibility</th>
               <th scope="col" id="linked-column">Linked Question</th>
               <th scope="col" id="responses-column">Responses</th>
-              <th scope="col" id="action-column" className="action">Action</th>
+              <th scope="col" id="action-column" className="action">Action{<Button bsStyle='link' style={{ padding: 3, color:'white' }} onClick={() => this.setState({showResponseSetAction: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Action)</text></Button>}</th>
             </tr>
           </thead>
           {this.props.potentialDupes.map((section, i) => {
@@ -347,9 +353,10 @@ class SurveyDedupe extends Component {
       return (
         <div>
           <div className="duplicate-nav-buttons">
-            <h2 className="h4">Viewing {pageIndex} of {qCount} Questions w/Suggested Replacements <a href="#" onClick={(e) => {
+            <h2 className="h4">Viewing {pageIndex} of {qCount} Questions w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showListAll: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Questions with Suggested Replacement)</text></Button>} <a href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({ viewPage: 'all' });
+              <InfoModal show={this.state.showListAll} header="Response Sets from your Survey w/Suggested Replacement" body={<p>Click the arrows to view the list of suggested replacement response sets for each response set on your survey. Click “List all” to return to the curation wizard summary page to view all response sets on your survey that are similar to others in the repository.</p>} hideInfo={()=>this.setState({showListAll: false})} />
             }}>(List all)</a></h2>
             <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousQuestion()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate question</span></button>
             <button className="btn btn-default" disabled={pageIndex == qCount} onClick={() => this.nextQuestion()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate question</span></button>
@@ -382,10 +389,11 @@ class SurveyDedupe extends Component {
               e.preventDefault();
               this.setState({showReviewModal: true, selectedDraft: question.draftQuestion});
               return false;
-            }}>Mark as Reviewed</button>
+              <InfoModal show={this.state.showMarkAsReviewed} header="Mark as Reviewed" body={<InfoModalBodyContent enum='markAsReviewed'></InfoModalBodyContent>} hideInfo={()=>this.setState({showMarkAsReviewed: false})} />
+            }}>Mark as Reviewed</button>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showMarkAsReviewed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Mark as Reviewed)</text></Button>}
           </div>}
           <div className="suggested-replacements">
-            <h3 className="h4">Suggested Replacement Questions ({question.potentialDuplicates && question.potentialDuplicates.length})</h3>
+            <h3 className="h4">Suggested Replacement Questions{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showSuggestedReplacementQuestions: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Suggested Replacement Questions)</text></Button>} ({question.potentialDuplicates && question.potentialDuplicates.length})</h3>
             {question.draftQuestion.curatedAt && <p className='pull-right'>(Last reviewed: {question.draftQuestion.curatedAt}) <a href='#' onClick={(e)=>{
               e.preventDefault();
               this.props.fetchQuestionDupes(question.draftQuestion.id, 'question', (successResponse)=>{
@@ -457,11 +465,12 @@ class SurveyDedupe extends Component {
     if (responseSet) {
       return (
         <div>
+          <InfoModal show={this.state.showListAll} header="Response Sets from your Survey w/Suggested Replacement" body={<p>Click the arrows to view the list of suggested replacement response sets for each response set on your survey. Click “List all” to return to the curation wizard summary page to view all response sets on your survey that are similar to others in the repository.</p>} hideInfo={()=>this.setState({showListAll: false})} />
           <div className="duplicate-nav-buttons">
             <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousResponseSet()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate response set</span></button>
             <button className="btn btn-default" disabled={pageIndex == rsCount} onClick={() => this.nextResponseSet()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate response set</span></button>
           </div>
-          <h2 className="h4 pull-right">Viewing {pageIndex} of {rsCount} Response Sets w/Suggested Replacements <a href="#" onClick={(e) => {
+          <h2 className="h4 pull-right">Viewing {pageIndex} of {rsCount} Response Sets w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showListAll: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set With Suggested Replacements)</text></Button>} <a href="#" onClick={(e) => {
             e.preventDefault();
             this.setState({ viewPage: 'all' });
           }}>(List all)</a></h2>
@@ -502,10 +511,10 @@ class SurveyDedupe extends Component {
               e.preventDefault();
               this.setState({showReviewModal: true, selectedDraft: responseSet.draftResponseSet});
               return false;
-            }}>Mark as Reviewed</button>
+            }}>Mark as Reviewed</button>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showMarkAsReviewed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Mark as Reviewed)</text></Button>}
           </div>}
           <div className="suggested-replacements">
-          <h3 className="h4">Suggested Replacement Response Sets ({responseSet.potentialDuplicates && responseSet.potentialDuplicates.length})</h3>
+          <h3 className="h4">Suggested Replacement Response Sets{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showSuggestedReplacementResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Suggested Replacement Response Sets)</text></Button>} ({responseSet.potentialDuplicates && responseSet.potentialDuplicates.length})</h3>
           {responseSet.draftResponseSet.curatedAt && <p className='pull-right'>(Last reviewed: {responseSet.draftResponseSet.curatedAt}) <a href='#' onClick={(e)=>{
             e.preventDefault();
             this.props.fetchQuestionDupes(responseSet.draftResponseSet.id, 'responseSet', (successResponse)=>{
