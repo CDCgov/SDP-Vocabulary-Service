@@ -118,7 +118,7 @@ export default class InfoModalBodyContent extends Component {
     } else if (this.props.enum == 'codeMappingHelpModal') {
       return this.codeMappingHelpModal();
     } else if (this.props.enum == 'markAsReviewed') {
-      return this.getmarkAsReviewedInfoBody();
+      return this.getMarkAsReviewedInfoBody();
     }
   }
 }
