@@ -343,6 +343,18 @@ Feature: Manage Surveys
     Then I should see "Mark & Link Confirmation"
     When I click on the "Confirm Link" button
     Then I should see "Successfully linked: Gender Partial with Gender Partial dupe"
+    When I click on the "Click for info about this item (Suggested Replacement Response Sets)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Mark as Reviewed)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set With Suggested Replacements List All)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Sets from your Survey with Suggested Replacements)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Name and Description)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Action)" button
+    Then I click on the "Close" button
 
   Scenario: See survey breadcrumb
     Given I have a Section with the name "Test Section"

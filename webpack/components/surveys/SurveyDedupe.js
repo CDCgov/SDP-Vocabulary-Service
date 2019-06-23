@@ -377,7 +377,6 @@ class SurveyDedupe extends Component {
             <h2 className="h4">Viewing {pageIndex} of {qCount} Questions w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showQuestionsWithSuggestedReplacementsListAll: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Questions with Suggested Replacements List All)</text></Button>}<a href="#" onClick={(e) => {
               e.preventDefault();
               this.setState({ viewPage: 'all' });
-              <InfoModal show={this.state.showListAll} header="Response Sets from your Survey w/Suggested Replacement" body={<p>Click the arrows to view the list of suggested replacement response sets for each response set on your survey. Click “List all” to return to the curation wizard summary page to view all response sets on your survey that are similar to others in the repository.</p>} hideInfo={()=>this.setState({showListAll: false})} />
             }}>(List all)</a></h2>
             <button className="btn btn-default" disabled={pageIndex == 1} onClick={() => this.previousQuestion()}><i className="fa fa-arrow-left"></i><span className="sr-only">Switch to the previous potential duplicate question</span></button>
             <button className="btn btn-default" disabled={pageIndex == qCount} onClick={() => this.nextQuestion()}><i className="fa fa-arrow-right"></i><span className="sr-only">Switch to the next potential duplicate question</span></button>
