@@ -349,6 +349,22 @@ class SurveyDedupe extends Component {
     }
   }
 
+  matchScoreActionVisibility(valueSet, visibility) {
+    if(valueSet == 'question') {
+      if(visibility == 'published') {
+          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showQuestionMatchScoreActionPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Match Score Action Public)</text></Button>;
+        } else {
+          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showQuestionMatchScoreActionPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Match Score Action Private)</text></Button>;
+        }
+    } else if (valueSet == 'responseSet') {
+        if(visibility == 'published') {
+          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showResponseSetMatchScoreActionPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Match Score Action Public)</text></Button>;
+        } else {
+          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showResponseSetMatchScoreActionPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Match Score Action Private)</text></Button>;
+        }
+      }
+    }
+
   viewSingleDupe(qCount) {
     let section = this.props.potentialDupes[this.state.viewSectionIndex];
     let question = section.dupes.questions[this.state.viewQuestionIndex];
@@ -398,8 +414,9 @@ class SurveyDedupe extends Component {
             }}>Mark as Reviewed</button>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showQuestionMarkAsReviewed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Mark as Reviewed)</text></Button>}
           </div>}
           <div className="suggested-replacements">
-            <InfoModal show={this.state.showSuggestedReplacementQuestions} header="Suggested Replacement Questions" body={<p>This is the list of similar questions from the SDP-V repository for the author to review to determine if one of them can replace the question from the author's survey to promote harmonization. <br/><br/>When selecting a replacement, consider CDC preferred, stage, and program usage.</p>} hideInfo={()=>this.setState({showSuggestedReplacementQuestions: false})} />
-            <InfoModal show={this.state.showQuestionsMatchScoreAction} header="Action" body={<p>test</p>} hideInfo={()=>this.setState({showQuestionsMatchScoreAction: false})} />
+            <InfoModal show={this.state.showSuggestedReplacementQuestions} header="Suggested Replacement Questions" body={<p>This is the list of similar questions from the SDP-V repository for the author to review to determine if one of them can replace the question from the author's survey to promote harmonization.<br/><br/>When selecting a replacement, consider CDC preferred, stage, and program usage.</p>} hideInfo={()=>this.setState({showSuggestedReplacementQuestions: false})} />
+                <InfoModal show={this.state.showQuestionMatchScoreActionPrivate} header="Action (Private)" body={<p>If the question from your survey has private visibility, you can replace your question with an existing question from the repository. This will delete your question from the repository and replace it with the one you select.</p>} hideInfo={()=>this.setState({showQuestionMatchScoreActionPrivate: false})} />
+                <InfoModal show={this.state.showQuestionMatchScoreActionPublic} header="Action (Public)" body={<p>If the question form your survey has public visibility, you can “link” your question to an existing question in the repository. This indicates that the question from the repository can replace the question from your survey on future versions. This also indicates to other users who are using your question to consider the suggested replacement question. This linkage will appear on the curation history tab on the question details page.</p>} hideInfo={()=>this.setState({showQuestionMatchScoreActionPublic: false})} />
             <h3 className="h4">Suggested Replacement Questions{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showSuggestedReplacementQuestions: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Suggested Replacement Questions)</text></Button>} ({question.potentialDuplicates && question.potentialDuplicates.length})</h3>
             {question.draftQuestion.curatedAt && <p className='pull-right'>(Last reviewed: {question.draftQuestion.curatedAt}) <a href='#' onClick={(e)=>{
               e.preventDefault();
@@ -419,7 +436,7 @@ class SurveyDedupe extends Component {
                   <th scope="col" id="category-column">Category</th>
                   <th scope="col" id="stage-column">Stage</th>
                   <th scope="col" id="usage-column" className="text-center">Program Usage</th>
-                  <th scope="col" id="action-column" className="action">Action{<Button bsStyle='link' style={{ padding: 3, color:'white' }} onClick={() => this.setState({showQuestionsMatchScoreAction: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Action)</text></Button>}</th>
+                  <th scope="col" id="action-column" className="action">Action{this.matchScoreActionVisibility('question', question.draftQuestion.status)}</th>
                 </tr>
               </thead>
               <tbody>
@@ -479,7 +496,6 @@ class SurveyDedupe extends Component {
           </div>
           <InfoModal show={this.state.showResponseSetMarkAsReviewed} header="Mark as Reviewed" body={<InfoModalBodyContent enum='markAsReviewed'></InfoModalBodyContent>} hideInfo={()=>this.setState({showResponseSetMarkAsReviewed: false})} />
           <InfoModal show={this.state.showResponseSetFromYourSurvey} header="Response Set from Your Survey" body={<p>The response set highlighted in yellow is from the selected Survey named above.</p>} hideInfo={()=>this.setState({showResponseSetFromYourSurvey: false})} />
-          <InfoModal show={this.state.showResponseSetsFromYourSurveyWithSuggestedReplacements} header="Suggested Replacements Response Sets" body={<p>test</p>} hideInfo={()=>this.setState({showSuggestedReplacementResponseSets: false})} />
           <h2 className="h4 pull-right">Viewing {pageIndex} of {rsCount} Response Sets w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showResponseSetsWithSuggestedReplacementsListAll: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set With Suggested Replacements List All)</text></Button>} <a href="#" onClick={(e) => {
             e.preventDefault();
             this.setState({ viewPage: 'all' });
@@ -524,8 +540,9 @@ class SurveyDedupe extends Component {
             }}>Mark as Reviewed</button>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showResponseSetMarkAsReviewed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Mark as Reviewed)</text></Button>}
           </div>}
           <div className="suggested-replacements">
-          <InfoModal show={this.state.showSuggestedReplacementResponseSets} header="Suggested Replacement Response Sets" body={<p>This is the list of similar response sets from the SDP-V repository for the author to review to determine if one of them can replace the response set from the author's survey to promote harmonization.<br/><br/>When selecting a replacement, consider CDC preferred, stage, and program usage.</p>} hideInfo={()=>this.setState({showSuggestedReplacementResponseSets: false})} />
-          <InfoModal show={this.state.showResponseSetMatchScoreAction} header="Action" body={<p>test</p>} hideInfo={()=>this.setState({showResponseSetMatchScoreAction: false})} />
+            <InfoModal show={this.state.showSuggestedReplacementResponseSets} header="Suggested Replacement Response Sets" body={<p>This is the list of similar response sets from the SDP-V repository for the author to review to determine if one of them can replace the response set from the author's survey to promote harmonization.<br/><br/>When selecting a replacement, consider CDC preferred, stage, and program usage.</p>} hideInfo={()=>this.setState({showSuggestedReplacementResponseSets: false})} />
+            <InfoModal show={this.state.showResponseSetMatchScoreActionPrivate} header="Action (Private)" body={<p>If the response set from your survey has private visibility, you can replace your response set with an existing response set from the repository. This will delete your response set from the repository and replace it with the one you select.</p>} hideInfo={()=>this.setState({showResponseSetMatchScoreActionPrivate: false})} />
+            <InfoModal show={this.state.showResponseSetMatchScoreActionPublic} header="Action (Public)" body={<p>If the response set from your survey has public visibility, you can “link” your response set to an existing response set in the repository. This indicates that the response set from the repository can replace the response set from your survey on future versions. This also indicates to other users who are using your response set to consider the suggested replacement response set. This linkage will appear on the curation history tab on the response set details page.</p>} hideInfo={()=>this.setState({showResponseSetMatchScoreActionPublic: false})} />
           <h3 className="h4">Suggested Replacement Response Sets{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showSuggestedReplacementResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Suggested Replacement Response Sets)</text></Button>} ({responseSet.potentialDuplicates && responseSet.potentialDuplicates.length})</h3>
           {responseSet.draftResponseSet.curatedAt && <p className='pull-right'>(Last reviewed: {responseSet.draftResponseSet.curatedAt}) <a href='#' onClick={(e)=>{
             e.preventDefault();
@@ -543,7 +560,7 @@ class SurveyDedupe extends Component {
                   <th scope="col" id="cdc-pref-column">CDC Preferred</th>
                   <th scope="col" id="stage-column">Stage</th>
                   <th scope="col" id="usage-column" className="text-center">Program Usage</th>
-                  <th scope="col" id="action-column" className="action">Action<Button bsStyle='link' style={{ padding: 3, color:'white' }} onClick={() => this.setState({showResponseSetMatchScoreAction: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Questions From Your Survey)</text></Button></th>
+                  <th scope="col" id="action-column" className="action">Action{this.matchScoreActionVisibility('responseSet', responseSet.draftResponseSet.status)}</th>
                 </tr>
               </thead>
               <tbody>
