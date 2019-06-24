@@ -102,11 +102,6 @@ export default class InfoModalBodyContent extends Component {
     </p>;
   }
 
-  getMarkAsReviewedInfoBody() {
-    return <p>After review, if no good replacements are found in the system, clicking “Mark as Reviewed” will  mark this response set as reviewed on today’s date and will filter out these suggestions from future results. Only new response sets added to SDP-V after the “marked as reviewed” date will be suggested when returning to curate this survey so that the author can focus on the new suggestions.<br/><br/>The date filter may be removed at any time by clicking “Show all past suggestions“.
-    </p>
-    }
-
   render() {
     if(this.props.enum == 'contentStage') {
       return this.getContentStageInfoBody();
