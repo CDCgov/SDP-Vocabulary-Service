@@ -1,38 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
-import { Modal, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import InfoModal from '../components/InfoModal';
 
 export default class CodedSetTable extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        show: false
-      };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false
+    };
+  }
 
-    getInfoButtonBody(colHeader) {
-      var rName = this.props.itemName;
-      if (rName == 'Response') {
-        if(colHeader == 'Display Name')        {
-          return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDisplayName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
-        }        else if(colHeader == 'Response')        {
-          return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponse: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
-        }        else if (colHeader == ' (Optional)')        {
-          return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemIdentifierOptional: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
-        }
-      }    else if (rName == 'Code System Mapping') {
-        if(colHeader == 'Concept Name')        {
-          return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoConceptName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
-        }        else if(colHeader == 'Concept Identifier')        {
-          return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoConceptID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
-        }        else if(colHeader == '')        {
-          return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemIdentifier: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
-        }
+  getInfoButtonBody(colHeader) {
+    var rName = this.props.itemName;
+    if (rName == 'Response') {
+      if(colHeader == 'Display Name')        {
+        return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDisplayName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
+      }        else if(colHeader == 'Response')        {
+        return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponse: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
+      }        else if (colHeader == ' (Optional)')        {
+        return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemIdentifierOptional: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
+      }
+    }    else if (rName == 'Code System Mapping') {
+      if(colHeader == 'Concept Name')        {
+        return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoConceptName: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
+      }        else if(colHeader == 'Concept Identifier')        {
+        return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoConceptID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
+      }        else if(colHeader == '')        {
+        return <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemIdentifier: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>;
       }
     }
+  }
 
   render() {
     var rName = this.props.itemName;
