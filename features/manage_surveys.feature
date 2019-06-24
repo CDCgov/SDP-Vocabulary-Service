@@ -293,6 +293,12 @@ Feature: Manage Surveys
     And I click on the "Curate" button
   # removed (2)
     Then I should see "Questions from your Survey w/Suggested Replacements"
+    When I click on the "Click for info about this item (Questions From Your Survey With Suggested Replacements)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Name and Description)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Action)" button
+    Then I click on the "Close" button
     And I should see "Test Section (2)"
     And I should see "Response Sets (1)"
     When I click on the "view-single-What is your gender?" button
@@ -302,13 +308,37 @@ Feature: Manage Surveys
     When I click on the "select-question-What is your name? Dupe" button
     Then I should see "Select & Replace Confirmation"
     When I click on the "Cancel" button
+    When I click on the "Click for info about this item (Questions from Your Survey)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Questions with Suggested Replacements List All)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Mark as Reviewed)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Suggested Replacement Questions)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Match Score Action Private)" button
+    Then I click on the "Close" button
     And I click on the "(List all)" link
     Then I should see "Test Section (2)"
     When I click on the "Response Sets (1)" link
   # removed (1)
     Then I should see "Response Sets from Your Survey w/Suggested Replacements"
+    When I click on the "Click for info about this item (Response Set Name and Description)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Action)" button
+    Then I click on the "Close" button
     And I click on the "view-single-Gender Partial" button
     Then I should see "Suggested Replacement Response Sets"
+    When I click on the "Click for info about this item (Response Set from Your Survey)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set With Suggested Replacements List All)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Mark as Reviewed)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Suggested Replacement Response Sets)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Match Score Action Public)" button
+    Then I click on the "Close" button
     When I click on the "select-response-set-Gender Partial dupe" button
     Then I should see "Mark & Link Confirmation"
     When I click on the "Confirm Link" button
@@ -425,30 +455,4 @@ Feature: Manage Surveys
     # When I click on the "Click for info about this item (Public)" button
     # Then I click on the "Close" button
       When I click on the "Click for info about this item (Private)" button
-      Then I click on the "Close" button
-
-    Scenario: View the info buttons when Curating a Survey
-      Given I have a Section with the name "Test Section"
-      And I have a Survey with the name "Test Survey" and the description "Survey description"
-      And I have a Question with the content "What is your gender?" and the type "MC"
-      And I have a Question with the content "What is your name?" and the type "MC"
-      And I have a Question with the content "What is your name? Dupe" and the type "MC"
-      And I have a published Response Set with the name "Gender Partial"
-      And I have a Response Set with the name "Gender Partial dupe"
-      And I have a Response Set with the name "Gender Partial again"
-      And I am logged in as test_author@gmail.com
-      When I go to the list of Surveys
-      And I click on the menu link for the Survey with the name "Test Survey"
-      And I click on the option to Details the Survey with the name "Test Survey"
-      When I click on the "Click for info about this item (Questions From Your Survey With Suggested Replacements)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set Mark as Reviewed)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set With Suggested Replacements List All)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Sets from your Survey with Suggested Replacements)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set Name and Description)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set Action)" button
       Then I click on the "Close" button
