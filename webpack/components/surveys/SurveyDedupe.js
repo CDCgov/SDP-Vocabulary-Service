@@ -352,18 +352,18 @@ class SurveyDedupe extends Component {
   matchScoreActionVisibility(valueSet, visibility) {
     if(valueSet == 'question') {
       if(visibility == 'published') {
-          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showQuestionMatchScoreActionPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Match Score Action Public)</text></Button>;
-        } else {
-          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showQuestionMatchScoreActionPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Match Score Action Private)</text></Button>;
-        }
+        return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showQuestionMatchScoreActionPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Match Score Action Public)</text></Button>;
+      } else {
+        return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showQuestionMatchScoreActionPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Question Match Score Action Private)</text></Button>;
+      }
     } else if (valueSet == 'responseSet') {
-        if(visibility == 'published') {
-          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showResponseSetMatchScoreActionPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Match Score Action Public)</text></Button>;
-        } else {
-          return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showResponseSetMatchScoreActionPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Match Score Action Private)</text></Button>;
-        }
+      if(visibility == 'published') {
+        return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showResponseSetMatchScoreActionPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Match Score Action Public)</text></Button>;
+      } else {
+        return <Button bsStyle='link' style={{ padding: 3, color: 'white' }} onClick={() => this.setState({showResponseSetMatchScoreActionPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Match Score Action Private)</text></Button>;
       }
     }
+  }
 
   viewSingleDupe(qCount) {
     let section = this.props.potentialDupes[this.state.viewSectionIndex];
