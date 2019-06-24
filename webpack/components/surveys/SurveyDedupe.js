@@ -235,7 +235,7 @@ class SurveyDedupe extends Component {
         <InfoModal show={this.state.showResponseSetNameAndDescription} header="Name and Description" body={<p>Response Sets are listed by the Section from the Survey that they are from. <br/><br/>The Section name and total number of response sets from that section that are similar to existing response sets in the SDP-V repository are listed as headers. Next, the list of response sets within each section is provided, including the response set name, description, visibility, linked question, and list of responses.</p>} hideInfo={()=>this.setState({showResponseSetNameAndDescription: false})} />
         <InfoModal show={this.state.showResponseSetAction} header="Action" body={<p>Select “View” to see the list of Response Sets from the SDP-V repository that are similar (at least 85% overlap in select fields) to the selected Response Set.</p>} hideInfo={()=>this.setState({showResponseSetAction: false})} />
         <InfoModal show={this.state.showResponseSetsWithSuggestedReplacementsListAll} header="Response Sets w/Suggested Replacement (List all)" body={<p>Click the arrows to view the list of suggested replacement response sets for each response set on your survey. Click “List all” to return to the curation wizard summary page to view all response sets on your survey that are similar to others in the repository.</p>} hideInfo={()=>this.setState({showResponseSetsWithSuggestedReplacementsListAll: false})} />
-        <h2 className="h4">Response Sets from Your Survey w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showResponseSetsFromYourSurveyWithSuggestedReplacements: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Reponse Sets from your Survey with Suggested Replacements)</text></Button>} ({rsCount})</h2>
+        <h2 className="h4">Response Sets from Your Survey w/Suggested Replacements{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showResponseSetsFromYourSurveyWithSuggestedReplacements: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Sets from your Survey with Suggested Replacements)</text></Button>} ({rsCount})</h2>
         <table className="table table-dark-header">
           <caption className="sr-only">Information about potential duplicate response sets in this survey</caption>
           <thead>
@@ -383,7 +383,7 @@ class SurveyDedupe extends Component {
           </div>
             <InfoModal show={this.state.showQuestionsFromYourSurvey} header="Questions from your Survey" body={<p>This is a question from the selected Survey.</p>} hideInfo={()=>this.setState({showQuestionsFromYourSurvey: false})} />
             <InfoModal show={this.state.showQuestionMarkAsReviewed} header="Mark as Reviewed" body={<InfoModalBodyContent enum='markAsReviewed'></InfoModalBodyContent>} hideInfo={()=>this.setState({showQuestionMarkAsReviewed: false})} />
-            <h3 className="h4">Questions from your Survey{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showQuestionsFromYourSurvey: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Questions From Your Survey)</text></Button>}</h3>
+            <h3 className="h4">Questions from your Survey{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showQuestionsFromYourSurvey: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Questions from Your Survey)</text></Button>}</h3>
           <table className="table table-dark-header">
             <caption className="sr-only">Information about questions in this survey</caption>
             <thead>
@@ -500,7 +500,7 @@ class SurveyDedupe extends Component {
             e.preventDefault();
             this.setState({ viewPage: 'all' });
           }}>(List all)</a></h2>
-          <h3 className="h4">Response Set from Your Survey<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showResponseSetFromYourSurvey: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set Mark as Reviewed)</text></Button></h3>
+          <h3 className="h4">Response Set from Your Survey<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showResponseSetFromYourSurvey: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Set from Your Survey)</text></Button></h3>
           <table className="table table-dark-header">
             <caption>Information about response sets in this survey</caption>
             <thead>
