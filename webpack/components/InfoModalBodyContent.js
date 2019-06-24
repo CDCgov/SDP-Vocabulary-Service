@@ -94,13 +94,13 @@ export default class InfoModalBodyContent extends Component {
     <p><strong>How to Search for Previously Used Code Mappings</strong><br/>To determine if a code system mapping has been used before in SDP-V, start typing in the concept name column of the table. A drop-down list of all previously used concept names that match the text entered in the field will appear. A user can navigate the list and select a concept name that was previously used. If a concept name is selected from the list, the concept identifier and code system identifier fields will be populated with existing values already entered in SDP-V.</p>
     <p><strong>How to Search for Code Mappings from an External Code Systems</strong><br/>Rather than requiring you to copy and paste codes from other code systems, SDP-V allows you to search for codes from specific external code systems by clicking on the “Search for external coded items” magnifying glass icon to the right of the code system mappings header. This opens the Search Codes dialog box. You may select a particular code system from the drop-down menu, or enter a search term to search across multiple code systems. This code search functionality searches codes from PHIN VADS. You may add coded values from these search results to the code mappings table by clicking the “Add” selection beside each result.</p>
     <p><strong>How to Create a New Code System Mapping</strong><br/>A new code system mapping may be created by simply typing a new concept name, concept identifier, and code system identifier. A new code mapping should only be created if an existing code mapping does not meet a user’s needs.</p>
-    </div>
+    </div>;
   }
 
   getMarkAsReviewedInfoBody() {
     return <p>After review, if no good replacements are found in the system, clicking “Mark as Reviewed” will  mark this response set as reviewed on today’s date and will filter out these suggestions from future results. Only new response sets added to SDP-V after the “marked as reviewed” date will be suggested when returning to curate this survey so that the author can focus on the new suggestions.<br/><br/>The date filter may be removed at any time by clicking “Show all past suggestions“.
-    </p>
-    }
+    </p>;
+  }
 
   render() {
     if(this.props.enum == 'contentStage') {
