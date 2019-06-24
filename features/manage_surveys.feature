@@ -323,7 +323,6 @@ Feature: Manage Surveys
     When I click on the "Response Sets (1)" link
   # removed (1)
     Then I should see "Response Sets from Your Survey w/Suggested Replacements"
-<<<<<<< HEAD
     When I click on the "Click for info about this item (Response Set Name and Description)" button
     Then I click on the "Close" button
     When I click on the "Click for info about this item (Response Set Action)" button
@@ -340,10 +339,6 @@ Feature: Manage Surveys
     Then I click on the "Close" button
     When I click on the "Click for info about this item (Response Set Match Score Action Public)" button
     Then I click on the "Close" button
-=======
-    And I click on the "view-single-Gender Partial" button
-    Then I should see "Suggested Replacement Response Sets"
->>>>>>> updated tests
     When I click on the "select-response-set-Gender Partial dupe" button
     Then I should see "Mark & Link Confirmation"
     When I click on the "Confirm Link" button
