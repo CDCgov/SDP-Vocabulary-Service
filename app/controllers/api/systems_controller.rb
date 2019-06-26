@@ -15,7 +15,7 @@ module Api
       @system = SurveillanceSystem.find_by(id: params[:id])
       if @system.nil?
         @@tracker.pageview(path: "/api/systems/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API System Not Found')
-        not_found_w_param('System')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/systems/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API System Show')

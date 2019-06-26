@@ -31,7 +31,7 @@ module Api
       @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
         @@tracker.pageview(path: "/api/valueSets/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Not Found')
-        not_found_w_param('Response Set')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/valueSets/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Show')
@@ -43,7 +43,7 @@ module Api
       @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
         @@tracker.pageview(path: "/api/valueSetsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Usage Not Found')
-        not_found_w_param('Response Set Usage')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/valueSetsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Usage Show')

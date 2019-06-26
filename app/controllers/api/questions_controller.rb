@@ -27,7 +27,7 @@ module Api
       @question = Question.by_id_and_version(params[:id].upcase, params[:version])
       if @question.nil?
         @@tracker.pageview(path: "/api/questions/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Not Found')
-        not_found_w_param('Question')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/questions/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Show')
@@ -39,7 +39,7 @@ module Api
       @question = Question.by_id_and_version(params[:id].upcase, params[:version])
       if @question.nil?
         @@tracker.pageview(path: "/api/questionsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Usage Not Found')
-        not_found_w_param('Question Usage')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/questionsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Question Usage Show')

@@ -15,7 +15,7 @@ module Api
       @program = SurveillanceProgram.find_by(id: params[:id])
       if @program.nil?
         @@tracker.pageview(path: "/api/programs/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API Program Not Found')
-        not_found_w_param('Program')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/programs/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API Program Show')
@@ -27,7 +27,7 @@ module Api
       @program = SurveillanceProgram.find_by(id: params[:id])
       if @program.nil?
         @@tracker.pageview(path: "/api/programsUsage/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API Program Usage Not Found')
-        not_found_w_param('Program Usage')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/programsUsage/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API Program Usage Show')

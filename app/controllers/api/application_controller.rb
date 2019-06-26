@@ -18,9 +18,5 @@ module Api
     def not_found
       render json: { message: 'Resource Not Found' }, status: 404
     end
-
-    def not_found_w_param(api_name)
-      render json: { message: 'Resource Not Found for this ' + api_name + '.' }, status: 404
-    end
   end
 end

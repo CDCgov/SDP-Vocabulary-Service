@@ -4,7 +4,13 @@ module Api
   module Fhir
     class QuestionairesController < ApplicationController
       def index
-        @@tracker.pageview(path: "/api/FHIR/questions/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API FHIR Question Show - Search content: ' + @_content)
+        content =
+          if params[:_content]
+            params[:_content]
+          else
+            'No search criteria provided.'
+          end
+        @@tracker.pageview(path: "/api/FHIR/questions/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API FHIR Question Show - Search content: ' + content)
 
         @surveys = Survey.includes(:published_by, survey_sections:
                          [section: { section_nested_items: [:response_set, :question, :nested_section] }]).where("status='published'")

@@ -27,7 +27,7 @@ module Api
                                                                         :question, :nested_section]).by_id_and_version(params[:id].upcase, params[:version])
       if @section.nil?
         @@tracker.pageview(path: "/api/sections/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Section Not Found')
-        not_found_w_param('Section')
+        not_found
         return
       else
         @@tracker.pageview(path: "/api/sections/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Section Show')
