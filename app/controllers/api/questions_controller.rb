@@ -1,5 +1,5 @@
-# rubocop:disable Questions/LineLength
-# rubocop:disable Questions/AbcSize
+# rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/AbcSize
 
 module Api
   class QuestionsController < Api::ApplicationController

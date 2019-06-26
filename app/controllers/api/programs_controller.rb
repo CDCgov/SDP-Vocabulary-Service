@@ -1,4 +1,4 @@
-# rubocop:disable Programs/LineLength
+# rubocop:disable Metrics/LineLength
 
 module Api
   class ProgramsController < Api::ApplicationController

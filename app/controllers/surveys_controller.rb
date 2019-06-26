@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/MethodLength
 require './lib/sdp/elastic_search'
 require 'savon'
 
