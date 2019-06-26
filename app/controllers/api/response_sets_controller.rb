@@ -1,9 +1,12 @@
-# rubocop:disable Metrics/AbcSize
+# rubocop:disable ResponseSets/LineLength
+# rubocop:disable ResponseSets/AbcSize
+
 module Api
   class ResponseSetsController < Api::ApplicationController
     respond_to :json
 
     def index
+      @@tracker.pageview(path: "/api/valueSets/#{params[:oid]}/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API Response Sets Show - Search criteria: ' + params[:search].to_s)
       if params[:oid]
         @value_sets = [ResponseSet.find_by(oid: params[:oid])]
       else
@@ -27,19 +30,25 @@ module Api
     def show
       @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
+        @@tracker.pageview(path: "/api/valueSets/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Not Found')
         not_found
         return
+      else
+        @@tracker.pageview(path: "/api/valueSets/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Show')
+        render json: @value_set, serializer: ValueSetsSerializer
       end
-      render json: @value_set, serializer: ValueSetsSerializer
     end
 
     def usage
       @value_set = ResponseSet.by_id_and_version(params[:id].upcase, params[:version])
       if @value_set.nil?
+        @@tracker.pageview(path: "/api/valueSetsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Usage Not Found')
         not_found
         return
+      else
+        @@tracker.pageview(path: "/api/valueSetsUsage/#{params[:id]}/#{params[:version]}", hostname: Settings.default_url_helper_host, title: 'API Response Set Usage Show')
+        render json: @value_set, serializer: ValueSetsSerializer
       end
-      render json: @value_set, serializer: UsageSerializer
     end
   end
 end
