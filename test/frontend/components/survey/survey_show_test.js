@@ -1,6 +1,7 @@
 import { expect, renderComponent } from '../../test_helper';
 import SurveyShow from '../../../../webpack/components/surveys/SurveyShow';
-import InfoModal from '../../components/InfoModal';
+import {Button} from 'react-bootstrap';
+import InfoModal from '../../../../webpack/components/InfoModal';
 
 describe('SurveyShow', () => {
   let component;
