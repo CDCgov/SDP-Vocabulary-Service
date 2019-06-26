@@ -117,6 +117,10 @@ class SurveysController < ApplicationController
                          }
                        })
     url = resp.body[:publish_survey_response][:publish_survey_result][:publish_info][:url]
+    @survey.ei_pub_key = pubkey
+    @survey.ei_org_key = params['org']
+    @survey.ei_url = url
+    @survey.save!
     render json: { msg: 'Successfully created web survey:', url: url, pubkey: pubkey }, status: :ok
   rescue
     # Replace with status text eventually resp['StatusText']

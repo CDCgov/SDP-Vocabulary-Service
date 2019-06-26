@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190304155018) do
+ActiveRecord::Schema.define(version: 20190626183858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,7 +145,6 @@ ActiveRecord::Schema.define(version: 20190304155018) do
     t.string "content_stage", default: "Draft"
     t.integer "duplicate_of"
     t.integer "minor_change_count", default: 0
-    t.string "suggested_replacement_of"
     t.datetime "curated_at"
     t.string "suggested_replacement_of"
     t.index ["category_id"], name: "index_questions_on_category_id"
@@ -174,7 +173,6 @@ ActiveRecord::Schema.define(version: 20190304155018) do
     t.string "content_stage", default: "Draft"
     t.integer "duplicate_of"
     t.integer "minor_change_count", default: 0
-    t.string "suggested_replacement_of"
     t.datetime "curated_at"
     t.string "suggested_replacement_of"
     t.index ["created_by_id"], name: "index_response_sets_on_created_by_id"
@@ -287,6 +285,9 @@ ActiveRecord::Schema.define(version: 20190304155018) do
     t.date "omb_approval_date"
     t.string "content_stage", default: "Draft"
     t.integer "minor_change_count", default: 0
+    t.string "ei_pub_key"
+    t.string "ei_org_key"
+    t.string "ei_url"
     t.index ["created_by_id"], name: "index_surveys_on_created_by_id"
   end
 
