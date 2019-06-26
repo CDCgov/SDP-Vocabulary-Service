@@ -1,5 +1,6 @@
 import { expect, renderComponent } from '../../test_helper';
 import SurveyShow from '../../../../webpack/components/surveys/SurveyShow';
+import InfoModal from '../../components/InfoModal';
 
 describe('SurveyShow', () => {
   let component;
@@ -28,7 +29,7 @@ describe('SurveyShow', () => {
 
   it('should create a list of sections', () => {
     // Drop out of JQuery and just use draw javascript selectors
-    expect(component.find("a[class='panel-toggle']")).to.contain('Linked Sections: 3');
+    expect(component.find("a[class='panel-toggle']")).to.contain('Linked Sections' + <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoLinkedSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Linked Sections)</text></Button> + ': 3');
   });
 
   it('should render an empty list of sections', () => {
