@@ -523,7 +523,7 @@ export default class QuestionShow extends Component {
                   <div className="panel-heading">
                     <h2 className="panel-title">
                       <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAuthorRecommendedResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Author Recommended Response Sets)</text></Button>}: {question.responseSets && question.responseSets.length}
+                      <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAuthorRecommendedResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {question.responseSets && question.responseSets.length}
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-rs">

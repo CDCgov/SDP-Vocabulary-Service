@@ -112,7 +112,7 @@ Feature: Edit Questions
     And I should see "What is your favorite animal?"
     When I click on the menu link for the Question with the content "What is your favorite animal?"
     And I click on the option to Details the Question with the content "What is your favorite animal?"
-    And I should see "Data Collection Methods:"
+    And I should see "Data Collection Methods"
     And I should see "Record review"
 
   Scenario: Create New Question that does not use a response set

@@ -161,13 +161,15 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
     And I should see "Survey description"
-    And I should see "Surveillance Program: Influenza"
+    # removed "Surveillance Program:"
+    And I should see "Influenza"
     And I should not see "FoodNet"
     And I should see "Test Concept 2"
     And I should not see "Test Concept 1"
     And I should not see "Publish"
     And I should see "Edit"
-    And I should see "Surveillance System: National Violent Death Reporting System"
+    # removed "Surveillance System:"
+    And I should see "National Violent Death Reporting System"
     When I click on the "Change History" link
     Then I should see "Notes / Comments: Testing comment functionality on edit"
     Then I should see "Changes by test_author@gmail.com"
@@ -448,8 +450,6 @@ Feature: Manage Surveys
       When I go to the list of Surveys
       And I click on the menu link for the Survey with the name "Test Survey"
       And I click on the option to Details the Survey with the name "Test Survey"
-      When I click on the "Click for info about this item (Version)" button
-      Then I click on the "Close" button
       When I click on the "Click for info about this item (Content Stage)" button
       Then I click on the "Close" button
     # When I click on the "Click for info about this item (Public)" button
