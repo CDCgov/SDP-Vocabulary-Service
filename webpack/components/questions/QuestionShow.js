@@ -412,7 +412,7 @@ export default class QuestionShow extends Component {
                   {question.responseType.name}
                 </div>}
                 {question.dataCollectionMethods && question.dataCollectionMethods.length > 0 && <div className="box-content">
-                <InfoModal show={this.state.showInfoDataCollectionMethods} header="Category" body={<p>The Data Collection Method attribute represents the manner in which the Question is used to collect data at the time of administration. This is not necessarily the same as how CDC is receiving the data.<br /><br />This attribute is optional but completion helps other users find questions in SDP-V most suited for a specific data collection method. There is an advanced search filter based off of this attribute.
+                <InfoModal show={this.state.showInfoDataCollectionMethods} header="Data Collection Method" body={<p>The Data Collection Method attribute represents the manner in which the Question is used to collect data at the time of administration. This is not necessarily the same as how CDC is receiving the data.<br /><br />This attribute is optional but completion helps other users find questions in SDP-V most suited for a specific data collection method. There is an advanced search filter based off of this attribute.
 </p>} hideInfo={()=>this.setState({showInfoDataCollectionMethods: false})} />
                   <strong>Data Collection Methods{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDataCollectionMethods: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Data Collection Methods)</text></Button>}: </strong>
                   <ul>
@@ -444,7 +444,7 @@ export default class QuestionShow extends Component {
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
-                      <InfoModal show={this.state.showInfoParentItemsQuestion} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service. It helps to answer “where is this question being used?”. The default view shows the names of the different Sections that the Question is being used on. The user can view the Surveys that each Section is used on by clicking “+”.</p>} hideInfo={()=>this.setState({showInfoParentItemsQuestion: false})} />
+                      <InfoModal show={this.state.showInfoParentItemsQuestion} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service. It helps to answer “where is this question being used?”. The default view shows the names of the different Sections that the Question is being used on. The user can view the Surveys that each Question is used on by clicking “+”.</p>} hideInfo={()=>this.setState({showInfoParentItemsQuestion: false})} />
                       <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
                       <text className="sr-only">Click link to expand information about (Parent Items)</text>Parent Items</a>
                       <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsQuestion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Parent Items InfoButton)</text></Button>

@@ -12,13 +12,13 @@ export default class InfoModalBodyContent extends Component {
 
   getContentStageInfoBody() {
     if(this.props.contentStage == 'Draft')        {
-      return <p>Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used. This is the initial status assigned to newly created content.</p>;
+      return <p>Content that is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used. This is the initial status assigned to newly created content.</p>;
     }   else if(this.props.contentStage == 'Comment Only')     {
-      return <p>Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.</p>;
+      return <p>Content that is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.</p>;
     }   else if(this.props.contentStage == 'Trial Use')        {
       return <p>Content that the Authors and Publisher believe is ready for User viewing, testing and/or comment. It is generally “complete”, but not final. Content at this Level should not be used to support public health response.</p>;
     }   else if(this.props.contentStage == 'Published')        {
-      return <p>A publicly available version of content that is ready for viewing, downloading, comments, and use for public health response.  Content is automatically updated to this stage at the time it is made public.</p>;
+      return <p>A publicly available version of content that is ready for viewing, downloading, comments, and use for public health response.  Content that is automatically updated to this stage at the time it is made public.</p>;
     }    else if(this.props.contentStage == 'Retired')         {
       return <p>Content that is no longer the most recent version (not latest). However, this content could be used with no known risk.</p>;
     }    else if(this.props.contentStage == 'Duplicate')       {
@@ -28,12 +28,11 @@ export default class InfoModalBodyContent extends Component {
 
   getVisibilityInfoBody() {
     if(this.props.visibility == 'private')        {
-      return <p>When content is initially created or imported in Vocabulary Service, it is created with private visibility. Private content is only visible to the user who authored it, users that belong to a group that the content is added to, and to all Publishers in the system. Content with this visibility can be modified until the author or authoring group is ready to make the content public.</p>;
+      return <p>Private content is only visible to the user who authored it, users that belong to a group that the content is added to, and to all Publishers in the system. Content with this visibility can be modified until the author or authoring group is ready to make the content public. When content is initially created or imported into the Vocabulary Service, it is created with private visibility.
+        <br/><br/>Whenever an author or authoring group is ready to share their content publicly, an author must send a publish request to their program Publisher to change the visibility  to public.</p>;
     }   else if(this.props.visibility == 'public')     {
-      return <p>Whenever an author or authoring group is ready to share their content publicly, an author must send a request to their program Publisher to change the visibility in the Vocabulary Service. Public content is visible to everyone who visits the Vocabulary Service website including users without authenticated accounts. This allows for authors to share their Vocabulary Service content with a wide public health audience. Once a version is made public, it cannot be undone.
-          <br/>
-          <br/>
-          An author can use the content stage attribute to indicate the maturity of a specific version of content and can create a new version when necessary. Authors can request that public content is “retired” which hides the content from dashboard search results.</p>;
+      return <p>Public content is visible to everyone who visits the Vocabulary Service website including users without authenticated accounts. This allows for authors to share their Vocabulary Service content with a wide public health audience. Once a version is made public, it cannot be undone; however authors can request that public content is “retired” which hides the content from dashboard search results.
+        <br/><br/>An author can use the “content stage” attribute to indicate the maturity of a specific version of public content (like published or trial use) or can create a new version when updates are necessary. </p>;
     }
   }
 
@@ -62,11 +61,6 @@ export default class InfoModalBodyContent extends Component {
     <p>The purpose of the Code System Mappings table is to identify the governed concepts from code systems like LOINC, SNOMED, PHIN VADS, etc that are associated with response sets, questions, sections, or surveys in SDP-V. That is, the Code System Mappings table identifies how content in SDP-V is represented in another code system.<br/>The Code System Mappings table should only include mapping to governed concepts. Non-governed concepts or keywords should not be added to the Code System Mappings table. If you would like to add keywords to your response set, question, section, or survey to facilitate content discovery or organization, please see the “Keyword Tags” help documentation for information on how to use the “Tags” feature.</p>
     <p><strong>Mutability: </strong>Any changes to entries in the Code System Mappings table are versioned since code system mappings are a property of the vocabulary itself. This allows users to update the Code System Mappings while maintaining legacy mappings in older SDP-V content versions if needed.</p>
     <p><strong>Discoverability: </strong>Code System Mappings table fields are included in the dashboard search algorithm so other users can find questions, sections, and surveys with specific concept names, concept identifiers or code system identifiers in SDP-V. For instance, a user can enter “27268008” into the dashboard search box to find content in SDP-V associated with that concept identifier. </p>
-
-    <h2>Definitions</h2>
-    <p><strong>Concept Name: </strong>Term from a controlled vocabulary to designate a unit of meaning or idea (e.g., ‘Genus Salmonella (organism)’). A controlled vocabulary includes external code systems, such as LOINC or SNOMED-CT, or internally developed vocabularies such as PHIN VADS.</p>
-    <p><strong>Concept Identifier: </strong>This is text or a code used to uniquely identify a concept in a controlled vocabulary (e.g., 27268008). Note that if you have selected a code system mapping that has already been used in SDP-V or is selected from the results from "Search for external coded items", this field will be automatically populated.</p>
-    <p><strong>Code System Identifier: </strong>This is the unique designator for a code system also referred to as a controlled vocabulary, in which concepts and value sets are defined (e.g. 2.16.840.1.113883.6.96). LOINC, SNOMED-CT, and RxNorm are code systems. Note that if you have mapped a code system to a question or response set that has already been mapped in SDP-V or returned from an external code system search, the code system identifier field will be automatically populated.</p>
 
     <h2>Example Code System Mappings Table</h2>
     <table className="set-table table">
