@@ -456,29 +456,3 @@ Feature: Manage Surveys
     # Then I click on the "Close" button
       When I click on the "Click for info about this item (Private)" button
       Then I click on the "Close" button
-
-    Scenario: View the info buttons when Curating a Survey
-      Given I have a Section with the name "Test Section"
-      And I have a Survey with the name "Test Survey" and the description "Survey description"
-      And I have a Question with the content "What is your gender?" and the type "MC"
-      And I have a Question with the content "What is your name?" and the type "MC"
-      And I have a Question with the content "What is your name? Dupe" and the type "MC"
-      And I have a published Response Set with the name "Gender Partial"
-      And I have a Response Set with the name "Gender Partial dupe"
-      And I have a Response Set with the name "Gender Partial again"
-      And I am logged in as test_author@gmail.com
-      When I go to the list of Surveys
-      And I click on the menu link for the Survey with the name "Test Survey"
-      And I click on the option to Details the Survey with the name "Test Survey"
-      When I click on the "Click for info about this item (Questions From Your Survey With Suggested Replacements)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set Mark as Reviewed)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set With Suggested Replacements List All)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Sets from your Survey with Suggested Replacements)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set Name and Description)" button
-      Then I click on the "Close" button
-      When I click on the "Click for info about this item (Response Set Action)" button
-      Then I click on the "Close" button
