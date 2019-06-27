@@ -116,8 +116,6 @@ Feature: Manage Sections
     When I go to the list of Sections
     And I click on the menu link for the Section with the name "Test Section"
     And I click on the option to Details the Section with the name "Test Section"
-    When I click on the "Click for info about this item (Version)" button
-    Then I click on the "Close" button
     When I click on the "Click for info about this item (Content Stage)" button
     Then I click on the "Close" button
   # When I click on the "Click for info about this item (Public)" button

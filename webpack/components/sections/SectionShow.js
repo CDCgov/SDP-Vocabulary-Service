@@ -440,7 +440,7 @@ class SectionShow extends Component {
                         e.preventDefault();
                         this.toggleExpand();
                       }} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about linked </text>Linked Questions and Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoLinkedQuestionsAndSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Linked Questions and Sections)</text></Button>}: {section.sectionNestedItems && section.sectionNestedItems.length}
+                      <text className="sr-only">Click link to expand information about linked</text>Linked Questions and Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoLinkedQuestionsAndSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {section.sectionNestedItems && section.sectionNestedItems.length}
                     </h2>
                     <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
                   </div>
