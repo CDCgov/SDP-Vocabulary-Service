@@ -306,14 +306,16 @@ class SurveyShow extends Component {
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Curate')}>Curate ({this.props.dupeCount})</Link>
           }
         </div>
-        <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
+        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+        <InfoModal show={this.state.showInfoSurveillanceProgram} header="Surveillance Program" body={<p>The surveillance program that will maintain and use this vocabulary to support their public health activities.</p>} hideInfo={()=>this.setState({showInfoSurveillanceProgram: false})} />
+        <InfoModal show={this.state.showInfoSurveillanceSystem} header="Surveillance System" body={<p>The surveillance system that will use this vocabulary to support public health activities.</p>} hideInfo={()=>this.setState({showInfoSurveillanceSystem: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${this.props.survey.preferred ? 'cdc-preferred-note' : ''}`}><strong>Survey Name:</strong> {this.props.survey.name} {this.props.survey.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version)</text></Button>}: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
+          <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
-          <p className="maincontent-item-info">Tags: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
+          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
             <text>{this.props.survey.tagList.join(', ')}</text>
           ) : (
             <text>No Tags Found</text>
@@ -363,15 +365,17 @@ class SurveyShow extends Component {
                 <div className="box-content">
                   <Linkify properties={{target: '_blank'}}>{this.props.survey.description}</Linkify>
                 </div>
+                <InfoModal show={this.state.showInfoOMBControlNumber} header="OMB Control Number" body={<p>Provides the OMB Control Number associated with the data collection instrument (if applicable).<br /> <br />This attribute is optional but completion allows other users to find vocabulary that has been used on an OMB-approved data collection instrument. Reuse of vocabulary that has been part of one or more OMB approved Paperwork Reduction Act (PRA) packages in the past can help expedite the review process. There is an advanced search filter that is based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoOMBControlNumber: false})} />
                 { this.props.survey.controlNumber &&
                 <div className="box-content">
-                  <strong>OMB Control Number: </strong>
+                  <strong>OMB Control Number{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoOMBControlNumber: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}: </strong>
                   {this.props.survey.controlNumber}
                   {this.props.survey.ombApprovalDate && <text className='pull-right'><strong>OMB Approval Date: </strong>{this.props.survey.ombApprovalDate}</text>}
                 </div>
                 }
                 <div className="box-content">
-                  <strong>Version Independent ID: </strong>{this.props.survey.versionIndependentId}
+                <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
+                  <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{this.props.survey.versionIndependentId}
                 </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="box-content">
@@ -379,23 +383,23 @@ class SurveyShow extends Component {
                   {this.props.survey.publishedBy.email}
                 </div>
                 }
-                <InfoModal show={this.state.showContentStage} header={this.props.survey.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={this.props.survey.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
+                <InfoModal show={this.state.showInfoContentStage} header={this.props.survey.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={this.props.survey.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoContentStage: false})} />
                 { this.props.survey.contentStage &&
                 <div className="box-content">
                   <strong>Content Stage: </strong>
-                  {this.props.survey.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
+                  {this.props.survey.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
                 <div className="box-content">
-                <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
-                  <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
+                <InfoModal show={this.state.showPublic} header="Public" body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({showPublic: false})} />
+                  <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'draft' &&
                 <div className="box-content">
-                <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
-                  <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
+                <InfoModal show={this.state.showPrivate} header="Private" body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({showPrivate: false})} />
+                  <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
                 </div>
                 }
                 { this.props.survey.parent &&
@@ -407,8 +411,9 @@ class SurveyShow extends Component {
               </div>
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
+                  <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
                   <h2 className="panel-title">
-                    Code System Mappings
+                    Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
                   </h2>
                 </div>
                 <div className="box-content">
@@ -419,9 +424,10 @@ class SurveyShow extends Component {
               </div>
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
+                  <InfoModal show={this.state.showInfoLinkedSections} header="Linked Sections" body={<p>Displays the selected sections (grouping of questions) for this Survey.</p>} hideInfo={()=>this.setState({showInfoLinkedSections: false})} />
                   <h2 className="panel-title">
                     <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
-                    <text className="sr-only">Click link to expand information about linked </text>Linked Sections: {this.props.sections && this.props.sections.length}</a>
+                    <text className="sr-only">Click link to expand information about linked </text>Linked Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoLinkedSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {this.props.sections && this.props.sections.length}
                   </h2>
                 </div>
                 <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
@@ -442,7 +448,7 @@ class SurveyShow extends Component {
 
   surveillanceSystem() {
     if (this.props.survey.surveillanceSystem) {
-      return <p className="maincontent-item-info">Surveillance System: {this.props.survey.surveillanceSystem.name}</p>;
+      return <p className="maincontent-item-info">Surveillance System{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSurveillanceSystem: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Surveillance System)</text></Button>}: {this.props.survey.surveillanceSystem.name}</p>;
     } else {
       return "";
     }
@@ -450,7 +456,7 @@ class SurveyShow extends Component {
 
   surveillanceProgram() {
     if (this.props.survey.surveillanceProgram) {
-      return <p className="maincontent-item-info">Surveillance Program: {this.props.survey.surveillanceProgram.name}</p>;
+      return <p className="maincontent-item-info">Surveillance Program{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSurveillanceProgram: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Surveillance Program)</text></Button>}: {this.props.survey.surveillanceProgram.name}</p>;
     } else {
       return "";
     }

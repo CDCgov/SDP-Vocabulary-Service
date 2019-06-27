@@ -16,7 +16,8 @@ Feature: Import Spreadsheet
     Then I should see "File imported with warnings"
     When I click on the "View Survey" button
     Then I should see "Survey Name: TestMMG.xlsx"
-    And I should see "Linked Sections: 6"
+    # Removed ': 6' due to info-button
+    And I should see "Linked Sections"
 
   Scenario: Create Survey with Blank sheet using importer
       Given I am logged in as test_author@gmail.com
@@ -32,7 +33,8 @@ Feature: Import Spreadsheet
       Then I should see "File imported with warnings"
       When I click on the "View Survey" button
       Then I should see "Survey Name: TestMMGBlank.xlsx"
-      And I should see "Linked Sections: 6"
+      # Removed ': 6' due to info-button
+      And I should see "Linked Sections"
 
  Scenario: Check that Survey which has no data does not import using importer
       Given I am logged in as test_author@gmail.com
@@ -62,7 +64,8 @@ Scenario: Create Survey from Generically Formatted Spreadsheet
       When I click on the "View Survey" button
       And I wait 10 seconds
       Then I should see "Survey Name: TestGenericTemplateMini.xlsx"
-      And I should see "Linked Sections: 1"
+      # Removed ': 1' due to info-button
+      And I should see "Linked Sections"
 
 Scenario: Check that Survey Import fails from badly Formatted Generic Spreadsheet
       Given I am logged in as test_author@gmail.com

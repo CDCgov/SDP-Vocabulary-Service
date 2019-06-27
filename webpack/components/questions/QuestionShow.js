@@ -287,12 +287,12 @@ export default class QuestionShow extends Component {
             }
           </div>
         }
-        <InfoModal show={this.state.showInfoVersion} header="Version" body={<InfoModalBodyContent enum='version'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoVersion: false})} />
+        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoVersion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version)</text></Button>}: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
-          <p className="maincontent-item-info">Tags: {question.tagList && question.tagList.length > 0 ? (
+          <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
+          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {question.tagList && question.tagList.length > 0 ? (
             <text>{question.tagList.join(', ')}</text>
           ) : (
             <text>No Tags Found</text>
@@ -357,7 +357,8 @@ export default class QuestionShow extends Component {
                   <h2 className="panel-title">Details</h2>
                 </div>
                 <div className="box-content">
-                  <strong>Version Independent ID: </strong>{question.versionIndependentId}
+                <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
+                  <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{question.versionIndependentId}
                 </div>
                 <div className="box-content">
                   <strong>Description: </strong>
@@ -397,7 +398,8 @@ export default class QuestionShow extends Component {
                 </div>
                 }
                 {question.category && <div className="box-content">
-                  <strong>Category: </strong>
+                <InfoModal show={this.state.showInfoCategory} header="Category" body={<p>The category defines the type of Question. Questions are categorized by the author.<br /> <br />This attribute is optional but completion allows other users to find questions of interest. There is an advanced search filter that is based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoCategory: false})} />
+                  <strong>Category{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCategory: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Category)</text></Button>}: </strong>
                   {question.category.name}
                 </div>}
                 {question.subcategory && <div className="box-content">
@@ -405,11 +407,14 @@ export default class QuestionShow extends Component {
                   {question.subcategory.name}
                 </div>}
                 {question.responseType && <div className="box-content">
-                  <strong>Response Type: </strong>
+                  <InfoModal show={this.state.showInfoResponseType} header="Response Type" body={<p>Response Type indicates what kind of response is expected for the Question. Common response types include choice, text, and date.  These response types are defined by HL7.</p>} hideInfo={()=>this.setState({showInfoResponseType: false})} />
+                  <strong>Response Type{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponseType: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Type)</text></Button>}: </strong>
                   {question.responseType.name}
                 </div>}
                 {question.dataCollectionMethods && question.dataCollectionMethods.length > 0 && <div className="box-content">
-                  <strong>Data Collection Methods: </strong>
+                <InfoModal show={this.state.showInfoDataCollectionMethods} header="Category" body={<p>The Data Collection Method attribute represents the manner in which the Question is used to collect data at the time of administration. This is not necessarily the same as how CDC is receiving the data.<br /><br />This attribute is optional but completion helps other users find questions in SDP-V most suited for a specific data collection method. There is an advanced search filter based off of this attribute.
+</p>} hideInfo={()=>this.setState({showInfoDataCollectionMethods: false})} />
+                  <strong>Data Collection Methods{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDataCollectionMethods: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Data Collection Methods)</text></Button>}: </strong>
                   <ul>
                     {question.dataCollectionMethods.map((dcm, i) => {
                       return (<li key={i}>{dcm}</li>);
@@ -417,14 +422,16 @@ export default class QuestionShow extends Component {
                   </ul>
                 </div>}
                 {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
-                  <strong>Other Allowed: </strong>
+                  <InfoModal show={this.state.showInfoOtherAllowed} header="Other Allowed" body={<p>This attribute indicates if the Question provides an “other” choice where a respondent can provide their own answer outside of the chosen Response Set.</p>} hideInfo={()=>this.setState({showInfoOtherAllowed: false})} />
+                  <strong>Other Allowed{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoOtherAllowed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Other Allowed)</text></Button>}: </strong>
                   {question.otherAllowed ? 'Yes' : 'No' }
                 </div>}
               </div>
+              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
               <div className="basic-c-box panel-default">
                 <div className="panel-heading">
                   <h2 className="panel-title">
-                    Code System Mappings
+                    Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
                   </h2>
                 </div>
                 <div className="box-content">
@@ -510,12 +517,13 @@ export default class QuestionShow extends Component {
                   </div>
                 </div>
               }
+              <InfoModal show={this.state.showInfoAuthorRecommendedResponseSets} header="Author Recommended Response Sets" body={<p>Response sets added to a Question by the author at the time of creation of the Question. This allows the author of the question to identify Response Sets that are appropriate for different contexts (e.g., For a Question asking about a vaccine administered, valid Response Sets may include condition-specific vaccine types, like varicella, influenza, or pertussis).  Users are encouraged to use these Response Sets if they meet their data collection needs.</p>} hideInfo={()=>this.setState({showInfoAuthorRecommendedResponseSets: false})} />
               {question.responseSets && question.responseSets.length > 0 &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
                       <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets: {question.responseSets && question.responseSets.length}</a>
+                      <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAuthorRecommendedResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {question.responseSets && question.responseSets.length}
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-rs">
@@ -528,12 +536,13 @@ export default class QuestionShow extends Component {
                   </div>
                 </div>
               }
+              <InfoModal show={this.state.showInfoResponseSetsLinkedOnSections} header="Response Sets Linked On Sections" body={<p>This displays a list of response sets paired with a Question that are not the “Author Recommended Response Sets”.<br /><br />SDP-V allows users the flexibility to pair a Question with different response sets based on their data collection needs.  If a user would like to reuse a Question, but the “author recommended response sets” do not meet the needs of that user, users can select other Response Sets from the repository to associate with the Question while creating, editing, or revising a Section. This allows SDP-V users to reuse Questions in the repository but provides the flexibility to select a context appropriate Response Set on a given Section. </p>} hideInfo={()=>this.setState({showInfoResponseSetsLinkedOnSections: false})} />
               {question.linkedResponseSets && question.linkedResponseSets.length > 0 &&
                 <div className="basic-c-box panel-default">
                   <div className="panel-heading">
                     <h2 className="panel-title">
                       <a className="panel-toggle" data-toggle="collapse" href="#collapse-lrs"><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections: {question.linkedResponseSets && question.linkedResponseSets.length}</a>
+                      <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponseSetsLinkedOnSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Sets Linked on Sections)</text></Button>}: {question.linkedResponseSets && question.linkedResponseSets.length}
                     </h2>
                   </div>
                   <div className="panel-collapse panel-details collapse" id="collapse-lrs">

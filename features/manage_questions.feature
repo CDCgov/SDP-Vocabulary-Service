@@ -165,8 +165,6 @@ Feature: Manage Questions
     When I go to the list of Questions
     When I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
-    When I click on the "Click for info about this item (Version)" button
-    Then I click on the "Close" button
     When I click on the "Click for info about this item (Content Stage)" button
     Then I click on the "Close" button
   # When I click on the "Click for info about this item (Public)" button

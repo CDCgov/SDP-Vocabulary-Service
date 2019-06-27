@@ -35,7 +35,8 @@ Feature: Manage Usage
     When I click on the "Publish" button
     Then I should see "This action cannot be undone"
     When I click on the "Confirm Publish" link
-    And I should see "Surveillance Program: FoodNet"
+    # removed "Surveillance Program:"
+    And I should see "FoodNet"
     And I click on the "CDC Vocabulary Service" link
     And I click on the menu link for the Question with the content "What is your gender?"
     And I click on the option to Details the Question with the content "What is your gender?"
@@ -77,7 +78,8 @@ Feature: Manage Usage
     When I click on the "Publish" button
     Then I should see "This action cannot be undone"
     When I click on the "Confirm Publish" link
-    And I should see "Surveillance Program: FoodNet"
+    # removed "Surveillance Program:"
+    And I should see "FoodNet"
     And I click on the "CDC Vocabulary Service" link
     And I click on the menu link for the Response Set with the name "Gender Full"
     And I click on the option to Details the Response Set with the name "Gender Full"
