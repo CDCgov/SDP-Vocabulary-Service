@@ -96,7 +96,7 @@ Feature: Manage Surveys
     When I click on the "Linked Sections" link
     And I should see "Test Gender Section"
     And I should not see "Publish"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "Edit"
 
  Scenario: Delete a draft Survey
@@ -161,13 +161,15 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I should see "Name: Edited Survey"
     And I should see "Survey description"
-    And I should see "Surveillance Program: Influenza"
+    # removed "Surveillance Program:"
+    And I should see "Influenza"
     And I should not see "FoodNet"
     And I should see "Test Concept 2"
     And I should not see "Test Concept 1"
     And I should not see "Publish"
     And I should see "Edit"
-    And I should see "Surveillance System: National Violent Death Reporting System"
+    # removed "Surveillance System:"
+    And I should see "National Violent Death Reporting System"
     When I click on the "Change History" link
     Then I should see "Notes / Comments: Testing comment functionality on edit"
     Then I should see "Changes by test_author@gmail.com"
@@ -291,7 +293,14 @@ Feature: Manage Surveys
     And I click on the "Save" button
     Then I wait 1 seconds
     And I click on the "Curate" button
-    Then I should see "Questions from your Survey w/Suggested Replacements (2)"
+  # removed (2)
+    Then I should see "Questions from your Survey w/Suggested Replacements"
+    When I click on the "Click for info about this item (Questions From Your Survey With Suggested Replacements)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Name and Description)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Action)" button
+    Then I click on the "Close" button
     And I should see "Test Section (2)"
     And I should see "Response Sets (1)"
     When I click on the "view-single-What is your gender?" button
@@ -301,12 +310,37 @@ Feature: Manage Surveys
     When I click on the "select-question-What is your name? Dupe" button
     Then I should see "Select & Replace Confirmation"
     When I click on the "Cancel" button
+    When I click on the "Click for info about this item (Questions from Your Survey)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Questions with Suggested Replacements List All)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Mark as Reviewed)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Suggested Replacement Questions)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Question Match Score Action Private)" button
+    Then I click on the "Close" button
     And I click on the "(List all)" link
     Then I should see "Test Section (2)"
     When I click on the "Response Sets (1)" link
-    Then I should see "Response Sets from Your Survey w/Suggested Replacements (1)"
+  # removed (1)
+    Then I should see "Response Sets from Your Survey w/Suggested Replacements"
+    When I click on the "Click for info about this item (Response Set Name and Description)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Action)" button
+    Then I click on the "Close" button
     And I click on the "view-single-Gender Partial" button
-    Then I should see "Suggested Replacement Response Sets ("
+    Then I should see "Suggested Replacement Response Sets"
+    When I click on the "Click for info about this item (Response Set from Your Survey)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set With Suggested Replacements List All)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Mark as Reviewed)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Suggested Replacement Response Sets)" button
+    Then I click on the "Close" button
+    When I click on the "Click for info about this item (Response Set Match Score Action Public)" button
+    Then I click on the "Close" button
     When I click on the "select-response-set-Gender Partial dupe" button
     Then I should see "Mark & Link Confirmation"
     When I click on the "Confirm Link" button
@@ -409,3 +443,16 @@ Feature: Manage Surveys
       And I click on the menu link for the Survey with the name "Test2 Survey"
       And I click on the option to Edit the Survey with the name "Test2 Survey"
       Then I should see "OMB Approval Date"
+
+    Scenario: View the info buttons in a Survey
+      Given I have a Survey with the name "Test Survey" and the description "Survey description"
+      And I am logged in as test_author@gmail.com
+      When I go to the list of Surveys
+      And I click on the menu link for the Survey with the name "Test Survey"
+      And I click on the option to Details the Survey with the name "Test Survey"
+      When I click on the "Click for info about this item (Content Stage)" button
+      Then I click on the "Close" button
+    # When I click on the "Click for info about this item (Public)" button
+    # Then I click on the "Close" button
+      When I click on the "Click for info about this item (Private)" button
+      Then I click on the "Close" button

@@ -28,7 +28,8 @@ describe('SurveyShow', () => {
 
   it('should create a list of sections', () => {
     // Drop out of JQuery and just use draw javascript selectors
-    expect(component.find("a[class='panel-toggle']")).to.contain('Linked Sections: 3');
+    // Removed Linked Sections.
+    expect(component.find("h2[class='panel-title']")).to.contain(': 3');
   });
 
   it('should render an empty list of sections', () => {

@@ -89,7 +89,7 @@ let SignedInMenu = ({currentUser, location, notifications, notificationCount}) =
         <li className="active"><a href="#" tabIndex="2" className="cdc-navbar-item"><i className="fa fa-bar-chart item-navbar-icon" aria-hidden="true"></i>Dashboard</a></li>
         {!location.pathname.includes("revise") && !location.pathname.includes("edit") && !location.pathname.includes("extend") && !location.pathname.includes("new") && (currentUser.publisher || currentUser.author) &&
           <li className="dropdown">
-            <a href="#" id="create-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item create-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-clipboard item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
+            <a href="#" id="create-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item create-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-plus item-navbar-icon" aria-hidden="true"></i>Create<span className="caret"></span></a>
             <ul className="cdc-nav-dropdown">
               <li className="nav-dropdown-item"><Link to="/responseSets/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Response Sets</Link></li>
               <li className="nav-dropdown-item"><Link to="/questions/new" tabIndex="2"><text className="sr-only">Click link to create new </text>Questions</Link></li>
@@ -220,7 +220,7 @@ class Header extends Component {
               <ContentMenu currentUser={this.props.currentUser} settingsOpener={this.props.settingsOpener} />
               <LoginMenu currentUser={this.props.currentUser} logInOpener={this.props.logInOpener} signUpOpener={this.props.signUpOpener} disableUserRegistration={this.props.disableUserRegistration}/>
               <li className="dropdown">
-                <a href="#" id="help-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question-circle utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
+                <a href="#" id="help-menu" tabIndex="2" className="dropdown-toggle cdc-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="fa fa-question utlt-navbar-icon" aria-hidden="true"></i>Help<span className="caret"></span></a>
                 <ul className="cdc-nav-dropdown">
                   <li className="nav-dropdown-item"><Link to='/Help' tabIndex="2">Help Documentation</Link></li>
                   {isReady && this.props.steps.length > 0 &&

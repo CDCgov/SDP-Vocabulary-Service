@@ -158,3 +158,16 @@ Feature: Manage Questions
     And I click on the menu link for the Question with the content "Why?"
     And I click on the option to Details the Question with the content "Why?"
     Then I should see "Why?"
+
+  Scenario: View the info buttons in a Question
+    Given I have a Question with the content "What is your gender?" and the type "MC"
+    And I am logged in as test_author@gmail.com
+    When I go to the list of Questions
+    When I click on the menu link for the Question with the content "What is your gender?"
+    And I click on the option to Details the Question with the content "What is your gender?"
+    When I click on the "Click for info about this item (Content Stage)" button
+    Then I click on the "Close" button
+  # When I click on the "Click for info about this item (Public)" button
+  # Then I click on the "Close" button
+    When I click on the "Click for info about this item (Private)" button
+    Then I click on the "Close" button

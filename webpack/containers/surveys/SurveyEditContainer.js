@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import values from 'lodash/values';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
@@ -19,6 +19,7 @@ import BasicAlert from '../../components/BasicAlert';
 import SurveyEdit from '../../components/surveys/SurveyEdit';
 import currentUserProps from "../../prop-types/current_user_props";
 import SectionSearchContainer from '../sections/SectionSearchContainer';
+import InfoModal from '../../components/InfoModal';
 
 class SurveyEditContainer extends Component {
   constructor(props) {
@@ -124,6 +125,9 @@ class SurveyEditContainer extends Component {
               <h1 className="panel-title">{`${this.actionWord()} Survey`}</h1>
             </div>
             <div className="panel-body">
+            <InfoModal show={this.state.showInfoSearchandSelectSections} header="Search and Select Sections" body={<p>Search through existing Sections in the system to identify the content that composes a specific SDP-V Survey. A SDP-V Survey defines the vocabulary (e.g., Sections that include groupings of related  Questions and Response Sets) used for a particular data collection or information exchange. An SDP-V Survey contains one or more Sections that are intended for a data collection instrument or information exchange.<br/><br/>Existing Sections in the repository can be searched and selected for use. To select a specific Section, click the blue “+” button. Once added, the “+” sign will change into a checkmark to indicate the Section will be added to this Section after save.
+            <br/><br/><strong>Can’t find an existing Section to use?</strong> After searching the service, if no suitable Sections are found, a user can create a new Section by returning to the dashboard and selecting the “Create” menu then “Section”. After creating the new Section, it will appear in the Section search results and can be added to a SDP-V Survey.</p>} hideInfo={()=>this.setState({showInfoSearchandSelectSections: false})} />
+            <label className="label-input" htmlFor="searchAndSelectSections">Search and Select Sections<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSearchandSelectSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
               <Row>
               <Col md={5}>
                 <SectionSearchContainer survey  ={this.props.survey}

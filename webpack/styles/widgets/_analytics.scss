@@ -1,10 +1,11 @@
 
 .analytics-group {
-  margin-top: 14px;
-  margin-bottom: 20px;
-  height: 150px;
+  margin-bottom: 10px;
+  height: 90px;
   text-align: center;
-  border: 1px solid $light-gray;
+  width: 60%;
+  position: relative;
+  left: 18%;
 }
 
 .analytics-list-group {
@@ -18,12 +19,9 @@
   @extend .list-group-item;
   display: table-cell !important;
   width: 25% !important;
-  color: $cdc-blue !important;
   text-align: center !important;
   border: none !important;
-  border-left: solid 1px $light-gray !important;
-  border-bottom: solid 1px $light-gray !important;
-  height: 150px !important;
+  height: 90px !important;
   &:first-child {
     border-left: none !important;
   }
@@ -35,6 +33,10 @@
 
 .analytics-active-item {
   background-color: $analytics-hover-blue !important;
+}
+
+.preview-active-item {
+  background-color: $preview-hover-blue !important;
 }
 
 .cdc-preferred-note {
@@ -51,17 +53,16 @@
 }
 
 .item-icon {
-  margin-top: 20px;
+  margin-top: 4px;
 }
 
 .item-value {
-  font-size: 32px;
+  font-size: 16px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .item-title {
-  font-size: 14px;
-  color: $dark-gray;
-  margin-top: 4px;
+  font-size: 12px;
+  margin-top: 2px;
 }

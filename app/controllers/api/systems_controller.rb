@@ -1,8 +1,11 @@
+# rubocop:disable Systems/LineLength
+
 module Api
   class SystemsController < Api::ApplicationController
     respond_to :json
 
     def index
+      @@tracker.pageview(path: "/api/systems/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API System Show - Search criteria: ' + params[:search].to_s)
       @systems = params[:search] ? SurveillanceSystem.search(params[:search]) : SurveillanceSystem.all
       @systems = params[:limit] ? @systems.limit(params[:limit].to_i) : @systems.limit(100)
       render json: @systems, each_serializer: SystemSerializer
@@ -11,10 +14,13 @@ module Api
     def show
       @system = SurveillanceSystem.find_by(id: params[:id])
       if @system.nil?
+        @@tracker.pageview(path: "/api/systems/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API System Not Found')
         not_found
         return
+      else
+        @@tracker.pageview(path: "/api/systems/#{params[:id]}", hostname: Settings.default_url_helper_host, title: 'API System Show')
+        render json: @system, serializer: SystemSerializer
       end
-      render json: @system, serializer: SystemSerializer
     end
 
     def usage

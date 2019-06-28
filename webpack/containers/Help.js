@@ -309,11 +309,11 @@ class Help extends Component {
         <p>An attribute of the content being presented that represents content maturity. Response sets, questions, sections, and surveys added to SDP-V do not need to advance through each content stage described below before sharing their content publicly (publishing content as described above). The content stage attribute offers users flexibility to accurately communicate the maturity of their content at different stages of the vocabulary life cycle with other users.</p>
         <ul>
         <li>
-        <strong>DRAFT</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used. This is the initial status assigned to newly created content.
+        <strong>DRAFT</strong> – Content that is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used. This is the initial status assigned to newly created content.
         <ul><li>This content stage can be used for content is that is in private workflow status.</li></ul>
         </li>
         <li>
-        <strong>COMMENT ONLY</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.
+        <strong>COMMENT ONLY</strong> – Content that is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.
         <ul><li>This content stage can be used for content is that is in either private and public workflow status.</li></ul>
         </li>
         <li>
@@ -800,8 +800,8 @@ class Help extends Component {
                 <td headers="generic-display-name-column-c">'Question Content Stage (O)'</td>
                 <td headers="generic-display-priority-c">Optional</td>
                 <td headers="generic-display-desc-c"> An attribute of the content being presented that represents content maturity. The content stage attribute offers users flexibility to accurately communicate the maturity of their content at different stages of the vocabulary life cycle with other users. If this field is left blank, the question will be imported in the “draft” content stage. Users may also select “comment only” or “trial use. Content stages are defined as follows:
-                  <br/><strong>DRAFT</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used.
-                  <br/><strong>COMMENT ONLY</strong> – Content is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.
+                  <br/><strong>DRAFT</strong> – Content that is being worked on by its Authors and Publisher. It is generally not considered to be “complete” and unlikely ready for comment. Content at this Level should not be used.
+                  <br/><strong>COMMENT ONLY</strong> – Content that is being worked on by its Authors and Publisher. It is generally not considered to be “complete” but is ready for viewing and comment. Content at this Level should not be used.
                   <br/><strong>TRIAL USE</strong> – Content that the Authors and Publisher believe is ready for User viewing, testing and/or comment. It is generally “complete”, but not final. Content at this Level should not be used to support public health response.
                 </td>
               </tr>
@@ -1191,7 +1191,8 @@ class Help extends Component {
               <a href="#1.17">1.17</a>,&nbsp;
               <a href="#1.18">1.18</a>,&nbsp;
               <a href="#1.19">1.19</a>,&nbsp;
-            <a href="#1.20">1.20</a>)
+              <a href="#1.20">1.20</a>,&nbsp;
+              <a href="#1.21">1.21</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
@@ -1201,6 +1202,20 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
+            <li id="1.21"><strong>Release <a href='' target='_blank'>1.21</a></strong> <small>(June 28, 2019)</small></li>
+              <ol>
+              <li>Users can now preview response sets linked to questions on the dashboard by clicking the 'preview' button on the right side of the search result expansion.</li>
+              <li>The metrics API and admin dashboard now report a count of the number of collaborative authoring groups.</li>
+              <li>The application now has a reusable info button that has been added to various places that required clarifications on language and use of functionality around the application.</li>
+              <li>Various improvements were made to the dashboard based on the usability testing, including:
+                <ul>
+                <li>Increase visibility of object type color-coding scheme</li>
+                <li>Object filters consolidated under the search bar and made to look more like filters</li>
+                <li>Improve clarity of Program and System counts on dashboard with updated colors</li>
+                <li>Rearranged layout and descreased size or eliminated unnecessary and unimportant information to reduce visual clutter</li>
+                </ul>
+              </li>
+              </ol>
             <li id="1.20"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/571015169/SDP+Vocabulary+Service+Release+1.20' target='_blank'>1.20</a></strong> <small>(May 30, 2019)</small></li>
               <ol>
               <li>Implemented logic to determine if PHIN VADS link is valid and if the OID exists</li>
@@ -1344,6 +1359,11 @@ class Help extends Component {
               <br/>
               <h4 id="userdocupdates"><strong>User Documentation Updates</strong></h4>
               <ul>
+              <li><strong>May 2019</strong></li>
+              <ul>
+                <li>The <strong>Vocabulary Service User Guide</strong>  has been updated with features available through Release 1.15.  The user guide is available on the <a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Accessing SDP Vocabulary Service</a> webpage.</li>
+                <li><strong>Surveillance Data Platform Vocabulary Service Fact Sheet</strong> has been updated.  The fact sheet is available at the bottom of the  <a href='https://www.cdc.gov/sdp/SDPVocabularyServiceSharedServices.html' target='_blank'>SDP Vocabulary Service</a> webpage.</li>
+              </ul>
                   <li><strong>August 2018</strong></li>
                   <ul>
                     <li>The <strong>Vocabulary Service User Guide</strong> has been updated with features available through Release 1.8. The user guide is available on the <a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Accessing SDP Vocabulary Service</a> webpage.</li>

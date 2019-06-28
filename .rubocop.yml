@@ -12,6 +12,7 @@ AllCops:
     - 'db/schema.rb'
     - 'node_modules/**/*'
     - 'app/views/api/fhir/**/*'
+    - 'config/initializers/staccato.rb'
 Rails:
   Enabled: true
 Rails/HasAndBelongsToMany:

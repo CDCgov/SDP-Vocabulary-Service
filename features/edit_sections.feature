@@ -98,7 +98,7 @@ Feature: Edit Sections
     And I should see "What is your gender?"
     And I should see "VERSION 1 OF 1 | ITEM TYPE: QUESTION"
     And I should not see "Publish"
-    And I should see "Version: 1"
+  # And I should see "Version: 1"
     And I should see "Edit"
     When I click on the "Switch to condensed item view" button
     Then I should see "What is your gender?"
@@ -190,8 +190,10 @@ Feature: Edit Sections
     And I should see "What is your gender?"
     And I should see "Response Type: Boolean"
     When I click on the "What is your gender?" link
-    And I click on the "Parent Items" link
+    And I click on the "Click link to expand information about (Parent Items)" link
     Then I should see "Test Section"
+    Then I wait 1 seconds
+    And I click on the "Click for info about this item (Parent Items InfoButton)" link
 
   Scenario: Show warning modal after adding question
     Given I have a Response Set with the name "Gender Full"

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button} from 'react-bootstrap';
 import TagsInput from 'react-tagsinput';
 
 import { responseSetProps } from '../../prop-types/response_set_props';
 import Errors from '../Errors';
 import ModalDialog from '../ModalDialog';
 import CodedSetTableEditContainer from '../../containers/CodedSetTableEditContainer';
+import InfoModal from '../InfoModal';
+import InfoModalBodyContent from '../../components/InfoModalBodyContent';
 
 export default class ResponseSetEdit extends Component {
   constructor(props) {
@@ -91,6 +93,7 @@ export default class ResponseSetEdit extends Component {
     return {
       name: '', oid: '', description: '', comment: '',
       responsesAttributes: [], tagList: [],
+      showInfoTags: false,
       version: 1, versionIndependentId: null, showModal: false
     };
   }
@@ -158,7 +161,7 @@ export default class ResponseSetEdit extends Component {
             <div className="panel-body">
                 <Row>
                   <Col md={8} className="question-form-group">
-                    <label className="input-label" htmlFor="response-set-name">Name</label>
+                    <label className="input-label" htmlFor="response-set-name">Response Set Name</label>
                     <input className="input-format" tabIndex="3" type="text" value={this.state.name} name="response-set-name" id="response-set-name" onChange={this.handleChange('name')}/>
                   </Col>
 
@@ -168,7 +171,8 @@ export default class ResponseSetEdit extends Component {
                 </Row>
                 <Row>
                   <Col md={8} className="question-form-group">
-                    <label className="input-label" htmlFor="response-set-tags">Tags</label>
+                    <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                    <label className="input-label" htmlFor="response-set-tags">Tags<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
                     <p>Press 'Tab' or 'Enter' after typing a tag to add it to the list. Press 'Backspace' or click the 'x' icon to remove a tag.</p>
                     <TagsInput value={this.state.tagList} onChange={this.handleTagChange} inputProps={{tabIndex: '3', id: 'response-set-tags'}} />
                   </Col>

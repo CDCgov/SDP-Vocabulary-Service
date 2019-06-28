@@ -12,7 +12,7 @@ describe('ResponseSetList', () => {
   });
 
   it('should create list of response sets', () => {
-    expect(component.find("li[class='u-result-content-item']").length).to.equal(3);
+    expect(component.find("div[class='result-description']").length).to.equal(3);
   });
 
 });

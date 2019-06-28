@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import {Button} from 'react-bootstrap';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { displayVersion, isSimpleEditable } from '../utilities/componentHelpers';
@@ -242,7 +243,7 @@ export default class SearchResult extends Component {
       case 'response_set':
       case 'response_set_dropped':
         return (
-          <ul className="list-inline result-linked-number result-linked-item associated__question" aria-label="Additional Response Set details.">
+          <ul className="list-inline result-linked-number result-linked-item associated__responses" aria-label="Additional Response Set details.">
             {result.codes && <li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-rs${type === 'response_set_dropped' ? '-drop' : ''}`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about linked </text>Responses: {result.responseCount}{result.responseCount === undefined && 'Click name for more info'}</a></li>}
           </ul>
         );
@@ -294,14 +295,20 @@ export default class SearchResult extends Component {
     switch(type) {
       case 'question':
         return (
-          <div className="panel-collapse panel-details collapse" id={`collapse-${result.id}-question`}>
-            <div className="panel-body">
+          <div className={`panel-collapse panel-details collapse`} id={`collapse-${result.id}-question`}>
+            <div className={`panel-body ${this.props.activeId === result.id ? 'analytics-active-item' : ''}`}>
               <text className="sr-only">List of links to response sets on this question:</text>
               {result.responseSets && result.responseSets.length > 0 &&
                 result.responseSets.map((rs, i) => {
                   return(
                     <div key={`response-set-${rs.id}-${i}`} className="result-details-content">
-                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link></span>}
+                      {rs.name === 'None' ? <text>No Associated Response Set.</text> : <span><span className={`fa ${iconMap['response_set']}`} aria-hidden="true"></span> <Link to={`/responseSets/${rs.id}`}>{rs.name + ' (version ' + rs.version + ')'}</Link><Button style={{padding: '0px'}} bsStyle='link' className="pull-right" onClick={() => {
+                        this.props.fetchResponseSetPreview(rs.id);
+                        this.props.showPreview();
+                        if (this.props.selectActive){
+                          this.props.selectActive(result.id);
+                        }
+                      }}><i className="fa fa-search" aria-hidden="true"></i> Preview</Button></span>}
                     </div>
                   );
                 })
@@ -436,13 +443,13 @@ export default class SearchResult extends Component {
           {this.showLinkedDetails(result, type)}
         </li>
         <li className="u-result-content-item condensed result-nav text-center" role="navigation" aria-label="Search Result">
-          <div><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+          <div><Link className='dark-gray' to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div>
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult, type)
             ) : (
               <div className="dropdown">
-                <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
+                <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dark-gray dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
                   <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
                   <span className="sr-only">View Item Action Menu</span>
                 </a>
@@ -457,8 +464,8 @@ export default class SearchResult extends Component {
 
   baseResult(type, result, highlight, handleSelectSearchResult, isSelected, isEditPage, actionName, action) {
     return (
-      <ul className="u-result-group u-result u-result-content" id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
-        <li className="u-result-content-item">
+      <ul className='u-result-group u-result u-result-content' id={`${type}_id_${result.id}`} aria-label="Summary of a search result or linked object's attributes.">
+        <li className={`u-result-content-item ${this.props.activeId === result.id ? 'preview-active-item' : ''}`}>
           <div className={`u-result-details result__${type}`}>
             <div className="list-inline result-type-wrapper">
               <div className="result-type-icon"><span className={`fa ${iconMap[type]} fa-2x`} aria-hidden="true"></span></div>
@@ -516,20 +523,20 @@ export default class SearchResult extends Component {
               return mapObj[matched];
             })}</span></i>}
           </div>
-          <div className="result-linked-details">
+          <div className={`result-linked-details ${this.props.activeId === result.id ? 'preview-active-item' : ''}`}>
             {this.linkedDetails(result, type)}
           </div>
           {(type !== "section_nested_item") && this.detailsPanel(result, type)}
         </li>
-        <li className="u-result-content-item result-nav" role="navigation" aria-label="Search Result">
-          <div className="result-nav-item"><Link to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
+        <li className={`u-result-content-item result-nav ${this.props.activeId === result.id ? 'preview-active-item' : ''}`} role="navigation" aria-label="Search Result">
+          <div className="result-nav-item"><Link className='dark-gray' to={`/${type.replace('_s','S').replace('section_','').replace('survey_','').replace('nested_','').replace('_dropped','').replace('nested','').replace('item','question')}s/${result.id}`} title="View Item Details"><i className="fa fa-eye fa-lg" aria-hidden="true"></i><span className="sr-only">View Item Details</span></Link></div>
           <div className="result-nav-item">
             {handleSelectSearchResult ? (
               this.selectResultButton(result, isSelected, handleSelectSearchResult, type)
             ) : (
               <div className="dropdown">
                 <a id={`${type}_${result.id}_menu`} role="navigation" href="#item-menu" className="dropdown-toggle widget-dropdown-toggle" data-toggle="dropdown">
-                  <span className="fa fa-ellipsis-h" aria-hidden="true"></span>
+                  <span className="fa fa-ellipsis-h dark-gray" aria-hidden="true"></span>
                   <span className="sr-only">View Item Action Menu</span>
                 </a>
                 {this.resultDropdownMenu(result, type, actionName, action)}
@@ -554,10 +561,14 @@ SearchResult.propTypes = {
   responseSets: PropTypes.arrayOf(responseSetProps),
   extraActionName: PropTypes.string,
   showProgramVarModal: PropTypes.func,
+  selectActive: PropTypes.func,
+  showPreview: PropTypes.func,
+  activeId: PropTypes.number,
   selectedResponseSetId: PropTypes.number,
   showResponseSetSearch: PropTypes.func,
   handleResponseSetChange:  PropTypes.func,
   handleSelectSearchResult: PropTypes.func,
+  fetchResponseSetPreview: PropTypes.func,
   updatePDV: PropTypes.func,
   isSelected: PropTypes.bool
 };

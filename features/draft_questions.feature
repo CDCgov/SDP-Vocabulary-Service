@@ -35,9 +35,10 @@ Feature: Draft, Publish, and Revise Questions
     And I click on the "Save" button
     Then I should see "What is your gender?"
     And I should see "Description: This is NOT a good description"
-    And I should see "Version: 1"
-    And I should see "Other Allowed: No"
-    And I should not see "Version: 2"
+  # And I should see "Version: 1"
+  # Removed 'Other Allowed:'
+    And I should see "No"
+  # And I should not see "Version: 2"
     And I should see "Edit"
     And I should not see "Publish"
 
@@ -80,6 +81,6 @@ Feature: Draft, Publish, and Revise Questions
     And I click on the "Save" button
     Then I should see "What is your gender?"
     And I should see "Description: This is a description"
-    And I should see "Version: 2"
+  # And I should see "Version: 2"
     And I should see "Edit"
     And I should see "Publish"

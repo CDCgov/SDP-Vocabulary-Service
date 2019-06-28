@@ -78,7 +78,6 @@ Feature: Session Management
     And I fill in the "password" field with "password"
     And I click on the "Log In" button
     Then I should see "test_author@gmail.com"
-    And I should see "My Stuff"
     And I should not see "Author Questions, Response Sets, Sections, and Surveys"
 
   Scenario: Edit an existing account
@@ -172,10 +171,10 @@ Feature: Session Management
     And I am logged in as test_author@gmail.com
     When I go to the dashboard
     Then I should see "What is your gender?"
-    And I should see "My Stuff"
+    And I should see "Owner"
     Then my session expires
     And I go to the dashboard
-    Then I should not see "My Stuff"
+    Then I should not see "Owner"
     And I should see "Author Questions, Response Sets, Sections, and Surveys"
 
   Scenario: Accessing content that belongs to another user causes a forbidden error
