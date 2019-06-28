@@ -299,7 +299,7 @@ class SurveyEdit extends Component {
               surveillanceSystems={this.props.surveillanceSystems}
               surveillancePrograms={this.props.surveillancePrograms} />
             <Col md={6} className="survey-group">
-              <InfoModal show={this.state.showInfoProgram} header="Program" body={<p>Identify the program that will maintain and use this vocabulary to support public health activities.<br/><br/>The default value is populated from the author’s profile, The value can be changed by selecting the pencil icon.</p>} hideInfo={()=>this.setState({showInfoProgram: false})} />
+              <InfoModal show={this.state.showInfoProgram} header="Program" body={<p>Identify the program that will maintain and use this vocabulary to support public health activities.<br/><br/>The default value is populated from the author’s profile.  The value can be changed by selecting the pencil icon.</p>} hideInfo={()=>this.setState({showInfoProgram: false})} />
               <label htmlFor="program"><strong>Program</strong><Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoProgram: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>:</label>
               <a className="tag-modal-link" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -307,7 +307,7 @@ class SurveyEdit extends Component {
               }}> {this.props.surveillancePrograms && this.props.surveillancePrograms[this.state.surveillanceProgramId] && this.props.surveillancePrograms[this.state.surveillanceProgramId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit program</text></i></a>
             </Col>
             <Col md={6} className="survey-group">
-              <InfoModal show={this.state.showInfoSystem} header="System" body={<p>Identify the surveillance system that will use this vocabulary to support public health activities.<br/><br/>The default value is populated from the author’s profile, The value can be changed by selecting the pencil icon.</p>} hideInfo={()=>this.setState({showInfoSystem: false})} />
+              <InfoModal show={this.state.showInfoSystem} header="System" body={<p>Identify the surveillance system that will use this vocabulary to support public health activities.<br/><br/>The default value is populated from the author’s profile. The value can be changed by selecting the pencil icon.</p>} hideInfo={()=>this.setState({showInfoSystem: false})} />
               <label htmlFor="system"><strong>System</strong><Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSystem: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>: </label>
               <a className="tag-modal-link" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -324,9 +324,9 @@ class SurveyEdit extends Component {
             <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
             <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
           </div>}
-          <InfoModal show={this.state.showInfoSelectedSections} header="Selected Sections" body={<p>The “Selected Sections” panel displays the selected sections for this Survey.</p>} hideInfo={()=>this.setState({showInfoSelectedSections: false})} />
+          <InfoModal show={this.state.showInfoSelectedSections} header="Selected Sections" body={<p>The “Selected Sections” panel displays the selected Sections for this Survey.</p>} hideInfo={()=>this.setState({showInfoSelectedSections: false})} />
           <label className="pull-left">Selected Sections<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSelectedSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
-          <InfoModal show={this.state.showInfo} header="Section Position" body="This column displays the order of the sections. To change position, enter the desired position and hit the 'Enter' key on your keyboard." hideInfo={()=>this.setState({showInfo: false})} />
+          <InfoModal show={this.state.showInfo} header="Position" body="This column displays the order of the sections. To change position, enter the desired position and hit the 'Enter' key on your keyboard." hideInfo={()=>this.setState({showInfo: false})} />
           <label className="pull-right">Position<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfo: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
           <br/>
           <SurveySectionList survey={this.state}
