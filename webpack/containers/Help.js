@@ -1202,11 +1202,19 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.21"><strong>Release <a href='' target='_blank'>1.21</a></strong> <small>(June ??, 2019)</small></li>
+            <li id="1.21"><strong>Release <a href='' target='_blank'>1.21</a></strong> <small>(June 28, 2019)</small></li>
               <ol>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>Users can now preview response sets linked to questions on the dashboard by clicking the 'preview' button on the right side of the search result expansion.</li>
+              <li>The metrics API and admin dashboard now report a count of the number of collaborative authoring groups.</li>
+              <li>The application now has a reusable info button that has been added to various places that required clarifications on language and use of functionality around the application.</li>
+              <li>Various improvements were made to the dashboard based on the usability testing, including:
+                <ul>
+                <li>Increase visibility of object type color-coding scheme</li>
+                <li>Object filters consolidated under the search bar and made to look more like filters</li>
+                <li>Improve clarity of Program and System counts on dashboard with updated colors</li>
+                <li>Rearranged layout and descreased size or eliminated unnecessary and unimportant information to reduce visual clutter</li>
+                </ul>
+              </li>
               </ol>
             <li id="1.20"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/571015169/SDP+Vocabulary+Service+Release+1.20' target='_blank'>1.20</a></strong> <small>(May 30, 2019)</small></li>
               <ol>
