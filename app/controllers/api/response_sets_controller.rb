@@ -1,5 +1,5 @@
-# rubocop:disable ResponseSets/LineLength
-# rubocop:disable ResponseSets/AbcSize
+# rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/AbcSize
 
 module Api
   class ResponseSetsController < Api::ApplicationController
