@@ -33,6 +33,7 @@ gem 'elasticsearch'
 gem 'httparty'
 gem 'js-routes'
 gem 'omniauth'
+gem 'omniauth-rails_csrf_protection' # remove once https://github.com/omniauth/omniauth/pull/809 is resolved
 gem 'omniauth_openid_connect'
 gem 'paper_trail'
 gem 'rolify'
