@@ -1202,7 +1202,7 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.21"><strong>Release <a href='' target='_blank'>1.21</a></strong> <small>(June 28, 2019)</small></li>
+            <li id="1.21"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/579338249/SDP+Vocabulary+Service+Release+1.21' target='_blank'>1.21</a></strong> <small>(June 28, 2019)</small></li>
               <ol>
               <li>Users can now preview response sets linked to questions on the dashboard by clicking the 'preview' button on the right side of the search result expansion.</li>
               <li>The metrics API and admin dashboard now report a count of the number of collaborative authoring groups.</li>
