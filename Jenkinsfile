@@ -180,8 +180,14 @@ pipeline {
             stage('Scan with oscap') {
               steps {
                 echo "Scanning with oscap..."
-                sh 'cd /home/jenkins; sudo oscap-docker image-cve docker-registry.default.svc.cluster.local:5000/sdp/vocabulary --report report.html;'
-                sh 'cd /home/jenkins; python report-parser.py report.html 7 14 30 -1'
+                sh 'sudo oscap-docker image-cve docker-registry.default.svc.cluster.local:5000/sdp/vocabulary --report report.html;'
+                sh 'python report-parser.py report.html 7 14 30 -1'
+              }
+            }
+            post {
+              always {
+                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '', reportFiles: 'report.html',
+                  reportName: 'OpenSCAP Results', reportTitles: 'OpenSCAP Scan Results'])
               }
             }
             stage('Scan with Twistlock') {
