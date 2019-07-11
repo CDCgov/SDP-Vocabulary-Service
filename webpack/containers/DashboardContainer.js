@@ -203,7 +203,8 @@ class DashboardContainer extends SearchManagerComponent {
                                  searchSource={this.props.searchResults.Source}
                                  lastSearch={this.props.lastSearch}
                                  suggestions={this.props.suggestions}
-                                 fetchSuggestions={fetchSuggestions}/>
+                                 fetchSuggestions={fetchSuggestions}
+                                 isDash={true} />
                 {this.state.groupFilterId === '-1' &&
                   <div className="adv-filter-list">Filtering to content owned by any of your groups</div>
                 }
