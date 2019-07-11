@@ -173,13 +173,13 @@ pipeline {
       }
     }
     stage('Image Scans') {
-      agent { label 'docker' }
       when {
         branch 'development'
       }
       failFast true
       parallel {
         stage('Scan with oscap') {
+          agent { label 'docker' }
           steps {
             echo "Scanning with oscap..."
             sh 'sudo oscap-docker image-cve docker-registry.default.svc.cluster.local:5000/sdp/vocabulary --report report.html;'
@@ -193,6 +193,7 @@ pipeline {
           }
         }
         stage('Scan with Twistlock') {
+          agent { label 'docker' }
           stages {
             stage('Twistlock Scan') {
               steps {
