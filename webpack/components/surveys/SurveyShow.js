@@ -386,10 +386,7 @@ class SurveyShow extends Component {
             <div className={`tab-pane ${this.state.selectedTab === 'main' && 'active'}`} id="main" role="tabpanel" aria-hidden={this.state.selectedTab !== 'main'} aria-labelledby="main-content-tab">
               <div className="basic-c-box panel-default survey-type">
                 <div className="panel-heading">
-                  <h2 className="panel-title">Description</h2>
-                </div>
-                <div className="box-content">
-                  <Linkify properties={{target: '_blank'}}>{this.props.survey.description}</Linkify>
+                  <h2 className="panel-title">Details</h2>
                 </div>
                 <InfoModal show={this.state.showInfoOMBControlNumber} header="OMB Control Number" body={<p>Provides the OMB Control Number associated with the data collection instrument (if applicable).<br /> <br />This attribute is optional but completion allows other users to find vocabulary that has been used on an OMB-approved data collection instrument. Reuse of vocabulary that has been part of one or more OMB approved Paperwork Reduction Act (PRA) packages in the past can help expedite the review process. There is an advanced search filter that is based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoOMBControlNumber: false})} />
                 { this.props.survey.controlNumber &&
@@ -402,6 +399,10 @@ class SurveyShow extends Component {
                 <div className="box-content">
                 <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
                   <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{this.props.survey.versionIndependentId}
+                </div>
+                <div className="box-content">
+                  <strong>Description: </strong>
+                  <Linkify properties={{target: '_blank'}}>{this.props.survey.description}</Linkify>
                 </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="box-content">
