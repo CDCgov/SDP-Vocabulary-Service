@@ -166,39 +166,65 @@ pipeline {
         branch 'development'
       }
 
-      steps {
-        echo "Pulling SDP-V container image for scanning..."
-        sh 'set +x; docker -H localhost:2375 login -u serviceaccount -p $(oc whoami -t) docker-registry.default.svc.cluster.local:5000'
-        sh 'docker -H localhost:2375 pull docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest'
-
-        echo "Scanning image with Twistlock..."
-        twistlockScan ca: '',
-          cert: '',
-          compliancePolicy: 'critical',
-          containerized: false,
-          dockerAddress: 'tcp://localhost:2375',
-          gracePeriodDays: 7,
-          ignoreImageBuildTime: true,
-          repository: '',
-          image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
-          tag: '',
-          key: '',
-          logLevel: 'true',
-          policy: 'critical',
-          requirePackageUpdate: true,
-          timeout: 60
-
-        echo "Publishing results..."
-        twistlockPublish ca: '',
-          cert: '',
-          containerized: false,
-          dockerAddress: 'tcp://localhost:2375',
-          gracePeriodDays: 7,
-          ignoreImageBuildTime: true,
-          image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
-          key: '',
-          logLevel: 'true',
-          timeout: 60
+      stages {
+        stage('Pull Image') {
+          steps {
+            echo "Pulling SDP-V container image for scanning..."
+            sh 'set +x; docker -H localhost:2375 login -u serviceaccount -p $(oc whoami -t) docker-registry.default.svc.cluster.local:5000'
+            sh 'docker -H localhost:2375 pull docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest'
+          }
+        }
+        stage('Image Scans') {
+          failFast true
+          parallel {
+            stage('Scan with oscap') {
+              steps {
+                echo "Scanning with oscap..."
+                sh 'cd /home/jenkins; sudo oscap-docker image-cve docker-registry.default.svc.cluster.local:5000/sdp/vocabulary --report report.html;'
+                sh 'cd /home/jenkins; python report-parser.py report.html 7 14 30 -1'
+              }
+            }
+            stage('Scan with Twistlock') {
+              stages {
+                stage('Twistlock Scan') {
+                  steps {
+                    echo "Scanning image with Twistlock..."
+                    twistlockScan ca: '',
+                      cert: '',
+                      compliancePolicy: 'critical',
+                      containerized: false,
+                      dockerAddress: 'tcp://localhost:2375',
+                      gracePeriodDays: 7,
+                      ignoreImageBuildTime: true,
+                      repository: '',
+                      image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
+                      tag: '',
+                      key: '',
+                      logLevel: 'true',
+                      policy: 'critical',
+                      requirePackageUpdate: true,
+                      timeout: 60
+                  }
+                }
+                stage('Twistlock Publish') {
+                  steps {
+                    echo "Publishing results..."
+                    twistlockPublish ca: '',
+                      cert: '',
+                      containerized: false,
+                      dockerAddress: 'tcp://localhost:2375',
+                      gracePeriodDays: 7,
+                      ignoreImageBuildTime: true,
+                      image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
+                      key: '',
+                      logLevel: 'true',
+                      timeout: 60
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
