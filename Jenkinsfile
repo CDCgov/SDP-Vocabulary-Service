@@ -112,7 +112,7 @@ pipeline {
       steps {
         unstash 'reports'
         script {
-          def scannerHome = tool 'SonarQube Scanner 3.3'
+          def scannerHome = tool 'SonarQube Scanner 4.0'
           withSonarQubeEnv('SDP') {
            sh "${scannerHome}/bin/sonar-scanner -X"
           }
