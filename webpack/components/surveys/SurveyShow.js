@@ -437,12 +437,6 @@ class SurveyShow extends Component {
                 }
                 { this.props.survey.parent &&
                 <div className="box-content">
-                  <strong>Published By: </strong>
-                  {this.props.survey.publishedBy.email}
-                </div>
-                }
-                { this.props.survey.parent &&
-                <div className="box-content">
                   <strong>Extended from: </strong>
                   <Link to={`/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name }</Link>
                 </div>
