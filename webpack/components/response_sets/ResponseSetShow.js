@@ -372,7 +372,7 @@ export default class ResponseSetShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>
-                  { format(parse(responseSet.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
+                  { format(parse(responseSet.createdAt,''), 'MMMM Do, YYYY') }
                 </div>
                 { responseSet.parent &&
                   <div className="box-content">

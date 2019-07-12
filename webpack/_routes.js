@@ -903,6 +903,9 @@ Based on Rails routes of Vocabulary::Application
 // usage_response_set => /response_sets/:id/usage(.:format)
   // function(id, options)
   usage_response_set_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"response_sets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// usage_section => /sections/:id/usage(.:format)
+  // function(id, options)
+  usage_section_path: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"sections",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"usage",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // user_openid_connect_omniauth_authorize => /users/auth/openid_connect(.:format)
   // function(options)
   user_openid_connect_omniauth_authorize_path: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"auth",false],[2,[7,"/",false],[2,[6,"openid_connect",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),

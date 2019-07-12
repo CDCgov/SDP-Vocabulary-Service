@@ -28,10 +28,20 @@ import {
   FETCH_SECTION_PENDING,
   FETCH_SECTION_SUCCESS,
   FETCH_SECTION_FAILURE,
-  FETCH_SECTION_PARENTS
+  FETCH_SECTION_PARENTS,
+  FETCH_SECTION_USAGE
 } from './types';
 
 const AJAX_TIMEOUT = 1000 * 60 * 5;  // 5 minutes
+
+export function fetchSectionUsage(id) {
+  return {
+    type: FETCH_SECTION_USAGE,
+    payload: axios.get(routes.usageSectionPath(id), {
+      headers: {'Accept': 'application/json', 'X-Key-Inflection': 'camel'}
+    })
+  };
+}
 
 export function newSection() {
   return {
