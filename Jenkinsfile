@@ -71,7 +71,7 @@ pipeline {
 
         echo "Running tests..."
         withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
-          sh '/home/jenkins/.npm-global/retire --outputformat json --outputpath reports/retire.json --severity medium'
+          sh '/home/jenkins/.npm-global/bin/retire --outputformat json --outputpath reports/retire.json --severity medium'
           sh 'bundle exec rake'
         }
 
