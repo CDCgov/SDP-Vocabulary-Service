@@ -5,6 +5,8 @@ import Linkify from 'react-linkify';
 import Pagination from 'rc-pagination';
 import $ from 'jquery';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 
 import SectionNestedItemList from '../../containers/sections/SectionNestedItemList';
 import CodedSetTable from "../CodedSetTable";
@@ -26,6 +28,8 @@ import ResultStyleControl from '../shared_show/ResultStyleControl';
 import { gaSend } from '../../utilities/GoogleAnalytics';
 import InfoModal from '../../components/InfoModal';
 import InfoModalBodyContent from '../../components/InfoModalBodyContent';
+
+import ProgramsAndSystems from "../shared_show/ProgramsAndSystems";
 
 const PAGE_SIZE = 10;
 
@@ -387,6 +391,10 @@ class SectionShow extends Component {
                   <strong>Description: </strong>
                   <Linkify properties={{target: '_blank'}}>{section.description}</Linkify>
                 </div>
+                <div className="box-content">
+                  <strong>Created: </strong>
+                  { format(parse(section.createdAt,''), 'MMMM Do, YYYY') }
+                </div>
                 <InfoModal show={this.state.showContentStage} header={section.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={section.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 { section.contentStage &&
                   <div className="box-content">
@@ -489,6 +497,9 @@ class SectionShow extends Component {
                     </div>
                   </div>
                 </div>
+              }
+              {section.status === 'published' &&
+                <ProgramsAndSystems item={section} />
               }
             </div>
           </div>

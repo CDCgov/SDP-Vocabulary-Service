@@ -15,7 +15,8 @@ import {
   REMOVE_SECTION_FROM_GROUP_FULFILLED,
   UPDATE_SECTION_TAGS_FULFILLED,
   UPDATE_PDV_FULFILLED,
-  FETCH_SECTION_PARENTS_FULFILLED
+  FETCH_SECTION_PARENTS_FULFILLED,
+  FETCH_SECTION_USAGE_FULFILLED
 } from '../actions/types';
 import * as helpers from './helpers';
 
@@ -41,6 +42,14 @@ export default function sections(state = {}, action) {
       newState = Object.assign({}, state);
       newState[0] = {sectionNestedItems: [], questions: [], version: 1, id: 0};
       return newState;
+    case FETCH_SECTION_USAGE_FULFILLED:
+      const sectionsClone = Object.assign({}, state);
+      if (sectionsClone[action.payload.data.id] === undefined) {
+        sectionsClone[action.payload.data.id] = {};
+      }
+      sectionsClone[action.payload.data.id].surveillanceSystems = action.payload.data.surveillanceSystems;
+      sectionsClone[action.payload.data.id].surveillancePrograms = action.payload.data.surveillancePrograms;
+      return sectionsClone;
     case ADD_NESTED_ITEM:
       sni = action.payload.nestedItem;
       sniType = action.payload.type;

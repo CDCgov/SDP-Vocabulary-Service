@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     get :redcap, on: :member
     get :epi_info, on: :member
     get :parent_items, on: :member
+    get :usage, on: :member
     put :publish, on: :member
     put :retire, on: :member
     put :update_stage, on: :member

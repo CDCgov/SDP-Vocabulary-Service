@@ -247,6 +247,28 @@ class Section < ApplicationRecord
                       .where('survey_sections.section_id = ?', id).select(:id, :name).distinct.to_a
   end
 
+  def surveillance_programs_usage
+    programs_usage = []
+    surveys.each do |surv|
+      programs_usage << surv.surveillance_program.name if surv.surveillance_program
+    end
+    parent_sections.each do |ps|
+      programs_usage += ps.surveillance_programs_usage
+    end
+    programs_usage.uniq
+  end
+
+  def surveillance_systems_usage
+    systems_usage = []
+    surveys.each do |surv|
+      systems_usage << surv.surveillance_system.name if surv.surveillance_system
+    end
+    parent_sections.each do |ps|
+      systems_usage += ps.surveillance_systems_usage
+    end
+    systems_usage.uniq
+  end
+
   # Provides a list of nested items that are only questions by flattening out
   # any subsections. Works recursively
   def flatten_questions

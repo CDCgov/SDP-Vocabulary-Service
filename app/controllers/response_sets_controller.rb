@@ -38,7 +38,6 @@ class ResponseSetsController < ApplicationController
   end
 
   def usage
-    @response_set = ResponseSet.find(params[:id])
     if @response_set.status != 'published'
       render(json: { error: 'Only published Response Sets provide usage information' }, status: :bad_request)
     else

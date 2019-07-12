@@ -366,7 +366,7 @@ export default class QuestionShow extends Component {
                 </div>
                 <div className="box-content">
                   <strong>Created: </strong>
-                  { format(parse(question.createdAt,''), 'MMMM Do YYYY, h:mm:ss a') }
+                  { format(parse(question.createdAt,''), 'MMMM Do, YYYY') }
                 </div>
                 <InfoModal show={this.state.showContentStage} header={question.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={question.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 {question.contentStage && <div className="box-content">
@@ -583,7 +583,7 @@ export default class QuestionShow extends Component {
 
 QuestionShow.propTypes = {
   question:  questionProps,
-  currentUser:   currentUserProps,
+  currentUser: currentUserProps,
   router: PropTypes.object,
   handlePublish:  PropTypes.func,
   retireQuestion: PropTypes.func,

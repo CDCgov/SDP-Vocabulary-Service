@@ -38,6 +38,7 @@ class Ability
       can :read, User
     else
       can :read, [ResponseSet, Question, Section, Survey], status: 'published'
+      can :usage, [ResponseSet, Question, Section, Survey], status: 'published'
       can :redcap, [ResponseSet, Question, Section, Survey], status: 'published'
       can :parent_items, [Question, Section], status: 'published'
       can :more_responses, [ResponseSet], status: 'published'

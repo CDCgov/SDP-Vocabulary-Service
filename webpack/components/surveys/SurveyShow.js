@@ -4,6 +4,8 @@ import { hashHistory, Link } from 'react-router';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import Linkify from 'react-linkify';
 import Pagination from 'rc-pagination';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 
 const PAGE_SIZE = 10;
 
@@ -404,6 +406,10 @@ class SurveyShow extends Component {
                   <strong>Description: </strong>
                   <Linkify properties={{target: '_blank'}}>{this.props.survey.description}</Linkify>
                 </div>
+                <div className="box-content">
+                  <strong>Created: </strong>
+                  { format(parse(this.props.survey.createdAt,''), 'MMMM Do, YYYY') }
+                </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="box-content">
                   <strong>Published By: </strong>
@@ -427,6 +433,12 @@ class SurveyShow extends Component {
                 <div className="box-content">
                 <InfoModal show={this.state.showPrivate} header="Private" body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({showPrivate: false})} />
                   <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
+                </div>
+                }
+                { this.props.survey.parent &&
+                <div className="box-content">
+                  <strong>Published By: </strong>
+                  {this.props.survey.publishedBy.email}
                 </div>
                 }
                 { this.props.survey.parent &&
