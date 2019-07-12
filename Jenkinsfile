@@ -183,7 +183,7 @@ pipeline {
           steps {
             echo "Scanning with oscap..."
             sh 'sudo oscap-docker image-cve docker-registry.default.svc.cluster.local:5000/sdp/vocabulary --report report.html;'
-            sh 'python report-parser.py report.html 7 14 30 -1'
+            sh 'report-parser.py report.html 7 14 30 -1'
           }
           post {
             always {
