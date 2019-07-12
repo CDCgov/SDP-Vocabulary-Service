@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Section < ApplicationRecord
   include OidGenerator, Versionable, Searchable, Mappable, Groupable
   acts_as_commentable
