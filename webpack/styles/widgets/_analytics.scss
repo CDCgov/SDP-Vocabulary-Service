@@ -25,10 +25,6 @@
   &:first-child {
     border-left: none !important;
   }
-  &:hover {
-    background-color: $analytics-hover-blue !important;
-    text-decoration: none !important;
-  }
 }
 
 .analytics-active-item {

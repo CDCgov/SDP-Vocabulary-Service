@@ -54,7 +54,7 @@ end
 When(/^I go to the list of Response Sets$/) do
   Elastictest.fake_rs_search_results
   visit '/'
-  page.find('button[id="response-sets-analytics-item"]').click
+  page.find('button[id="search-btn"]').click
 end
 
 Given(/^I have a Response Set with the name "([^"]*)"$/) do |set_name|

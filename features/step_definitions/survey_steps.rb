@@ -23,7 +23,7 @@ end
 When(/^I go to the list of Surveys$/) do
   Elastictest.fake_survey_search_results
   visit '/'
-  page.find('button[id="surveys-analytics-item"]').click
+  page.find('button[id="search-btn"]').click
 end
 
 When(/^I use the section search to select "([^"]*)"$/) do |name|

@@ -22,7 +22,7 @@ class DashboardSearch extends SearchStateComponent {
   constructor(props){
     super(props);
     this.state={
-      type: '',
+      type: [],
       myStuffFilter: false,
       searchTerms: '',
       programFilter: [],
@@ -47,6 +47,7 @@ class DashboardSearch extends SearchStateComponent {
     this.hideAdvSearch = this.hideAdvSearch.bind(this);
     this.selectGroup = this.selectGroup.bind(this);
     this.selectType = this.selectType.bind(this);
+    this.selectAuthor = this.selectAuthor.bind(this);
     this.clearAdvSearch = this.clearAdvSearch.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.selectFilters = this.selectFilters.bind(this);
@@ -105,7 +106,7 @@ class DashboardSearch extends SearchStateComponent {
       stageFilter: '',
       categoryFilter: '',
       rtFilter: '',
-      type: '',
+      type: [],
       myStuffFilter: false,
       preferredFilter: false,
       retiredFilter: false,
@@ -477,22 +478,27 @@ class DashboardSearch extends SearchStateComponent {
     this.props.search(newSearchParams);
   }
 
-  selectType(searchType, myStuffToggle=false) {
+  selectAuthor() {
     let newState = {};
-    if(myStuffToggle) {
-      if(this.state.type === searchType && this.state.myStuffFilter) {
-        newState.myStuffFilter = false;
-      } else {
-        newState.myStuffFilter = true;
-      }
-    } else {
+    if(this.state.myStuffFilter) {
       newState.myStuffFilter = false;
+    } else {
+      newState.myStuffFilter = true;
     }
-    if(this.state.type === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
-      newState.type = '';
+    this.setState(newState);
+    let newSearchParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newSearchParams);
+  }
+
+  selectType(searchType) {
+    let newState = {};
+    let type = this.state.type || [];
+    if(type.includes(searchType)) {
+      newState.type = type.filter((i) => i !== searchType);
       newState.page = 1;
     } else {
-      newState.type = searchType;
+      type.push(searchType);
+      newState.type = type;
       newState.page = 1;
     }
     this.setState(newState);
@@ -544,10 +550,10 @@ class DashboardSearch extends SearchStateComponent {
                     <li className="dropdown">
                       <a href="#" id="type-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Type<span className="caret"></span></a>
                       <ul className="cdc-nav-dropdown">
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('response_set')}>Response Sets</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('question')}>Questions</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('section')}>Sections</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('survey')}>Surveys</a></li>
+                        <li className="nav-dropdown-item"><a href='#' className='response-set-green' onClick={()=>this.selectType('response_set')}>{this.state.type && this.state.type.includes('response_set') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-list' aria-hidden="true" /> Response Sets</a></li>
+                        <li className="nav-dropdown-item"><a href='#' className='question-blue' onClick={()=>this.selectType('question')}>{this.state.type && this.state.type.includes('question') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-question-circle' aria-hidden="true" /> Questions</a></li>
+                        <li className="nav-dropdown-item"><a href='#' className='section-purple' onClick={()=>this.selectType('section')}>{this.state.type && this.state.type.includes('section') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-window-maximize' aria-hidden="true" /> Sections</a></li>
+                        <li className="nav-dropdown-item"><a href='#' className='survey-teal' onClick={()=>this.selectType('survey')}>{this.state.type && this.state.type.includes('survey') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-clipboard' aria-hidden="true" /> Surveys</a></li>
                       </ul>
                     </li>
                   </ul>}
@@ -556,7 +562,7 @@ class DashboardSearch extends SearchStateComponent {
                       <li className="dropdown">
                         <a href="#" id="owner-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Owner<span className="caret"></span></a>
                         <ul className="cdc-nav-dropdown">
-                          <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType(this.state.type, true)}>Filter to items owned by me</a></li>
+                          <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectAuthor()}>Filter to items owned by me</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -629,6 +635,20 @@ class DashboardSearch extends SearchStateComponent {
                   }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>
                 </div>
             </nav>
+            {this.state.type && this.state.type.length > 0 && <div className='col-md-12'>
+              {this.state.type && this.state.type.includes('survey') &&
+                <div className='adv-filter-survey col-md-3'><i className='fa important-white fa-clipboard' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Survey <a href='#' onClick={() => this.selectType('survey')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.type && this.state.type.includes('section')&&
+                <div className='adv-filter-section col-md-3'><i className='fa important-white fa-window-maximize' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Section <a href='#' onClick={() => this.selectType('section')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.type && this.state.type.includes('question') &&
+                <div className='adv-filter-question col-md-3'><i className='fa important-white fa-question-circle' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Question <a href='#' onClick={() => this.selectType('question')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.type && this.state.type.includes('response_set') &&
+                <div className='adv-filter-response_set col-md-3'><i className='fa important-white fa-list' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Response Set <a href='#' onClick={() => this.selectType('response_set')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+            </div>}
             {this.state.programFilter.length > 0 &&
               <div className="adv-filter-list">Program Filters: {this.state.programFilter.map((id, i) => {
                 return <div key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</div>;
@@ -646,12 +666,6 @@ class DashboardSearch extends SearchStateComponent {
                 return <div key={i} className="adv-filter-list-item col-md-12">{method}</div>;
               })}
               </div>
-            }
-            {this.state.type && this.state.type !== '' &&
-              <div className="adv-filter-list">Filtering by type: {this.state.type} <a href='#' onClick={(e) => {
-                e.preventDefault();
-                this.selectType('');
-              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.mostRecentFilter &&
               <div className="adv-filter-list">Filtering by most recent version <a href='#' onClick={(e) => {
