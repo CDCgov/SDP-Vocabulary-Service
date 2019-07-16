@@ -17,7 +17,6 @@ import { surveillanceProgramsProps } from '../prop-types/surveillance_program_pr
 import values from 'lodash/values';
 import filter from 'lodash/filter';
 import $ from 'jquery';
-import iconMap from '../styles/iconMap';
 
 class DashboardSearch extends SearchStateComponent {
   constructor(props){
