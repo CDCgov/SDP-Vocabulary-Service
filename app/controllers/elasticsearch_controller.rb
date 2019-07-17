@@ -55,7 +55,7 @@ class ElasticsearchController < ApplicationController
     must_filters['preferred'] = params[:preferred] ? params[:preferred] : false
     must_filters['omb'] = params[:omb] ? params[:omb] : false
     must_filters['status'] = params[:status] ? params[:status] : ''
-    must_filters['stage'] = params[:stage] ? params[:stage] : ''
+    must_filters['stage'] = params[:stage] ? params[:stage] : []
     must_filters['category'] = params[:category] ? params[:category].underscore.split(' ')[0] : ''
     must_filters['rt'] = params[:rt] ? params[:rt].underscore.split(' ')[0] : ''
     must_filters['source'] = params[:source] ? params[:source] : ''

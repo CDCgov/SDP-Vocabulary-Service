@@ -193,10 +193,11 @@ module SDP
                        { term: { 'status': must_filters['status'] } }
                      end
 
-      stage_terms = if must_filters['stage'].blank?
+      must_filters['stage'] = must_filters['stage'] || []
+      stage_terms = if must_filters['stage'].empty?
                       {}
                     else
-                      { match: { content_stage: must_filters['stage'] } }
+                      { terms: { 'content_stage.keyword': must_filters['stage'] } }
                     end
 
       category_terms = if must_filters['category'].blank?

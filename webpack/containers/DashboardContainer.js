@@ -52,7 +52,7 @@ class DashboardContainer extends SearchManagerComponent {
       ombDate: null,
       sourceFilter: '',
       statusFilter: '',
-      stageFilter: '',
+      stageFilter: [],
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,

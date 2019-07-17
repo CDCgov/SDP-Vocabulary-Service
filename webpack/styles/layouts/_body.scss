@@ -48,6 +48,30 @@ html, body  {
   color: $survey-teal;
 }
 
+.status-green {
+  color: $status-green;
+}
+
+.fa-ban {
+  color: $dark-gray;
+}
+
+.fa-pencil {
+  color: orange;
+}
+
+.fa-gavel {
+  color: brown;
+}
+
+.fa-comments {
+  color: purple;
+}
+
+.fa-files-o {
+  color: red;
+}
+
 .download-sr {
   padding-top: 6px;
   font-size: 16px;
