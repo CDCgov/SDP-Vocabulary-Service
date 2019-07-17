@@ -31,7 +31,7 @@ class DashboardSearch extends SearchStateComponent {
       sort: '',
       sourceFilter: '',
       statusFilter: '',
-      stageFilter: '',
+      stageFilter: [],
       categoryFilter: '',
       rtFilter: '',
       retiredFilter: false,
@@ -103,7 +103,7 @@ class DashboardSearch extends SearchStateComponent {
       ombDate: null,
       sourceFilter: '',
       statusFilter: '',
-      stageFilter: '',
+      stageFilter: [],
       categoryFilter: '',
       rtFilter: '',
       type: [],
@@ -252,7 +252,16 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   toggleStageFilter(e) {
-    let newState = {stageFilter: e.target.value, retiredFilter: this.state.retiredFilter};
+    let newState = {};
+    let stage = this.state.stageFilter || [];
+    if(stage.includes(e.target.value)) {
+      newState.stageFilter = stage.filter((i) => i !== e.target.value);
+      newState.retiredFilter = this.state.retiredFilter;
+    } else {
+      stage.push(e.target.value);
+      newState.stageFilter = stage;
+      newState.retiredFilter = this.state.retiredFilter;
+    }
     if (e.target.value === 'Retired' && !this.state.retiredFilter) {
       newState['retiredFilter'] = true;
     }
@@ -377,7 +386,7 @@ class DashboardSearch extends SearchStateComponent {
                 </Col>
                 <Col sm={6}>
                   <FormGroup>
-                    <ControlLabel htmlFor="status-filter">Visibility Status: </ControlLabel>
+                    <ControlLabel htmlFor="status-filter">Visibility Status: </ControlLabel><br/>
                     <ToggleButtonGroup
                       type="radio"
                       name="status-filter"
@@ -401,19 +410,6 @@ class DashboardSearch extends SearchStateComponent {
                       <ToggleButton value={'local'} onClick={() => this.toggleSource('local')}>SDPV Local</ToggleButton>
                       <ToggleButton value={'phin_vads'} onClick={() => this.toggleSource('phin_vads')}>PHIN VADS</ToggleButton>
                     </ToggleButtonGroup>
-                  </FormGroup>
-                  <FormGroup>
-                    <label htmlFor="stage-filter">Content Stage: </label>
-                    <select className="input-select" name="stage-filter" id="stage-filter" value={this.state.stageFilter} onChange={(e) => this.toggleStageFilter(e)} >
-                      <option value="">Select Stage...</option>
-                      <option value="Draft">Draft</option>
-                      <option value="Comment Only">Comment Only</option>
-                      <option value="Trial Use">Trial Use</option>
-                      <option value="Published">Published</option>
-                      <option value="Retired">Retired</option>
-                      <option value="Duplicate">Duplicate</option>
-                    </select>
-                    <br />
                   </FormGroup>
                 </Col>
               </Row>
@@ -593,28 +589,28 @@ class DashboardSearch extends SearchStateComponent {
                       <ul className="cdc-nav-dropdown">
                         <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Published'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Published') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-check-square-o status-green' aria-hidden="true" /> Published</a></li>
+                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Draft'}});
-                        }}>Draft</a></li>
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Draft') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-pencil' aria-hidden="true" /> Draft</a></li>
                         <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Comment Only'}});
-                        }}>Comment Only</a></li>
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Comment Only') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-comments' aria-hidden="true" /> Comment Only</a></li>
                         <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Trial Use'}});
-                        }}>Trial Use</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
-                          e.preventDefault();
-                          this.toggleStageFilter({target: {value: 'Published'}});
-                        }}>Published</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
-                          e.preventDefault();
-                          this.toggleStageFilter({target: {value: 'Retired'}});
-                        }}>Retired</a></li>
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Trial Use') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-gavel' aria-hidden="true" /> Trial Use</a></li>
                         <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Duplicate'}});
-                        }}>Duplicate</a></li>
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Duplicate') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-files-o' aria-hidden="true" /> Duplicate</a></li>
+                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Retired'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Retired') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-ban' aria-hidden="true" /> Retired</a></li>
                       </ul>
                     </li>
                   </ul>
@@ -662,10 +658,19 @@ class DashboardSearch extends SearchStateComponent {
               </div>
             }
             {this.state.methodsFilter.length > 0 &&
-              <div className="adv-filter-list">Data Collection Method Filters: {this.state.methodsFilter.map((method, i) => {
-                return <div key={i} className="adv-filter-list-item col-md-12">{method}</div>;
+              <div className="adv-filter-list">Data Collection Method Filters: <ul>{this.state.methodsFilter.map((method, i) => {
+                return <li key={i} className="adv-filter-list-item col-md-12">{method}</li>;
               })}
-              </div>
+              </ul></div>
+            }
+            {this.state.stageFilter.length > 0 &&
+              <div className="adv-filter-list">Content Stage Filters: <ul>{this.state.stageFilter.map((stage, i) => {
+                return <li key={i} className="adv-filter-list-item col-md-12">{stage} <a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: stage } });
+                }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></li>;
+              })}
+              </ul></div>
             }
             {this.state.mostRecentFilter &&
               <div className="adv-filter-list">Filtering by most recent version <a href='#' onClick={(e) => {
@@ -683,6 +688,12 @@ class DashboardSearch extends SearchStateComponent {
               <div className="adv-filter-list">Including retired content in search results <a href='#' onClick={(e) => {
                 e.preventDefault();
                 this.toggleRetiredFilter();
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+            }
+            {this.state.myStuffFilter &&
+              <div className="adv-filter-list">Filtering to content you own <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.selectAuthor();
               }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {!this.state.retiredFilter &&
@@ -729,12 +740,6 @@ class DashboardSearch extends SearchStateComponent {
               <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status <a href='#' onClick={(e) => {
                 e.preventDefault();
                 this.toggleStatus('');
-              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
-            }
-            {this.state.stageFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.stageFilter} content stage <a href='#' onClick={(e) => {
-                e.preventDefault();
-                this.toggleStageFilter({target: {value: ''}});
               }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.sourceFilter !== '' &&
