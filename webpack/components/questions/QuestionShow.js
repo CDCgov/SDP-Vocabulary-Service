@@ -260,30 +260,10 @@ export default class QuestionShow extends Component {
             }
           </div>
         }
-        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
-          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {question.tagList && question.tagList.length > 0 ? (
-            <text>{question.tagList.join(', ')}</text>
-          ) : (
-            <text>No Tags Found</text>
-          )}
-          {isSimpleEditable(question, this.props.currentUser) &&
-            <a className='pull-right' href='#' onClick={(e) => {
-              e.preventDefault();
-              this.setState({ tagModalOpen: true });
-            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-              <TagModal show={this.state.tagModalOpen || false}
-                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                        tagList={question.tagList}
-                        saveButtonAction={(tagList) => {
-                          this.props.updateQuestionTags(question.id, tagList);
-                          this.setState({ tagModalOpen: false });
-                        }} />
-            </a>
-          }</p>
           {question.status === 'published' &&
             <ProgramsAndSystems item={question} />
           }
@@ -565,6 +545,30 @@ export default class QuestionShow extends Component {
                   <strong>Other Allowed{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoOtherAllowed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Other Allowed)</text></Button>}: </strong>
                   {question.otherAllowed ? 'Yes' : 'No' }
                 </div>}
+                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                {
+                  <div className="box-content">
+                  <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {question.tagList && question.tagList.length > 0 ? (
+                    <text>{question.tagList.join(', ')}</text>
+                  ) : (
+                    <text>No Tags Found</text>
+                  )}
+                  {isSimpleEditable(question, this.props.currentUser) &&
+                    <a href='#' onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                      <TagModal show={this.state.tagModalOpen || false}
+                                cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                tagList={question.tagList}
+                                saveButtonAction={(tagList) => {
+                                  this.props.updateQuestionTags(question.id, tagList);
+                                  this.setState({ tagModalOpen: false });
+                                }} />
+                    </a>
+                  }
+                  </div>
+                }
               </div>
               </div>
               </div>

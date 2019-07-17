@@ -306,7 +306,6 @@ class SurveyShow extends Component {
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Curate')}>Curate ({this.props.dupeCount})</Link>
           }
         </div>
-        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <InfoModal show={this.state.showInfoSurveillanceProgram} header="Surveillance Program" body={<p>The surveillance program that will maintain and use this vocabulary to support their public health activities.</p>} hideInfo={()=>this.setState({showInfoSurveillanceProgram: false})} />
         <InfoModal show={this.state.showInfoSurveillanceSystem} header="Surveillance System" body={<p>The surveillance system that will use this vocabulary to support public health activities.</p>} hideInfo={()=>this.setState({showInfoSurveillanceSystem: false})} />
         <div className="maincontent-details">
@@ -315,25 +314,6 @@ class SurveyShow extends Component {
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
-          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
-            <text>{this.props.survey.tagList.join(', ')}</text>
-          ) : (
-            <text>No Tags Found</text>
-          )}
-          {isSimpleEditable(this.props.survey, this.props.currentUser) &&
-            <a className='pull-right' href='#' onClick={(e) => {
-              e.preventDefault();
-              this.setState({ tagModalOpen: true });
-            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-              <TagModal show={this.state.tagModalOpen || false}
-                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                        tagList={this.props.survey.tagList}
-                        saveButtonAction={(tagList) => {
-                          this.props.updateSurveyTags(this.props.survey.id, tagList);
-                          this.setState({ tagModalOpen: false });
-                        }} />
-            </a>
-          }</p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
               <InfoModal show={this.state.showInfoSections} header="Sections" body={<p>Displays the selected sections (grouping of questions) for this Survey.</p>} hideInfo={()=>this.setState({showInfoSections: false})} />
@@ -480,6 +460,30 @@ class SurveyShow extends Component {
                   <strong>Extended from: </strong>
                   <Link to={`/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name }</Link>
                 </div>
+                }
+                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                {
+                  <div className="box-content">
+                  <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
+                    <text>{this.props.survey.tagList.join(', ')}</text>
+                  ) : (
+                    <text>No Tags Found</text>
+                  )}
+                  {isSimpleEditable(this.props.survey, this.props.currentUser) &&
+                    <a href='#' onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                      <TagModal show={this.state.tagModalOpen || false}
+                                cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                tagList={this.props.survey.tagList}
+                                saveButtonAction={(tagList) => {
+                                  this.props.updateSurveyTags(this.props.survey.id, tagList);
+                                  this.setState({ tagModalOpen: false });
+                                }} />
+                    </a>
+                  }
+                  </div>
                 }
                 </div>
                 </div>

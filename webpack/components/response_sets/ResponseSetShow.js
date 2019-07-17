@@ -265,16 +265,10 @@ export default class ResponseSetShow extends Component {
             }
           </div>
         }
-        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${responseSet.preferred ? 'cdc-preferred-note' : ''}`}><strong>Response Set Name:</strong> {responseSet.name} {responseSet.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
-          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {responseSet.tagList && responseSet.tagList.length > 0 ? (
-            <text>{responseSet.tagList.join(', ')}</text>
-          ) : (
-            <text>No Tags Found</text>
-          )}
           {isSimpleEditable(responseSet, this.props.currentUser) &&
             <a className='pull-right' href='#' onClick={(e) => {
               e.preventDefault();
@@ -288,7 +282,7 @@ export default class ResponseSetShow extends Component {
                           this.setState({ tagModalOpen: false });
                         }} />
             </a>
-          }</p>
+          }
           {responseSet.questions && responseSet.questions.length > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
@@ -467,6 +461,30 @@ export default class ResponseSetShow extends Component {
                   <strong>OID: </strong>
                   {responseSet.oid}
                 </div>
+                }
+                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                {
+                  <div className="box-content">
+                    <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {responseSet.tagList && responseSet.tagList.length > 0 ? (
+                      <text>{responseSet.tagList.join(', ')}</text>
+                    ) : (
+                      <text>No Tags Found</text>
+                    )}
+                    {isSimpleEditable(responseSet, this.props.currentUser) &&
+                      <a href='#' onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({ tagModalOpen: true });
+                      }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                        <TagModal show={this.state.tagModalOpen || false}
+                                  cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                  tagList={responseSet.tagList}
+                                  saveButtonAction={(tagList) => {
+                                    this.props.updateResponseSetTags(responseSet.id, tagList);
+                                    this.setState({ tagModalOpen: false });
+                                  }} />
+                      </a>
+                    }
+                  </div>
                 }
                 </div>
                 </div>

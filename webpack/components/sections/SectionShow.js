@@ -303,30 +303,11 @@ class SectionShow extends Component {
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
         </div>
-        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
-          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
-            <text>{section.tagList.join(', ')}</text>
-          ) : (
-            <text>No Tags Found</text>
-          )}
-          {isSimpleEditable(section, this.props.currentUser) &&
-            <a className='pull-right' href='#' onClick={(e) => {
-              e.preventDefault();
-              this.setState({ tagModalOpen: true });
-            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-              <TagModal show={this.state.tagModalOpen || false}
-                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                        tagList={section.tagList}
-                        saveButtonAction={(tagList) => {
-                          this.props.updateSectionTags(section.id, tagList);
-                          this.setState({ tagModalOpen: false });
-                        }} />
-            </a>
-          }</p>
+
           <InfoModal show={this.state.showInfoQuestionsAndSections} header="Questions and Sections" body={<p>Displays the selected content for this Section. A Section may contain either Questions only, Sections only (a grouping of questions), or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoQuestionsAndSections: false})} />
           {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
             <div className="basic-c-box panel-default">
@@ -507,6 +488,30 @@ class SectionShow extends Component {
                   <strong>Extended from: </strong>
                   <Link to={`/sections/${section.parent.id}`}>{ section.parent.name }</Link>
                 </div>
+                }
+                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                {
+                  <div className="box-content">
+                  <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
+                    <text>{section.tagList.join(', ')}</text>
+                  ) : (
+                    <text>No Tags Found</text>
+                  )}
+                  {isSimpleEditable(section, this.props.currentUser) &&
+                    <a href='#' onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                      <TagModal show={this.state.tagModalOpen || false}
+                                cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                tagList={section.tagList}
+                                saveButtonAction={(tagList) => {
+                                  this.props.updateSectionTags(section.id, tagList);
+                                  this.setState({ tagModalOpen: false });
+                                }} />
+                    </a>
+                  }
+                  </div>
                 }
                 </div>
                 </div>
