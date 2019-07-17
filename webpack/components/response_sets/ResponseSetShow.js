@@ -247,14 +247,6 @@ export default class ResponseSetShow extends Component {
                 </ul>
               </div>
             }
-            {isRetirable(responseSet, this.props.currentUser) &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
-                gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Retire');
-                return false;
-              }}>{this.publishModal()}Retire</a>
-            }
             {isPublishable(responseSet, this.props.currentUser) &&
               <a className="btn btn-default" href="#" onClick={(e) => {
                 e.preventDefault();
@@ -262,26 +254,6 @@ export default class ResponseSetShow extends Component {
                 gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Publish');
                 return false;
               }}>{this.publishModal()}Publish</a>
-            }
-            {this.props.currentUser && this.props.currentUser.admin && !responseSet.preferred &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.props.addPreferred(responseSet.id, 'ResponseSet', () => {
-                  this.props.fetchResponseSet(responseSet.id);
-                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/Checked');
-                });
-                return false;
-              }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
-            }
-            {this.props.currentUser && this.props.currentUser.admin && responseSet.preferred &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.props.removePreferred(responseSet.id, 'ResponseSet', () => {
-                  this.props.fetchResponseSet(responseSet.id);
-                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/UnChecked');
-                });
-                return false;
-              }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
             }
             {isEditable(responseSet, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -317,6 +289,48 @@ export default class ResponseSetShow extends Component {
                         }} />
             </a>
           }</p>
+          {responseSet.questions && responseSet.questions.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">Questions</h2>
+              </div>
+              <div className="box-content">
+                <SectionNestedItemList items={this.nestedItemsForPage(responseSet)} currentUser={this.props.currentUser} />
+                {responseSet.questions.length > 10 &&
+                  <Pagination onChange={this.pageChange} current={this.state.qPage} total={responseSet.questions.length} />
+                }
+              </div>
+            </div>
+          }
+          {responseSet.status === 'published' &&
+            <ProgramsAndSystems item={responseSet} />
+          }
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title">Responses</h2>
+            </div>
+            <div className="box-content">
+              {responseSet.responseCount && responseSet.responseCount > 25 &&
+                <p>
+                  This response set has a large amount of responses. The table below is a sample of 25 of the {responseSet.responseCount} responses. To access an exhaustive list please choose from the following options:
+                  <ul>
+                    <li>Visit our API endpoint ({`/api/valueSets/${responseSet.versionIndependentId}`}) with the full list of responses</li>
+                    {responseSet.source && responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent &&
+                      <li><a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">Click here to visit import source list in PHIN VADS UI</a></li>
+                    }
+                    <li>Use the load more option at the bottom of the table to expand to the exhaustive list. For performance and usability each load batch will grab an additional 25 responses.</li>
+                  </ul>
+                </p>
+              }
+              <CodedSetTable items={responseSet.responses} itemName={'Response'} />
+              {responseSet.responses && responseSet.responseCount && responseSet.responseCount > 25 && responseSet.responseCount !== responseSet.responses.length &&
+                <p><button onClick={() => {
+                  this.props.fetchMoreResponses(responseSet.id, this.state.page);
+                  this.setState({page: this.state.page+1});
+                }}>... Click here to load more</button></p>
+              }
+            </div>
+          </div>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -327,6 +341,38 @@ export default class ResponseSetShow extends Component {
             <li id="curation-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'curation'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="curation">
               <a className="nav-link" data-toggle="tab" href="#curation-history" role="tab">Curation History</a>
             </li>
+            <div className="action_bar no-print">
+              <div className="btn-group">
+              {isRetirable(responseSet, this.props.currentUser) &&
+                <a className="btn btn-default" href="#" onClick={(e) => {
+                  e.preventDefault();
+                  this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/Retire');
+                  return false;
+                }}>{this.publishModal()}Retire</a>
+              }
+            {this.props.currentUser && this.props.currentUser.admin && !responseSet.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.addPreferred(responseSet.id, 'ResponseSet', () => {
+                  this.props.fetchResponseSet(responseSet.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/Checked');
+                });
+                return false;
+              }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+            }
+            {this.props.currentUser && this.props.currentUser.admin && responseSet.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.removePreferred(responseSet.id, 'ResponseSet', () => {
+                  this.props.fetchResponseSet(responseSet.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + responseSet.version + '/CDC Pref/UnChecked');
+                });
+                return false;
+              }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
+            }
+            </div>
+            </div>
           </ul>
           <div className="tab-content">
           <div className={`tab-pane ${this.state.selectedTab === 'curation' && 'active'}`} id="curation" role="tabpanel" aria-hidden={this.state.selectedTab !== 'curation'} aria-labelledby="curation-history-tab">
@@ -361,15 +407,17 @@ export default class ResponseSetShow extends Component {
               <div className="basic-c-box panel-default response_set-type">
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
-                </div>
-                <div className="box-content">
-                <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
-                  <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{responseSet.versionIndependentId}
-                </div>
-                <div className="box-content">
-                  <strong>Description: </strong>
-                  <Linkify properties={{target: '_blank'}}>{responseSet.description}</Linkify>
-                </div>
+                  </div>
+                  <div className="container">
+                  <div className="col-md-4">
+                  <div className="box-content">
+                    <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
+                    <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{responseSet.versionIndependentId}
+                  </div>
+                    <div className="box-content">
+                      <strong>Description: </strong>
+                      <Linkify properties={{target: '_blank'}}>{responseSet.description}</Linkify>
+                    </div>
                 <div className="box-content">
                   <strong>Created: </strong>
                   { format(parse(responseSet.createdAt,''), 'MMMM Do, YYYY') }
@@ -393,7 +441,10 @@ export default class ResponseSetShow extends Component {
                     {responseSet.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                   </div>
                 }
-                { this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
+                </div>
+                <div className="col-md-5">
+                {
+                this.props.currentUser && responseSet.status && responseSet.status === 'published' &&
                 <div className="box-content">
                   <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
                   <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
@@ -417,49 +468,9 @@ export default class ResponseSetShow extends Component {
                   {responseSet.oid}
                 </div>
                 }
-              </div>
-              <div className="basic-c-box panel-default">
-                <div className="panel-heading">
-                  <h2 className="panel-title">Responses</h2>
                 </div>
-                <div className="box-content">
-                  {responseSet.responseCount && responseSet.responseCount > 25 &&
-                    <p>
-                      This response set has a large amount of responses. The table below is a sample of 25 of the {responseSet.responseCount} responses. To access an exhaustive list please choose from the following options:
-                      <ul>
-                        <li>Visit our API endpoint ({`/api/valueSets/${responseSet.versionIndependentId}`}) with the full list of responses</li>
-                        {responseSet.source && responseSet.source === 'PHIN_VADS' && responseSet.oid && responseSet.version === responseSet.mostRecent &&
-                          <li><a href={`https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=${responseSet.oid}`} target="_blank">Click here to visit import source list in PHIN VADS UI</a></li>
-                        }
-                        <li>Use the load more option at the bottom of the table to expand to the exhaustive list. For performance and usability each load batch will grab an additional 25 responses.</li>
-                      </ul>
-                    </p>
-                  }
-                  <CodedSetTable items={responseSet.responses} itemName={'Response'} />
-                  {responseSet.responses && responseSet.responseCount && responseSet.responseCount > 25 && responseSet.responseCount !== responseSet.responses.length &&
-                    <p><button onClick={() => {
-                      this.props.fetchMoreResponses(responseSet.id, this.state.page);
-                      this.setState({page: this.state.page+1});
-                    }}>... Click here to load more</button></p>
-                  }
                 </div>
               </div>
-              {responseSet.questions && responseSet.questions.length > 0 &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">Linked Questions</h2>
-                  </div>
-                  <div className="box-content">
-                    <SectionNestedItemList items={this.nestedItemsForPage(responseSet)} currentUser={this.props.currentUser} />
-                    {responseSet.questions.length > 10 &&
-                      <Pagination onChange={this.pageChange} current={this.state.qPage} total={responseSet.questions.length} />
-                    }
-                  </div>
-                </div>
-              }
-              {responseSet.status === 'published' &&
-                <ProgramsAndSystems item={responseSet} />
-              }
             </div>
           </div>
         </div>

@@ -243,39 +243,12 @@ export default class QuestionShow extends Component {
                 </ul>
               </div>
             }
-            {isRetirable(question, this.props.currentUser) &&
-              <button className="btn btn-primary" onClick={(e) => {
-                e.preventDefault();
-                this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
-                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Retire');
-              }}>{this.publishModal()}Retire</button>
-            }
             {isPublishable(question, this.props.currentUser) &&
               <button className="btn btn-primary" onClick={(e) => {
                 e.preventDefault();
                 this.setState({showPublishModal: true, publishOrRetire: 'Publish'});
                 gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Publish');
               }}>{this.publishModal()}Publish</button>
-            }
-            {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.props.addPreferred(question.id, 'Question', () => {
-                  this.props.fetchQuestion(question.id);
-                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/Checked');
-                });
-                return false;
-              }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
-            }
-            {this.props.currentUser && this.props.currentUser.admin && question.preferred &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.props.removePreferred(question.id, 'Question', () => {
-                  this.props.fetchQuestion(question.id);
-                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/UnChecked');
-                });
-                return false;
-              }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
             }
             {isEditable(question, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <a className="btn btn-default" href="#" onClick={(e) => {
@@ -311,6 +284,137 @@ export default class QuestionShow extends Component {
                         }} />
             </a>
           }</p>
+          {question.status === 'published' &&
+            <ProgramsAndSystems item={question} />
+          }
+          {question.sections && question.sections.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <InfoModal show={this.state.showInfoParentItemsQuestion} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service. It helps to answer “where is this question being used?”. The default view shows the names of the different Sections that the Question is being used on. The user can view the Surveys that each Question is used on by clicking “+”.</p>} hideInfo={()=>this.setState({showInfoParentItemsQuestion: false})} />
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about (Parent Items)</text>Parent Items</a>
+                  <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsQuestion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Parent Items InfoButton)</text></Button>
+                </h2>
+              </div>
+              <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
+                <div className="box-content panel-body">
+                  {question.parentItems && question.parentItems.length > 0 && question.parentItems[0].error === undefined ? ( <ul className="no-bullet-list">
+                    {question.parentItems.map((sect, pathIndex) => {
+                      return (
+                        <li>
+                          <a data-toggle="collapse" title="Click to expand section path" href={`#collapse-section-path-${pathIndex}`} onClick={()=>{
+                            let csp = this.state.collapseSectionPath;
+                            if (this.state.collapseSectionPath[pathIndex]) {
+                              csp[pathIndex] = false;
+                              this.setState({collapseSectionPath: csp});
+                            } else {
+                              csp[pathIndex] = true;
+                              this.setState({collapseSectionPath: csp});
+                            }
+                          }}><i className={`fa ${this.state.collapseSectionPath[pathIndex] === true ? 'fa-minus' : 'fa-plus'}`} aria-hidden="true"></i> <text className='sr-only'>Click to expand section path</text></a>
+                          <i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${sect.id}`}>{sect.name}</a>
+                            {sect.surveys && sect.surveys.length > 0 && <ul className="no-bullet-list collapse" id={`collapse-section-path-${pathIndex}`}>
+                              {sect.surveys.map((surv) => {
+                                return(
+                                  <li>
+                                    {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
+                                    {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
+                                    <ul className="no-bullet-list">
+                                    {surv.slice(1).map((pathItem, index) => {
+                                      return(
+                                        <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
+                                      );
+                                    })}
+                                    </ul>
+                                  </li>
+                                );
+                              })}
+                            </ul>}
+                        </li>
+                      );
+                    })}
+                  </ul>) : (
+                    <p>Loading Parent Items or None found.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          }
+          <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title">
+                Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
+              </h2>
+            </div>
+            <div className="box-content">
+              <div id="concepts-table">
+                <CodedSetTable items={question.concepts} itemName={'Code System Mapping'} />
+              </div>
+            </div>
+          </div>
+          {this.props.breadcrumb && this.props.breadcrumb.length > 1 && question.linkedResponseSets && question.linkedResponseSets.length > 0 && (this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section')) &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-ers" onClick={() => {
+                    let sid = this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section');
+                    let sidType = this.props.breadcrumb.find((item)=>item.type=='survey') ? 'survey' : 'section';
+                    this.props.fetchQrsLink(question.id, sid.id, sidType, (successResponse)=>this.setState({qrsLink: successResponse.data}));
+                  }}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about </text>Responses expected for this question:</a>
+                </h2>
+              </div>
+              <div className="panel-collapse panel-details collapse" id="collapse-ers">
+                <div className="box-content panel-body">
+                  {question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink) ? (
+                    <ResponseSetList responseSets={[question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink)]} />
+                  ) : (
+                    <LoadingSpinner msg="Loading responses..." />
+                  )}
+                </div>
+              </div>
+            </div>
+          }
+          <InfoModal show={this.state.showInfoAuthorRecommendedResponseSets} header="Author Recommended Response Sets" body={<p>Response sets added to a Question by the author at the time of creation of the Question. This allows the author of the question to identify Response Sets that are appropriate for different contexts (e.g., For a Question asking about a vaccine administered, valid Response Sets may include condition-specific vaccine types, like varicella, influenza, or pertussis).  Users are encouraged to use these Response Sets if they meet their data collection needs.</p>} hideInfo={()=>this.setState({showInfoAuthorRecommendedResponseSets: false})} />
+          {question.responseSets && question.responseSets.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAuthorRecommendedResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {question.responseSets && question.responseSets.length}
+                </h2>
+              </div>
+              <div className="panel-collapse panel-details collapse" id="collapse-rs">
+                <div className="box-content panel-body">
+                  <ResponseSetList responseSets={this.nestedItemsForPage(question.responseSets)} />
+                  {question.responseSets.length > 10 &&
+                    <Pagination onChange={this.pageChange} current={this.state.page} total={question.responseSets.length} />
+                  }
+                </div>
+              </div>
+            </div>
+          }
+          <InfoModal show={this.state.showInfoResponseSetsLinkedOnSections} header="Response Sets Linked On Sections" body={<p>This displays a list of response sets paired with a Question that are not the “Author Recommended Response Sets”.<br /><br />SDP-V allows users the flexibility to pair a Question with different response sets based on their data collection needs.  If a user would like to reuse a Question, but the “author recommended response sets” do not meet the needs of that user, users can select other Response Sets from the repository to associate with the Question while creating, editing, or revising a Section. This allows SDP-V users to reuse Questions in the repository but provides the flexibility to select a context appropriate Response Set on a given Section. </p>} hideInfo={()=>this.setState({showInfoResponseSetsLinkedOnSections: false})} />
+          {question.linkedResponseSets && question.linkedResponseSets.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" data-toggle="collapse" href="#collapse-lrs"><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponseSetsLinkedOnSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Sets Linked on Sections)</text></Button>}: {question.linkedResponseSets && question.linkedResponseSets.length}
+                </h2>
+              </div>
+              <div className="panel-collapse panel-details collapse" id="collapse-lrs">
+                <div className="box-content panel-body">
+                  <ResponseSetList responseSets={this.nestedItemsForPage(question.linkedResponseSets)} />
+                  {question.linkedResponseSets.length > 10 &&
+                    <Pagination onChange={this.pageChange} current={this.state.page} total={question.linkedResponseSets.length} />
+                  }
+                </div>
+              </div>
+            </div>
+          }
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -321,6 +425,37 @@ export default class QuestionShow extends Component {
             <li id="curation-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'curation'})} aria-selected={this.state.selectedTab === 'curation'} aria-controls="curation">
               <a className="nav-link" data-toggle="tab" href="#curation-history" role="tab">Curation History</a>
             </li>
+            <div className="action_bar no-print">
+              <div className="btn-group">
+            {isRetirable(question, this.props.currentUser) &&
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/Retire');
+              }}>{this.publishModal()}Retire</button>
+            }
+            {this.props.currentUser && this.props.currentUser.admin && !question.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.addPreferred(question.id, 'Question', () => {
+                  this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/Checked');
+                });
+                return false;
+              }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+            }
+            {this.props.currentUser && this.props.currentUser.admin && question.preferred &&
+              <a className="btn btn-default" href="#" onClick={(e) => {
+                e.preventDefault();
+                this.props.removePreferred(question.id, 'Question', () => {
+                  this.props.fetchQuestion(question.id);
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + question.version + '/CDC Pref/UnChecked');
+                });
+                return false;
+              }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
+            }
+            </div>
+            </div>
           </ul>
           <div className="tab-content">
           <div className={`tab-pane ${this.state.selectedTab === 'curation' && 'active'}`} id="curation" role="tabpanel" aria-hidden={this.state.selectedTab !== 'curation'} aria-labelledby="curation-history-tab">
@@ -356,6 +491,8 @@ export default class QuestionShow extends Component {
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
                 </div>
+                <div className="container">
+                <div className="col-md-4">
                 <div className="box-content">
                 <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
                   <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{question.versionIndependentId}
@@ -373,6 +510,8 @@ export default class QuestionShow extends Component {
                   <strong>Content Stage: </strong>
                   {question.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                 </div>}
+                </div>
+                <div className="col-md-5">
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="box-content">
                   <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
@@ -427,137 +566,8 @@ export default class QuestionShow extends Component {
                   {question.otherAllowed ? 'Yes' : 'No' }
                 </div>}
               </div>
-              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
-              <div className="basic-c-box panel-default">
-                <div className="panel-heading">
-                  <h2 className="panel-title">
-                    Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
-                  </h2>
-                </div>
-                <div className="box-content">
-                  <div id="concepts-table">
-                    <CodedSetTable items={question.concepts} itemName={'Code System Mapping'} />
-                  </div>
-                </div>
               </div>
-              {question.sections && question.sections.length > 0 &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">
-                      <InfoModal show={this.state.showInfoParentItemsQuestion} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service. It helps to answer “where is this question being used?”. The default view shows the names of the different Sections that the Question is being used on. The user can view the Surveys that each Question is used on by clicking “+”.</p>} hideInfo={()=>this.setState({showInfoParentItemsQuestion: false})} />
-                      <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-sections`}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about (Parent Items)</text>Parent Items</a>
-                      <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsQuestion: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Parent Items InfoButton)</text></Button>
-                    </h2>
-                  </div>
-                  <div className="panel-collapse panel-details collapse" id="collapse-linked-sections">
-                    <div className="box-content panel-body">
-                      {question.parentItems && question.parentItems.length > 0 && question.parentItems[0].error === undefined ? ( <ul className="no-bullet-list">
-                        {question.parentItems.map((sect, pathIndex) => {
-                          return (
-                            <li>
-                              <a data-toggle="collapse" title="Click to expand section path" href={`#collapse-section-path-${pathIndex}`} onClick={()=>{
-                                let csp = this.state.collapseSectionPath;
-                                if (this.state.collapseSectionPath[pathIndex]) {
-                                  csp[pathIndex] = false;
-                                  this.setState({collapseSectionPath: csp});
-                                } else {
-                                  csp[pathIndex] = true;
-                                  this.setState({collapseSectionPath: csp});
-                                }
-                              }}><i className={`fa ${this.state.collapseSectionPath[pathIndex] === true ? 'fa-minus' : 'fa-plus'}`} aria-hidden="true"></i> <text className='sr-only'>Click to expand section path</text></a>
-                              <i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${sect.id}`}>{sect.name}</a>
-                                {sect.surveys && sect.surveys.length > 0 && <ul className="no-bullet-list collapse" id={`collapse-section-path-${pathIndex}`}>
-                                  {sect.surveys.map((surv) => {
-                                    return(
-                                      <li>
-                                        {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
-                                        {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
-                                        <ul className="no-bullet-list">
-                                        {surv.slice(1).map((pathItem, index) => {
-                                          return(
-                                            <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
-                                          );
-                                        })}
-                                        </ul>
-                                      </li>
-                                    );
-                                  })}
-                                </ul>}
-                            </li>
-                          );
-                        })}
-                      </ul>) : (
-                        <p>Loading Parent Items or None found.</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              }
-              {this.props.breadcrumb && this.props.breadcrumb.length > 1 && question.linkedResponseSets && question.linkedResponseSets.length > 0 && (this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section')) &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">
-                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-ers" onClick={() => {
-                        let sid = this.props.breadcrumb.find((item)=>item.type=='survey') || this.props.breadcrumb.find((item)=>item.type=='section');
-                        let sidType = this.props.breadcrumb.find((item)=>item.type=='survey') ? 'survey' : 'section';
-                        this.props.fetchQrsLink(question.id, sid.id, sidType, (successResponse)=>this.setState({qrsLink: successResponse.data}));
-                      }}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about </text>Responses expected for this question:</a>
-                    </h2>
-                  </div>
-                  <div className="panel-collapse panel-details collapse" id="collapse-ers">
-                    <div className="box-content panel-body">
-                      {question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink) ? (
-                        <ResponseSetList responseSets={[question.linkedResponseSets.find((rs)=>rs.id === this.state.qrsLink)]} />
-                      ) : (
-                        <LoadingSpinner msg="Loading responses..." />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              }
-              <InfoModal show={this.state.showInfoAuthorRecommendedResponseSets} header="Author Recommended Response Sets" body={<p>Response sets added to a Question by the author at the time of creation of the Question. This allows the author of the question to identify Response Sets that are appropriate for different contexts (e.g., For a Question asking about a vaccine administered, valid Response Sets may include condition-specific vaccine types, like varicella, influenza, or pertussis).  Users are encouraged to use these Response Sets if they meet their data collection needs.</p>} hideInfo={()=>this.setState({showInfoAuthorRecommendedResponseSets: false})} />
-              {question.responseSets && question.responseSets.length > 0 &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">
-                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-rs"><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about linked </text>Author Recommended Response Sets</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAuthorRecommendedResponseSets: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {question.responseSets && question.responseSets.length}
-                    </h2>
-                  </div>
-                  <div className="panel-collapse panel-details collapse" id="collapse-rs">
-                    <div className="box-content panel-body">
-                      <ResponseSetList responseSets={this.nestedItemsForPage(question.responseSets)} />
-                      {question.responseSets.length > 10 &&
-                        <Pagination onChange={this.pageChange} current={this.state.page} total={question.responseSets.length} />
-                      }
-                    </div>
-                  </div>
-                </div>
-              }
-              <InfoModal show={this.state.showInfoResponseSetsLinkedOnSections} header="Response Sets Linked On Sections" body={<p>This displays a list of response sets paired with a Question that are not the “Author Recommended Response Sets”.<br /><br />SDP-V allows users the flexibility to pair a Question with different response sets based on their data collection needs.  If a user would like to reuse a Question, but the “author recommended response sets” do not meet the needs of that user, users can select other Response Sets from the repository to associate with the Question while creating, editing, or revising a Section. This allows SDP-V users to reuse Questions in the repository but provides the flexibility to select a context appropriate Response Set on a given Section. </p>} hideInfo={()=>this.setState({showInfoResponseSetsLinkedOnSections: false})} />
-              {question.linkedResponseSets && question.linkedResponseSets.length > 0 &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">
-                      <a className="panel-toggle" data-toggle="collapse" href="#collapse-lrs"><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about </text>Response Sets Linked on Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponseSetsLinkedOnSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Sets Linked on Sections)</text></Button>}: {question.linkedResponseSets && question.linkedResponseSets.length}
-                    </h2>
-                  </div>
-                  <div className="panel-collapse panel-details collapse" id="collapse-lrs">
-                    <div className="box-content panel-body">
-                      <ResponseSetList responseSets={this.nestedItemsForPage(question.linkedResponseSets)} />
-                      {question.linkedResponseSets.length > 10 &&
-                        <Pagination onChange={this.pageChange} current={this.state.page} total={question.linkedResponseSets.length} />
-                      }
-                    </div>
-                  </div>
-                </div>
-              }
-              {question.status === 'published' &&
-                <ProgramsAndSystems item={question} />
-              }
+              </div>
             </div>
           </div>
         </div>
