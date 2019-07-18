@@ -471,66 +471,66 @@ export default class QuestionShow extends Component {
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
                 </div>
-                <div className="container">
-                <div className="col-md-4">
-                <div className="box-content">
+                <div className="container-fluid details-margin-padding">
+                <div className="col-md-6 details-margin-padding">
+                <div className="details-border">
                 <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
                   <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{question.versionIndependentId}
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Description: </strong>
                   <Linkify properties={{target: '_blank'}}>{question.description}</Linkify>
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Created: </strong>
                   { format(parse(question.createdAt,''), 'MMMM Do, YYYY') }
                 </div>
                 <InfoModal show={this.state.showContentStage} header={question.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={question.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
-                {question.contentStage && <div className="box-content">
+                {question.contentStage && <div className="details-border">
                   <strong>Content Stage: </strong>
                   {question.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                 </div>}
                 </div>
-                <div className="col-md-5">
+                <div className="col-md-6 margin-padding">
                 { this.props.currentUser && question.status && question.status === 'published' &&
-                <div className="box-content">
+                <div className="details-border">
                   <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
                   <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && question.status && question.status === 'draft' &&
-                <div className="box-content">
+                <div className="details-border">
                   <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
                   <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
                 </div>
                 }
                 { question.parent &&
-                  <div className="box-content">
+                  <div className="details-border">
                     <strong>Extended from: </strong>
                     <Link to={`/questions/${question.parent.id}`}>{ question.parent.name || question.parent.content }</Link>
                   </div>
                 }
                 { question.status === 'published' && question.publishedBy && question.publishedBy.email &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Published By: </strong>
                   {question.publishedBy.email}
                 </div>
                 }
-                {question.category && <div className="box-content">
+                {question.category && <div className="details-border">
                 <InfoModal show={this.state.showInfoCategory} header="Category" body={<p>The category defines the type of Question. Questions are categorized by the author.<br /> <br />This attribute is optional but completion allows other users to find questions of interest. There is an advanced search filter that is based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoCategory: false})} />
                   <strong>Category{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCategory: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Category)</text></Button>}: </strong>
                   {question.category.name}
                 </div>}
-                {question.subcategory && <div className="box-content">
+                {question.subcategory && <div className="details-border">
                   <strong>Subcategory: </strong>
                   {question.subcategory.name}
                 </div>}
-                {question.responseType && <div className="box-content">
+                {question.responseType && <div className="details-border">
                   <InfoModal show={this.state.showInfoResponseType} header="Response Type" body={<p>Response Type indicates what kind of response is expected for the Question. Common response types include choice, text, and date.  These response types are defined by HL7.</p>} hideInfo={()=>this.setState({showInfoResponseType: false})} />
                   <strong>Response Type{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoResponseType: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Response Type)</text></Button>}: </strong>
                   {question.responseType.name}
                 </div>}
-                {question.dataCollectionMethods && question.dataCollectionMethods.length > 0 && <div className="box-content">
+                {question.dataCollectionMethods && question.dataCollectionMethods.length > 0 && <div className="details-border">
                 <InfoModal show={this.state.showInfoDataCollectionMethods} header="Data Collection Method" body={<p>The Data Collection Method attribute represents the manner in which the Question is used to collect data at the time of administration. This is not necessarily the same as how CDC is receiving the data.<br /><br />This attribute is optional but completion helps other users find questions in SDP-V most suited for a specific data collection method. There is an advanced search filter based off of this attribute.
 </p>} hideInfo={()=>this.setState({showInfoDataCollectionMethods: false})} />
                   <strong>Data Collection Methods{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoDataCollectionMethods: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Data Collection Methods)</text></Button>}: </strong>
@@ -540,14 +540,14 @@ export default class QuestionShow extends Component {
                     })}
                   </ul>
                 </div>}
-                {question.responseType && question.responseType.code === 'choice' && <div className="box-content">
+                {question.responseType && question.responseType.code === 'choice' && <div className="details-border">
                   <InfoModal show={this.state.showInfoOtherAllowed} header="Other Allowed" body={<p>This attribute indicates if the Question provides an “other” choice where a respondent can provide their own answer outside of the chosen Response Set.</p>} hideInfo={()=>this.setState({showInfoOtherAllowed: false})} />
                   <strong>Other Allowed{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoOtherAllowed: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Other Allowed)</text></Button>}: </strong>
                   {question.otherAllowed ? 'Yes' : 'No' }
                 </div>}
                 <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
                 {
-                  <div className="box-content">
+                  <div className="details-border">
                   <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {question.tagList && question.tagList.length > 0 ? (
                     <text>{question.tagList.join(', ')}</text>
                   ) : (

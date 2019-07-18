@@ -442,56 +442,56 @@ class SectionShow extends Component {
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
                 </div>
-                <div className="container">
-                <div className="col-md-4">
-                <div className="box-content">
+                <div className="container-fluid details-margin-padding">
+                <div className="col-md-6 details-margin-padding">
+                <div className="details-border">
                 <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
                   <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{section.versionIndependentId}
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Description: </strong>
                   <Linkify properties={{target: '_blank'}}>{section.description}</Linkify>
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Created: </strong>
                   { format(parse(section.createdAt,''), 'MMMM Do, YYYY') }
                 </div>
                 <InfoModal show={this.state.showContentStage} header={section.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={section.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 { section.contentStage &&
-                  <div className="box-content">
+                  <div className="details-border">
                     <strong>Content Stage: </strong>
                     {section.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                   </div>
                 }
                 </div>
-                <div className="col-md-5">
+                <div className="col-md-6 details-margin-padding">
                 { this.props.currentUser && section.status && section.status === 'published' &&
-                <div className="box-content">
+                <div className="details-border">
                 <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
                   <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && section.status && section.status === 'draft' &&
-                <div className="box-content">
+                <div className="details-border">
                 <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
                   <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
                 </div>
                 }
                 { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Published By: </strong>
                   {section.publishedBy.email}
                 </div>
                 }
                 { section.parent &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Extended from: </strong>
                   <Link to={`/sections/${section.parent.id}`}>{ section.parent.name }</Link>
                 </div>
                 }
                 <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
                 {
-                  <div className="box-content">
+                  <div className="details-border">
                   <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
                     <text>{section.tagList.join(', ')}</text>
                   ) : (
