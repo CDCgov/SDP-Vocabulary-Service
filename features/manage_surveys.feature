@@ -70,7 +70,7 @@ Feature: Manage Surveys
    Then I should see "Name: Gender Survey"
    Then I should see "Revised Description"
    And I should see "TagTest1"
-   When I click on the "Linked Sections" link
+   When I click on the "Sections" link
    And I should see "Test Gender Section"
    And I should see "(Published)"
    And I should see "Edit"
@@ -93,7 +93,7 @@ Feature: Manage Surveys
     Then I should see "Name: Test Survey Extended"
     Then I should see "Parent description"
     And I should see "Extended from: Test Survey"
-    When I click on the "Linked Sections" link
+    When I click on the "Sections" link
     And I should see "Test Gender Section"
     And I should not see "Publish"
   # And I should see "Version: 1"
@@ -193,7 +193,7 @@ Feature: Manage Surveys
     And I move the Section "Gender Section" up
     And I should see "Result Already Added"
     And I click on the "Save" button
-    And I click on the "Linked Sections" link
+    And I click on the "Sections" link
     Then I should see "Gender Section"
     And I should see "Demographics Section"
 
@@ -372,10 +372,10 @@ Feature: Manage Surveys
     And I use the section search to select "Test Section"
     And I click on the "Save" button
     Then I wait 1 seconds
-    And I click on the "Linked Sections" link
+    And I click on the "Sections" link
     And I click on the "Test Section" link
     Then I should see "Test Survey"
-    When I click on the "Linked Questions and Sections" link
+    When I click on the "Questions and Sections" link
     And I click on the "What is your gender?" link
     Then I should see "Test Survey"
     And I should see "Test Section"
