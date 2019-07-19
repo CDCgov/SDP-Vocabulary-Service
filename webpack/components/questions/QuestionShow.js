@@ -491,7 +491,7 @@ export default class QuestionShow extends Component {
                   {question.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                 </div>}
                 </div>
-                <div className="col-md-6 margin-padding">
+                <div className="col-md-6 details-margin-padding">
                 { this.props.currentUser && question.status && question.status === 'published' &&
                 <div className="details-border">
                   <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
