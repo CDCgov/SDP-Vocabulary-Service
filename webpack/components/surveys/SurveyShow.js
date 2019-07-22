@@ -278,14 +278,6 @@ class SurveyShow extends Component {
               </ul>
             </div>
           }
-          {isRetirable(this.props.survey, this.props.currentUser) &&
-            <a className="btn btn-default" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
-              gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Retire');
-              return false;
-            }}>{this.publishModal()}Retire</a>
-          }
           {isPublishable(this.props.survey, this.props.currentUser) &&
             <a className="btn btn-default" href="#" onClick={(e) => {
               e.preventDefault();
@@ -293,26 +285,6 @@ class SurveyShow extends Component {
               gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Publish');
               return false;
             }}>{this.publishModal()}Publish</a>
-          }
-          {this.props.currentUser && this.props.currentUser.admin && !this.props.survey.preferred &&
-            <a className="btn btn-default" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.props.addPreferred(this.props.survey.id, 'Survey', () => {
-                this.props.fetchSurvey(this.props.survey.id);
-                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/Checked');
-              });
-              return false;
-            }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
-          }
-          {this.props.currentUser && this.props.currentUser.admin && this.props.survey.preferred &&
-            <a className="btn btn-default" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.props.removePreferred(this.props.survey.id, 'Survey', () => {
-                this.props.fetchSurvey(this.props.survey.id);
-                gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/UnChecked');
-              });
-              return false;
-            }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
           }
           {isRevisable(this.props.survey, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/revise`}>Revise</Link>
@@ -334,7 +306,6 @@ class SurveyShow extends Component {
               <Link className="btn btn-default" to={`surveys/${this.props.survey.id}/dedupe`} onClick={() => gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Curate')}>Curate ({this.props.dupeCount})</Link>
           }
         </div>
-        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <InfoModal show={this.state.showInfoSurveillanceProgram} header="Surveillance Program" body={<p>The surveillance program that will maintain and use this vocabulary to support their public health activities.</p>} hideInfo={()=>this.setState({showInfoSurveillanceProgram: false})} />
         <InfoModal show={this.state.showInfoSurveillanceSystem} header="Surveillance System" body={<p>The surveillance system that will use this vocabulary to support public health activities.</p>} hideInfo={()=>this.setState({showInfoSurveillanceSystem: false})} />
         <div className="maincontent-details">
@@ -343,25 +314,36 @@ class SurveyShow extends Component {
           <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
           {this.surveillanceProgram()}
           {this.surveillanceSystem()}
-          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
-            <text>{this.props.survey.tagList.join(', ')}</text>
-          ) : (
-            <text>No Tags Found</text>
-          )}
-          {isSimpleEditable(this.props.survey, this.props.currentUser) &&
-            <a className='pull-right' href='#' onClick={(e) => {
-              e.preventDefault();
-              this.setState({ tagModalOpen: true });
-            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-              <TagModal show={this.state.tagModalOpen || false}
-                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                        tagList={this.props.survey.tagList}
-                        saveButtonAction={(tagList) => {
-                          this.props.updateSurveyTags(this.props.survey.id, tagList);
-                          this.setState({ tagModalOpen: false });
-                        }} />
-            </a>
-          }</p>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <InfoModal show={this.state.showInfoSections} header="Sections" body={<p>Displays the selected sections (grouping of questions) for this Survey.</p>} hideInfo={()=>this.setState({showInfoSections: false})} />
+              <h2 className="panel-title">
+                <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                <text className="sr-only">Click link to expand information about linked </text>Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {this.props.sections && this.props.sections.length}
+              </h2>
+            </div>
+            <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
+              <div className="box-content panel-body">
+                <SectionList sections={this.nestedItemsForPage(this.props.sections)} currentUser={this.props.currentUser} />
+                {this.props.sections.length > 10 &&
+                  <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.sections.length} />
+                }
+              </div>
+            </div>
+          </div>
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
+              <h2 className="panel-title">
+                Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
+              </h2>
+            </div>
+            <div className="box-content">
+              <div id="concepts-table">
+                <CodedSetTable items={this.props.survey.concepts} itemName={'Code System Mapping'} />
+              </div>
+            </div>
+          </div>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -369,6 +351,38 @@ class SurveyShow extends Component {
             <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
               <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
             </li>
+            <div className="action_bar no-print">
+              <div className="btn-group">
+              {isRetirable(this.props.survey, this.props.currentUser) &&
+                <a className="btn btn-default" href="#" onClick={(e) => {
+                  e.preventDefault();
+                  this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                  gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/Retire');
+                  return false;
+                }}>{this.publishModal()}Retire</a>
+              }
+              {this.props.currentUser && this.props.currentUser.admin && !this.props.survey.preferred &&
+                <a className="btn btn-default" href="#" onClick={(e) => {
+                  e.preventDefault();
+                  this.props.addPreferred(this.props.survey.id, 'Survey', () => {
+                    this.props.fetchSurvey(this.props.survey.id);
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/Checked');
+                  });
+                  return false;
+                }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+              }
+              {this.props.currentUser && this.props.currentUser.admin && this.props.survey.preferred &&
+                <a className="btn btn-default" href="#" onClick={(e) => {
+                  e.preventDefault();
+                  this.props.removePreferred(this.props.survey.id, 'Survey', () => {
+                    this.props.fetchSurvey(this.props.survey.id);
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + this.props.survey.version + '/CDC Pref/UnChecked');
+                  });
+                  return false;
+                }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
+              }
+              </div>
+            </div>
           </ul>
           <div className="tab-content">
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
@@ -390,86 +404,88 @@ class SurveyShow extends Component {
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
                 </div>
+                <div className="container-fluid details-margin-padding">
+                <div className="col-md-6 details-margin-padding">
                 <InfoModal show={this.state.showInfoOMBControlNumber} header="OMB Control Number" body={<p>Provides the OMB Control Number associated with the data collection instrument (if applicable).<br /> <br />This attribute is optional but completion allows other users to find vocabulary that has been used on an OMB-approved data collection instrument. Reuse of vocabulary that has been part of one or more OMB approved Paperwork Reduction Act (PRA) packages in the past can help expedite the review process. There is an advanced search filter that is based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoOMBControlNumber: false})} />
                 { this.props.survey.controlNumber &&
-                <div className="box-content">
-                  <strong>OMB Control Number{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoOMBControlNumber: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}: </strong>
-                  {this.props.survey.controlNumber}
-                  {this.props.survey.ombApprovalDate && <text className='pull-right'><strong>OMB Approval Date: </strong>{this.props.survey.ombApprovalDate}</text>}
-                </div>
+                  <div className="details-border">
+                    <strong>OMB Control Number{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoOMBControlNumber: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (OMB Control Number)</text></Button>}: </strong>
+                    {this.props.survey.controlNumber}
+                  </div>
                 }
-                <div className="box-content">
+                <div className="details-border">
+                  <strong>OMB Approval Date: </strong>{this.props.survey.ombApprovalDate}
+                </div>
+                <div className="details-border">
                 <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
                   <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{this.props.survey.versionIndependentId}
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Description: </strong>
                   <Linkify properties={{target: '_blank'}}>{this.props.survey.description}</Linkify>
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Created: </strong>
                   { format(parse(this.props.survey.createdAt,''), 'MMMM Do, YYYY') }
                 </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Published By: </strong>
                   {this.props.survey.publishedBy.email}
                 </div>
                 }
                 <InfoModal show={this.state.showInfoContentStage} header={this.props.survey.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={this.props.survey.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoContentStage: false})} />
                 { this.props.survey.contentStage &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Content Stage: </strong>
                   {this.props.survey.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                 </div>
                 }
+                </div>
+                <div className="col-md-6 details-margin-padding">
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'published' &&
-                <div className="box-content">
+                <div className="details-border">
                 <InfoModal show={this.state.showPublic} header="Public" body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({showPublic: false})} />
                   <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showPublic: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && this.props.survey.status && this.props.survey.status === 'draft' &&
-                <div className="box-content">
+                <div className="details-border">
                 <InfoModal show={this.state.showPrivate} header="Private" body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({showPrivate: false})} />
                   <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showPrivate: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
                 </div>
                 }
                 { this.props.survey.parent &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Extended from: </strong>
                   <Link to={`/surveys/${this.props.survey.parent.id}`}>{ this.props.survey.parent.name }</Link>
                 </div>
                 }
-              </div>
-              <div className="basic-c-box panel-default">
-                <div className="panel-heading">
-                  <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
-                  <h2 className="panel-title">
-                    Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
-                  </h2>
-                </div>
-                <div className="box-content">
-                  <div id="concepts-table">
-                    <CodedSetTable items={this.props.survey.concepts} itemName={'Code System Mapping'} />
+                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                {
+                  <div className="details-border">
+                  <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {this.props.survey.tagList && this.props.survey.tagList.length > 0 ? (
+                    <text>{this.props.survey.tagList.join(', ')}</text>
+                  ) : (
+                    <text>No Tags Found</text>
+                  )}
+                  {isSimpleEditable(this.props.survey, this.props.currentUser) &&
+                    <a href='#' onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                      <TagModal show={this.state.tagModalOpen || false}
+                                cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                tagList={this.props.survey.tagList}
+                                saveButtonAction={(tagList) => {
+                                  this.props.updateSurveyTags(this.props.survey.id, tagList);
+                                  this.setState({ tagModalOpen: false });
+                                }} />
+                    </a>
+                  }
                   </div>
+                }
                 </div>
-              </div>
-              <div className="basic-c-box panel-default">
-                <div className="panel-heading">
-                  <InfoModal show={this.state.showInfoLinkedSections} header="Linked Sections" body={<p>Displays the selected sections (grouping of questions) for this Survey.</p>} hideInfo={()=>this.setState({showInfoLinkedSections: false})} />
-                  <h2 className="panel-title">
-                    <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
-                    <text className="sr-only">Click link to expand information about linked </text>Linked Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoLinkedSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {this.props.sections && this.props.sections.length}
-                  </h2>
-                </div>
-                <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
-                  <div className="box-content panel-body">
-                    <SectionList sections={this.nestedItemsForPage(this.props.sections)} currentUser={this.props.currentUser} />
-                    {this.props.sections.length > 10 &&
-                      <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.sections.length} />
-                    }
-                  </div>
                 </div>
               </div>
             </div>

@@ -44,7 +44,7 @@ Feature: Manage Sections
     And I use the question search to select "What is your gender?"
     And I click on the "Save" button
     Then I wait 1 seconds
-    When I click on the "Linked Questions" link
+    When I click on the "Questions" link
     And I should see "What is your gender?"
     When I click on the "Delete" link
     Then I should see "Are you sure you want to delete this section?"
@@ -74,7 +74,7 @@ Feature: Manage Sections
     And I use the question search to select "What is your name?"
     And I click on the "Save" button
     Then I wait 1 seconds
-    When I click on the "Linked Questions" link
+    When I click on the "Questions" link
     And I should see "What is your gender?"
     And I should see the question "What is your name?" first
     And I should see the response set "Gender Partial" second

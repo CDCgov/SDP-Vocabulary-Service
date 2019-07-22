@@ -256,14 +256,6 @@ class SectionShow extends Component {
                 return false;
               }}>{this.publishModal()}Publish</a>
           }
-          {isRetirable(section, this.props.currentUser) &&
-              <a className="btn btn-default" href="#" onClick={(e) => {
-                e.preventDefault();
-                this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
-                gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Retire');
-                return false;
-              }}>{this.publishModal()}Retire</a>
-          }
           {isSimpleEditable(section, this.props.currentUser) &&
             <div className="btn-group">
               <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -294,26 +286,6 @@ class SectionShow extends Component {
               </ul>
             </div>
           }
-          {this.props.currentUser && this.props.currentUser.admin && !section.preferred &&
-            <a className="btn btn-default" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.props.addPreferred(section.id, 'Section', () => {
-                this.props.fetchSection(section.id);
-                gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/CDC Pref/Checked');
-              });
-              return false;
-            }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
-          }
-          {this.props.currentUser && this.props.currentUser.admin && section.preferred &&
-            <a className="btn btn-default" href="#" onClick={(e) => {
-              e.preventDefault();
-              this.props.removePreferred(section.id, 'Section', () => {
-                this.props.fetchSection(section.id);
-                gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/CDC Pref/UnChecked');
-              });
-              return false;
-            }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
-          }
           {isRevisable(section, this.props.currentUser) && this.props.currentUser && this.props.currentUser.author &&
             <Link className="btn btn-default" to={`sections/${section.id}/revise`}>Revise</Link>
           }
@@ -331,30 +303,85 @@ class SectionShow extends Component {
             <Link className="btn btn-default" to={`/sections/${section.id}/extend`}>Extend</Link>
           }
         </div>
-        <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
           <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
-          <p className="maincontent-item-info">Tags{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
-            <text>{section.tagList.join(', ')}</text>
-          ) : (
-            <text>No Tags Found</text>
-          )}
-          {isSimpleEditable(section, this.props.currentUser) &&
-            <a className='pull-right' href='#' onClick={(e) => {
-              e.preventDefault();
-              this.setState({ tagModalOpen: true });
-            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-              <TagModal show={this.state.tagModalOpen || false}
-                        cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                        tagList={section.tagList}
-                        saveButtonAction={(tagList) => {
-                          this.props.updateSectionTags(section.id, tagList);
-                          this.setState({ tagModalOpen: false });
-                        }} />
-            </a>
-          }</p>
+
+          <InfoModal show={this.state.showInfoQuestionsAndSections} header="Questions and Sections" body={<p>Displays the selected content for this Section. A Section may contain either Questions only, Sections only (a grouping of questions), or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoQuestionsAndSections: false})} />
+          {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                  <a className="panel-toggle" onClick={(e) => {
+                    e.preventDefault();
+                    this.toggleExpand();
+                  }} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about linked</text>Questions and Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoQuestionsAndSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {section.sectionNestedItems && section.sectionNestedItems.length}
+                </h2>
+                <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
+              </div>
+              <div className="panel-collapse panel-details collapse" id="collapse-linked-questions">
+                <div className="box-content panel-body">
+                  <SectionNestedItemList resultStyle={this.props.resultStyle} items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
+                  {this.props.section.sectionNestedItems.length > 10 &&
+                    <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
+                  }
+                </div>
+              </div>
+            </div>
+          }
+          {section.status === 'published' &&
+            <ProgramsAndSystems item={section} />
+          }
+          {section.parentItems && section.parentItems.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <h2 className="panel-title">
+                <InfoModal show={this.state.showInfoParentItemsSection} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service.  It helps to answer “where is this section being used?”. The default view shows the names of the different Surveys that the Section is being used on. If the Section that is being viewed is nested on another Section in the service, the user can also see that by following the breadcrumb.</p>} hideInfo={()=>this.setState({showInfoParentItemsSection: false})} />
+                  <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
+                  <text className="sr-only">Click link to expand information about </text>Parent Items</a>
+                  <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsSection: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
+                </h2>
+              </div>
+              <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
+                <div className="box-content panel-body">
+                  {section.parentItems && section.parentItems.length > 0 && section.parentItems[0].error === undefined ? ( <ul className="no-bullet-list">
+                    {section.parentItems.map((surv) => {
+                      return (
+                        <li>
+                          {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
+                          {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
+                          <ul className="no-bullet-list">
+                          {surv.slice(1).map((pathItem, index) => {
+                            return(
+                              <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
+                            );
+                          })}
+                          </ul>
+                        </li>
+                      );
+                    })}
+                  </ul>) : (
+                    <p>Loading Parent Items or None found.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          }
+          <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
+          <div className="basic-c-box panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title">
+                Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
+              </h2>
+            </div>
+            <div className="box-content">
+              <div id="concepts-table">
+                <CodedSetTable items={section.concepts} itemName={'Code System Mapping'} />
+              </div>
+            </div>
+          </div>
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
@@ -362,6 +389,38 @@ class SectionShow extends Component {
             <li id="change-history-tab" className="nav-item" role="tab" onClick={() => this.setState({selectedTab: 'changes'})} aria-selected={this.state.selectedTab === 'changes'} aria-controls="changes">
               <a className="nav-link" data-toggle="tab" href="#change-history" role="tab">Change History</a>
             </li>
+            <div className="action_bar no-print">
+              <div className="btn-group">
+              {isRetirable(section, this.props.currentUser) &&
+                  <a className="btn btn-default" href="#" onClick={(e) => {
+                    e.preventDefault();
+                    this.setState({showPublishModal: true, publishOrRetire: 'Retire'});
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/Retire');
+                    return false;
+                  }}>{this.publishModal()}Retire</a>
+              }
+              {this.props.currentUser && this.props.currentUser.admin && !section.preferred &&
+                <a className="btn btn-default" href="#" onClick={(e) => {
+                  e.preventDefault();
+                  this.props.addPreferred(section.id, 'Section', () => {
+                    this.props.fetchSection(section.id);
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/CDC Pref/Checked');
+                  });
+                  return false;
+                }}><i className="fa fa-square"></i> CDC Pref<text className="sr-only">Click to add CDC preferred attribute to this content</text></a>
+              }
+              {this.props.currentUser && this.props.currentUser.admin && section.preferred &&
+                <a className="btn btn-default" href="#" onClick={(e) => {
+                  e.preventDefault();
+                  this.props.removePreferred(section.id, 'Section', () => {
+                    this.props.fetchSection(section.id);
+                    gaSend('send', 'pageview', window.location.toString() + '/v' + section.version + '/CDC Pref/UnChecked');
+                  });
+                  return false;
+                }}><i className="fa fa-check-square"></i> CDC Pref<text className="sr-only">Click to remove CDC preferred attribute from this content</text></a>
+              }
+              </div>
+            </div>
           </ul>
           <div className="tab-content">
             <div className={`tab-pane ${this.state.selectedTab === 'changes' && 'active'}`} id="changes" role="tabpanel" aria-hidden={this.state.selectedTab !== 'changes'} aria-labelledby="change-history-tab">
@@ -383,124 +442,80 @@ class SectionShow extends Component {
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
                 </div>
-                <div className="box-content">
+                <div className="container-fluid details-margin-padding">
+                <div className="col-md-6 details-margin-padding">
+                <div className="details-border">
                 <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
                   <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{section.versionIndependentId}
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Description: </strong>
                   <Linkify properties={{target: '_blank'}}>{section.description}</Linkify>
                 </div>
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Created: </strong>
                   { format(parse(section.createdAt,''), 'MMMM Do, YYYY') }
                 </div>
                 <InfoModal show={this.state.showContentStage} header={section.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={section.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 { section.contentStage &&
-                  <div className="box-content">
+                  <div className="details-border">
                     <strong>Content Stage: </strong>
                     {section.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                   </div>
                 }
+                </div>
+                <div className="col-md-6 details-margin-padding">
                 { this.props.currentUser && section.status && section.status === 'published' &&
-                <div className="box-content">
+                <div className="details-border">
                 <InfoModal show={this.state.show} header='Public' body={<InfoModalBodyContent enum='visibility' visibility='public'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
                   <strong>Visibility: </strong>Public{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Public)</text></Button>}
                 </div>
                 }
                 { this.props.currentUser && section.status && section.status === 'draft' &&
-                <div className="box-content">
+                <div className="details-border">
                 <InfoModal show={this.state.show} header='Private' body={<InfoModalBodyContent enum='visibility' visibility='private'></InfoModalBodyContent>} hideInfo={()=>this.setState({show: false})} />
                   <strong>Visibility: </strong>Private (authors and publishers only){<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({show: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Private)</text></Button>}
                 </div>
                 }
                 { section.status === 'published' && section.publishedBy && section.publishedBy.email &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Published By: </strong>
                   {section.publishedBy.email}
                 </div>
                 }
                 { section.parent &&
-                <div className="box-content">
+                <div className="details-border">
                   <strong>Extended from: </strong>
                   <Link to={`/sections/${section.parent.id}`}>{ section.parent.name }</Link>
                 </div>
                 }
+                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                {
+                  <div className="details-border">
+                  <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
+                    <text>{section.tagList.join(', ')}</text>
+                  ) : (
+                    <text>No Tags Found</text>
+                  )}
+                  {isSimpleEditable(section, this.props.currentUser) &&
+                    <a href='#' onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                      <TagModal show={this.state.tagModalOpen || false}
+                                cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                tagList={section.tagList}
+                                saveButtonAction={(tagList) => {
+                                  this.props.updateSectionTags(section.id, tagList);
+                                  this.setState({ tagModalOpen: false });
+                                }} />
+                    </a>
+                  }
+                  </div>
+                }
+                </div>
+                </div>
               </div>
-              <InfoModal show={this.state.showInfoCodeSystemMappings} header="Code System Mappings" body={<InfoModalBodyContent enum='codeMappingHelpModal'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoCodeSystemMappings: false})} />
-              <div className="basic-c-box panel-default">
-                <div className="panel-heading">
-                  <h2 className="panel-title">
-                    Code System Mappings{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoCodeSystemMappings: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Code System Mappings)</text></Button>}
-                  </h2>
-                </div>
-                <div className="box-content">
-                  <div id="concepts-table">
-                    <CodedSetTable items={section.concepts} itemName={'Code System Mapping'} />
-                  </div>
-                </div>
-              </div>
-              <InfoModal show={this.state.showInfoLinkedQuestionsAndSections} header="Linked Questions and Sections" body={<p>Displays the selected content for this Section. A Section may contain either Questions only, Sections only (a grouping of questions), or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoLinkedQuestionsAndSections: false})} />
-              {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">
-                      <a className="panel-toggle" onClick={(e) => {
-                        e.preventDefault();
-                        this.toggleExpand();
-                      }} href={`#collapse-linked-questions`}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about linked</text>Linked Questions and Sections</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoLinkedQuestionsAndSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item </text></Button>}: {section.sectionNestedItems && section.sectionNestedItems.length}
-                    </h2>
-                    <ResultStyleControl resultControlVisibility={this.props.resultControlVisibility} resultStyle={this.props.resultStyle} />
-                  </div>
-                  <div className="panel-collapse panel-details collapse" id="collapse-linked-questions">
-                    <div className="box-content panel-body">
-                      <SectionNestedItemList resultStyle={this.props.resultStyle} items={this.nestedItemsForPage(section)} currentUser={this.props.currentUser} />
-                      {this.props.section.sectionNestedItems.length > 10 &&
-                        <Pagination onChange={this.pageChange} current={this.state.page} total={this.props.section.sectionNestedItems.length} />
-                      }
-                    </div>
-                  </div>
-                </div>
-              }
-              {section.parentItems && section.parentItems.length > 0 &&
-                <div className="basic-c-box panel-default">
-                  <div className="panel-heading">
-                    <h2 className="panel-title">
-                    <InfoModal show={this.state.showInfoParentItemsSection} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service.  It helps to answer “where is this section being used?”. The default view shows the names of the different Surveys that the Section is being used on. If the Section that is being viewed is nested on another Section in the service, the user can also see that by following the breadcrumb.</p>} hideInfo={()=>this.setState({showInfoParentItemsSection: false})} />
-                      <a className="panel-toggle" data-toggle="collapse" href={`#collapse-linked-surveys`}><i className="fa fa-bars" aria-hidden="true"></i>
-                      <text className="sr-only">Click link to expand information about </text>Parent Items</a>
-                      <Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItemsSection: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>
-                    </h2>
-                  </div>
-                  <div className="panel-collapse panel-details collapse" id="collapse-linked-surveys">
-                    <div className="box-content panel-body">
-                      {section.parentItems && section.parentItems.length > 0 && section.parentItems[0].error === undefined ? ( <ul className="no-bullet-list">
-                        {section.parentItems.map((surv) => {
-                          return (
-                            <li>
-                              {surv[0] && surv[0].type !== 'section' && <text><i className="fa fa-clipboard" aria-hidden="true"></i> <a href={`/#/surveys/${surv[0].id}`}>{surv[0].name}</a></text>}
-                              {surv[0] && surv[0].type === 'section' && <text><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${surv[0].id}`}>{surv[0].name}</a></text>}
-                              <ul className="no-bullet-list">
-                              {surv.slice(1).map((pathItem, index) => {
-                                return(
-                                  <li className='elbow-li' style={{ marginLeft: index + 'em' }}><i className="fa fa-window-maximize" aria-hidden="true"></i> <a href={`/#/sections/${pathItem.id}`}>{pathItem.name}</a></li>
-                                );
-                              })}
-                              </ul>
-                            </li>
-                          );
-                        })}
-                      </ul>) : (
-                        <p>Loading Parent Items or None found.</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              }
-              {section.status === 'published' &&
-                <ProgramsAndSystems item={section} />
-              }
             </div>
           </div>
         </div>

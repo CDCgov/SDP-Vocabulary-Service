@@ -17,7 +17,7 @@ Feature: Import Spreadsheet
     When I click on the "View Survey" button
     Then I should see "Survey Name: TestMMG.xlsx"
     # Removed ': 6' due to info-button
-    And I should see "Linked Sections"
+    And I should see "Sections"
 
   Scenario: Create Survey with Blank sheet using importer
       Given I am logged in as test_author@gmail.com
@@ -34,7 +34,7 @@ Feature: Import Spreadsheet
       When I click on the "View Survey" button
       Then I should see "Survey Name: TestMMGBlank.xlsx"
       # Removed ': 6' due to info-button
-      And I should see "Linked Sections"
+      And I should see "Sections"
 
  Scenario: Check that Survey which has no data does not import using importer
       Given I am logged in as test_author@gmail.com
@@ -65,7 +65,7 @@ Scenario: Create Survey from Generically Formatted Spreadsheet
       And I wait 10 seconds
       Then I should see "Survey Name: TestGenericTemplateMini.xlsx"
       # Removed ': 1' due to info-button
-      And I should see "Linked Sections"
+      And I should see "Sections"
 
 Scenario: Check that Survey Import fails from badly Formatted Generic Spreadsheet
       Given I am logged in as test_author@gmail.com
