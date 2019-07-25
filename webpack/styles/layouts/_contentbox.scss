@@ -29,6 +29,11 @@
   border-right: 1px solid $light-gray;
   background-color: $very-light-gray;
   padding: 7px;
+  white-space: pre-wrap;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  overflow: auto;
 }
 
 .details-margin-padding {
