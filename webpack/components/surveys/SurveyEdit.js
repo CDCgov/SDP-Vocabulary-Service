@@ -304,7 +304,7 @@ class SurveyEdit extends Component {
               <a className="tag-modal-link" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({ progSysModalOpen: true });
-              }}> {this.props.surveillancePrograms && this.props.surveillancePrograms[this.state.surveillanceProgramId] && this.props.surveillancePrograms[this.state.surveillanceProgramId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit program</text></i></a>
+              }}> {this.props.surveillancePrograms && this.props.surveillancePrograms[this.state.surveillanceProgramId] && this.props.surveillancePrograms[this.state.surveillanceProgramId].name} <i className="fa fa-file-text-o-square-o" aria-hidden="true"><text className='sr-only'>Click to edit program</text></i></a>
             </Col>
             <Col md={6} className="survey-group">
               <InfoModal show={this.state.showInfoSystem} header="System" body={<p>Identify the surveillance system that will use this vocabulary to support public health activities.<br/><br/>The default value is populated from the author’s profile. The value can be changed by selecting the pencil icon.</p>} hideInfo={()=>this.setState({showInfoSystem: false})} />
@@ -312,7 +312,7 @@ class SurveyEdit extends Component {
               <a className="tag-modal-link" href="#" onClick={(e) => {
                 e.preventDefault();
                 this.setState({ progSysModalOpen: true });
-              }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-pencil-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
+              }}> {this.props.surveillanceSystems && this.props.surveillanceSystems[this.state.surveillanceSystemId] && this.props.surveillanceSystems[this.state.surveillanceSystemId].name} <i className="fa fa-file-text-o-square-o" aria-hidden="true"><text className='sr-only'>Click to edit system</text></i></a>
             </Col>
           </Row>
           <h2 className="code-system-mappings-table-header"><strong>Code System Mappings</strong></h2>

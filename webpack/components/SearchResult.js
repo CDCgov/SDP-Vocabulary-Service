@@ -94,7 +94,7 @@ export default class SearchResult extends Component {
     } else if (stage === 'Draft') {
       return(
         <li className="result-analytics-item">
-          <span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span>
+          <span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span>
           <p className="item-description"><text className="sr-only">Content stage: </text>draft</p>
         </li>
       );
@@ -143,7 +143,7 @@ export default class SearchResult extends Component {
       );
     } else if (status === 'draft') {
       return(
-          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>private (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>private (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
       );
     } else {
       return(
@@ -425,7 +425,7 @@ export default class SearchResult extends Component {
                           this.setState({ pdvModalOpen: false });
                         }} />
                       <text className="sr-only">Item program defined variable: </text>{this.props.programVar ? this.props.programVar : 'Add Variable'} {'\u00A0'}
-                      <i className="fa fa-pencil-square-o" aria-hidden="true"> <text className="sr-only">Click to edit program defined variable</text></i>
+                      <i className="fa fa-file-text-o-square-o" aria-hidden="true"> <text className="sr-only">Click to edit program defined variable</text></i>
                     </a>
                   ) : ( this.props.programVar &&
                     <p>
@@ -502,7 +502,7 @@ export default class SearchResult extends Component {
                           this.setState({ pdvModalOpen: false });
                         }} />
                       <text className="sr-only">Item program defined variable: </text>{this.props.programVar ? this.props.programVar : 'Add Variable'} {'\u00A0'}
-                      <i className="fa fa-pencil-square-o" aria-hidden="true"><text className="sr-only">Click to edit program defined variable</text></i>
+                      <i className="fa fa-file-text-o-square-o" aria-hidden="true"><text className="sr-only">Click to edit program defined variable</text></i>
                     </a>
                   ) : ( this.props.programVar &&
                     <p>
