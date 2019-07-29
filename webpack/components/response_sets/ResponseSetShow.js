@@ -402,39 +402,56 @@ export default class ResponseSetShow extends Component {
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
                   </div>
+                  <div className="details-border">
+                    <strong>Description: </strong>
+                    <Linkify properties={{target: '_blank'}}>{responseSet.description}</Linkify>
+                  </div>
+                  <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                  {
+                    <div className="details-border">
+                      <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {responseSet.tagList && responseSet.tagList.length > 0 ? (
+                        <text>{responseSet.tagList.join(', ')}</text>
+                      ) : (
+                        <text>No Tags Found</text>
+                      )}
+                      {isSimpleEditable(responseSet, this.props.currentUser) &&
+                        <a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.setState({ tagModalOpen: true });
+                        }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                          <TagModal show={this.state.tagModalOpen || false}
+                                    cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                    tagList={responseSet.tagList}
+                                    saveButtonAction={(tagList) => {
+                                      this.props.updateResponseSetTags(responseSet.id, tagList);
+                                      this.setState({ tagModalOpen: false });
+                                    }} />
+                        </a>
+                      }
+                      </div>
+                    }
                   <div className="container-fluid details-margin-padding">
                   <div className="col-md-6 details-margin-padding">
+                    <div className="details-border">
+                      <strong>Import / Source: </strong>
+                      {this.sourceLink(responseSet)}
+                    </div>
+                    <div className="details-border">
+                      <InfoModal show={this.state.showContentStage} header={responseSet.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={responseSet.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
+                        <strong>Content Stage: </strong>
+                        {responseSet.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
+                    </div>
+                    <div className="details-border">
+                      <strong>Author: </strong>{ responseSet.createdBy && responseSet.createdBy.email }
+                    </div>
+                    <div className="details-border">
+                      <strong>Created: </strong>
+                      { format(parse(responseSet.createdAt,''), 'MMMM Do, YYYY') }
+                    </div>
                   <div className="details-border">
                     <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
                     <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{responseSet.versionIndependentId}
                   </div>
-                    <div className="details-border">
-                      <strong>Description: </strong>
-                      <Linkify properties={{target: '_blank'}}>{responseSet.description}</Linkify>
-                    </div>
-                <div className="details-border">
-                  <strong>Created: </strong>
-                  { format(parse(responseSet.createdAt,''), 'MMMM Do, YYYY') }
-                </div>
-                { responseSet.parent &&
-                  <div className="details-border">
-                    <strong>Extended from: </strong>
-                    <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
-                  </div>
-                }
-                { responseSet.source &&
-                  <div className="details-border">
-                    <strong>Import / Source: </strong>
-                    {this.sourceLink(responseSet)}
-                  </div>
-                }
-                { responseSet.contentStage &&
-                  <div className="details-border">
-                  <InfoModal show={this.state.showContentStage} header={responseSet.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={responseSet.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
-                    <strong>Content Stage: </strong>
-                    {responseSet.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
-                  </div>
-                }
                 </div>
                 <div className="col-md-6 details-margin-padding">
                 {
@@ -456,36 +473,16 @@ export default class ResponseSetShow extends Component {
                   {responseSet.publishedBy.email}
                 </div>
                 }
-                { responseSet.oid &&
+                { responseSet.parent &&
+                  <div className="details-border">
+                    <strong>Extended from: </strong>
+                    <Link to={`/responseSets/${responseSet.parent.id}`}>{ responseSet.parent.name }</Link>
+                  </div>
+                }
                 <div className="details-border">
                   <strong>OID: </strong>
                   {responseSet.oid}
                 </div>
-                }
-                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
-                {
-                  <div className="details-border">
-                    <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {responseSet.tagList && responseSet.tagList.length > 0 ? (
-                      <text>{responseSet.tagList.join(', ')}</text>
-                    ) : (
-                      <text>No Tags Found</text>
-                    )}
-                    {isSimpleEditable(responseSet, this.props.currentUser) &&
-                      <a href='#' onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ tagModalOpen: true });
-                      }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
-                        <TagModal show={this.state.tagModalOpen || false}
-                                  cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                                  tagList={responseSet.tagList}
-                                  saveButtonAction={(tagList) => {
-                                    this.props.updateResponseSetTags(responseSet.id, tagList);
-                                    this.setState({ tagModalOpen: false });
-                                  }} />
-                      </a>
-                    }
-                  </div>
-                }
                 </div>
                 </div>
               </div>
