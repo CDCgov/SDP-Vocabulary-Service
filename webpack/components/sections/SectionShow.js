@@ -306,7 +306,7 @@ class SectionShow extends Component {
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
+          <p className="maincontent-item-info">Version: {section.version} </p>
 
           <InfoModal show={this.state.showInfoQuestionsAndSections} header="Questions and Sections" body={<p>Displays the selected content for this Section. A Section may contain either Questions only, Sections only (a grouping of questions), or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoQuestionsAndSections: false})} />
           {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&

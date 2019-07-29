@@ -311,9 +311,7 @@ class SurveyShow extends Component {
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${this.props.survey.preferred ? 'cdc-preferred-note' : ''}`}><strong>Survey Name:</strong> {this.props.survey.name} {this.props.survey.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {this.props.survey.version} - Author: {this.props.survey.userId} </p>
-          {this.surveillanceProgram()}
-          {this.surveillanceSystem()}
+          <p className="maincontent-item-info">Version: {this.props.survey.version} </p>
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
               <InfoModal show={this.state.showInfoSections} header="Sections" body={<p>Displays the selected sections (grouping of questions) for this Survey.</p>} hideInfo={()=>this.setState({showInfoSections: false})} />

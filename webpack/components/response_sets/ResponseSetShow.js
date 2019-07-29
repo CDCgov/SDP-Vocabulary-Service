@@ -268,7 +268,7 @@ export default class ResponseSetShow extends Component {
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${responseSet.preferred ? 'cdc-preferred-note' : ''}`}><strong>Response Set Name:</strong> {responseSet.name} {responseSet.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {responseSet.version} - Author: {responseSet.createdBy && responseSet.createdBy.email} </p>
+          <p className="maincontent-item-info">Version: {responseSet.version} </p>
           {isSimpleEditable(responseSet, this.props.currentUser) &&
             <a className='pull-right' href='#' onClick={(e) => {
               e.preventDefault();

@@ -263,7 +263,7 @@ export default class QuestionShow extends Component {
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${question.preferred ? 'cdc-preferred-note' : ''}`}><strong>Question Name:</strong> {question.content} {question.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {question.version} - Author: {question.createdBy && question.createdBy.email} </p>
+          <p className="maincontent-item-info">Version: {question.version} </p>
           <InfoModal show={this.state.showInfoAuthorRecommendedResponseSets} header="Author Recommended Response Sets" body={<p>Response sets added to a Question by the author at the time of creation of the Question. This allows the author of the question to identify Response Sets that are appropriate for different contexts (e.g., For a Question asking about a vaccine administered, valid Response Sets may include condition-specific vaccine types, like varicella, influenza, or pertussis).  Users are encouraged to use these Response Sets if they meet their data collection needs.</p>} hideInfo={()=>this.setState({showInfoAuthorRecommendedResponseSets: false})} />
           {question.responseSets && question.responseSets.length > 0 &&
             <div className="basic-c-box panel-default">
