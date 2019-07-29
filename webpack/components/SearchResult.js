@@ -222,7 +222,7 @@ export default class SearchResult extends Component {
 
   questionCollapsable(result) {
     if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
-      return (<li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>);
+      return (<li>Response Type: {result.responseType.name}</li>);
     } else if (result.responseSets && result.responseSets.length === 1) {
       return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Set</a></li>);
     } else if (result.responseSets == undefined) {
@@ -259,7 +259,7 @@ export default class SearchResult extends Component {
         if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
           return (
             <ul className="list-inline result-linked-number result-linked-item associated__responseset" aria-label="Additional Question details.">
-              <li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>
+              <li>Response Type: {result.responseType.name}</li>
             </ul>
           );
         } else {
@@ -425,7 +425,7 @@ export default class SearchResult extends Component {
                           this.setState({ pdvModalOpen: false });
                         }} />
                       <text className="sr-only">Item program defined variable: </text>{this.props.programVar ? this.props.programVar : 'Add Variable'} {'\u00A0'}
-                      <i className="fa fa-file-text-o-square-o" aria-hidden="true"> <text className="sr-only">Click to edit program defined variable</text></i>
+                      <i className="fa fa-pencil-square-o" aria-hidden="true"> <text className="sr-only">Click to edit program defined variable</text></i>
                     </a>
                   ) : ( this.props.programVar &&
                     <p>
@@ -502,7 +502,7 @@ export default class SearchResult extends Component {
                           this.setState({ pdvModalOpen: false });
                         }} />
                       <text className="sr-only">Item program defined variable: </text>{this.props.programVar ? this.props.programVar : 'Add Variable'} {'\u00A0'}
-                      <i className="fa fa-file-text-o-square-o" aria-hidden="true"><text className="sr-only">Click to edit program defined variable</text></i>
+                      <i className="fa fa-pencil-square-o" aria-hidden="true"><text className="sr-only">Click to edit program defined variable</text></i>
                     </a>
                   ) : ( this.props.programVar &&
                     <p>

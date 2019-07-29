@@ -273,7 +273,7 @@ export default class ResponseSetShow extends Component {
             <a className='pull-right' href='#' onClick={(e) => {
               e.preventDefault();
               this.setState({ tagModalOpen: true });
-            }}>Update Tags <i className="fa fa-file-text-o-square-o" aria-hidden="true"></i>
+            }}>Update Tags <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
               <TagModal show={this.state.tagModalOpen || false}
                         cancelButtonAction={() => this.setState({ tagModalOpen: false })}
                         tagList={responseSet.tagList}
@@ -474,7 +474,7 @@ export default class ResponseSetShow extends Component {
                       <a href='#' onClick={(e) => {
                         e.preventDefault();
                         this.setState({ tagModalOpen: true });
-                      }}>&nbsp;&nbsp;<i className="fa fa-file-text-o" aria-hidden="true"></i>
+                      }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
                         <TagModal show={this.state.tagModalOpen || false}
                                   cancelButtonAction={() => this.setState({ tagModalOpen: false })}
                                   tagList={responseSet.tagList}

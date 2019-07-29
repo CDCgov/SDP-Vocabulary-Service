@@ -473,7 +473,7 @@ class SurveyShow extends Component {
                     <a href='#' onClick={(e) => {
                       e.preventDefault();
                       this.setState({ tagModalOpen: true });
-                    }}>&nbsp;&nbsp;<i className="fa fa-file-text-o" aria-hidden="true"></i>
+                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
                       <TagModal show={this.state.tagModalOpen || false}
                                 cancelButtonAction={() => this.setState({ tagModalOpen: false })}
                                 tagList={this.props.survey.tagList}
