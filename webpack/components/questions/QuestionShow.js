@@ -191,6 +191,13 @@ export default class QuestionShow extends Component {
     );
   }
 
+  alternativeLength(question) {
+    let altLength = this.nestedItemsForPage(question.linkedResponseSets.filter((lrs)=>!question.responseSets.map((rs)=>rs.id).includes(lrs.id))).length
+    return (
+      altLength
+    );
+  }
+
   mainContent(question) {
     return (
       <Col md={9} className="maincontent">
@@ -284,19 +291,24 @@ export default class QuestionShow extends Component {
             </div>
           }
           <InfoModal show={this.state.showInfoAlternativeResponseSetOptions} header="Alternative Response Set Options" body={<p>This displays a list of response sets paired with a Question that are not the “Author Recommended Response Sets”.<br /><br />SDP-V allows users the flexibility to pair a Question with different response sets based on their data collection needs.  If a user would like to reuse a Question, but the “author recommended response sets” do not meet the needs of that user, users can select other Response Sets from the repository to associate with the Question while creating, editing, or revising a Section. This allows SDP-V users to reuse Questions in the repository but provides the flexibility to select a context appropriate Response Set on a given Section. </p>} hideInfo={()=>this.setState({showInfoAlternativeResponseSetOptions: false})} />
-          {question.linkedResponseSets && question.linkedResponseSets.length > 0 &&
+          {question.linkedResponseSets && this.alternativeLength(question) > 0 &&
             <div className="basic-c-box panel-default">
               <div className="panel-heading">
                 <h2 className="panel-title">
                   <a className="panel-toggle" data-toggle="collapse" href="#collapse-lrs"><i className="fa fa-bars" aria-hidden="true"></i>
-                  <text className="sr-only">Click link to expand information about </text>Alternative Response Set Options</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAlternativeResponseSetOptions: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Alternative Response Set Options)</text></Button>}: {question.linkedResponseSets && question.linkedResponseSets.length}
+                  <text className="sr-only">Click link to expand information about </text>Alternative Response Set Options</a>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoAlternativeResponseSetOptions: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Alternative Response Set Options)</text></Button>}: {question.linkedResponseSets && this.alternativeLength(question)}
                 </h2>
               </div>
               <div className="panel-collapse panel-details collapse" id="collapse-lrs">
                 <div className="box-content panel-body">
-                  <ResponseSetList responseSets={this.nestedItemsForPage(question.linkedResponseSets)} />
-                  {question.linkedResponseSets.length > 10 &&
-                    <Pagination onChange={this.pageChange} current={this.state.page} total={question.linkedResponseSets.length} />
+                  {question.responseSets ? (
+                    //elimination
+                    <ResponseSetList responseSets={this.nestedItemsForPage(question.linkedResponseSets.filter((lrs)=>!question.responseSets.map((rs)=>rs.id).includes(lrs.id)))} />
+                  ) : (
+                    <ResponseSetList responseSets={this.nestedItemsForPage(question.linkedResponseSets)} />
+                  )}
+                  {this.alternativeLength(question) > 10 &&
+                    <Pagination onChange={this.pageChange} current={this.state.page} total={this.alternativeLength(question)} />
                   }
                 </div>
               </div>
