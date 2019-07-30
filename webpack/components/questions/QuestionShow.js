@@ -192,7 +192,7 @@ export default class QuestionShow extends Component {
   }
 
   alternativeLength(question) {
-    let altLength = this.nestedItemsForPage(question.linkedResponseSets.filter((lrs)=>!question.responseSets.map((rs)=>rs.id).includes(lrs.id))).length
+    let altLength = this.nestedItemsForPage(question.linkedResponseSets.filter((lrs)=>!question.responseSets.map((rs)=>rs.id).includes(lrs.id))).length;
     return (
       altLength
     );
