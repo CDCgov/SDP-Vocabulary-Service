@@ -244,5 +244,5 @@ def updateSlack(String colorHex, String messageText) {
 }
 
 def updateEmail(String subjectText, String messageText) {
-  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", from: 'no-reply@mitre.org', replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
+  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
 }
