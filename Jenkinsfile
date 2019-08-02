@@ -75,11 +75,9 @@ pipeline {
           script {
             def retire = sh returnStatus: true, script: '/home/jenkins/.npm-global/bin/retire --outputformat json --outputpath reports/retire.json --severity medium'
             if (retire == 13) {
-              echo "Vulnerabilities exist in NodeJS libraries used!  See archived retire.json file for details."
-              return 1;
+              error "Vulnerabilities exist in NodeJS libraries used!  See archived retire.json file for details."
             } else {
               echo "No vulnerabilities found in NodeJS libraries"
-              return 0;
             }
           }
           sh 'bundle exec rake'
