@@ -594,7 +594,7 @@ class DashboardSearch extends SearchStateComponent {
                         <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Draft'}});
-                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Draft') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-pencil' aria-hidden="true" /> Draft</a></li>
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Draft') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-file-text-o' aria-hidden="true" /> Draft</a></li>
                         <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Comment Only'}});
@@ -633,16 +633,16 @@ class DashboardSearch extends SearchStateComponent {
             </nav>
             {this.state.type && this.state.type.length > 0 && <div className='col-md-12'>
               {this.state.type && this.state.type.includes('survey') &&
-                <div className='adv-filter-survey col-md-3'><i className='fa important-white fa-clipboard' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Survey <a href='#' onClick={() => this.selectType('survey')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className='adv-filter-survey col-md-3'><i className='fa important-white fa-clipboard' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Survey <a href='#' className='important-white' onClick={() => this.selectType('survey')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               }
               {this.state.type && this.state.type.includes('section')&&
-                <div className='adv-filter-section col-md-3'><i className='fa important-white fa-window-maximize' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Section <a href='#' onClick={() => this.selectType('section')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className='adv-filter-section col-md-3'><i className='fa important-white fa-window-maximize' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Section <a href='#' className='important-white' onClick={() => this.selectType('section')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               }
               {this.state.type && this.state.type.includes('question') &&
-                <div className='adv-filter-question col-md-3'><i className='fa important-white fa-question-circle' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Question <a href='#' onClick={() => this.selectType('question')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className='adv-filter-question col-md-3'><i className='fa important-white fa-question-circle' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Question <a href='#' className='important-white' onClick={() => this.selectType('question')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               }
               {this.state.type && this.state.type.includes('response_set') &&
-                <div className='adv-filter-response_set col-md-3'><i className='fa important-white fa-list' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Response Set <a href='#' onClick={() => this.selectType('response_set')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className='adv-filter-response_set col-md-3'><i className='fa important-white fa-list' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Response Set <a href='#' className='important-white' onClick={() => this.selectType('response_set')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               }
             </div>}
             {this.state.programFilter.length > 0 &&
@@ -663,15 +663,44 @@ class DashboardSearch extends SearchStateComponent {
               })}
               </ul></div>
             }
-            {this.state.stageFilter.length > 0 &&
-              <div className="adv-filter-list">Content Stage Filters: <ul>{this.state.stageFilter.map((stage, i) => {
-                return <li key={i} className="adv-filter-list-item col-md-12">{stage} <a href='#' onClick={(e) => {
+            {this.state.stageFilter && this.state.stageFilter.length > 0 && <div className='col-md-12'>
+              {this.state.stageFilter.includes('Published') &&
+                <div className='adv-filter-published col-md-3'><i className='fa important-white fa-check-square-o' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Published <a href='#' className='important-white' onClick={(e) => {
                   e.preventDefault();
-                  this.toggleStageFilter({ target: { value: stage } });
-                }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></li>;
-              })}
-              </ul></div>
-            }
+                  this.toggleStageFilter({ target: { value: 'Published' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Draft')&&
+                <div className='adv-filter-draft col-md-3'><i className='fa important-white fa-file-text-o' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Draft <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Draft' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Comment Only') &&
+                <div className='adv-filter-comment col-md-3'><i className='fa important-white fa-comments' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Comment Only <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Comment Only' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Trial Use') &&
+                <div className='adv-filter-trial col-md-3'><i className='fa important-white fa-gavel' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Trial Use <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Trial Use' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Duplicate') &&
+                <div className='adv-filter-duplicate col-md-3'><i className='fa important-white fa-files-o' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Duplicate <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Duplicate' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Retired') &&
+                <div className='adv-filter-retired col-md-3'><i className='fa important-white fa-ban' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Retired <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Retired' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+            </div>}
             {this.state.mostRecentFilter &&
               <div className="adv-filter-list">Filtering by most recent version <a href='#' onClick={(e) => {
                 e.preventDefault();

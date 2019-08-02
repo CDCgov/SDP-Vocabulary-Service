@@ -94,7 +94,7 @@ export default class SearchResult extends Component {
     } else if (stage === 'Draft') {
       return(
         <li className="result-analytics-item">
-          <span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span>
+          <span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span>
           <p className="item-description"><text className="sr-only">Content stage: </text>draft</p>
         </li>
       );
@@ -143,7 +143,7 @@ export default class SearchResult extends Component {
       );
     } else if (status === 'draft') {
       return(
-          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>private (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
+          <p className="item-description" title={`Updated: ${date}`}><span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span> <text className="sr-only">Item visibility status: </text>private (<text className="sr-only">Item Version Number: </text><span title={`Item type:${type}`}>v{version}</span>)</p>
       );
     } else {
       return(
@@ -222,7 +222,7 @@ export default class SearchResult extends Component {
 
   questionCollapsable(result) {
     if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
-      return (<li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>);
+      return (<li>Response Type: {result.responseType.name}</li>);
     } else if (result.responseSets && result.responseSets.length === 1) {
       return (<li><a className="panel-toggle" data-toggle="collapse" href={`#collapse-${result.id}-question`}><i className="fa fa-bars" aria-hidden="true"></i><text className="sr-only">Click link to expand information about </text>Linked Response Set</a></li>);
     } else if (result.responseSets == undefined) {
@@ -259,7 +259,7 @@ export default class SearchResult extends Component {
         if(result.responseType && result.responseType.name && result.responseType.name !== 'Choice' && result.responseType.name !== 'Open Choice') {
           return (
             <ul className="list-inline result-linked-number result-linked-item associated__responseset" aria-label="Additional Question details.">
-              <li><i className="fa fa-comments" aria-hidden="true"></i>Response Type: {result.responseType.name}</li>
+              <li>Response Type: {result.responseType.name}</li>
             </ul>
           );
         } else {

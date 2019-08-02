@@ -197,7 +197,7 @@ class SurveyDedupe extends Component {
                     <tr key={j}>
                       <td scope="row" headers={`section_${i} name-desc-column`}><text>{question.draftQuestion.content}</text><br/><span className="small">{question.draftQuestion.description}</span></td>
                       {question.draftQuestion.status === 'published' && <td headers={`section_${i} vis-column`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
-                      {question.draftQuestion.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
+                      {question.draftQuestion.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                       <td headers={`section_${i} response-column`}><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
                       <td headers={`section_${i} category-column`}>{question.draftQuestion.category}</td>
                       <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${question.draftQuestion.content}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewQuestionIndex: j, potentialDupes: question.potentialDuplicates})}>View</button></td>
@@ -258,7 +258,7 @@ class SurveyDedupe extends Component {
                     <tr key={j}>
                       <td scope="row" headers={`section_${i} name-desc-column`}><text>{responseSet.draftResponseSet.name}</text><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
                       {responseSet.draftResponseSet.status === 'published' && <td headers={`section_${i} vis-column`}><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
-                      {responseSet.draftResponseSet.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
+                      {responseSet.draftResponseSet.status === 'draft' && <td headers={`section_${i} vis-column`}><span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                       <td headers={`section_${i} linked-column`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</td>
                       <td headers={`section_${i} responses-column`}>{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ')}</td>
                       <td headers={`section_${i} action-column`}><button className="btn btn-sm btn-default" id={`view-single-${responseSet.draftResponseSet.name}`} onClick={()=>this.setState({viewPage: 'single', viewSectionIndex: i, viewResponseSetIndex: j, potentialDupes: responseSet.potentialDuplicates})}>View</button></td>
@@ -398,7 +398,7 @@ class SurveyDedupe extends Component {
               <tr className="duplicate-row">
                 <td scope="row" headers="name-desc-q-column"><a href={`/#/questions/${question.draftQuestion.id}`} target="_blank">{question.draftQuestion.content}</a><br/><span className="small">{question.draftQuestion.description}</span></td>
                 {question.draftQuestion.status === 'published' && <td headers="vis-q-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
-                {question.draftQuestion.status === 'draft' && <td headers="vis-q-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
+                {question.draftQuestion.status === 'draft' && <td headers="vis-q-column"><span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                 <td headers="response-type-q-column"><i className='fa fa-comments' aria-hidden="true"></i> {question.draftQuestion.responseType}</td>
                 <td headers="category-q-column">{question.draftQuestion.category}</td>
               </tr>
@@ -515,7 +515,7 @@ class SurveyDedupe extends Component {
               <tr className="duplicate-row">
                 <td scope="row" headers="name-desc-rs-column"><a href={`/#/responseSets/${responseSet.draftResponseSet.id}`} target="_blank">{responseSet.draftResponseSet.name}</a><br/><span className="small">{responseSet.draftResponseSet.description}</span></td>
                 {responseSet.draftResponseSet.status === 'published' && <td headers="vis-rs-column"><span className="fa fa-check-square-o fa-lg item-status-published" aria-hidden="true"></span> Public</td>}
-                {responseSet.draftResponseSet.status === 'draft' && <td headers="vis-rs-column"><span className="fa fa-pencil fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
+                {responseSet.draftResponseSet.status === 'draft' && <td headers="vis-rs-column"><span className="fa fa-file-text-o fa-lg item-status-draft" aria-hidden="true"></span> Private</td>}
                 <td headers="linked-rs-column"><a target='_blank' href={`/#/questions/${responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.id}`}><i className={`fa ${iconMap['question']}`} aria-hidden="true"></i> {responseSet.draftResponseSet.linkedQuestion && responseSet.draftResponseSet.linkedQuestion.content}</a></td>
                 <td headers="responses-rs-column">{responseSet.draftResponseSet.responses && join(responseSet.draftResponseSet.responses.map((r) => r.displayName), ', ').replace(/codes.code,|codes.displayName|codes.codeSystem|controlNumber|tagList/gi, (matched)=>{
                   var mapObj = {
