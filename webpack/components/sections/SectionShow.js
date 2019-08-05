@@ -306,7 +306,7 @@ class SectionShow extends Component {
         <div className="maincontent-details">
           <Breadcrumb currentUser={this.props.currentUser} />
           <h1 className={`maincontent-item-name ${section.preferred ? 'cdc-preferred-note' : ''}`}><strong>Section Name:</strong> {section.name} {section.preferred && <text className="sr-only">This content is marked as preferred by the CDC</text>}</h1>
-          <p className="maincontent-item-info">Version: {section.version} - Author: {section.userId} </p>
+          <p className="maincontent-item-info">Version: {section.version} </p>
 
           <InfoModal show={this.state.showInfoQuestionsAndSections} header="Questions and Sections" body={<p>Displays the selected content for this Section. A Section may contain either Questions only, Sections only (a grouping of questions), or a mixture or both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoQuestionsAndSections: false})} />
           {section.sectionNestedItems && section.sectionNestedItems.length > 0 && ((section.questions && section.questions.length > 0) || (section.nestedSections && section.nestedSections.length > 0)) &&
@@ -442,20 +442,36 @@ class SectionShow extends Component {
                 <div className="panel-heading">
                   <h2 className="panel-title">Details</h2>
                 </div>
-                <div className="container-fluid details-margin-padding">
-                <div className="col-md-6 details-margin-padding">
-                <div className="details-border">
-                <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
-                  <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{section.versionIndependentId}
-                </div>
                 <div className="details-border">
                   <strong>Description: </strong>
                   <Linkify properties={{target: '_blank'}}>{section.description}</Linkify>
                 </div>
-                <div className="details-border">
-                  <strong>Created: </strong>
-                  { format(parse(section.createdAt,''), 'MMMM Do, YYYY') }
-                </div>
+                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
+                {
+                  <div className="details-border">
+                  <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
+                    <text>{section.tagList.join(', ')}</text>
+                  ) : (
+                    <text>No Tags Found</text>
+                  )}
+                  {isSimpleEditable(section, this.props.currentUser) &&
+                    <a href='#' onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ tagModalOpen: true });
+                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
+                      <TagModal show={this.state.tagModalOpen || false}
+                                cancelButtonAction={() => this.setState({ tagModalOpen: false })}
+                                tagList={section.tagList}
+                                saveButtonAction={(tagList) => {
+                                  this.props.updateSectionTags(section.id, tagList);
+                                  this.setState({ tagModalOpen: false });
+                                }} />
+                    </a>
+                  }
+                  </div>
+                }
+                <div className="container-fluid details-margin-padding">
+                <div className="col-md-6 details-margin-padding">
                 <InfoModal show={this.state.showContentStage} header={section.contentStage} body={<InfoModalBodyContent enum='contentStage' contentStage={section.contentStage}></InfoModalBodyContent>} hideInfo={()=>this.setState({showContentStage: false})} />
                 { section.contentStage &&
                   <div className="details-border">
@@ -463,6 +479,18 @@ class SectionShow extends Component {
                     {section.contentStage}{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showContentStage: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Content Stage)</text></Button>}
                   </div>
                 }
+                <div className="details-border">
+                  <strong>Author: </strong>
+                  { section.userId }
+                </div>
+                <div className="details-border">
+                  <strong>Created: </strong>
+                  { format(parse(section.createdAt,''), 'MMMM Do, YYYY') }
+                </div>
+                <div className="details-border">
+                <InfoModal show={this.state.showVersionIndependentID} header="Version Indenpendent ID" body={<InfoModalBodyContent enum='versionIndependentID'></InfoModalBodyContent>} hideInfo={()=>this.setState({showVersionIndependentID: false})} />
+                  <strong>Version Independent ID{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showVersionIndependentID: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Version Independent ID)</text></Button>}: </strong>{section.versionIndependentId}
+                </div>
                 </div>
                 <div className="col-md-6 details-margin-padding">
                 { this.props.currentUser && section.status && section.status === 'published' &&
@@ -488,30 +516,6 @@ class SectionShow extends Component {
                   <strong>Extended from: </strong>
                   <Link to={`/sections/${section.parent.id}`}>{ section.parent.name }</Link>
                 </div>
-                }
-                <InfoModal show={this.state.showInfoTags} header="Tags" body={<InfoModalBodyContent enum='tags'></InfoModalBodyContent>} hideInfo={()=>this.setState({showInfoTags: false})} />
-                {
-                  <div className="details-border">
-                  <strong>Tags</strong>{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoTags: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Tags)</text></Button>}: {section.tagList && section.tagList.length > 0 ? (
-                    <text>{section.tagList.join(', ')}</text>
-                  ) : (
-                    <text>No Tags Found</text>
-                  )}
-                  {isSimpleEditable(section, this.props.currentUser) &&
-                    <a href='#' onClick={(e) => {
-                      e.preventDefault();
-                      this.setState({ tagModalOpen: true });
-                    }}>&nbsp;&nbsp;<i className="fa fa-pencil" aria-hidden="true"></i>
-                      <TagModal show={this.state.tagModalOpen || false}
-                                cancelButtonAction={() => this.setState({ tagModalOpen: false })}
-                                tagList={section.tagList}
-                                saveButtonAction={(tagList) => {
-                                  this.props.updateSectionTags(section.id, tagList);
-                                  this.setState({ tagModalOpen: false });
-                                }} />
-                    </a>
-                  }
-                  </div>
                 }
                 </div>
                 </div>
