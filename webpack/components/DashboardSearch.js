@@ -32,8 +32,8 @@ class DashboardSearch extends SearchStateComponent {
       sourceFilter: '',
       statusFilter: '',
       stageFilter: [],
-      categoryFilter: '',
-      rtFilter: '',
+      categoryFilter: [],
+      rtFilter: [],
       retiredFilter: false,
       preferredFilter: false,
       ombFilter: false,
@@ -104,8 +104,8 @@ class DashboardSearch extends SearchStateComponent {
       sourceFilter: '',
       statusFilter: '',
       stageFilter: [],
-      categoryFilter: '',
-      rtFilter: '',
+      categoryFilter: [],
+      rtFilter: [],
       type: [],
       myStuffFilter: false,
       preferredFilter: false,
@@ -273,22 +273,20 @@ class DashboardSearch extends SearchStateComponent {
     this.props.changeFiltersCallback(newState);
   }
 
-  toggleCategory(val) {
-    let newState = {categoryFilter: val};
-    this.setState(newState);
-    let searchParams = this.currentSearchParameters();
-    searchParams.categoryFilter = newState.categoryFilter;
-    this.props.search(searchParams);
+  toggleCategory(e) {
+    let newState = {categoryFilter: $(e.target).val()};
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
     this.props.changeFiltersCallback(newState);
+    return this.setState(newState);
   }
 
-  toggleResponseType(val) {
-    let newState = {rtFilter: val};
-    this.setState(newState);
-    let searchParams = this.currentSearchParameters();
-    searchParams.rtFilter = newState.rtFilter;
-    this.props.search(searchParams);
+  toggleResponseType(e) {
+    let newState = {rtFilter: $(e.target).val()};
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
     this.props.changeFiltersCallback(newState);
+    return this.setState(newState);
   }
 
   toggleSort(val) {
@@ -417,16 +415,14 @@ class DashboardSearch extends SearchStateComponent {
                 <Col sm={6}>
                   <FormGroup>
                     <label htmlFor="rt-filter">Response Type <span className="label-note">(Questions Only):</span></label>
-                    <select className="input-select" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e.target.value)} >
-                      <option value="">Select Response Type...</option>
+                    <select multiple className="form-control" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
                       {values(this.props.responseTypes).map((rt, i) => {
                         return <option key={i} value={rt.name}>{rt.name}</option>;
                       })}
                     </select>
                     <br />
                     <label htmlFor="category-filter">Category <span className="label-note">(Questions Only):</span></label>
-                    <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e.target.value)} >
-                      <option value="">Select Category...</option>
+                    <select multiple className="form-control" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
                       {values(this.props.categories).map((category, i) => {
                         return <option key={i} value={category.name}>{category.name}</option>;
                       })}
@@ -546,10 +542,12 @@ class DashboardSearch extends SearchStateComponent {
                     <li className="dropdown">
                       <a href="#" id="type-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Type<span className="caret"></span></a>
                       <ul className="cdc-nav-dropdown">
-                        <li className="nav-dropdown-item"><a href='#' className='response-set-green' onClick={()=>this.selectType('response_set')}>{this.state.type && this.state.type.includes('response_set') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-list' aria-hidden="true" /> Response Sets</a></li>
-                        <li className="nav-dropdown-item"><a href='#' className='question-blue' onClick={()=>this.selectType('question')}>{this.state.type && this.state.type.includes('question') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-question-circle' aria-hidden="true" /> Questions</a></li>
-                        <li className="nav-dropdown-item"><a href='#' className='section-purple' onClick={()=>this.selectType('section')}>{this.state.type && this.state.type.includes('section') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-window-maximize' aria-hidden="true" /> Sections</a></li>
-                        <li className="nav-dropdown-item"><a href='#' className='survey-teal' onClick={()=>this.selectType('survey')}>{this.state.type && this.state.type.includes('survey') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-clipboard' aria-hidden="true" /> Surveys</a></li>
+                      <form className="drop-form">
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='response-set-green' onClick={()=>this.selectType('response_set')}>{this.state.type && this.state.type.includes('response_set') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-list' aria-hidden="true" /> Response Sets</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='question-blue' onClick={()=>this.selectType('question')}>{this.state.type && this.state.type.includes('question') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-question-circle' aria-hidden="true" /> Questions</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='section-purple' onClick={()=>this.selectType('section')}>{this.state.type && this.state.type.includes('section') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-window-maximize' aria-hidden="true" /> Sections</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='survey-teal' onClick={()=>this.selectType('survey')}>{this.state.type && this.state.type.includes('survey') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-clipboard' aria-hidden="true" /> Surveys</a></li>
+                      </form>
                       </ul>
                     </li>
                   </ul>}
@@ -587,30 +585,32 @@ class DashboardSearch extends SearchStateComponent {
                     <li className="dropdown">
                       <a href="#" id="stage-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stage<span className="caret"></span></a>
                       <ul className="cdc-nav-dropdown">
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                      <form className="drop-form">
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Published'}});
                         }}>{this.state.stageFilter && this.state.stageFilter.includes('Published') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-check-square-o status-green' aria-hidden="true" /> Published</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Draft'}});
                         }}>{this.state.stageFilter && this.state.stageFilter.includes('Draft') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-file-text-o' aria-hidden="true" /> Draft</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Comment Only'}});
                         }}>{this.state.stageFilter && this.state.stageFilter.includes('Comment Only') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-comments' aria-hidden="true" /> Comment Only</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Trial Use'}});
                         }}>{this.state.stageFilter && this.state.stageFilter.includes('Trial Use') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-gavel' aria-hidden="true" /> Trial Use</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Duplicate'}});
                         }}>{this.state.stageFilter && this.state.stageFilter.includes('Duplicate') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-files-o' aria-hidden="true" /> Duplicate</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
                           e.preventDefault();
                           this.toggleStageFilter({target: {value: 'Retired'}});
                         }}>{this.state.stageFilter && this.state.stageFilter.includes('Retired') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-ban' aria-hidden="true" /> Retired</a></li>
+                      </form>
                       </ul>
                     </li>
                   </ul>
@@ -759,11 +759,11 @@ class DashboardSearch extends SearchStateComponent {
                 this.toggleSort('');
               }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
-            {this.state.categoryFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category <a href='#' onClick={(e) => {
-                e.preventDefault();
-                this.toggleCategory('');
-              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+            {this.state.categoryFilter.length > 0 &&
+              <div className="adv-filter-list">Category Filters: <ul>{this.state.categoryFilter.map((cat, i) => {
+                return <li key={i} className="adv-filter-list-item col-md-12">{cat}</li>;
+              })}
+              </ul></div>
             }
             {this.state.statusFilter !== '' &&
               <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status <a href='#' onClick={(e) => {
@@ -777,11 +777,11 @@ class DashboardSearch extends SearchStateComponent {
                 this.toggleSource('');
               }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
-            {this.state.rtFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.rtFilter} response type <a href='#' onClick={(e) => {
-                e.preventDefault();
-                this.toggleResponseType('');
-              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+            {this.state.rtFilter.length > 0 &&
+              <div className="adv-filter-list">Response Type Filters: <ul>{this.state.rtFilter.map((rt, i) => {
+                return <li key={i} className="adv-filter-list-item col-md-12">{rt}</li>;
+              })}
+              </ul></div>
             }
           </div>
         </Col>
