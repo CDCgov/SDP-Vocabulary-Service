@@ -1,6 +1,6 @@
 /*!
 
- handlebars v4.0.5
+ handlebars v4.1.2
 
 Copyright (C) 2011-2015 by Yehuda Katz
 
@@ -275,7 +275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _logger2 = _interopRequireDefault(_logger);
 
-	var VERSION = '4.0.5';
+	var VERSION = '4.1.2';
 	exports.VERSION = VERSION;
 	var COMPILER_REVISION = 7;
 
