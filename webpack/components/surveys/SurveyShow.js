@@ -439,7 +439,7 @@ class SurveyShow extends Component {
                 </div>
                 }
                 <div className="details-border">
-                  <strong>Surveillance Program: </strong> {this.surveillanceProgram()}
+                  <strong>Surveillance Program</strong>{this.surveillanceProgram()}: {this.props.survey.surveillanceProgram.name}
                 </div>
                 <InfoModal show={this.state.showInfoOMBControlNumber} header="OMB Control Number" body={<p>Provides the OMB Control Number associated with the data collection instrument (if applicable).<br /> <br />This attribute is optional but completion allows other users to find vocabulary that has been used on an OMB-approved data collection instrument. Reuse of vocabulary that has been part of one or more OMB approved Paperwork Reduction Act (PRA) packages in the past can help expedite the review process. There is an advanced search filter that is based off of this attribute.</p>} hideInfo={()=>this.setState({showInfoOMBControlNumber: false})} />
                 { this.props.survey.controlNumber &&
@@ -475,10 +475,10 @@ class SurveyShow extends Component {
                 </div>
                 }
                 <div className="details-border">
-                  <strong>Surveillance System: </strong> {this.surveillanceSystem()}
+                  <strong>Surveillance System</strong>{this.surveillanceSystem()}: {this.props.survey.surveillanceSystem.name}
                 </div>
                 <div className="details-border">
-                  <strong>OMB Approval Date: </strong>{this.props.survey.ombApprovalDate}
+                  <strong>OMB Approval Date: </strong> {this.props.survey.ombApprovalDate}
                 </div>
                 { this.props.survey.status === 'published' && this.props.survey.publishedBy && this.props.survey.publishedBy.email &&
                 <div className="details-border">
@@ -504,7 +504,7 @@ class SurveyShow extends Component {
 
   surveillanceSystem() {
     if (this.props.survey.surveillanceSystem) {
-      return <p className="maincontent-item-info">Surveillance System{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSurveillanceSystem: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Surveillance System)</text></Button>}: {this.props.survey.surveillanceSystem.name}</p>;
+      return <Button bsStyle='link' style={{ padding: 1 }} onClick={() => this.setState({showInfoSurveillanceSystem: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Surveillance System)</text></Button>;
     } else {
       return "";
     }
@@ -512,7 +512,7 @@ class SurveyShow extends Component {
 
   surveillanceProgram() {
     if (this.props.survey.surveillanceProgram) {
-      return <p className="maincontent-item-info">Surveillance Program{<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSurveillanceProgram: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Surveillance Program)</text></Button>}: {this.props.survey.surveillanceProgram.name}</p>;
+      return <Button bsStyle='link' style={{ padding: 1 }} onClick={() => this.setState({showInfoSurveillanceProgram: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Surveillance Program)</text></Button>;
     } else {
       return "";
     }
