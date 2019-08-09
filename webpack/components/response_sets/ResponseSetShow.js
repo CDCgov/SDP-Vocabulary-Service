@@ -283,22 +283,6 @@ export default class ResponseSetShow extends Component {
                         }} />
             </a>
           }
-          {responseSet.questions && responseSet.questions.length > 0 &&
-            <div className="basic-c-box panel-default">
-              <div className="panel-heading">
-                <h2 className="panel-title">Questions</h2>
-              </div>
-              <div className="box-content">
-                <SectionNestedItemList items={this.nestedItemsForPage(responseSet)} currentUser={this.props.currentUser} />
-                {responseSet.questions.length > 10 &&
-                  <Pagination onChange={this.pageChange} current={this.state.qPage} total={responseSet.questions.length} />
-                }
-              </div>
-            </div>
-          }
-          {responseSet.status === 'published' &&
-            <ProgramsAndSystems item={responseSet} />
-          }
           <div className="basic-c-box panel-default">
             <div className="panel-heading">
               <h2 className="panel-title">Responses</h2>
@@ -325,6 +309,23 @@ export default class ResponseSetShow extends Component {
               }
             </div>
           </div>
+          {responseSet.status === 'published' &&
+            <ProgramsAndSystems item={responseSet} />
+          }
+          {responseSet.questions && responseSet.questions.length > 0 &&
+            <div className="basic-c-box panel-default">
+              <div className="panel-heading">
+                <InfoModal show={this.state.showInfoParentItems} header="Parent Items" body={<p>The parent items window shows how content is being reused across the service. It helps to answer “where is this response set being used?”. The view shows the Questions that the response set is being used on.</p>} hideInfo={()=>this.setState({showInfoParentItems: false})} />
+                <h2 className="panel-title">Parent Items<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoParentItems: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item (Parent Items InfoButton)</text></Button></h2>
+              </div>
+              <div className="box-content">
+                <SectionNestedItemList items={this.nestedItemsForPage(responseSet)} currentUser={this.props.currentUser} />
+                {responseSet.questions.length > 10 &&
+                  <Pagination onChange={this.pageChange} current={this.state.qPage} total={responseSet.questions.length} />
+                }
+              </div>
+            </div>
+          }
           <ul className="nav nav-tabs" role="tablist">
             <li id="main-content-tab" className="nav-item active" role="tab" onClick={() => this.setState({selectedTab: 'main'})} aria-selected={this.state.selectedTab === 'main'} aria-controls="main">
               <a className="nav-link" data-toggle="tab" href="#main-content" role="tab">Information</a>
