@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 
-import { fetchSection, publishSection, fetchSectionParents, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
+import { fetchSection, publishSection, fetchSectionUsage, fetchSectionParents, retireSection, updateStageSection, addSectionToGroup, removeSectionFromGroup, deleteSection, updateSectionTags } from '../../actions/section_actions';
 import { setSteps } from '../../actions/tutorial_actions';
 import { setStats } from '../../actions/landing';
 import { hideResultControl, toggleResultControl } from '../../actions/display_style_actions';
@@ -30,6 +30,9 @@ class SectionShowContainer extends Component {
 
   componentDidMount() {
     gaSend('send', 'pageview', window.location.toString());
+    if (this.props.section && this.props.section.status === 'published') {
+      this.props.fetchSectionUsage(this.props.params.sectionId);
+    }
     if (this.props.section){
       this.props.fetchSectionParents(this.props.params.sectionId);
     }
@@ -67,6 +70,10 @@ class SectionShowContainer extends Component {
       this.props.fetchSection(this.props.params.sectionId);
     } else if (this.props.section && this.props.section.parentItems === undefined) {
       this.props.fetchSectionParents(this.props.params.sectionId);
+    }
+    if (this.props.section && this.props.section.status === 'published' &&
+        this.props.section.surveillancePrograms === undefined) {
+      this.props.fetchSectionUsage(this.props.params.sectionId);
     }
   }
 
@@ -153,7 +160,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setSteps, setStats, fetchSection, fetchSectionParents, publishSection, addSectionToGroup, addPreferred, removePreferred,
+  return bindActionCreators({setSteps, setStats, fetchSectionUsage, fetchSection, fetchSectionParents, publishSection, addSectionToGroup, addPreferred, removePreferred,
     removeSectionFromGroup, deleteSection, updateSectionTags, hideResultControl, updateStageSection, toggleResultControl, retireSection, clearBreadcrumb, addBreadcrumbItem}, dispatch);
 }
 
@@ -185,7 +192,8 @@ SectionShowContainer.propTypes = {
   isLoading: PropTypes.bool,
   loadStatus : PropTypes.string,
   loadStatusText : PropTypes.string,
-  addBreadcrumbItem: PropTypes.func
+  addBreadcrumbItem: PropTypes.func,
+  fetchSectionUsage: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SectionShowContainer);

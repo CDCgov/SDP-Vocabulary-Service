@@ -1,5 +1,5 @@
-# rubocop:disable Surveys/LineLength
-# rubocop:disable Surveys/AbcSize
+# rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/AbcSize
 
 module Api
   class SurveysController < Api::ApplicationController

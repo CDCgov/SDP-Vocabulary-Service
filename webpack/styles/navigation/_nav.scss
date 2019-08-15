@@ -231,6 +231,17 @@ a.cdc-brand:focus {
   @extend .dropdown-menu;
   min-width: 200px;
   background-color: white;
+  .drop-form {
+    .cdc-nav-dropdown-item {
+      display: block;
+      padding: 3px 20px;
+      clear: both;
+      font-weight: 400;
+      line-height: 1.42857;
+      color: #333;
+      white-space: nowrap;
+    }
+  }
   ul {
     list-style-type: none;
     padding-left: 0px;

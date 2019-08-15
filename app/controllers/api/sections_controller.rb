@@ -1,5 +1,5 @@
-# rubocop:disable Sections/LineLength
-# rubocop:disable Sections/AbcSize
+# rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/AbcSize
 
 module Api
   class SectionsController < Api::ApplicationController

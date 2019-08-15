@@ -1,11 +1,23 @@
 class SectionsController < ApplicationController
   load_and_authorize_resource
   before_action :set_paper_trail_whodunnit
+  load_and_authorize_resource except: [:usage]
 
   def info_for_paper_trail
     comment = request.params[:comment] || ''
     association_changes = request.params[:association_changes] || {}
     { comment: comment, associations: association_changes }
+  end
+
+  def usage
+    if @section.status != 'published'
+      render(json: { error: 'Only published Response Sets provide usage information' }, status: :bad_request)
+    else
+      response = { id: @section.id }
+      response[:surveillance_programs] = @section.surveillance_programs_usage
+      response[:surveillance_systems] = @section.surveillance_systems_usage
+      render json: response
+    end
   end
 
   # GET /sections

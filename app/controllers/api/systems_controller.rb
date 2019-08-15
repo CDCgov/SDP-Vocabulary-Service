@@ -1,4 +1,4 @@
-# rubocop:disable Systems/LineLength
+# rubocop:disable Metrics/LineLength
 
 module Api
   class SystemsController < Api::ApplicationController

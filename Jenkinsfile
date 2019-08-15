@@ -112,7 +112,7 @@ pipeline {
       steps {
         unstash 'reports'
         script {
-          def scannerHome = tool 'SonarQube Scanner 3.3'
+          def scannerHome = tool 'SonarQube Scanner 4.0'
           withSonarQubeEnv('SDP') {
            sh "${scannerHome}/bin/sonar-scanner -X"
           }
@@ -160,7 +160,7 @@ pipeline {
       }
     }
 
-    stage('Scan Image') {
+    stage('Pull Image') {
       agent { label 'docker' }
       when {
         branch 'development'
@@ -170,35 +170,68 @@ pipeline {
         echo "Pulling SDP-V container image for scanning..."
         sh 'set +x; docker -H localhost:2375 login -u serviceaccount -p $(oc whoami -t) docker-registry.default.svc.cluster.local:5000'
         sh 'docker -H localhost:2375 pull docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest'
-
-        echo "Scanning image with Twistlock..."
-        twistlockScan ca: '',
-          cert: '',
-          compliancePolicy: 'critical',
-          containerized: false,
-          dockerAddress: 'tcp://localhost:2375',
-          gracePeriodDays: 7,
-          ignoreImageBuildTime: true,
-          repository: '',
-          image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
-          tag: '',
-          key: '',
-          logLevel: 'true',
-          policy: 'critical',
-          requirePackageUpdate: true,
-          timeout: 60
-
-        echo "Publishing results..."
-        twistlockPublish ca: '',
-          cert: '',
-          containerized: false,
-          dockerAddress: 'tcp://localhost:2375',
-          gracePeriodDays: 7,
-          ignoreImageBuildTime: true,
-          image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
-          key: '',
-          logLevel: 'true',
-          timeout: 60
+      }
+    }
+    stage('Image Scans') {
+      when {
+        branch 'development'
+      }
+      failFast true
+      parallel {
+        stage('Scan with oscap') {
+          agent { label 'docker' }
+          steps {
+            echo "Scanning with oscap..."
+            sh 'sudo oscap-docker image-cve docker-registry.default.svc.cluster.local:5000/sdp/vocabulary --report report.html;'
+            sh 'report-parser.py report.html 7 14 30 -1'
+          }
+          post {
+            always {
+              publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '', reportFiles: 'report.html',
+                reportName: 'OpenSCAP Results', reportTitles: 'OpenSCAP Scan Results'])
+            }
+          }
+        }
+        stage('Scan with Twistlock') {
+          agent { label 'docker' }
+          stages {
+            stage('Twistlock Scan') {
+              steps {
+                echo "Scanning image with Twistlock..."
+                twistlockScan ca: '',
+                  cert: '',
+                  compliancePolicy: 'critical',
+                  containerized: false,
+                  dockerAddress: 'tcp://localhost:2375',
+                  gracePeriodDays: 7,
+                  ignoreImageBuildTime: true,
+                  repository: '',
+                  image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
+                  tag: '',
+                  key: '',
+                  logLevel: 'true',
+                  policy: 'critical',
+                  requirePackageUpdate: true,
+                  timeout: 60
+              }
+            }
+            stage('Twistlock Publish') {
+              steps {
+                echo "Publishing results..."
+                twistlockPublish ca: '',
+                  cert: '',
+                  containerized: false,
+                  dockerAddress: 'tcp://localhost:2375',
+                  gracePeriodDays: 7,
+                  ignoreImageBuildTime: true,
+                  image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
+                  key: '',
+                  logLevel: 'true',
+                  timeout: 60
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -211,5 +244,5 @@ def updateSlack(String colorHex, String messageText) {
 }
 
 def updateEmail(String subjectText, String messageText) {
-  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", from: 'no-reply@mitre.org', replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
+  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
 }

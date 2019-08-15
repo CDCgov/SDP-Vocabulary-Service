@@ -22,7 +22,7 @@ class SurveyImportContainer extends Component {
       survey: {},
       fileChosen: false,
       filePromiseReturned: false,
-      importType: "mmg" //make sure that value matches with default clicked value
+      importType: "generic" //make sure that value matches with default clicked value
     };
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -78,13 +78,13 @@ class SurveyImportContainer extends Component {
           <legend>Please select the format of the file you wish to import</legend>
           <div className="radio">
             <label htmlFor="import-type-generic">
-              <input type='radio' className='form-radio-input'  value="generic" onClick={this.changeFormat} name='importType' id='import-type-generic'  />
+              <input type='radio' className='form-radio-input'  value="generic" onClick={this.changeFormat} defaultChecked name='importType' id='import-type-generic'  />
               Generic Import
             </label>
           </div>
           <div className="radio">
             <label htmlFor="import-type-mmg">
-              <input type='radio' className='form-radio-input' value="mmg" onClick={this.changeFormat}  defaultChecked name='importType' id='import-type-mmg' />
+              <input type='radio' className='form-radio-input' value="mmg" onClick={this.changeFormat} name='importType' id='import-type-mmg' />
               MMG Import
             </label>
           </div>
@@ -126,7 +126,7 @@ class SurveyImportContainer extends Component {
   }
 
   cancelImport() {
-    this.setState({file: null, importAttempted: false, importFailure: null, importWarnings: [],importErrors: [], fileChosen: false, importFormat: null, filePromiseReturned: false, survey: {}, importType:"mmg"});
+    this.setState({file: null, importAttempted: false, importFailure: null, importWarnings: [],importErrors: [], fileChosen: false, importFormat: null, filePromiseReturned: false, survey: {}, importType:"generic"});
   }
 
   fileActions() {

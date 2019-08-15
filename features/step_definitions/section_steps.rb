@@ -18,7 +18,7 @@ end
 When(/^I go to the list of Sections$/) do
   Elastictest.fake_section_search_results
   visit '/'
-  page.find('button[id="sections-analytics-item"]').click
+  page.find('button[id="search-btn"]').click
 end
 
 When(/^I click on the button to add the Question "([^"]*)"$/) do |question_content|

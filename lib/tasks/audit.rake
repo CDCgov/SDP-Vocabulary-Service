@@ -8,7 +8,9 @@ begin
     end
     desc 'Check gems for vulns using bundle-audit'
     task :check do
-      Bundler::Audit::CLI.new.check
+      # TODO: remove CVE-2015-9284 once https://github.com/omniauth/omniauth/pull/809 is resolved
+      # mitigated with: omniauth-rails_csrf_protection
+      sh 'bundle-audit check --ignore CVE-2015-9284'
     end
 
     desc 'Update vulns database and check gems using bundle-audit'

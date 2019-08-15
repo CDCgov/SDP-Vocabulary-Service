@@ -22,7 +22,7 @@ class DashboardSearch extends SearchStateComponent {
   constructor(props){
     super(props);
     this.state={
-      type: '',
+      type: [],
       myStuffFilter: false,
       searchTerms: '',
       programFilter: [],
@@ -31,9 +31,9 @@ class DashboardSearch extends SearchStateComponent {
       sort: '',
       sourceFilter: '',
       statusFilter: '',
-      stageFilter: '',
-      categoryFilter: '',
-      rtFilter: '',
+      stageFilter: [],
+      categoryFilter: [],
+      rtFilter: [],
       retiredFilter: false,
       preferredFilter: false,
       ombFilter: false,
@@ -47,6 +47,7 @@ class DashboardSearch extends SearchStateComponent {
     this.hideAdvSearch = this.hideAdvSearch.bind(this);
     this.selectGroup = this.selectGroup.bind(this);
     this.selectType = this.selectType.bind(this);
+    this.selectAuthor = this.selectAuthor.bind(this);
     this.clearAdvSearch = this.clearAdvSearch.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.selectFilters = this.selectFilters.bind(this);
@@ -93,7 +94,7 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   clearAdvSearch() {
-    const clearedParams = {
+    let clearedParams = {
       programFilter: [],
       systemFilter: [],
       methodsFilter: [],
@@ -102,10 +103,10 @@ class DashboardSearch extends SearchStateComponent {
       ombDate: null,
       sourceFilter: '',
       statusFilter: '',
-      stageFilter: '',
-      categoryFilter: '',
-      rtFilter: '',
-      type: '',
+      stageFilter: [],
+      categoryFilter: [],
+      rtFilter: [],
+      type: [],
       myStuffFilter: false,
       preferredFilter: false,
       retiredFilter: false,
@@ -251,7 +252,16 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   toggleStageFilter(e) {
-    let newState = {stageFilter: e.target.value, retiredFilter: this.state.retiredFilter};
+    let newState = {};
+    let stage = this.state.stageFilter || [];
+    if(stage.includes(e.target.value)) {
+      newState.stageFilter = stage.filter((i) => i !== e.target.value);
+      newState.retiredFilter = this.state.retiredFilter;
+    } else {
+      stage.push(e.target.value);
+      newState.stageFilter = stage;
+      newState.retiredFilter = this.state.retiredFilter;
+    }
     if (e.target.value === 'Retired' && !this.state.retiredFilter) {
       newState['retiredFilter'] = true;
     }
@@ -264,21 +274,19 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   toggleCategory(e) {
-    let newState = {categoryFilter: e.target.value};
-    this.setState(newState);
-    let searchParams = this.currentSearchParameters();
-    searchParams.categoryFilter = newState.categoryFilter;
-    this.props.search(searchParams);
+    let newState = {categoryFilter: $(e.target).val()};
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
     this.props.changeFiltersCallback(newState);
+    return this.setState(newState);
   }
 
   toggleResponseType(e) {
-    let newState = {rtFilter: e.target.value};
-    this.setState(newState);
-    let searchParams = this.currentSearchParameters();
-    searchParams.rtFilter = newState.rtFilter;
-    this.props.search(searchParams);
+    let newState = {rtFilter: $(e.target).val()};
+    let newParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newParams);
     this.props.changeFiltersCallback(newState);
+    return this.setState(newState);
   }
 
   toggleSort(val) {
@@ -376,7 +384,7 @@ class DashboardSearch extends SearchStateComponent {
                 </Col>
                 <Col sm={6}>
                   <FormGroup>
-                    <ControlLabel htmlFor="status-filter">Visibility Status: </ControlLabel>
+                    <ControlLabel htmlFor="status-filter">Visibility Status: </ControlLabel><br/>
                     <ToggleButtonGroup
                       type="radio"
                       name="status-filter"
@@ -401,35 +409,20 @@ class DashboardSearch extends SearchStateComponent {
                       <ToggleButton value={'phin_vads'} onClick={() => this.toggleSource('phin_vads')}>PHIN VADS</ToggleButton>
                     </ToggleButtonGroup>
                   </FormGroup>
-                  <FormGroup>
-                    <label htmlFor="stage-filter">Content Stage: </label>
-                    <select className="input-select" name="stage-filter" id="stage-filter" value={this.state.stageFilter} onChange={(e) => this.toggleStageFilter(e)} >
-                      <option value="">Select Stage...</option>
-                      <option value="Draft">Draft</option>
-                      <option value="Comment Only">Comment Only</option>
-                      <option value="Trial Use">Trial Use</option>
-                      <option value="Published">Published</option>
-                      <option value="Retired">Retired</option>
-                      <option value="Duplicate">Duplicate</option>
-                    </select>
-                    <br />
-                  </FormGroup>
                 </Col>
               </Row>
               <Row>
                 <Col sm={6}>
                   <FormGroup>
                     <label htmlFor="rt-filter">Response Type <span className="label-note">(Questions Only):</span></label>
-                    <select className="input-select" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
-                      <option value="">Select Response Type...</option>
+                    <select multiple className="form-control" name="rt-filter" id="rt-filter" value={this.state.rtFilter} onChange={(e) => this.toggleResponseType(e)} >
                       {values(this.props.responseTypes).map((rt, i) => {
                         return <option key={i} value={rt.name}>{rt.name}</option>;
                       })}
                     </select>
                     <br />
                     <label htmlFor="category-filter">Category <span className="label-note">(Questions Only):</span></label>
-                    <select className="input-select" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
-                      <option value="">Select Category...</option>
+                    <select multiple className="form-control" name="category-filter" id="category-filter" value={this.state.categoryFilter} onChange={(e) => this.toggleCategory(e)} >
                       {values(this.props.categories).map((category, i) => {
                         return <option key={i} value={category.name}>{category.name}</option>;
                       })}
@@ -477,22 +470,27 @@ class DashboardSearch extends SearchStateComponent {
     this.props.search(newSearchParams);
   }
 
-  selectType(searchType, myStuffToggle=false) {
+  selectAuthor() {
     let newState = {};
-    if(myStuffToggle) {
-      if(this.state.type === searchType && this.state.myStuffFilter) {
-        newState.myStuffFilter = false;
-      } else {
-        newState.myStuffFilter = true;
-      }
-    } else {
+    if(this.state.myStuffFilter) {
       newState.myStuffFilter = false;
+    } else {
+      newState.myStuffFilter = true;
     }
-    if(this.state.type === searchType && !(myStuffToggle && !this.state.myStuffFilter)) {
-      newState.type = '';
+    this.setState(newState);
+    let newSearchParams = Object.assign(this.currentSearchParameters(), newState);
+    this.props.search(newSearchParams);
+  }
+
+  selectType(searchType) {
+    let newState = {};
+    let type = this.state.type || [];
+    if(type.includes(searchType)) {
+      newState.type = type.filter((i) => i !== searchType);
       newState.page = 1;
     } else {
-      newState.type = searchType;
+      type.push(searchType);
+      newState.type = type;
       newState.page = 1;
     }
     this.setState(newState);
@@ -540,23 +538,25 @@ class DashboardSearch extends SearchStateComponent {
                   <i className="fa fa-filter filter-brand"><text className="sr-only">Filter navbar</text></i>
                 </div>
                 <div className="collapse navbar-collapse" id="filter-nav">
-                  <ul className="filter-nav filter-utlt-navbar-nav">
+                  {this.props.isDash && <ul className="filter-nav filter-utlt-navbar-nav">
                     <li className="dropdown">
                       <a href="#" id="type-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Type<span className="caret"></span></a>
                       <ul className="cdc-nav-dropdown">
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('response_set')}>Response Sets</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('question')}>Questions</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('section')}>Sections</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType('survey')}>Surveys</a></li>
+                      <form className="drop-form">
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='response-set-green' onClick={()=>this.selectType('response_set')}>{this.state.type && this.state.type.includes('response_set') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-list' aria-hidden="true" /> Response Sets</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='question-blue' onClick={()=>this.selectType('question')}>{this.state.type && this.state.type.includes('question') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-question-circle' aria-hidden="true" /> Questions</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='section-purple' onClick={()=>this.selectType('section')}>{this.state.type && this.state.type.includes('section') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-window-maximize' aria-hidden="true" /> Sections</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='survey-teal' onClick={()=>this.selectType('survey')}>{this.state.type && this.state.type.includes('survey') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-clipboard' aria-hidden="true" /> Surveys</a></li>
+                      </form>
                       </ul>
                     </li>
-                  </ul>
+                  </ul>}
                   {this.props.loggedIn &&
                     <ul className="filter-nav filter-utlt-navbar-nav">
                       <li className="dropdown">
                         <a href="#" id="owner-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Owner<span className="caret"></span></a>
                         <ul className="cdc-nav-dropdown">
-                          <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectType(this.state.type, true)}>Filter to items owned by me</a></li>
+                          <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectAuthor()}>Filter to items owned by me</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -567,10 +567,16 @@ class DashboardSearch extends SearchStateComponent {
                         <a href="#" id="group-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Group<span className="caret"></span></a>
                         <ul className="cdc-nav-dropdown">
                           {this.props.groups.map((g, i) => {
-                            return <li key={i} className="nav-dropdown-item" onClick={()=>this.selectGroup(g.id)}><a href='#'>{g.name}</a></li>;
+                            return <li key={i} className="nav-dropdown-item" onClick={(e) => {
+                              e.preventDefault();
+                              this.selectGroup(g.id);
+                            }}><a href='#'>{g.name}</a></li>;
                           })}
                           <li role="separator" className="divider"></li>
-                          <li className="nav-dropdown-item"><a href='#' onClick={()=>this.selectGroup('-1')}>All My Groups</a></li>
+                          <li className="nav-dropdown-item"><a href='#' onClick={(e) => {
+                            e.preventDefault();
+                            this.selectGroup('-1');
+                          }}>All My Groups</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -579,12 +585,32 @@ class DashboardSearch extends SearchStateComponent {
                     <li className="dropdown">
                       <a href="#" id="stage-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stage<span className="caret"></span></a>
                       <ul className="cdc-nav-dropdown">
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.toggleStageFilter({target: {value: 'Draft'}})}>Draft</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.toggleStageFilter({target: {value: 'Comment Only'}})}>Comment Only</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.toggleStageFilter({target: {value: 'Trial Use'}})}>Trial Use</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.toggleStageFilter({target: {value: 'Published'}})}>Published</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.toggleStageFilter({target: {value: 'Retired'}})}>Retired</a></li>
-                        <li className="nav-dropdown-item"><a href='#' onClick={()=>this.toggleStageFilter({target: {value: 'Duplicate'}})}>Duplicate</a></li>
+                      <form className="drop-form">
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Published'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Published') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-check-square-o status-green' aria-hidden="true" /> Published</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Draft'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Draft') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-file-text-o' aria-hidden="true" /> Draft</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Comment Only'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Comment Only') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-comments' aria-hidden="true" /> Comment Only</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Trial Use'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Trial Use') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-gavel' aria-hidden="true" /> Trial Use</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Duplicate'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Duplicate') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-files-o' aria-hidden="true" /> Duplicate</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' onClick={(e) => {
+                          e.preventDefault();
+                          this.toggleStageFilter({target: {value: 'Retired'}});
+                        }}>{this.state.stageFilter && this.state.stageFilter.includes('Retired') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' />} <i className='fa fa-ban' aria-hidden="true" /> Retired</a></li>
+                      </form>
                       </ul>
                     </li>
                   </ul>
@@ -593,7 +619,10 @@ class DashboardSearch extends SearchStateComponent {
                   </ul>
                   <ul className="filter-nav filter-utlt-navbar-nav">
                     <li className="dropdown">
-                      <a href="#" id="clear-filter" tabIndex="2" className="filter-navbar-item help-link" role="button" onClick={()=>this.clearAdvSearch()}>Clear</a>
+                      <a href="#" id="clear-filter" tabIndex="2" className="filter-navbar-item help-link" role="button" onClick={(e) => {
+                        e.preventDefault();
+                        this.clearAdvSearch();
+                      }}>Clear</a>
                     </li>
                   </ul>
                   <a className="adv-search-link pull-right" title="Advanced Search" href="#" tabIndex="4" onClick={(e) => {
@@ -602,6 +631,20 @@ class DashboardSearch extends SearchStateComponent {
                   }}>{this.props.searchSource === 'simple_search' && <i className="fa fa-exclamation-triangle simple-search-icon" aria-hidden="true"></i>} Advanced</a>
                 </div>
             </nav>
+            {this.state.type && this.state.type.length > 0 && <div className='col-md-12'>
+              {this.state.type && this.state.type.includes('survey') &&
+                <div className='adv-filter-survey col-md-3'><i className='fa important-white fa-clipboard' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Survey <a href='#' className='important-white' onClick={() => this.selectType('survey')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.type && this.state.type.includes('section')&&
+                <div className='adv-filter-section col-md-3'><i className='fa important-white fa-window-maximize' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Section <a href='#' className='important-white' onClick={() => this.selectType('section')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.type && this.state.type.includes('question') &&
+                <div className='adv-filter-question col-md-3'><i className='fa important-white fa-question-circle' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Question <a href='#' className='important-white' onClick={() => this.selectType('question')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.type && this.state.type.includes('response_set') &&
+                <div className='adv-filter-response_set col-md-3'><i className='fa important-white fa-list' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Response Set <a href='#' className='important-white' onClick={() => this.selectType('response_set')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+            </div>}
             {this.state.programFilter.length > 0 &&
               <div className="adv-filter-list">Program Filters: {this.state.programFilter.map((id, i) => {
                 return <div key={i} className="adv-filter-list-item col-md-12">{this.props.surveillancePrograms[id].name}</div>;
@@ -615,56 +658,130 @@ class DashboardSearch extends SearchStateComponent {
               </div>
             }
             {this.state.methodsFilter.length > 0 &&
-              <div className="adv-filter-list">Data Collection Method Filters: {this.state.methodsFilter.map((method, i) => {
-                return <div key={i} className="adv-filter-list-item col-md-12">{method}</div>;
+              <div className="adv-filter-list">Data Collection Method Filters: <ul>{this.state.methodsFilter.map((method, i) => {
+                return <li key={i} className="adv-filter-list-item col-md-12">{method}</li>;
               })}
-              </div>
+              </ul></div>
             }
-            {this.state.type && this.state.type !== '' &&
-              <div className="adv-filter-list">Filtering by type: {this.state.type} <a href='#' onClick={() => this.selectType('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
-            }
+            {this.state.stageFilter && this.state.stageFilter.length > 0 && <div className='col-md-12'>
+              {this.state.stageFilter.includes('Published') &&
+                <div className='adv-filter-published col-md-3'><i className='fa important-white fa-check-square-o' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Published <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Published' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Draft')&&
+                <div className='adv-filter-draft col-md-3'><i className='fa important-white fa-file-text-o' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Draft <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Draft' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Comment Only') &&
+                <div className='adv-filter-comment col-md-3'><i className='fa important-white fa-comments' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Comment Only <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Comment Only' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Trial Use') &&
+                <div className='adv-filter-trial col-md-3'><i className='fa important-white fa-gavel' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Trial Use <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Trial Use' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Duplicate') &&
+                <div className='adv-filter-duplicate col-md-3'><i className='fa important-white fa-files-o' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Duplicate <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Duplicate' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+              {this.state.stageFilter.includes('Retired') &&
+                <div className='adv-filter-retired col-md-3'><i className='fa important-white fa-ban' aria-hidden="true"></i><text className='sr-only'>Filtering by content stage: </text> Retired <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleStageFilter({ target: { value: 'Retired' } });
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              }
+            </div>}
             {this.state.mostRecentFilter &&
-              <div className="adv-filter-list">Filtering by most recent version <a href='#' onClick={() => this.toggleMostRecentFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Filtering by most recent version <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.toggleMostRecentFilter();
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.preferredFilter &&
-              <div className="adv-filter-list">Filtering by CDC preferred content <a href='#' onClick={() => this.togglePreferredFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Filtering by CDC preferred content <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.togglePreferredFilter();
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.retiredFilter &&
-              <div className="adv-filter-list">Including retired content in search results <a href='#' onClick={() => this.toggleRetiredFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Including retired content in search results <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.toggleRetiredFilter();
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+            }
+            {this.state.myStuffFilter &&
+              <div className="adv-filter-list">Filtering to content you own <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.selectAuthor();
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {!this.state.retiredFilter &&
-              <div className="adv-filter-list">Hiding retired content from search results <a href='#' onClick={() => this.toggleRetiredFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Hiding retired content from search results <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.toggleRetiredFilter();
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.ombFilter &&
-              <div className="adv-filter-list">Filtering by OMB approved content <a href='#' onClick={() => this.toggleOmbFilter()}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Filtering by OMB approved content <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.toggleOmbFilter();
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.contentSince &&
               <div className="adv-filter-list">Content Since Filter:
-                <div className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')} <a href='#' onClick={() => this.handleDateChange(null)}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className="adv-filter-list-item col-md-12">{this.state.contentSince.format('M/D/YYYY')} <a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.handleDateChange(null);
+                }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               </div>
             }
             {this.state.ombDate &&
               <div className="adv-filter-list">Filtering to surveys with OMB approval date after:
-                <div className="adv-filter-list-item col-md-12">{this.state.ombDate.format('M/D/YYYY')} <a href='#' onClick={() => this.handleOmbDateChange(null)}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className="adv-filter-list-item col-md-12">{this.state.ombDate.format('M/D/YYYY')} <a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  this.handleOmbDateChange(null);
+                }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               </div>
             }
             {this.state.sort !== '' &&
-              <div className="adv-filter-list">Sorting results by {this.state.sort} <a href='#' onClick={() => this.toggleSort('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Sorting results by {this.state.sort} <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.toggleSort('');
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
-            {this.state.categoryFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.categoryFilter} category <a href='#' onClick={() => this.toggleCategory('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+            {this.state.categoryFilter.length > 0 &&
+              <div className="adv-filter-list">Category Filters: <ul>{this.state.categoryFilter.map((cat, i) => {
+                return <li key={i} className="adv-filter-list-item col-md-12">{cat}</li>;
+              })}
+              </ul></div>
             }
             {this.state.statusFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status <a href='#' onClick={() => this.toggleStatus('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
-            }
-            {this.state.stageFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.stageFilter} content stage <a href='#' onClick={() => this.toggleStageFilter('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Filtering results by {this.state.statusFilter === 'draft' ? 'private' : 'public'} visibility status <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.toggleStatus('');
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
             {this.state.sourceFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.sourceFilter} source <a href='#' onClick={() => this.toggleSource('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+              <div className="adv-filter-list">Filtering results by {this.state.sourceFilter} source <a href='#' onClick={(e) => {
+                e.preventDefault();
+                this.toggleSource('');
+              }}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
             }
-            {this.state.rtFilter !== '' &&
-              <div className="adv-filter-list">Filtering results by {this.state.rtFilter} response type <a href='#' onClick={() => this.toggleResponseType('')}><i className="fa fa-times search-btn-icon" aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+            {this.state.rtFilter.length > 0 &&
+              <div className="adv-filter-list">Response Type Filters: <ul>{this.state.rtFilter.map((rt, i) => {
+                return <li key={i} className="adv-filter-list-item col-md-12">{rt}</li>;
+              })}
+              </ul></div>
             }
           </div>
         </Col>
@@ -678,6 +795,7 @@ DashboardSearch.propTypes = {
   search: PropTypes.func.isRequired,
   categories: PropTypes.object,
   loggedIn: PropTypes.bool,
+  isDash: PropTypes.bool,
   groups: PropTypes.array,
   responseTypes: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,

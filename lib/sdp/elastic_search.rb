@@ -193,22 +193,25 @@ module SDP
                        { term: { 'status': must_filters['status'] } }
                      end
 
-      stage_terms = if must_filters['stage'].blank?
+      must_filters['stage'] = must_filters['stage'] || []
+      stage_terms = if must_filters['stage'].empty?
                       {}
                     else
-                      { match: { content_stage: must_filters['stage'] } }
+                      { terms: { 'content_stage.keyword': must_filters['stage'] } }
                     end
 
-      category_terms = if must_filters['category'].blank?
+      must_filters['category'] = must_filters['category'] || []
+      category_terms = if must_filters['category'].empty?
                          {}
                        else
-                         { term: { 'category.name': must_filters['category'] } }
+                         { terms: { 'category.name': must_filters['category'] } }
                        end
 
-      rt_terms = if must_filters['rt'].blank?
+      must_filters['rt'] = must_filters['rt'] || []
+      rt_terms = if must_filters['rt'].empty?
                    {}
                  else
-                   { term: { 'response_type.name': must_filters['rt'] } }
+                   { terms: { 'response_type.name': must_filters['rt'] } }
                  end
 
       source_terms = if must_filters['source'].blank?

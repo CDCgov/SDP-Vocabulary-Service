@@ -33,19 +33,43 @@ html, body  {
 }
 
 .fa-list {
-  color: $rs-green !important;
+  color: $rs-green;
 }
 
 .fa-question-circle {
-  color: $question-blue !important;
+  color: $question-blue;
 }
 
 .fa-window-maximize {
-  color: $section-purple !important;
+  color: $section-purple;
 }
 
 .fa-clipboard {
-  color: $survey-teal !important;
+  color: $survey-teal;
+}
+
+.status-green {
+  color: $status-green;
+}
+
+.fa-ban {
+  color: $dark-gray;
+}
+
+.fa-file-text-o {
+  color: #7e4924;
+}
+
+.fa-gavel {
+  color: teal;
+}
+
+.fa-comments {
+  color: purple;
+}
+
+.fa-files-o {
+  color: crimson;
 }
 
 .download-sr {

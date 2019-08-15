@@ -64,7 +64,7 @@ Feature: Edit Sections
     And I click on the "Save" button
     Then I should see "Name: Gender Section"
     Then I should see "Revised Description"
-    When I click on the "Linked Questions and Sections" link
+    When I click on the "Questions and Sections" link
     And I should see "What is your gender?"
     And I should see "Nested Section"
     And I should see "Edit"
@@ -93,7 +93,7 @@ Feature: Edit Sections
     And I should see "Description from parent"
     And I should see "Extended from: Test Section"
     And I should not see "Switch to expanded item view"
-    When I click on the "Linked Questions" link
+    When I click on the "Questions" link
     Then I should see "Switch to expanded item view"
     And I should see "What is your gender?"
     And I should see "VERSION 1 OF 1 | ITEM TYPE: QUESTION"
@@ -132,7 +132,7 @@ Feature: Edit Sections
     And I should see "Result Already Added"
     And I click on the "Save" button
     Then I wait 1 seconds
-    When I click on the "Linked Questions" link
+    When I click on the "Questions" link
     And I should see "What is your gender?"
     And I should see the question "What is your name?" first
     And I should see the response set "Gender Partial" second
@@ -161,7 +161,7 @@ Feature: Edit Sections
     And I click on the "Add Question" button
     And I click on the "Save" button
     Then I should see "Test Section"
-    When I click on the "Linked Questions" link
+    When I click on the "Questions" link
     And I should see "What is your gender?"
     And I should see "What is your favorite color?"
 
@@ -186,7 +186,7 @@ Feature: Edit Sections
     And I use the response set search modal to select "New Response Set"
     And I click on the "Save" button
     Then I should see "Test Section"
-    When I click on the "Linked Questions" link
+    When I click on the "Questions" link
     And I should see "What is your gender?"
     And I should see "Response Type: Boolean"
     When I click on the "What is your gender?" link

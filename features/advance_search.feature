@@ -54,30 +54,12 @@ Feature: Advanced Search
     Then I should see "Filtering results by private visibility status"
     And I should see "Clear"
 
-  Scenario: Filter search by stage
-    And I am on the "/" page
-    When I click on the "Advanced" link
-    And I tab out of the "content-since" field
-    And I select the "Trial Use" option in the "Content Stage:" list
-    And I click on the "Close" button
-    Then I should see "Filtering results by Trial Use content stage"
-    And I should see "Clear"
-
-  Scenario: Filter search by stage
-    And I am on the "/" page
-    When I click on the "Advanced" link
-    And I tab out of the "content-since" field
-    And I select the "Trial Use" option in the "Content Stage:" list
-    And I click on the "Close" button
-    Then I should see "Filtering results by Trial Use content stage"
-    And I should see "Clear"
-
   Scenario: Filter search by category
     And I am on the "/" page
     When I click on the "Advanced" link
     And I select the "Clinical" option in the "Category (Questions Only):" list
     And I click on the "Close" button
-    Then I should see "Filtering results by Clinical category"
+    Then I should see "Category Filters"
     And I should see "Clear"
 
   Scenario: Filter search by response type
@@ -85,7 +67,7 @@ Feature: Advanced Search
     When I click on the "Advanced" link
     And I select the "Choice" option in the "Response Type (Questions Only):" list
     And I click on the "Close" button
-    Then I should see "Filtering results by Choice response type"
+    Then I should see "Response Type Filters"
     And I should see "Clear"
 
   Scenario: Sort by system and program usage

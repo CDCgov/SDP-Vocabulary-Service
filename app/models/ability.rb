@@ -23,10 +23,12 @@ class Ability
       can :link_to_duplicate, [ResponseSet, Question, Section, Survey], status: 'published', groups: { id: user.group_ids }
       can [
         :update, :update_tags, :redcap, :spreadsheet, :epi_info, :publish_web, :more_responses, :parent_items, :duplicate_count,
-        :update_tags, :usage, :comment, :qrs_link
+        :update_tags, :usage, :comment, :qrs_link, :read, :duplicates
       ], [ResponseSet, Question, Section, Survey], status: 'draft', created_by_id: user.id
-      can [:update, :update_tags, :redcap, :spreadsheet, :epi_info, :publish_web, :more_responses, :parent_items, :duplicate_count,
-           :update_tags, :usage, :comment, :qrs_link], [ResponseSet, Question, Section, Survey], status: 'draft', groups: { id: user.group_ids }
+      can [
+        :update, :update_tags, :redcap, :spreadsheet, :epi_info, :publish_web, :more_responses, :parent_items, :duplicate_count,
+        :update_tags, :usage, :comment, :qrs_link, :read, :duplicates
+      ], [ResponseSet, Question, Section, Survey], status: 'draft', groups: { id: user.group_ids }
       can :redcap, [ResponseSet, Question, Section, Survey], status: 'published'
       can :parent_items, [Question, Section], status: 'published'
       can :more_responses, [ResponseSet], status: 'published'
@@ -38,6 +40,7 @@ class Ability
       can :read, User
     else
       can :read, [ResponseSet, Question, Section, Survey], status: 'published'
+      can :usage, [ResponseSet, Question, Section, Survey], status: 'published'
       can :redcap, [ResponseSet, Question, Section, Survey], status: 'published'
       can :parent_items, [Question, Section], status: 'published'
       can :more_responses, [ResponseSet], status: 'published'

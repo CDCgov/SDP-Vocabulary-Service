@@ -6,20 +6,40 @@
   padding-bottom: 12px;
   background-color: $very-light-gray;
   &.survey-type {
-    border-left: 5px solid $survey-id;
+    border-left: 0px solid $survey-id;
   }
   &.section-type {
-    border-left: 5px solid $section-id;
+    border-left: 0px solid $section-id;
   }
   &.survey_section-type {
-    border-left: 5px solid $section-id;
+    border-left: 0px solid $section-id;
   }
   &.response_set-type {
-    border-left: 5px solid $responseset-id;
+    border-left: 0px solid $responseset-id;
   }
   &.question-type {
-    border-left: 5px solid $cdc-blue;
+    border-left: 0px solid $cdc-blue;
   }
+}
+
+.details-border {
+  border-bottom: 1px solid $light-gray;
+  border-top: 1px solid $light-gray;
+  border-left: 1px solid $light-gray;
+  border-right: 1px solid $light-gray;
+  background-color: $very-light-gray;
+  padding: 7px;
+  white-space: pre-wrap;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  overflow: auto;
+}
+
+.details-margin-padding {
+  margin-left: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .box-content {

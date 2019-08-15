@@ -52,7 +52,7 @@ class DashboardContainer extends SearchManagerComponent {
       ombDate: null,
       sourceFilter: '',
       statusFilter: '',
-      stageFilter: '',
+      stageFilter: [],
       categoryFilter: '',
       rtFilter: '',
       preferredFilter: false,
@@ -193,7 +193,7 @@ class DashboardContainer extends SearchManagerComponent {
             <div className={this.props.preview && this.props.preview.name ? 'col-md-8' : 'col-md-12'}>
               <div className="dashboard-details">
                 <div>
-                  {this.analyticsGroup(this.state.type)}
+                  {this.analyticsGroup()}
                 </div>
                 <DashboardSearch search={this.search} surveillanceSystems={this.props.surveillanceSystems}
                                  surveillancePrograms={this.props.surveillancePrograms} loggedIn={loggedIn}
@@ -203,7 +203,8 @@ class DashboardContainer extends SearchManagerComponent {
                                  searchSource={this.props.searchResults.Source}
                                  lastSearch={this.props.lastSearch}
                                  suggestions={this.props.suggestions}
-                                 fetchSuggestions={fetchSuggestions}/>
+                                 fetchSuggestions={fetchSuggestions}
+                                 isDash={true} />
                 {this.state.groupFilterId === '-1' &&
                   <div className="adv-filter-list">Filtering to content owned by any of your groups</div>
                 }
@@ -327,38 +328,38 @@ class DashboardContainer extends SearchManagerComponent {
     this.props.setLastSearch(newSearchParams);
   }
 
-  analyticsGroup(searchType) {
+  analyticsGroup() {
     return (
     <div className="analytics-group" role="navigation" aria-label="Analytics">
       <ul className="analytics-list-group">
-        <button id="response-sets-analytics-item" tabIndex="4" className={"rs-green analytics-list-item btn" + (searchType === 'response_set' ? " analytics-active-item" : "")} onClick={() => this.selectType('response_set')}>
+        <div id="response-sets-analytics-item" className="rs-green analytics-list-item">
           <div>
             <i className="fa fa-list fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="response-sets-analytics-item-title">{this.props.responseSetCount}</p>
             <h2 className="item-title" id="response-sets-analytics-item-title">Response Sets</h2>
           </div>
-        </button>
-        <button id="questions-analytics-item" tabIndex="4" className={"question-blue analytics-list-item btn" + (searchType === 'question' ? " analytics-active-item" : "")} onClick={() => this.selectType('question')}>
+        </div>
+        <div id="questions-analytics-item" className="question-blue analytics-list-item">
           <div>
             <i className="fa fa-question-circle fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="question-analytics-item-title">{this.props.questionCount}</p>
             <h2 className="item-title" id="question-analytics-item-title">Questions</h2>
           </div>
-        </button>
-        <button id="sections-analytics-item" tabIndex="4" className={"section-purple analytics-list-item btn" + (searchType === 'section' ? " analytics-active-item" : "")} onClick={() => this.selectType('section')}>
+        </div>
+        <div id="sections-analytics-item" className="section-purple analytics-list-item">
           <div>
             <i className="fa fa-window-maximize fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="sections-analytics-item-title">{this.props.sectionCount}</p>
             <h2 className="item-title" id="sections-analytics-item-title">Sections</h2>
           </div>
-        </button>
-        <button id="surveys-analytics-item" tabIndex="4" className={"survey-teal analytics-list-item btn" + (searchType === 'survey' ? " analytics-active-item" : "")} onClick={() => this.selectType('survey')}>
+        </div>
+        <div id="surveys-analytics-item" className="survey-teal analytics-list-item">
           <div>
             <i className="fa fa-clipboard fa-2x item-icon" aria-hidden="true"></i>
             <p className="item-value" aria-describedby="surveys-analytics-item-title">{this.props.surveyCount}</p>
             <h2 className="item-title" id="surveys-analytics-item-title">Surveys</h2>
           </div>
-        </button>
+        </div>
       </ul>
     </div>);
   }
@@ -437,7 +438,6 @@ class DashboardContainer extends SearchManagerComponent {
             </div>
           </div>
         </div>}
-        {this.props.preview && this.props.preview.name && <div className="recent-items-heading"></div>}
       </div>
     );
   }
