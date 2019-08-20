@@ -22,6 +22,7 @@ pipeline {
 
         echo "Installing dependencies..."
         sh 'yarn install'
+        sh 'npm install -g retire'
         sh 'bundle install'
 
         echo "Precompiling assets..."
@@ -70,6 +71,15 @@ pipeline {
 
         echo "Running tests..."
         withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
+          sh 'mkdir -p reports;'
+          script {
+            def retire = sh returnStatus: true, script: '/home/jenkins/.npm-global/bin/retire --outputformat json --outputpath reports/retire.json --severity medium'
+            if (retire == 13) {
+              error "Vulnerabilities exist in NodeJS libraries used!  See archived retire.json file for details."
+            } else {
+              echo "No vulnerabilities found in NodeJS libraries"
+            }
+          }
           sh 'bundle exec rake'
         }
 
@@ -91,7 +101,7 @@ pipeline {
           echo "Destroying elasticsearch..."
           sh 'oc delete pods,dc,rc,services,secrets -l name=${esname}'
           echo "Archiving test artifacts..."
-          archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
+          archiveArtifacts artifacts: '**/reports/retire.json, **/reports/coverage/*, **/reports/mini_test/*',
             fingerprint: true
           stash allowEmpty: true, includes: 'reports/**,coverage/**', name: 'reports'
         }

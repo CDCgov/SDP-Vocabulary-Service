@@ -472,6 +472,7 @@ GEM
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
+    wdm (0.1.1)
     web-console (3.5.1)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -554,6 +555,7 @@ DEPENDENCIES
   simplecov
   staccato
   tzinfo-data
+  wdm (>= 0.1.0)
   web-console
   webpacker
 
