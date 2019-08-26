@@ -29,11 +29,12 @@ class SectionEditSearchContainer extends SearchManagerComponent {
     this.search   = this.search.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.changeFiltersCallback = this.changeFiltersCallback.bind(this);
-    this.selectType = this.selectType.bind(this);
   }
 
   componentWillMount() {
-    this.search(this.currentSearchParameters());
+    let searchParameters = this.currentSearchParameters();
+    searchParameters.type = ['question','section'];
+    this.search(searchParameters);
   }
 
   componentDidUpdate(_prevProps, prevState) {
@@ -43,7 +44,6 @@ class SectionEditSearchContainer extends SearchManagerComponent {
   }
 
   search(searchParameters) {
-    searchParameters.type = this.state.searchType;
     searchParameters.nsFilter = this.props.sectionId;
     super.search(searchParameters, SECTION_EDIT_SEARCH_CONTEXT);
   }
@@ -52,46 +52,34 @@ class SectionEditSearchContainer extends SearchManagerComponent {
     super.loadMore(SECTION_EDIT_SEARCH_CONTEXT);
   }
 
-  selectType(type) {
-    this.setState({ searchType: type });
-    let searchParameters = this.currentSearchParameters();
-    searchParameters.type = type;
-    super.search(searchParameters, SECTION_EDIT_SEARCH_CONTEXT);
-  }
-
   render() {
     const searchResults = this.props.searchResults;
     const fetchSuggestions = debounce(this.props.fetchSuggestions, 300);
     return (
       <div>
-        <ul className="nav nav-tabs section-edit-search-tabs" role="tablist">
-          <li id="question-search-tab" className={`nav-item ${this.state.searchType === 'question' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('question')} aria-selected={this.state.searchType === 'question'}>
-            <a className="nav-link" href="#" tabIndex="4" onClick={(e) => e.preventDefault()} role="tab"><i className="fa fa-question-circle" aria-hidden="true"><text className='sr-only' aria-hidden="true">Click to filter search by</text></i> Questions</a>
-          </li>
-          <li id="section-search-tab" className={`nav-item ${this.state.searchType === 'section' ? 'active' : ''}`} role="tab" onClick={() => this.selectType('section')} aria-selected={this.state.searchType === 'section'}>
-            <a className="nav-link" href="#" tabIndex="4" onClick={(e) => e.preventDefault()} role="tab"><i className="fa fa-window-maximize" aria-hidden="true"><text className='sr-only' aria-hidden="true">Click to filter search by</text></i> Sections</a>
-          </li>
-        </ul>
+        <br/>
         <DashboardSearch search={this.search}
+                         isSectionEdit={true}
+                         isDash={true}
                          surveillanceSystems={this.props.surveillanceSystems}
                          surveillancePrograms={this.props.surveillancePrograms}
                          changeFiltersCallback={this.changeFiltersCallback}
                          searchSource={this.props.searchResults.Source}
                          suggestions={this.props.suggestions}
                          fetchSuggestions={fetchSuggestions}
-                         placeholder={`Search ${this.state.searchType}s...`} />
+                         placeholder={`Search...`} />
         <br/>
         <div className="load-more-search">
           {searchResults.hits && searchResults.hits.hits.map((sr, i) => {
-            let isSelected = this.state.searchType === 'section' ? this.props.selectedSections[sr.Id] : this.props.selectedQuestions[sr.Id];
+            let isSelected = sr.Type === 'section' ? this.props.selectedSections[sr.Id] : this.props.selectedQuestions[sr.Id];
             return (
               <SearchResult key={`${sr.Source.versionIndependentId}-${sr.Source.updatedAt}-${i}`}
                             type={sr.Type}
                             result={sr}
                             isEditPage={true}
                             currentUser={this.props.currentUser}
-                            handleSelectSearchResult={this.props.handleSelectSearchResult}
-                            isSelected={isSelected} />
+                            isSelected={isSelected}
+                            handleSelectSearchResult={this.props.handleSelectSearchResult} />
             );
           })}
           {searchResults.hits && searchResults.hits.total > 0 && this.state.page <= Math.floor((searchResults.hits.total-1) / 10) &&

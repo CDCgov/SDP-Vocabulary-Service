@@ -8,6 +8,8 @@ module EpiInfoHelper
       5
     when 'date'
       7
+    when 'boolean'
+      11
     when 'dateTime'
       9
     when 'instant'
