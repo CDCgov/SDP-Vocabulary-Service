@@ -319,11 +319,7 @@ class SectionEdit extends Component {
       <div id="added-nested-items" aria-label="Added sections and questions">
       <Row>
         <div className="response-set-header">
-          <Col md={5} className="response-set-label">
-          <InfoModal show={this.state.showInfoSelectedQuestionsandSections} header="Selected Questions and Sections" body={<p>The “Selected Questions and Sections” panel displays the selected content for this Section. A Section may contain either Questions only, Sections only, or a mixture of both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoSelectedQuestionsandSections: false})} />
-          <label htmlFor="selectedQuestionsandSections">Selected Questions &amp; Sections<Button bsStyle='link' style={{ padding: 3, display: 'flex', justifyContent: 'center'}} onClick={() => this.setState({showInfoSelectedQuestionsandSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
-          </Col>
-          <Col md={7} className="response-set-label">
+          <Col md={12} className="response-set-label">
             <InfoModal show={this.state.showInfoAddNewResponseSet} header="Add New Response Set" body={<p><u>For Questions with Choice or Open Choice response types</u>:  The Vocabulary Service allows users to reuse Questions in the repository created by another author while providing the flexibility to select a context appropriate Response Set on a given Section if the "author recommended response sets" do not fit their needs.
               <br/><br/>To determine if a new response set if necessary:
               <br/><br/>1) The user should first consider using the response sets populated in the response set drop-down menu; these are response sets that were selected as valid response options by the question author (aka "author recommended response sets").
@@ -334,7 +330,15 @@ class SectionEdit extends Component {
           </Col>
         </div>
       </Row>
+      <hr/>
         <div className="added-nested-item-group">
+        <Col md={5} className="response-set-label">
+        <InfoModal show={this.state.showInfoSelectedQuestionsandSections} header="Selected Questions and Sections" body={<p>The “Selected Questions and Sections” panel displays the selected content for this Section. A Section may contain either Questions only, Sections only, or a mixture of both Questions and Sections.</p>} hideInfo={()=>this.setState({showInfoSelectedQuestionsandSections: false})} />
+        <label htmlFor="selectedQuestionsandSections">Selected Questions &amp; Sections<Button bsStyle='link' style={{ padding: 3, display: 'flex', justifyContent: 'center'}} onClick={() => this.setState({showInfoSelectedQuestionsandSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+        </Col>
+        <InfoModal show={this.state.showInfo} header="Position" body="This column displays the order of the sections. To change position, enter the desired position and hit the 'Enter' key on your keyboard." hideInfo={()=>this.setState({showInfo: false})} />
+        <label className="pull-right">Position<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfo: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
+        <br/>
           {this.state.sectionNestedItems.map((sni, i) =>
             <Row key={sni.questionId || sni.nestedSectionId}>
               <Col md={11}>
