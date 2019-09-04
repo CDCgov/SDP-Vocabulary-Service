@@ -551,7 +551,7 @@ DEPENDENCIES
   simplecov
   staccato
   tzinfo-data
-  wdm (>= 0.1.0)
+  wdm (>= 0.1.1)
   web-console
   webpacker
 
