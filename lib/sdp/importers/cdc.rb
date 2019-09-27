@@ -20,6 +20,7 @@ module SDP
       end
 
       def self.import_enterprise_data_spreadsheet(excelx_file)
+        begin
         programs = []
         xlsx = Roo::Spreadsheet.open(excelx_file)
         sheet = xlsx.sheet(0)
@@ -31,9 +32,12 @@ module SDP
           end
         end
         write_out_programs(programs)
+        rescue
+        end
       end
 
       def self.write_out_programs(programs)
+        begin
         programs.compact.each do |p|
           program_name = p.strip
           acronym = nil
@@ -45,6 +49,8 @@ module SDP
             program_name = program_name.split('(')[0].strip
           end
           SurveillanceProgram.create!(name: program_name, acronym: acronym) unless SurveillanceProgram.find_by(name: program_name)
+        end
+        rescue
         end
       end
     end
