@@ -325,7 +325,6 @@ module SDP
       end
 
       def save!
-        begin
         @meta_survey[:concepts]
         s = Survey.new(name: @meta_survey[:name] || @config[:survey_name] || @file, description: @meta_survey[:description] || '', created_by: @user)
         s.tag_list = @meta_survey[:keyword_tags] if @meta_survey[:keyword_tags].present?
@@ -334,22 +333,16 @@ module SDP
         section_position = 0
         save_survey_items(s, section_position)
         s
-        rescue
-        end
       end
 
       def append!(survey_id)
-        begin
         s = Survey.find(survey_id)
         section_position = 0
         section_position = s.survey_sections.last.position if s.survey_sections.present?
         save_survey_items(s, section_position + 1)
-        rescue
-        end
       end
 
       def extend!(survey_id)
-        begin
         original = Survey.find(survey_id)
         s = Survey.new(name: @meta_survey[:name] || @config[:survey_name] || @file, description: @meta_survey[:description] || '', created_by: @user, parent_id: original.id)
         s.tag_list = @meta_survey[:keyword_tags] if @meta_survey[:keyword_tags].present?
@@ -363,8 +356,6 @@ module SDP
         s.surveillance_program = @user.last_program
         s.save!
         save_survey_items(s, section_position + 1)
-        rescue
-        end
       end
 
       def parse!(verbose = false)
