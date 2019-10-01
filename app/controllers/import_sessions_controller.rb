@@ -9,7 +9,7 @@ class ImportSessionsController < ApplicationController
     response.stream.close
   end
 
-    def create
+  def create
     render status: :bad_request, json: { error: 'No spreadsheet present' } if import_session_params[:file].blank?
     spreadsheet_upload = import_session_params[:file]
     @import_type = import_session_params[:import_type]
