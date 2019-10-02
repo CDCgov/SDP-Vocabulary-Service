@@ -356,7 +356,6 @@ module SDP
         s.surveillance_program = @user.last_program
         s.save!
         save_survey_items(s, section_position + 1)
-        $stdout.write ' '
       end
 
       def parse!(verbose = false)
@@ -498,7 +497,6 @@ module SDP
             parent_section.section_nested_items << nsi
             save_section_items(section, item.items)
           end
-          $stdout.write ' '
         end
       end
 
@@ -589,7 +587,6 @@ module SDP
           end
         end
         @top_level.items = new_items
-        $stdout.write ' '
       end
 
       def extract_survey_metadata(workbook)

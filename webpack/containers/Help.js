@@ -1193,7 +1193,8 @@ class Help extends Component {
               <a href="#1.19">1.19</a>,&nbsp;
               <a href="#1.20">1.20</a>,&nbsp;
               <a href="#1.21">1.21</a>,&nbsp;
-            <a href="#1.22">1.22</a>)
+              <a href="#1.22">1.22</a>,&nbsp;
+              <a href="#1.23">1.23</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           <br/>
@@ -1206,7 +1207,13 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.22"><strong>Release <a href='' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
+            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(October ?, 2019)</small></li>
+              <ol>
+              <li>Response type default update to "Choice" when creating a Question.</li>
+              <li>Updated Section Edit page with Type Filter.</li>
+              <li>Added Position info button to Create Section page.</li>
+              </ol>
+            <li id="1.22"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/592838675/SDP+Vocabulary+Service+Release+1.22' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
               <ol>
               <li>Removed clickable filters and highlighting from dashboard items.</li>
               <li>Per usability testing feedback, components and detail sections have been reordered across the service for ease of readablity.</li>

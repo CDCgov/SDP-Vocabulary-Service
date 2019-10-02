@@ -65,6 +65,7 @@ group :development, :test do
   gem 'pry-nav'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
+  gem 'rubyzip', '~> 1.3'
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
 end
