@@ -1197,9 +1197,6 @@ class Help extends Component {
               <a href="#1.23">1.23</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
-          <br/>
-          <br/>
-          <a>Chris Test.</a>
           </ol>
           <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
@@ -1207,11 +1204,26 @@ class Help extends Component {
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(October ?, 2019)</small></li>
+            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(October <strong>??</strong>, 2019)</small></li>
               <ol>
               <li>Response type default update to "Choice" when creating a Question.</li>
-              <li>Updated Section Edit page with Type Filter.</li>
-              <li>Added Position info button to Create Section page.</li>
+              <li>Updated Section Edit page with Type Filter allowing a user to easily distiguish between filtering between Questions and Sections.</li>
+              <li>Added a Position info button to Create Section page.</li>
+              <li><u>BUG</u>:</li>
+                <ul>
+                  <u>Status</u>: Deferred
+                  <br/>
+                  <u>Summary</u>:
+                  <br/>
+                  When a user attempts to import a file using the 'Import Spreadsheet' option, the user may encounter a 'Server 500' error stating that the import was not successful.<br/>
+                  <u>Expected Result</u>: <br/>An error message is presented to the user with a '500 Server Error'.<br/>
+                  <u>Actual Result</u>: <br/>Processing of the imported spreadsheet continues to process and the upload is successful.<br/>
+                  <u>Content Requirements for Successful Import of the Spreadsheet</u>:
+                  <ul>
+                    <li>Formatting (i.e. Tab name or header name changes) of the Excel import spreadsheet file has not been changed.</li>
+                    <li>Content is enterred and saved with accuracy.</li>
+                  </ul>
+                </ul>
               </ol>
             <li id="1.22"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/592838675/SDP+Vocabulary+Service+Release+1.22' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
               <ol>
