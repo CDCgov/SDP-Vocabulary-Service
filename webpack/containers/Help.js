@@ -1199,7 +1199,7 @@ class Help extends Component {
           <a href="#userdocupdates">User Documentation Updates</a>
           <br/>
           <br/>
-          <a>Chris Test.</a>
+          <a>Chris Test - (dev-build-test-102620190628am)</a>
           </ol>
           <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
