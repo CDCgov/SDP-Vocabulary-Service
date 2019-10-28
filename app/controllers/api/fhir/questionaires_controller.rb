@@ -1,4 +1,4 @@
-# rubocop:disable Questionaire/LineLength
+# rubocop:disable Metrics/LineLength
 
 module Api
   module Fhir
