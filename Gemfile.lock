@@ -129,7 +129,7 @@ GEM
       activesupport (>= 3.0)
       deep_merge (~> 1.2.1)
       dry-validation (>= 0.10.4)
-    crass (1.0.4)
+    crass (1.0.5)
     cucumber (3.1.0)
       builder (>= 2.1.2)
       cucumber-core (~> 3.1.0)
@@ -246,7 +246,7 @@ GEM
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    loofah (2.2.3)
+    loofah (2.3.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -469,6 +469,7 @@ GEM
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
+    wdm (0.1.1)
     web-console (3.5.1)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -544,13 +545,13 @@ DEPENDENCIES
   roo-xls
   rubocop (~> 0.49.0)
   rubocop-checkstyle_formatter
-  rubyzip (~> 1.3)
   savon
   scss_lint
   selenium-webdriver
   simplecov
   staccato
   tzinfo-data
+  wdm (>= 0.1.0)
   web-console
   webpacker
 
