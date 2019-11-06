@@ -1197,10 +1197,10 @@ class Help extends Component {
               <a href="#1.23">1.23</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
-          <br/>
-          <br/>
-          <a>Chris Test.</a>
           </ol>
+          <br/>
+          <ul><h4 id="New_Demo"><strong>-- NEW Demo Test --</strong></h4>
+          <strong>SDP-V Test: NEW Demo environment merge test.</strong></ul>
           <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
