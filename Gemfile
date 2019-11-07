@@ -65,7 +65,6 @@ group :development, :test do
   gem 'pry-nav'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
-  gem 'rubyzip', '~> 1.3'
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
 end
@@ -94,3 +93,5 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'foreman'
+
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
