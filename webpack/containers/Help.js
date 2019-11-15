@@ -58,7 +58,7 @@ class Help extends Component {
         <h1 id="general">General</h1>
         <p><strong>Full help resources:</strong></p>
         <ul>
-        <li><a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Additional external help resources including a full user guide can be found by clicking here!</a></li>
+        <li><a href='https://www.cdc.gov/sdp/SDPVocabularyServiceSharedServices.html' target='_blank'>Additional external help resources including a full user guide can be found by clicking here!</a></li>
         </ul>
         <p><strong>Navigation and Help Basics:</strong></p>
         <ul>
@@ -1164,7 +1164,6 @@ class Help extends Component {
           Read our latest release notes to learn how the application is continuously improving, learn
           about updates to user documentation, and find other announcements important to the user community.</p>
       <br/>
-      <br/>
         <strong>Find Out What&lsquo;s New In:</strong>
         <br/>
         <br/>
@@ -1193,26 +1192,16 @@ class Help extends Component {
               <a href="#1.19">1.19</a>,&nbsp;
               <a href="#1.20">1.20</a>,&nbsp;
               <a href="#1.21">1.21</a>,&nbsp;
-              <a href="#1.22">1.22</a>,&nbsp;
-              <a href="#1.23">1.23</a>)
+              <a href="#1.22">1.22</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
-          <br/>
-          <ul><h4 id="New_Demo"><strong>-- NEW Demo Test --</strong></h4>
-          <strong>SDP-V Test: NEW Demo environment merge test.</strong></ul>
           <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(October ?, 2019)</small></li>
-              <ol>
-              <li>Response type default update to "Choice" when creating a Question.</li>
-              <li>Updated Section Edit page with Type Filter.</li>
-              <li>Added Position info button to Create Section page.</li>
-              </ol>
             <li id="1.22"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/592838675/SDP+Vocabulary+Service+Release+1.22' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
               <ol>
               <li>Removed clickable filters and highlighting from dashboard items.</li>
