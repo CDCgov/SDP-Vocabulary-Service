@@ -1203,6 +1203,8 @@ class Help extends Component {
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
           <br/>
+          <h4 id="newDemo"><strong>Demo (NEW) ENV Test: 11/18/2019</strong></h4>
+          <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
             <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(October <strong>???</strong>, 2019)</small></li>
