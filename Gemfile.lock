@@ -96,7 +96,7 @@ GEM
     bcrypt (3.1.12)
     bcrypt (3.1.12-x64-mingw32)
     bcrypt (3.1.12-x86-mingw32)
-    bindata (2.4.3)
+    bindata (2.4.4)
     bindex (0.5.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
@@ -222,7 +222,7 @@ GEM
     httpi (2.4.4)
       rack
       socksify
-    i18n (1.6.0)
+    i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     inflecto (0.0.2)
@@ -235,8 +235,8 @@ GEM
       railties (>= 3.2)
       sprockets-rails
     json (2.1.0)
-    json-jwt (1.9.4)
-      activesupport
+    json-jwt (1.11.0)
+      activesupport (>= 4.2)
       aes_key_wrap
       bindata
     json-schema (2.8.0)
@@ -259,7 +259,7 @@ GEM
     mimemagic (0.3.2)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
-    minitest (5.11.3)
+    minitest (5.13.0)
     minitest-rails (3.0.0)
       minitest (~> 5.8)
       railties (~> 5.0)
@@ -275,11 +275,11 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     nio4r (2.3.1)
-    nokogiri (1.10.4)
+    nokogiri (1.10.5)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.4-x64-mingw32)
+    nokogiri (1.10.5-x64-mingw32)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.4-x86-mingw32)
+    nokogiri (1.10.5-x86-mingw32)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
     oj (3.5.0)
@@ -518,6 +518,7 @@ DEPENDENCIES
   httparty
   jbuilder (~> 2.5)
   js-routes
+  json-jwt (~> 1.11)
   json-schema
   json_schema
   listen (~> 3.0.5)
@@ -525,6 +526,7 @@ DEPENDENCIES
   minitest-rails
   minitest-reporters
   mocha
+  nokogiri (~> 1.10, >= 1.10.5)
   olive_branch
   omniauth
   omniauth_openid_connect
