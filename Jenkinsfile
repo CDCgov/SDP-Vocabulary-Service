@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Run Tests') {
       steps {
-        updateSlack('#FFFF00', 'Started tests')
+        echo "Started tests..."
 
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
@@ -107,11 +107,11 @@ pipeline {
         }
 
         success {
-          updateSlack('#00FF00', 'Finished tests')
+          echo "Finished tests..."
         }
 
         failure {
-          updateSlack('#FF0000', 'Failed tests')
+          echo "Tests failed..."
         }
       }
     }
@@ -150,7 +150,7 @@ pipeline {
       }
 
       steps {
-        updateSlack('#FFFF00', 'Starting build for development environment')
+        echo "Starting build for development environment..."
 
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
@@ -159,13 +159,11 @@ pipeline {
 
       post {
         success {
-          updateSlack('#00FF00', 'Finished building for development environment')
-          updateEmail('Finished building for development environment', 'Finished building for development environment.')
+          echo "BUILD COMPLETE: Finished building for development environment..."
         }
 
         failure {
-          updateSlack('#FF0000', 'Failed to build for development environment')
-          updateEmail('Failed to build for development environment', 'Failed to build for development environment.')
+          echo "BUILD FAILED: Failed to build for development environment..."
         }
       }
     }
@@ -245,14 +243,4 @@ pipeline {
       }
     }
   }
-}
-
-def updateSlack(String colorHex, String messageText) {
-  if (env.BRANCH_NAME == 'development' || env.CHANGE_ID) {
-    slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  }
-}
-
-def updateEmail(String subjectText, String messageText) {
-  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
 }
