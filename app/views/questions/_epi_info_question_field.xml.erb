@@ -1,5 +1,5 @@
 <Field
-          Name="<%= sni.question.content.parameterize.underscore.camelize.truncate(40, omission: '') %>"
+          Name="<%= sni.program_var %>"
           PageId="<%= @position %>"
           FieldId="<%= @tab_counter+=1 %>"
           UniqueId="<%= SecureRandom.uuid %>"
@@ -18,7 +18,6 @@
           ControlWidthPercentage="0.4"
           Expr1015="Segoe UI" Expr1016="10" Expr1017="Regular"
           ControlScriptName=""
-          ProgramDefinedVariableName="<%= sni.program_var %>"
           PromptText="<%= sni.question.content %>"
           PromptFontFamily="Segoe UI"
           PromptFontSize="10"
