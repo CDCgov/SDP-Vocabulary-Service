@@ -8,7 +8,7 @@ module Api
     def index
       @@tracker.pageview(path: "/api/valueSets/#{params[:oid]}/#{params[:limit]}", hostname: Settings.default_url_helper_host, title: 'API Response Sets Show - Search criteria: ' + params[:search].to_s)
       if params[:oid]
-        @value_sets = [ResponseSet.find_by(oid: params[:oid])]
+        @value_sets = ResponseSet.select(Arel.star).where(ResponseSet.arel_table[:oid].eq(params[:oid])).order(:version).reverse_order.limit(1)
       else
         @value_sets = params[:search] ? ResponseSet.search(params[:search]) : ResponseSet.all.includes(:responses, :published_by)
         current_user_id = current_user ? current_user.id : -1
