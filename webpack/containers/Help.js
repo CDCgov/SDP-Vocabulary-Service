@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
-import { Button } from 'react-bootstrap';
-import InfoModal from '../components/InfoModal';
 
 class Help extends Component {
   constructor(props){
@@ -1194,41 +1192,17 @@ class Help extends Component {
               <a href="#1.19">1.19</a>,&nbsp;
               <a href="#1.20">1.20</a>,&nbsp;
               <a href="#1.21">1.21</a>,&nbsp;
-              <a href="#1.22">1.22</a>,&nbsp;
-              <a href="#1.23">1.23</a>)
+              <a href="#1.22">1.22</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
           <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
-          <br/>
-          <h4 id="newDemo"><strong>Demo (NEW) ENV Test: 11/18/2019</strong></h4>
+            <ol><strong><i>Do we want to include 'New Demo' content to the user community in this section?</i></strong></ol>
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(October <strong>???</strong>, 2019)</small></li>
-            <ol>
-              <li>Response type default update to "Choice" when creating a Question.</li>
-              <li>Updated Section Edit page with Type Filter allowing a user to easily distiguish between filtering between Questions and Sections.</li>
-              <li>Added a Position info button to Create Section page.</li>
-              <InfoModal show={this.state.showInfoImportFileBug} header="Known Bug: File Import" body={<p>
-                <ul>
-                  <u>Status</u>: Deferred
-                  <br/>
-                  <u>Summary</u>:
-                  <br/>
-                  When a user attempts to import a file using the 'Import Spreadsheet' option, the user may encounter a 'Server 500' error stating that the import was not successful.<br/>
-                  <u>Expected Result</u>: <br/>An error message is presented to the user with a '500 Server Error'.<br/>
-                  <u>Actual Result</u>: <br/>Processing of the imported spreadsheet continues to process and the upload is successful.<br/>
-                  <u>Content Requirements for Successful Import of the Spreadsheet</u>:
-                  <ul>
-                    <li>Formatting (i.e. Tab name or header name changes) of the Excel import spreadsheet file has not been changed.</li>
-                    <li>Content is enterred and saved with accuracy.</li>
-                  </ul>
-                </ul></p>} hideInfo={()=>this.setState({showInfoImportFileBug: false})} />
-                <li>File Import Error <i>(Known Bug<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoImportFileBug: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>)</i>.</li>
-              </ol>
             <li id="1.22"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/592838675/SDP+Vocabulary+Service+Release+1.22' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
               <ol>
               <li>Removed clickable filters and highlighting from dashboard items.</li>
