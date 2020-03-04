@@ -334,7 +334,7 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     public_suffix (3.0.3)
-    puma (3.11.3)
+    puma (3.12.4)
     rack (2.0.7)
     rack-oauth2 (1.9.1)
       activesupport
@@ -535,7 +535,7 @@ DEPENDENCIES
   pry-nav
   pry-rescue
   pry-stack_explorer
-  puma (~> 3.0)
+  puma (~> 3.12)
   rack
   rails (~> 5.1.2)
   rails-erd
