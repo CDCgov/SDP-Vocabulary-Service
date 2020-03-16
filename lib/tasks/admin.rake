@@ -24,6 +24,63 @@ namespace :admin do
     end
   end
 
+  # Changes the content ownership
+  # signature: Object, Current Owner email address, New Owner email address, version independent id number, version number
+  task :update_content_ownership, [:vs_obj, :owner_email, :new_owner_email, :version_independent_id, :version] => :environment do |_t, args|
+    owner = User.find_by(email: args.owner_email)
+    new_owner = User.find_by(email: args.new_owner_email)
+    BOOL_OPT = true if args.vs_obj != 'section' || args.vs_obj != 'survey'
+    if args.version
+      case args.vs_obj
+      when args.vs_obj = 'responseSet'
+        vs = ResponseSet.find_by(version_independent_id: args.version_independent_id, version: args.version)
+      when args.vs_obj = 'question'
+        vs = Question.find_by(version_independent_id: args.version_independent_id, version: args.version)
+      when args.vs_obj = 'section'
+        vs = Section.find_by(version_independent_id: args.version_independent_id, version: args.version)
+      when args.vs_obj = 'survey'
+        vs = Survey.find_by(version_independent_id: args.version_independent_id, version: args.version)
+      else
+        abort("-----\n-----\n----- Data Set #{args.vs_obj} not found -----\n-----\n-----")
+      end
+      vs.created_by_id = new_owner[:id]
+      if BOOL_OPT.nil?
+        vs.updated_by_id = owner[:id]
+      end
+      vs.save!
+    else
+      case args.vs_obj
+      when args.vs_obj = 'responseSet'
+        vs = ResponseSet.where(version_independent_id: args.version_independent_id).sort
+      when args.vs_obj = 'question'
+        vs = Question.where(version_independent_id: args.version_independent_id).sort
+      when args.vs_obj = 'section'
+        vs = Section.where(version_independent_id: args.version_independent_id).sort
+      when args.vs_obj = 'survey'
+        vs = Survey.where(version_independent_id: args.version_independent_id).sort
+      else
+        abort("-----\n-----\n----- Data Set #{args.vs_obj} not found -----\n-----\n-----")
+      end
+      puts "\n-----"
+      puts "Total number of version to be updated: #{vs.count}"
+      vs.each do |v|
+        puts "Version #{v.version} update initiated."
+        v.created_by_id = new_owner[:id]
+        if BOOL_OPT.nil?
+          v.updated_by_id = owner[:id]
+        end
+        v.save!
+        puts "Version #{v.version} update successful."
+      end
+    end
+    puts "\n----- Summary of #{args.vs_obj} Changes -----"
+    puts "\nPrevious Owner: #{owner[:first_name]} #{owner[:last_name]} at #{args.owner_email}"
+    puts "New Owner: #{new_owner[:first_name]} #{new_owner[:last_name]} at #{args.new_owner_email}"
+    puts "#{args.vs_obj} version: #{args.version}" if args.version
+    puts "#{args.vs_obj} Id: #{args.version_independent_id}"
+    puts "\n-----"
+  end
+
   # Revoke an administrative users admin rights"
   task :revoke_admin, [:email] => :environment do |_t, args|
     user = User.find_by(email: args.email)
