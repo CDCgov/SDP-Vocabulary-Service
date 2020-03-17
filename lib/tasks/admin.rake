@@ -44,9 +44,7 @@ namespace :admin do
         abort("-----\n-----\n----- Data Set #{args.vs_obj} not found -----\n-----\n-----")
       end
       vs.created_by_id = new_owner[:id]
-      if BOOL_OPT.nil?
-        vs.updated_by_id = owner[:id]
-      end
+      vs.updated_by_id = owner[:id] if BOOL_OPT.nil?
       vs.save!
     else
       case args.vs_obj
@@ -66,9 +64,7 @@ namespace :admin do
       vs.each do |v|
         puts "Version #{v.version} update initiated."
         v.created_by_id = new_owner[:id]
-        if BOOL_OPT.nil?
-          v.updated_by_id = owner[:id]
-        end
+        vs.updated_by_id = owner[:id] if BOOL_OPT.nil?
         v.save!
         puts "Version #{v.version} update successful."
       end
