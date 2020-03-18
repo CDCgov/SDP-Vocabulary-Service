@@ -6,7 +6,7 @@ gem 'rails', '~> 5.1.2'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '>= 3.12.2'
+gem 'puma', '>= 3.12.4', '>= 4.3.3'
 
 gem 'olive_branch'
 gem 'webpacker'
@@ -33,7 +33,7 @@ gem 'elasticsearch'
 gem 'httparty'
 gem 'js-routes'
 gem 'json-jwt', '~> 1.11'
-gem 'nokogiri', '~> 1.10', '>= 1.10.5'
+gem 'nokogiri', '~> 1.10', '>= 1.10.8'
 gem 'omniauth'
 gem 'omniauth_openid_connect'
 gem 'paper_trail'

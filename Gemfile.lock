@@ -275,11 +275,11 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     nio4r (2.3.1)
-    nokogiri (1.10.5)
+    nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.5-x64-mingw32)
+    nokogiri (1.10.9-x64-mingw32)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.5-x86-mingw32)
+    nokogiri (1.10.9-x86-mingw32)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
     oj (3.5.0)
@@ -334,7 +334,7 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     public_suffix (3.0.3)
-    puma (4.3.1)
+    puma (4.3.3)
       nio4r (~> 2.0)
     rack (2.0.8)
     rack-oauth2 (1.9.1)
@@ -527,7 +527,7 @@ DEPENDENCIES
   minitest-rails
   minitest-reporters
   mocha
-  nokogiri (~> 1.10, >= 1.10.5)
+  nokogiri (~> 1.10, >= 1.10.8)
   olive_branch
   omniauth
   omniauth_openid_connect
@@ -539,7 +539,7 @@ DEPENDENCIES
   pry-nav
   pry-rescue
   pry-stack_explorer
-  puma (>= 3.12.2)
+  puma (>= 4.3.3, >= 3.12.4)
   rack
   rails (~> 5.1.2)
   rails-erd
