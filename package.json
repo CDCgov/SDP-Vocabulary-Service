@@ -1,6 +1,6 @@
 {
   "name": "SDP",
-  "version": "0.0.1",
+  "version": "1.13.0",
   "license": "Apache-2.0",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require ./test/frontend/test_helper.js --recursive ./test/frontend",
@@ -35,7 +35,7 @@
     "file-loader": "^0.11.2",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.2",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.5.3",
     "jquery": "^3.4.1",
     "jquery-ujs": "^1.2.2",
     "js-yaml": "^3.10.0",
