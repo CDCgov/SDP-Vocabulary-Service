@@ -1,18 +1,20 @@
 source 'https://rubygems.org'
 
-gem 'rack'
+gem 'rack', '~> 2.2', '>= 2.2.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.2'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '>= 3.12.4', '>= 4.3.3'
+gem 'puma', '~> 4.3'
 
 gem 'olive_branch'
 gem 'webpacker'
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'json_schema'
+
+gem 'jquery-rails', '~> 4.4'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
@@ -28,12 +30,10 @@ gem 'acts_as_commentable'
 gem 'acts_as_tree'
 gem 'cancancan'
 gem 'config'
-gem 'devise', '~> 4.7', '>= 4.7.1'
+gem 'devise'
 gem 'elasticsearch'
 gem 'httparty'
 gem 'js-routes'
-gem 'json-jwt', '~> 1.11'
-gem 'nokogiri', '~> 1.10', '>= 1.10.8'
 gem 'omniauth'
 gem 'omniauth_openid_connect'
 gem 'paper_trail'
@@ -96,4 +96,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'foreman'
 
-gem 'wdm', '>= 0.1.0', platforms: [:x64_mingw]
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
