@@ -56,7 +56,7 @@ pipeline {
 
         echo "Starting elasticsearch..."
         timeout(time: 5, unit: 'MINUTES') {
-          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.6.0 | oc create -f -'
+          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.8.9 | oc create -f -'
           waitUntil {
             script {
               sleep time: 15, unit: 'SECONDS'
@@ -102,32 +102,6 @@ pipeline {
       }
     }
 
-    stage('SonarQube Scan') {
-      agent { label 'jenkins-agent-sonarqube' }
-
-      steps {
-        unstash 'reports'
-        script {
-          def scannerHome = tool 'SonarQube Scanner 4.0'
-          withSonarQubeEnv('SDP') {
-           sh "${scannerHome}/bin/sonar-scanner -X"
-          }
-        }
-      }
-    }
-
-    stage('Publish Results') {
-      steps {
-        publishBrakeman 'reports/brakeman.html'
-        cucumber 'reports/cucumber.json'
-        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '',
-          pattern: 'reports/rubocop-checkstyle-result.xml', unHealthy: ''
-        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false,
-          reportDir: 'reports/rubocop', reportFiles: 'index.html', reportName: 'RuboCop Report',
-          reportTitles: ''])
-      }
-    }
-
     stage('Build for Dev Env') {
       agent any
 
@@ -166,68 +140,6 @@ pipeline {
         echo "Pulling SDP-V container image for scanning..."
         sh 'set +x; docker -H localhost:2375 login -u serviceaccount -p $(oc whoami -t) docker-registry.default.svc.cluster.local:5000'
         sh 'docker -H localhost:2375 pull docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest'
-      }
-    }
-    stage('Image Scans') {
-      when {
-        branch 'development'
-      }
-      failFast true
-      parallel {
-        stage('Scan with oscap') {
-          agent { label 'docker' }
-          steps {
-            echo "Scanning with oscap..."
-            sh 'sudo oscap-docker image-cve docker-registry.default.svc.cluster.local:5000/sdp/vocabulary --report report.html;'
-            sh 'report-parser.py report.html 7 14 30 -1'
-          }
-          post {
-            always {
-              publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '', reportFiles: 'report.html',
-                reportName: 'OpenSCAP Results', reportTitles: 'OpenSCAP Scan Results'])
-            }
-          }
-        }
-        stage('Scan with Twistlock') {
-          agent { label 'docker' }
-          stages {
-            stage('Twistlock Scan') {
-              steps {
-                echo "Scanning image with Twistlock..."
-                twistlockScan ca: '',
-                  cert: '',
-                  compliancePolicy: 'critical',
-                  containerized: false,
-                  dockerAddress: 'tcp://localhost:2375',
-                  gracePeriodDays: 7,
-                  ignoreImageBuildTime: true,
-                  repository: '',
-                  image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
-                  tag: '',
-                  key: '',
-                  logLevel: 'true',
-                  policy: 'critical',
-                  requirePackageUpdate: true,
-                  timeout: 60
-              }
-            }
-            stage('Twistlock Publish') {
-              steps {
-                echo "Publishing results..."
-                twistlockPublish ca: '',
-                  cert: '',
-                  containerized: false,
-                  dockerAddress: 'tcp://localhost:2375',
-                  gracePeriodDays: 7,
-                  ignoreImageBuildTime: true,
-                  image: 'docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest',
-                  key: '',
-                  logLevel: 'true',
-                  timeout: 60
-              }
-            }
-          }
-        }
       }
     }
   }
