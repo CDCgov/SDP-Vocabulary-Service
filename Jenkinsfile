@@ -222,7 +222,6 @@ pipeline {
       }
     }
   }
-}
 
 def updateSlack(String colorHex, String messageText) {
   if (env.BRANCH_NAME == 'development' || env.CHANGE_ID) {
