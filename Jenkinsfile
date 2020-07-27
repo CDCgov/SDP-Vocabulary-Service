@@ -102,20 +102,7 @@ pipeline {
         }
       }
     }
-
-    stage('SonarQube Scan') {
-      agent { label 'jenkins-agent-sonarqube' }
-
-      steps {
-        unstash 'reports'
-        script {
-          def scannerHome = tool 'SonarQube Scanner 4.0'
-          withSonarQubeEnv('SDP') {
-           echo "bypassing scannerHome"
-          }
-        }
-      }
-    }
+  }
 
     stage('Publish Results') {
       steps {
@@ -169,6 +156,7 @@ pipeline {
         sh 'docker -H localhost:2375 pull docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest'
       }
     }
+
     stage('Image Scans') {
       when {
         branch 'development'
@@ -189,6 +177,7 @@ pipeline {
             }
           }
         }
+
         stage('Scan with Twistlock') {
           agent { label 'docker' }
           stages {
@@ -212,6 +201,7 @@ pipeline {
                   timeout: 60
               }
             }
+
             stage('Twistlock Publish') {
               steps {
                 echo "Publishing results..."
