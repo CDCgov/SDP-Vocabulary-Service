@@ -111,7 +111,7 @@ pipeline {
         script {
           def scannerHome = tool 'SonarQube Scanner 4.0'
           withSonarQubeEnv('SDP') {
-           sh "${scannerHome}/bin/sonar-scanner -X"
+           echo "bypassing scannerHome"
           }
         }
       }
