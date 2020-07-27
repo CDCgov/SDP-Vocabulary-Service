@@ -91,10 +91,6 @@ pipeline {
           sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
           echo "Destroying elasticsearch..."
           sh 'oc delete pods,dc,rc,services,secrets -l name=${esname}'
-          echo "Archiving test artifacts..."
-          archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
-            fingerprint: true
-          stash allowEmpty: true, includes: 'reports/**,coverage/**', name: 'reports'
         }
 
         success {
