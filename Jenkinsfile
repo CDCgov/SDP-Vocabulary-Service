@@ -56,7 +56,7 @@ pipeline {
 
         echo "Starting elasticsearch..."
         timeout(time: 5, unit: 'MINUTES') {
-          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.6.0 | oc create -f -'
+          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.8.9 | oc create -f -'
           waitUntil {
             script {
               sleep time: 15, unit: 'SECONDS'
