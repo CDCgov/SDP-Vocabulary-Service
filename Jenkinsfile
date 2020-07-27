@@ -69,6 +69,11 @@ pipeline {
           }
         }
 
+        echo "Running tests..."
+          withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
+            sh 'bundle exec rake'
+        }
+
         echo "Running elasticsearch integration tests..."
         withEnv(["NO_PROXY=localhost,127.0.0.1,${elastichost}", "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
                  'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432',
@@ -86,6 +91,10 @@ pipeline {
           sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
           echo "Destroying elasticsearch..."
           sh 'oc delete pods,dc,rc,services,secrets -l name=${esname}'
+          echo "Archiving test artifacts..."
+          archiveArtifacts artifacts: '**/reports/coverage/*, **/reports/mini_test/*',
+            fingerprint: true
+          stash allowEmpty: true, includes: 'reports/**,coverage/**', name: 'reports'
         }
 
         success {
@@ -95,6 +104,18 @@ pipeline {
         failure {
           updateSlack('#FF0000', 'Failed tests')
         }
+      }
+    }
+
+    stage('Publish Results') {
+      steps {
+        publishBrakeman 'reports/brakeman.html'
+        cucumber 'reports/cucumber.json'
+        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '',
+          pattern: 'reports/rubocop-checkstyle-result.xml', unHealthy: ''
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false,
+          reportDir: 'reports/rubocop', reportFiles: 'index.html', reportName: 'RuboCop Report',
+          reportTitles: ''])
       }
     }
 
