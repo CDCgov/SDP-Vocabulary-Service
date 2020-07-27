@@ -234,7 +234,7 @@ GEM
     js-routes (1.4.3)
       railties (>= 3.2)
       sprockets-rails
-    json (2.1.0)
+    json (2.3.1)
     json-jwt (1.9.4)
       activesupport
       aes_key_wrap
