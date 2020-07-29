@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Run Tests') {
       steps {
-        updateSlack('#FFFF00', 'Started tests')
+        echo "Started Tests..."
 
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
@@ -56,7 +56,7 @@ pipeline {
 
         echo "Starting elasticsearch..."
         timeout(time: 5, unit: 'MINUTES') {
-          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.8.9 | oc create -f -'
+          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.6.0 | oc create -f -'
           waitUntil {
             script {
               sleep time: 15, unit: 'SECONDS'
@@ -71,7 +71,16 @@ pipeline {
 
         echo "Running tests..."
         withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
-          echo "bypassing bundle exec rake"
+          sh 'mkdir -p reports;'
+          script {
+            def retire = sh returnStatus: true, script: '/home/jenkins/.npm-global/bin/retire --outputformat json --outputpath reports/retire.json --severity medium'
+            if (retire == 13) {
+              error "Vulnerabilities exist in NodeJS libraries used!  See archived retire.json file for details."
+            } else {
+              echo "No vulnerabilities found in NodeJS libraries"
+            }
+          }
+          echo "bypassing bundle exec rake..."
         }
 
         echo "Running elasticsearch integration tests..."
@@ -91,28 +100,16 @@ pipeline {
           sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
           echo "Destroying elasticsearch..."
           sh 'oc delete pods,dc,rc,services,secrets -l name=${esname}'
+          echo "bypassing Archiving test artifacts..."
         }
 
         success {
-          updateSlack('#00FF00', 'Finished tests')
+          echo "Finished tests."
         }
 
         failure {
-          updateSlack('#FF0000', 'Failed tests')
+          echo "Failed tests detected."
         }
-      }
-    }
-  }
-
-    stage('Publish Results') {
-      steps {
-        publishBrakeman 'reports/brakeman.html'
-        cucumber 'reports/cucumber.json'
-        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '',
-          pattern: 'reports/rubocop-checkstyle-result.xml', unHealthy: ''
-        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false,
-          reportDir: 'reports/rubocop', reportFiles: 'index.html', reportName: 'RuboCop Report',
-          reportTitles: ''])
       }
     }
 
@@ -124,7 +121,7 @@ pipeline {
       }
 
       steps {
-        updateSlack('#FFFF00', 'Starting build for development environment')
+        echo "Starting build for development environment"
 
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
@@ -133,13 +130,11 @@ pipeline {
 
       post {
         success {
-          updateSlack('#00FF00', 'Finished building for development environment')
-          updateEmail('Finished building for development environment', 'Finished building for development environment.')
+          echo "Finished building for development environment."
         }
 
         failure {
-          updateSlack('#FF0000', 'Failed to build for development environment')
-          updateEmail('Failed to build for development environment', 'Failed to build for development environment.')
+          echo "Failed to build for development environment."
         }
       }
     }
@@ -156,7 +151,6 @@ pipeline {
         sh 'docker -H localhost:2375 pull docker-registry.default.svc.cluster.local:5000/sdp/vocabulary:latest'
       }
     }
-
     stage('Image Scans') {
       when {
         branch 'development'
@@ -177,7 +171,6 @@ pipeline {
             }
           }
         }
-
         stage('Scan with Twistlock') {
           agent { label 'docker' }
           stages {
@@ -201,7 +194,6 @@ pipeline {
                   timeout: 60
               }
             }
-
             stage('Twistlock Publish') {
               steps {
                 echo "Publishing results..."
@@ -222,13 +214,4 @@ pipeline {
       }
     }
   }
-
-def updateSlack(String colorHex, String messageText) {
-  if (env.BRANCH_NAME == 'development' || env.CHANGE_ID) {
-    slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  }
-}
-
-def updateEmail(String subjectText, String messageText) {
-  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
 }
