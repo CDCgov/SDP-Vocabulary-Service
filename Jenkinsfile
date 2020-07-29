@@ -25,50 +25,6 @@ pipeline {
         sh 'npm install -g retire'
         sh 'bundle install'
 
-        echo "Precompiling assets..."
-        sh 'NODE_ENV=production bundle exec rails assets:precompile'
-
-        echo "Starting Foreman..."
-        sh 'foreman start webpack &'
-
-        echo "Starting test database..."
-        timeout(time: 5, unit: 'MINUTES') {
-          sh 'oc process openshift//postgresql-ephemeral -l testdb=${svcname} DATABASE_SERVICE_NAME=${svcname} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=${tdbname} | oc create -f -'
-          waitUntil {
-            script {
-              sleep time: 15, unit: 'SECONDS'
-              def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
-              return (r == "true")
-            }
-          }
-          script {
-            env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.clusterIP}"'
-            env.podName = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.name}"'
-            env.namespace = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.namespace}"'
-          }
-          openshiftExec namespace: "${namespace}", pod: "${podName}", container: 'postgresql', command: [ "/bin/sh", "-i", "-c", "psql -h 127.0.0.1 -q -c 'ALTER ROLE railstest WITH SUPERUSER'" ]
-        }
-
-        echo "Creating schema..."
-        withEnv(["OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
-          sh 'bundle exec rake db:schema:load'
-        }
-
-        echo "Starting elasticsearch..."
-        timeout(time: 5, unit: 'MINUTES') {
-          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.6.0 | oc create -f -'
-          waitUntil {
-            script {
-              sleep time: 15, unit: 'SECONDS'
-              def r = sh returnStdout: true, script: 'oc get pod -l name=${esname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
-              return (r == "true")
-            }
-          }
-          script {
-            env.elastichost = sh returnStdout: true, script: 'oc get service -l name=${esname} -o jsonpath="{.items[*].spec.clusterIP}"'
-          }
-        }
-
         echo "Running tests..."
         withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
           sh 'mkdir -p reports;'
@@ -83,23 +39,10 @@ pipeline {
           echo "bypassing bundle exec rake..."
         }
 
-        echo "Running elasticsearch integration tests..."
-        withEnv(["NO_PROXY=localhost,127.0.0.1,${elastichost}", "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
-                 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432',
-                 "ES_HOST=http://${elastichost}:9200", 'RAILS_ENV=test']) {
-          sh 'bundle exec rake db:seed'
-          sh 'bundle exec rake admin:create_user[test@sdpv.local,testtest,false]'
-          sh 'bundle exec rake data:load_test[test@sdpv.local]'
-          sh 'bundle exec rake es:test[test@sdpv.local]'
-        }
-      }
-
       post {
         always {
           echo "Destroying test database..."
-          sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
-          echo "Destroying elasticsearch..."
-          sh 'oc delete pods,dc,rc,services,secrets -l name=${esname}'
+          echo "bypassing Destroying elasticsearch..."
           echo "bypassing Archiving test artifacts..."
         }
 
