@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Run Tests') {
       steps {
-        echo "Started Tests..."
+        updateSlack('#FFFF00', 'Started tests')
 
         script {
           env.svcname = sh returnStdout: true, script: 'echo -n "test-${BUILD_NUMBER}-${BRANCH_NAME}" | tr "_A-Z" "-a-z" | cut -c1-24 | sed -e "s/-$//"'
@@ -24,8 +24,124 @@ pipeline {
         sh 'yarn install'
         sh 'npm install -g retire'
         sh 'bundle install'
+
+        echo "Precompiling assets..."
+        sh 'NODE_ENV=production bundle exec rails assets:precompile'
+
+        echo "Starting Foreman..."
+        sh 'foreman start webpack &'
+
+        echo "Starting test database..."
+        timeout(time: 5, unit: 'MINUTES') {
+          sh 'oc process openshift//postgresql-ephemeral -l testdb=${svcname} DATABASE_SERVICE_NAME=${svcname} POSTGRESQL_USER=railstest POSTGRESQL_PASSWORD=railstest POSTGRESQL_DATABASE=${tdbname} | oc create -f -'
+          waitUntil {
+            script {
+              sleep time: 15, unit: 'SECONDS'
+              def r = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
+              return (r == "true")
+            }
+          }
+          script {
+            env.dbhost = sh returnStdout: true, script: 'oc get service -l testdb=${svcname} -o jsonpath="{.items[*].spec.clusterIP}"'
+            env.podName = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.name}"'
+            env.namespace = sh returnStdout: true, script: 'oc get pod -l name=${svcname} -o jsonpath="{.items[*].metadata.namespace}"'
+          }
+          openshiftExec namespace: "${namespace}", pod: "${podName}", container: 'postgresql', command: [ "/bin/sh", "-i", "-c", "psql -h 127.0.0.1 -q -c 'ALTER ROLE railstest WITH SUPERUSER'" ]
+        }
+
+        echo "Creating schema..."
+        withEnv(["OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
+          sh 'bundle exec rake db:schema:load'
+        }
+
+        echo "Starting elasticsearch..."
+        timeout(time: 5, unit: 'MINUTES') {
+          sh 'oc process openshift//elasticsearch-ephemeral -l name=${esname} ELASTICSEARCH_SERVICE_NAME=${esname} NAMESPACE=trusted-images ELASTICSEARCH_IMAGE=elasticsearch ELASTICSEARCH_VERSION=6.6.0 | oc create -f -'
+          waitUntil {
+            script {
+              sleep time: 15, unit: 'SECONDS'
+              def r = sh returnStdout: true, script: 'oc get pod -l name=${esname} -o jsonpath="{range .items[*]}{.status.containerStatuses[*].ready}{end}"'
+              return (r == "true")
+            }
+          }
+          script {
+            env.elastichost = sh returnStdout: true, script: 'oc get service -l name=${esname} -o jsonpath="{.items[*].spec.clusterIP}"'
+          }
+        }
+
+        echo "Running tests..."
+        withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
+          sh 'mkdir -p reports;'
+          script {
+            def retire = sh returnStatus: true, script: '/home/jenkins/.npm-global/bin/retire --outputformat json --outputpath reports/retire.json --severity medium'
+            if (retire == 13) {
+              error "Vulnerabilities exist in NodeJS libraries used!  See archived retire.json file for details."
+            } else {
+              echo "No vulnerabilities found in NodeJS libraries"
+            }
+          }
+          sh 'bundle exec rake'
+        }
+
+        echo "Running elasticsearch integration tests..."
+        withEnv(["NO_PROXY=localhost,127.0.0.1,${elastichost}", "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
+                 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432',
+                 "ES_HOST=http://${elastichost}:9200", 'RAILS_ENV=test']) {
+          sh 'bundle exec rake db:seed'
+          sh 'bundle exec rake admin:create_user[test@sdpv.local,testtest,false]'
+          sh 'bundle exec rake data:load_test[test@sdpv.local]'
+          sh 'bundle exec rake es:test[test@sdpv.local]'
+        }
+      }
+
+      post {
+        always {
+          echo "Destroying test database..."
+          sh 'oc delete pods,dc,rc,services,secrets -l testdb=${svcname}'
+          echo "Destroying elasticsearch..."
+          sh 'oc delete pods,dc,rc,services,secrets -l name=${esname}'
+          echo "Archiving test artifacts..."
+          archiveArtifacts artifacts: '**/reports/retire.json, **/reports/coverage/*, **/reports/mini_test/*',
+            fingerprint: true
+          stash allowEmpty: true, includes: 'reports/**,coverage/**', name: 'reports'
+        }
+
+        success {
+          updateSlack('#00FF00', 'Finished tests')
+        }
+
+        failure {
+          updateSlack('#FF0000', 'Failed tests')
+        }
       }
     }
+
+    stage('SonarQube Scan') {
+      agent { label 'jenkins-agent-sonarqube' }
+
+      steps {
+        unstash 'reports'
+        script {
+          def scannerHome = tool 'SonarQube Scanner 4.0'
+          withSonarQubeEnv('SDP') {
+           sh "${scannerHome}/bin/sonar-scanner -X"
+          }
+        }
+      }
+    }
+
+    stage('Publish Results') {
+      steps {
+        publishBrakeman 'reports/brakeman.html'
+        cucumber 'reports/cucumber.json'
+        checkstyle canComputeNew: false, defaultEncoding: '', healthy: '',
+          pattern: 'reports/rubocop-checkstyle-result.xml', unHealthy: ''
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false,
+          reportDir: 'reports/rubocop', reportFiles: 'index.html', reportName: 'RuboCop Report',
+          reportTitles: ''])
+      }
+    }
+
     stage('Build for Dev Env') {
       agent any
 
@@ -34,7 +150,7 @@ pipeline {
       }
 
       steps {
-        echo "Starting build for development environment"
+        updateSlack('#FFFF00', 'Starting build for development environment')
 
         echo "Triggering new build for development environment..."
         openshiftBuild namespace: 'sdp', bldCfg: 'vocabulary',
@@ -43,11 +159,13 @@ pipeline {
 
       post {
         success {
-          echo "Finished building for development environment."
+          updateSlack('#00FF00', 'Finished building for development environment')
+          updateEmail('Finished building for development environment', 'Finished building for development environment.')
         }
 
         failure {
-          echo "Failed to build for development environment."
+          updateSlack('#FF0000', 'Failed to build for development environment')
+          updateEmail('Failed to build for development environment', 'Failed to build for development environment.')
         }
       }
     }
@@ -127,4 +245,14 @@ pipeline {
       }
     }
   }
+}
+
+def updateSlack(String colorHex, String messageText) {
+  if (env.BRANCH_NAME == 'development' || env.CHANGE_ID) {
+    slackSend (color: colorHex, message: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  }
+}
+
+def updateEmail(String subjectText, String messageText) {
+  emailext(subject: "${subjectText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "${messageText}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'. Please see ${env.BUILD_URL} for additional details.", replyTo: '${DEFAULT_REPLYTO}', to: '${DEFAULT_RECIPIENTS}')
 }
