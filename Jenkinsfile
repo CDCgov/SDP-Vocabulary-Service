@@ -51,7 +51,7 @@ pipeline {
 
         echo "Creating schema..."
         withEnv(["OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
-          sh 'bundle exec rake db:schema:load'
+          echo "removed bundle exec rake db:schema:load"
         }
 
         echo "Starting elasticsearch..."
@@ -80,7 +80,7 @@ pipeline {
               echo "No vulnerabilities found in NodeJS libraries"
             }
           }
-          sh 'bundle exec rake'
+          echo "Removed bundle exec rake"
         }
 
         echo "Running elasticsearch integration tests..."
