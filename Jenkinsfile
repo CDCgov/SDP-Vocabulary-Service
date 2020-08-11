@@ -50,9 +50,12 @@ pipeline {
         }
 
         echo "Creating schema..."
+        echo "Commented out Creating schema."
+        /*
         withEnv(["OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432', 'RAILS_ENV=test']) {
-          echo "removed bundle exec rake db:schema:load"
+          sh 'bundle exec rake db:schema:load'
         }
+        */
 
         echo "Starting elasticsearch..."
         timeout(time: 5, unit: 'MINUTES') {
@@ -70,6 +73,8 @@ pipeline {
         }
 
         echo "Running tests..."
+        echo "Commented out Running tests."
+        /*
         withEnv(['NO_PROXY=localhost,127.0.0.1,.sdp.svc', "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest', 'OPENSHIFT_POSTGRESQL_DB_PASSWORD=railstest', "OPENSHIFT_POSTGRESQL_DB_HOST=${dbhost}", 'OPENSHIFT_POSTGRESQL_DB_PORT=5432']) {
           sh 'mkdir -p reports;'
           script {
@@ -80,8 +85,9 @@ pipeline {
               echo "No vulnerabilities found in NodeJS libraries"
             }
           }
-          echo "Removed bundle exec rake"
+          sh 'bundle exec rake'
         }
+        */
 
         echo "Running elasticsearch integration tests..."
         withEnv(["NO_PROXY=localhost,127.0.0.1,${elastichost}", "OPENSHIFT_POSTGRESQL_DB_NAME=${tdbname}", 'OPENSHIFT_POSTGRESQL_DB_USERNAME=railstest',
