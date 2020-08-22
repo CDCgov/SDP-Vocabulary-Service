@@ -1214,7 +1214,7 @@ class Help extends Component {
               <li>Added a Position info button to Create Section page.</li>
               <li>Updated API to return the latest version.</li>
               <li>Updated EPI Info export mapping.</li>
-              <li>Description updated in Details section to dynamically scale.</li>
+              <li>Description textbox updated in Details section to dynamically scale.</li>
               <InfoModal show={this.state.showInfoImportFileBug} header="Known Bug: File Import" body={<p>
                 <ul>
                   <u>Status</u>: Deferred
@@ -1231,6 +1231,7 @@ class Help extends Component {
                   </ul>
                 </ul></p>} hideInfo={()=>this.setState({showInfoImportFileBug: false})} />
                 <li>File Import Error <i>(Known Bug<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoImportFileBug: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>)</i>.</li>
+              <li>Security updates include acorn, arrify, coffeescript, del, devise, esquery, estraverse, fast-levenshtein, flat-cache, generate-function, glob, globby, handlebars, is-my-json-valid, is-property, jquery, json, js-yaml, lodash, nio4r, node-sass, nokogiri, nokogiri x64 and x86, optionator, path-parse, puma, rack, resolve, rimraf, swagger-cli, webpack, webpack-bundle-analyzer, websocket-extensions, word-wrap.</li>
               </ol>
             <li id="1.22"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/592838675/SDP+Vocabulary+Service+Release+1.22' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
               <ol>
