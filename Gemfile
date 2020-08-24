@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rack'
+gem 'rack', '~> 2.2', '>= 2.2.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.2'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '>= 4.3.3'
+gem 'puma', '~> 4.3', '>= 4.3.5'
 
 gem 'olive_branch'
 gem 'webpacker'
@@ -96,4 +96,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'foreman'
 
-gem 'wdm', '>= 0.1.0', platforms: [:x64_mingw]
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
