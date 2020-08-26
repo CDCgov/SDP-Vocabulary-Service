@@ -13,10 +13,9 @@ Feature: Import Spreadsheet
     And I should see "'Introduction' tab does not contain expected"
     When I click on the "Import" button
     And I wait 10 seconds
-    Then I should see "File imported with warnings"
+    Then I should see "File successfully imported"
     When I click on the "View Survey" button
     Then I should see "Survey Name: TestMMG.xlsx"
-    # Removed ': 6' due to info-button
     And I should see "Sections"
 
   Scenario: Create Survey with Blank sheet using importer
@@ -30,10 +29,9 @@ Feature: Import Spreadsheet
       And I should see "Sheet Blank Sheet skipped because it is blank"
       When I click on the "Import" button
       And I wait 10 seconds
-      Then I should see "File imported with warnings"
+      Then I should see "File successfully imported"
       When I click on the "View Survey" button
       Then I should see "Survey Name: TestMMGBlank.xlsx"
-      # Removed ': 6' due to info-button
       And I should see "Sections"
 
  Scenario: Check that Survey which has no data does not import using importer
@@ -60,11 +58,10 @@ Scenario: Create Survey from Generically Formatted Spreadsheet
       And I should see "Warning: Sheet Sheet1 skipped"
       When I click on the "Import" button
       And I wait 30 seconds
-      Then I should see "File imported with warnings"
+      Then I should see "File successfully imported"
       When I click on the "View Survey" button
       And I wait 10 seconds
       Then I should see "Survey Name: TestGenericTemplateMini.xlsx"
-      # Removed ': 1' due to info-button
       And I should see "Sections"
 
 Scenario: Check that Survey Import fails from badly Formatted Generic Spreadsheet

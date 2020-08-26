@@ -324,6 +324,7 @@ class SurveyEdit extends Component {
             <label  htmlFor="save-with-comment">Notes / Comments About Changes Made (Optional)</label>
             <textarea className="input-format" tabIndex="3" placeholder="Add notes about the changes here..." type="text" value={this.state.comment || ''} name="save-with-comment" id="save-with-comment" onChange={this.handleChange('comment')}/>
           </div>}
+          <br/>
           <InfoModal show={this.state.showInfoSelectedSections} header="Selected Sections" body={<p>The “Selected Sections” panel displays the selected Sections for this Survey.</p>} hideInfo={()=>this.setState({showInfoSelectedSections: false})} />
           <label className="pull-left">Selected Sections<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoSelectedSections: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button></label>
           <InfoModal show={this.state.showInfo} header="Position" body="This column displays the order of the sections. To change position, enter the desired position and hit the 'Enter' key on your keyboard." hideInfo={()=>this.setState({showInfo: false})} />

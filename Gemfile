@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rack'
+gem 'rack', '~> 2.2', '>= 2.2.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.2'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 4.3', '>= 4.3.5'
 
 gem 'olive_branch'
 gem 'webpacker'
@@ -28,10 +28,12 @@ gem 'acts_as_commentable'
 gem 'acts_as_tree'
 gem 'cancancan'
 gem 'config'
-gem 'devise'
+gem 'devise', '~> 4.7', '>= 4.7.1'
 gem 'elasticsearch'
 gem 'httparty'
 gem 'js-routes'
+gem 'json-jwt', '~> 1.11'
+gem 'nokogiri', '~> 1.10', '>= 1.10.8'
 gem 'omniauth'
 gem 'omniauth_openid_connect'
 gem 'paper_trail'

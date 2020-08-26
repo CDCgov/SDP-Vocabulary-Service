@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSteps } from '../actions/tutorial_actions';
+import { Button } from 'react-bootstrap';
+import InfoModal from '../components/InfoModal';
 
 class Help extends Component {
   constructor(props){
@@ -58,7 +60,7 @@ class Help extends Component {
         <h1 id="general">General</h1>
         <p><strong>Full help resources:</strong></p>
         <ul>
-        <li><a href='https://www.cdc.gov/sdp/SDPHowItWorksVocabularyService.html' target='_blank'>Additional external help resources including a full user guide can be found by clicking here!</a></li>
+        <li><a href='https://www.cdc.gov/sdp/SDPVocabularyServiceSharedServices.html' target='_blank'>Additional external help resources including a full user guide can be found by clicking here!</a></li>
         </ul>
         <p><strong>Navigation and Help Basics:</strong></p>
         <ul>
@@ -1164,7 +1166,6 @@ class Help extends Component {
           Read our latest release notes to learn how the application is continuously improving, learn
           about updates to user documentation, and find other announcements important to the user community.</p>
       <br/>
-      <br/>
         <strong>Find Out What&lsquo;s New In:</strong>
         <br/>
         <br/>
@@ -1193,17 +1194,46 @@ class Help extends Component {
               <a href="#1.19">1.19</a>,&nbsp;
               <a href="#1.20">1.20</a>,&nbsp;
               <a href="#1.21">1.21</a>,&nbsp;
-            <a href="#1.22">1.22</a>)
+              <a href="#1.22">1.22</a>,&nbsp;
+              <a href="#1.23">1.23</a>)
               </small><br/>
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
+          <br/>
+          <h4>Dev and Demo testing...8/26/2020</h4>
           <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.22"><strong>Release <a href='' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
+            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(July 2020)</small></li>
+            <ol>
+              <li>Response type default update to "Choice" when creating a Question.</li>
+              <li>Updated Section Edit page with Type Filter allowing a user to easily distiguish between filtering between Questions and Sections.</li>
+              <li>Added a Position info button to Create Section page.</li>
+              <li>Updated API to return the latest version.</li>
+              <li>Updated EPI Info export mapping.</li>
+              <li>Description textbox updated in Details section to dynamically scale.</li>
+              <InfoModal show={this.state.showInfoImportFileBug} header="Known Bug: File Import" body={<p>
+                <ul>
+                  <u>Status</u>: Deferred
+                  <br/>
+                  <u>Summary</u>:
+                  <br/>
+                  When a user attempts to import a file using the 'Import Spreadsheet' option, the user may encounter a 'Server 500' error stating that the import was not successful.<br/>
+                  <u>Expected Result</u>: <br/>Dependant on file size, an error message is presented to the user with a '500 Server Error'.<br/>
+                  <u>Actual Result</u>: <br/>Processing of the imported spreadsheet continues to process and the upload is successful.<br/>
+                  <u>Content Requirements for Successful Import of the Spreadsheet</u>:
+                  <ul>
+                    <li>Formatting (i.e. Tab name or header name changes) of the Excel import spreadsheet file has not been changed.</li>
+                    <li>Content is enterred and saved with accuracy.</li>
+                  </ul>
+                </ul></p>} hideInfo={()=>this.setState({showInfoImportFileBug: false})} />
+                <li>File Import Error <i>(Known Bug<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoImportFileBug: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>)</i>.</li>
+              <li>Security updates include acorn, arrify, coffeescript, del, devise, esquery, estraverse, fast-levenshtein, flat-cache, generate-function, glob, globby, handlebars, is-my-json-valid, is-property, jquery, json, js-yaml, lodash, nio4r, node-sass, nokogiri, nokogiri x64 and x86, optionator, path-parse, puma, rack, resolve, rimraf, swagger-cli, webpack, webpack-bundle-analyzer, websocket-extensions, word-wrap.</li>
+              </ol>
+            <li id="1.22"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/592838675/SDP+Vocabulary+Service+Release+1.22' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
               <ol>
               <li>Removed clickable filters and highlighting from dashboard items.</li>
               <li>Per usability testing feedback, components and detail sections have been reordered across the service for ease of readablity.</li>

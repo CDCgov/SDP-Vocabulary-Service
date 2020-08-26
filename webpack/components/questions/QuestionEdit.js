@@ -47,7 +47,7 @@ class QuestionEdit extends Component {
   componentWillReceiveProps(nextProps) {
     if(this.state.responseTypeId === null || this.state.responseTypeId === undefined) {
       const sortedRT = this.sortedResponseTypes(nextProps.responseTypes);
-      let rtid = sortedRT[0] ? sortedRT[0].id : null;
+      let rtid = sortedRT[2] ? sortedRT[2].id : null;
       this.setState({ responseTypeId: rtid });
     }
     if(nextProps.question && nextProps.question.responseSets && !this.unsavedState && nextProps.question.responseSets !== this.state.linkedResponseSets) {

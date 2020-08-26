@@ -21,8 +21,9 @@ import $ from 'jquery';
 class DashboardSearch extends SearchStateComponent {
   constructor(props){
     super(props);
+    let defaultType = this.props.isSectionEdit ? ['question', 'section'] : [];
     this.state={
-      type: [],
+      type: defaultType,
       myStuffFilter: false,
       searchTerms: '',
       programFilter: [],
@@ -94,6 +95,7 @@ class DashboardSearch extends SearchStateComponent {
   }
 
   clearAdvSearch() {
+    let defaultType = this.props.isSectionEdit ? ['question', 'section'] : [];
     let clearedParams = {
       programFilter: [],
       systemFilter: [],
@@ -106,7 +108,7 @@ class DashboardSearch extends SearchStateComponent {
       stageFilter: [],
       categoryFilter: [],
       rtFilter: [],
-      type: [],
+      type: defaultType,
       myStuffFilter: false,
       preferredFilter: false,
       retiredFilter: false,
@@ -543,10 +545,24 @@ class DashboardSearch extends SearchStateComponent {
                       <a href="#" id="type-filter" tabIndex="2" className="dropdown-toggle filter-navbar-item help-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Type<span className="caret"></span></a>
                       <ul className="cdc-nav-dropdown">
                       <form className="drop-form">
-                        <li className="cdc-nav-dropdown-item"><a href='#' className='response-set-green' onClick={()=>this.selectType('response_set')}>{this.state.type && this.state.type.includes('response_set') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-list' aria-hidden="true" /> Response Sets</a></li>
-                        <li className="cdc-nav-dropdown-item"><a href='#' className='question-blue' onClick={()=>this.selectType('question')}>{this.state.type && this.state.type.includes('question') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-question-circle' aria-hidden="true" /> Questions</a></li>
-                        <li className="cdc-nav-dropdown-item"><a href='#' className='section-purple' onClick={()=>this.selectType('section')}>{this.state.type && this.state.type.includes('section') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-window-maximize' aria-hidden="true" /> Sections</a></li>
-                        <li className="cdc-nav-dropdown-item"><a href='#' className='survey-teal' onClick={()=>this.selectType('survey')}>{this.state.type && this.state.type.includes('survey') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-clipboard' aria-hidden="true" /> Surveys</a></li>
+                        {!this.props.isSectionEdit && <li className="cdc-nav-dropdown-item"><a href='#' className='response-set-green' onClick={()=>this.selectType('response_set')}>{this.state.type && this.state.type.includes('response_set') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-list' aria-hidden="true" /> Response Sets</a></li>}
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='question-blue' onClick={(e)=>{
+                          e.preventDefault();
+                          if (!this.props.isSectionEdit || this.state.type.includes('section')) {
+                            this.selectType('question');
+                          } else {
+                            this.selectType('section');
+                          }
+                        }}>{this.state.type && this.state.type.includes('question') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-question-circle' aria-hidden="true" /> Questions</a></li>
+                        <li className="cdc-nav-dropdown-item"><a href='#' className='section-purple' onClick={(e)=>{
+                          e.preventDefault();
+                          if (!this.props.isSectionEdit || this.state.type.includes('question')) {
+                            this.selectType('section');
+                          } else {
+                            this.selectType('question');
+                          }
+                        }}>{this.state.type && this.state.type.includes('section') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-window-maximize' aria-hidden="true" /> Sections</a></li>
+                        {!this.props.isSectionEdit && <li className="cdc-nav-dropdown-item"><a href='#' className='survey-teal' onClick={()=>this.selectType('survey')}>{this.state.type && this.state.type.includes('survey') ? <i className='fa fa-check-square-o' aria-hidden='true' /> : <i className='fa fa-square-o' aria-hidden='true' /> } <i className='fa fa-clipboard' aria-hidden="true" /> Surveys</a></li>}
                       </form>
                       </ul>
                     </li>
@@ -636,10 +652,24 @@ class DashboardSearch extends SearchStateComponent {
                 <div className='adv-filter-survey col-md-3'><i className='fa important-white fa-clipboard' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Survey <a href='#' className='important-white' onClick={() => this.selectType('survey')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               }
               {this.state.type && this.state.type.includes('section')&&
-                <div className='adv-filter-section col-md-3'><i className='fa important-white fa-window-maximize' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Section <a href='#' className='important-white' onClick={() => this.selectType('section')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className='adv-filter-section col-md-3'><i className='fa important-white fa-window-maximize' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Section <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  if (!this.props.isSectionEdit || this.state.type.includes('question')) {
+                    this.selectType('section');
+                  } else {
+                    this.selectType('question');
+                  }
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               }
               {this.state.type && this.state.type.includes('question') &&
-                <div className='adv-filter-question col-md-3'><i className='fa important-white fa-question-circle' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Question <a href='#' className='important-white' onClick={() => this.selectType('question')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
+                <div className='adv-filter-question col-md-3'><i className='fa important-white fa-question-circle' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Question <a href='#' className='important-white' onClick={(e) => {
+                  e.preventDefault();
+                  if (!this.props.isSectionEdit || this.state.type.includes('section')) {
+                    this.selectType('question');
+                  } else {
+                    this.selectType('section');
+                  }
+                }}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
               }
               {this.state.type && this.state.type.includes('response_set') &&
                 <div className='adv-filter-response_set col-md-3'><i className='fa important-white fa-list' aria-hidden="true"></i><text className='sr-only'>Filtering by type: </text> Response Set <a href='#' className='important-white' onClick={() => this.selectType('response_set')}><i className="fa fa-times" style={{'color': 'white'}} aria-hidden="true"></i><text className='sr-only'>Click to remove filter</text></a></div>
@@ -796,6 +826,7 @@ DashboardSearch.propTypes = {
   categories: PropTypes.object,
   loggedIn: PropTypes.bool,
   isDash: PropTypes.bool,
+  isSectionEdit: PropTypes.bool,
   groups: PropTypes.array,
   responseTypes: PropTypes.object,
   surveillanceSystems: surveillanceSystemsProps,

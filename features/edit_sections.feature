@@ -57,7 +57,6 @@ Feature: Edit Sections
     And I click on the "Done" button
     And I should see "TEST VAR EDIT"
     And I set search filter to "sections" without "Test Section"
-    And I click on the "Click to filter search by Sections" link
     And I fill in the "search" field with "Nest"
     And I click on the "search-btn" button
     And I use the section search to select "Nested Section"
