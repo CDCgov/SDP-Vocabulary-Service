@@ -85,7 +85,7 @@
     "chai-jquery": "^2.0.0",
     "chai-spies": "*",
     "enzyme": "2.9.1",
-    "eslint": "^3.10.2",
+    "eslint": "^4.18.2",
     "eslint-plugin-react": "^6.7.1",
     "jsdom": "^9.8.3",
     "mocha": "^5.2.0",
