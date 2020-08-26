@@ -1200,6 +1200,8 @@ class Help extends Component {
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
           <br/>
+          <h4>Dev and Demo testing...8/26/2020</h4>
+          <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
           <br/>
