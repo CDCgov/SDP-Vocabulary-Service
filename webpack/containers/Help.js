@@ -1200,14 +1200,12 @@ class Help extends Component {
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
           <br/>
-          <h4>Dev and Demo testing...8/26/2020</h4>
-          <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(July 2020)</small></li>
+            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(August 4, 2020)</small></li>
             <ol>
               <li>Response type default update to "Choice" when creating a Question.</li>
               <li>Updated Section Edit page with Type Filter allowing a user to easily distiguish between filtering between Questions and Sections.</li>
