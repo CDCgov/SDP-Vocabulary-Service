@@ -540,7 +540,7 @@ DEPENDENCIES
   pry-rescue
   pry-stack_explorer
   puma (~> 4.3, >= 4.3.5)
-  rack (~> 2.2, >= 2.2.3)
+  rack
   rails (~> 5.1.2)
   rails-erd
   rolify
