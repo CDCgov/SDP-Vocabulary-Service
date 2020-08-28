@@ -1200,14 +1200,12 @@ class Help extends Component {
           <a href="#userdocupdates">User Documentation Updates</a>
           </ol>
           <br/>
-          <h4>Dev and Demo testing...8/26/2020</h4>
-          <br/>
           <h4 id="Announcements"><strong>Announcements</strong></h4>
             <ol>This section will be periodically updated with announcements relevant to the user community.  Please check back for updates.</ol>
           <br/>
           <h4 id="releasenotes"><strong>Release Notes</strong></h4>
             <ul>
-            <li id="1.23"><strong>Release <a href='' target='_blank'>1.23</a></strong> <small>(July 2020)</small></li>
+            <li id="1.23"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/1264353282/SDP+Vocabulary+Service+Release+1.23' target='_blank'>1.23</a></strong> <small>(August 4, 2020)</small></li>
             <ol>
               <li>Response type default update to "Choice" when creating a Question.</li>
               <li>Updated Section Edit page with Type Filter allowing a user to easily distiguish between filtering between Questions and Sections.</li>
@@ -1232,6 +1230,7 @@ class Help extends Component {
                 </ul></p>} hideInfo={()=>this.setState({showInfoImportFileBug: false})} />
                 <li>File Import Error <i>(Known Bug<Button bsStyle='link' style={{ padding: 3 }} onClick={() => this.setState({showInfoImportFileBug: true})}><i className="fa fa-info-circle" aria-hidden="true"></i><text className="sr-only">Click for info about this item</text></Button>)</i>.</li>
               <li>Security updates include acorn, arrify, coffeescript, del, devise, esquery, estraverse, fast-levenshtein, flat-cache, generate-function, glob, globby, handlebars, is-my-json-valid, is-property, jquery, json, js-yaml, lodash, nio4r, node-sass, nokogiri, nokogiri x64 and x86, optionator, path-parse, puma, rack, resolve, rimraf, swagger-cli, webpack, webpack-bundle-analyzer, websocket-extensions, word-wrap.</li>
+              <li>Updated privacy policy link.</li>
               </ol>
             <li id="1.22"><strong>Release <a href='https://publichealthsurveillance.atlassian.net/wiki/spaces/SVS/pages/592838675/SDP+Vocabulary+Service+Release+1.22' target='_blank'>1.22</a></strong> <small>(August 6, 2019)</small></li>
               <ol>
